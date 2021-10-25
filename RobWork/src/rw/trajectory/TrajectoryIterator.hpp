@@ -21,9 +21,9 @@
 /**
  * @file TrajectoryIterator.hpp
  */
-
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
-
+#endif
 namespace rw { namespace trajectory {
 
     /** @addtogroup trajectory */

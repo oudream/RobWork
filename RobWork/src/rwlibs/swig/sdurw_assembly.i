@@ -29,9 +29,11 @@ using rwlibs::task::Task;
 %include <std_string.i>
 %include <std_vector.i>
 %include <exception.i>
+%include <rwlibs/swig/swig_macros.i>
 
 %import <rwlibs/swig/sdurw_core.i>
 %import <rwlibs/swig/sdurw_math.i>
+%import <rwlibs/swig/sdurw_trajectory.i>
 %import <rwlibs/swig/sdurw.i>
 %import <rwlibs/swig/sdurw_task.i>
 
@@ -39,12 +41,14 @@ using rwlibs::task::Task;
 import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_math.*;
+import org.robwork.sdurw_trajectory.*;
 import org.robwork.sdurw_task.*;
 %}
 %typemap(javaimports) SWIGTYPE %{
 import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_math.*;
+import org.robwork.sdurw_trajectory.*;
 import org.robwork.sdurw_task.*;
 %}
 
@@ -65,7 +69,7 @@ public:
 	*/
 	
 	rw::math::Transform3D<double>  femaleTmaleTarget;
-	rw::core::Ptr<Trajectory<rw::math::Transform3D<double> > > worldTendTrajectory;
+	rw::core::Ptr<rw::trajectory::Trajectory<rw::math::Transform3D<double> > > worldTendTrajectory;
 	rw::math::VelocityScrew6D<double>  femaleTmaleVelocityTarget;
 	rw::math::Rotation3D<double>  offset;
 	//VectorND<6,bool> selection;
@@ -157,8 +161,8 @@ public:
 	std::string taskID;
 	std::string resultID;
     
-    rw::trajectory::Path<Timed<AssemblyState> > realState;
-	rw::trajectory::Path<Timed<AssemblyState> > assumedState;
+    rw::trajectory::Path<rw::trajectory::Timed<AssemblyState> > realState;
+	rw::trajectory::Path<rw::trajectory::Timed<AssemblyState> > assumedState;
 	rw::math::Transform3D<double>  approach;
 	std::string errorMessage;
 };
@@ -189,9 +193,9 @@ public:
 };
 
 %template (AssemblyStatePtr) rw::core::Ptr<AssemblyState>;
-%template (TimedAssemblyState) Timed<AssemblyState>;
-%template (TimedAssemblyStateVector) std::vector<Timed<AssemblyState> >;
-%template (PathTimedAssemblyState) rw::trajectory::Path<Timed<AssemblyState> >;
+%template (TimedAssemblyState) rw::trajectory::Timed<AssemblyState>;
+%template (TimedAssemblyStateVector) std::vector<rw::trajectory::Timed<AssemblyState> >;
+%template (PathTimedAssemblyState) rw::trajectory::Path<rw::trajectory::Timed<AssemblyState> >;
 OWNEDPTR(AssemblyState);
 
 class AssemblyTask

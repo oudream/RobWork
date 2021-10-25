@@ -16,6 +16,8 @@
 #include <rwlibs/simulation/SimulatedSensor.hpp>
 #include <rw/kinematics/FixedFrame.hpp>
 #include <rw/graphics/SceneViewer.hpp>
+#include <rw/trajectory/Trajectory.hpp>
+#include <rw/trajectory/InterpolatorTrajectory.hpp>
 #include <rw/models.hpp>
 #include <rw/core/Ptr.hpp>
 

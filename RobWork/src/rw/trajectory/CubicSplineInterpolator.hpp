@@ -21,12 +21,12 @@
 /**
  * @file CubicSplineInterpolator.hpp
  */
-
+#if !defined(SWIG)
 #include "Interpolator.hpp"
 
 #include <rw/core/macros.hpp>
 #include <rw/math/Transform3DVector.hpp>
-
+#endif
 namespace rw { namespace trajectory {
 
     /** @addtogroup trajectory */
@@ -70,7 +70,7 @@ namespace rw { namespace trajectory {
          * @note The derivative is a 2-degree polynomial:
          * \f$ \bf{df}(t)= \bf{b} + 2\cdot \bf{c}\cdot t + 3\cdot \bf{d}\cdot t^2 \f$
          */
-        T dx (double t) const { return _b + 2 * _c * t + 3 * _d * t * t; }
+        T dx (double t) const { return _b + _c * 2 * t + _d * 3 * t * t; }
 
         /**
          * @copydoc Interpolator::ddx
@@ -78,10 +78,7 @@ namespace rw { namespace trajectory {
          * @note The second derivative is a 1-degree polynomial:
          * \f$ \bf{df}(t)= 2\cdot \bf{c} + 6\cdot \bf{d}\cdot t \f$
          */
-        T ddx (double t) const
-        {
-            return _c * 2 + _d * t * 6;
-        }
+        T ddx (double t) const { return _c * 2 + _d * t * 6; }
 
         /**
          * @copydoc Interpolator::duration
@@ -96,7 +93,7 @@ namespace rw { namespace trajectory {
         double _duration;
     };
 
- template< class T >
+    template< class T >
     class CubicSplineInterpolator< rw::math::Rotation3D< T > >
         : public Interpolator< rw::math::Rotation3D< T > >
     {
@@ -141,7 +138,7 @@ namespace rw { namespace trajectory {
         double _duration;
     };
 
- template< class T >
+    template< class T >
     class CubicSplineInterpolator< rw::math::Transform3D< T > >
         : public Interpolator< rw::math::Transform3D< T > >
     {

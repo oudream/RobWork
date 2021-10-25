@@ -21,14 +21,14 @@
 /**
  * @file LloydHaywardBlend.hpp
  */
-
+#if !defined(SWIG)
 #include "Blend.hpp"
 #include "Interpolator.hpp"
 #include "InterpolatorUtil.hpp"
 
 #include <rw/math/Rotation3D.hpp>
 #include <rw/math/Transform3D.hpp>
-
+#endif
 namespace rw { namespace trajectory {
 
     /** @addtogroup trajectory */
@@ -210,7 +210,7 @@ namespace rw { namespace trajectory {
          */
         LloydHaywardBlend (Interpolator< rw::math::Rotation3D< T > >* inter1,
                            Interpolator< rw::math::Rotation3D< T > >* inter2, double tau,
-                           double kappa)
+                           double kappa  = 15 / 2)
         {
             RW_THROW ("Rotation3D not supported in LloydHaywardBlend");
         }
@@ -225,7 +225,7 @@ namespace rw { namespace trajectory {
          * @copydoc Blend::x
          * @endcond
          */
-        rw::math::Rotation3D< T > x (double t) const { return rw::math::Rotation3D<>::identity (); }
+        rw::math::Rotation3D< T > x (double t) const { return rw::math::Rotation3D<T>::identity (); }
 
         /**
          * @cond
@@ -234,7 +234,7 @@ namespace rw { namespace trajectory {
          */
         rw::math::Rotation3D< T > dx (double t) const
         {
-            return rw::math::Rotation3D<>::identity ();
+            return rw::math::Rotation3D<T>::identity ();
         }
 
         /**
@@ -244,7 +244,7 @@ namespace rw { namespace trajectory {
          */
         rw::math::Rotation3D< T > ddx (double t) const
         {
-            return rw::math::Rotation3D<>::identity ();
+            return rw::math::Rotation3D<T>::identity ();
         }
 
         /**
@@ -297,7 +297,7 @@ namespace rw { namespace trajectory {
          */
         LloydHaywardBlend (Interpolator< rw::math::Transform3D< T > >* inter1,
                            Interpolator< rw::math::Transform3D< T > >* inter2, double tau,
-                           double kappa) :
+                           double kappa = 15 / 2) :
             _wrap1 (inter1),
             _wrap2 (inter2), _blend (&_wrap1, &_wrap2, tau, kappa)
         {}

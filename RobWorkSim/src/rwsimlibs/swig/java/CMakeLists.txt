@@ -78,6 +78,7 @@ if(build)
                   ${RW_LIBS}/sdurw_models_java.jar
                   ${RW_LIBS}/sdurw_proximity_java.jar
                   ${RW_LIBS}/sdurw_graphics_java.jar
+                  ${RW_LIBS}/sdurw_trajectory_java.jar
         JAVADOC_LINK ${RW_LIBS}/javadoc/sdurw
                      ${RW_LIBS}/javadoc/sdurw_core
                      ${RW_LIBS}/javadoc/sdurw_common
@@ -88,6 +89,7 @@ if(build)
                      ${RW_LIBS}/javadoc/sdurw_models
                      ${RW_LIBS}/javadoc/sdurw_proximity
                      ${RW_LIBS}/javadoc/sdurw_graphics
+                     ${RW_LIBS}/javadoc/sdurw_trajectory
         WINDOW_TITLE "RobWorkSim Java API Documentation"
                      LOADER_SOURCE_FILE "${CMAKE_CURRENT_SOURCE_DIR}/LoaderRWSim.java"
                      LOADER_DST_FILE "java_src_sdurwsim/org/robwork/LoaderRWSim.java" BUILD_DOC

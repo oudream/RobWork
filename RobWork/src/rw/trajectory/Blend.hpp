@@ -21,9 +21,9 @@
 /**
  * @file Blend.hpp
  */
-
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
-
+#endif
 namespace rw { namespace trajectory {
 
     /** @addtogroup trajectory */
@@ -33,8 +33,8 @@ namespace rw { namespace trajectory {
      * @brief Interface for blending
      *
      * A Blend describes a way to blend between to consecutive interpolators. If we let
-     * \f$t_1\f$ be the time switching from one interpolator to the next, then the blend
-     * control the path in the interval \f$[t_1-\tau_1;t_1+\tau_2]\f$.
+     * \f$ t_1\f$ be the time switching from one interpolator to the next, then the blend
+     * control the path in the interval \f$ [t_1-\tau_1;t_1+\tau_2]\f$.
      *
      * See the specific implementations for at description of which template
      * arguments that are valid.
@@ -52,21 +52,21 @@ namespace rw { namespace trajectory {
 
         /**
          * @brief The position for a given time t
-         * @param t [in] \f$t\in[0,\tau_1+\tau_2] \f$
+         * @param t [in] \f$ t\in[0,\tau_1+\tau_2] \f$
          * @return Position at time \b t
          */
         virtual T x (double t) const = 0;
 
         /**
          * @brief The velocity for a given time t
-         * @param t [in] \f$t\in[0,\tau_1+\tau_2] \f$
+         * @param t [in] \f$ t\in[0,\tau_1+\tau_2] \f$
          * @return Velocity at time \b t
          */
         virtual T dx (double t) const = 0;
 
         /**
          * @brief The acceleration for a given time t
-         * @param t [in] \f$t\in[0,\tau_1+\tau_2] \f$
+         * @param t [in] \f$ t\in[0,\tau_1+\tau_2] \f$
          * @return Acceleration at time \b t
          */
         virtual T ddx (double t) const = 0;

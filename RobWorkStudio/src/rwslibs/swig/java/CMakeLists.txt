@@ -73,6 +73,7 @@ if(build)
                   ${RW_LIBS}/sdurw_models_java.jar
                   ${RW_LIBS}/sdurw_proximity_java.jar
                   ${RW_LIBS}/sdurw_graphics_java.jar
+                  ${RW_LIBS}/sdurw_trajectory_java.jar
                   ${RW_LIBS}/sdurw_java.jar
         JAVADOC_LINK ${RW_LIBS}/javadoc/sdurw
                      ${RW_LIBS}/javadoc/sdurw_core
@@ -83,6 +84,7 @@ if(build)
                      ${RW_LIBS}/javadoc/sdurw_sensor
                      ${RW_LIBS}/javadoc/sdurw_models
                      ${RW_LIBS}/javadoc/sdurw_proximity
+                     ${RW_LIBS}/javadoc/sdurw_trajectory
                      ${RW_LIBS}/javadoc/sdurw_graphics
         WINDOW_TITLE "RobWorkStudio Java API Documentation"
     )

@@ -18,8 +18,9 @@
 #ifndef RW_TRAJECTORY_FIXEDINTERPOLATOR_HPP
 #define RW_TRAJECTORY_FIXEDINTERPOLATOR_HPP
 
+#if !defined(SWIG)
 #include "Interpolator.hpp"
-
+#endif
 /**
    @file Interpolator.hpp
 */

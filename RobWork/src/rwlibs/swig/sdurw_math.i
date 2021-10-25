@@ -351,6 +351,7 @@ ADD_DEFINITION(Transform3DAngleMetric_d, Transform3DAngleMetric);
 %}
 %include <rw/math/Q.hpp>
 %template(PairQ) std::pair<rw::math::Q,rw::math::Q>;
+%template(VectorQ) std::vector<rw::math::Q>;
 
 %rename(copy) rw::math::Quaternion::operator=;
 %ignore rw::math::Quaternion::e() const;
@@ -388,6 +389,8 @@ FRIEND_OPERATOR(rw::math::Rotation3D<float>, rw::math::Wrench6D<float>, *);
     #include <rw/math/Rotation3D.hpp>
 %}
 %include <rw/math/Rotation3D.hpp>
+%template(VectorRotation3D) std::vector<rw::math::Rotation3D<double>>;
+%template(VectorRotation3D_f) std::vector<rw::math::Rotation3D<float>>;
 
 %{
     #include <rw/math/RPY.hpp>
@@ -407,6 +410,8 @@ FRIEND_OPERATOR(rw::math::Rotation3D<float>, rw::math::Wrench6D<float>, *);
 %include <rw/math/Transform3D.hpp>
 %template(inverse) rw::math::inverse<double>;
 %template(inverse) rw::math::inverse<float>;
+%template(VectorTransform3D) std::vector<rw::math::Transform3D<double>>;
+%template(VectorTransform3D_f) std::vector<rw::math::Transform3D<float>>;
 
 %{
     #include <rw/math/Transform3DVector.hpp>

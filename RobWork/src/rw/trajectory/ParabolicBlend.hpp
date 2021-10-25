@@ -21,12 +21,12 @@
 /**
  * @file ParabolicBlend.hpp
  */
-
+#if !defined(SWIG)
 #include "Blend.hpp"
 #include "LinearInterpolator.hpp"
 
 #include <rw/core/macros.hpp>
-
+#endif
 namespace rw { namespace trajectory {
 
     /** @addtogroup trajectory */
@@ -49,12 +49,13 @@ namespace rw { namespace trajectory {
          * @param tau [in] Blend time
          */
         ParabolicBlend (const LinearInterpolator< T >& line1, const LinearInterpolator< T >& line2,
-                        double tau) : _tau(tau)
+                        double tau) :
+            _tau (tau)
         {
             if (_tau > line1.duration () || _tau > line2.duration ()) {
                 RW_THROW ("blend time tau is greater then LineInterpolator duration");
             }
-            if ((line1.getEnd () - line2.getStart ()).norm2() > 10e-10) {
+            if (GT(line1.getEnd () - line2.getStart (),10e-10)) {
                 RW_THROW ("Bland cannot be performed when line1.getEnd() != line2.getStart()");
             }
             double T1 = line1.duration ();
@@ -99,7 +100,7 @@ namespace rw { namespace trajectory {
                         const typename LinearInterpolator< T >::Ptr line2, double tau) :
             ParabolicBlend (*line1, *line2, tau)
         {}
-
+#if !defined(SWIGPYTHON)
         /**
          * @brief Constructs parabolic blend between \b line1 and \b line2 with \b tau
          * as blend time. The segments is copied for internal storage
@@ -111,7 +112,7 @@ namespace rw { namespace trajectory {
                         double tau) :
             ParabolicBlend (*line1, *line2, tau)
         {}
-
+#endif
         /**
          * @brief Destructor
          */
@@ -178,6 +179,18 @@ namespace rw { namespace trajectory {
         T _a;
         T _b;
         T _c;
+
+        template<class R>
+        bool GT(R lhs,double rhs){
+            return lhs.norm2() > rhs; 
+        }
+
+        bool GT(double lhs,double rhs){
+            return lhs > rhs;
+        }
+        bool GT(float lhs,double rhs){
+            return lhs > rhs;
+        }
     };
 
     /**
@@ -203,7 +216,27 @@ namespace rw { namespace trajectory {
             const rw::math::EAA< T > u2 (inverse (rotBlend) * rotEnd);
 
             const LinearInterpolator< rw::math::Vector3D< T > > lin1 (
-                u1.axis () * u1.angle (), rw::math::Vector3D<> (0, 0, 0), tau);
+                u1.axis () * u1.angle (), rw::math::Vector3D<T> (0, 0, 0), tau);
+            const LinearInterpolator< rw::math::Vector3D< T > > lin2 (
+                rw::math::Vector3D< T > (0, 0, 0), u2.axis () * u2.angle (), tau);
+            // The Parabolic blend only read values from the arguments and does not store them
+            // (therefore it is ok with the local parameters)
+            return ParabolicBlend< rw::math::Vector3D< T > > (&lin1, &lin2, tau);
+        }
+
+        ParabolicBlend< rw::math::Vector3D< T > >
+        getBlend (const LinearInterpolator< rw::math::Rotation3D< T > >& line1,
+                  const LinearInterpolator< rw::math::Rotation3D< T > >& line2, double tau)
+        {
+            const rw::math::Rotation3D< T > rotStart = line1.x (line1.duration () - tau);
+            const rw::math::Rotation3D< T > rotBlend = line1.getEnd ();
+            const rw::math::Rotation3D< T > rotEnd   = line2.x (tau);
+
+            const rw::math::EAA< T > u1 (inverse (rotBlend) * rotStart);
+            const rw::math::EAA< T > u2 (inverse (rotBlend) * rotEnd);
+
+            const LinearInterpolator< rw::math::Vector3D< T > > lin1 (
+                u1.axis () * u1.angle (), rw::math::Vector3D<T> (0, 0, 0), tau);
             const LinearInterpolator< rw::math::Vector3D< T > > lin2 (
                 rw::math::Vector3D< T > (0, 0, 0), u2.axis () * u2.angle (), tau);
             // The Parabolic blend only read values from the arguments and does not store them
@@ -219,13 +252,65 @@ namespace rw { namespace trajectory {
          * @param line2 [in] LinearInterpolator representing the second rotational segment
          * @param tau [in] The blend time
          */
-        ParabolicBlend (typename LinearInterpolator< rw::math::Rotation3D< T > >::CPtr line1,
-                        typename LinearInterpolator< rw::math::Rotation3D< T > >::CPtr line2,
-                        double tau) :
+        ParabolicBlend (
+            rw::core::Ptr< rw::trajectory::LinearInterpolator< rw::math::Rotation3D< T > > > line1,
+            rw::core::Ptr< rw::trajectory::LinearInterpolator< rw::math::Rotation3D< T > > > line2,
+            double tau) :
             _blend (getBlend (line1, line2, tau)),
             _blendRot (line1->getEnd ())
         {
             _duration = line1->duration () + line2->duration ();
+        }
+
+        /**
+         * @brief Constructs a ParabolicBlend for blending the rotation between \b int1 and \b int2.
+         *
+         * @param line1 [in] LinearInterpolator representing the first rotational segment
+         * @param line2 [in] LinearInterpolator representing the second rotational segment
+         * @param tau [in] The blend time
+         */
+        ParabolicBlend (
+            rw::core::Ptr< const rw::trajectory::LinearInterpolator< rw::math::Rotation3D< T > > >
+                line1,
+            rw::core::Ptr< const rw::trajectory::LinearInterpolator< rw::math::Rotation3D< T > > >
+                line2,
+            double tau) :
+            _blend (getBlend (line1, line2, tau)),
+            _blendRot (line1->getEnd ())
+        {
+            _duration = line1->duration () + line2->duration ();
+        }
+
+        /**
+         * @brief Constructs a ParabolicBlend for blending the rotation between \b int1 and \b int2.
+         *
+         * @param line1 [in] LinearInterpolator representing the first rotational segment
+         * @param line2 [in] LinearInterpolator representing the second rotational segment
+         * @param tau [in] The blend time
+         */
+        ParabolicBlend (
+            const rw::trajectory::LinearInterpolator< rw::math::Rotation3D< T > >* line1,
+            const rw::trajectory::LinearInterpolator< rw::math::Rotation3D< T > >* line2,
+            double tau) :
+            _blend (getBlend (line1, line2, tau)),
+            _blendRot (line1->getEnd ())
+        {
+            _duration = line1->duration () + line2->duration ();
+        }
+
+        /**
+         * @brief Constructs a ParabolicBlend for blending the rotation between \b int1 and \b int2.
+         *
+         * @param line1 [in] LinearInterpolator representing the first rotational segment
+         * @param line2 [in] LinearInterpolator representing the second rotational segment
+         * @param tau [in] The blend time
+         */
+        ParabolicBlend (const LinearInterpolator< rw::math::Rotation3D< T > >& line1,
+                        const LinearInterpolator< rw::math::Rotation3D< T > >& line2, double tau) :
+            _blend (getBlend (line1, line2, tau)),
+            _blendRot (line1.getEnd ())
+        {
+            _duration = line1.duration () + line2.duration ();
         }
 
         /**
@@ -250,7 +335,7 @@ namespace rw { namespace trajectory {
          * @copydoc Blend::dx
          * @endcond
          */
-        rw::math::Rotation3D<> dx (double t) const
+        rw::math::Rotation3D< T > dx (double t) const
         {
             rw::math::Vector3D< T > v = _blend.x (t);
             rw::math::EAA< T > eaa (v (0), v (1), v (2));
@@ -262,7 +347,7 @@ namespace rw { namespace trajectory {
          * @copydoc Blend::ddx
          * @endcond
          */
-        rw::math::Rotation3D<> ddx (double t) const
+        rw::math::Rotation3D< T > ddx (double t) const
         {
             rw::math::Vector3D< T > v = _blend.x (t);
             rw::math::EAA< T > eaa (v (0), v (1), v (2));
@@ -279,7 +364,7 @@ namespace rw { namespace trajectory {
          * @brief get the deviation from the intersection point
          * @return the deviation
          */
-        rw::math::Rotation3D<> deviation () const
+        rw::math::Rotation3D< T > deviation () const
         {
             RW_THROW ("deviation is not implemented for rotation");
             return rw::math::Rotation3D<> ();
@@ -326,15 +411,70 @@ namespace rw { namespace trajectory {
          * @param line2 [in] Second segment
          * @param tau [in] Blend time
          */
-        ParabolicBlend (typename LinearInterpolator< rw::math::Transform3D< T > >::CPtr line1,
-                        typename LinearInterpolator< rw::math::Transform3D< T > >::CPtr line2,
-                        double tau) :
+        ParabolicBlend (
+            rw::core::Ptr< rw::trajectory::LinearInterpolator< rw::math::Transform3D< T > > > line1,
+            rw::core::Ptr< rw::trajectory::LinearInterpolator< rw::math::Transform3D< T > > > line2,
+            double tau) :
             _posBlend (&(line1->getPositionInterpolator ()), &(line2->getPositionInterpolator ()),
                        tau),
             _rotBlend (&(line1->getRotationInterpolator ()), &(line2->getRotationInterpolator ()),
                        tau)
         {
             _duration = line1->duration () + line2->duration ();
+        }
+        /**
+         * @brief Constructs parabolic blend between \b line1 and \b line2 with \b tau
+         * as blend time
+         * @param line1 [in] First segment
+         * @param line2 [in] Second segment
+         * @param tau [in] Blend time
+         */
+        ParabolicBlend (
+            rw::core::Ptr< const rw::trajectory::LinearInterpolator< rw::math::Transform3D< T > > >
+                line1,
+            rw::core::Ptr< const rw::trajectory::LinearInterpolator< rw::math::Transform3D< T > > >
+                line2,
+            double tau) :
+            _posBlend (&(line1->getPositionInterpolator ()), &(line2->getPositionInterpolator ()),
+                       tau),
+            _rotBlend (&(line1->getRotationInterpolator ()), &(line2->getRotationInterpolator ()),
+                       tau)
+        {
+            _duration = line1->duration () + line2->duration ();
+        }
+
+        /**
+         * @brief Constructs parabolic blend between \b line1 and \b line2 with \b tau
+         * as blend time
+         * @param line1 [in] First segment
+         * @param line2 [in] Second segment
+         * @param tau [in] Blend time
+         */
+        ParabolicBlend (
+            const rw::trajectory::LinearInterpolator< rw::math::Transform3D< T > >* line1,
+            const rw::trajectory::LinearInterpolator< rw::math::Transform3D< T > >* line2,
+            double tau) :
+            _posBlend (&(line1->getPositionInterpolator ()), &(line2->getPositionInterpolator ()),
+                       tau),
+            _rotBlend (&(line1->getRotationInterpolator ()), &(line2->getRotationInterpolator ()),
+                       tau)
+        {
+            _duration = line1->duration () + line2->duration ();
+        }
+
+        /**
+         * @brief Constructs parabolic blend between \b line1 and \b line2 with \b tau
+         * as blend time
+         * @param line1 [in] First segment
+         * @param line2 [in] Second segment
+         * @param tau [in] Blend time
+         */
+        ParabolicBlend (LinearInterpolator< rw::math::Transform3D< T > > line1,
+                        LinearInterpolator< rw::math::Transform3D< T > > line2, double tau) :
+            _posBlend (line1.getPositionInterpolator (), line2.getPositionInterpolator (), tau),
+            _rotBlend (line1.getRotationInterpolator (), line2.getRotationInterpolator (), tau)
+        {
+            _duration = line1.duration () + line2.duration ();
         }
 
         /**
@@ -361,7 +501,7 @@ namespace rw { namespace trajectory {
          * @copydoc Blend::dx
          * @endcond
          */
-        rw::math::Transform3D<> dx (double t) const
+        rw::math::Transform3D< T > dx (double t) const
         {
             rw::math::Vector3D< T > pos   = _posBlend.dx (t);
             rw::math::Rotation3D< T > rot = _rotBlend.dx (t);
@@ -375,7 +515,7 @@ namespace rw { namespace trajectory {
          * @copydoc Blend::ddx
          * @endcond
          */
-        rw::math::Transform3D<> ddx (double t) const
+        rw::math::Transform3D< T > ddx (double t) const
         {
             rw::math::Vector3D< T > pos   = _posBlend.ddx (t);
             rw::math::Rotation3D< T > rot = _rotBlend.ddx (t);
@@ -396,7 +536,7 @@ namespace rw { namespace trajectory {
          * @brief get the deviation from the intersection point
          * @return the deviation
          */
-        rw::math::Transform3D<> deviation () const
+        rw::math::Transform3D< T > deviation () const
         {
             RW_THROW ("deviation is not implemented for transform");
             return rw::math::Transform3D<> ();

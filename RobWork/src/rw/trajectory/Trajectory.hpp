@@ -17,7 +17,7 @@
 
 #ifndef RW_TRAJECTORY_TRAJECTORY_HPP
 #define RW_TRAJECTORY_TRAJECTORY_HPP
-
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
 #include <rw/kinematics/State.hpp>
 #include <rw/math/Q.hpp>
@@ -25,7 +25,7 @@
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/Vector3D.hpp>
 #include <rw/trajectory/TrajectoryIterator.hpp>
-
+#endif
 namespace rw { namespace trajectory {
 
     /** @addtogroup trajectory */
@@ -144,7 +144,7 @@ namespace rw { namespace trajectory {
          * iterator
          * @brief Pointer to the iterator. The pointer has ownership.
          */
-        virtual typename TrajectoryIterator< T >::Ptr getIterator (double dt = 1) const = 0;
+        virtual typename rw::trajectory::TrajectoryIterator< T >::Ptr getIterator (double dt = 1) const = 0;
 
       protected:
         /**

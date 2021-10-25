@@ -155,7 +155,7 @@ namespace rw { namespace graphics {
          * @brief Sets up the color alpha value.
          *
          * @param alpha [in] \f$ 0.0 \f$ corresponds to fully transparent and
-         * \f$1.0\f$ to completely solid.
+         * \f$ 1.0\f$ to completely solid.
          */
         virtual void setTransparency (float alpha) = 0;
 
