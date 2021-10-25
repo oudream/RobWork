@@ -115,7 +115,7 @@ SWIG_DECLARE_TEMPLATE (BVBSphere, rw::geometry::BV< rw::geometry::BSphere< doubl
 SWIG_DECLARE_TEMPLATE (BVBSphere_f, rw::geometry::BV< rw::geometry::BSphere< float > >);
 #if SWIG_VERSION < 0x040000
 SWIG_DECLARE_TEMPLATE (BSphere_d, rw::geometry::BSphere< double >);
-ADD_DEFINITION(BSphere_d,BSphere)
+ADD_DEFINITION(BSphere_d,BSphere,sdurw_geometry)
 #else 
 SWIG_DECLARE_TEMPLATE (BSphere, rw::geometry::BSphere< double >);
 #endif

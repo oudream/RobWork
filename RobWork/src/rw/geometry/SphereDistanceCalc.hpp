@@ -72,8 +72,8 @@ namespace rw { namespace proximity {
     SWIG_DECLARE_TEMPLATE (BVDistanceCalcSphereDistanceCalc_d,
                            BVDistanceCalcSphereDistanceCalc_TYPE (double));
     SWIG_DECLARE_TEMPLATE (SphereDistanceCalc_d, rw::proximity::SphereDistanceCalc< double >);
-    ADD_DEFINITION (BVDistanceCalcSphereDistanceCalc_d, BVDistanceCalcSphereDistanceCalc)
-    ADD_DEFINITION (SphereDistanceCalc_d, SphereDistanceCalc)
+    ADD_DEFINITION (BVDistanceCalcSphereDistanceCalc_d, BVDistanceCalcSphereDistanceCalc,sdurw_geometry)
+    ADD_DEFINITION (SphereDistanceCalc_d, SphereDistanceCalc,sdurw_geometry)
 #else
     SWIG_DECLARE_TEMPLATE (BVDistanceCalcSphereDistanceCalc,
                            BVDistanceCalcSphereDistanceCalc_TYPE (double));

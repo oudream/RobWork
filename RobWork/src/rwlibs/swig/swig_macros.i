@@ -280,14 +280,14 @@
     %import include_module
 %enddef
 
-%define ADD_DEFINITION(orig,new)
+%define ADD_DEFINITION(orig,new,module)
 #if defined(SWIGPYTHON)
 %pythoncode {
 new=orig
 }
 #elif defined(SWIGLUA)
 %luacode {
-new = orig
+module.new = module.orig
 }
 #elif defined(SWIGJAVA)
 #endif 

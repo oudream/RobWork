@@ -295,7 +295,7 @@ extern template class rw::geometry::OBB< float >;
 SWIG_DECLARE_TEMPLATE (ObvOBB, rw::geometry::OBV< rw::geometry::OBB< double > >);
 #if SWIG_VERSION < 0x040000
 SWIG_DECLARE_TEMPLATE (OBB_d, rw::geometry::OBB< double >);
-ADD_DEFINITION (OBB_d, OBB)
+ADD_DEFINITION (OBB_d, OBB,sdurw_geometry)
 #else
 SWIG_DECLARE_TEMPLATE (OBB, rw::geometry::OBB< double >);
 #endif

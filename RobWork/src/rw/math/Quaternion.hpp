@@ -621,7 +621,7 @@ namespace rw { namespace math {
 
 #if SWIG_VERSION < 0x040000
     SWIG_DECLARE_TEMPLATE (Quaternion_d, rw::math::Quaternion< double >);
-    ADD_DEFINITION (Quaternion_d, Quaternion)
+    ADD_DEFINITION (Quaternion_d, Quaternion,sdurw_math)
 #else
     SWIG_DECLARE_TEMPLATE (Quaternion, rw::math::Quaternion< double >);
 #endif

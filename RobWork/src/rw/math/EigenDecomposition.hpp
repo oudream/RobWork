@@ -113,7 +113,7 @@ namespace rw { namespace math {
 #else
 #if SWIG_VERSION < 0x040000
     SWIG_DECLARE_TEMPLATE (EigenDecomposition_d, rw::math::EigenDecomposition< double >);
-    ADD_DEFINITION (EigenDecomposition_d, EigenDecomposition)
+    ADD_DEFINITION (EigenDecomposition_d, EigenDecomposition,sdurw_geometry)
 #else
     SWIG_DECLARE_TEMPLATE (EigenDecomposition, rw::math::EigenDecomposition< double >);
 #endif

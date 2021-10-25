@@ -230,7 +230,7 @@ namespace rw { namespace geometry {
                            BVColliderOBBToleranceCollider_TYPE (float));
 #if SWIG_VERSION < 0x040000
     SWIG_DECLARE_TEMPLATE (OBBToleranceCollider_d, rw::geometry::OBBToleranceCollider< double >);
-    ADD_DEFINITION (OBBToleranceCollider_d, OBBToleranceCollider)
+    ADD_DEFINITION (OBBToleranceCollider_d, OBBToleranceCollider,sdurw_geometry)
 #else
     SWIG_DECLARE_TEMPLATE (OBBToleranceCollider, rw::geometry::OBBToleranceCollider< double >);
 #endif

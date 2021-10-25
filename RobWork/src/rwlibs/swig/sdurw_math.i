@@ -232,11 +232,11 @@ NAMED_OWNEDPTR(MetricRotation3D, rw::math::Metric<rw::math::Rotation3D<double>>)
 %template(WeightedInfinityMetricVector3D) rw::math::WeightedInfinityMetric< rw::math::Vector3D<double> >;
 
 %template(Rotation3DAngleMetric_d) rw::math::Rotation3DAngleMetric<double>;
-ADD_DEFINITION(Rotation3DAngleMetric_d, Rotation3DAngleMetric);
+ADD_DEFINITION(Rotation3DAngleMetric_d, Rotation3DAngleMetric,sdurw_math);
 %template(Rotation3DAngleMetric_f) rw::math::Rotation3DAngleMetric<float>;
 
 %template(Transform3DAngleMetric_d) rw::math::Transform3DAngleMetric <double>;
-ADD_DEFINITION(Transform3DAngleMetric_d, Transform3DAngleMetric);
+ADD_DEFINITION(Transform3DAngleMetric_d, Transform3DAngleMetric,sdurw_math);
 %template(Transform3DAngleMetric_f) rw::math::Transform3DAngleMetric <float>;
 
 %{
