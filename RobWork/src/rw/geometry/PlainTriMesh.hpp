@@ -225,9 +225,9 @@ namespace rw { namespace geometry {
                            rw::geometry::PlainTriMesh< rw::geometry::TriangleN1< double > >);
     SWIG_DECLARE_TEMPLATE (PlainTriMeshN3_d,
                            rw::geometry::PlainTriMesh< rw::geometry::TriangleN3< double > >);
-    ADD_DEFINITION (PlainTriMesh_d, PlainTriMesh)
-    ADD_DEFINITION (PlainTriMeshN1_d, PlainTriMeshN1)
-    ADD_DEFINITION (PlainTriMeshN3_d, PlainTriMeshN3)
+    ADD_DEFINITION (PlainTriMesh_d, PlainTriMesh,sdurw_geometry)
+    ADD_DEFINITION (PlainTriMeshN1_d, PlainTriMeshN1,sdurw_geometry)
+    ADD_DEFINITION (PlainTriMeshN3_d, PlainTriMeshN3,sdurw_geometry)
 #else
     SWIG_DECLARE_TEMPLATE (PlainTriMesh,
                            rw::geometry::PlainTriMesh< rw::geometry::Triangle< double > >);

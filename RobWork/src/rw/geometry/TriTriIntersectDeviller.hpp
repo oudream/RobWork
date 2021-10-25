@@ -220,7 +220,7 @@ namespace rw { namespace geometry {
 #else
 #if SWIG_VERSION < 0x040000
     SWIG_DECLARE_TEMPLATE (TriTriIntersectDeviller_d, rw::geometry::TriTriIntersectDeviller< double >);
-    ADD_DEFINITION (TriTriIntersectDeviller_d, TriTriIntersectDeviller)
+    ADD_DEFINITION (TriTriIntersectDeviller_d, TriTriIntersectDeviller,sdurw_geometry)
 #else
     SWIG_DECLARE_TEMPLATE (TriTriIntersectDeviller, rw::geometry::TriTriIntersectDeviller< double >);
 #endif

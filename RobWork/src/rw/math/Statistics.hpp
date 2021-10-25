@@ -286,7 +286,7 @@ namespace rw { namespace math {
 #if defined(SWIG)
 #if SWIG_VERSION < 0x040000
     SWIG_DECLARE_TEMPLATE (Statistics_d, rw::math::Statistics< double >);
-    ADD_DEFINITION (Statistics_d, Statistics)
+    ADD_DEFINITION (Statistics_d, Statistics,sdurw_geometry)
 #else
     SWIG_DECLARE_TEMPLATE (Statistics, rw::math::Statistics< double >);
 #endif

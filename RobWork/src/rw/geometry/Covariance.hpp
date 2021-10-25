@@ -155,7 +155,7 @@ namespace rw { namespace geometry {
 #else
 #if SWIG_VERSION < 0x040000
     SWIG_DECLARE_TEMPLATE (Covariance_d, rw::geometry::Covariance< double >);
-    ADD_DEFINITION (Covariance_d, Covariance)
+    ADD_DEFINITION (Covariance_d, Covariance,sdurw_geometry)
 #else
     SWIG_DECLARE_TEMPLATE (Covariance, rw::geometry::Covariance< double >);
 #endif

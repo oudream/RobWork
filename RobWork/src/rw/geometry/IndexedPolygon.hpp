@@ -81,7 +81,7 @@ namespace rw { namespace geometry {
 #if defined(SWIG)
 #if SWIG_VERSION < 0x040000
     SWIG_DECLARE_TEMPLATE (IndexedPolygon_16, rw::geometry::IndexedPolygon< uint16_t >);
-    ADD_DEFINITION (IndexedPolygon_16, IndexedPolygon)
+    ADD_DEFINITION (IndexedPolygon_16, IndexedPolygon,sdurw_geometry)
 #else
     SWIG_DECLARE_TEMPLATE (IndexedPolygon, rw::geometry::IndexedPolygon< uint16_t >);
 #endif
@@ -164,7 +164,7 @@ namespace rw { namespace geometry {
 #if defined(SWIG)
 #if SWIG_VERSION < 0x040000
     SWIG_DECLARE_TEMPLATE (IndexedPolygonN_16, rw::geometry::IndexedPolygonN< uint16_t >);
-    ADD_DEFINITION (IndexedPolygonN_16, IndexedPolygonN)
+    ADD_DEFINITION (IndexedPolygonN_16, IndexedPolygonN,sdurw_geometry)
 #else
     SWIG_DECLARE_TEMPLATE (IndexedPolygonN, rw::geometry::IndexedPolygonN< uint16_t >);
 #endif
@@ -261,7 +261,7 @@ namespace rw { namespace geometry {
 #if defined(SWIG)
 #if SWIG_VERSION < 0x040000
     SWIG_DECLARE_TEMPLATE (IndexedPolygonNN_16, rw::geometry::IndexedPolygonNN< uint16_t >);
-    ADD_DEFINITION (IndexedPolygonNN_16, IndexedPolygonNN)
+    ADD_DEFINITION (IndexedPolygonNN_16, IndexedPolygonNN,sdurw_geometry)
 #else
     SWIG_DECLARE_TEMPLATE (IndexedPolygonNN, rw::geometry::IndexedPolygonNN< uint16_t >);
 #endif
