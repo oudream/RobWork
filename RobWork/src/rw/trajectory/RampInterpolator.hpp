@@ -43,7 +43,7 @@ namespace rw { namespace trajectory {
      *
      * For use with a rw::math::Transform3D see the template specialization
      */
-    template< class T > class RampInterpolator : public Interpolator< T >
+    template< class T > class RampInterpolator : public rw::trajectory::Interpolator< T >
     {
       public:
         //! @brief smart pointer type to instance of class
@@ -138,10 +138,10 @@ namespace rw { namespace trajectory {
             if (t < _tau_s)
                 return _dwmax * _b;
             if (t < _durationRamp - _tau_e)
-                return 0 * _b;
+                return _b * 0;
             if (t < _durationRamp)
                 return -_dwmax * _b;
-            return 0 * _b;
+            return _b * 0;
         }
 
         /**
@@ -167,17 +167,17 @@ namespace rw { namespace trajectory {
             using namespace rw::math;
             // calculate max time
             double maxtime = 0;
-            for (size_t i = 0; i < _b.size (); i++) {
+            for (size_t i = 0; i < size(_b); i++) {
                 double t   = 0;
-                double tau = _vel (i) / _acc (i);
-                double eps = sqrt (fabs (_b (i)) / (_acc (i)));
+                double tau = item(_vel,i) / item(_acc ,i);
+                double eps = sqrt (fabs (item(_b ,i) / item(_acc ,i)));
                 // std::cout<<"tau = "<<tau<<std::endl;
                 // std::cout<<"eps = "<<eps<<std::endl;
                 if (eps < tau)
                     t = 2 * eps;
                 else {
-                    double dtau = tau * _vel (i);
-                    double Ttmp = (fabs (_b (i)) - dtau) / _vel (i);
+                    double dtau = tau * item(_vel,i);
+                    double Ttmp = (fabs (item(_b,i)) - dtau) / item(_vel, i);
                     t           = Ttmp + 2 * tau;
                 }
                 maxtime = std::max (t, maxtime);
@@ -189,13 +189,13 @@ namespace rw { namespace trajectory {
             _dwmax = 1e10;
             _ws    = 0;
 
-            for (size_t i = 0; i < _a.size (); i++) {
+            for (size_t i = 0; i < size(_a); i++) {
                 // double dq = fabs(_qend(i)-_qstart(i));
-                double dq = fabs (_b (i));
+                double dq = fabs (item(_b,i));
                 // std::cout<<"dq = "<<dq<<std::endl;
                 if (dq != 0) {
-                    _wmax  = std::min (_wmax, _vel (i) / dq);
-                    _dwmax = std::min (_dwmax, _acc (i) / dq);
+                    _wmax  = std::min (_wmax, item(_vel,i) / dq);
+                    _dwmax = std::min (_dwmax, item(_acc,i) / dq);
                 }
             }
             // std::cout<<"wmax = "<<_wmax<<std::endl;
@@ -231,9 +231,31 @@ namespace rw { namespace trajectory {
         double _dwmax;
         double _tau_s;
         double _tau_e;
+
+        template<class R> 
+        size_t size(R& val){
+            return val.size();
+        }
+        size_t size(float& val){
+            return 1;
+        }
+        size_t size(double& val){
+            return 1;
+        }
+
+        template<class R> 
+        typename R::value_type item(R& val,size_t idx){
+            return val(idx);
+        }
+        float item(float& val,size_t idx){
+            return val;
+        }
+        double item(double& val,size_t idx){
+            return val;
+        }
     };
 
-    template<> class RampInterpolator< double > : public Interpolator< double >
+    template<> class RampInterpolator< double > : public rw::trajectory::Interpolator< double >
     {
       public:
         //! @brief smart pointer type to this class
@@ -307,7 +329,7 @@ namespace rw { namespace trajectory {
      */
     template< class T >
     class RampInterpolator< rw::math::Rotation3D< T > >
-        : public Interpolator< rw::math::Rotation3D< T > >
+        : public rw::trajectory::Interpolator< rw::math::Rotation3D< T > >
     {
       public:
         //! @brief smart pointer type to this class
@@ -424,7 +446,7 @@ namespace rw { namespace trajectory {
      */
     template< class T >
     class RampInterpolator< rw::math::Vector3D< T > >
-        : public Interpolator< rw::math::Vector3D< T > >
+        : public rw::trajectory::Interpolator< rw::math::Vector3D< T > >
     {
       public:
         //! @brief smart pointer type to this class
@@ -447,6 +469,23 @@ namespace rw { namespace trajectory {
             _end (end), _b (end - start),
             _ramp (rw::math::Q (1, 0.0), rw::math::Q (1, _b.norm2 ()), rw::math::Q (1, velLimit),
                    rw::math::Q (1, accLimit))
+        {}
+
+        /**
+         * @brief Construct RampInterpolator starting a \b start and finishing in \b end.
+         *
+         * @param start [in] Start of interpolator
+         * @param end [in] End of interpolator
+         * @param velLimit [in] the max velocity in m/sec
+         * @param accLimit [in] the max acceleration in m/sec^2
+         */
+        RampInterpolator (const rw::math::Vector3D< T >& start, const rw::math::Vector3D< T >& end,
+                          const rw::math::Vector3D< T >& velLimit,
+                          const rw::math::Vector3D< T >& accLimit, double duration = -1) :
+            _start (start),
+            _end (end), _b (end - start),
+            _ramp (rw::math::Q (1, 0.0), rw::math::Q (1, _b.norm2 ()),
+                   rw::math::Q (1, velLimit.norm2 ()), rw::math::Q (1, accLimit.norm2 ()), duration)
         {}
 
         /**
@@ -508,7 +547,7 @@ namespace rw { namespace trajectory {
      */
     template< class T >
     class RampInterpolator< rw::math::Transform3D< T > >
-        : public Interpolator< rw::math::Transform3D< T > >
+        : public rw::trajectory::Interpolator< rw::math::Transform3D< T > >
     {
       public:
         //! @brief smart pointer type to this class
@@ -523,7 +562,8 @@ namespace rw { namespace trajectory {
         RampInterpolator (const rw::math::Transform3D< T >& start,
                           const rw::math::Transform3D< T >& end,
                           const rw::math::Transform3D< T >& vellimits,
-                          const rw::math::Transform3D< T >& acclimits, double duration = -1) : _posInterpolator (start.P (), end.P (), 0, 0),
+                          const rw::math::Transform3D< T >& acclimits, double duration = -1) :
+            _posInterpolator (start.P (), end.P (), 0, 0),
             _rotInterpolator (start.R (), end.R (), 0, 0)
         {
             RW_THROW ("Not implemented");

@@ -106,6 +106,7 @@ void java_ThreadSimulatorStepCallback(ThreadSimulator* sim, rw::kinematics::Stat
 %import <rwlibs/swig/sdurw_control.i>
 %import <rwlibs/swig/sdurw_simulation.i>
 %import <rwlibs/swig/sdurw_proximity.i>
+%import <rwlibs/swig/sdurw_trajectory.i>
 
 
 
@@ -125,6 +126,7 @@ import org.robwork.sdurw_assembly.*;
 import org.robwork.sdurw_control.*;
 import org.robwork.sdurw_simulation.*;
 import org.robwork.sdurw_task.*;
+import org.robwork.sdurw_trajectory.*;
 %}
 %pragma(java) moduleimports=%{
 import org.robwork.sdurw.*;
@@ -136,6 +138,7 @@ import org.robwork.sdurw_geometry.*;
 import org.robwork.sdurw_models.*;
 import org.robwork.sdurw_proximity.*;
 import org.robwork.sdurw_sensor.*;
+import org.robwork.sdurw_trajectory.*;
 %}
 %pragma(java) jniclassimports=%{
 import org.robwork.sdurw.*;
@@ -150,6 +153,7 @@ import org.robwork.sdurw_geometry.*;
 import org.robwork.sdurw_models.*;
 import org.robwork.sdurw_proximity.*;
 import org.robwork.sdurw_sensor.*;
+import org.robwork.sdurw_trajectory.*;
 %}
 
 #if (defined(SWIGPYTHON) || defined(SWIGLUA))
@@ -1075,7 +1079,7 @@ public:
 	 void setDynamicsEnabled(rw::core::Ptr<Body> body, bool enabled);
 	 // interfaces for manipulating/controlling bodies
 	 void setTarget(rw::core::Ptr<Body> body, const rw::math::Transform3D<double>& t3d, rw::kinematics::State& state); 
-	 void setTarget(rw::core::Ptr<Body> body, rw::core::Ptr<Trajectory<rw::math::Transform3D<double> > > traj);
+	 void setTarget(rw::core::Ptr<Body> body, rw::core::Ptr<rw::trajectory::Trajectory<rw::math::Transform3D<double> > > traj);
 
 	 void disableBodyControl( rw::core::Ptr<Body> body );
 	 void disableBodyControl( );

@@ -178,7 +178,7 @@ namespace rw { namespace math {
         {
             return Vector2D< T > ((*this)[0] * s, (*this)[1] * s);
         }
-#if !defined(SWIGPYTHON)
+
         /**
            @brief Scalar multiplication.
          */
@@ -186,7 +186,6 @@ namespace rw { namespace math {
         {
             return Vector2D< T > (s * v[0], s * v[1]);
         }
-#endif
 
         /**
            @brief Vector subtraction.

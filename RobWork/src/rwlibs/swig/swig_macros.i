@@ -268,6 +268,10 @@
     %rename (to) from;
 %enddef
 
+%define SWIG_IGNORE(obj)
+    %ignore obj;
+%enddef
+
 %define SWIG_DECLARE_TEMPLATE(name,type)
     %template(name) type;
 %enddef

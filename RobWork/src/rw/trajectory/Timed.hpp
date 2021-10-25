@@ -22,10 +22,10 @@
    @file Timed.hpp
    @brief Class rw::interpolator::Timed
 */
-
+#if !defined(SWIG)
 #include <rw/kinematics/State.hpp>
 #include <rw/math/Q.hpp>
-
+#endif
 namespace rw { namespace trajectory {
 
     /** @addtogroup trajectory */
@@ -47,11 +47,12 @@ namespace rw { namespace trajectory {
         */
         Timed () : _time (0.0), _value () {}
 
+#if !defined(SWIGPYTHON)
         /**
            @brief The time
         */
         double getTime () const { return _time; }
-
+#endif
         double& getTime () { return _time; }
 
         /**
@@ -61,6 +62,10 @@ namespace rw { namespace trajectory {
 
         T& getValue () { return _value; }
 
+#ifdef SWIG
+         SWIG_GET_TIME();
+#endif
+
       private:
         double _time;
         T _value;
@@ -69,16 +74,16 @@ namespace rw { namespace trajectory {
     /**
        @brief A tuple of (time, value).
     */
-    template< class T > Timed< T > makeTimed (double time, const T& value)
+    template< class T > rw::trajectory::Timed< T > makeTimed (double time, const T& value)
     {
-        return Timed< T > (time, value);
+        return rw::trajectory::Timed< T > (time, value);
     }
 
     //! A tuple of (time, Q).
-    typedef Timed< rw::math::Q > TimedQ;
+    typedef rw::trajectory::Timed< rw::math::Q > TimedQ;
 
     //! A tuple of (time, State). See rw::trajectory::Timed<t> template for more info.
-    typedef Timed< rw::kinematics::State > TimedState;
+    typedef rw::trajectory::Timed< rw::kinematics::State > TimedState;
 
     /*@}*/
 }}    // namespace rw::trajectory

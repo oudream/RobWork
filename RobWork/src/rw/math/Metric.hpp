@@ -113,10 +113,10 @@ namespace rw { namespace math {
     };
 
     //! Metrics on configurations.
-    typedef Metric< Q > QMetric;
+    typedef Metric< rw::math::Q > QMetric;
 
     //! Metric on Transdform3D
-    typedef Metric< Transform3D<> > Transform3DMetric;
+    typedef Metric< rw::math::Transform3D< double > > Transform3DMetric;
     /* @} */
 }}    // namespace rw::math
 

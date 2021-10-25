@@ -17,12 +17,12 @@
 
 #ifndef RW_TRAJECTORY_TIMEDUTIL_HPP
 #define RW_TRAJECTORY_TIMEDUTIL_HPP
-
+#if !defined(SWIG)
 #include "Path.hpp"
 #include "Timed.hpp"
 
 #include <rw/math/Q.hpp>
-
+#endif
 /**
    @file TimedUtil.hpp
    @brief Class rw::trajectory::TimedUtil
@@ -56,8 +56,9 @@ namespace rw { namespace trajectory {
            for the remaining configurations are computed using the joint speed
            velocities \b speed.
         */
-        static TimedQPath makeTimedQPath (const math::Q& speed, const QPath& path,
-                                          double offset = 0);
+        static rw::trajectory::Path< rw::trajectory::Timed< rw::math::Q > >
+        makeTimedQPath (const rw::math::Q& speed, const rw::trajectory::Path< rw::math::Q >& path,
+                        double offset = 0);
 
         /**
            @brief A path of time stamped configurations.
@@ -66,8 +67,9 @@ namespace rw { namespace trajectory {
            the remaining configurations are computed using the joint speed
            velocities of \b device.
          */
-        static TimedQPath makeTimedQPath (const models::Device& device, const QPath& path,
-                                          double offset = 0);
+        static rw::trajectory::Path< rw::trajectory::Timed< rw::math::Q > >
+        makeTimedQPath (const rw::models::Device& device,
+                        const rw::trajectory::Path< rw::math::Q >& path, double offset = 0);
 
         /**
            @brief A path of time stamped states.
@@ -76,8 +78,9 @@ namespace rw { namespace trajectory {
            remaining states are computed using the maximum joint speed
            velocities of \b workcell.
          */
-        static TimedStatePath makeTimedStatePath (const models::WorkCell& workcell,
-                                                  const StatePath& path, double offset = 0);
+        static rw::trajectory::Path< rw::trajectory::Timed< rw::kinematics::State > >
+        makeTimedStatePath (const rw::models::WorkCell& workcell, const  rw::trajectory::Path<rw::kinematics::State>& path,
+                            double offset = 0);
 
         /**
            @brief A path of time stamped states.
@@ -86,9 +89,10 @@ namespace rw { namespace trajectory {
            remaining states are computed using the maximum joint speed
            velocities of \b device.
         */
-        static TimedStatePath makeTimedStatePath (const models::Device& device, const QPath& path,
-                                                  const kinematics::State& state,
-                                                  double offset = 0);
+        static rw::trajectory::Path< rw::trajectory::Timed< rw::kinematics::State > >
+        makeTimedStatePath (const rw::models::Device& device,
+                            const rw::trajectory::Path< rw::math::Q >& path,
+                            const rw::kinematics::State& state, double offset = 0);
     };
 
     /*@}*/

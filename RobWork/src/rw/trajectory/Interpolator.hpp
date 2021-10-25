@@ -18,8 +18,9 @@
 #ifndef RW_TRAJECTORY_INTERPOLATOR_HPP
 #define RW_TRAJECTORY_INTERPOLATOR_HPP
 
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
-
+#endif
 /**
    @file Interpolator.hpp
 */

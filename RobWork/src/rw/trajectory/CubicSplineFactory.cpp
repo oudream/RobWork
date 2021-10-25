@@ -209,7 +209,7 @@ CubicSplineFactory::makeClampedSpline (TimedQPath::Ptr tqpath, const rw::math::Q
 // ###########################################################################
 
 template< typename T >
-typename InterpolatorTrajectory< T >::Ptr
+rw::core::Ptr< rw::trajectory::InterpolatorTrajectory< T > >
 CubicSplineFactory::makeNaturalSpline (const Path< T >& path, double timeStep)
 {
     std::vector< double > times;
@@ -235,7 +235,7 @@ CubicSplineFactory::makeNaturalSpline (const Path< Quaternion< double > >& path,
 // ########### NEXT FUNCTION ###############
 
 template< typename T >
-typename InterpolatorTrajectory< T >::Ptr
+rw::core::Ptr< rw::trajectory::InterpolatorTrajectory< T > >
 CubicSplineFactory::makeNaturalSpline (const Path< Timed< T > >& path)
 {
     Path< T > pathN;
@@ -264,7 +264,7 @@ CubicSplineFactory::makeNaturalSpline (const Path< Timed< Quaternion< double > >
 // ########### NEXT FUNCTION ###############
 
 template< typename T >
-typename InterpolatorTrajectory< T >::Ptr
+rw::core::Ptr< rw::trajectory::InterpolatorTrajectory< T > >
 CubicSplineFactory::makeNaturalSpline (const Path< T >& path, const std::vector< double >& times)
 {
     if (path.size () < 2) {
@@ -378,7 +378,7 @@ CubicSplineFactory::makeNaturalSpline (const Path< Quaternion<> >& path,
 
 // ########### NEXT FUNCTION ###############
 template< typename T >
-typename InterpolatorTrajectory< T >::Ptr
+rw::core::Ptr< rw::trajectory::InterpolatorTrajectory< T > >
 CubicSplineFactory::makeClampedSpline (const Path< T >& path, const T& dStart, const T& dEnd,
                                        double timeStep)
 {
@@ -419,7 +419,7 @@ CubicSplineFactory::makeClampedSpline (const Path< Quaternion<> >& path, const Q
 // ########### NEXT FUNCTION ###############
 
 template< typename T >
-typename InterpolatorTrajectory< T >::Ptr
+rw::core::Ptr< rw::trajectory::InterpolatorTrajectory< T > >
 CubicSplineFactory::makeClampedSpline (const Path< Timed< T > >& tpath, const T& dStart,
                                        const T& dEnd)
 {
@@ -452,7 +452,7 @@ CubicSplineFactory::makeClampedSpline (const Path< Timed< Quaternion<> > >& tpat
 
 // ########### NEXT FUNCTION ###############
 template< typename T >
-typename InterpolatorTrajectory< T >::Ptr
+rw::core::Ptr< rw::trajectory::InterpolatorTrajectory< T > >
 CubicSplineFactory::makeClampedSpline (const Path< T >& path, const std::vector< double >& times,
                                        const T& dStart, const T& dEnd)
 {
