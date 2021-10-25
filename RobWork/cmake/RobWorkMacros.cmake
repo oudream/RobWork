@@ -766,7 +766,7 @@ macro(RW_ADD_SWIG _name _language _type)
                    RUNTIME_OUTPUT_DIRECTORY "${SLIB_BINARY_OUTPUT_DIR}"
     )
 
-    target_include_directories(${SLIB_TARGET_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+    target_include_directories(${SLIB_TARGET_NAME} PRIVATE ${XERCESC_INCLUDE_DIR} ${CMAKE_CURRENT_SOURCE_DIR})
     add_library(${PROJECT_PREFIX}::${SLIB_TARGET_NAME} ALIAS ${SLIB_TARGET_NAME})
 
     if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
