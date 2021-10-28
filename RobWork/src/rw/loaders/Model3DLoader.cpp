@@ -32,3 +32,18 @@ bool Model3DLoader::Factory::hasModel3DLoader (const std::string& format)
     }
     return false;
 }
+
+std::vector< std::string > Model3DLoader::Factory::getSupportedFormats ()
+{
+    std::set< std::string > formats;
+    Model3DLoader::Factory ep;
+    std::vector< Extension::Ptr > exts = ep.getExtensions ();
+    for (Extension::Ptr ext : exts) {
+        Model3DLoader::Ptr loader = ext->getObject ().cast< Model3DLoader > ();
+        if (!loader.isNull ()) {
+            const std::vector< std::string > extFormats = loader->getModelFormats ();
+            formats.insert (extFormats.begin (), extFormats.end ());
+        }
+    }
+    return std::vector< std::string > (formats.begin (), formats.end ());
+}

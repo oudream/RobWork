@@ -3,12 +3,14 @@ require("sdurw_math")
 require("sdurw_kinematics")
 require("sdurw_models")
 require("sdurw_invkin")
+require("sdurw_loaders")
 require("sdurw")
 
 using("sdurw_math")
 using("sdurw_kinematics")
 using("sdurw_models")
 using("sdurw_invkin")
+using("sdurw_loaders")
 using("sdurw")
 
 if #arg ~= 1 then

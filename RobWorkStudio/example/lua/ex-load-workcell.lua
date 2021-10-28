@@ -1,9 +1,11 @@
 require("sdurw_core")
 require("sdurw_models")
 require("sdurw")
+require("sdurw_loaders")
 require("sdurws")
 
 using("sdurw")
+using("sdurw_loaders")
 using("sdurws")
 
 if #arg < 1 then

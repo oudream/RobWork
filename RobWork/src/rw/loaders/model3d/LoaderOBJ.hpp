@@ -48,6 +48,9 @@ namespace rw { namespace loaders {
 
         //! @copydoc Model3DLoader::load
         rw::graphics::Model3D::Ptr load (const std::string& filename);
+
+        //! @copydoc Model3DLoader::getModelFormats
+        std::vector< std::string > getModelFormats () {return {".OBJ"};}
     };
 
     //! @}

@@ -50,6 +50,9 @@ namespace rw { namespace loaders {
         //! @copydoc Model3DLoader::load
         rw::graphics::Model3D::Ptr load (const std::string& filename);    // Loads a model
 
+        //! @copydoc Model3DLoader::getModelFormats
+        std::vector< std::string > getModelFormats () {return {".3DS"};}
+
       private:
         std::string _path;    // The path of the model
     };

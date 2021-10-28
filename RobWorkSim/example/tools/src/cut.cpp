@@ -11,7 +11,7 @@
 
 #include <rw/kinematics/Kinematics.hpp>
 #include <rw/kinematics/MovableFrame.hpp>
-#include <rw/loaders/WorkCellFactory.hpp>
+#include <rw/loaders/WorkCellLoader.hpp>
 #include <rw/loaders/model3d/STLFile.hpp>
 #include <rw/loaders/path/PathLoader.hpp>
 #include <rw/models/Device.hpp>

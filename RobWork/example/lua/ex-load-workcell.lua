@@ -1,7 +1,9 @@
 require("sdurw_core")
 require("sdurw_models")
+require("sdurw_loaders")
 require("sdurw")
 using("sdurw")
+using("sdurw_loaders")
 
 if #arg ~= 1 then
     print("Usage: lua ex-load-workcell.lua <workcell>")

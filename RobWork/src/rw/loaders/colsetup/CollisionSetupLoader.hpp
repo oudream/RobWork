@@ -18,10 +18,11 @@
 #ifndef RW_COLLISION_COLLISIONSETUPLOADER_HPP
 #define RW_COLLISION_COLLISIONSETUPLOADER_HPP
 
+#if !defined(SWIG)
 #include <rw/proximity/CollisionSetup.hpp>
 
 #include <string>
-
+#endif
 /**
  * @file colsetup/CollisionSetupLoader.hpp
  */

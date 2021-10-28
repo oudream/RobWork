@@ -21,10 +21,10 @@
 /**
  * @file loaders/Model3DFactory.hpp
  */
-
+#if !defined(SWIG)
 #include <rw/common/FileCache.hpp>
 #include <rw/graphics/Model3D.hpp>
-
+#endif
 namespace rw { namespace loaders {
 
     /** @addtogroup graphics */
