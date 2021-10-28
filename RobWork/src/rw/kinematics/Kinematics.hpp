@@ -119,7 +119,7 @@ namespace rw { namespace kinematics {
         static rw::kinematics::Frame* worldFrame (rw::core::Ptr< rw::kinematics::Frame > frame,
                                                   const rw::kinematics::State& state);
 
-#if !defined(SWIGPYTHON) && !defined(SWIGJAVA) && !defined(SWIGLUA)
+#if !defined(SWIG)
         /**
            @brief Find the world frame of the workcell by traversing the path
            from \b frame to the root of the tree.
@@ -245,7 +245,7 @@ namespace rw { namespace kinematics {
         static std::vector< FrameList >
         getStaticFrameGroups (rw::core::Ptr< rw::kinematics::Frame > root,
                               const rw::kinematics::State& state);
-#if !defined(SWIGPYTHON) && !defined(SWIGJAVA) && !defined(SWIGLUA)
+#if !defined(SWIG)
         /**
          * @brief Get static frame groups.
          *
@@ -272,12 +272,10 @@ namespace rw { namespace kinematics {
          * Attachable Frames (DAF).
          * @return vector with the frame groups.
          */
-#if !defined(SWIG)
+
         DEPRECATED ("Use Frame::Ptr insted of Frame*")
-#endif
         static std::vector< ConstFrameList >
         getStaticFrameGroups (const Frame* root, const rw::kinematics::State& state);
-#endif
 
         /**
          * @brief Get static frame groups.
@@ -290,11 +288,12 @@ namespace rw { namespace kinematics {
          * Attachable Frames (DAF).
          * @return vector with the frame groups.
          */
-#if !defined(SWIG)
+
         DEPRECATED ("Use Frame::Ptr insted of Frame*")
+
+        static std::vector< FrameList > getStaticFrameGroups (Frame* root,
+                                                              const rw::kinematics::State& state);
 #endif
-        static std::vector< FrameList >
-        getStaticFrameGroups (Frame* root, const rw::kinematics::State& state);
     };
 
     /*@}*/

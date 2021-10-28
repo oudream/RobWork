@@ -107,11 +107,11 @@
 	NAMED_OWNEDPTR(NAME_T3D(name),template_type<rw::math::Transform3D<double> > );
 	NAMED_OWNEDPTR(NAME_Q(name),template_type< rw::math::Q > );
 
-	ADD_DEFINITION(NAME_DOUBLE(name),NAME_R1(name));
-	ADD_DEFINITION(NAME_V2D(name),NAME_R2(name));
-	ADD_DEFINITION(NAME_V3D(name),NAME_R3(name));
-	ADD_DEFINITION(NAME_R3D(name),NAME_SO3(name));
-	ADD_DEFINITION(NAME_T3D(name),NAME_SE3(name) );
+	ADD_DEFINITION(NAME_DOUBLE(name),NAME_R1(name),sdurw_trejectory);
+	ADD_DEFINITION(NAME_V2D(name),NAME_R2(name),sdurw_trejectory);
+	ADD_DEFINITION(NAME_V3D(name),NAME_R3(name),sdurw_trejectory);
+	ADD_DEFINITION(NAME_R3D(name),NAME_SO3(name),sdurw_trejectory);
+	ADD_DEFINITION(NAME_T3D(name),NAME_SE3(name),sdurw_trejectory);
 %enddef
 
 %{
@@ -283,8 +283,8 @@ NAMED_OWNEDPTR(PathTimedState,rw::trajectory::Path<rw::trajectory::Timed<rw::kin
 // Transform
 %template(VectorTimedTransform3Dd) std::vector<rw::trajectory::Timed<rw::math::Transform3D<double>>>;
 %template (PathTimedTransform3Dd) rw::trajectory::Path< rw::trajectory::Timed<rw::math::Transform3D<double>>>;
-ADD_DEFINITION(PathTransform3DPtr,PathSE3Ptr)
-ADD_DEFINITION(PathTransform3DCPtr,PathSE3CPtr)
+ADD_DEFINITION(PathTransform3DPtr,PathSE3Ptr,sdurw_trajectory)
+ADD_DEFINITION(PathTransform3DCPtr,PathSE3CPtr,sdurw_trajectory)
 
 
 %extend rw::trajectory::Path< rw::math::Q > {

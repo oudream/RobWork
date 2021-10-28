@@ -22,11 +22,12 @@
  * @file PathLoader.hpp
  */
 
+#if !defined(SWIG)
 #include <rw/trajectory/Path.hpp>
 #include <rw/trajectory/Timed.hpp>
 
 #include <string>
-
+#endif 
 // Forward declarations
 namespace rw { namespace models {
     class WorkCell;

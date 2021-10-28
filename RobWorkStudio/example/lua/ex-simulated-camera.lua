@@ -4,12 +4,14 @@ require("sdurw_models")
 require("sdurw_sensor")
 require("sdurw")
 require("sdurw_simulation")
+require("sdurw_loaders")
 require("sdurws")
 
 using("sdurw_core")
 using("sdurw_kinematics")
 using("sdurw")
 using("sdurw_simulation")
+using("sdurw_loaders")
 using("sdurws")
 
 if #arg < 1 then
@@ -45,7 +47,7 @@ local rwstudio = getRobWorkStudioInstance();
 rwstudio:postOpenWorkCell(WC_FILE);
 sleep(2);
 local gldrawer = rwstudio:getView():getSceneViewer();
-local framegrabber = ownedPtr( GLFrameGrabber(width,height,fovy) );
+local framegrabber = sdurw_simulation.ownedPtr( GLFrameGrabber(width,height,fovy) );
 framegrabber:init(gldrawer);
 local simcam = SimulatedCamera("SimulatedCamera", fovy, camera, framegrabber:asFrameGrabberPtr());
 simcam:setFrameRate(100);

@@ -21,7 +21,7 @@
 #include <rw/core/StringUtil.hpp>
 #include <rw/geometry/IndexedPolygon.hpp>
 #include <rw/geometry/Triangulate.hpp>
-#include <rw/loaders/ImageFactory.hpp>
+#include <rw/loaders/ImageLoader.hpp>
 #include <rw/math/EAA.hpp>
 
 #include <fstream>

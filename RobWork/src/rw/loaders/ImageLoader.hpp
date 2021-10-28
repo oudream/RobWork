@@ -18,9 +18,10 @@
 #ifndef RW_LOADERS_IMAGE_IMAGELOADER_HPP
 #define RW_LOADERS_IMAGE_IMAGELOADER_HPP
 
+#if !defined(SWIG)
 #include <rw/core/ExtensionPoint.hpp>
 #include <rw/sensor/Image.hpp>
-
+#endif
 namespace rw { namespace loaders {
 
     /** @addtogroup loaders */

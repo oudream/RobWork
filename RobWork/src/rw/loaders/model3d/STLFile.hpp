@@ -50,6 +50,9 @@ namespace rw { namespace loaders {
          * @return triangle mesh if successfull, NULL otherwise.
          */
         static rw::geometry::PlainTriMeshN1F::Ptr load (const std::string& filename);
+
+        //! @copydoc Model3DLoader::getModelFormats
+        std::vector< std::string > getModelFormats ();
     };
 
     // @}

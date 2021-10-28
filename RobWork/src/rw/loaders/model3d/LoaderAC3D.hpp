@@ -58,6 +58,9 @@ namespace rw { namespace loaders {
 
         // void save(Model3DPtr model, const std::string& filename);
 
+        //! @copydoc Model3DLoader::getModelFormats
+        std::vector< std::string > getModelFormats () {return {".AC",".AC3D"};}
+
       private:
         void initialize (std::istream& in, float alpha);
 

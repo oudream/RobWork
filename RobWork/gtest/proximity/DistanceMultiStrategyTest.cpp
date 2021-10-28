@@ -248,8 +248,10 @@ TEST_P(DistanceMultiStrategyTest, Cuboids_Cuboids) {
     ASSERT_EQ(22u,res.p1prims.size());
     ASSERT_EQ(22u,res.p2prims.size());
     ASSERT_EQ(22u,res.distances.size());
-    EXPECT_EQ(res.p1,res.p1s[0]);
-    EXPECT_EQ(res.p2,res.p2s[0]);
+	for(size_t i = 0; i < 3; i++){
+		EXPECT_NEAR(res.p1[i],res.p1s[0][i],std::numeric_limits<float>::epsilon());
+		EXPECT_NEAR(res.p2[i],res.p2s[0][i],std::numeric_limits<float>::epsilon());
+	}
     EXPECT_NEAR(-s/2, res.p1[0],std::numeric_limits<float>::epsilon());
     EXPECT_NEAR(-s/2, res.p2[0],std::numeric_limits<float>::epsilon());
     EXPECT_NEAR(+(tolerance-eps)/2, res.p1[2],std::numeric_limits<float>::epsilon());

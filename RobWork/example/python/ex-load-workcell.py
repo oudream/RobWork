@@ -1,4 +1,5 @@
 from sdurw import *
+from sdurw_loaders import *
 import sys
 
 if __name__ == '__main__':
@@ -6,7 +7,7 @@ if __name__ == '__main__':
         print("Usage: python3 " + sys.argv[0] + " <workcell>")
         sys.exit(1)
 
-    workcell = WorkCellLoaderFactory.load(sys.argv[1]);
+    workcell = WorkCellLoaderFactory.load(sys.argv[1])
     if workcell.isNull():
         print("WorkCell could not be loaded.")
         sys.exit(1)
