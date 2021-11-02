@@ -1,3 +1,28 @@
+robwork (2.3.2-1) focal; urgency=medium
+
+  [ Thomas Nicky Thulesen ]
+  * Fixed error when dependent projects are finding RobWork with components in CMake.
+  * Fixed Javadoc errors in JacobianIKSolver
+
+  [ Kasper Høj Lorenzen ]
+  * Updated PPA packages
+
+  [ Thomas Nicky Thulesen ]
+  * Reduction of dependencies and automatic dev dependencies for Debian packages
+
+  [ Kasper Høj Lorenzen ]
+  * added missing debian python & lua package
+  * Version number updated to 2.3.1-2
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Thu, 28 Oct 2021 10:49:38 +0200
+
+robwork (2.3.1-1) focal; urgency=medium
+
+  * added missing dev packages to all target
+  * Version number updated to 2.3.1-1
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Thu, 21 Oct 2021 15:02:40 +0200
+
 robwork (2.3.0-2) bionic; urgency=medium
 
   * Version number updated to 2.3.0-2
@@ -5,13 +30,6 @@ robwork (2.3.0-2) bionic; urgency=medium
  -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Wed, 20 Oct 2021 15:15:32 +0200
 
 robwork (2.3.0-1) focal; urgency=medium
-
-  [ Kasper Høj Lorenzen ]
-  * Initial setup
-  * fixing errors and upgrading Rotation3D
-  * test
-  * Initial setup
-  * fixing errors and upgrading Rotation3D
 
   [ Thomas Nicky Thulesen ]
   * Preparation for Ubuntu 21.10: Fixed some deprecation warnings with boost bind, and fixed some new GCC warnings.
