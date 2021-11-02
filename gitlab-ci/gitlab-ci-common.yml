@@ -2,6 +2,12 @@
 
 .CI-common:
   rules:
+    # PPA Pipeline
+    - if: '$PPATest == "1" && $CI_JOB_NAME =~ /^ppa-test:.*/'
+    # PPA Cancel other runs
+    - if: '$PPATest == "1"'
+      when: never 
+
     # Merge Pipeline
     - if: '$CI_JOB_NAME =~ /^.*(build[:-](RW.?.?|doc)|tests|examples).*-2004/                                   && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
     # Merge Pipeline for ubuntu16 problems

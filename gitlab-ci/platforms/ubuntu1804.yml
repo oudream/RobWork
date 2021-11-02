@@ -93,3 +93,8 @@ test-debian-upgrade:ubuntu-1804:
   dependencies:
     - build-debian:ubuntu-1804
   needs: ["build-debian:ubuntu-1804"]
+
+ppa-test:ubuntu-1804:
+  extends: .ppa-install-tests
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804-deb-test
+  needs: []

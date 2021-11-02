@@ -322,3 +322,21 @@
   script:
     - apt -y install libsdurw-all-dev libsdurws-all-dev libsdurwsim-all-dev python3-robwork
     - apt -y --allow-downgrades install ./DEBPKG/*.deb
+
+.ppa-install-tests:
+  extends: .linux-install-tests
+  stage: test 
+  tags:
+    - linux
+  before_script:
+    - *remove-rw-install
+    - *uninstall-rw-deb
+    - rm -r ../*.deb || echo "Nothing to remove"
+    - rm -r ../robwork_* || echo "Nothing to remove"
+    - THREADS=$(nproc --all)
+    - robworkdata=/home/robworkdata
+    - export DISPLAY=:0
+    - Xvfb $DISPLAY -screen 0 640x480x24 &
+    - add-apt-repository ppa:sdurobotics/robwork
+    - apt-get update
+    - apt -y install libsdurw-all-dev libsdurws-all-dev libsdurwsim-all-dev python3-robwork lua-robwork

@@ -26,11 +26,7 @@ examples:ubuntu-2004:
     - build-RWS:ubuntu-2004
     - build-RWSim:ubuntu-2004
   needs:
-    [
-      "build-RW:ubuntu-2004",
-      "build-RWS:ubuntu-2004",
-      "build-RWSim:ubuntu-2004",
-    ]
+    ["build-RW:ubuntu-2004", "build-RWS:ubuntu-2004", "build-RWSim:ubuntu-2004"]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2004
 
 tests:ubuntu-2004:
@@ -40,11 +36,7 @@ tests:ubuntu-2004:
     - build-RWS:ubuntu-2004
     - build-RWSim:ubuntu-2004
   needs:
-    [
-      "build-RW:ubuntu-2004",
-      "build-RWS:ubuntu-2004",
-      "build-RWSim:ubuntu-2004",
-    ]
+    ["build-RW:ubuntu-2004", "build-RWS:ubuntu-2004", "build-RWSim:ubuntu-2004"]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2004
 
 python-tests:ubuntu-2004:
@@ -54,13 +46,8 @@ python-tests:ubuntu-2004:
     - build-RWS:ubuntu-2004
     - build-RWSim:ubuntu-2004
   needs:
-    [
-      "build-RW:ubuntu-2004",
-      "build-RWS:ubuntu-2004",
-      "build-RWSim:ubuntu-2004",
-    ]
+    ["build-RW:ubuntu-2004", "build-RWS:ubuntu-2004", "build-RWSim:ubuntu-2004"]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2004
-
 
 install-tests:ubuntu-2004:
   extends: .linux-install-tests
@@ -69,11 +56,7 @@ install-tests:ubuntu-2004:
     - build-RWS:ubuntu-2004
     - build-RWSim:ubuntu-2004
   needs:
-    [
-      "build-RW:ubuntu-2004",
-      "build-RWS:ubuntu-2004",
-      "build-RWSim:ubuntu-2004",
-    ]
+    ["build-RW:ubuntu-2004", "build-RWS:ubuntu-2004", "build-RWSim:ubuntu-2004"]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2004
 
 build-debian:ubuntu-2004:
@@ -93,3 +76,8 @@ test-debian-upgrade:ubuntu-2004:
   dependencies:
     - build-debian:ubuntu-2004
   needs: ["build-debian:ubuntu-2004"]
+
+ppa-test:ubuntu-2004:
+  extends: .ppa-install-tests
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2004-deb-test
+  needs: []
