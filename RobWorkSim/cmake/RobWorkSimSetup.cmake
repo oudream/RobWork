@@ -65,7 +65,7 @@ if(SWIG_FOUND)
     if(RWSIM_USE_NUMPY)
         message(STATUS "RobWork is compiled with Numpy")
         execute_process(
-            COMMAND python3 -c "import numpy; print(numpy.__file__);"
+            COMMAND ${PYTHON_EXECUTABLE} -c "import numpy; print(numpy.__file__);"
             OUTPUT_VARIABLE NUMPY_INCLUDE_DIR
             OUTPUT_STRIP_TRAILING_WHITESPACE
         )
