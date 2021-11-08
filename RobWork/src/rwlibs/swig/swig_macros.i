@@ -291,7 +291,21 @@ new=orig
 }
 #elif defined(SWIGLUA)
 %luacode {
-module.new = module.orig
+    for n,v in pairs(_G) do
+        -- print("checking: " .. n);
+        if n == "module" then
+            for t_n,t_v in pairs(v) do
+                -- print("    checking: " .. t_n);
+                if t_n == "orig" then 
+                    -- print("Found name: " .. "module" .. ".".. t_n);
+                    v["new"] = t_v;
+                    break;
+                end
+            end
+            _G[n] = v;
+            break;
+        end
+    end   
 }
 #elif defined(SWIGJAVA)
 #endif 

@@ -3,9 +3,12 @@
 .CI-common:
   rules:
     # PPA Pipeline
-    - if: '$PPATest == "1" && $CI_JOB_NAME =~ /^ppa-test:.*/'
+    - if: '$PPATest =~ /^.+/ && $CI_JOB_NAME =~ /^ppa-test:.*/'
+    # Don't run PPA pipeline if not PPATest
+    - if: '$PPATest =~ /^.?/ && $CI_JOB_NAME =~ /^ppa-test:.*/'
+      when: never
     # PPA Cancel other runs
-    - if: '$PPATest == "1"'
+    - if: '$PPATest =~ /^.+/'
       when: never 
 
     # Merge Pipeline
