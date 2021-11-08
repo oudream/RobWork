@@ -101,7 +101,7 @@ namespace rw { namespace trajectory {
          * Usage: ++iterator
          *
          * The increment is equal to the \b dt specified in the constructor.
-         * @return Reference to the TrajectoryIterator
+         * @return Reference to the TrajectoryIterator  
          */
         virtual TrajectoryIterator& operator++ ()
         {
@@ -115,7 +115,6 @@ namespace rw { namespace trajectory {
          * Usage: iterator++
          *
          * The increment is equal to the \b dt specified in the constructor.
-         * @return Reference to the TrajectoryIterator
          */
         virtual void operator++ (int) { inc (); }
 
@@ -139,7 +138,6 @@ namespace rw { namespace trajectory {
          * Usage: iterator--;
          *
          * The decrement is equal to the \b dt specified in the constructor.
-         * @return Reference to the TrajectoryIterator
          */
         virtual void operator-- (int) { dec (); }
 

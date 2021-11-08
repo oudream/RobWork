@@ -2,7 +2,7 @@ set(SUBSYS_NAME sdurw_pathplanners)
 set(SUBSYS_DESC "A collection of path planners!")
 set(SUBSYS_DEPS
     PUBLIC sdurw_core sdurw_common sdurw_math sdurw_models sdurw_trajectory sdurw_algorithms sdurw_pathplanning
-    PRIVATE sdurw_kinematics
+    PRIVATE sdurw_kinematics sdurw_proximity # for SWIG
 )
 
 set(build TRUE)

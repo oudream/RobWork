@@ -21,11 +21,11 @@
 /**
    @file QEdgeConstraint.hpp
 */
-
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Metric.hpp>
 #include <rw/math/Q.hpp>
-
+#endif
 namespace rw { namespace models {
     class Device;
 }}    // namespace rw::models

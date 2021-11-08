@@ -78,6 +78,17 @@ SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
     OWNEDPTR(SWIG_CORE_DEFINE(ownedPtr_type));
 %enddef
 
+%define NAMED_ABSTRACTPTR(name,ownedPtr_type)
+    %template(NAME_PTR(name)) rw::core::Ptr<ownedPtr_type>;
+    %template(NAME_CPTR(name)) rw::core::Ptr<ownedPtr_type const>;
+
+    %extend rw::core::Ptr<ownedPtr_type>{
+         rw::core::Ptr< const ownedPtr_type > cptr () {
+             return $self->cptr();
+         }
+    }
+%enddef
+
 %{
   #include <rw/core/os.hpp>
 %}

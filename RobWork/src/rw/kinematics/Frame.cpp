@@ -111,10 +111,12 @@ bool Frame::isDAF ()
     return Kinematics::isDAF (this);
 }
 
-std::ostream& rw::kinematics::operator<< (std::ostream& out, const Frame& frame)
+namespace rw{ namespace kinematics {
+std::ostream& operator<< (std::ostream& out, const Frame& frame)
 {
     return out << "Frame[" << frame.getName () << "]";
 }
+}}
 
 rw::math::Transform3D<> Frame::wTf (const rw::kinematics::State& state) const
 {

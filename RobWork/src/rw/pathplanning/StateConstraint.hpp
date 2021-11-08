@@ -21,11 +21,11 @@
 /**
    @file StateConstraint.hpp
 */
-
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
 
 #include <vector>
-
+#endif 
 namespace rw { namespace core {
     class Log;
 }}    // namespace rw::core

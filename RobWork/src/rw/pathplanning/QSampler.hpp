@@ -21,11 +21,12 @@
 /**
    @file QSampler.hpp
 */
-
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Q.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/models/Device.hpp>
+#endif
 
 namespace rw { namespace pathplanning {
     class QConstraint;

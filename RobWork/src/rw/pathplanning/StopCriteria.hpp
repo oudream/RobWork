@@ -21,12 +21,12 @@
 /**
    @file StopCriteria.hpp
 */
-
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
 
 #include <boost/function.hpp>
 #include <vector>
-
+#endif
 namespace rw { namespace pathplanning {
 
     /** @addtogroup pathplanning */
