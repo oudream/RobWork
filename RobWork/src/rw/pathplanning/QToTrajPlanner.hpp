@@ -21,7 +21,7 @@
 /**
    @file QToTPlanner.hpp
 */
-
+#if !defined(SWIG)
 #include "PathPlanner.hpp"
 #include "QIKSampler.hpp"
 #include "QToQPlanner.hpp"
@@ -31,7 +31,7 @@
 #include <rw/kinematics/State.hpp>
 #include <rw/math/Metric.hpp>
 #include <rw/models/Device.hpp>
-
+#endif
 namespace rw { namespace pathplanning {
 
     /** @addtogroup pathplanning */

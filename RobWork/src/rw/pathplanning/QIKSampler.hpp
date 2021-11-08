@@ -21,10 +21,11 @@
 /**
    @file QIKSampler.hpp
 */
-
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Q.hpp>
 #include <rw/math/Transform3D.hpp>
+#endif 
 
 namespace rw { namespace kinematics {
     class State;

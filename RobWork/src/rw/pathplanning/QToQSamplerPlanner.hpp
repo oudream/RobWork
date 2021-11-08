@@ -21,9 +21,10 @@
 /**
    @file QToQSamplerPlanner.hpp
 */
-
+#if !defined(SWIG)
 #include "PathPlanner.hpp"
 #include "QSampler.hpp"
+#endif
 
 namespace rw { namespace pathplanning {
 

@@ -21,11 +21,12 @@
 /**
    @file QConstraint.hpp
 */
-
+#if !defined(SWIG)
 #include <rw/core/Log.hpp>
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Q.hpp>
 #include <rw/models/Device.hpp>
+#endif 
 
 namespace rw { namespace kinematics {
     class State;

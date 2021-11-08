@@ -69,64 +69,6 @@ namespace rwlibs {
  * The wrapped classes are defined as typedefs of other classes in RobWork.
  */
 namespace swig {
-
-    /**
-     * @name loaders
-     * Wrapped classes in loaders.
-     */
-    ///@{
-    //! @copydoc rw::loaders::ImageLoader
-    typedef rw::loaders::ImageLoader ImageLoader;
-    //! @copydoc rw::loaders::ImageLoader::Factory
-    typedef rw::loaders::ImageLoader::Factory ImageLoaderFactory;
-    //! @copydoc rw::loaders::WorkCellLoader
-    typedef rw::loaders::WorkCellLoader WorkCellLoader;
-    //! @copydoc rw::loaders::WorkCellLoader::Factory
-    typedef rw::loaders::WorkCellLoader::Factory WorkCellLoaderFactory;
-#ifdef RW_HAVE_XERCES
-    //! @copydoc rw::loaders::XMLTrajectoryLoader
-    typedef rw::loaders::XMLTrajectoryLoader XMLTrajectoryLoader;
-    //! @copydoc rw::loaders::XMLTrajectorySaver
-    typedef rw::loaders::XMLTrajectorySaver XMLTrajectorySaver;
-#endif
-    //! @copydoc rw::loaders::STLFile
-    typedef rw::loaders::STLFile STLFile;
-    ///@}
-
-    /**
-     * @name pathplanning
-     * Wrapped classes in pathplanning.
-     */
-    ///@{
-    //! @copydoc rw::pathplanning::QConstraint
-    typedef rw::pathplanning::QConstraint QConstraint;
-    //! @copydoc rw::pathplanning::QEdgeConstraint
-    typedef rw::pathplanning::QEdgeConstraint QEdgeConstraint;
-    //! @copydoc rw::pathplanning::QEdgeConstraintIncremental
-    typedef rw::pathplanning::QEdgeConstraintIncremental QEdgeConstraintIncremental;
-    //! @copydoc rw::pathplanning::QIKSampler
-    typedef rw::pathplanning::QIKSampler QIKSampler;
-    //! @copydoc rw::pathplanning::QNormalizer
-    typedef rw::pathplanning::QNormalizer QNormalizer;
-    //! @copydoc rw::pathplanning::QSampler
-    typedef rw::pathplanning::QSampler QSampler;
-    //! @copydoc rw::pathplanning::QToQPlanner
-    typedef rw::pathplanning::QToQPlanner QToQPlanner;
-    //! @copydoc rw::pathplanning::QToQSamplerPlanner
-    typedef rw::pathplanning::QToQSamplerPlanner QToQSamplerPlanner;
-    //! @copydoc rw::pathplanning::QToTPlanner
-    typedef rw::pathplanning::QToTPlanner QToTPlanner;
-
-    //! @copydoc rw::pathplanning::StopCriteria
-    typedef rw::pathplanning::StopCriteria StopCriteria;
-    //! @copydoc rw::pathplanning::PlannerConstraint
-    typedef rw::pathplanning::PlannerConstraint PlannerConstraint;
-    //! @copydoc rw::pathplanning::StateConstraint
-    typedef rw::pathplanning::StateConstraint StateConstraint;
-    ///@}
-
-    // plugin
-
     /**
      * @name assembly
      * Wrapped classes in assembly.

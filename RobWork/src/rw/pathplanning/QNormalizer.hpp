@@ -21,10 +21,10 @@
 /**
    @file QNormalizer.hpp
 */
-
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Q.hpp>
-
+#endif
 namespace rw { namespace pathplanning {
 
     /** @addtogroup pathplanning */

@@ -223,7 +223,7 @@ private:
  * PATHPLANNING
  ********************************************/
 
-%include <rwlibs/swig/rw_i/planning.i>
+//%include <rwlibs/swig/rw_i/planning.i>
 
 
  

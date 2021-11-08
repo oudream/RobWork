@@ -1,13 +1,8 @@
 set(SUBSYS_NAME sdurw_pathplanning)
 set(SUBSYS_DESC "The pathplanning RobWork library!")
 set(SUBSYS_DEPS
-    PUBLIC  sdurw_core
-            sdurw_math
-            sdurw_kinematics
-            sdurw_proximity
-            sdurw_models
-            sdurw_trajectory
-    PRIVATE sdurw_invkin
+    PUBLIC sdurw_core sdurw_math sdurw_kinematics sdurw_proximity sdurw_models sdurw_trajectory
+    PRIVATE sdurw_invkin sdurw_common # FOR Swig
 )
 set(build TRUE)
 rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON DEPENDS ${SUBSYS_DEPS})
