@@ -266,12 +266,12 @@ namespace rwsim { namespace simulator {
             return _rwFrameToODEBody[frame];
         }
 
-        dBodyID getODEBodyId (rw::kinematics::Frame* frame)
+        dBodyID getODEBodyId (rw::kinematics::Frame::Ptr frame)
         {
-            if (_rwFrameToODEBody.find (frame) == _rwFrameToODEBody.end ()) {
+            if (_rwFrameToODEBody.find (frame.get()) == _rwFrameToODEBody.end ()) {
                 return NULL;
             }
-            return _rwFrameToODEBody[frame]->getBodyID ();
+            return _rwFrameToODEBody[frame.get()]->getBodyID ();
         }
 
         dBodyID getODEBodyId (rwsim::dynamics::Body* body)
