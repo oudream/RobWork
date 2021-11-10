@@ -314,6 +314,11 @@ NAMED_OWNEDPTR(MetricLine,rw::math::Metric<rw::geometry::Line>);
 %template(VectorLine) std::vector<rw::geometry::Line>;
 
 %{
+	#include <rw/geometry/Object3D.hpp>
+%}
+%include <rw/geometry/Object3D.hpp>
+
+%{
 	#include <rw/geometry/Model3D.hpp>
 %}
 %include <rw/geometry/Model3D.hpp>

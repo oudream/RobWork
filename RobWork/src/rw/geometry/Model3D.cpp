@@ -42,10 +42,8 @@ Model3D::Material::Material () : name (""), simplergb (true), texId (-1)
     transparency = 0;
 }
 
-Model3D::Material::Material (const std::string& nam, float r, float g, float b,
-                                     float a) :
-    name (nam),
-    simplergb (true), texId (-1)
+Model3D::Material::Material (const std::string& nam, float r, float g, float b, float a) :
+    name (nam), simplergb (true), texId (-1)
 {
     rgb[0] = r;
     rgb[1] = g;
@@ -61,11 +59,11 @@ Model3D::Material::Material (const std::string& nam, float r, float g, float b,
 }
 
 Model3D::Model3D (const std::string& name) :
-    _name (name), _filePath (""), _mask (rw::geometry::Geometry::PhysicalGroup), _isDynamic (false){}
+    _name (name), _filePath (""), _mask (rw::geometry::Geometry::PhysicalGroup), _isDynamic (false)
+{}
 
 Model3D::~Model3D ()
-{
-}
+{}
 
 int Model3D::addObject (Model3D::Object3DGeneric::Ptr obj)
 {
@@ -262,6 +260,10 @@ void Model3D::addGeometry (const Material& mat, rw::geometry::Geometry::Ptr geom
     TriMesh::Ptr mesh = geom->getGeometryData ()->getTriMesh (false);
     addTriMesh (mat, *mesh);
 }
+void Model3D::addTriMesh (const Material& mat, rw::core::Ptr< const rw::geometry::TriMesh > mesh)
+{
+    addTriMesh (mat, *mesh);
+}
 
 void Model3D::addTriMesh (const Material& mat, const TriMesh& mesh)
 {
@@ -301,8 +303,7 @@ void Model3D::addTriMesh (const Material& mat, const TriMesh& mesh)
 
 namespace {
 template< class T >
-rw::math::Vector3D< float > calcNormal (typename Model3D::Object3D< T >::Ptr& obj,
-                                        size_t face1)
+rw::math::Vector3D< float > calcNormal (typename Model3D::Object3D< T >::Ptr& obj, size_t face1)
 {
     IndexedTriangle< T >& gtri = obj->_faces[face1];
     Vector3D< float >& v0      = obj->_vertices[gtri[0]];
@@ -451,3 +452,4 @@ void Model3D::optimize (double smooth_angle, SmoothMethod method)
         }
     }
 }
+

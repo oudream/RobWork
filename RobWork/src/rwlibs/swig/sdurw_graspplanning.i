@@ -17,6 +17,7 @@
     #include <rw/geometry/IndexedTriArray.hpp>
     #include <rw/kinematics/MovableFrame.hpp>
     #include <rw/kinematics/FixedFrame.hpp>
+    #include <rw/geometry/Object3D.hpp>
 %}
 
 %pragma(java) jniclassimports=%{
