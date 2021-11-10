@@ -37,6 +37,7 @@ if(build)
         OBBCollider.cpp
         OBBFactory.cpp
         OBBToleranceCollider.cpp
+        Object3D.cpp
         PlainTriMesh.cpp
         Plane.cpp
         PointCloud.cpp
@@ -112,6 +113,7 @@ if(build)
         OBBToleranceCollider.hpp
         OBBToleranceCollider.hpp
         OBVDistanceCalc.hpp
+        Object3D.hpp
         PlainTriMesh.hpp
         Plane.hpp
         PointCloud.hpp

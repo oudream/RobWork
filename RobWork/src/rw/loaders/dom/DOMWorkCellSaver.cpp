@@ -25,6 +25,7 @@
 #include <rw/geometry/Cylinder.hpp>
 #include <rw/geometry/Plane.hpp>
 #include <rw/geometry/Sphere.hpp>
+#include <rw/geometry/TriMesh.hpp>
 #include <rw/geometry/Tube.hpp>
 #include <rw/graphics/DrawableNode.hpp>
 #include <rw/graphics/SceneDescriptor.hpp>
@@ -37,6 +38,7 @@
 #include <rw/loaders/dom/DOMPropertyMapFormat.hpp>
 #include <rw/loaders/dom/DOMPropertyMapSaver.hpp>
 #include <rw/loaders/dom/DOMProximitySetupSaver.hpp>
+#include <rw/loaders/model3d/STLFile.hpp>
 #include <rw/loaders/rwxml/XMLParserUtil.hpp>
 #include <rw/models/DHParameterSet.hpp>
 #include <rw/models/DependentPrismaticJoint.hpp>
@@ -56,9 +58,67 @@ using namespace rw::math;
 using namespace rw::kinematics;
 using namespace rw::graphics;
 using namespace rw::models;
+using namespace rw::geometry;
 using namespace rw;
 
 namespace {
+
+class TriMeshList : public TriMesh
+{
+  public:
+    TriMeshList (std::vector< TriMesh::Ptr > list) : _list (list) {}
+
+    virtual rw::geometry::Triangle< double > getTriangle (size_t idx) const
+    {
+        size_t i = 0;
+        while (idx >= _list[i]->size ()) {
+            idx -= _list[i++]->size ();
+        }
+        return _list[i]->getTriangle (idx);
+    }
+    virtual void getTriangle (size_t idx, rw::geometry::Triangle< double >& dst) const
+    {
+        size_t i = 0;
+        while (idx >= _list[i]->size ()) {
+            idx -= _list[i++]->size ();
+        }
+        return _list[i]->getTriangle (idx, dst);
+    }
+    virtual void getTriangle (size_t idx, rw::geometry::Triangle< float >& dst) const
+    {
+        size_t i = 0;
+        while (idx >= _list[i]->size ()) {
+            idx -= _list[i++]->size ();
+        }
+        return _list[i]->getTriangle (idx, dst);
+    }
+
+    virtual size_t getSize () const
+    {
+        size_t res = 0;
+        for (auto & t : _list) {
+            res += t->size ();
+        }
+        return res;
+    }
+
+    virtual size_t size () const { return getSize (); }
+
+    virtual rw::core::Ptr< TriMesh > clone () const
+    {
+        return rw::core::ownedPtr (new TriMeshList (_list));
+    }
+
+    virtual void scale (double scale) {}
+
+    virtual GeometryType getType () const{
+        return GeometryType::UserType;
+    }
+
+  private:
+    std::vector< TriMesh::Ptr > _list;
+};
+
 class ElementCreator
 {
   public:
@@ -88,21 +148,21 @@ std::map< rw::kinematics::Frame*, rw::models::Device* > frameToDevice;
 std::map< rw::kinematics::Frame*, rw::models::Device* > parentToDevice;
 std::map< rw::kinematics::Frame*, bool > isEndEffector;
 
-bool isFrameInDevice (rw::core::Ptr<Frame> frame)
+bool isFrameInDevice (rw::core::Ptr< Frame > frame)
 {
-    return frameToDevice.find (frame.get()) != frameToDevice.end ();
+    return frameToDevice.find (frame.get ()) != frameToDevice.end ();
 }
 
-bool isFrameInDevice (rw::core::Ptr<Frame> frame, Device* dev)
+bool isFrameInDevice (rw::core::Ptr< Frame > frame, Device* dev)
 {
     if (isFrameInDevice (frame))
-        return frameToDevice[frame.get()] == dev;
+        return frameToDevice[frame.get ()] == dev;
     return false;
 }
 
-bool isFrameParentToDevice (rw::core::Ptr<Frame> frame)
+bool isFrameParentToDevice (rw::core::Ptr< Frame > frame)
 {
-    return parentToDevice.find (frame.get()) != parentToDevice.end ();
+    return parentToDevice.find (frame.get ()) != parentToDevice.end ();
 }
 
 template< class T > std::string createStringFromArray (const T& v, size_t n)
@@ -123,7 +183,7 @@ template< class T > std::string createStringFromArray (const T& v)
     return createStringFromArray< T > (v, v.size ());
 }
 
-std::string scopedName (Device* dev,  rw::core::Ptr<Frame> frame)
+std::string scopedName (Device* dev, rw::core::Ptr< Frame > frame)
 {
     std::string fname = frame->getName ();
     std::string dname = dev->getName ();
@@ -135,11 +195,11 @@ std::string scopedName (Device* dev,  rw::core::Ptr<Frame> frame)
     return fname;
 }
 
-std::string scopedName (rw::core::Ptr<Frame> sframe,  rw::core::Ptr<Frame> frame)
+std::string scopedName (rw::core::Ptr< Frame > sframe, rw::core::Ptr< Frame > frame)
 {
     if (isFrameInDevice (frame)) {
-        if (isFrameInDevice (sframe, frameToDevice[frame.get()]))
-            return scopedName (frameToDevice[frame.get()], frame);
+        if (isFrameInDevice (sframe, frameToDevice[frame.get ()]))
+            return scopedName (frameToDevice[frame.get ()], frame);
     }
     return frame->getName ();
 }
@@ -194,12 +254,13 @@ void writeDrawablesAndColModels (rw::models::Object::Ptr object, DOMElem::Ptr pa
 
                 // Add the position
                 DOMBasisTypes::createPos (mod->getTransform ().P (), draw_element);
-
+        
                 std::string t ("#");
                 if (!mod->getFilePath ().empty () &&
                     mod->getFilePath ().compare (0, t.length (), t) != 0) {
+
                     DOMElem::Ptr polytope_element = draw_element->addChild ("Polytope");
-                    // std::cout << "Object model filepath: " << mod->getFilePath() << std::endl;
+                   
                     polytope_element->addAttribute ("file")->setValue (mod->getFilePath ());
                 }
                 else {
@@ -210,10 +271,6 @@ void writeDrawablesAndColModels (rw::models::Object::Ptr object, DOMElem::Ptr pa
                     std::string type, param1, param2, param3, param4, param5;
                     std::istringstream ss (mod->getFilePath ());
                     ss >> type >> param1 >> param2 >> param3 >> param4 >> param5;
-                    // std::cout << type << std::endl << param1 << std::endl << param2 << std::endl
-                    // << param3
-                    //          << std::endl <<
-                    //          param4 << std::endl << param5 << std::endl;
 
                     if (type == "#Plane") {
                         DOMElem::Ptr plane_element = draw_element->addChild ("Plane");
@@ -245,7 +302,17 @@ void writeDrawablesAndColModels (rw::models::Object::Ptr object, DOMElem::Ptr pa
                         tube_element->addAttribute ("z")->setValue (param3);
                     }
                     else {
-                        std::cout << "Unknown geometry type" << std::endl;
+                        // Save object as STL
+                        std::vector<TriMesh::Ptr> list;
+                        for(auto &o: mod->getObjects ()){
+                            list.push_back(o.cast<TriMesh>());
+                        }
+                        rw::loaders::STLFile::save (TriMeshList (list),
+                                              "./model_" + mod->getName () + ".stl");
+
+                        DOMElem::Ptr polytope_element = draw_element->addChild ("Polytope");
+                        polytope_element->addAttribute ("file")->setValue (
+                            "./model_" + mod->getName () + ".stl");
                     }
                 }
             }
@@ -1003,22 +1070,22 @@ ElementCreator::createElement< FixedFrame* > (FixedFrame* frame,
     return element;
 }
 
-void writeDeviceFrame (rw::core::Ptr<Frame> frame, ElementCreator& creator,
+void writeDeviceFrame (rw::core::Ptr< Frame > frame, ElementCreator& creator,
                        rw::core::Ptr< const rw::models::WorkCell > workcell, const State state,
                        Device::Ptr dev, DOMElem::Ptr parent)
 {
-    if (FixedFrame* ff = frame.cast<FixedFrame>().get()) {
+    if (FixedFrame* ff = frame.cast< FixedFrame > ().get ()) {
         // std::cout << "The frame type was Fixed!" << std::endl;
         if (isFrameInDevice (frame))
             creator.createElement< FixedFrame* > (ff, workcell, dev, parent);
         else
             creator.createElement< FixedFrame* > (ff, workcell, parent);
     }
-    else if (MovableFrame* mf = frame.cast<MovableFrame>().get()) {
+    else if (MovableFrame* mf = frame.cast< MovableFrame > ().get ()) {
         // std::cout << "The frame type was Movable!" << std::endl;
         creator.createElement< MovableFrame* > (mf, workcell, state, parent);
     }
-    else if (RevoluteJoint* rj = frame.cast<RevoluteJoint>().get()) {
+    else if (RevoluteJoint* rj = frame.cast< RevoluteJoint > ().get ()) {
         // std::cout << "The frame type was RevoluteJoint" << std::endl;
         creator.createElement< RevoluteJoint* > (rj, workcell, state, dev, parent);
     } /*
@@ -1037,19 +1104,19 @@ void writeDeviceFrame (rw::core::Ptr<Frame> frame, ElementCreator& creator,
      }*/
 }
 
-void writeFrame (rw::core::Ptr<Frame> frame, ElementCreator& creator,
+void writeFrame (rw::core::Ptr< Frame > frame, ElementCreator& creator,
                  rw::core::Ptr< const rw::models::WorkCell > workcell, const State state,
                  DOMElem::Ptr parent)
 {
-    if (FixedFrame* ff = frame.cast<FixedFrame>().get()) {
+    if (FixedFrame* ff = frame.cast< FixedFrame > ().get ()) {
         // std::cout << "The frame type was Fixed!" << std::endl;
         creator.createElement< FixedFrame* > (ff, workcell, parent);
     }
-    else if (MovableFrame* mf = frame.cast<MovableFrame>().get()) {
+    else if (MovableFrame* mf = frame.cast< MovableFrame > ().get ()) {
         // std::cout << "The frame type was Movable!" << std::endl;
         creator.createElement< MovableFrame* > (mf, workcell, state, parent);
     }
-    else if (RevoluteJoint* rj = frame.cast<RevoluteJoint>().get()) {
+    else if (RevoluteJoint* rj = frame.cast< RevoluteJoint > ().get ()) {
         // std::cout << "The frame type was RevoluteJoint" << std::endl;
         creator.createElement< RevoluteJoint* > (rj, workcell, state, parent);
     } /*
@@ -1127,7 +1194,7 @@ void createDOMDocument (DOMElem::Ptr rootDoc, rw::core::Ptr< const rw::models::W
 
     for (Device::Ptr dev : devices) {
         // First write parent frame to device
-        rw::core::Ptr<Frame> parent = dev->getBase ()->getParent ();
+        rw::core::Ptr< Frame > parent = dev->getBase ()->getParent ();
         writeFrame (parent, creator, workcell, state, rootElement);
 
         std::string devType      = getDeviceType (*dev);
@@ -1138,9 +1205,9 @@ void createDOMDocument (DOMElem::Ptr rootDoc, rw::core::Ptr< const rw::models::W
         std::stack< Frame* > frames;
         frames.push (dev->getBase ());
         while (!frames.empty ()) {
-            rw::core::Ptr<Frame> frame = frames.top ();
+            rw::core::Ptr< Frame > frame = frames.top ();
             frames.pop ();
-            flist.push_back (frame.get());
+            flist.push_back (frame.get ());
 
             writeDeviceFrame (frame, creator, workcell, state, dev, dev_element);
 

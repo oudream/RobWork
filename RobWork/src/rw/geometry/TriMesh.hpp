@@ -187,6 +187,7 @@ namespace rw { namespace geometry {
       private:
         bool _isConvex;
     };
+
     //! @}
 }}    // namespace rw::geometry
 
