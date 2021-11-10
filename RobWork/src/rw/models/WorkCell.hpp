@@ -342,10 +342,16 @@ namespace rw { namespace models {
 
         /**
          * @brief Returns a default State
-         *
          * @return default State
          */
         rw::kinematics::State getDefaultState () const;
+
+        /**
+         * @brief set the default state of the WorkCell.
+         * if the given state is an older state then states valid in both
+         * new and old version will be copied to the default state.
+         */
+        void setDefaultState (const rw::kinematics::State& state);
 
         /**
          * @brief Returns sensor with the specified name.

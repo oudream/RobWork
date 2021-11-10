@@ -510,8 +510,7 @@ void RobWorkStudio::openPlugin (RobWorkStudioPlugin& plugin)
 #if !defined(RW_MACOS)
         QMessageBox::information (NULL, buf.str ().c_str (), "Unknown error", QMessageBox::Ok);
 #else
-        this->log ().info () << buf.str () << std::endl
-                             << " With message: "  << std::endl;
+        this->log ().info () << buf.str () << std::endl << " With message: " << std::endl;
 #endif
     }
 }
@@ -648,7 +647,6 @@ void RobWorkStudio::setupPlugin (const QString& fullname, bool visible, int dock
 
         QObject* pluginObject = loader.instance ();
         if (pluginObject != NULL) {
-
             RobWorkStudioPlugin* testP = dynamic_cast< RobWorkStudioPlugin* > (pluginObject);
             if (testP == NULL) {
                 RW_THROW ("Loaded plugin is NULL, tried loading \"" << fullname.toStdString ()
@@ -991,19 +989,17 @@ void RobWorkStudio::openWorkCellFile (const QString& filename)
 void RobWorkStudio::setWorkcell (rw::models::WorkCell::Ptr workcell)
 {
     // Always close the workcell.
-    if (_workcell && _workcell != _workcell)
+    if (_workcell && workcell != _workcell) {
         closeWorkCell ();
+    }
 
     // Open a new workcell if there is one.<
-    if (workcell) {
-        std::cout << "Number of devices in workcell in RobWorkStudio::setWorkCell:"
-                  << workcell->getDevices ().size () << std::endl;
+    if (workcell && workcell != _workcell) {
         // don't set any variables before we know they are good
         CollisionDetector::Ptr detector = makeCollisionDetector (workcell);
-
-        _workcell = workcell;
-        _state    = _workcell->getDefaultState ();
-        _detector = detector;
+        _workcell                       = workcell;
+        _state                          = _workcell->getDefaultState ();
+        _detector                       = detector;
         _view->setWorkCell (_workcell);
         _view->setState (_state);
         openAllPlugins ();

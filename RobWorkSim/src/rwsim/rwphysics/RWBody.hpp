@@ -61,6 +61,18 @@ namespace rwsim { namespace simulator {
          */
         void calcAuxVarialbles (rw::kinematics::State& state);
 
+#ifdef RW_USE_PTR
+
+        /**
+         * @brief gets the frame that the bodies dynamic variables
+         * are described relative to.
+         */
+        rw::kinematics::Frame::Ptr getBodyFrame () const
+        {
+            RW_ASSERT (_body);
+            return _body->getBodyFrame ();
+        }
+#else
         /**
          * @brief gets the frame that the bodies dynamic variables
          * are described relative to.
@@ -70,7 +82,7 @@ namespace rwsim { namespace simulator {
             RW_ASSERT (_body);
             return _body->getBodyFrame ();
         }
-
+#endif
         const std::string& getMaterial () { return _materialID; }
 
         void resetState (rw::kinematics::State& state);
@@ -341,7 +353,7 @@ namespace rwsim { namespace simulator {
         dynamics::Body* _body;
 
         rw::kinematics::MovableFrame* _mframe;
-        rw::core::Ptr<rw::kinematics::Frame> _parent;
+        rw::core::Ptr< rw::kinematics::Frame > _parent;
 
         std::string _materialID;
 

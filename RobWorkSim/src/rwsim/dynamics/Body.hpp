@@ -127,12 +127,19 @@ namespace rwsim { namespace dynamics {
          */
         const std::string& getName () const { return _bodyframe->getName (); }
 
+#ifdef RW_USE_PTR
+        /**
+         * @brief Returns the frame that the bodies dynamic variables are described relative to.
+         * @return pointer to the body reference frame.
+         */
+        rw::kinematics::Frame::Ptr getBodyFrame () const { return _obj->getBase (); }
+#else
         /**
          * @brief Returns the frame that the bodies dynamic variables are described relative to.
          * @return pointer to the body reference frame.
          */
         rw::kinematics::Frame* getBodyFrame () const { return _obj->getBase (); }
-
+#endif
         /**
          * @brief Get all geometry associated with this body.
          * @param state [in] the current state (for deformable bodies).

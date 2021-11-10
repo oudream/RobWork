@@ -335,6 +335,10 @@ State WorkCell::getDefaultState () const
     return _tree->getDefaultState ();
 }
 
+void WorkCell::setDefaultState (const State& state){
+    _tree->setDefaultState (state);
+}
+
 std::vector< rw::core::Ptr< rw::sensor::SensorModel > > WorkCell::getSensors () const
 {
     std::vector< rw::core::Ptr< rw::sensor::SensorModel > > sensors;
