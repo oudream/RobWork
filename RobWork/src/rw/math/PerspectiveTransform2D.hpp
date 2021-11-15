@@ -241,10 +241,16 @@ namespace rw { namespace math {
     extern template class rw::math::PerspectiveTransform2D< double >;
     extern template class rw::math::PerspectiveTransform2D< float >;
 #else
+  
+#if SWIG_VERSION < 0x040000
     SWIG_DECLARE_TEMPLATE (PerspectiveTransform2Dd, rw::math::PerspectiveTransform2D< double >);
-    SWIG_DECLARE_TEMPLATE (PerspectiveTransform2Df, rw::math::PerspectiveTransform2D< float >);
+    ADD_DEFINITION (PerspectiveTransform2Dd, PerspectiveTransform2D)
+#else
+    SWIG_DECLARE_TEMPLATE (PerspectiveTransform2D, rw::math::PerspectiveTransform2D< double >);
 #endif
 
+    SWIG_DECLARE_TEMPLATE (PerspectiveTransform2Df, rw::math::PerspectiveTransform2D< float >);
+#endif
     using PerspectiveTransform2Dd = PerspectiveTransform2D< double >;
     using PerspectiveTransform2Df = PerspectiveTransform2D< float >;
 

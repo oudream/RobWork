@@ -94,6 +94,21 @@ NAMED_OWNEDPTR(Object,rw::models::Object);
 NAMED_OWNEDPTR(Device,rw::models::Device);
 %template (DevicePtrVector) std::vector<rw::core::Ptr<rw::models::Device> >;
 
+
+%{
+	std::vector< double,std::allocator< double > > rw_kinematics_StateData_getData(rw::kinematics::StateData *self,rw::kinematics::State &state){
+        double* data = self->getData(state);
+        std::vector<double> ret(self->size());
+        for(int i = 0; i < self->size(); i++){
+            ret.push_back(data[i]);
+        }
+        return ret;
+    }
+	void rw_kinematics_StateData_setData(rw::kinematics::StateData *self,rw::kinematics::State &state,std::vector< double,std::allocator< double > > const vals){
+        self->setData(state,vals.data());
+    }
+%}
+
 %{
 	#include<rw/models/Joint.hpp>
 %}

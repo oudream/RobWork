@@ -89,6 +89,12 @@ namespace rw { namespace math {
         explicit Transform3D (const rw::math::Vector3D< T >& d) : _d (d), _R (rw::math::Rotation3D< T >::identity ()) {}
 
         /**
+         * @brief Copy Constructor
+         * @param Transform3D [in] Values to initialize the transform
+         */
+        Transform3D (const rw::math::Transform3D< T >& t) : _d (t._d), _R (t._R) {}
+
+        /**
          * @brief Constructs a homogeneous transform
          *
          * Calling this constructor is equivalent to the transform
@@ -523,7 +529,14 @@ namespace rw { namespace math {
     extern template class rw::math::Transform3D< double >;
     extern template class rw::math::Transform3D< float >;
 #else
+ 
+#if SWIG_VERSION < 0x040000
     SWIG_DECLARE_TEMPLATE (Transform3Dd, rw::math::Transform3D< double >);
+    ADD_DEFINITION (Transform3Dd, Transform3D)
+#else
+    SWIG_DECLARE_TEMPLATE (Transform3D, rw::math::Transform3D< double >);
+#endif
+
     SWIG_DECLARE_TEMPLATE (Transform3Df, rw::math::Transform3D< float >);
 #endif
 

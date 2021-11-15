@@ -573,7 +573,14 @@ namespace rw { namespace math {
     extern template class rw::math::Rotation3D< double >;
     extern template class rw::math::Rotation3D< float >;
 #else
+
+#if SWIG_VERSION < 0x040000
     SWIG_DECLARE_TEMPLATE (Rotation3Dd, rw::math::Rotation3D< double >);
+    ADD_DEFINITION (Rotation3Dd, Rotation3D)
+#else
+    SWIG_DECLARE_TEMPLATE (Rotation3D, rw::math::Rotation3D< double >);
+#endif
+
     SWIG_DECLARE_TEMPLATE (Rotation3Df, rw::math::Rotation3D< float >);
 #endif
     using Rotation3Dd = Rotation3D< double >;

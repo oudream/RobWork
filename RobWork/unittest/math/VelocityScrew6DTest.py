@@ -23,9 +23,9 @@ import sdurw_math
 class VelocetyScrew6DTest(unittest.TestCase):
 
     def test_VelocityScrew6DTest_ADL(self):
-        linear1 = sdurw_math.Vector3Dd(1, 2, 3)
-        angular1 = sdurw_math.EAAd(4, 5, 6)
-        screw = sdurw_math.VelocityScrew6Dd(linear1, angular1)
+        linear1 = sdurw_math.Vector3D(1, 2, 3)
+        angular1 = sdurw_math.EAA(4, 5, 6)
+        screw = sdurw_math.VelocityScrew6D(linear1, angular1)
 
         # Test Argument-Dependent Lookup (ADL)
         self.assertLess(math.fabs(screw.norm1() - (1 + 2 + 3 + 4 + 5 + 6)) , 1e-15)
@@ -34,14 +34,14 @@ class VelocetyScrew6DTest(unittest.TestCase):
 
 
     def test_VelocetySrew6D(self):
-        T = sdurw_math.Transform3Dd().identity()
-        screw = sdurw_math.VelocityScrew6Dd(T)
+        T = sdurw_math.Transform3D().identity()
+        screw = sdurw_math.VelocityScrew6D(T)
         for i in range (0,6):
             self.assertEqual(screw[i] , 0)
 
-        linear = sdurw_math.Vector3Dd(0.1, 0.2, 0.3)
-        angular = sdurw_math.EAAd(4, 5, 6)
-        screw = sdurw_math.VelocityScrew6Dd(linear, angular)
+        linear = sdurw_math.Vector3D(0.1, 0.2, 0.3)
+        angular = sdurw_math.EAA(4, 5, 6)
+        screw = sdurw_math.VelocityScrew6D(linear, angular)
 
         self.assertEqual(screw.linear()[0], linear[0])
         self.assertEqual(screw.linear()[1], linear[1])
@@ -52,16 +52,16 @@ class VelocetyScrew6DTest(unittest.TestCase):
         self.assertLess(math.fabs(screw[5] - angular.axis()[2] * angular.angle()), 1e-16)
 
 
-        linear1 = sdurw_math.Vector3Dd(0.1, 0.2, 0.3)
-        angular1 = sdurw_math.EAAd(0.4, 0.5, 0.6)
-        screw1 = sdurw_math.VelocityScrew6Dd(linear1, angular1)
+        linear1 = sdurw_math.Vector3D(0.1, 0.2, 0.3)
+        angular1 = sdurw_math.EAA(0.4, 0.5, 0.6)
+        screw1 = sdurw_math.VelocityScrew6D(linear1, angular1)
 
-        linear2 = sdurw_math.Vector3Dd(0.2, 0.3, 0.4)
-        angular2 = sdurw_math.EAAd(0.5, 0.6, 0.7)
-        screw2 = sdurw_math.VelocityScrew6Dd(linear2, angular2)
+        linear2 = sdurw_math.Vector3D(0.2, 0.3, 0.4)
+        angular2 = sdurw_math.EAA(0.5, 0.6, 0.7)
+        screw2 = sdurw_math.VelocityScrew6D(linear2, angular2)
 
-        screwA = sdurw_math.VelocityScrew6Dd(screw1)
-        screwB = sdurw_math.VelocityScrew6Dd(screw2)
+        screwA = sdurw_math.VelocityScrew6D(screw1)
+        screwB = sdurw_math.VelocityScrew6D(screw2)
 
         screw1 += screw2
         for i in range (0,6):
@@ -72,9 +72,9 @@ class VelocetyScrew6DTest(unittest.TestCase):
             self.assertLess(math.fabs(screw2[i] - -screwA[i]),  1e-15)
 
 
-        linear1 = sdurw_math.Vector3Dd(1, 2, 3)
-        angular1 = sdurw_math.EAAd(4, 5, 6)
-        screw = sdurw_math.VelocityScrew6Dd(linear1, angular1)
+        linear1 = sdurw_math.Vector3D(1, 2, 3)
+        angular1 = sdurw_math.EAA(4, 5, 6)
+        screw = sdurw_math.VelocityScrew6D(linear1, angular1)
 
         # Test unqualified lookup
         self.assertLess(math.fabs(screw.norm1() - (1 + 2 + 3 + 4 + 5 + 6)) , 1e-15)
@@ -86,38 +86,50 @@ class VelocetyScrew6DTest(unittest.TestCase):
         self.assertLess(math.fabs(sdurw_math.norm2(screw) - math.sqrt(1.0 * 1 + 2 * 2 + 3 * 3 + 4 * 4 + 5 * 5 + 6 * 6)) , 1e-15)
         self.assertLess(math.fabs(sdurw_math.normInf(screw) - 6) , 1e-15)
 
-        linear = sdurw_math.Vector3Dd(0.1, 0.2, 0.3)
-        angular = sdurw_math.EAAd(0.4, 0.5, 0.6)
-        screw = sdurw_math.VelocityScrew6Dd(linear, angular)
+        linear = sdurw_math.Vector3D(0.1, 0.2, 0.3)
+        angular = sdurw_math.EAA(0.4, 0.5, 0.6)
+        screw = sdurw_math.VelocityScrew6D(linear, angular)
 
         vsf = sdurw_math.castToFloat(screw)
         for i in range (0,6):
             self.assertAlmostEqual(screw[i] , vsf[i],delta=1e-5)
 
-        linear = sdurw_math.Vector3Dd(0.1, 0.2, 0.3)
-        angular = sdurw_math.EAAd(0.4, 0.5, 0.6)
-        screw = sdurw_math.VelocityScrew6Dd(linear, angular)
+        linear = sdurw_math.Vector3D(0.1, 0.2, 0.3)
+        angular = sdurw_math.EAA(0.4, 0.5, 0.6)
+        screw = sdurw_math.VelocityScrew6D(linear, angular)
+
         eigen = screw.asNumpy()
 
         for i in range (0,6):
             self.assertAlmostEqual(eigen[i,0], screw[i],delta=1e-4) # TODO check after eigen 2 numpy works
 
         # Test comparison operators operator== and operator!= 
-        linear1 = sdurw_math.Vector3Dd(1, 2, 3)
-        angular1 = sdurw_math.EAAd(4, 5, 6)
-        screw1 = sdurw_math.VelocityScrew6Dd(linear1, angular1)
-        linear2 = sdurw_math.Vector3Dd(1, 2, 3)
-        angular2 = sdurw_math.EAAd(4, 5, 6)
-        screw2 = sdurw_math.VelocityScrew6Dd(linear2, angular2)
+        linear1 = sdurw_math.Vector3D(1, 2, 3)
+        angular1 = sdurw_math.EAA(4, 5, 6)
+        screw1 = sdurw_math.VelocityScrew6D(linear1, angular1)
+        linear2 = sdurw_math.Vector3D(1, 2, 3)
+        angular2 = sdurw_math.EAA(4, 5, 6)
+        screw2 = sdurw_math.VelocityScrew6D(linear2, angular2)
         self.assertEqual(screw1 , screw2)
         self.assertTrue(not(screw1 != screw2))
 
-        linear3 = sdurw_math.Vector3Dd(1, 4, 3)
-        angular3 = sdurw_math.EAAd(4, 5, 2)
-        screw3 = sdurw_math.VelocityScrew6Dd(linear3, angular3)
+        linear3 = sdurw_math.Vector3D(1, 4, 3)
+        angular3 = sdurw_math.EAA(4, 5, 2)
+        screw3 = sdurw_math.VelocityScrew6D(linear3, angular3)
         self.assertNotEqual(screw1 , screw3)
         self.assertTrue(not(screw1 == screw3))
     
+
+    def test_VelocityScrew6D_Conversion(self):
+        #Test conversion, if it contains "Swig Object" then it is a failure
+        obj1 = sdurw_math.VelocityScrew6D()
+        s = str(obj1)
+        self.assertNotIn("Swig Object", s)
+
+        obj1f = sdurw_math.VelocityScrew6Df()
+        s = str(obj1f)
+        self.assertNotIn("Swig Object", s)
+
 
 if __name__ == '__main__':
     unittest.main()

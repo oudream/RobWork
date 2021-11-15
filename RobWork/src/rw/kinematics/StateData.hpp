@@ -79,7 +79,7 @@ namespace rw { namespace kinematics {
          * @return The number of doubles allocated by the StateData
          */
         inline int size () const { return _size; };
-
+#if !defined(SWIG)
         // The StateData values.
         /**
          * @brief An array of length size() containing the values for
@@ -145,6 +145,9 @@ namespace rw { namespace kinematics {
                 RW_THROW ("StateData \"" << _name << "\" NOT initialized!");
             state.getQState ().setQ (*this, vals);
         }
+
+#endif
+
 
         /**
          * @brief Check is state data includes a cache.

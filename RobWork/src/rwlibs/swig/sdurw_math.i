@@ -114,6 +114,16 @@ FRIEND_OPERATOR(rw::math::Rotation3D<float>,rw::math::InertiaMatrix<float>,*);
     #include <rw/math/LinearAlgebra.hpp>
 %}
 %include <rw/math/LinearAlgebra.hpp>
+%template(eigenDecompositionSymmetric) rw::math::LinearAlgebra::eigenDecompositionSymmetric<double>;
+%template(eigenDecomposition) rw::math::LinearAlgebra::eigenDecomposition<double>;
+
+%extend rw::math::LinearAlgebra {
+    static bool isSO(Eigen::Matrix<double,3,3> var){
+        return rw::math::LinearAlgebra::isSO(var);
+    }
+}
+
+//%template(isSO_f) rw::math::LinearAlgebra::isSO<float>;
 
 %extend rw::math::LinearAlgebra {
     static bool isSO(Eigen::Matrix<double,3,3> var){
@@ -351,6 +361,7 @@ ADD_DEFINITION(Transform3DAngleMetric_d, Transform3DAngleMetric,sdurw_math);
 %}
 %include <rw/math/Q.hpp>
 %template(PairQ) std::pair<rw::math::Q,rw::math::Q>;
+%template(PairConstQ) std::pair<const rw::math::Q, const rw::math::Q>;
 %template(VectorQ) std::vector<rw::math::Q>;
 
 %rename(copy) rw::math::Quaternion::operator=;

@@ -79,6 +79,12 @@ class QuaternionTest(unittest.TestCase):
         for i in range(4):
             self.assertAlmostEqual(a[i],af[i],delta=1e-7)
 
+    def test_Quaternion_Conversion(self):
+        #Test conversion, if it contains "Swig Object" then it is a failure
+        obj1 = sdurw_math.Quaternion()
+        s = str(obj1)
+        self.assertNotIn("Swig Object", s)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -268,7 +268,7 @@
   //PyErr_SetString(PyExc_ValueError, "The output typemap for non-const reference is not yet implemented. Please report this problem to the developer.");
   
   ConvertFromEigenToNumPyMatrix<CLASS>(&$result, $1);
-  PyErr_WarnEx(PyExc_RuntimeWarning,"This function should have returned a reference to the object but a copy was made instead",0);
+  //PyErr_WarnEx(PyExc_RuntimeWarning,"This function should have returned a reference to the object but a copy was made instead",0);
 }
 // Out: const* (not yet implemented)
 %typemap(out, fragment="Eigen_Fragments") CLASS const*

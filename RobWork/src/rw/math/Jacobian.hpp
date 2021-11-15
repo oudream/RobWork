@@ -109,12 +109,12 @@ namespace math {
         /**
          * @brief Accessor for the internal Eigen matrix state.
          */
-        Base& e () { return _jac; }
+        Eigen::Matrix< double, Eigen::Dynamic, Eigen::Dynamic >& e () { return _jac; }
 
         /**
          * @brief Accessor for the internal Eigen matrix state.
          */
-        const Base& e () const { return _jac; }
+        const Eigen::Matrix< double, Eigen::Dynamic, Eigen::Dynamic >& e () const { return _jac; }
 
 #if !defined(SWIG)
         /**

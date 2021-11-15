@@ -857,8 +857,15 @@ namespace rw { namespace math {
 extern template class rw::math::EAA< double >;
 extern template class rw::math::EAA< float >;
 #else
-SWIG_DECLARE_TEMPLATE (EAAd, rw::math::EAA< double >);
+
+#if SWIG_VERSION < 0x040000
+    SWIG_DECLARE_TEMPLATE (EAAd, rw::math::EAA< double >);
+    ADD_DEFINITION (EAAd, EAA)
+#else
+    SWIG_DECLARE_TEMPLATE (EAA, rw::math::EAA< double >);
+#endif
 SWIG_DECLARE_TEMPLATE (EAAf, rw::math::EAA< float >);
+
 #endif
 
 namespace rw { namespace common {

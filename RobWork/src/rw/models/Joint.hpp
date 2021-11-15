@@ -96,6 +96,16 @@ namespace rw { namespace models {
         }
 
         /**
+         * @brief Sets joint bounds
+         * @param lower [in] the lower of this joint
+         * @param upper [in] the upper of this joint
+         */
+        void setBounds (const rw::math::Q& lower, const rw::math::Q& upper)
+        {
+            _bounds = std::make_pair(lower,upper);
+        }
+
+        /**
          * @brief Gets joint bounds
          * @return the lower and upper bound of this joint
          */

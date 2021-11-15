@@ -640,7 +640,14 @@ namespace rw { namespace math {
     extern template class rw::math::VelocityScrew6D< double >;
     extern template class rw::math::VelocityScrew6D< float >;
 #else
+    
+#if SWIG_VERSION < 0x040000
     SWIG_DECLARE_TEMPLATE (VelocityScrew6Dd, rw::math::VelocityScrew6D< double >);
+    ADD_DEFINITION (VelocityScrew6Dd, VelocityScrew6D)
+#else
+    SWIG_DECLARE_TEMPLATE (VelocityScrew6D, rw::math::VelocityScrew6D< double >);
+#endif
+
     SWIG_DECLARE_TEMPLATE (VelocityScrew6Df, rw::math::VelocityScrew6D< float >);
 #endif
     using VelocityScrew6Dd = VelocityScrew6D< double >;

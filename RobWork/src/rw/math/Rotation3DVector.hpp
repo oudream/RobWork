@@ -77,8 +77,17 @@ namespace rw { namespace math {
     extern template class rw::math::Rotation3DVector< double >;
     extern template class rw::math::Rotation3DVector< float >;
 #else 
+
+#if SWIG_VERSION < 0x040000
     SWIG_DECLARE_TEMPLATE (Rotation3DVectord, rw::math::Rotation3DVector< double >);
+    ADD_DEFINITION (Rotation3DVectord, Rotation3DVector)
+#else
+    SWIG_DECLARE_TEMPLATE (Rotation3DVector, rw::math::Rotation3DVector< double >);
+#endif
+
     SWIG_DECLARE_TEMPLATE (Rotation3DVectorf, rw::math::Rotation3DVector< float >);
 #endif 
+    using Rotation3DVectord = rw::math::Rotation3DVector< double >;
+    using Rotation3DVectorf = rw::math::Rotation3DVector< float >;
 
 #endif    // end include guard
