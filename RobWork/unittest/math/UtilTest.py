@@ -27,7 +27,7 @@ class UtilTest(unittest.TestCase):
     def test_Util(self):
         q = sdurw_math.Quaternion(0.1, 0.2, 0.3, 0.4)
         q.normalize()
-        eaa = sdurw_math.EAAd(1,2,3)
+        eaa = sdurw_math.EAA(1,2,3)
 
         eaa_q = sdurw_math.Math.quaternionToEAA(q)
         q_eaa = sdurw_math.Math.eaaToQuaternion(eaa_q)
@@ -47,21 +47,21 @@ class UtilTest(unittest.TestCase):
         self.assertEqual(sdurw_math.Math.ceilLog2(9), 4)
 
     def test_Vector3D_norm(self):
-        v1 = sdurw_math.Vector3Dd(1.0, 2.0, 2.0)
+        v1 = sdurw_math.Vector3D(1.0, 2.0, 2.0)
         self.assertEqual(sdurw_math.MetricUtil.norm1(v1), 5.0)
         self.assertEqual(sdurw_math.MetricUtil.norm2(v1), 3.0)
         self.assertEqual(sdurw_math.MetricUtil.normInf(v1), 2.0)
 
     def test_Vector3D_cross(self):
-        v1 = sdurw_math.Vector3Dd(1.0, 2.0, 2.0)
-        v2 = sdurw_math.Vector3Dd(v1)                      # Make a copy of v1 using c++ copy constructor
+        v1 = sdurw_math.Vector3D(1.0, 2.0, 2.0)
+        v2 = sdurw_math.Vector3D(v1)                      # Make a copy of v1 using c++ copy constructor
 
         self.assertEqual(sdurw_math.MetricUtil.normInf(sdurw_math.cross(v1, v2)), 0)
 
     def test_Transform3DAngleMetric(self):
-        v1 = sdurw_math.Vector3Dd(1.0, 2.0, 2.0)
-        t1 = sdurw_math.Transform3Dd(sdurw_math.Vector3Dd(1, 0, 0), sdurw_math.Rotation3Dd.identity())
-        t2 = sdurw_math.Transform3Dd(sdurw_math.Vector3Dd(1, 0, 0), sdurw_math.RPYd(1.4, 0, 0).toRotation3D())
+        v1 = sdurw_math.Vector3D(1.0, 2.0, 2.0)
+        t1 = sdurw_math.Transform3D(sdurw_math.Vector3D(1, 0, 0), sdurw_math.Rotation3D.identity())
+        t2 = sdurw_math.Transform3D(sdurw_math.Vector3D(1, 0, 0), sdurw_math.RPY(1.4, 0, 0).toRotation3D())
 
         x1 = sdurw_math.Transform3DAngleMetric(1.0, 0.0).distance(t1, t2)
         x2 = sdurw_math.Transform3DAngleMetric(0.0, 1.0).distance(t1, t2)
@@ -69,7 +69,7 @@ class UtilTest(unittest.TestCase):
         self.assertAlmostEqual(x2, 1.4, delta = 1e-15)
 
     def test_Wrench6D(self):
-        wrench = sdurw_math.Wrench6Dd(1,2,3,4,5,6)
+        wrench = sdurw_math.Wrench6D(1,2,3,4,5,6)
         self.assertEqual(wrench.force()[0] , 1)
         self.assertEqual(wrench.force()[1] , 2)
         self.assertEqual(wrench.force()[2] , 3)
@@ -175,7 +175,7 @@ class UtilTest(unittest.TestCase):
         T = sdurw_math.Math.ranTransform3D()
         Tserialized = sdurw_math.Math.toStdVector(T, 3, 4)
         self.assertEqual(len(Tserialized) , 12)
-        Trestored = sdurw_math.Transform3Dd()
+        Trestored = sdurw_math.Transform3D()
         sdurw_math.Math.fromStdVectorToMat(Tserialized, Trestored, 3, 4)
         self.assertTrue(T.equal(Trestored))
 

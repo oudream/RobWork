@@ -29,8 +29,9 @@
 
 namespace rw { namespace models {
     //! @addtogroup models
-
+#if !defined(SWIG)
     //! @{
+#endif
     /**
      * @brief A universal joint that allows rotations in two directions.
      *

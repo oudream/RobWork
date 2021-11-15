@@ -4,7 +4,7 @@ using("sdurw")
 require("sdurw_math")
 using("sdurw_math")
 
-rotd = Rotation3Dd(1,0,0,0,0,-1,0,1,0);
+rotd = Rotation3D(1,0,0,0,0,-1,0,1,0);
 rotf = Rotation3Df(1,0,0,0,0,-1,0,1,0);
 
 print("Rotation double:");

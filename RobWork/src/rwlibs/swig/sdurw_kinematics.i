@@ -34,8 +34,8 @@
 
 
 
-%ignore rw::kinematics::StateData::getData;
-%ignore rw::kinematics::StateData::setData;
+//%ignore rw::kinematics::StateData::getData;
+//%ignore rw::kinematics::StateData::setData;
 %ignore rw::kinematics::StateData::getCache() const;
 %ignore rw::kinematics::StateData::getCache(rw::kinematics::State &);
 %{
@@ -100,8 +100,93 @@ NAMED_OWNEDPTR(StateData, rw::kinematics::StateData);
 #else 
 %ignore rw::kinematics::Frame::getChildren() const;
 %ignore rw::kinematics::Frame::getParent() const;
-
 #endif 
+
+#if !defined(SWIGJAVA)
+#if defined(SWIGLUA)
+#define SWIGPtr_pre L,
+#else
+#define SWIGPtr_pre
+#endif
+
+#ifndef SWIG_POINTER_NO_NULL
+#define SWIG_POINTER_NO_NULL 0
+#endif
+%typecheck(SWIG_TYPECHECK_SWIGOBJECT) rw::core::Ptr<rw::kinematics::Frame>{
+    void* ptr;
+    if (SWIG_IsOK(SWIG_ConvertPtr(SWIGPtr_pre $input, (void **) &ptr, $descriptor(rw::core::Ptr<rw::core::kinematics::Frame> *),SWIG_POINTER_NO_NULL | 0))) {
+		$1 = 1;
+	}else if(SWIG_IsOK(SWIG_ConvertPtr(SWIGPtr_pre $input, (void **) &ptr, $descriptor(rw::core::Ptr<rw::kinematics::FixedFrame> *),SWIG_POINTER_NO_NULL | 0))){
+        $1 = 1;
+    }else if(SWIG_IsOK(SWIG_ConvertPtr(SWIGPtr_pre $input, (void **) &ptr, $descriptor(rw::kinematics::FixedFrame *),SWIG_POINTER_NO_NULL | 0))){
+        $1 = 1;
+    }else if(SWIG_IsOK(SWIG_ConvertPtr(SWIGPtr_pre $input, (void **) &ptr, $descriptor(std::vector< rw::kinematics::MovableFrame * >::value_type),SWIG_POINTER_NO_NULL | 0))){
+        $1 = 1;
+    }else if(SWIG_IsOK(SWIG_ConvertPtr(SWIGPtr_pre $input, (void **) &ptr, $descriptor(rw::core::Ptr<rw::kinematics::MovableFrame> *),SWIG_POINTER_NO_NULL | 0))){
+        $1 = 1;
+    }else if(SWIG_IsOK(SWIG_ConvertPtr(SWIGPtr_pre $input, (void **) &ptr, $descriptor(rw::kinematics::MovableFrame *),SWIG_POINTER_NO_NULL | 0))){
+        $1 = 1;
+    }else {
+		$1 = SWIG_IsOK(SWIG_ConvertPtr(SWIGPtr_pre $input, (void **) &ptr, $descriptor(rw::kinematics::Frame *),SWIG_POINTER_NO_NULL | 0));
+	}
+    if (! $1){
+        std::cout << "Failed to varify rw::core::Ptr< rw::kinematics::Frame > " << std::endl;
+    }
+    
+}
+%typemap(in) rw::core::Ptr<rw::kinematics::Frame > (void * argp){
+    int res = SWIG_ConvertPtr(SWIGPtr_pre $input, &argp, $descriptor(rw::core::Ptr<rw::kinematics::Frame> *),SWIG_POINTER_NO_NULL | 0);
+	if (SWIG_IsOK(res)) {
+		rw::core::Ptr<rw::kinematics::Frame> * tmp_var = reinterpret_cast< rw::core::Ptr<rw::kinematics::Frame > * > (argp);
+		$1 = *tmp_var;
+	}
+	if(!SWIG_IsOK(res)) {
+        res = SWIG_ConvertPtr(SWIGPtr_pre $input, &argp, $descriptor(rw::kinematics::Frame *),SWIG_POINTER_NO_NULL | 0);
+        if (SWIG_IsOK(res)) {
+            rw::kinematics::Frame  * tmp_var = reinterpret_cast< rw::kinematics::Frame *> (argp);
+            $1 = rw::core::Ptr< rw::kinematics::Frame > (tmp_var);
+        }
+    }
+    if(!SWIG_IsOK(res)) {
+        res = SWIG_ConvertPtr(SWIGPtr_pre $input, &argp, $descriptor(rw::kinematics::MovableFrame *),SWIG_POINTER_NO_NULL | 0);
+        if (SWIG_IsOK(res)) {
+            rw::kinematics::MovableFrame* tmp_var = reinterpret_cast< rw::kinematics::MovableFrame *> (argp);
+            $1 = rw::core::Ptr< rw::kinematics::Frame > (tmp_var);
+        }
+    }
+    if(!SWIG_IsOK(res)) {
+        res = SWIG_ConvertPtr(SWIGPtr_pre $input, &argp, $descriptor(rw::core::Ptr<rw::kinematics::MovableFrame> *),SWIG_POINTER_NO_NULL | 0);
+        if (SWIG_IsOK(res)) {
+            rw::core::Ptr<rw::kinematics::MovableFrame>* tmp_var = reinterpret_cast< rw::core::Ptr<rw::kinematics::MovableFrame> *> (argp);
+            $1 = tmp_var->cast<rw::kinematics::Frame>();
+        }
+   } 
+    if(!SWIG_IsOK(res)) {
+        res = SWIG_ConvertPtr(SWIGPtr_pre $input, &argp, $descriptor(rw::kinematics::FixedFrame *),SWIG_POINTER_NO_NULL | 0);
+        if (SWIG_IsOK(res)) {
+            rw::kinematics::FixedFrame* tmp_var = reinterpret_cast< rw::kinematics::FixedFrame *> (argp);
+            $1 = rw::core::Ptr< rw::kinematics::Frame > (tmp_var);
+        }
+    }
+    if(!SWIG_IsOK(res)) {
+        res = SWIG_ConvertPtr(SWIGPtr_pre $input, &argp, $descriptor(rw::core::Ptr<rw::kinematics::FixedFrame> *),SWIG_POINTER_NO_NULL | 0);
+        if (SWIG_IsOK(res)) {
+            rw::core::Ptr<rw::kinematics::FixedFrame>* tmp_var = reinterpret_cast< rw::core::Ptr<rw::kinematics::FixedFrame> *> (argp);
+            $1 = tmp_var->cast<rw::kinematics::Frame>();
+        }
+   } 
+        
+    if(!SWIG_IsOK(res)) {
+#if !defined(SWIGLUA)
+        SWIG_exception_fail(SWIG_ArgError(res), "could not convert to type rw::core::Ptr<rw::kinematics::Frame >");
+#else 
+        lua_pushstring(L, "could not convert to type rw::core::Ptr<rw::kinematics::Frame >");
+        SWIG_fail;
+#endif 
+	}
+}
+#endif
+
 %{
     #include <rw/kinematics/Frame.hpp>
 %}

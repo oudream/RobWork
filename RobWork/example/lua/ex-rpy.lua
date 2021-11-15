@@ -4,12 +4,12 @@ using("sdurw")
 require("sdurw_math")
 using("sdurw_math")
 
-rpy = RPYd(Pi,Pi/2,0);
+rpy = RPY(Pi,Pi/2,0);
 print("RPY: " .. tostring(rpy));
 rotationFromRPY = rpy:toRotation3D();
 print("Rotation from RPY: " .. tostring(rotationFromRPY));
 
-rot = Rotation3Dd(-1,0,0,0,0,1,0,1,0);
+rot = Rotation3D(-1,0,0,0,0,1,0,1,0);
 print("Rotation: " .. tostring(rot));
-rpyFromRotation = RPYd(rot);
+rpyFromRotation = RPY(rot);
 print("RPY from Rotation: " .. tostring(rpyFromRotation));

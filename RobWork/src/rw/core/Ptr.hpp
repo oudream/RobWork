@@ -63,7 +63,7 @@ namespace rw { namespace core {
         //! The internal type of shared pointer used.
         typedef cpp_shared_ptr shared_ptr;
 #endif
-
+#if !defined(SWIG)
         //! Pointer type
         typedef T* pointer;
 
@@ -72,7 +72,7 @@ namespace rw { namespace core {
 
         //! Value type
         typedef T value_type;
-
+#endif
         /**
          * @brief Default constructor yielding a NULL-pointer.
          */
@@ -220,17 +220,17 @@ namespace rw { namespace core {
         /**
          * @brief The pointer stored in the object.
          */
-        pointer get () const { return _ptr; }
+        T* get () const { return _ptr; }
 
         /**
          * @brief Dereferencing operator.
          */
-        reference operator* () const { return *get (); }
+        T& operator* () const { return *get (); }
 
         /**
          * @brief Member access operator.
          */
-        pointer operator-> () const { return get (); }
+        T* operator-> () const { return get (); }
 
 #if !defined(SWIG)
         /**
@@ -274,7 +274,7 @@ namespace rw { namespace core {
          * @brief Tests if the smart pointer points to different from the instance of \b p
          */
         bool operator!= (void* p) const { return get () != p; }
-#else 
+#else
         PTR_EQ_C_PTR;
 #endif
 

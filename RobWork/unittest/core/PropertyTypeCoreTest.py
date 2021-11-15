@@ -17,35 +17,31 @@
 
 import unittest                                     # now we can use python unittest framework
 import math, sys
-import sdurw_math
+import sdurw_core
 
 
-class Pose6DTest(unittest.TestCase):
+class PropertyTypeCore(unittest.TestCase):
 
-    def test_Pose6D(self):
-        p = sdurw_math.Pose6D(1.1,2.2,3.3,4.4,5.5,6.6)
+    def test_PropertyType(self):
+        proptype = sdurw_core.PropertyType()
+        self.assertEqual(sdurw_core.PropertyType.Unknown, proptype.getId())             # Unknown = -1
 
-        self.assertEqual(p[0] , 1.1)
-        self.assertEqual(p[1] , 2.2)
-        self.assertEqual(p[2] , 3.3)
-        self.assertAlmostEqual(p[3], 4.4, delta = 1e-15)
-        self.assertAlmostEqual(p[4], 5.5, delta = 1e-15)
-        self.assertAlmostEqual(p[5], 6.6, delta = 1e-15)
+        proptype = sdurw_core.PropertyType(int(6))
+        self.assertEqual(sdurw_core.PropertyType.Int, proptype.getId())
 
 
-        pf = sdurw_math.castToFloat(p)
-        for i in range(6):
-            self.assertAlmostEqual(pf[i],p[i],delta=1e-7)
+    def test_getType(self):
+        map = sdurw_core.PropertyMap()
+        x = sdurw_core.PropertyType.getType(map).getId()
+        print("\n x", x )
+        print("\n MANGLER  AttributeError: type object 'PropertyType' has no attribute 'Types'             DET VIRKER IKKE")
+#        self.assertEqual(sdurw_core.PropertyType.Types.PropertyMap, sdurw_core.PropertyType.getType(map).getId())
 
-    def test_Pose6D_Conversion(self):
-        #Test conversion, if it contains "Swig Object" then it is a failure
-        obj1 = sdurw_math.Pose6D()
-        s = str(obj1)
-        self.assertNotIn("Swig Object", s)
+#        map = sdurw_core.PropertyMap.ptr()
 
-        obj1f = sdurw_math.Pose6Df()
-        s = str(obj1f)
-        self.assertNotIn("Swig Object", s)
+#        std::vector<rw::core::Ptr<rw::core::PropertyValueBase> > list;
+
+        print("\n Mangler Resten")
 
 
 if __name__ == '__main__':

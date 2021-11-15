@@ -74,5 +74,16 @@ class Statistics(unittest.TestCase):
         self.assertAlmostEqual(0.2904023945936753,stats.angularMeanAndVariance()[1], delta = 0.00001)
 
 
+    def test_Statistics_Conversion(self):
+        #Test conversion, if it contains "Swig Object" then it is a failure
+        obj1 = sdurw_math.Statistics()
+        s = str(obj1)
+        self.assertNotIn("Swig Object", s)
+
+        obj1f = sdurw_math.Statistics_f()
+        s = str(obj1f)
+        self.assertNotIn("Swig Object", s)
+
+
 if __name__ == '__main__':
     unittest.main()

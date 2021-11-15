@@ -221,7 +221,14 @@ namespace rw { namespace math {
     extern template class rw::math::Pose2D< double >;
     extern template class rw::math::Pose2D< float >;
 #else
+
+#if SWIG_VERSION < 0x040000
     SWIG_DECLARE_TEMPLATE (Pose2Dd, rw::math::Pose2D< double >);
+    ADD_DEFINITION (Pose2Dd, Pose2D)
+#else
+    SWIG_DECLARE_TEMPLATE (Pose2D, rw::math::Pose2D< double >);
+#endif        
+
     SWIG_DECLARE_TEMPLATE (Pose2Df, rw::math::Pose2D< float >);
 #endif
     using Pose2Dd = Pose2D< double >;

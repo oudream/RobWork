@@ -760,7 +760,14 @@ namespace rw { namespace math {
     extern template class rw::math::Vector3D< double >;
     extern template class rw::math::Vector3D< float >;
 #else
+
+#if SWIG_VERSION < 0x040000
     SWIG_DECLARE_TEMPLATE (Vector3Dd, rw::math::Vector3D< double >);
+    ADD_DEFINITION (Vector3Dd, Vector3D)
+#else
+    SWIG_DECLARE_TEMPLATE (Vector3D, rw::math::Vector3D< double >);
+#endif    
+
     SWIG_DECLARE_TEMPLATE (Vector3Df, rw::math::Vector3D< float >);
 #endif
 

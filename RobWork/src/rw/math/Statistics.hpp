@@ -257,6 +257,7 @@ namespace rw { namespace math {
          * @brief Provides reference to the internal data container
          */
         const std::list< T >& data () const { return _data; }
+        
 #if !defined(SWIG)
         /**
          * @brief Statitics to stream

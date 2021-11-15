@@ -207,6 +207,8 @@
     - cd RobWork/unittest
     - python3 -m unittest discover ./math -p '*.py'
     - python3 -m unittest discover ./core -p '*.py'
+    - python3 -m unittest discover ./models -p '*.py'
+    - python3 -m unittest discover ./kinematics -p '*.py'
 
 .linux-install-tests:
   extends: .CI-common-linux

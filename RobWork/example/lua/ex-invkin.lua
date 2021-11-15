@@ -32,7 +32,7 @@ end
 local state = wc:getDefaultState()
 local solver = ClosedFormIKSolverUR(device:cptr(), state)
 
-local Tdesired = Transform3Dd(Vector3Dd(0.2, -0.2, 0.5), EAAd(0, Pi, 0):toRotation3D())
+local Tdesired = Transform3D(Vector3D(0.2, -0.2, 0.5), EAA(0, Pi, 0):toRotation3D())
 local solutions = solver:solve(Tdesired, state)
 
 print("Inverse Kinematics for " .. device:getName() .. ".")

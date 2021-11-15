@@ -30,8 +30,8 @@ def qc10_func():
 class Rotation3DTest(unittest.TestCase):
 
     def test_MetricTest(self):
-        v21 = sdurw_math.Vector2Dd(0.1, 0.2)
-        v31 = sdurw_math.Vector3Dd(0.1, 0.2, 0.3)
+        v21 = sdurw_math.Vector2D(0.1, 0.2)
+        v31 = sdurw_math.Vector3D(0.1, 0.2, 0.3)
         q1 = sdurw_math.Q(3, 0.1, 0.2, 0.3)
         q2 = sdurw_math.Q(3, 0.1, 0.2, 0.3)
 
@@ -47,8 +47,8 @@ class Rotation3DTest(unittest.TestCase):
         self.assertAlmostEqual(0, mh3.distance(q1,q1), delta = 0.00001)
 
 
-        mh1 = sdurw_math.WeightedManhattenMetricVector2D(sdurw_math.Vector2Dd(1.0,1.0))
-        mh2 = sdurw_math.WeightedManhattenMetricVector3D(sdurw_math.Vector3Dd(1.0,1.0,1.0))
+        mh1 = sdurw_math.WeightedManhattenMetricVector2D(sdurw_math.Vector2D(1.0,1.0))
+        mh2 = sdurw_math.WeightedManhattenMetricVector3D(sdurw_math.Vector3D(1.0,1.0,1.0))
         mh3 = sdurw_math.WeightedManhattenMetricQ(sdurw_math.Q(3,1.0,1.0,1.0))
 
         self.assertAlmostEqual(0.1+0.2, mh1.distance(v21), delta = 0.00001)
@@ -73,8 +73,8 @@ class Rotation3DTest(unittest.TestCase):
         self.assertAlmostEqual(0, mh3.distance(q1,q1), delta = 0.00001)
 
 
-        mh1 = sdurw_math.WeightedEuclideanMetricVector2D(sdurw_math.Vector2Dd(1.0,1.0))
-        mh2 = sdurw_math.WeightedEuclideanMetricVector3D(sdurw_math.Vector3Dd(1.0,1.0,1.0))
+        mh1 = sdurw_math.WeightedEuclideanMetricVector2D(sdurw_math.Vector2D(1.0,1.0))
+        mh2 = sdurw_math.WeightedEuclideanMetricVector3D(sdurw_math.Vector3D(1.0,1.0,1.0))
         mh3 = sdurw_math.WeightedEuclideanMetricQ(sdurw_math.Q(3,1.0,1.0,1.0))
 
         self.assertAlmostEqual(math.sqrt(0.1*0.1+0.2*0.2), mh1.distance(v21), delta = 0.00001)
@@ -101,8 +101,8 @@ class Rotation3DTest(unittest.TestCase):
     def test_Rotation2DTest(self):
         # String operations has been left out intentionally
 
-        r1 = sdurw_math.Rotation2Dd().identity()
-        v1 = sdurw_math.Vector2Dd(1,2)
+        r1 = sdurw_math.Rotation2D().identity()
+        v1 = sdurw_math.Vector2D(1,2)
         self.assertLess((v1 - r1 * v1).normInf(), 0.0000001)
 
         # Giver det mening at teste cast til integer ?
@@ -121,23 +121,23 @@ class Rotation3DTest(unittest.TestCase):
 
 
         # Test comparison operators operator== and operator!= 
-        rotcomp1 = sdurw_math.Rotation2Dd(1.1, -2.2, 3.3, 4.4)
-        rotcomp2 = sdurw_math.Rotation2Dd(1.1, -2.2, 3.3, 4.4)
+        rotcomp1 = sdurw_math.Rotation2D(1.1, -2.2, 3.3, 4.4)
+        rotcomp2 = sdurw_math.Rotation2D(1.1, -2.2, 3.3, 4.4)
         self.assertEqual(rotcomp1, rotcomp2)
         self.assertTrue(not(rotcomp1 != rotcomp2))
 
-        rotcomp3 = sdurw_math.Rotation2Dd(-1.1, 2.2, 3.3, 4.4)
+        rotcomp3 = sdurw_math.Rotation2D(-1.1, 2.2, 3.3, 4.4)
         self.assertNotEqual(rotcomp1 , rotcomp3)
         self.assertTrue(not(rotcomp1 == rotcomp3))
 
     def test_Rotation3DTest(self):
         # String operations has been left out intentionally
 
-        r1 = sdurw_math.Rotation3Dd().identity()
-        v1 = sdurw_math.Vector3Dd(1,2,3)
+        r1 = sdurw_math.Rotation3D().identity()
+        v1 = sdurw_math.Vector3D(1,2,3)
         self.assertEqual((v1 - r1 * v1).normInf(), 0)
 
-        eaa = sdurw_math.EAAd(sdurw_math.Vector3Dd(1.0, 0.0, 0.0),  math.pi / 2.0)
+        eaa = sdurw_math.EAA(sdurw_math.Vector3D(1.0, 0.0, 0.0),  math.pi / 2.0)
         r3 = eaa.toRotation3D()
 
         self.assertTrue(sdurw_math.LinearAlgebra.isSO(r3.asNumpy()))
@@ -155,16 +155,16 @@ class Rotation3DTest(unittest.TestCase):
 
 
     # Test comparison operators operator== and operator!=
-        eaacomp1 = sdurw_math.EAAd(math.pi  / 2, 0, 0)
+        eaacomp1 = sdurw_math.EAA(math.pi  / 2, 0, 0)
         rotcomp1 = eaacomp1.toRotation3D()
 
-        eaacomp2 = sdurw_math.EAAd(math.pi  / 2, 0, 0)
+        eaacomp2 = sdurw_math.EAA(math.pi  / 2, 0, 0)
         rotcomp2 = eaacomp2.toRotation3D()
 
         self.assertEqual(rotcomp1 , rotcomp2)
         self.assertTrue(not(rotcomp1 != rotcomp2))
 
-        eaacomp3 = sdurw_math.EAAd(math.pi  / 4, 0, 0)
+        eaacomp3 = sdurw_math.EAA(math.pi  / 4, 0, 0)
         rotcomp3 = eaacomp3.toRotation3D()
         self.assertNotEqual(rotcomp1 , rotcomp3)
         self.assertTrue(not(rotcomp1 == rotcomp3))
@@ -208,6 +208,16 @@ class Rotation3DTest(unittest.TestCase):
 
         # Test exception when creating Q with 11 arguments.
         with self.assertRaises(Exception): qc10_func()
+
+    def test_Rotation3D_Conversion(self):
+        #Test conversion, if it contains "Swig Object" then it is a failure
+        obj1 = sdurw_math.Rotation3D()
+        s = str(obj1)
+        self.assertNotIn("Swig Object", s)
+
+        obj1f = sdurw_math.Rotation3Df()
+        s = str(obj1f)
+        self.assertNotIn("Swig Object", s)
 
 
 if __name__ == '__main__':
