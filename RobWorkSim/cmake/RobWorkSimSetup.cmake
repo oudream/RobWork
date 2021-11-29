@@ -55,22 +55,10 @@ endif()
 #
 # Use numpy for swing bindings if available
 #
-if(SWIG_FOUND)
-    execute_process(
-        COMMAND ${PYTHON_EXECUTABLE} -c
-                "try: \n\timport numpy; print(\"ON\");\nexcept ImportError:\n\tprint(\"OFF\");"
-        OUTPUT_VARIABLE RWSIM_USE_NUMPY
-        OUTPUT_STRIP_TRAILING_WHITESPACE
-    )
+if(RW_BUILD_WITH_SWIG)
+    set(RWSIM_USE_NUMPY ${RW_BUILD_WITH_NUMPY})
     if(RWSIM_USE_NUMPY)
-        message(STATUS "RobWork is compiled with Numpy")
-        execute_process(
-            COMMAND ${PYTHON_EXECUTABLE} -c "import numpy; print(numpy.__file__);"
-            OUTPUT_VARIABLE NUMPY_INCLUDE_DIR
-            OUTPUT_STRIP_TRAILING_WHITESPACE
-        )
-        get_filename_component(NUMPY_INCLUDE_DIR "${NUMPY_INCLUDE_DIR}" DIRECTORY)
-        set(NUMPY_INCLUDE_DIR "${NUMPY_INCLUDE_DIR}/core/include")
+        set(NUMPY_INCLUDE_DIR ${RW_BUILD_WITH_NUMPY_INCLUDE_DIR})
         message(STATUS "numpy found at: ${NUMPY_INCLUDE_DIR}")
     else()
         message(STATUS "RobWork can't find Numpy.")

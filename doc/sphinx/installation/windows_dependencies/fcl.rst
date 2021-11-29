@@ -3,7 +3,7 @@ fcl
 
 Fcl can be compiled and installed with the following script
 
-::
+.. code-block:: none
     set Install_DIR=C:\Local
     git clone https://github.com/flexible-collision-library/fcl.git
     cd fcl

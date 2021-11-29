@@ -52,7 +52,7 @@ public:
 	 */
     template<class T>
     inline void writeImpl(T& object, const std::string& id,
-    		typename boost::enable_if_c<std::is_base_of<Serializable, T>::value, T>::type* def=NULL)
+    		typename std::enable_if<std::is_base_of<Serializable, T>::value, T>::type* def=NULL)
     {
     	object.write(_oa, id);
     }
@@ -63,40 +63,15 @@ public:
      */
     template<typename T>
     inline void writeImpl(T& object, const std::string& id,
-    		typename boost::disable_if_c<std::is_base_of<Serializable, T>::value, T>::type* def=NULL,
-    		typename boost::disable_if_c<boost::is_pointer<T>::value, T>::type* defptr=NULL)
+    		typename std::enable_if<!std::is_base_of<Serializable, T>::value, T>::type* def=NULL,
+    		typename std::enable_if<!std::is_pointer<T>::value, T>::type* defptr=NULL)
     {
-    	//BOOST_MPL_ASSERT_MSG(boost::is_reference<T>::value, "type T cannot be of type reference!" , (T) );
-
-		//if( boost::is_floating_point<T>::value || boost::is_integral<T>::value){
-		//	T* val = new T;
-		//	write(*val, id);
-		//}
-
 		// try and use overloaded method
 		serialization::write(object, _oa, id);
     	//serialization::write(sd, _oa, id);
     }
 
 };
-
-
-
-/*
-namespace rw{ namespace common {
-    class OutputArchive; class InputArchive;
-namespace serialization {
-	template<>
-	void write(const rw::math::Vector2D<double>& tmp, rw::common::OutputArchive& oar, const std::string& id){}
-	template<>
-	void write(const rw::math::Vector2D<float>& tmp, rw::common::OutputArchive& oar, const std::string& id){}
-	template<>
-	void read(rw::math::Vector2D<double>& tmp, rw::common::InputArchive& iar, const std::string& id){}
-	template<>
-	void read(rw::math::Vector2D<float>& tmp, rw::common::InputArchive& iar, const std::string& id){}
-}}} // end namespaces
-*/
-
 
 struct SerializationData: public rw::common::Serializable {
 	SerializationData(){
@@ -183,7 +158,7 @@ struct SerializationData: public rw::common::Serializable {
 	double data3;
 	uint32_t data4;
 	uint16_t data5;
-	boost::int8_t data6;
+	int8_t data6;
 
 	rw::math::Vector3D<double> data7;
 	rw::math::Vector2D<double> data8;

@@ -40,6 +40,7 @@ if(build)
         DOMCoreBasisTypes.cpp
         DOMPropertyMapFormat.cpp
         BoostXMLParser.cpp
+        os.cpp
     )
 
     set(FILES_HPP

@@ -401,6 +401,15 @@ namespace rw { namespace math {
             return v * s;
         }
 #endif
+
+        /**
+         * @brief Scalar Devision.
+         */
+        inline const Quaternion< T > operator/ (T s) const
+        {
+            return Quaternion< T > (_q.x () / s, _q.y () / s, _q.z () / s, _q.w () / s);
+        }
+
         /**
          * @brief element whise division
          * @param lhs [in] the scalar to devide with

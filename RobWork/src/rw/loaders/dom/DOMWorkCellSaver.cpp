@@ -203,15 +203,7 @@ std::string scopedName (rw::core::Ptr< Frame > sframe, rw::core::Ptr< Frame > fr
     }
     return frame->getName ();
 }
-/*
-    std::string scopedName(DummyWorkcell &dwc, Frame *frame){
-        if(isFrameInDevice(frame)){
-            return scopedName(frameToDevice[frame], frame);
-        }
 
-        return frame->getName();
-    }
-*/
 std::string getDeviceType (Device& dev)
 {
     if (dynamic_cast< SerialDevice* > (&dev)) {

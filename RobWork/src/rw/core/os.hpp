@@ -79,53 +79,7 @@ class OS
      * strings as argument {RobWork, RobWorkSim, RobWorkHardware and RobWorkStudio}
      * @return return "" if location not found
      */
-    static std::string InstallPluginLocation (std::string pack = "RobWork")
-    {
-#if defined(RW_WIN)
-        HKEY hKey          = 0;
-        char buf[1024]     = {0};
-        DWORD dwType       = 0;
-        DWORD dwBufSize    = sizeof (buf);
-        std::string subkey = "Software\\Kitware\\CMake\\Packages\\" + pack;
-        if (RegOpenKey (HKEY_CURRENT_USER, subkey.c_str (), &hKey) == ERROR_SUCCESS) {
-            dwType = REG_SZ;
-            if (RegQueryValueEx (hKey, "Location", 0, &dwType, (BYTE*) buf, &dwBufSize) ==
-                ERROR_SUCCESS) {
-                return std::string (buf) + "\\lib\\RobWork\\rwplugins";
-            }
-            RegCloseKey (hKey);
-        }
-        return std::string ();
-#else
-        if (boost::filesystem::exists ("/usr/lib/")) {    // Add default plugin location
-
-            boost::filesystem::path p ("/usr/lib");
-            std::string rwpluginFolder = "";
-
-            // Find the architecture dependendt folder containing the rwplugins folder
-            // Search all files and folders
-            for (boost::filesystem::directory_iterator i (p);
-                 i != boost::filesystem::directory_iterator ();
-                 i++) {
-                // If is directory
-                if (boost::filesystem::is_directory (i->path ())) {
-                    rwpluginFolder = "/usr/lib/";
-                    rwpluginFolder += i->path ().filename ().string ();
-                    rwpluginFolder += "/RobWork/rwplugins";
-                    if (boost::filesystem::exists (rwpluginFolder)) {
-                        break;
-                    }
-                    else {
-                        rwpluginFolder = "";
-                    }
-                }
-            }
-            return rwpluginFolder;
-        }
-        return "";
-
-#endif
-    }
+    static std::string InstallPluginLocation (std::string pack = "RobWork");
 };
 
 #endif /*RW_COMMOM_OS_HPP*/

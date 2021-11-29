@@ -102,15 +102,15 @@ namespace rw { namespace common {
             else
                 doWrite ((int) 0, id);
         }
-        void doWrite (boost::int8_t val, const std::string& id);
-        void doWrite (boost::uint8_t val, const std::string& id);
+        void doWrite (int8_t val, const std::string& id);
+        void doWrite (uint8_t val, const std::string& id);
 
-        void doWrite (boost::int16_t val, const std::string& id) { writeValue (val, id); };
-        void doWrite (boost::uint16_t val, const std::string& id) { writeValue (val, id); };
-        void doWrite (boost::int32_t val, const std::string& id) { writeValue (val, id); };
-        void doWrite (boost::uint32_t val, const std::string& id) { writeValue (val, id); };
-        void doWrite (boost::int64_t val, const std::string& id) { writeValue (val, id); };
-        void doWrite (boost::uint64_t val, const std::string& id) { writeValue (val, id); };
+        void doWrite (int16_t val, const std::string& id) { writeValue (val, id); };
+        void doWrite (uint16_t val, const std::string& id) { writeValue (val, id); };
+        void doWrite (int32_t val, const std::string& id) { writeValue (val, id); };
+        void doWrite (uint32_t val, const std::string& id) { writeValue (val, id); };
+        void doWrite (int64_t val, const std::string& id) { writeValue (val, id); };
+        void doWrite (uint64_t val, const std::string& id) { writeValue (val, id); };
         void doWrite (float val, const std::string& id) { writeValue (val, id); };
         void doWrite (double val, const std::string& id) { writeValue (val, id); };
         void doWrite (const std::string& val, const std::string& id) { writeValue (val, id); };
@@ -119,35 +119,35 @@ namespace rw { namespace common {
         {
             writeValue (val, id);
         };
-        void doWrite (const std::vector< boost::int8_t >& val, const std::string& id)
+        void doWrite (const std::vector< int8_t >& val, const std::string& id)
         {
             writeValue (val, id);
         };
-        void doWrite (const std::vector< boost::uint8_t >& val, const std::string& id)
+        void doWrite (const std::vector< uint8_t >& val, const std::string& id)
         {
             writeValue (val, id);
         };
-        void doWrite (const std::vector< boost::int16_t >& val, const std::string& id)
+        void doWrite (const std::vector< int16_t >& val, const std::string& id)
         {
             writeValue (val, id);
         };
-        void doWrite (const std::vector< boost::uint16_t >& val, const std::string& id)
+        void doWrite (const std::vector< uint16_t >& val, const std::string& id)
         {
             writeValue (val, id);
         };
-        void doWrite (const std::vector< boost::int32_t >& val, const std::string& id)
+        void doWrite (const std::vector< int32_t >& val, const std::string& id)
         {
             writeValue (val, id);
         };
-        void doWrite (const std::vector< boost::uint32_t >& val, const std::string& id)
+        void doWrite (const std::vector< uint32_t >& val, const std::string& id)
         {
             writeValue (val, id);
         };
-        void doWrite (const std::vector< boost::int64_t >& val, const std::string& id)
+        void doWrite (const std::vector< int64_t >& val, const std::string& id)
         {
             writeValue (val, id);
         };
-        void doWrite (const std::vector< boost::uint64_t >& val, const std::string& id)
+        void doWrite (const std::vector< uint64_t >& val, const std::string& id)
         {
             writeValue (val, id);
         };
@@ -265,31 +265,31 @@ namespace rw { namespace common {
         }
 
         virtual void doRead (bool& val, const std::string& id);
-        virtual void doRead (boost::int8_t& val, const std::string& id);
-        virtual void doRead (boost::uint8_t& val, const std::string& id);
-        virtual void doRead (boost::int16_t& val, const std::string& id)
+        virtual void doRead (int8_t& val, const std::string& id);
+        virtual void doRead (uint8_t& val, const std::string& id);
+        virtual void doRead (int16_t& val, const std::string& id)
         {
-            readValue< boost::int16_t > (val, id);
+            readValue< int16_t > (val, id);
         }
-        virtual void doRead (boost::uint16_t& val, const std::string& id)
+        virtual void doRead (uint16_t& val, const std::string& id)
         {
-            readValue< boost::uint16_t > (val, id);
+            readValue< uint16_t > (val, id);
         }
-        virtual void doRead (boost::int32_t& val, const std::string& id)
+        virtual void doRead (int32_t& val, const std::string& id)
         {
-            readValue< boost::int32_t > (val, id);
+            readValue< int32_t > (val, id);
         }
-        virtual void doRead (boost::uint32_t& val, const std::string& id)
+        virtual void doRead (uint32_t& val, const std::string& id)
         {
-            readValue< boost::uint32_t > (val, id);
+            readValue< uint32_t > (val, id);
         }
-        virtual void doRead (boost::int64_t& val, const std::string& id)
+        virtual void doRead (int64_t& val, const std::string& id)
         {
-            readValue< boost::int64_t > (val, id);
+            readValue< int64_t > (val, id);
         }
-        virtual void doRead (boost::uint64_t& val, const std::string& id)
+        virtual void doRead (uint64_t& val, const std::string& id)
         {
-            readValue< boost::uint64_t > (val, id);
+            readValue< uint64_t > (val, id);
         }
         virtual void doRead (float& val, const std::string& id) { readValue< float > (val, id); }
         virtual void doRead (double& val, const std::string& id) { readValue< double > (val, id); }
@@ -299,35 +299,35 @@ namespace rw { namespace common {
         {
             readValue (val, id);
         }
-        virtual void doRead (std::vector< boost::int8_t >& val, const std::string& id)
+        virtual void doRead (std::vector< int8_t >& val, const std::string& id)
         {
             readValue (val, id);
         }
-        virtual void doRead (std::vector< boost::uint8_t >& val, const std::string& id)
+        virtual void doRead (std::vector< uint8_t >& val, const std::string& id)
         {
             readValue (val, id);
         }
-        virtual void doRead (std::vector< boost::int16_t >& val, const std::string& id)
+        virtual void doRead (std::vector< int16_t >& val, const std::string& id)
         {
             readValue (val, id);
         }
-        virtual void doRead (std::vector< boost::uint16_t >& val, const std::string& id)
+        virtual void doRead (std::vector< uint16_t >& val, const std::string& id)
         {
             readValue (val, id);
         }
-        virtual void doRead (std::vector< boost::int32_t >& val, const std::string& id)
+        virtual void doRead (std::vector< int32_t >& val, const std::string& id)
         {
             readValue (val, id);
         }
-        virtual void doRead (std::vector< boost::uint32_t >& val, const std::string& id)
+        virtual void doRead (std::vector< uint32_t >& val, const std::string& id)
         {
             readValue (val, id);
         }
-        virtual void doRead (std::vector< boost::int64_t >& val, const std::string& id)
+        virtual void doRead (std::vector< int64_t >& val, const std::string& id)
         {
             readValue (val, id);
         }
-        virtual void doRead (std::vector< boost::uint64_t >& val, const std::string& id)
+        virtual void doRead (std::vector< uint64_t >& val, const std::string& id)
         {
             readValue (val, id);
         }

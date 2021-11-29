@@ -3,7 +3,7 @@ Eigen3
 
 Eigen can be installed on windows by running the following script.
 
-::
+.. code-block:: none
     set Install_DIR=C:\Local
     git clone https://gitlab.com/libeigen/eigen.git
     cd eigen

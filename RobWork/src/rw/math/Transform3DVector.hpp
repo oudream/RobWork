@@ -48,6 +48,7 @@ namespace rw { namespace math {
       public:
         typedef Eigen::Matrix< T, 7, 1 > type;
         typedef rw::core::Ptr< Transform3DVector< T > > Ptr;
+        typedef T value_type;
 
         /**
          * @brief default constructor

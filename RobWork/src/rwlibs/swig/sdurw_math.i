@@ -116,6 +116,8 @@ FRIEND_OPERATOR(rw::math::Rotation3D<float>,rw::math::InertiaMatrix<float>,*);
 %include <rw/math/LinearAlgebra.hpp>
 %template(eigenDecompositionSymmetric) rw::math::LinearAlgebra::eigenDecompositionSymmetric<double>;
 %template(eigenDecomposition) rw::math::LinearAlgebra::eigenDecomposition<double>;
+%template(pairEigenMatrixXComplex_d_EigenVectorXComplex_d) std::pair<rw::math::LinearAlgebra::EigenMatrix<std::complex<double>>::type,rw::math::LinearAlgebra::EigenVector<std::complex<double>>::type>;
+%template(pairEigenMatrixX_d_EigenVectorX_d) std::pair<rw::math::LinearAlgebra::EigenMatrix<double>::type,rw::math::LinearAlgebra::EigenVector<double>::type>;
 
 %extend rw::math::LinearAlgebra {
     static bool isSO(Eigen::Matrix<double,3,3> var){

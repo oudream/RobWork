@@ -511,7 +511,7 @@ namespace rwlibs { namespace algorithms {
         // copy the KDNodes into the tree nodes
         for (unsigned int i = 0; i < tNodes->size (); i++) {
             (*tNodes)[i]          = new TreeNode ();
-            (*tNodes)[i]->_kdnode = new KDTreeQ< T >::KDNode (nodes[i]);
+            (*tNodes)[i]->_kdnode = new typename KDTreeQ< T >::KDNode (nodes[i]);
         }
 
         // create a simple median balanced tree

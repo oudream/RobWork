@@ -129,6 +129,7 @@ if(build)
         PUBLIC RWS::qtpropertybrowser
                ${PYTHON_LIBRARIES}
                ${QT_LIBRARIES}
+               ${QTGL_LIBRARIES}
                ${SUBSYS_DEPS}
         PUBLIC ${OPENGL_LIBRARIES}
         PRIVATE ${GLUT_glut_LIBRARY} ${PYTHON_LIBRARIES}

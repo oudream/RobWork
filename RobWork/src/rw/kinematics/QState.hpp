@@ -177,16 +177,16 @@ namespace rw { namespace kinematics {
          * @brief returns the StateSetup
          */
         rw::core::Ptr< rw::kinematics::StateSetup > getStateSetup () const { return _setup; }
- #if !defined(SWIGPYTHON)
-        /*
+        
+        /**
          * @brief Assignment operator.
          * @param rhs [in] the other QState to assign to this.
          * @return a reference to this QState.
          */
         QState& operator= (const QState& rhs);
-#endif
+
         /**
-           @brief The dimension of the state vector.
+         * @brief The dimension of the state vector.
          */
         size_t size () const { return _contents.size (); }
 
