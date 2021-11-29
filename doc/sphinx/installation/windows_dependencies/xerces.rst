@@ -63,7 +63,7 @@ Old installation procedure (Xerces 3.1.4 and earlier):
 Compile Xerces
 --------------
 
-::
+.. code-block:: none
     set Install_DIR=C:\Local
     svn checkout https://svn.apache.org/repos/asf/xerces/c/tags/Xerces-C_3_2_2/
     cd Xerces-C_3_2_2

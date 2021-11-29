@@ -84,6 +84,8 @@
 #define NAME_V2D(x) x ## Vector2D
 #define NAME_R3D(x) x ## Rotation3D
 #define NAME_T3D(x) x ## Transform3D
+#define NAME_T3DV(x) x ## Transform3DVector
+#define NAME_QUAT(x) x ## Quaternion
 
 %define ADD_TRAJECTORY_STANDARD_TEMPLATE(name,template_type)
 	
@@ -106,6 +108,12 @@
 	NAMED_OWNEDPTR(NAME_R3D(name),template_type<rw::math::Rotation3D<double> > );
 	NAMED_OWNEDPTR(NAME_T3D(name),template_type<rw::math::Transform3D<double> > );
 	NAMED_OWNEDPTR(NAME_Q(name),template_type< rw::math::Q > );
+
+	NAMED_OWNEDPTR(NAME_FLOAT(NAME_DOUBLE(name)),template_type<float> );
+	NAMED_OWNEDPTR(NAME_FLOAT(NAME_V2D(name)),template_type<rw::math::Vector2D<float> > );
+	NAMED_OWNEDPTR(NAME_FLOAT(NAME_V3D(name)),template_type<rw::math::Vector3D<float> > );
+	NAMED_OWNEDPTR(NAME_FLOAT(NAME_R3D(name)),template_type<rw::math::Rotation3D<float> > );
+	NAMED_OWNEDPTR(NAME_FLOAT(NAME_T3D(name)),template_type<rw::math::Transform3D<float> > );
 
 	ADD_DEFINITION(NAME_DOUBLE(name),NAME_R1(name),sdurw_trejectory);
 	ADD_DEFINITION(NAME_V2D(name),NAME_R2(name),sdurw_trejectory);
@@ -134,6 +142,12 @@ ADD_TRAJECTORY_STANDARD_TEMPLATE(Interpolator,rw::trajectory::Interpolator);
 %include <rw/trajectory/Trajectory.hpp>
 ADD_TRAJECTORY_STANDARD_TEMPLATE(Trajectory,rw::trajectory::Trajectory);
 
+
+%template(NAME_FLOAT(NAME_T3DV(Trajectory))) rw::trajectory::Trajectory<rw::math::Transform3DVector<float>>;
+%template(NAME_T3DV(Trajectory)) rw::trajectory::Trajectory<rw::math::Transform3DVector<double>>;
+%template(NAME_QUAT(Trajectory)) rw::trajectory::Trajectory<rw::math::Quaternion<double>>;
+%template(NAME_FLOAT(NAME_QUAT(Trajectory))) rw::trajectory::Trajectory<rw::math::Quaternion<float>>;
+
 %template (TrajectoryState) rw::trajectory::Trajectory<rw::kinematics::State>;
 %template (TrajectoryStatePtr) rw::core::Ptr<rw::trajectory::Trajectory<rw::kinematics::State> >;
 OWNEDPTR(rw::trajectory::Trajectory<rw::kinematics::State> );
@@ -144,6 +158,33 @@ OWNEDPTR(rw::trajectory::Trajectory<rw::kinematics::State> );
 %include <rw/trajectory/InterpolatorTrajectory.hpp>
 ADD_TRAJECTORY_STANDARD_TEMPLATE(InterpolatorTrajectory,rw::trajectory::InterpolatorTrajectory);
 
+%template(NAME_FLOAT(NAME_T3DV(InterpolatorTrajectory))) rw::trajectory::InterpolatorTrajectory<rw::math::Transform3DVector<float>>;
+%template(NAME_T3DV(InterpolatorTrajectory)) rw::trajectory::InterpolatorTrajectory<rw::math::Transform3DVector<double>>;
+%template(NAME_QUAT(InterpolatorTrajectory)) rw::trajectory::InterpolatorTrajectory<rw::math::Quaternion<double>>;
+%template(NAME_FLOAT(NAME_QUAT(InterpolatorTrajectory))) rw::trajectory::InterpolatorTrajectory<rw::math::Quaternion<float>>;
+
+
+NAMED_OWNEDPTR(NAME_FLOAT(NAME_T3DV(InterpolatorTrajectory)),rw::trajectory::InterpolatorTrajectory<rw::math::Transform3DVector<float> > );
+NAMED_OWNEDPTR(NAME_T3DV(InterpolatorTrajectory),rw::trajectory::InterpolatorTrajectory<rw::math::Transform3DVector<double> > );
+NAMED_OWNEDPTR(NAME_QUAT(InterpolatorTrajectory), rw::trajectory::InterpolatorTrajectory<rw::math::Quaternion<double>>);
+NAMED_OWNEDPTR(NAME_FLOAT(NAME_QUAT(InterpolatorTrajectory)), rw::trajectory::InterpolatorTrajectory<rw::math::Quaternion<float>>);
+
+%template(NAME_DOUBLE(Segment)) std::pair< rw::core::Ptr< rw::trajectory::Blend< double > >, rw::core::Ptr< rw::trajectory::Interpolator< double > > >;
+%template(NAME_V2D(Segment)) std::pair< rw::core::Ptr< rw::trajectory::Blend< rw::math::Vector2D<double> > >, rw::core::Ptr< rw::trajectory::Interpolator< rw::math::Vector2D<double> > > >;
+%template(NAME_V3D(Segment)) std::pair< rw::core::Ptr< rw::trajectory::Blend< rw::math::Vector3D<double> > >, rw::core::Ptr< rw::trajectory::Interpolator< rw::math::Vector3D<double> > > >;
+%template(NAME_R3D(Segment)) std::pair< rw::core::Ptr< rw::trajectory::Blend< rw::math::Rotation3D<double> > >, rw::core::Ptr< rw::trajectory::Interpolator< rw::math::Rotation3D<double> > > >;
+%template(NAME_T3D(Segment)) std::pair< rw::core::Ptr< rw::trajectory::Blend< rw::math::Transform3D<double> > >, rw::core::Ptr< rw::trajectory::Interpolator< rw::math::Transform3D<double> > > >;
+%template(NAME_T3DV(Segment)) std::pair< rw::core::Ptr< rw::trajectory::Blend< rw::math::Transform3DVector<double> > >, rw::core::Ptr< rw::trajectory::Interpolator< rw::math::Transform3DVector<double> > > >;
+%template(NAME_QUAT(Segment)) std::pair< rw::core::Ptr< rw::trajectory::Blend< rw::math::Quaternion<double> > >, rw::core::Ptr< rw::trajectory::Interpolator< rw::math::Quaternion<double> > > >;
+%template(NAME_Q(Segment)) std::pair< rw::core::Ptr< rw::trajectory::Blend< rw::math::Q > >, rw::core::Ptr< rw::trajectory::Interpolator<  rw::math::Q  > > >;
+
+%template(NAME_FLOAT(Segment)) std::pair< rw::core::Ptr< rw::trajectory::Blend< float > >, rw::core::Ptr< rw::trajectory::Interpolator< float > > >;
+%template(NAME_FLOAT(NAME_V2D(Segment))) std::pair< rw::core::Ptr< rw::trajectory::Blend< rw::math::Vector2D<float> > >, rw::core::Ptr< rw::trajectory::Interpolator<  rw::math::Vector2D<float> > > >;
+%template(NAME_FLOAT(NAME_V3D(Segment))) std::pair< rw::core::Ptr< rw::trajectory::Blend< rw::math::Vector3D<float> > >, rw::core::Ptr< rw::trajectory::Interpolator<  rw::math::Vector3D<float> > > >;
+%template(NAME_FLOAT(NAME_R3D(Segment))) std::pair< rw::core::Ptr< rw::trajectory::Blend< rw::math::Rotation3D<float> > >, rw::core::Ptr< rw::trajectory::Interpolator<  rw::math::Rotation3D<float> > > >;
+%template(NAME_FLOAT(NAME_T3D(Segment)))  std::pair< rw::core::Ptr< rw::trajectory::Blend< rw::math::Transform3D<float> > >, rw::core::Ptr< rw::trajectory::Interpolator<  rw::math::Transform3D<float> > > >;
+%template(NAME_FLOAT(NAME_T3DV(Segment)))  std::pair< rw::core::Ptr< rw::trajectory::Blend< rw::math::Transform3DVector<float> > >, rw::core::Ptr< rw::trajectory::Interpolator<  rw::math::Transform3DVector<float> > > >;
+%template(NAME_FLOAT(NAME_QUAT(Segment)))  std::pair< rw::core::Ptr< rw::trajectory::Blend< rw::math::Quaternion<float> > >, rw::core::Ptr< rw::trajectory::Interpolator<  rw::math::Quaternion<float> > > >;
 
 %{
     #include <rw/trajectory/LinearInterpolator.hpp>
@@ -255,6 +296,12 @@ ADD_TRAJECTORY_STANDARD_TEMPLATE(Timed,rw::trajectory::Timed);
 %template(SWIGTYPE_internal_Rotation3D) std::vector<rw::math::Rotation3D<double>>;
 %template(SWIGTYPE_internal_Transform3D) std::vector<rw::math::Transform3D<double>>;
 %template(SWIGTYPE_internal_Q) std::vector<rw::math::Q>;
+
+%template(SWIGTYPE_internal_Vector_f) std::vector<float>;
+%template(SWIGTYPE_internal_Vector2D_f) std::vector<rw::math::Vector2D<float>>;
+%template(SWIGTYPE_internal_Vector3D_f) std::vector<rw::math::Vector3D<float>>;
+%template(SWIGTYPE_internal_Rotation3D_f) std::vector<rw::math::Rotation3D<float>>;
+%template(SWIGTYPE_internal_Transform3D_f) std::vector<rw::math::Transform3D<float>>;
 #endif
 
 %{

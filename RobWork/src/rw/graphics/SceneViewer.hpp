@@ -201,7 +201,7 @@ namespace rw { namespace graphics {
          */
         // virtual SceneCamera::Ptr getCurrentCamera() = 0;
         // virtual void setCurrentCamera(const std::string& name) = 0;
-
+#if !defined(SWIG)
         /**
          * @brief Defines a listener for position change events
          *
@@ -225,7 +225,7 @@ namespace rw { namespace graphics {
          * @return REference to the PositionSelectedEvent
          */
         PositionSelectedEvent& positionSelectedEvent () { return _positionSelectedEvent; }
-
+#endif
         // ----------------- ABSTRACT view manipulation Functions, use getViewCamera()
         /**
          * @brief set the orientation of the view. The view will look in the

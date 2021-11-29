@@ -8,22 +8,24 @@ set(SUBSYS_DEPS
 )
 
 if(RWS_USE_STATIC_LINK_PLUGINS)
+    message(STATUS "USE STATIC PLUGINS")
     set(SUBSYS_DEPS_TEST
-        RW::sdurws_jog
-        RW::sdurws_log
-        RW::sdurws_planning
-        RW::sdurws_playback
-        RW::sdurws_pythoneditor
-        RW::sdurws_sensors
-        RW::sdurws_treeview
-        RW::sdurws_propertyview
-        RW::sdurws_workcelleditorplugin
+        RWS::sdurws_jog
+        RWS::sdurws_log
+        RWS::sdurws_planning
+        RWS::sdurws_playback
+        RWS::sdurws_pythoneditor
+        RWS::sdurws_sensors
+        RWS::sdurws_treeview
+        RWS::sdurws_propertyview
+        RWS::sdurws_workcelleditorplugin
     )
     if(SWIG_DEFAULT_COMPILE)
         set(SUBSYS_DEPS_TEST ${SUBSYS_DEPS_TEST} sdurws_luaeditor sdurws_luapl)
     endif()
     rw_is_targets(test TARGETS ${SUBSYS_DEPS_TEST} TARGETS_OUT static_plugins)
     list(APPEND SUBSYS_DEPS ${static_plugins})
+    message(STATUS "DEPENDS:  ${static_plugins}")
 endif()
 
 set(build TRUE)
@@ -34,6 +36,7 @@ rw_subsys_option(
 )
 
 if(build)
+    message(STATUS "DEPENDS:  ${SUBSYS_DEPS}")
     # Standard cpp files to compile:
     set(SrcFiles RobWorkStudioApp.cpp)
     set(SRC_FILES_HPP RobWorkStudioApp.hpp)

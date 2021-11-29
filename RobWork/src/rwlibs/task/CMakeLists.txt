@@ -1,8 +1,13 @@
 set(SUBSYS_NAME sdurw_task)
 set(SUBSYS_DESC "Generic Task description")
 set(SUBSYS_DEPS
-    PUBLIC sdurw_core sdurw_math sdurw_sensor
-    PRIVATE sdurw_loaders sdurw_trajectory
+    PUBLIC
+    sdurw_core
+    sdurw_math
+    sdurw_sensor
+    PRIVATE
+    sdurw_loaders
+    sdurw_trajectory
 )
 
 set(DEFAULT TRUE)
@@ -18,8 +23,7 @@ rw_subsys_option(
 
 if(build)
     # The camera file and include path to use.
-    set(
-        SRC_FILES
+    set(SRC_FILES
         ./Action.cpp
         ./Entity.cpp
         ./Motion.cpp
@@ -38,8 +42,7 @@ if(build)
         ./loader/TaskSaver.cpp
     )
 
-    set(
-        SRC_FILES_HPP
+    set(SRC_FILES_HPP
         ./Action.hpp
         ./Entity.hpp
         ./Motion.hpp
@@ -60,15 +63,18 @@ if(build)
 
     if(RW_HAVE_XERCES)
         set(SRC_FILES ${SRC_FILES} ./loader/XMLTaskFormat.cpp ./loader/XMLTaskLoader.cpp
-                      ./loader/XMLTaskSaver.cpp)
+                      ./loader/XMLTaskSaver.cpp
+        )
         set(LOADER_SRC_FILES_HPP ./loader/XMLTaskFormat.hpp ./loader/XMLTaskLoader.hpp
-                                 ./loader/XMLTaskSaver.hpp)
+                                 ./loader/XMLTaskSaver.hpp
+        )
     endif()
 
     rw_add_library(${SUBSYS_NAME} ${SRC_FILES} ${SRC_FILES_HPP} ${LOADER_SRC_FILES_HPP})
     rw_add_includes(${SUBSYS_NAME} "rwlibs/task" ${SRC_FILES_HPP})
     rw_add_include_dirs(${SUBSYS_NAME} "rwlibs/task" loader)
     target_link_libraries(${SUBSYS_NAME} ${SUBSYS_DEPS})
+
     target_include_directories(${SUBSYS_NAME}
         PUBLIC
         ${XERCESC_INCLUDE_DIR}

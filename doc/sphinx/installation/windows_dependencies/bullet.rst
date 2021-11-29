@@ -16,7 +16,7 @@ that are normally unnecessary when used in RobWorkSim. Notice that
 switching off USE\_MSVC\_DISABLE\_RTTI is only required from Bullet 2.87
 and newer. 
 
-::
+.. code-block:: none
     set Install_DIR=C:\Local
     git clone https://github.com/bulletphysics/bullet3
     cd bullet3

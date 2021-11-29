@@ -17,14 +17,14 @@
 
 #ifndef RW_LOADERS_WORKCELLFACTORY_HPP
 #define RW_LOADERS_WORKCELLFACTORY_HPP
-
+#include <rw/core/os.hpp>
 #include <rw/loaders/WorkCellLoader.hpp>
 #ifdef RW_WIN32
 #pragma message( \
     "#include <rw/loaders/WorkCellFactory.hpp> is deprecated use #include <rw/loaders/WorkCellLoader.hpp> instead")
 #else
-#warning "#include <rw/loaders/WorkCellFactory.hpp> is deprecated use #include <rw/loaders/WorkCellLoader.hpp> instead"
+#warning \
+    "#include <rw/loaders/WorkCellFactory.hpp> is deprecated use #include <rw/loaders/WorkCellLoader.hpp> instead"
 #endif
-
 
 #endif    // end include guard

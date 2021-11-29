@@ -13,7 +13,7 @@ https://bitbucket.org/odedevs/ode
 CMake is used by ODE 0.15.2 and newer. It takes 10 minutes to setup and
 compile, and takes up around 85 MB. This is the recommended procedure:
 
-::
+.. code-block:: none
     set Install_DIR=C:\Local
     git clone https://bitbucket.org/odedevs/ode
     cd ode

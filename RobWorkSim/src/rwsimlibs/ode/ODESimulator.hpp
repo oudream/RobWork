@@ -300,15 +300,6 @@ namespace rwsim { namespace simulator {
             return _contactingBodies;
         }
 
-        /**
-         * @brief Returns a vector of all contact points
-         *
-         * @return vector of tuples (name1, name2, contact point)
-         */ /*
-        std::vector<boost::tuple<std::string, std::string, dynamics::ContactPoint> > getContactPoints() const {
-			return _contactPoints;
-		} */
-
         void handleCollisionBetween (dGeomID o0, dGeomID o1);
 
         const std::vector< ODEUtil::TriGeomData* >& getTriMeshs () { return _triGeomDatas; }

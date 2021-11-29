@@ -26,14 +26,6 @@
 
 #include <gtest/gtest.h>
 
-#if !defined(__GNUC__) || BOOST_VERSION >= 106400 || __GNUC__ >= 7 ||                   \
-    (__GNUC__ == 6 && __GNUC_MINOR__ >= 1) || (__GNUC__ == 5 && __GNUC_MINOR__ >= 4) || \
-    (__GNUC__ == 4 && __GNUC_MINOR__ >= 9 && __GNUC_PATCHLEVEL__ >= 4)
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/text_oarchive.hpp>
-#include <sstream>
-#endif
-
 using namespace rw::math;
 using namespace rw::models;
 using namespace rw::kinematics;
@@ -41,38 +33,6 @@ using namespace rw::loaders;
 using namespace rw::trajectory;
 using rw::trajectory::QPath;
 
-TEST (BoostSerialization, Path)
-{
-    QPath path (5);
-
-    for (std::size_t i = 0; i < path.size (); ++i) {
-        std::size_t size = Random::ranI (2, 15);
-        path[i]          = Q (size);
-
-        for (std::size_t k = 0; k < size; ++k) {
-            path[i][k] = Random::ran (-10, 10);
-        }
-    }
-    EXPECT_EQ (std::size_t (5), path.size ());
-
-#if !defined(__GNUC__) || BOOST_VERSION >= 106400 || __GNUC__ >= 7 ||                   \
-    (__GNUC__ == 6 && __GNUC_MINOR__ >= 1) || (__GNUC__ == 5 && __GNUC_MINOR__ >= 4) || \
-    (__GNUC__ == 4 && __GNUC_MINOR__ >= 9 && __GNUC_PATCHLEVEL__ >= 4)
-    std::stringstream stream;
-    boost::archive::text_oarchive oa (stream);
-    oa << path;
-
-    // Use boost to load class data
-    boost::archive::text_iarchive ia (stream);
-    QPath loadedpath;
-    ia >> loadedpath;
-
-    EXPECT_EQ (path.size (), loadedpath.size ());
-    for (std::size_t i = 0; i < std::min (path.size (), loadedpath.size ()); ++i) {
-        EXPECT_EQ (path[i], loadedpath[i]);
-    }
-#endif
-}
 TEST (PathTest, simpleQPath)
 {
     QPath path;

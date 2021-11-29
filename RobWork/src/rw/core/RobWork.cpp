@@ -189,7 +189,7 @@ void RobWork::initialize (const std::vector< std::string >& plugins)
                      buildDir + SLASH + pluginFolder + SLASH + RW_BUILD_TYPE + SLASH);
 
         std::vector< std::string > rws_build_dirs = {
-            "RobWorkStudio", "robworkstudio", "rws", "RWS", "rwstudio", "RWStudio", "RWSTUDIO"};
+            "RobWorkStudio", "robworkstudio", "RWS", "rws", "rwstudio", "RWStudio", "RWSTUDIO"};
         for (std::string& dir : rws_build_dirs) {
             std::string path = buildDir + SLASH + ".." + SLASH + dir + SLASH + pluginFolder +
                                SLASH + RW_BUILD_TYPE + SLASH;

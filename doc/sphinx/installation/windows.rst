@@ -64,7 +64,9 @@ RobWork Required Dependencies
 -----------------------------
 When installing these dependencies, it is recommended to not install them in a "Program Files"
 as these folders are typically locked behind admin privileges. In the following guides the install location
-will be refereed to as %Install_DIR%
+will be refereed to as %Install_DIR%. as RobWork useses a cmake package manager eigen3 and qhull will be download
+and install the first time you run cmake, so unless you need a specific version and know your way around cmake, leave them as is.
+
 
 .. toctree::
    :glob:
@@ -185,8 +187,8 @@ CMake:
 
     cd Build\RW
     cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 15 2017 Win64" ^
-          -DBOOST_ROOT="C:\Boost\boost_1_65_1" ^
-          -DBOOST_LIBRARYDIR="C:\Boost\boost_1_65_1\lib64-msvc-14.1" ^
+          -DBoost_DIR="C:\ome\path\to\boost_1_74_0\lib64-msvc-14.2\cmake\Boost-1.74.0<" ^
+          -DBoost_INCLUDEDIR="C:\ome\path\to\boost_1_74_0
           -DGTEST_ROOT:PATH="C:\some\path\to\GTest\googletest" ^
           -DGTEST_SOURCE:PATH="C:\some\path\to\GTest\googletest" ^
           -DXERCESC_ROOT:PATH="C:\some\path\to\xerces-c-3.2.1\xerces-install" ^

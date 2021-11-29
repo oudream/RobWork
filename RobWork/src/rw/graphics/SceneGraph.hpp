@@ -407,7 +407,7 @@ namespace rw { namespace graphics {
          * @return true if found and successfully removed.
          */
         virtual bool removeChild (const std::string& name, rw::graphics::GroupNode::Ptr node);
-
+#if !defined(SWIG)
         //! @brief Type of a visitor function. Returns true if visit is done.
         typedef boost::function< bool (rw::core::Ptr< rw::graphics::SceneNode >& node,
                                        rw::core::Ptr< rw::graphics::SceneNode >& parent) >
@@ -429,7 +429,7 @@ namespace rw { namespace graphics {
          */
         void traverse (rw::core::Ptr< rw::graphics::SceneNode >& node, NodeVisitor& visitor,
                        NodeVisitor& postvisitor);
-
+#if !defined(SWIGJAVA)
         /**
          * @copydoc traverse(rw::core::Ptr<SceneNode>&, NodeVisitor&)
          * @param filter [in] filter which nodes to visit.
@@ -443,7 +443,8 @@ namespace rw { namespace graphics {
          */
         void traverse (rw::core::Ptr< rw::graphics::SceneNode >& node, NodeVisitor& visitor,
                        NodeVisitor& postvisitor, const NodeFilter& filter);
-
+#endif
+#endif
       protected:
         //! @brief Construct new scene graph with only a root node "Root".
         SceneGraph () : _root (rw::core::ownedPtr (new GroupNode ("Root"))) {}

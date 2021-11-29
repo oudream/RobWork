@@ -230,7 +230,6 @@ if(TARGET sdurw_math)
         math/EAATest.cpp
         math/MetricFactoryTest.cpp
         math/PolynomialTest.cpp
-        math/SerializationTest.cpp
         math/StatisticsTest.cpp
         math/QuaternionTest.cpp
         math/Vector3DTest.cpp

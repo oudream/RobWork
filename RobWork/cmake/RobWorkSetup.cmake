@@ -63,14 +63,30 @@ if(${RW_BUILD_TYPE} STREQUAL "release")
 endif()
 
 # hunter_add_package(Boost COMPONENTS filesystem serialization system thread program_options)
-find_package(
+if((NOT DEFINED Boost_DIR OR NOT DEFINED BOOST_ROOT) AND WIN32)
+    file(GLOB BOOST_ROOT LIST_DIRECTORIES TRUE "C:/local/boost*")
+    if(EXISTS ${BOOST_ROOT})
+        file(GLOB Boost_DIR LIST_DIRECTORIES TRUE "${BOOST_ROOT}/lib64*/cmake/Boost-*")
+        if(NOT EXISTS ${Boost_DIR})
+            unset(Boost_DIR)
+        endif()
+    ELSE()
+        unset(BOOST_ROOT)
+    ENDIF()
+endif()
+
+# Packages needed: Filesystem system thread program_options
+# Package depends: date_time
+# Package removed: serialization
+
+find_package( 
     Boost QUIET
-    COMPONENTS filesystem serialization system thread program_options date_time
+    COMPONENTS filesystem system thread program_options date_time
     CONFIG
-    HINTS "C:\\local"
+    PATHS "C:/local"
 )
 if(NOT Boost_FOUND)
-    find_package(Boost REQUIRED COMPONENTS filesystem serialization system thread program_options date_time)
+    find_package(Boost REQUIRED COMPONENTS filesystem system thread program_options date_time)
 endif()
 if(TARGET Boost::headers)
     set(Boost_LIBRARIES ${Boost_LIBRARIES} Boost::headers)
@@ -431,17 +447,43 @@ endif()
 #
 # Use numpy for swing bindings if available
 #
-if(SWIG_FOUND)
+if(SWIG_FOUND AND PYTHONINTERP_FOUND)
     execute_process(
         COMMAND ${PYTHON_EXECUTABLE} -c
                 "try: \n\timport numpy; print(\"ON\");\nexcept ImportError:\n\tprint(\"OFF\");"
         OUTPUT_VARIABLE RW_USE_NUMPY
         OUTPUT_STRIP_TRAILING_WHITESPACE
     )
+    if(NOT RW_USE_NUMPY)
+        execute_process(
+            COMMAND ${PYTHON_EXECUTABLE} -c
+                    "try: \n\timport pip; print(\"ON\");\nexcept ImportError:\n\tprint(\"OFF\");"
+            OUTPUT_VARIABLE RW_GOT_PIP
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+        )
+        if(NOT RW_GOT_PIP  AND WIN32 )
+            execute_process(
+                COMMAND powershell -Command Invoke-WebRequest -Uri https://bootstrap.pypa.io/get-pip.py -OutFile get-pip.py
+                COMMAND ${PYTHON_EXECUTABLE} get-pip.py
+            )
+        endif()
+        
+        execute_process( 
+             COMMAND ${PYTHON_EXECUTABLE} - m pip install numpy
+        )
+    endif() 
+
+    execute_process(
+        COMMAND ${PYTHON_EXECUTABLE} -c
+                "try: \n\timport numpy; print(\"ON\");\nexcept ImportError:\n\tprint(\"OFF\");"
+        OUTPUT_VARIABLE RW_USE_NUMPY
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+
     if(RW_USE_NUMPY)
         message(STATUS "RobWork is compiled with Numpy")
         execute_process(
-            COMMAND python3 -c "import numpy; print(numpy.__file__);"
+            COMMAND ${PYTHON_EXECUTABLE} -c "import numpy; print(numpy.__file__);"
             OUTPUT_VARIABLE NUMPY_INCLUDE_DIR
             OUTPUT_STRIP_TRAILING_WHITESPACE
         )

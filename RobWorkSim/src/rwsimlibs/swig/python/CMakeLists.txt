@@ -26,11 +26,8 @@ rw_subsys_option(
 if(build)
     include(UseSWIG)
     include_directories(${PYTHON_INCLUDE_DIRS})
-    if(RW_USE_NUMPY)
-        include_directories(${NUMPY_INCLUDE_DIR})
-    endif()
 
-    if(RW_USE_NUMPY)
+    if(RWSIM_USE_NUMPY)
         include_directories(${NUMPY_INCLUDE_DIR})
     endif()
 

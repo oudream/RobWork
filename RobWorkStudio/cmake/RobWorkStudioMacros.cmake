@@ -13,7 +13,8 @@ macro(RWS_ADD_PLUGIN _name _lib_type)
     endif()
 
     add_library(${_name} ${_lib_type} ${PL_UNPARSED_ARGUMENTS})
-    add_dependencies(${_name} sdurws)
+    add_library(${PROJECT_PREFIX}::${_name} ALIAS ${_name})
+
     # Only link if needed
     if(WIN32 AND MSVC)
         set_target_properties(${_name} PROPERTIES LINK_FLAGS_RELEASE /OPT:REF)
