@@ -182,7 +182,7 @@ namespace rw { namespace math {
 
 #if SWIG_VERSION < 0x040000
     SWIG_DECLARE_TEMPLATE (RPYd, rw::math::RPY< double >);
-    ADD_DEFINITION (RPY_d, RPY)
+    ADD_DEFINITION (RPYd, RPY,sdurw_math)
 #else
     SWIG_DECLARE_TEMPLATE (RPY, rw::math::RPY< double >);
 #endif

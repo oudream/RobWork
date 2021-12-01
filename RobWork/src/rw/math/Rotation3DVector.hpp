@@ -80,7 +80,7 @@ namespace rw { namespace math {
 
 #if SWIG_VERSION < 0x040000
     SWIG_DECLARE_TEMPLATE (Rotation3DVectord, rw::math::Rotation3DVector< double >);
-    ADD_DEFINITION (Rotation3DVectord, Rotation3DVector)
+    ADD_DEFINITION (Rotation3DVectord, Rotation3DVector,sdurw_math)
 #else
     SWIG_DECLARE_TEMPLATE (Rotation3DVector, rw::math::Rotation3DVector< double >);
 #endif

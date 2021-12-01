@@ -198,7 +198,7 @@ namespace rw { namespace math {
             static Rotation2D id (1, 0, 0, 1);
             return id;
         }
-        
+
 #if !defined(SWIG)
         /**
          * @brief Returns reference to matrix element
@@ -364,10 +364,10 @@ namespace rw { namespace math {
     extern template class rw::math::Rotation2D< double >;
     extern template class rw::math::Rotation2D< float >;
 #else
-   
+
 #if SWIG_VERSION < 0x040000
     SWIG_DECLARE_TEMPLATE (Rotation2Dd, rw::math::Rotation2D< double >);
-    ADD_DEFINITION (Rotation2Dd, Rotation2D)
+    ADD_DEFINITION (Rotation2Dd, Rotation2D, sdurw_math);
 #else
     SWIG_DECLARE_TEMPLATE (Rotation2D, rw::math::Rotation2D< double >);
 #endif
@@ -376,7 +376,7 @@ namespace rw { namespace math {
 #endif
     using Rotation2Dd = Rotation2D< double >;
     using Rotation2Df = Rotation2D< float >;
-    
+
     /**@}*/
 }}    // namespace rw::math
 

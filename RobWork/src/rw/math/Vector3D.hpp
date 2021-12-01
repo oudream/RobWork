@@ -85,14 +85,12 @@ namespace rw { namespace math {
             _vec[1] = y;
             _vec[2] = z;
         }
-        
+
         /**
          * @brief Copy constructor
          * @param vec [in] vector to copy
          */
-        Vector3D (const Vector3D<T>& copy_vec): _vec(copy_vec._vec)
-        {
-        }
+        Vector3D (const Vector3D< T >& copy_vec) : _vec (copy_vec._vec) {}
 
         /**
          * @brief Creates a 3D vector from vector_expression
@@ -100,9 +98,9 @@ namespace rw { namespace math {
          */
         template< class R > explicit Vector3D (const Eigen::MatrixBase< R >& r)
         {
-            _vec[0] = T( r.row (0) (0));
-            _vec[1] = T( r.row (1) (0));
-            _vec[2] = T( r.row (2) (0));
+            _vec[0] = T (r.row (0) (0));
+            _vec[1] = T (r.row (1) (0));
+            _vec[2] = T (r.row (2) (0));
         }
 
         /**
@@ -317,7 +315,7 @@ namespace rw { namespace math {
          */
         template< class R > Vector3D< T > operator* (const Eigen::MatrixBase< R >& rhs) const
         {
-            return Vector3D< T > (this->e()*rhs);
+            return Vector3D< T > (this->e () * rhs);
         }
 
         /**
@@ -326,9 +324,10 @@ namespace rw { namespace math {
          * @param rhs [in] the Vector to be multiplied
          * @return the product
          */
-        template< class R > friend Vector3D< T > operator* (const Eigen::MatrixBase< R >& lhs, const Vector3D< T >& rhs)
+        template< class R >
+        friend Vector3D< T > operator* (const Eigen::MatrixBase< R >& lhs, const Vector3D< T >& rhs)
         {
-            return Vector3D< T > (lhs*rhs.e());
+            return Vector3D< T > (lhs * rhs.e ());
         }
 
         /**
@@ -763,10 +762,10 @@ namespace rw { namespace math {
 
 #if SWIG_VERSION < 0x040000
     SWIG_DECLARE_TEMPLATE (Vector3Dd, rw::math::Vector3D< double >);
-    ADD_DEFINITION (Vector3Dd, Vector3D)
+    ADD_DEFINITION (Vector3Dd, Vector3D, sdurw_math);
 #else
     SWIG_DECLARE_TEMPLATE (Vector3D, rw::math::Vector3D< double >);
-#endif    
+#endif
 
     SWIG_DECLARE_TEMPLATE (Vector3Df, rw::math::Vector3D< float >);
 #endif

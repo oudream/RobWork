@@ -532,7 +532,7 @@ namespace rw { namespace math {
  
 #if SWIG_VERSION < 0x040000
     SWIG_DECLARE_TEMPLATE (Transform3Dd, rw::math::Transform3D< double >);
-    ADD_DEFINITION (Transform3Dd, Transform3D)
+    ADD_DEFINITION (Transform3Dd, Transform3D,sdurw_math)
 #else
     SWIG_DECLARE_TEMPLATE (Transform3D, rw::math::Transform3D< double >);
 #endif

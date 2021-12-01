@@ -244,7 +244,7 @@ namespace rw { namespace math {
   
 #if SWIG_VERSION < 0x040000
     SWIG_DECLARE_TEMPLATE (PerspectiveTransform2Dd, rw::math::PerspectiveTransform2D< double >);
-    ADD_DEFINITION (PerspectiveTransform2Dd, PerspectiveTransform2D)
+    ADD_DEFINITION (PerspectiveTransform2Dd, PerspectiveTransform2D,sdurw_math)
 #else
     SWIG_DECLARE_TEMPLATE (PerspectiveTransform2D, rw::math::PerspectiveTransform2D< double >);
 #endif
