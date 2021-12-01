@@ -592,7 +592,7 @@ namespace rw { namespace math {
   
 #if SWIG_VERSION < 0x040000
     SWIG_DECLARE_TEMPLATE (Wrench6Dd, rw::math::Wrench6D< double >);
-    ADD_DEFINITION (Wrench6Dd, Wrench6D)
+    ADD_DEFINITION (Wrench6Dd, Wrench6D,sdurw_math)
 #else
     SWIG_DECLARE_TEMPLATE (Wrench6D, rw::math::Wrench6D< double >);
 #endif

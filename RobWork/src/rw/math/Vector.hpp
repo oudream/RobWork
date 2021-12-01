@@ -446,7 +446,7 @@ namespace rw { namespace math {
 
 #if SWIG_VERSION < 0x040000
     SWIG_DECLARE_TEMPLATE (Vectord, rw::math::Vector< double >);
-    ADD_DEFINITION (Vectord, Vector)
+    ADD_DEFINITION (Vectord, Vector,sdurw_math)
 #else
     SWIG_DECLARE_TEMPLATE(Vector, rw::math::Vector< double >);
 #endif

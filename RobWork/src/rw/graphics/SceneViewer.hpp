@@ -195,7 +195,7 @@ namespace rw { namespace graphics {
         // virtual SceneCamera::Ptr addSlaveCamera(const std::string& name) = 0;
         // virtual void removeSlaveCamera(const std::string& name) = 0;
 
-        /**
+        /*
          * @brief the current camera can be either the view camera or one of the slave cameras
          * @return
          */

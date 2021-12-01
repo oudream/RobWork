@@ -860,7 +860,7 @@ extern template class rw::math::EAA< float >;
 
 #if SWIG_VERSION < 0x040000
     SWIG_DECLARE_TEMPLATE (EAAd, rw::math::EAA< double >);
-    ADD_DEFINITION (EAAd, EAA)
+    ADD_DEFINITION (EAAd, EAA,sdurw_math)
 #else
     SWIG_DECLARE_TEMPLATE (EAA, rw::math::EAA< double >);
 #endif

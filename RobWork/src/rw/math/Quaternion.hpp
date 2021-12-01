@@ -561,7 +561,7 @@ namespace rw { namespace math {
         inline bool operator!= (const Quaternion< T >& r) const { return !((*this) == r); }
 
 #if defined(SWIG)
-        TOSTRING ();
+        TOSTRING (rw::math::Quaternion<T>);
 #endif
       private:
         Eigen::Quaternion< T > _q;

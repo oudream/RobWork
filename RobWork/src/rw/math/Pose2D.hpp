@@ -224,7 +224,7 @@ namespace rw { namespace math {
 
 #if SWIG_VERSION < 0x040000
     SWIG_DECLARE_TEMPLATE (Pose2Dd, rw::math::Pose2D< double >);
-    ADD_DEFINITION (Pose2Dd, Pose2D)
+    ADD_DEFINITION (Pose2Dd, Pose2D,sdurw_math)
 #else
     SWIG_DECLARE_TEMPLATE (Pose2D, rw::math::Pose2D< double >);
 #endif        
