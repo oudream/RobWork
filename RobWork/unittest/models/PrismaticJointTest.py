@@ -102,11 +102,8 @@ class PrismaticJointTest(unittest.TestCase):
         print("\n MANGLER   'angle' og 'cross'                          DET VIRKER IKKE")
         #self.assertLess((post.R()).angle() - (expRot).angle(), sys.float_info.epsilon)
         #self.assertLess(cross((post.R()).axis(),(expRot).axis()).normInf(), sys.float_info.epsilon)
-
         expPos = wTp.P() + expRot.getCol(2)*q[0]
         self.assertLess((post.P() - expPos).normInf(), sys.float_info.epsilon)
-
-
 
 if __name__ == '__main__':
     unittest.main()
