@@ -32,7 +32,7 @@
 #include <rw/math/VelocityScrew6D.hpp>
 #include <rw/models/Device.hpp>
 #include <rw/models/Joint.hpp>
-
+#include <rw/core/Ptr.hpp>
 namespace rwsim { namespace dynamics {
 
     class DynamicDevice;
@@ -50,6 +50,8 @@ namespace rwsim { namespace dynamics {
     class Link : public Body
     {
       public:
+      //! @brief Smart pointer type for a Link.
+        typedef rw::core::Ptr< Link > Ptr;
         /**
          * @brief Construct a new link.
          * @param info [in] the dynamic properties of the link.
@@ -65,7 +67,7 @@ namespace rwsim { namespace dynamics {
       public:    // functions that need to be implemented by specialized class
         //! @copydoc Body::getVelocity
         virtual rw::math::VelocityScrew6D<>
-        getVelocity (const rw::kinematics::State& state) const = 0;
+        getVelocity (const rw::kinematics::State& state) const;
 
         //! @copydoc Body::reset
         virtual void reset (rw::kinematics::State& state);

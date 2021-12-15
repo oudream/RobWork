@@ -41,6 +41,9 @@ namespace rwlibs { namespace simulation {
     class SimulatedKinect : public SimulatedSensor
     {
       public:
+
+        typedef rw::core::Ptr<SimulatedKinect> Ptr;
+
         /**
          * @brief constructor
          * @param name [in] name of this simulated scanner

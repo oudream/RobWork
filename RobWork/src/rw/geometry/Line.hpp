@@ -219,10 +219,6 @@ namespace rw { namespace geometry {
             // angle
             double ang = rw::math::angle (a.dir (), b.dir ());
             ang        = ((rw::math::Pi - ang) < ang) ? (rw::math::Pi - ang) : ang;
-
-            // std::cout << "angle= " << ang << std::endl;
-            // std::cout << "dist= " << a.distance(b) << std::endl;
-
             return 0.5 * ang * _angToDistWeight + 0.5 * a.distance (b);
         }
 

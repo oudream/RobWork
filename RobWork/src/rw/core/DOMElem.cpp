@@ -50,6 +50,11 @@ void DOMElem::setValue (double val)
     setValue (boost::lexical_cast< std::string > (val));
 }
 
+void DOMElem::setValue (const char* val)
+{
+    setValue (std::string (val));
+}
+
 void DOMElem::setValueString (std::string val)
 {
     setValue (val);

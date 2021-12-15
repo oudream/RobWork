@@ -96,6 +96,16 @@ namespace rwsim { namespace dynamics {
         const std::vector< std::string >& getObjectTypes () { return _objectNames; }
 
         /**
+         * @brief Get Object Description
+         * @param matId the Object ID
+         * @return a string Description of the Material
+         */
+        std::string getDesctiption (const std::string& matId)
+        {
+            return _idToDesc[getDataID (matId)];
+        }
+
+        /**
          * @brief Get the maximum id.
          * @return the maximum id.
          */

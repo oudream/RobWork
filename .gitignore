@@ -2615,6 +2615,8 @@ RobWorkSim/example/python/serialdev-out.txt
 # RobWorkSim/example/tutorials/
 /RobWorkSim/example/tutorials/build
 
+#/RobWorkSim/gtest/testfiles
+/RobWorkSim/gtest/testfiles/SavedFiles
 # /RobWorkSim/src/
 /RobWorkSim/src/cmake_install.cmake
 /RobWorkSim/src/CMakeCache.txt
@@ -3636,3 +3638,4 @@ RobWorkSim/src/rwsimlibs/swig/python/RobWorkSim-*.egg-info
 /debian/sdurw-doc1.2/DEBIAN/md5sums
 
 /RobWork*/cmake/targets/*.cmake
+

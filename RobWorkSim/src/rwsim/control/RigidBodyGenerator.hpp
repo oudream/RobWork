@@ -1,6 +1,8 @@
 #ifndef RWSIM_CONTROL_RIGIDBODYGENERATOR_HPP_
 #define RWSIM_CONTROL_RIGIDBODYGENERATOR_HPP_
 
+#include <rw/geometry/Geometry.hpp>
+#include <rwlibs/control/Controller.hpp>
 #include <rwlibs/simulation/SimulatedController.hpp>
 
 namespace rwsim { namespace control {
@@ -41,7 +43,7 @@ namespace rwsim { namespace control {
         void reset (const rw::kinematics::State& state);
 
         //! @copydoc rwlibs::simulation::SimulatedController::getControllerName
-        Controller* getController () { return NULL; };
+        rwlibs::control::Controller* getController () { return NULL; };
 
         void setEnabled (bool enabled) { _enabled = enabled; };
 

@@ -231,6 +231,37 @@ namespace rw { namespace math {
         TOSTRING (rw::math::InertiaMatrix< T >);
 #endif
 
+
+        /**
+         * @brief Comparison operator.
+         *
+         * The comparison operator makes a element wise comparison.
+         * Returns true only if all elements are equal.
+         *
+         * @param rhs [in] InertiaMatrix to compare with
+         * @return True if equal.
+         */
+        bool operator== (const InertiaMatrix& rhs) const
+        {
+            for (int i = 0; i < 3; i++)
+                for (int j = 0; j < 3; j++)
+                    if (!(_matrix (i, j) == rhs (i, j)))
+                        return false;
+            return true;
+        }
+
+        /**
+         * @brief Comparison operator.
+         *
+         * The comparison operator makes a element wise comparison.
+         * Returns true if any of the elements are different.
+         *
+         * @param rhs [in] InertiaMatrix to compare with
+         * @return True if not equal.
+         */
+        bool operator!= (const InertiaMatrix& rhs) const { return !(*this == rhs); }
+
+
         /**
          * @brief Make inertia matrix for a solid sphere.
          * @param mass [in] mass of solid sphere.

@@ -84,6 +84,13 @@ namespace rwsim { namespace dynamics {
         const std::vector< std::string >& getMaterials ();
 
         /**
+         * @brief Get Material Description
+         * @param matId the MAterial ID
+         * @return a string Description of the Material
+         */
+        std::string getDescription (const std::string& matId) { return _matToDesc[getDataID(matId)]; }
+
+        /**
          * @brief Get the number of materials.
          * @return the maximum id of a material.
          */

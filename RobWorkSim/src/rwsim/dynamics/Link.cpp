@@ -29,13 +29,13 @@ using namespace rw::kinematics;
 using namespace rwsim::dynamics;
 
 Link::Link (const BodyInfo& info, rw::models::Object::Ptr obj, DynamicDevice* ddev, size_t id) :
-    Body (0, info, obj), _ddev (ddev), _id (id)
+    Body (info, obj), _ddev (ddev), _id (id)
 {}
 
 Link::~Link ()
 {}
 
-rw::math::VelocityScrew6D<> getVelocity (rw::kinematics::State& state)
+rw::math::VelocityScrew6D<> Link::getVelocity (rw::kinematics::State& state) const
 {
     return _ddev->getVelocity (this, state);
 }
