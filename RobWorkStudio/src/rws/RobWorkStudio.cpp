@@ -42,6 +42,7 @@
 #include <QCloseEvent>
 #include <QFileDialog>
 #include <QIcon>
+#include <QInputDialog>
 #include <QMenu>
 #include <QMenuBar>
 #include <QMessageBox>
@@ -52,6 +53,7 @@
 #include <QStringList>
 #include <QToolBar>
 #include <QUrl>
+
 #ifdef RWS_USE_PYTHON
 #include <rws/pythonpluginloader/PyPlugin.hpp>
 #endif    // RWS_USE_PYTHON
@@ -383,16 +385,35 @@ void RobWorkStudio::showPropertyEditor ()
     _propEditor->resize (400, 600);
 }
 
-void RobWorkStudio::setupPluginsMenu ()
+void RobWorkStudio::setupPluginsMenu (bool create)
 {
     QAction* loadPluginAction = new QAction (QIcon (""), tr ("Load plugin"), this);
     connect (loadPluginAction, SIGNAL (triggered ()), this, SLOT (loadPlugin ()));
 
-    _pluginsMenu = menuBar ()->addMenu (tr ("&Plugins"));
+    QAction* removePluginAction = new QAction (QIcon (""), tr ("Unload plugin"), this);
+    connect (removePluginAction, SIGNAL (triggered ()), this, SLOT (unloadPlugin ()));
+
+    if (_pluginsMenu == nullptr) {
+        create = true;
+    }
+
+    if (create) {
+        _pluginsMenu = menuBar ()->addMenu (tr ("&Plugins"));
+    }
+    else {
+        _pluginsMenu->clear ();
+    }
     _pluginsMenu->addAction (loadPluginAction);
+    _pluginsMenu->addAction (removePluginAction);
     _pluginsMenu->addSeparator ();
-    _pluginsToolBar = addToolBar (tr ("Plugins"));
-    _pluginsToolBar->setObjectName ("PluginsBar");
+
+    if (create) {
+        _pluginsToolBar = addToolBar (tr ("Plugins"));
+        _pluginsToolBar->setObjectName ("PluginsBar");
+    }
+    else {
+        _pluginsToolBar->clear ();
+    }
 }
 
 void RobWorkStudio::loadPlugin (std::string pluginFile, bool visible, int dock)
@@ -425,6 +446,51 @@ void RobWorkStudio::loadPlugin ()
 
         setupPlugin (pathname, filename, 0, 1);
     }
+}
+
+void RobWorkStudio::unloadPlugin ()
+{
+    QStringList list;
+    for (RobWorkStudioPlugin* pl : _plugins) {
+        list.append (pl->name ());
+    }
+
+    bool ok;
+    QString text = QInputDialog::getItem (
+        this, tr ("Unload plugin"), tr ("Which Plugin should be removed"), list, 0, false, &ok);
+
+    if (ok) {
+        std::cout << "OK: " << text.toStdString () << std::endl;
+        for (RobWorkStudioPlugin* pl : _plugins) {
+            if (pl->name () == text) {
+                bool test = unloadPlugin (pl);
+                std::cout << "test: " << test << std::endl;
+                break;
+            }
+        }
+    }
+}
+
+bool RobWorkStudio::unloadPlugin (RobWorkStudioPlugin* pl)
+{
+    removeDockWidget (pl);
+    setupPluginsMenu (false);
+    int remove = -1;
+    for (size_t i = 0; i < _plugins.size (); i++) {
+        if (_plugins[i] == pl) {
+            remove = i;
+        }
+        else {
+            _plugins[i]->setupMenu (_pluginsMenu);
+            _plugins[i]->setupToolBar (_pluginsToolBar);
+        }
+    }
+    if (remove < 0){
+        return false;
+    }
+    _plugins.erase (_plugins.begin () + remove);
+    _plugins_loaded[_plugin2fileName[pl->name ().toStdString ()]] = false;
+    return true;
 }
 
 void RobWorkStudio::setupHelpMenu ()
@@ -653,7 +719,7 @@ void RobWorkStudio::setupPlugin (const QString& fullname, bool visible, int dock
                                                                     << "\"");
             }
             RobWorkStudioPlugin* plugin = qobject_cast< RobWorkStudioPlugin* > (pluginObject);
-
+            _plugin2fileName[plugin->name ().toStdString ()] = base;
             if (plugin) {
                 addPlugin (plugin, visible, dockarea);
             }

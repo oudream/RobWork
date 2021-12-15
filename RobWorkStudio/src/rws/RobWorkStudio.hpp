@@ -605,12 +605,21 @@ class RobWorkStudio : public QMainWindow
     void loadSettingsSetupPlugins (const std::string& file);
 
     /**
-     *  @breif Load a plugin file
+     *  @brief Load a plugin file
      *  @param pluginFile [in] The absolute path to the shared library file contaning the object
      * 	@param visible [in] Sets wether the plugin is UI is opened upon load
-     *  @patam dock [in] The area where the uis will be placed
+     *  @param dock [in] The area where the uis will be placed
      */
     void loadPlugin (std::string pluginFile, bool visible = false, int dock = 1);
+
+    /**
+     * @brief Unload the plugin from RobWorkStudio 
+     * @param pl [in] the plugin to be unloaded
+     * @return true if succesfull
+     * @return false if an error was encountered while unloading
+     */
+    bool unloadPlugin(RobWorkStudioPlugin* pl);
+
 
     /**
      * @brief Load Workcell into RobWork Studio based on settings file
@@ -668,6 +677,8 @@ class RobWorkStudio : public QMainWindow
     void printCollisions ();
     void loadPlugin ();
 
+    void unloadPlugin();
+
   protected:
     //! Close Event inherited from QT
     void closeEvent (QCloseEvent* e);
@@ -678,7 +689,12 @@ class RobWorkStudio : public QMainWindow
     void setupFileActions ();
     void setupToolActions ();
     void setupViewGL ();
-    void setupPluginsMenu ();
+
+    /**
+     * @brief create a new menu bar or reset the existing one
+     * @param create [in] if true create new
+     */
+    void setupPluginsMenu (bool create = true);
     void setupHelpMenu ();
 
     void createPlugins ();
@@ -717,6 +733,7 @@ class RobWorkStudio : public QMainWindow
     HelpAssistant* _assistant;
 
     std::map<std::string,bool> _plugins_loaded;
+    std::map<std::string,std::string> _plugin2fileName;
 
   private:
     void openAllPlugins ();
