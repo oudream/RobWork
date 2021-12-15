@@ -41,6 +41,7 @@ template< class T > T* findParentFrom (rw::core::Ptr<rw::kinematics::Frame> f)
     return NULL;
 }
 
+}    // namespace
 class RigidLink : public Body
 {
   public:
@@ -137,7 +138,6 @@ class RigidLink : public Body
     rw::kinematics::StatelessData< RigidLinkState > _rstate;
 };
 
-}    // namespace
 
 RigidDevice::RigidDevice (
     rwsim::dynamics::Body::Ptr base,

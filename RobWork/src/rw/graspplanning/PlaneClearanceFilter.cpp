@@ -63,7 +63,7 @@ bool PlaneClearanceFilter::isValid (const Contact3D& con)
     // calculate the angle between normal and plane, where a n with (0,0,-1)
     // has an min angle of -90 degree and (0,0,1) has an max angle of 90 degree.
     double ang = angle (Vector3D<> (0, 0, -1), n);    // =
-    std::cout << "ANGLE: " << ang * Rad2Deg << " < " << (_minAngle + Pi / 2) * Rad2Deg << std::endl;
+    // std::cout << "ANGLE: " << ang * Rad2Deg << " < " << (_minAngle + Pi / 2) * Rad2Deg << std::endl;
     if (ang < _minAngle + Pi / 2)
         return false;
 

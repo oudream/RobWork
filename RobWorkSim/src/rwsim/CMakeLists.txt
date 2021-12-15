@@ -71,6 +71,7 @@ if(build)
         sensor/BodyContactSensor.cpp
         sensor/SimulatedFTSensor.cpp
         loaders/DynamicWorkCellLoader.cpp
+        loaders/DynamicWorkCellSaver.cpp
         loaders/ScapePoseFormat.cpp
         util/MovingAverage.cpp
         util/PointRANSACFitting.cpp
@@ -196,6 +197,7 @@ if(build)
         sensor/BodyContactSensor.hpp
         sensor/SimulatedFTSensor.hpp
         loaders/DynamicWorkCellLoader.hpp
+        loaders/DynamicWorkCellSaver.hpp
         loaders/ScapePoseFormat.hpp
         util/MovingAverage.hpp
         util/PointRANSACFitting.hpp

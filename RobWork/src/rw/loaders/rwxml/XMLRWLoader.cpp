@@ -148,8 +148,8 @@ void addPropertyToMap (const DummyProperty& dprop, core::PropertyMap& map)
             map.add (dprop._name, dprop._desc, val);
         }
         catch (const std::exception& e) {
-            RW_WARN ("Could not parse double property value: "
-                     << dprop._name << ". An error occured:\n " << std::string (e.what ()));
+            RW_WARN ("Could not parse double property value: \""
+                     << dprop._name << "\" from: \"" << dprop._val << "\"" << ". An error occured:\n " << std::string (e.what ()));
         }
     }
     else if (dprop._type == "Q") {

@@ -22,6 +22,7 @@
 
 #include "Body.hpp"
 
+#include <rw/core/Ptr.hpp>
 #include <rw/math/Jacobian.hpp>
 #include <rw/math/Vector3D.hpp>
 #include <rw/models/Joint.hpp>
@@ -43,14 +44,10 @@ namespace rwsim { namespace dynamics {
     class FixedLink : public Body
     {
       public:
-        /*FixedLink( const std::string &material,
-                           rw::kinematics::Frame *base,
-                           std::vector<FixedLink*> parents,
-                           rw::models::Device &dev,
-                           rw::models::Joint &j,
-                           rw::kinematics::State &state);
-                           */
-        FixedLink (const BodyInfo& info, rw::core::Ptr<rw::kinematics::Frame> base,
+        //! @brief Smart pointer type for a FixedLink.
+        typedef rw::core::Ptr< FixedLink > Ptr;
+
+        FixedLink (const BodyInfo& info, rw::core::Ptr< rw::kinematics::Frame > base,
                    std::vector< FixedLink* > parents, rw::models::Device& dev, rw::models::Joint& j,
                    const std::vector< rw::kinematics::Frame* >& frames,
                    rw::kinematics::State& state);
@@ -221,7 +218,7 @@ namespace rwsim { namespace dynamics {
 
         double _targetVel;
 
-        rw::core::Ptr<rw::kinematics::Frame> _base;
+        rw::core::Ptr< rw::kinematics::Frame > _base;
 
         int _impulseIterations;
 

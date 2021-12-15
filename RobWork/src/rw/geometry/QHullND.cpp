@@ -16,6 +16,7 @@
  ********************************************************************************/
 
 #include "QHullND.hpp"
+
 #include <rw/core/macros.hpp>
 
 #if defined(__cplusplus)
@@ -96,7 +97,7 @@ void qhull::build (size_t dim, double* coords, size_t nrCoords, std::vector< int
         }
     }
     else {
-        cout << "Not Exit Code!";
+        RW_WARN ("Not Exit Code!");
     }
 
     if (qhT_pointer->VERIFYoutput && !qhT_pointer->FORCEoutput && !qhT_pointer->STOPpoint &&
@@ -124,14 +125,14 @@ void qhull::build (std::vector< std::vector< double > > coords, std::vector< int
 {
     size_t nrCoords = coords.size ();
     if (nrCoords > 0) {
-        size_t dim = coords[0].size();
-        double* array = new double[nrCoords*dim];
-        for (size_t i = 0; i < nrCoords; i ++){
-            for (size_t j = 0; j < nrCoords; j++){
-                array[i*dim+j] = coords[i][j];
+        size_t dim    = coords[0].size ();
+        double* array = new double[nrCoords * dim];
+        for (size_t i = 0; i < nrCoords; i++) {
+            for (size_t j = 0; j < nrCoords; j++) {
+                array[i * dim + j] = coords[i][j];
             }
         }
-        qhull::build(dim,&array[0],nrCoords,vertIdxs,faceIdxs,faceNormals,faceOffsets);
+        qhull::build (dim, &array[0], nrCoords, vertIdxs, faceIdxs, faceNormals, faceOffsets);
         delete[] array;
     }
     else {

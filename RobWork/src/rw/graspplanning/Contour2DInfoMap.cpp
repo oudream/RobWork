@@ -159,9 +159,9 @@ void Contour2DInfoMap::reset (const Contour2D& contour)
         _normalToContactsMap[nAngleIdx].push_back (&c);
     }
     _avgCurvature /= contourSize;
-    std::cout << "- Average Object Curvature: " << _avgCurvature << std::endl;
-    std::cout << "- Max Object Curvature: " << _maxCurvature << std::endl;
-    std::cout << "- Min Object Curvature: " << _minCurvature << std::endl;
+    //std::cout << "- Average Object Curvature: " << _avgCurvature << std::endl;
+    //std::cout << "- Max Object Curvature: " << _maxCurvature << std::endl;
+    //std::cout << "- Min Object Curvature: " << _minCurvature << std::endl;
 }
 
 Contour2DInfoMap::ContactPtrList Contour2DInfoMap::getCNormals (double nAngle, double margin,

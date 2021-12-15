@@ -299,9 +299,13 @@ namespace rw { namespace core {
 #endif
         //! @copydoc setValue(const std::string&)
         virtual void setValue (double val);
+
+        //! @copydoc setValue(const std::string&)
+        virtual void setValue (const char* val);
+
         //! @copydoc setValue(const std::string&)
         virtual void setValueString (std::string val);
-        
+
 #if !defined(SWIGJAVA) && !defined(SWIGPYTHON) && !defined(SWIGLUA)
       protected:
 #endif

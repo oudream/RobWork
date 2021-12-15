@@ -24,8 +24,8 @@
 #include "SimulatedSensor.hpp"
 
 #include <rw/math/Constants.hpp>
-#include <rw/sensor/Scan2D.hpp>
 #include <rw/sensor/Scanner2D.hpp>
+#include <rw/sensor/Scanner1D.hpp>
 #endif
 namespace rwlibs { namespace simulation {
     //! @addtogroup simulation
@@ -37,6 +37,9 @@ namespace rwlibs { namespace simulation {
     class SimulatedScanner1D : public rw::sensor::Scanner1D, public virtual rwlibs::simulation::SimulatedSensor
     {
       public:
+
+        typedef rw::core::Ptr<SimulatedScanner1D> Ptr;
+
         /**
          * @brief constructor
          * @param name [in] name of this simulated scanner
@@ -117,11 +120,6 @@ namespace rwlibs { namespace simulation {
         bool _isAcquired, _isOpenned;
         rw::geometry::PointCloud _scan;
     };
-
-    /**
-     * @brief Definition of pointer to SimulatedScanner2D
-     */
-    typedef rw::core::Ptr< SimulatedScanner2D > SimulatedScanner2DPtr;
 
     //! @}
 }}    // namespace rwlibs::simulation
