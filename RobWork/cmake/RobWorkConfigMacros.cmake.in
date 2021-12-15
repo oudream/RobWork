@@ -317,7 +317,7 @@ function(@PROJECT_PREFIX@_VERIFY_TARGET __target __result)
             get_target_property(type ${__target} TYPE)
             if(NOT ("${type}" STREQUAL "INTERFACE_LIBRARY"))
                 get_target_property(out ${__target} IMPORTED_LOCATION_RELEASE)
-
+                
                 if(NOT EXISTS ${out})
                     get_target_property(out ${__target} IMPORTED_LOCATION_RELWITHDEBINFO)
                 endif()

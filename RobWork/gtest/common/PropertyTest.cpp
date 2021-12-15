@@ -50,7 +50,7 @@ TEST(PropertyTest, Property)
         propB->getDescription(),
         propB->getValue());
 
-    EXPECT_EQ(bag.size() , 2);
+    EXPECT_EQ(bag.size() , 2u);
 
     for(PropertyBase::Ptr prop: bag.getProperties()) {
         std::string str = prop->getIdentifier();

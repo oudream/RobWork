@@ -212,7 +212,7 @@ TEST(Rotation3DTest, QTest)
 	{
 		double arr[] = {0.1, 0.2, 0.3};
 		Q q1(3,arr);
-		EXPECT_EQ(q1.size() , 3);
+		EXPECT_EQ(q1.size() , 3u);
 		EXPECT_EQ(q1(2) , 0.3);
 		EXPECT_EQ(q1[1] , 0.2);
 

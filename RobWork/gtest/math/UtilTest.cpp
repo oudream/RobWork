@@ -231,7 +231,7 @@ TEST(UtilTest, MatrixVectorConvertionTest) {
     Math::seed(829);
     const Transform3D<> T = Math::ranTransform3D<double>();
     std::vector<double> Tserialized = Math::toStdVector(T, 3, 4);
-    EXPECT_EQ(Tserialized.size() , 12);
+    EXPECT_EQ(Tserialized.size() , 12u);
     Transform3D<> Trestored;
     Math::fromStdVectorToMat(Tserialized, Trestored, 3, 4);
     EXPECT_TRUE(T.equal(Trestored));

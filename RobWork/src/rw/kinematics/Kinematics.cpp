@@ -165,8 +165,10 @@ Frame* Kinematics::worldFrame (rw::core::Ptr< Frame > frame, const State& state)
 
 const Frame* Kinematics::worldFrame (rw::core::Ptr< const Frame > frame, const State& state)
 {
-    // Forward to non-const version.
-    return worldFrame (frame, state);
+    rw::core::Ptr< const Frame > parent = frame;
+    while (parent->getParent (state))
+        parent = parent->getParent (state);
+    return parent.get ();
 }
 
 //----------------------------------------------------------------------
