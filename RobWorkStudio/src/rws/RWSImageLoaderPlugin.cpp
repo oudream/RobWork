@@ -71,16 +71,14 @@ std::vector< Extension::Descriptor > RWSImageLoaderPlugin::getExtensionDescripto
                              "GIF",
                              "JPG",
                              "JPEG",
-                             "MNG",
                              "PNG",
                              "PBM",
                              "PGM",
                              "PPM",
-                             "TIFF",
                              "XBM",
                              "XPM",
-                             "SVG",
-                             "TGA"};
+                             "SVG"};
+    
     // for(QByteArray& format: formats){
     for (std::string& format : formats) {
         // std::cout << "setting format: " << format.toUpper().data() << std::endl;
