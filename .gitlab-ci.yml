@@ -19,4 +19,4 @@ include:
   - '/gitlab-ci/platforms/ubuntu1804.yml'
   - '/gitlab-ci/gitlab-ci-doc.yml'
   - '/gitlab-ci/platforms/windows10-vs16.yml'
-  - '/gitlab-ci/platforms/mac-highsierra.yml'
+  - '/gitlab-ci/platforms/mac.yml'

@@ -121,7 +121,7 @@ TEST(PropertyMapCore, PropertyMapCore) {
     }
     EXPECT_TRUE(ids.find("doubleId") != ids.end());
     EXPECT_TRUE(ids.find("nonExistingId") != ids.end());
-    EXPECT_EQ(2, ids.size());
+    EXPECT_EQ(2u, ids.size());
 }
 
 TEST(PropertyMapCore, PropertyChangedListener) {

@@ -177,7 +177,7 @@ namespace rw { namespace common {
         template< class T > void writeValue (const std::vector< T >& val, const std::string& id)
         {
             (*_ofs) << id << "=";
-            for (const T& rval : val) {
+            for (const T rval : val) {
                 (*_ofs) << rval << " ";
             }
             (*_ofs) << "\n";

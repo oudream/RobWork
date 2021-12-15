@@ -76,7 +76,7 @@ TEST(ClosedFormIKSolverURTest, ClosedFormIKSolverURTest ){
         device->setQ(qRef,state);
         T = device->baseTend(state);
         solutions = solver.solve(T, state);
-        EXPECT_GT(solutions.size() , 0);
+        EXPECT_GT(solutions.size() , 0u);
         bool found = false;
         for(const Q& sol : solutions) {
             if ((sol-qRef).normInf() <= EPS) {

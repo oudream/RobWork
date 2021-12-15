@@ -183,7 +183,13 @@ namespace rw { namespace geometry {
         Type type () const { return _type; }
 
         QuadraticCurve & operator=(const QuadraticCurve &rhs){
-            *this=QuadraticCurve(rhs);
+            this->_c = rhs._c;
+            this->_u = rhs._u;
+            this->_v = rhs._v;
+            this->_type = rhs._type;
+
+            this->_hasLimits = rhs._hasLimits;
+            this->_limits = rhs._limits;
             return *this;
         }
 
@@ -216,10 +222,10 @@ namespace rw { namespace geometry {
             return clone ();
         }
 #endif
-        const rw::math::Vector3D<double> _c;
-        const rw::math::Vector3D<double> _u;
-        const rw::math::Vector3D<double> _v;
-        const Type _type;
+        rw::math::Vector3D<double> _c;
+        rw::math::Vector3D<double> _u;
+        rw::math::Vector3D<double> _v;
+        Type _type;
 
         bool _hasLimits;
         std::pair< double, double > _limits;

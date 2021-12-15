@@ -44,7 +44,7 @@ void workFunction(ThreadPool* pool, unsigned int id) {
 	Timer::sleepMs(50);
 	{
 		boost::mutex::scoped_lock lock(testMutex);
-		EXPECT_GT(pool->getQueueSize() , 0);
+		EXPECT_GT(pool->getQueueSize() , 0u);
 		EXPECT_EQ(pool->isStopping() , false);
 	}
 	try {
@@ -84,7 +84,7 @@ int runPool(bool stop) {
 	{
 		boost::mutex::scoped_lock lock(testMutex);
 		EXPECT_EQ(pool->getNumberOfThreads() , THREADS);
-		EXPECT_EQ(pool->getQueueSize() , 0);
+		EXPECT_EQ(pool->getQueueSize() , 0u);
 	}
 
 	for (unsigned int i = 0; i < JOBS; i++) {
@@ -143,7 +143,7 @@ int runTaskEmpty() {
 	EXPECT_TRUE(task->keepAlive());
 	task->setKeepAlive(false);
 	EXPECT_FALSE(task->keepAlive());
-	EXPECT_EQ(task->getSubTasks().size(),0);
+	EXPECT_EQ(task->getSubTasks().size(),0u);
 
 	ThreadTask::Ptr subtask1 = ownedPtr(new ThreadTask(task));
 	EXPECT_TRUE(task->addSubTask(subtask1));
@@ -364,7 +364,7 @@ int runTask() {
 			EXPECT_TRUE(mainRun);
 		} else {
 			EXPECT_LT(event.taskID , JOBS);
-			EXPECT_LT(event.subTaskID , 4);
+			EXPECT_LT(event.subTaskID , 4u);
 			if (event.function == Event::Run) {
 				EXPECT_NE(event.type,Event::MainTask);
 				if (event.type == Event::Task) {
