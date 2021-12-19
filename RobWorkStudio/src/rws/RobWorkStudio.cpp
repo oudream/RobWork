@@ -297,7 +297,7 @@ void RobWorkStudio::setupFileActions ()
 
     QAction* closeAction =
         new QAction (QIcon (":/images/close.png"), tr ("&Close"), this);    // owned
-    connect (closeAction, SIGNAL (triggered ()), this, SLOT (closeWorkCell ()));
+    connect (closeAction, SIGNAL (triggered ()), this, SLOT (onCloseWorkCell ()));
 
     QAction* saveAction = new QAction (QIcon (":/images/save.png"), tr ("&Save"), this);    // owned
     connect (saveAction, SIGNAL (triggered ()), this, SLOT (saveWorkCell ()));
@@ -485,7 +485,7 @@ bool RobWorkStudio::unloadPlugin (RobWorkStudioPlugin* pl)
             _plugins[i]->setupToolBar (_pluginsToolBar);
         }
     }
-    if (remove < 0){
+    if (remove < 0) {
         return false;
     }
     _plugins.erase (_plugins.begin () + remove);
@@ -967,8 +967,6 @@ void RobWorkStudio::openFile (const std::string& file)
     catch (const rw::core::Exception& exp) {
         QMessageBox::information (
             NULL, "Exception", exp.getMessage ().getText ().c_str (), QMessageBox::Ok);
-
-        // closeWorkCell();
     }
     // std::cout << "Update handler!" << std::endl;
     updateHandler ();
@@ -1079,6 +1077,9 @@ rw::models::WorkCell::Ptr RobWorkStudio::getWorkcell ()
 
 void RobWorkStudio::closeWorkCell ()
 {
+    _workcell = nullptr;
+    _detector = nullptr;
+    _state    = State ();
     // Clear everything from the view
     _view->clear ();
 
@@ -1355,7 +1356,7 @@ bool RobWorkStudio::event (QEvent* event)
         return true;
     }
     else if (event->type () == RobWorkStudioEvent::CloseWorkCell) {
-        closeWorkCell ();
+        onCloseWorkCell ();
         rwse->done ();
         return true;
     }
@@ -1373,7 +1374,7 @@ bool RobWorkStudio::event (QEvent* event)
         return true;
     }
     else if (event->type () == RobWorkStudioEvent::ExitEvent) {
-        closeWorkCell ();
+        onCloseWorkCell ();
         rwse->done ();
         close ();
         return true;
