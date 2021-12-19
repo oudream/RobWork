@@ -37,9 +37,9 @@
 #include <QMainWindow>
 #include <boost/any.hpp>
 #include <boost/function.hpp>
-#include <vector>
 #include <map>
 #include <string>
+#include <vector>
 
 class QCloseEvent;
 class QDragEnterEvent;
@@ -105,10 +105,15 @@ class RobWorkStudio : public QMainWindow
     void setWorkCell (rw::models::WorkCell::Ptr workcell) { setWorkcell (workcell); }
 
     //! @copydoc openWorkCellFile
-    void setWorkcell (std::string workcell_file) { openWorkCellFile (workcell_file.c_str()); }
+    void setWorkcell (std::string workcell_file) { openWorkCellFile (workcell_file.c_str ()); }
 
     //! @copydoc openWorkCellFile
-    void setWorkCell (std::string workcell_file) { openWorkCellFile (workcell_file.c_str()); }
+    void setWorkCell (std::string workcell_file) { openWorkCellFile (workcell_file.c_str ()); }
+
+    /**
+     * @brief close the workcell
+     */
+    void closeWorkCell ();
 
     /**
      * @copydoc setWorkcell
@@ -173,7 +178,10 @@ class RobWorkStudio : public QMainWindow
      *
      * @return pointer to TimedStatePath
      */
-    const rw::core::Ptr<rw::trajectory::TimedStatePath> getTimedStatePathPtr () { return _timedStatePath; }
+    const rw::core::Ptr< rw::trajectory::TimedStatePath > getTimedStatePathPtr ()
+    {
+        return _timedStatePath;
+    }
 
     /**
      * @brief Sets the common TimedStatePath
@@ -613,13 +621,12 @@ class RobWorkStudio : public QMainWindow
     void loadPlugin (std::string pluginFile, bool visible = false, int dock = 1);
 
     /**
-     * @brief Unload the plugin from RobWorkStudio 
+     * @brief Unload the plugin from RobWorkStudio
      * @param pl [in] the plugin to be unloaded
      * @return true if succesfull
      * @return false if an error was encountered while unloading
      */
-    bool unloadPlugin(RobWorkStudioPlugin* pl);
-
+    bool unloadPlugin (RobWorkStudioPlugin* pl);
 
     /**
      * @brief Load Workcell into RobWork Studio based on settings file
@@ -658,7 +665,7 @@ class RobWorkStudio : public QMainWindow
     void reloadWorkCell ();
     void open ();
     void setCheckAction ();
-    void closeWorkCell ();
+    void onCloseWorkCell () { closeWorkCell (); }
     void saveWorkCell ();
     void showSolidTriggered ();
     void showWireTriggered ();
@@ -677,7 +684,7 @@ class RobWorkStudio : public QMainWindow
     void printCollisions ();
     void loadPlugin ();
 
-    void unloadPlugin();
+    void unloadPlugin ();
 
   protected:
     //! Close Event inherited from QT
@@ -732,8 +739,8 @@ class RobWorkStudio : public QMainWindow
     std::vector< std::pair< QAction*, std::string > > _lastFilesActions;
     HelpAssistant* _assistant;
 
-    std::map<std::string,bool> _plugins_loaded;
-    std::map<std::string,std::string> _plugin2fileName;
+    std::map< std::string, bool > _plugins_loaded;
+    std::map< std::string, std::string > _plugin2fileName;
 
   private:
     void openAllPlugins ();
