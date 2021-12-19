@@ -44,10 +44,7 @@ class LinAlgeTest(unittest.TestCase):
         A[3][0] = 1
         A[0][3] = 1
 
-        print("\n MANGLER   subject arround eigenDecompositionSymmetric has not been addressed yet.        DET VIRKER IKKE")
-# This subject arround eigenDecompositionSymmetric has not been addressed yet.
-#
-#        val1 = sdurw_math.LinearAlgebra.eigenDecompositionSymmetric(A)
+        val1 = sdurw_math.LinearAlgebra.eigenDecompositionSymmetric(A)
 
 
     # MANGLER

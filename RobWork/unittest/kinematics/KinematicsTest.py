@@ -44,14 +44,7 @@ class KinematicsTest(unittest.TestCase):
     def test_StateStructureTest(self):
         l1 = sdurw_kinematics.FixedFrame("l1",sdurw_math.Transform3D(Vector3D(1,2,3)))
         m1 = sdurw_kinematics.MovableFrame("m1")
-        print("M1 is ", m1)
         daf = sdurw_kinematics.FixedFrame("daf",sdurw_math.Transform3D(Vector3D(1,2,3)))
-
-#        print("\n sdurw_kinematics.FrameType(m1).get()", sdurw_kinematics.FrameType(m1).get())
-
-        print("\n m1.getDOF()", m1.getDOF() )
-        print("\n m1.getPropertyMap()", m1.getPropertyMap() )
-#        print("\n m1.FrameType.get()", m1.FrameType.get() )
 
         tree = sdurw_kinematics.StateStructure()
         world = tree.getRoot()
@@ -65,15 +58,6 @@ class KinematicsTest(unittest.TestCase):
         m1.setTransform(m1_t3d, state)
         m1_t3d_b = sdurw_math.Transform3D()
         m1_t3d_b = m1.getTransform(state)
-
-        # Just some printouts :-)
-        print("\n m1_t3d", m1_t3d )
-        print("\n m1_t3d_b", m1_t3d_b )
-        print("\n m1_t3d_b", m1_t3d_b.P() )
-        print("\n m1_t3d_b.P()[0]", m1_t3d_b.P()[0])
-        print("\n m1_t3d_b.P()[1]", m1_t3d_b.P()[1])
-        print("\n m1_t3d_b.P()[2]", m1_t3d_b.P()[2])
-        print("\n m1_t3d_b.R()", m1_t3d_b.R() )
 
         self.assertAlmostEqual( m1_t3d_b.P()[0], m1_t3d.P()[0], delta = 1e-6 )
         self.assertAlmostEqual( m1_t3d_b.P()[1], m1_t3d.P()[1], delta = 1e-6 )
@@ -168,17 +152,21 @@ class KinematicsTest(unittest.TestCase):
         tree.addFrame(l5,l4)
         tree.addFrame(l6,l5)
         tree.addFrame(l7,l6)
-
+        
         state = tree.getDefaultState()
+
         frame = l7
-#        while(frame != world) :
-#            parent = frame.getParent(tree.getDefaultState())
-#            print(" frame:", frame.getName() , " parent:", parent.getName())
-
-#            print("\n MANGLER   .Segmentation fault (core dumped)        DET VIRKER IKKE")
-#            tree.remove(frame)
-#            frame = parent
-
+        while(frame != world) :
+            parent = frame.getParent(tree.getDefaultState())
+            tree.remove(frame)
+            frame = parent
+            
+    def test_stateStructureFrame(self):
+        l1 = sdurw_kinematics.FixedFrame("l1",sdurw_math.Transform3D())
+        tree = sdurw_kinematics.StateStructure()
+        world = tree.getRoot()     
+        self.assertEqual(world,tree.getRoot())
+            
 
     def test_removeMovableFramesTest(self):
         l1 = sdurw_kinematics.MovableFrame("l1")
@@ -202,14 +190,10 @@ class KinematicsTest(unittest.TestCase):
         tree.addFrame(l3,l2)
         state = tree.getDefaultState()
 
-        # TO DO
-        # AttributeError: module 'sdurw_kinematics' has no attribute 'frameTframe'
-        print("\n AttributeError: module 'sdurw_kinematics' has no attribute 'frameTframe'")
-        #
-#        transform = sdurw_kinematics.frameTframe(world, l3, state)
-#        self.assertEqual( transform.P()[0] , 6.0 )
-#        self.assertEqual( transform.P()[1] , 9.0 )
-#        self.assertEqual( transform.P()[2] , 12.0 )
+        transform = sdurw_kinematics.Kinematics.frameTframe(world, l3, state)
+        self.assertEqual( transform.P()[0] , 6.0 )
+        self.assertEqual( transform.P()[1] , 9.0 )
+        self.assertEqual( transform.P()[2] , 12.0 )
 
 
     def test_multipleChainTest(self):
@@ -221,21 +205,16 @@ class KinematicsTest(unittest.TestCase):
         tree.addFrame(l2,world)
 
         state = tree.getDefaultState()
+        
+        transform = sdurw_kinematics.Kinematics.frameTframe(world, l1, state)
+        self.assertEqual( transform.P()[0] , 1.0 )
+        self.assertEqual( transform.P()[1] , 2.0 )
+        self.assertEqual( transform.P()[2] , 3.0 )
 
-        # TO DO
-        # AttributeError: module 'sdurw_kinematics' has no attribute 'frameTframe'
-        #
-        print("\n AttributeError: module 'sdurw_kinematics' has no attribute 'frameTframe'")
-        #
-#        transform = sdurw_kinematics.frameTframe(world, l1, state)
-#        self.assertEqual( transform.P()[0] , 1.0 )
-#        self.assertEqual( transform.P()[1] , 2.0 )
-#        self.assertEqual( transform.P()[2] , 3.0 )
-
-#        transform = sdurw_kinematics.frameTframe(world, l2, state)
-#        self.assertEqual( transform.P()[0] , 2.0 )
-#        self.assertEqual( transform.P()[1] , 3.0 )
-#        self.assertEqual( transform.P()[2] , 4.0 )
+        transform = sdurw_kinematics.Kinematics.frameTframe(world, l2, state)
+        self.assertEqual( transform.P()[0] , 2.0 )
+        self.assertEqual( transform.P()[1] , 3.0 )
+        self.assertEqual( transform.P()[2] , 4.0 )
 
 
 if __name__ == '__main__':

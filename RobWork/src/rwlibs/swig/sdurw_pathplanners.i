@@ -19,6 +19,7 @@ using rw::trajectory::Path;
 %}
 
 %include <exception.i>
+%include <rwlibs/swig/swig_macros.i>
 
 %import <rwlibs/swig/sdurw_trajectory.i>
 %import <rwlibs/swig/sdurw_core.i>

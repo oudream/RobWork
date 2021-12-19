@@ -24,7 +24,9 @@ using rw::math::Metric;
 using rw::trajectory::Path;
 %}
 
+%include <rwlibs/swig/swig_macros.i>
 %include <exception.i>
+
 %import <rwlibs/swig/sdurw_core.i>
 %import <rwlibs/swig/sdurw_common.i>
 %import <rwlibs/swig/sdurw_math.i>

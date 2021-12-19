@@ -148,7 +148,6 @@ namespace rw { namespace kinematics {
 
 #endif
 
-
         /**
          * @brief Check is state data includes a cache.
          * @return true if cache, false otherwise.
@@ -156,7 +155,7 @@ namespace rw { namespace kinematics {
         inline bool hasCache () const { return _hasCache; }
 
         // StateData(int size, StateCache::Ptr defaultCache, const std::string& name);
-        
+
         /**
          * @brief Get the cache.
          * @param state [in] the state.
@@ -164,13 +163,12 @@ namespace rw { namespace kinematics {
          */
         rw::core::Ptr< rw::kinematics::StateCache >
         getCache (const rw::kinematics::State& state) const;
-       
 
-        #if !defined(SWIGPYTHON)
+#if !defined(SWIGPYTHON)
         //! @copydoc getCache(const State&) const .
         rw::core::Ptr< rw::kinematics::StateCache > getCache (rw::kinematics::State& state);
-         #endif 
-         
+#endif
+
         /**
          * @brief Get default cache.
          * @return the cache.
@@ -190,6 +188,23 @@ namespace rw { namespace kinematics {
          * @return the state structure.
          */
         class rw::kinematics::StateStructure* getStateStructure () { return _sstructure; };
+
+        /**
+         * @brief Compares the state data to see if they are the same
+         * Checks the ID, name and which statetrucure they belong to
+         * @param rhs [in] the StateData to compare with
+         * @return true if equal
+         * @return false if not equal
+         */
+        bool operator== (const StateData& rhs);
+
+        /**
+         * @brief Check if not equal
+         * @param rhs [in] the StateData to compare with
+         * @return true if not equal
+         * @return false if equal
+         */
+        bool operator!= (const StateData& rhs) { return !(*this == rhs); }
 
       public:
         /**

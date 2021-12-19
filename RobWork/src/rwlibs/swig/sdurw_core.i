@@ -11,6 +11,10 @@ SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 %include <rwlibs/swig/ext_i/boost.i>
 %include <rwlibs/swig/ext_i/os.i>
 
+%include <stl.i>
+%include <std_vector.i>
+%include <typemaps.i>
+
 %rename(getDeref) rw::core::Ptr::operator->;
 %rename(deref) rw::core::Ptr::get;
 
@@ -216,9 +220,10 @@ NAMED_OWNEDPTR(LogWriter, rw::core::LogWriter);
 NAMED_OWNEDPTR(Plugin, rw::core::Plugin);
 
 %{
-    #include <rw/core/PropertyValue.hpp>
+    #include <rw/core/PropertyType.hpp>
 %}
-%include <rw/core/PropertyValue.hpp>
+%include <rw/core/PropertyType.hpp>
+
 
 %{
     #include <rw/core/PropertyValueBase.hpp>
@@ -229,15 +234,66 @@ NAMED_OWNEDPTR(Plugin, rw::core::Plugin);
 NAMED_OWNEDPTR(PropertyValueBase, rw::core::PropertyValueBase);
 
 %{
-    #include <rw/core/Property.hpp>
+    #include <rw/core/PropertyValue.hpp>
 %}
-%include <rw/core/Property.hpp>
+%include <rw/core/PropertyValue.hpp>
+%template(PropertyValue_d) rw::core::PropertyValue<double>;
+%template(PropertyValue_f) rw::core::PropertyValue<float>;
+%template(PropertyValue_s) rw::core::PropertyValue<std::string>;
+%template(PropertyValue_b) rw::core::PropertyValue<bool>;
+%template(PropertyValue_i) rw::core::PropertyValue<int>;
+%template(PropertyValueVector_d) rw::core::PropertyValue<std::vector<double>>;
+%template(PropertyValueVector_s) rw::core::PropertyValue<std::vector<std::string>>;
+%template(PropertyValueVector_i) rw::core::PropertyValue<std::vector<int>>;
+%template(PropertyValuePropertyMap) rw::core::PropertyValue<rw::core::PropertyMap>;
 
 %{
     #include <rw/core/PropertyBase.hpp>
 %}
 %include <rw/core/PropertyBase.hpp>
 NAMED_OWNEDPTR(PropertyBase, rw::core::PropertyBase);
+
+%{
+    #include <rw/core/Property.hpp>
+%}
+%include <rw/core/Property.hpp>
+%template(Property_d) rw::core::Property<double>;
+%template(Property_f) rw::core::Property<float>;
+%template(Property_s) rw::core::Property<std::string>;
+%template(Property_b) rw::core::Property<bool>;
+%template(Property_i) rw::core::Property<int>;
+%template(PropertyVector_d) rw::core::Property<std::vector<double>>;
+%template(PropertyVector_s) rw::core::Property<std::vector<std::string>>;
+%template(PropertyVector_i) rw::core::Property<std::vector<int>>;
+%template(PropertyPropertyMap) rw::core::Property<rw::core::PropertyMap>;
+
+#if defined (SWIGPYTHON)
+%pythoncode {
+def Property(identifier,description,value):
+    """
+      Create a new Property
+      identifier [str]: the id of the property
+      description [str]: description of the property
+      value [mixed]: the value of the property
+    """
+    if isinstance(value,float):
+        return Property_d(identifier,description,value)
+    elif isinstance(value,int):
+        return Property_i(identifier,description,value)
+    elif isinstance(value,str):
+        return Property_s(identifier,description,value)
+    elif isinstance(value,bool):
+        return Property_b(identifier,description,value)
+    elif isinstance(value,(list,tuple)) and len(value)>0 and isinstance(value[0],float):
+        return PropertyVector_d(identifier,description,value)
+    elif isinstance(value,(list,tuple)) and len(value)>0 and isinstance(value[0],str):
+        return PropertyVector_s(identifier,description,value)
+    elif isinstance(value,(list,tuple)) and len(value)>0 and isinstance(value[0],int):
+        return PropertyVector_i(identifier,description,value)
+    elif isinstance(value,PropertyMap):
+        return PropertyPropertyMap(identifier,description,value)
+}
+#endif
 
 %{
     #include <rw/core/PropertyMap.hpp>
@@ -269,11 +325,6 @@ NAMED_OWNEDPTR(PropertyBase, rw::core::PropertyBase);
 %template(setVectorInt) rw::core::PropertyMap::set<std::vector<int>>;
 %template(setVectorFloat) rw::core::PropertyMap::set<std::vector<float>>;
 %template(setVectorDouble) rw::core::PropertyMap::set<std::vector<double>>;
-
-%{
-    #include <rw/core/PropertyType.hpp>
-%}
-%include <rw/core/PropertyType.hpp>
 
 %{
     #include <rw/core/RobWork.hpp>

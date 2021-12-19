@@ -223,8 +223,6 @@ namespace rw { namespace math {
          * @return the decomposition as a pair with eigenvectors and eigenvalues.
          */
         template< class T >
-        // static std::pair<typename EigenMatrix<T>::type, typename EigenVector<T>::type >
-        // eigenDecompositionSymmetric(const typename EigenMatrix<T>::type& Am1)
         static std::pair< typename EigenMatrix< T >::type, typename EigenVector< T >::type >
         eigenDecompositionSymmetric (const Eigen::Matrix< T, Eigen::Dynamic, Eigen::Dynamic >& Am1)
         {

@@ -10,6 +10,7 @@ using namespace rwlibs::swig;
 %}
 
 %include <exception.i>
+%include <rwlibs/swig/swig_macros.i>
 
 %import <rwlibs/swig/sdurw_core.i>
 %import <rwlibs/swig/sdurw_models.i>

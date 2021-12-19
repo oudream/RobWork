@@ -35,19 +35,17 @@ class Property(unittest.TestCase):
     def test_double(self):
         val = 0.1
         # Test ordinary constructor, clone() and standard interface functions
+        propertyA = sdurw_core.Property("TestId", "Desc", val)
 
-        print("\n MANGLER   AttributeError: module 'sdurw_core' has no attribute 'Property'      DET VIRKER IKKE")
-#        propertyA = sdurw_core.Property("TestId", "Desc", val)
-
-        print("\n MANGLER   AttributeError: 'property' object has no attribute 'getIdentifier'      DET VIRKER IKKE")
-#        self.assertEqual("TestId", propertyA.getIdentifier())
-#        self.assertEqual("Desc", propertyA.getDescription())
-#        self.assertEqual(0.1, propertyA.getValue())
-#        self.assertEqual(sdurw_core.PropertyType.Types.Double, propertyA.getType().getId())
-#        self.assertEqual(0.1, propertyA.getPropertyValue().getValue())
-#        self.assertEqual(sdurw_core.PropertyType.Types.Double, propertyA.getPropertyValue().getType().getId())        
-#        clone = propertyA.clone()
-#        print("\n HVORDAN BRUGER MAN arrow operator ->  I PYTHON ?")
+        self.assertEqual("TestId", propertyA.getIdentifier())
+        self.assertEqual("Desc", propertyA.getDescription())
+        self.assertEqual(0.1, propertyA.getValue())
+        self.assertEqual(sdurw_core.PropertyType.Double, propertyA.getType().getId())
+        self.assertEqual(0.1, propertyA.getPropertyValue().getValue())
+        self.assertEqual(sdurw_core.PropertyType.Double, propertyA.getPropertyValue().getType().getId())        
+        clone = propertyA.clone()
+        
+        print("\n HVORDAN BRUGER MAN arrow operator ->  I PYTHON ?")
 
 
 if __name__ == '__main__':

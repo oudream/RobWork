@@ -20,7 +20,7 @@
 #include <rw/geometry/IndexedTriMesh.hpp>
 using namespace rwlibs::swig;
 %}
-
+%include <rwlibs/swig/swig_macros.i>
 %include <exception.i>
 
 %import <rwlibs/swig/sdurw_core.i>

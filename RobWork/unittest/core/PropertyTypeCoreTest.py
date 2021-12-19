@@ -33,13 +33,11 @@ class PropertyTypeCore(unittest.TestCase):
     def test_getType(self):
         map = sdurw_core.PropertyMap()
         x = sdurw_core.PropertyType.getType(map).getId()
-        print("\n x", x )
-        print("\n MANGLER  AttributeError: type object 'PropertyType' has no attribute 'Types'             DET VIRKER IKKE")
-#        self.assertEqual(sdurw_core.PropertyType.Types.PropertyMap, sdurw_core.PropertyType.getType(map).getId())
+        self.assertEqual(sdurw_core.PropertyType.PropertyMap, sdurw_core.PropertyType.getType(map).getId())
 
-#        map = sdurw_core.PropertyMap.ptr()
+        #map = sdurw_core.PropertyMap.ptr()
 
-#        std::vector<rw::core::Ptr<rw::core::PropertyValueBase> > list;
+        #std::vector<rw::core::Ptr<rw::core::PropertyValueBase> > list;
 
         print("\n Mangler Resten")
 

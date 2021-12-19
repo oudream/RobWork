@@ -28,6 +28,7 @@ using namespace rw::graphics;
 
 %include <std_vector.i>
 %include <exception.i>
+%include <rwlibs/swig/swig_macros.i>
 
 %import <rwlibs/swig/sdurw_core.i>
 %import <rwlibs/swig/sdurw_kinematics.i>
