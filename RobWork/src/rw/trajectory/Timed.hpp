@@ -47,7 +47,7 @@ namespace rw { namespace trajectory {
         */
         Timed () : _time (0.0), _value () {}
 
-#if !defined(SWIGPYTHON)
+#if !defined(SWIGPYTHON) || !defined(SWIGJAVA)
         /**
            @brief The time
         */
@@ -55,15 +55,17 @@ namespace rw { namespace trajectory {
 #endif
         double& getTime () { return _time; }
 
+#if !defined(SWIGJAVA)
         /**
            @brief The value
         */
         const T& getValue () const { return _value; }
+#endif 
 
         T& getValue () { return _value; }
 
 #ifdef SWIG
-         SWIG_GET_TIME();
+         SWIG_SET_TIME();
 #endif
 
       private:

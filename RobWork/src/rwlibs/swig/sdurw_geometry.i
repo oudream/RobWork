@@ -5,8 +5,11 @@
 %include <rwlibs/swig/swig_macros.i>
 %include <rwlibs/swig/ext_i/os.i>
 
-%import <rwlibs/swig/ext_i/std.i>
+#if defined(SWIGPYTHON) && defined(RW_USE_NUMPY)
+%include <rwlibs/swig/ext_i/eigen.i>
+#endif 
 
+%import <rwlibs/swig/ext_i/std.i>
 %import <rwlibs/swig/sdurw_core.i>
 %import <rwlibs/swig/sdurw_common.i>
 %import <rwlibs/swig/sdurw_math.i>

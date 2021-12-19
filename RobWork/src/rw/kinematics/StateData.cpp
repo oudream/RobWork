@@ -58,3 +58,8 @@ void StateData::setCache (rw::core::Ptr< StateCache > cache, State& state)
         return;    // stop early if we know size is 0
     state.setCache (_id, cache);
 }
+
+bool StateData::operator== (const StateData& rhs)
+{
+    return (this->_id == rhs._id && this->_sstructure == rhs._sstructure && this->_name == rhs._name);
+}

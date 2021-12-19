@@ -67,11 +67,13 @@ namespace rw { namespace geometry {
         //! @copydoc GeometryData::getTriMesh
         virtual rw::core::Ptr< TriMesh > getTriMesh (bool forceCopy = true);
 
-        //! @copydoc GeometryData::isConvex
-        virtual bool isConvex () = 0;
-
+#if !defined(SWIGJAVA)
         //! @copydoc GeometryData::getTriMesh
         virtual rw::core::Ptr< TriMesh > getTriMesh (bool forceCopy = true) const;
+#endif 
+
+        //! @copydoc GeometryData::isConvex
+        virtual bool isConvex () = 0;
 
         /**
          * @brief Get the number of surface patches in this shell.

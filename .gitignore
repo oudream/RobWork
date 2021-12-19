@@ -1587,6 +1587,9 @@ RobWork/example/java/src/*.log
 # /RobWork/src/rwlibs/swig/ext_i
 RobWork/src/rwlibs/swig/ext_i/os.i
 
+# /RobWork/src/rwlibs/swig/typemaps
+RobWork/src/rwlibs/swig/typemaps/*.i
+
 # /RobWork/src/rwlibs/task/
 /RobWork/src/rwlibs/task/cmake_install.cmake
 /RobWork/src/rwlibs/task/CMakeCache.txt

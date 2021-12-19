@@ -277,6 +277,25 @@ namespace rw { namespace kinematics {
          */
         rw::math::Transform3D<> fTf (const rw::core::Ptr<rw::kinematics::Frame> to, const rw::kinematics::State& state) const;
 
+
+        /**
+         * @brief Compares the Frame to see if they are the same
+         * Checks the statedata, parent frame and chld frame
+         * @param rhs [in] the Frame to compare with
+         * @return true if equal
+         * @return false if not equal
+         */
+        bool operator== (const Frame& rhs);
+
+        /**
+         * @brief Check if not equal
+         * @param rhs [in] the Frame to compare with
+         * @return true if not equal
+         * @return false if equal
+         */
+        bool operator!= (const Frame& rhs) { return !(*this == rhs); }
+
+
 #if !defined(SWIG)
         /**
            @brief Streaming operator.

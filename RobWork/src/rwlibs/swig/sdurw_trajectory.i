@@ -249,7 +249,7 @@ ADD_TRAJECTORY_STANDARD_TEMPLATE(ParabolicBlend,rw::trajectory::ParabolicBlend);
 
 
 
-%define SWIG_GET_TIME()
+%define SWIG_SET_TIME()
 	%extend {
         void setTime(double time){
             $self->rw::trajectory::Timed<T>::getTime() = time;

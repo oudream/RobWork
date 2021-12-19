@@ -25,6 +25,11 @@
   int res = SWIG_AsVal_std_string($input, &temp);
   $1 = &temp;
 }
+
+%typemap(out, fragment="SWIG_From_double") double& {
+  $result = SWIG_From_double(*$1);
+}
+
 #endif
 
 %{

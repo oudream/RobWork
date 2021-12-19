@@ -1,4 +1,6 @@
 
+//%include <rwlibs/swig/ext_i/macros.i>
+
 #if !defined(SWIGJAVA)
 %include "carrays.i"
 %array_class(double, doubleArray);
@@ -310,3 +312,58 @@ new=orig
 #elif defined(SWIGJAVA)
 #endif 
 %enddef
+
+
+/*
+
+#ifndef SWIG_POINTER_NO_NULL
+#define SWIG_POINTER_NO_NULL 0
+#endif
+
+
+
+#ifndef SWIGPtr_pre
+#if defined(SWIGLUA)
+#define SWIGPtr_pre L,
+#else
+#define SWIGPtr_pre
+#endif
+#endif
+
+
+#if !defined(SWIGJAVA)
+#define TYPECHECK(type_in,...) \
+%typecheck(SWIG_TYPECHECK_SWIGOBJECT) type_in { \
+    void* ptr;\
+    $1 = 0;\
+    if (SWIG_IsOK(SWIG_ConvertPtr(SWIGPtr_pre $input, (void **) &ptr, $descriptor( type_in *),SWIG_POINTER_NO_NULL | 0))) {\
+		$1 = 1;\
+	}\
+    EVAL(FOR_EACH_REVERSE(SINGLE_TYPE_CHECK,__VA_ARGS__))\
+    if (! $1){\
+        std::cout << "Failed to verify " #type_in << std::endl;\
+    }\
+}
+#endif
+
+
+%typemap(in) type_in (void * argp){
+    int res = SWIG_ConvertPtr(SWIGPtr_pre $input, &argp, $descriptor(type_in *),SWIG_POINTER_NO_NULL | 0);
+	if (SWIG_IsOK(res)) {
+		type_in * tmp_var = reinterpret_cast< type_in * > (argp);
+		$1 = *tmp_var;
+	}
+    VAL(FOR_EACH_REVERSE(SINGLE_CONVERT,__VA_ARGS__))
+    if(!SWIG_IsOK(res)) {
+#if !defined(SWIGLUA)
+        SWIG_exception_fail(SWIG_ArgError(res), "could not convert to type rw::core::Ptr<rw::kinematics::Frame >");
+#else 
+        lua_pushstring(L, "could not convert to type rw::core::Ptr<rw::kinematics::Frame >");
+        SWIG_fail;
+#endif 
+	}
+}
+
+#undef SINGLE_CONVERT
+#endif
+%enddef*/

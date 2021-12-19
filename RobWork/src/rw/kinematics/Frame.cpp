@@ -127,3 +127,16 @@ rw::math::Transform3D<> Frame::fTf (const rw::core::Ptr< Frame> to, const rw::ki
 {
     return Kinematics::frameTframe (this, to, state);
 }
+
+bool Frame::operator== (const Frame& rhs)
+{
+    if(StateData::operator==(rhs) && this->_parent == rhs._parent && this->_children.size() == rhs._children.size()){
+        for(size_t i = 0; i < this->_children.size();i++){
+            if(this->_children[i] != rhs._children[i]){
+                return false;
+            }
+        }
+        return true;
+    }
+    return false;
+}
