@@ -199,6 +199,14 @@ void RobWorkStudio::closeEvent (QCloseEvent* e)
     _settingsMap->set< int > ("WindowPosY", this->pos ().y ());
     _settingsMap->set< int > ("WindowWidth", this->width ());
     _settingsMap->set< int > ("WindowHeight", this->height ());
+    
+    closeAllPlugins ();
+
+    // close all plugins
+    typedef std::vector< RobWorkStudioPlugin* >::iterator I;
+    for (I it = _plugins.begin (); it != _plugins.end (); ++it) {
+        (*it)->QWidget::close ();
+    }
 
     if (!_propMap.get< PropertyMap > ("cmdline").has ("NoSave")) {
         _propMap.set ("cmdline", PropertyMap ());
@@ -215,16 +223,9 @@ void RobWorkStudio::closeEvent (QCloseEvent* e)
     }
     _propMap = PropertyMap ();
     _propEditor->close ();
-
-    closeAllPlugins ();
+    
     _view->clear ();
     _view->close ();
-
-    // close all plugins
-    typedef std::vector< RobWorkStudioPlugin* >::iterator I;
-    for (I it = _plugins.begin (); it != _plugins.end (); ++it) {
-        (*it)->QWidget::close ();
-    }
 
     // now call accept
     e->accept ();
