@@ -18,6 +18,8 @@
 #include "ODEThreading.hpp"
 
 #include <rw/core/macros.hpp>
+#include <map>
+
 
 #ifdef ODE_WITH_THREADING_IMPL
 #include <ode/objects.h>
