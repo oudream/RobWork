@@ -2,6 +2,7 @@
 
 %include <stl.i>
 %include <std_vector.i>
+%include <exception.i>
 %include <rwlibs/swig/swig_macros.i>
 
 %import <rwlibs/swig/sdurw_core.i>
@@ -49,6 +50,17 @@ import org.robwork.sdurw_kinematics.*;
 import org.robwork.sdurw_geometry.*;
 import org.robwork.sdurw_sensor.*;
 %}
+
+%exception {
+    try {
+        //printf("Entering function : $name\n"); // uncomment to get a print out of all function calls
+        $action
+    }catch(rw::core::Exception& e ){
+        SWIG_exception(SWIG_RuntimeError,e.what());
+    }catch(...){
+        SWIG_exception(SWIG_RuntimeError,"unknown error");
+    }
+}
 
 %{
 	template<class T>
@@ -282,10 +294,12 @@ NAMED_OWNEDPTR(ParallelDevice,rw::models::ParallelDevice);
 %}
 %include <rw/models/ParallelLeg.hpp>
 NAMED_OWNEDPTR(ParallelLeg,rw::models::ParallelLeg);
-    %template(VectorParallelLegPtr) std::vector<rw::core::Ptr<rw::models::ParallelLeg>>;
-    %template(VectorParallelLeg_p) std::vector<rw::models::ParallelLeg*>;
-    %template(VectorVectorParallelLeg_p) std::vector<std::vector<rw::models::ParallelLeg*>>;
 
+%template(VectorParallelLegPtr) std::vector<rw::core::Ptr<rw::models::ParallelLeg>>;
+%template(VectorParallelLeg_p) std::vector<rw::models::ParallelLeg*>;
+%template(VectorVectorParallelLeg_p) std::vector<std::vector<rw::models::ParallelLeg*>>;
+
+ADD_DEFINITION(VectorParallelLeg_p,ParallelLegs,sdurw_model)
 
 
 %{

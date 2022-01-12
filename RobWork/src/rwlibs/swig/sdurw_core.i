@@ -153,6 +153,19 @@ NAMED_OWNEDPTR(DOMParser, rw::core::DOMParser);
     }
 }
 
+
+%exception {
+    try {
+        //printf("Entering function : $name\n"); // uncomment to get a print out of all function calls
+        $action
+    }catch(rw::core::Exception& e ){
+        SWIG_exception(SWIG_RuntimeError,e.what());
+    }catch(...){
+        SWIG_exception(SWIG_RuntimeError,"unknown error");
+    }
+}
+
+
 %{
     #include <rw/core/Extension.hpp>
 %}

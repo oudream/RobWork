@@ -21,7 +21,7 @@ import sdurw_math
 import sdurw_kinematics
 import sdurw_models
 from sdurw_math.sdurw_math import Vector3D
-import numpy as np
+
 
 def addTestFrames(world):
     frame1 = sdurw_kinematics.MovableFrame("Frame1")
@@ -70,26 +70,26 @@ class Kinematics(unittest.TestCase):
 
         root = world.getWorldFrame()
 
+        staticGroups = sdurw_kinematics.Kinematics.getStaticFrameGroups(root, world.getDefaultState())
+        print("\n MANGLER   AttributeError: 'tuple' object has no attribute 'size'     MEN   len(staticGroups) giver kun 1      DET VIRKER IKKE")
+#        self.assertAlmostEqual(10, staticGroups.size())
+        for list in staticGroups:
+            for frame in list:
+                if (frame.getName() == "WORLD"):
+                    self.assertFalse(frameInGroup[0])
+                    frameInGroup[0] = True
+                else:
+                    id = frame.getName()[5:]                   # Remove 5 first characters by slicing
+                    self.assertFalse(frameInGroup[id])
+                    frameInGroup[id] = True
 
-        print("\n MANGLER   segfault        DET VIRKER IKKE")
-#        staticGroups = sdurw_kinematics.Kinematics.getStaticFrameGroups (root, world.getDefaultState ())
-#        self.assertAlmostEqual(10u, staticGroups.size ())
-#        for list in staticGroups:
-#            for frame in list:
-#                if (frame.getName() == "WORLD"):
-#                    self.assertFalse(frameInGroup[0])
-#                    frameInGroup[0] = true
-#                else:
-#                    id = frame.getName()[5:]                   # Remove 5 first characters by slicing
-#                    self.assertFalse(frameInGroup[id])
-#                    frameInGroup[id] = true
-#
-#        for i in range(0, i < len(frameInGroup), 1):
-#            self.assertTrue(frameInGroup[i])
+        for i in range(0, i < len(frameInGroup), 1):
+           self.assertTrue(frameInGroup[i])
 
 
     def test_getStaticFrameGroupsConst(self):
-        print("\n ER DET MULIGT AT IMPLEMENTERE TESTEN IGEN MED  std::vector< ConstFrameList >  ??")
+        # Does it make sence to test this if we cannot use std::vector< ConstFrameList >    ?
+        pass
 
 
 if __name__ == '__main__':
