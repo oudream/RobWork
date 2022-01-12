@@ -1047,10 +1047,12 @@ MultiDistanceResult& ProximityStrategyFCL::doDistances (ProximityModel::Ptr a,
     rwresult.b        = b;
     rwresult.distance = std::numeric_limits< double >::max ();
 
+    bool doThreading = aModel->models.size () > 1 || bModel->models.size () > 1;
+
     size_t current_threads = this->_threads;
-    int geoA            = -1;
-    int geoB            = -1;
-    size_t i            = 0;
+    int geoA               = -1;
+    int geoB               = -1;
+    size_t i               = 0;
     for (auto& ma : aModel->models) {
         geoA++;
         geoB = -1;
@@ -1064,20 +1066,34 @@ MultiDistanceResult& ProximityStrategyFCL::doDistances (ProximityModel::Ptr a,
                 results[i].geoIdA  = geoA;
                 results[i].geoIdB  = geoB;
             } while (current_threads <= 0);
-            current_threads--;
 
-            std::thread t1 (doDistancesThreaded,
-                            &results[i],
-                            threshold,
-                            wTa * ma.t3d,
-                            &(ma.model),
-                            wTb * mb.t3d,
-                            &(mb.model),
-                            data.rel_err,
-                            data.abs_err,
-                            _bv,
-                            &current_threads);
-            t1.detach ();
+            current_threads--;
+            if (doThreading) {
+                std::thread t1 (doDistancesThreaded,
+                                &results[i],
+                                threshold,
+                                wTa * ma.t3d,
+                                &(ma.model),
+                                wTb * mb.t3d,
+                                &(mb.model),
+                                data.rel_err,
+                                data.abs_err,
+                                _bv,
+                                &current_threads);
+                t1.detach ();
+            }
+            else {
+                doDistancesThreaded (&results[i],
+                                     threshold,
+                                     wTa * ma.t3d,
+                                     &(ma.model),
+                                     wTb * mb.t3d,
+                                     &(mb.model),
+                                     data.rel_err,
+                                     data.abs_err,
+                                     _bv,
+                                     &current_threads);
+            }
             i++;
         }
     }

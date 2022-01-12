@@ -936,8 +936,10 @@ void ODESimulator::initPhysics (rw::kinematics::State& state)
     // std::vector<Object::Ptr> objects = _dwc->getWorkcell()->getObjects();
     for (Body::Ptr body : _dwc->getBodies ()) {
         Object::Ptr obj = body->getObject ();
-        // std::cout << "objects: " << obj->getName() << std::endl;
-        _narrowStrategy->addModel (obj);
+        bool res = _narrowStrategy->addModel (obj);
+        if (!res) {
+            RW_WARN ("Failed to add Object: " << obj->getName () << " to strategy");
+        }
     }
 
     std::vector< Frame* > frames =
@@ -1857,14 +1859,15 @@ bool ODESimulator::detectCollisionsRW (rw::kinematics::State& state, bool onlyTe
     while (!filter->isEmpty ()) {
         const FramePair& pair = filter->frontAndPop ();
         RW_DEBUGS (pair.first->getName () << " -- " << pair.second->getName ());
+        //std::cout << pair.first->getName () << " -- " << pair.second->getName () << std::endl;
 
         // and lastly we use the dispatcher to find the strategy the
         // is required to compute the narrowphase collision
         const ProximityModel::Ptr& a = _frameToModels[*pair.first];
         const ProximityModel::Ptr& b = _frameToModels[*pair.second];
         if (a == NULL || b == NULL) {
-            // std::cout << "No rwmodels:" << pair.first->getName() << " -- " <<
-            // pair.second->getName() << std::endl; std::cout << "No rwmodels:" << std::endl;
+            //std::cout << "No rwmodels:" << pair.first->getName () << " -- "
+            //          << pair.second->getName () << std::endl;
             continue;
         }
 
@@ -1872,8 +1875,8 @@ bool ODESimulator::detectCollisionsRW (rw::kinematics::State& state, bool onlyTe
         ODEBody* a_data = _rwFrameToODEBody[pair.first];
         ODEBody* b_data = _rwFrameToODEBody[pair.second];
         if (a_data == NULL || b_data == NULL) {
-            // std::cout << "No ode bodies:" << pair.first->getName() << " -- " <<
-            // pair.second->getName() << std::endl;
+            //std::cout << "No ode bodies:" << pair.first->getName () << " -- "
+            //          << pair.second->getName () << std::endl;
             continue;
         }
 
@@ -1883,19 +1886,22 @@ bool ODESimulator::detectCollisionsRW (rw::kinematics::State& state, bool onlyTe
         dGeomID a_geom = _frameToOdeGeoms[a_data->getFrame ()];
         dGeomID b_geom = _frameToOdeGeoms[b_data->getFrame ()];
         if (a_geom == NULL || b_geom == NULL) {
-            // std::cout << "No ode geoms:" << pair.first->getName() << " -- " <<
-            // pair.second->getName() << std::endl;
+            //std::cout << "No ode geoms:" << pair.first->getName () << " -- "
+            //          << pair.second->getName () << std::endl;
             continue;
         }
 
         if (a_geom == b_geom) {
-            // std::cout << "Same geoms:" << pair.first->getName() << " -- " <<
-            // pair.second->getName() << std::endl;
+            //std::cout << "Same geoms:" << pair.first->getName () << " -- "
+            //          << pair.second->getName () << std::endl;
             continue;
         }
 
-        if (a_data == b_data)
+        if (a_data == b_data) {
+            //std::cout << "Same data:" << pair.first->getName () << " -- " << pair.second->getName ()
+            //          << std::endl;
             continue;
+        }
 
         Transform3D<> aT = a_data->getTransform ();
         Transform3D<> bT = b_data->getTransform ();
@@ -2030,7 +2036,7 @@ bool ODESimulator::detectCollisionsRW (rw::kinematics::State& state, bool onlyTe
                                                      pair.second->getName ())] =
                     true;    //.push_back(point);
                              //_contactPointsTmp.push_back(boost::make_tuple(pair.first->getName(),
-                //pair.second->getName(), 	point));
+                // pair.second->getName(), 	point));
             }
 
             // friction direction between the bodies ...
