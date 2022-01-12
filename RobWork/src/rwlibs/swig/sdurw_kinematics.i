@@ -145,7 +145,6 @@ NAMED_OWNEDPTR(Frame, rw::kinematics::Frame);
 %template (VectorVectorFrame) std::vector<std::vector<rw::kinematics::Frame*>>;
 %template (MapStringFrame) std::map<std::string,rw::kinematics::Frame*>;
 
-
 %{
     #include <rw/kinematics/FixedFrame.hpp>
 %}

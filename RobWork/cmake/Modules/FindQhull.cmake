@@ -25,10 +25,11 @@ if(NOT ${Qhull_FOUND})
     # ##############################################################################################
     # Find Include Dir
     # ##############################################################################################
+
     find_file(
         QHULL_HEADER
         NAMES libqhull_r.h
-        HINTS "${QHULL_ROOT}" "$ENV{QHULL_ROOT}" "${QHULL_INCLUDE_DIR}" "${QHULL_NATIVE_ROOT}"
+        HINTS ${QHULL_ROOT} "$ENV{QHULL_ROOT}" "${QHULL_INCLUDE_DIR}" "${QHULL_NATIVE_ROOT}"
         PATHS "$ENV{PROGRAMFILES}/QHull" "$ENV{PROGRAMW6432}/QHull"
         PATH_SUFFIXES qhull src/libqhull libqhull_r include
     )
@@ -46,11 +47,11 @@ if(NOT ${Qhull_FOUND})
     find_library(
         QHULL_LIBRARY
         NAMES ${qhull_libnames}
-        HINTS "${QHULL_ROOT}" "$ENV{QHULL_ROOT}" "${QHULL_NATIVE_ROOT}"
+        HINTS ${QHULL_ROOT} "$ENV{QHULL_ROOT}" "${QHULL_NATIVE_ROOT}"
         PATHS "$ENV{PROGRAMFILES}/QHull" "$ENV{PROGRAMW6432}/QHull" "/usr"
         PATH_SUFFIXES project build bin lib lib/x86_64-linux-gnu lib64
     )
-    
+    message(STATUS "QHULL LIBRARY ${QHULL_LIBRARY}")
     # ##############################################################################################
     # Finalize find package
     # ##############################################################################################

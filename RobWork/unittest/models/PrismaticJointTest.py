@@ -35,28 +35,18 @@ class PrismaticJointTest(unittest.TestCase):
         joint.multiplyJointTransform(wTp,q,pre)
 
         self.assertLess((post.P()- pre.P()).normInf(), sys.float_info.epsilon)
-
-        print("\n MANGLER   AttributeError: 'Rotation3D' object has no attribute 'angle'        DET VIRKER IKKE")
         z = post.R()
-        print("\n z", z )
-#        z = (post.R()).angle()
-        print("\n z", z )
-#        self.assertLess((post.R()).angle()-(pre.R()).angle(), sys.float_info.epsilon)
-
-        print("\n MANGLER   NameError: name 'cross' is not defined        DET VIRKER IKKE")
-#        self.assertLess(cross((post.R()).axis(), (pre.R()).axis()).normInf(), sys.float_info.epsilon)
-
-
+        z = sdurw_math.EAA(post.R()).angle()
+        self.assertLess(sdurw_math.EAA(post.R()).angle()-sdurw_math.EAA(pre.R()).angle(), sys.float_info.epsilon)
+        self.assertLess(sdurw_math.cross(sdurw_math.EAA(post.R()).axis(),sdurw_math.EAA(pre.R()).axis()).normInf() , sys.float_info.epsilon)
 
         # Check values are as expected
         expRot = wTp.R()*rot
-        print("\n MANGLER   'angle' og 'cross'                          DET VIRKER IKKE")
-#        self.assertLess((post.R()).angle() - (expRot).angle(), sys.float_info.epsilon)
-#        self.assertLess(cross((post.R()).axis(), (expRot).axis()).normInf(), sys.float_info.epsilon)
+        self.assertLess(sdurw_math.EAA(post.R()).angle() - sdurw_math.EAA(expRot).angle(), sys.float_info.epsilon)
+        self.assertLess(sdurw_math.cross(sdurw_math.EAA(post.R()).axis(), sdurw_math.EAA(expRot).axis()).normInf(), sys.float_info.epsilon)
 
         expPos = wTp.P()+wTp.R().getCol(2)*0.1+expRot.getCol(2)*q[0]
         self.assertLess((post.P() - expPos).normInf(), sys.float_info.epsilon)
-
 
         joint = sdurw_models.PrismaticJoint("Joint",sdurw_math.Transform3D(sdurw_math.Vector3D.z()*0.1))
         wTp = sdurw_math.Transform3D(sdurw_math.Vector3D.z()*0.05, RPY(0, -math.pi/4, 0).toRotation3D())
@@ -68,16 +58,13 @@ class PrismaticJointTest(unittest.TestCase):
         joint.multiplyJointTransform(wTp,q,pre)
 
         self.assertLess((post.P() - pre.P()).normInf(), sys.float_info.epsilon)
-
-        print("\n MANGLER   'angle' og 'cross'                          DET VIRKER IKKE")
-#        self.assertLess((post.R()).angle() - (pre.R()).angle(), sys.float_info.epsilon)
-#        self.assertLess(cross((post.R()).axis(), (pre.R()).axis()).normInf(), sys.float_info.epsilon)
+        self.assertLess(sdurw_math.EAA(post.R()).angle() - sdurw_math.EAA(pre.R()).angle(), sys.float_info.epsilon)
+        self.assertLess(sdurw_math.cross(sdurw_math.EAA(post.R()).axis(), sdurw_math.EAA(pre.R()).axis()).normInf(), sys.float_info.epsilon)
 
         # Check values are as expected
         expRot = wTp.R()
-        print("\n MANGLER   'angle' og 'cross'                          DET VIRKER IKKE")
-        #self.assertLess((post.R()).angle() - (expRot).angle(), sys.float_info.epsilon)
-        #self.assertLess(cross((post.R()).axis(),(expRot).axis()).normInf(), sys.float_info.epsilon)
+        self.assertLess(sdurw_math.EAA(post.R()).angle() - sdurw_math.EAA(expRot).angle(), sys.float_info.epsilon)
+        self.assertLess(sdurw_math.cross(sdurw_math.EAA(post.R()).axis(),sdurw_math.EAA(expRot).axis()).normInf(), sys.float_info.epsilon)
 
         expPos = wTp.P() + wTp.R().getCol(2)*(0.1+q[0])
         self.assertLess((post.P() - expPos).normInf(), sys.float_info.epsilon)
@@ -93,15 +80,13 @@ class PrismaticJointTest(unittest.TestCase):
         pre = sdurw_math.Transform3D()
         joint.multiplyJointTransform(wTp,q,pre)
         self.assertLess((post.P() - pre.P()).normInf(), sys.float_info.epsilon)
-        print("\n MANGLER   'angle' og 'cross'                          DET VIRKER IKKE")
-#        self.assertLess((post.R()).angle() - (pre.R()).angle(), sys.float_info.epsilon)
-#        self.assertLess(cross((post.R()).axis(), (pre.R()).axis()).normInf(), sys.float_info.epsilon)
+        self.assertLess(sdurw_math.EAA(post.R()).angle() - sdurw_math.EAA(pre.R()).angle(), sys.float_info.epsilon)
+        self.assertLess(sdurw_math.cross(sdurw_math.EAA(post.R()).axis(), sdurw_math.EAA(pre.R()).axis()).normInf(), sys.float_info.epsilon)
 
         # Check values are as expected
         expRot = wTp.R()*rot
-        print("\n MANGLER   'angle' og 'cross'                          DET VIRKER IKKE")
-        #self.assertLess((post.R()).angle() - (expRot).angle(), sys.float_info.epsilon)
-        #self.assertLess(cross((post.R()).axis(),(expRot).axis()).normInf(), sys.float_info.epsilon)
+        self.assertLess(sdurw_math.EAA(post.R()).angle() - sdurw_math.EAA(expRot).angle(), sys.float_info.epsilon)
+        self.assertLess(sdurw_math.cross(sdurw_math.EAA(post.R()).axis(),sdurw_math.EAA(expRot).axis()).normInf(), sys.float_info.epsilon)
         expPos = wTp.P() + expRot.getCol(2)*q[0]
         self.assertLess((post.P() - expPos).normInf(), sys.float_info.epsilon)
 

@@ -1,6 +1,10 @@
 %module sdurw_loaders
 
+%include <stl.i>
+%include <std_vector.i>
+%include <exception.i>
 %include <rwlibs/swig/swig_macros.i>
+
 
 %import <rwlibs/swig/sdurw_core.i>
 %import <rwlibs/swig/sdurw_common.i>
@@ -12,9 +16,6 @@
 %import <rwlibs/swig/sdurw_proximity.i>
 %import <rwlibs/swig/sdurw_graphics.i>
 %import <rwlibs/swig/sdurw_trajectory.i>
-
-%include <stl.i>
-%include <std_vector.i>
 
 %import <rwlibs/swig/ext_i/std.i>
 

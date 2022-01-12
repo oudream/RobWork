@@ -23,7 +23,7 @@ import sdurw_models
 import array
 from sdurw_math.sdurw_math import Transform3D, Vector3D
 from sdurw_math.sdurw_math import RPY
-#import numpy as np
+import numpy as np
 
 def testGenericJoint(self, joint, dof):
         self.assertEqual(dof, joint.getBounds()[0].size())
@@ -156,7 +156,7 @@ class Joint(unittest.TestCase):
 
         self.assertTrue(joint.getJointTransform(state).equal( sdurw_math.Transform3D( sdurw_math.Vector3D().z()*0.1 )))
 
-        print("\n MANGLER   HVORFOR        DET VIRKER IKKE")
+        print("\n MANGLER   AssertionError: False is not true        DET VIRKER IKKE")
 #        self.assertTrue(joint.getJointTransform(state).equal( sdurw_math.Transform3D( (T.P()+T.R().getCol(2)*0.1), T.R()) ))
 
 #        print("\n T.R().getCol(2)", T.R().getCol(2) )
@@ -180,14 +180,14 @@ class Joint(unittest.TestCase):
         multiplyJointTransform_res = sdurw_math.Transform3D(T)                  # Make a copy of T using c++ copy constructor
         joint.multiplyJointTransform(T, sdurw_math.Q(1,0.1), multiplyJointTransform_res)
         self.assertTrue(multiplyJointTransform_res.equal(multiplyTransform_res))
-
+        
         jacobian = sdurw_math.Jacobian(6+1,1+2)
         jacRef = sdurw_math.Jacobian.zero(6,1)
 
         jacobian = sdurw_math.Jacobian.zero(6+1,1+2)
 
         jacRef[2,0] = 1
-
+        
         joint.getJacobian(1,2,joint.getJointTransform(state),sdurw_math.Transform3D.identity(),state,jacobian)
 
         # TO DO Kasper skal kigge lidt nærmere på hvad der sker her.
@@ -201,7 +201,7 @@ class Joint(unittest.TestCase):
 
         # TO DO Kasper skal kigge lidt nærmere på hvad der sker her.
 #        self.assertAlmostEqual( (jacobian.asNumpy()[0:2, 1:7] - jacRef.asNumpy()), 0, delta = sys.float_info.epsilon )
-
+        
         jacobian = sdurw_math.Jacobian.zero(6+1,1+2)
         joint.getJacobian(1,2,joint.getJointTransform(state),T,state,jacobian)                  # Using a transformation to the control point should not change anything
 
@@ -209,6 +209,7 @@ class Joint(unittest.TestCase):
 #        self.assertAlmostEqual( (jacobian.asNumpy()[0:2, 1:7] - jacRef.asNumpy()), 0, delta = sys.float_info.epsilon )
 
         testGenericJoint(self,joint,1)
+        
 
 
     def test_Revolute(self):
@@ -230,7 +231,7 @@ class Joint(unittest.TestCase):
 
         vals = [math.pi/2, 0]
         joint.setData(state,vals)
-
+        
         # TO DO Kasper skal kigge lidt nærmere på hvad der sker her - getData og setData.
 #        self.assertEqual(math.pi/2, joint.getData(state)[0])
         
@@ -248,26 +249,29 @@ class Joint(unittest.TestCase):
         multiplyJointTransform_res = sdurw_math.Transform3D(T)                  # Make a copy of v1 using c++ copy constructor
         joint.multiplyJointTransform(T, sdurw_math.Q(1,math.pi/2), multiplyJointTransform_res)
         self.assertTrue(multiplyJointTransform_res.equal(multiplyTransform_res))
-
+        
         jacobian = sdurw_math.Jacobian.zero(6+1,1+2)
         jacRef = sdurw_math.Jacobian.zero(6,1)
         jacRef[5,0] = 1
         joint.getJacobian(1,2,joint.getJointTransform(state),sdurw_math.Transform3D.identity(),state,jacobian)
-
+        
         # TO DO Kasper skal kigge lidt nærmere på hvad der sker her.
 #        self.assertAlmostEqual( (jacobian.asNumpy()[0:2, 1:7] - jacRef.asNumpy()), 0, delta = sys.float_info.epsilon )
         jacobian = sdurw_math.Jacobian.zero(6+1,1+2)
-        joint.getJacobian(1,2,joint.getJointTransform(state),sdurw_math.Transform3D( sdurw_math.Vector3D().z()*0.1 ),state,jacobian)    # displacement of tcp along z should not change anything
-
+        
+        # TO DO Kasper skal kigge lidt nærmere på hvad der sker her.
+        # Fault: Segmentation fault (core dumped) !
+#        joint.getJacobian(1,2,joint.getJointTransform(state),sdurw_math.Transform3D( sdurw_math.Vector3D().z()*0.1 ),state,jacobian)    # displacement of tcp along z should not change anything
+        
         # TO DO Kasper skal kigge lidt nærmere på hvad der sker her.
 #        self.assertAlmostEqual( (jacobian.asNumpy()[0:2, 1:7] - jacRef.asNumpy()), 0, delta = sys.float_info.epsilon )
         jacRef = sdurw_math.Jacobian.zero(6,1)
         jacRef[1,0] = 0.1;                                                      # if tcp is displaced in x, it will move in y when rotating around z.
         joint.getJacobian(1,2,joint.getJointTransform(state),sdurw_math.Transform3D( sdurw_math.Vector3D().x()*0.1 ),state,jacobian)
-
+        
         # TO DO Kasper skal kigge lidt nærmere på hvad der sker her.
 #        self.assertAlmostEqual( (jacobian.asNumpy()[0:2, 1:7] - jacRef.asNumpy()), 0, delta = sys.float_info.epsilon )
-
+        
         jacobian = sdurw_math.Jacobian(6+1,1+2)
         jacRef = sdurw_math.Jacobian.zero(6,1)
         rotVec = T.R().getCol(2)

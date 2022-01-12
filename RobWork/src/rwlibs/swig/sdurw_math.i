@@ -71,9 +71,6 @@ FRIEND_OPERATOR_RET(rw::math::Vector3D<float>, rw::math::EAA<float>, ==, bool);
 FRIEND_OPERATOR_RET(rw::math::Vector3D<double>, rw::math::EAA<double>, !=, bool);
 FRIEND_OPERATOR_RET(rw::math::Vector3D<float>, rw::math::EAA<float>, !=, bool);
 
-%template(cross) rw::math::cross<double>;
-%template(cross) rw::math::cross<float>;
-
 %ignore rw::math::EigenDecomposition::MapSort;
 %{
     #include <rw/math/EigenDecomposition.hpp>
@@ -516,8 +513,7 @@ FRIEND_OPERATOR(rw::math::Rotation3D<float>, rw::math::VelocityScrew6D<float>, *
 %template (norm1) rw::math::norm1<double>;
 %template (norm2) rw::math::norm2<float>;
 %template (norm2) rw::math::norm2<double>;
-%template (cross) rw::math::cross<double>;
-%template (cross) rw::math::cross<float>;
+
 %template (normInf) rw::math::normInf<float>;
 %template (normInf) rw::math::normInf<double>;
 %template (castToFloat) rw::math::cast<float,double>;
