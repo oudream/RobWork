@@ -25,6 +25,11 @@ import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
 %}
 
+%{
+    #include <rw/math/Vector3D.hpp>
+%}
+
+
 %constant double Pi = rw::math::Pi;
 %constant double Inch2Meter = rw::math::Inch2Meter;
 %constant double Meter2Inch = rw::math::Meter2Inch;

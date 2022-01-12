@@ -1187,10 +1187,8 @@ class RobWorkStudioEventHS
         int cnt = 0;
         while (_hs != NULL && *_hs == false && cnt < 100) {
             TimerUtil::sleepMs (5);
-            // std::cout << "Wait1: " << *_hs << std::endl;
             cnt++;
         }
-        // std::cout << "Wait done: " << std::endl;
     }
 
     rw::core::Ptr< bool > _hs;

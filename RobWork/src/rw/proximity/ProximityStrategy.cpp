@@ -19,6 +19,7 @@
 #include <rw/kinematics/Frame.hpp>
 #include <rw/models/Object.hpp>
 #include <rw/models/RigidObject.hpp>
+#include <rw/models/DeformableObject.hpp>
 #include <rw/proximity/rwstrategy/ProximityStrategyRW.hpp>
 
 #include <thread>
@@ -48,6 +49,18 @@ bool ProximityStrategy::addModel (rw::models::Object::Ptr object)
 {
     if (RigidObject::Ptr robj = object.cast< RigidObject > ()) {
         std::vector< Geometry::Ptr > geoms = robj->getGeometry ();
+        for (Geometry::Ptr geom : geoms) {
+            rw::core::Ptr<Frame> geoframe = geom->getFrame ();
+            if (!hasModel (geoframe)) {
+                _frameToModel[*geoframe] = createModel ();
+                _frameToModel[*geoframe]->setFrame (geoframe);
+            }
+            ProximityModel::Ptr model = getModel (geoframe);
+            model->addGeometry (geom);
+        }
+        return true;
+    }else if(object.cast< DeformableObject > () == NULL ){
+        std::vector< Geometry::Ptr > geoms = object->getGeometry ();
         for (Geometry::Ptr geom : geoms) {
             rw::core::Ptr<Frame> geoframe = geom->getFrame ();
             if (!hasModel (geoframe)) {

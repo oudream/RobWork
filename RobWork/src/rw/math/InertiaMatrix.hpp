@@ -307,6 +307,15 @@ namespace rw { namespace math {
                                        0,
                                        (T) (1 / 12.0 * mass * (x * x + y * y)));
         }
+        
+        /**
+         * @brief get The diagonal of the Matrix
+         * @return Vector3D< T > 
+         */
+        rw::math::Vector3D< T > diag () const
+        {
+            return Vector3D< T > (_matrix (0, 0), _matrix (1, 1), _matrix (2, 2));
+        }
 
       private:
         Base _matrix;
@@ -325,8 +334,8 @@ namespace rw { namespace math {
      * @f$ \robabx{b}{a}{\mathbf{R}} = \robabx{a}{b}{\mathbf{R}}^{-1} =
      * \robabx{a}{b}{\mathbf{R}}^T @f$
      */
-    
-    #endif 
+
+#endif
     template< class Q > InertiaMatrix< Q > inverse (const InertiaMatrix< Q >& aRb)
     {
         return InertiaMatrix< Q > (aRb.e ().inverse ());
