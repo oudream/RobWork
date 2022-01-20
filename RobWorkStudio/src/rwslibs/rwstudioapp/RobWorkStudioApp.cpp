@@ -75,6 +75,7 @@
 
 #include <boost/filesystem.hpp>
 #include <boost/program_options/parsers.hpp>
+#include <functional>
 
 USE_ROBWORK_NAMESPACE
 using namespace robwork;
@@ -85,22 +86,29 @@ namespace {
 class MyQApplication : public QApplication
 {
   public:
-    MyQApplication (int& argc, char** argv) : QApplication (argc, argv) {}
+    MyQApplication (int& argc, char** argv) : QApplication (argc, argv), devMode (false) {}
 
     bool notify (QObject* rec, QEvent* ev)
     {
-        try {
+        if (!devMode) {
+            try {
+                return QApplication::notify (rec, ev);
+            }
+            catch (std::exception& e) {
+                QMessageBox::warning (0, tr ("An error occurred"), e.what ());
+            }
+            catch (...) {
+                QMessageBox::warning (
+                    0, tr ("An unexpected error occurred"), tr ("This is likely a bug."));
+            }
+        }
+        else {
             return QApplication::notify (rec, ev);
-        }
-        catch (std::exception& e) {
-            QMessageBox::warning (0, tr ("An error occurred"), e.what ());
-        }
-        catch (...) {
-            QMessageBox::warning (
-                0, tr ("An unexpected error occurred"), tr ("This is likely a bug."));
         }
         return false;
     }
+
+    bool devMode;
 };
 }    // namespace
 
@@ -227,12 +235,16 @@ int RobWorkStudioApp::run ()
 
     ProgramOptions poptions ("RobWorkStudio", RW_VERSION);
 
-    poptions.addStringOption ("ini-file", std::string(getenv("HOME")) +"/.RobWorkStudio.ini", "RobWorkStudio ini-file");
+    poptions.addStringOption ("ini-file",
+                              std::string (getenv ("HOME")) + "/.RobWorkStudio.ini",
+                              "RobWorkStudio ini-file");
     poptions.addStringOption ("input-file", "", "Project/Workcell/Device input file");
     poptions.addStringOption (
         "rwsplugin", "", "load RobWorkStudio plugin, not to be confused with '--rwplugin'");
     poptions.addStringOption ("nosplash", "", "If defined the splash screen will not be shown");
     poptions.addStringOption ("exclude-plugins", "", "list of plugins not to load seperated by ,");
+    poptions.addBoolOption (
+        "developer", false, "use developer mode. This lets exceptions be caught by a debugger");
     poptions.setPositionalOption ("input-file", -1);
 
     poptions.initOptions ();
@@ -245,15 +257,15 @@ int RobWorkStudioApp::run ()
     std::string inifile = map.get< std::string > ("ini-file", "");
     RobWork rw;
     if (!boost::filesystem::exists (inifile)) {
-        rw.getLog().infoLog() << "inifile not found at: " << inifile << std::endl;
-        if (boost::filesystem::exists (std::string(getenv("HOME")) +"/RobWorkStudio.ini")) {
-            inifile = std::string(getenv("HOME")) + "/RobWorkStudio.ini";
+        rw.getLog ().infoLog () << "inifile not found at: " << inifile << std::endl;
+        if (boost::filesystem::exists (std::string (getenv ("HOME")) + "/RobWorkStudio.ini")) {
+            inifile = std::string (getenv ("HOME")) + "/RobWorkStudio.ini";
         }
         else if (boost::filesystem::exists ("RobWorkStudio.ini")) {
             inifile = "RobWorkStudio.ini";
         }
         if (boost::filesystem::exists (inifile)) {
-            rw.getLog().infoLog() << "using inifile: " << inifile << std::endl;
+            rw.getLog ().infoLog () << "using inifile: " << inifile << std::endl;
         }
     }
 
@@ -265,12 +277,13 @@ int RobWorkStudioApp::run ()
 
     {
         MyQApplication app (argc, argv);
+        app.devMode = map.get< bool > ("developer");
 #ifdef RWS_HAVE_GLUT
         glutInit (&argc, argv);
 #endif
 
-        try {
-            QSplashScreen* splash;
+        std::function<void(void)> AppRunner = [&]() {
+            QSplashScreen* splash = NULL;
             if (showSplash) {
                 QPixmap pixmap (":/images/splash.jpg");
                 splash = new QSplashScreen (pixmap);
@@ -404,20 +417,28 @@ int RobWorkStudioApp::run ()
                 _isRunning = false;
                 _rwstudio  = NULL;
             }
+        };
+        if (app.devMode) {
+            AppRunner ();
         }
-        catch (const Exception& e) {
-            std::cout << e.what () << std::endl;
-            QMessageBox::critical (NULL, "RW Exception", e.what ());
-            _isRunning = false;
-            return -1;
-        }
-        catch (std::exception& e) {
-            std::cout << e.what () << std::endl;
-            QMessageBox::critical (NULL, "Exception", e.what ());
-            _isRunning = false;
-            return -1;
-        }
-        catch (int) {
+        else {
+            try {
+                AppRunner ();
+            }
+            catch (const Exception& e) {
+                std::cout << e.what () << std::endl;
+                QMessageBox::critical (NULL, "RW Exception", e.what ());
+                _isRunning = false;
+                return -1;
+            }
+            catch (std::exception& e) {
+                std::cout << e.what () << std::endl;
+                QMessageBox::critical (NULL, "Exception", e.what ());
+                _isRunning = false;
+                return -1;
+            }
+            catch (int) {
+            }
         }
     }
     _isRunning = false;

@@ -233,6 +233,14 @@ void ProgramOptions::addStringOption (const std::string& name, const std::string
     _additionalStringOptions.push_back (name);
 }
 
+void ProgramOptions::addBoolOption (const std::string& name, bool defval, const std::string& desc)
+{
+    _optionDesc.add_options () (
+        name.c_str (), po::bool_switch ()->default_value (defval), desc.c_str ());
+
+    _additionalBoolOptions.push_back (name);
+}
+
 void ProgramOptions::setPositionalOption (const std::string& name, int i)
 {
     _posOptionDesc.add (name.c_str (), i);
@@ -281,10 +289,17 @@ int ProgramOptions::checkVariablesMap (po::variables_map& vm)
     }
 
     for (std::string strOption : _additionalStringOptions) {
-        // std::cout << strOption <<" sfdkjskf "<< std::endl;
         if (vm.count (strOption.c_str ())) {
             std::string val = vm[strOption.c_str ()].as< std::string > ();
             _pmap.add (strOption, "", val);
+        }
+    }
+    for (std::string& o : _additionalBoolOptions) {
+        if (_pmap.has (o)) {
+            _pmap.set (o, vm[o.c_str ()].as< bool > ());
+        }
+        else {
+            _pmap.add (o, "", vm[o.c_str ()].as< bool > ());
         }
     }
     return 0;
