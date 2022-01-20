@@ -4,6 +4,7 @@
 %include <std_vector.i>
 %include <exception.i>
 %include <rwlibs/swig/swig_macros.i>
+%include <exception.i>
 
 %import <rwlibs/swig/sdurw_core.i>
 %import <rwlibs/swig/sdurw_common.i>
@@ -72,6 +73,17 @@ import org.robwork.sdurw_sensor.*;
 		return printCString<rw::kinematics::Frame>(*f);
 	}
 %}
+
+%exception {
+    try {
+        //printf("Entering function : $name\n"); // uncomment to get a print out of all function calls
+        $action
+    }catch(rw::core::Exception& e ){
+        SWIG_exception(SWIG_RuntimeError,e.what());
+    }catch(...){
+        SWIG_exception(SWIG_RuntimeError,"unknown error");
+    }
+}
 
 
 %{
@@ -383,6 +395,7 @@ NAMED_OWNEDPTR(VirtualJoint,rw::models::VirtualJoint);
 %include <rw/models/WorkCell.hpp>
 NAMED_OWNEDPTR(WorkCell,rw::models::WorkCell);
 //%template (WorkCellChangedEvent) rw::core::Event< rw::models::WorkCell::WorkCellChangedListener, int >;
+
 
 %extend rw::models::WorkCell {
 	/**

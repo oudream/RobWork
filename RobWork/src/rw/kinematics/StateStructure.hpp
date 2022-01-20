@@ -68,7 +68,7 @@ namespace rw { namespace kinematics {
          * @note the search includes the union of StateData in all
          * StateSetup's that belong to the StateStructure
          */
-        bool has (const StateData* data);
+        bool has (rw::core::Ptr<const StateData> data);
 
         /**
          * @brief gets the max ID of any StateData/Frame currently in the tree.
@@ -87,7 +87,8 @@ namespace rw { namespace kinematics {
          * @note Ownership is taken, the data object may not have been added to
          * any StateStructure before.
          */
-        void addData (StateData* data);
+        DEPRECATED("use rw::core::Ptr<StateData> instead of StateData*")
+        void addData (StateData*  data);
 
         /**
          * @brief adds a statedata to the frame tree and allocates memory
@@ -132,7 +133,7 @@ namespace rw { namespace kinematics {
          * children then all of these will change parent relation ship such that
          * world will become their parent.
          */
-        void remove (StateData* data);
+        void remove (rw::core::Ptr<StateData> data);
 
         /**
          * @brief upgrades the state to the default state, but without

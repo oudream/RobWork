@@ -64,6 +64,11 @@ namespace rw { namespace models {
          */
         ParallelLeg (std::vector< rw::kinematics::Frame* > frames);
 
+         /**
+         * @brief Constructs leg from frames
+         * @param frames [in] list of Frame's
+         */
+        ParallelLeg (std::vector< rw::core::Ptr<rw::kinematics::Frame> > frames);
         /**
          * @brief Destructor
          */
@@ -171,6 +176,7 @@ namespace rw { namespace models {
 
       private:
         std::vector< rw::kinematics::Frame* > _kinematicChain;
+        std::vector< rw::core::Ptr<rw::kinematics::Frame> > _kinematicChainPtr;
         std::vector< models::Joint* > _actuatedJoints;
         std::vector< models::Joint* > _unactuatedJoints;
         rw::math::Jacobian* _jacobian;
