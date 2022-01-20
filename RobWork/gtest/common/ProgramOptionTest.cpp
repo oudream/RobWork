@@ -97,4 +97,20 @@ TEST(ProgramOptions, ParseInitOptions) {
     EXPECT_EQ(List,rw::math::Q(4,221.2342,2.0,3.0,4.0));
 }
 
+TEST(ProgramOptions, addBoolOption){
+    ProgramOptions parser("testApp","6.6.6");
+
+    parser.addBoolOption("test",false,"a test");
+
+    parser.parse("-help");
+    PropertyMap p = parser.getPropertyMap();
+    EXPECT_FALSE(p.get<bool>("test"));
+
+    parser.parse("--test");
+    PropertyMap p2 = parser.getPropertyMap();
+    EXPECT_TRUE(p2.get<bool>("test"));
+
+    
+}
+
 //TODO(kalor) add test of setPositionOption and addStringOption
