@@ -59,13 +59,13 @@ StateStructure::~StateStructure ()
     }
 }
 
-bool StateStructure::has (const StateData* const data)
+bool StateStructure::has (rw::core::Ptr<const StateData> const data)
 {
     const int id = data->getID ();
     return (id >= 0 && id < getMaxID () && _allDatas[id] != NULL);
 }
 
-void StateStructure::addData (StateData* const data)
+void StateStructure::addData (StateData* data)
 {
     addDataInternal (data);
 
@@ -74,7 +74,7 @@ void StateStructure::addData (StateData* const data)
     _stateDataAddedEvent.fire (data);
 }
 
-void StateStructure::addData (const rw::core::Ptr< StateData > data)
+void StateStructure::addData (rw::core::Ptr< StateData > data)
 {
     addDataInternal (data);
 
@@ -83,7 +83,7 @@ void StateStructure::addData (const rw::core::Ptr< StateData > data)
     _stateDataAddedEvent.fire (data.get ());
 }
 
-void StateStructure::addDataInternal (StateData* const data)
+void StateStructure::addDataInternal (StateData* data)
 {
     // frame must not be in tree allready
     if (has (data))
@@ -103,7 +103,7 @@ void StateStructure::addDataInternal (StateData* const data)
     // lastly update the default state
 }
 
-void StateStructure::addDataInternal (const rw::core::Ptr< StateData > data)
+void StateStructure::addDataInternal (rw::core::Ptr< StateData > data)
 {
     // frame must not be in tree allready
     if (has (data.get ())) {
@@ -233,7 +233,7 @@ void StateStructure::addDAF (Frame::Ptr frame, Frame::Ptr parent)
     _stateDataAddedEvent.fire (frame.get ());
 }
 
-void StateStructure::remove (StateData* data)
+void StateStructure::remove (rw::core::Ptr<StateData> data)
 {
     RW_ASSERT (data);
     RW_ASSERT (data->getID () > 0);
@@ -260,7 +260,7 @@ void StateStructure::remove (StateData* data)
     updateDefaultState ();
     // perform cleanup
     cleanup (id);
-    _stateDataRemovedEvent.fire (data);
+    _stateDataRemovedEvent.fire (data.get());
 }
 
 State StateStructure::upgradeState (const State& oldState)

@@ -5,7 +5,6 @@
 %include <exception.i>
 %include <rwlibs/swig/swig_macros.i>
 
-
 %import <rwlibs/swig/sdurw_core.i>
 %import <rwlibs/swig/sdurw_common.i>
 %import <rwlibs/swig/sdurw_math.i>

@@ -54,7 +54,7 @@ namespace rw { namespace kinematics {
      * the transform of a frame may depend on the joint values for other frames
      * also.
      */
-    class Frame : public StateData
+    class Frame : public rw::kinematics::StateData
     {
         typedef std::vector< rw::kinematics::Frame* > ChildList;
 

@@ -446,7 +446,10 @@ class ParallelDevice(unittest.TestCase):
 #        self.assertEqual(95.6865, qFull[32])
 
     def test_Robotiq(self):
+        
         path = os.getcwd()+"/../gtest/testfiles/devices/Robotiq-2-finger-85/robotiq.wc.xml"
+        if not os.path.exists(path):
+                path = os.getcwd()+"/../../gtest/testfiles/devices/Robotiq-2-finger-85/robotiq.wc.xml"
         wc = sdurw_loaders.WorkCellLoaderFactory.load(path)
         self.assertFalse(wc.isNull())
 

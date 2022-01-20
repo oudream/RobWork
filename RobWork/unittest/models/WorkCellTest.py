@@ -34,9 +34,8 @@ class WorkCell(unittest.TestCase):
         frame5 = sdurw_kinematics.MovableFrame("Frame5")
 
         world = sdurw_models.WorkCell("The World")
-
         with self.assertRaises(Exception):
-            world.addFrame(frame1)
+            world.addFrame(frame1.deref())
 
 # TO DO Kig nærmere på dette problem omkring world.addFrame():
         print("\n MANGLER   TypeError: Wrong number or type of arguments for overloaded function 'WorkCell_addFrame'.        DET VIRKER IKKE")
@@ -45,7 +44,7 @@ class WorkCell(unittest.TestCase):
         # Note to translation of "EXPECT_NO_THROW" into python: Simply call your functionality. If an unhandled exception gets raised, the test automatically fails! There is really no reason to do anything else. 
         #
 
-        print("\n MANGLER   Her får man alligevel en RuntimeError        DET VIRKER IKKE")
+        print("\n MANGLER   Her faer man alligevel en RuntimeError        DET VIRKER IKKE")
 #        self.assertRaises(RuntimeError, world.addFrame(frame1,frame2) )
         del world
 

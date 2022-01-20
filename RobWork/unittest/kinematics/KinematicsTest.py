@@ -63,16 +63,13 @@ class KinematicsTest(unittest.TestCase):
         self.assertAlmostEqual( m1_t3d_b.P()[1], m1_t3d.P()[1], delta = 1e-6 )
         self.assertAlmostEqual( m1_t3d_b.P()[2], m1_t3d.P()[2], delta = 1e-6 )
 
-        # TO DO 
-        # "We need to beable to compare the frames directly"
-        # So this would work:  self.assertEqual( world, daf.getParent(state) )
-        #
-        self.assertEqual( world.getName() , daf.getParent(state).getName() )
+        self.assertEqual( world , daf.getParent(state) )
 
         daf.attachTo(m1, state)
-#        self.assertEqual( m1 , daf.getParent(state) )
+        
+        self.assertEqual( m1 , daf.getParent(state) )
         daf.attachTo(l1, state)
-#        self.assertEqual( l1 , daf.getParent(state) )
+        self.assertEqual( l1 , daf.getParent(state) )
 
         tree.setDefaultState(state)
         tree.remove(l1)
@@ -94,14 +91,14 @@ class KinematicsTest(unittest.TestCase):
         nstate = tree.getDefaultState()
         nstate.copy(state)
 
-#        self.assertEqual( l1 , daf.getParent(nstate) )
+        self.assertEqual( l1 , daf.getParent(nstate) )
         m1_t3d_b = m1.getTransform(nstate)
         self.assertAlmostEqual( m1_t3d_b.P()[0], m1_t3d.P()[0], delta = 1e-6 )
         self.assertAlmostEqual( m1_t3d_b.P()[1], m1_t3d.P()[1], delta = 1e-6 )
         self.assertAlmostEqual( m1_t3d_b.P()[2], m1_t3d.P()[2], delta = 1e-6 )
 
         # also check if old state values are not deleted
-#        self.assertEqual( l1 , daf.getParent(state) )
+        self.assertEqual( l1 , daf.getParent(state) )
         m1_t3d_b = m1.getTransform(state)
         self.assertAlmostEqual( m1_t3d_b.P()[0], m1_t3d.P()[0], delta = 1e-6 )
         self.assertAlmostEqual( m1_t3d_b.P()[1], m1_t3d.P()[1], delta = 1e-6 )
