@@ -99,8 +99,6 @@ if(EXISTS ${RWSIMCFG_ROOT}/RobWorkSimBuildConfig_${RWSIM_BUILD_TYPE}.cmake)
         if(NOT ${RobWork_FOUND})
             find_package(RobWork REQUIRED HINTS ${RWSIM_BUILD_WITH_RW_ROOT}/cmake)
         endif()
-    else()
-        message(STATUS "RobWork Already Found")
     endif()
 
     # Find RobWorkStudio
@@ -114,8 +112,6 @@ if(EXISTS ${RWSIMCFG_ROOT}/RobWorkSimBuildConfig_${RWSIM_BUILD_TYPE}.cmake)
         if(NOT ${RobWorkStudio_FOUND})
             find_package(RobWorkStudio REQUIRED HINTS ${RWSIM_BUILD_WITH_RWS_ROOT}/cmake)
         endif()
-    else()
-        message(STATUS "RobWorkStudio Already Found")
     endif()
 
     set(tmp_list ${RWSIM_BUILD_WITH_LIBRARIES} ${RobWorkSim_FIND_COMPONENTS})

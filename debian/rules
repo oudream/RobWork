@@ -6,7 +6,8 @@ export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 	# Ubuntu 16
 	#dh $@ --parallel --buildsystem=cmake --builddirectory=Build
 	# Newer then ubuntu 16
-	dh $@ --buildsystem=cmake --builddirectory=Build 
+	dh $@ --buildsystem=cmake --builddirectory=Build
+	#dh $@ --buildsystem=cmake --builddirectory=Build --no-parallel
 
 
 override_dh_auto_configure:

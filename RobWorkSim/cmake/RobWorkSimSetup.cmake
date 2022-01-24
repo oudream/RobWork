@@ -65,7 +65,6 @@ if(RW_BUILD_WITH_SWIG)
     endif()
 endif()
 
-
 # Find and setup OpenGL.
 if(POLICY CMP0072) # Introduce cmake 3.11
     cmake_policy(SET CMP0072 NEW)
@@ -175,6 +174,10 @@ endif()
 # test if ODE exists
 set(RWSIM_HAVE_ODE False)
 
+if(DEFINED ODE_DIR AND NOT DEFINED ODE_ROOT)
+    set(ODE_ROOT ${ODE_DIR})
+endif()
+
 find_package(ODE QUIET)
 cmake_dependent_option(
     RWSIM_DISABLE_ODE "Set when you want to disable ODE!" OFF "${ODE_FOUND};${RW_BUILD_WITH_PQP}"
@@ -269,9 +272,8 @@ if(DEFINED USE_WERROR)
 endif()
 
 if(NOT DEFINED RWSIM_CXX_FLAGS)
-    set(RWSIM_CXX_FLAGS
-        "${RW_BUILD_WITH_CXX_FLAGS} ${RWSIM_CXX_FLAGS_TMP}"
-        CACHE STRING "Change this to force using your own flags and not those of RobWorkSim"
+    set(RWSIM_CXX_FLAGS "${RW_BUILD_WITH_CXX_FLAGS} ${RWSIM_CXX_FLAGS_TMP}" CACHE STRING
+        "Change this to force using your own flags and not those of RobWorkSim"
     )
 endif()
 set(RWSIM_CXX_FLAGS "${RWSIM_CXX_FLAGS}${WERROR_FLAG}")
@@ -283,14 +285,12 @@ message(STATUS "RobWorkSim: Adding RWSIM CXX flags: ${RWSIM_CXX_FLAGS}")
 # automatically set.
 #
 if(DEFINED RWSIM_LINKER_FLAGS)
-    set(CMAKE_SHARED_LINKER_FLAGS
-        "${CMAKE_SHARED_LINKER_FLAGS} ${RWSIM_LINKER_FLAGS}"
-        CACHE STRING "" FORCE
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${RWSIM_LINKER_FLAGS}" CACHE STRING
+        "" FORCE
     )
     if(WIN32)
-        set(CMAKE_EXE_LINKER_FLAGS
-            "${CMAKE_EXE_LINKER_FLAGS} ${RWSIM_LINKER_FLAGS}"
-            CACHE STRING "" FORCE
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${RWSIM_LINKER_FLAGS}" CACHE STRING
+            "" FORCE
         )
     endif()
 
@@ -309,9 +309,8 @@ set(ROBWORKSIM_INCLUDE_DIRS ${RWSIM_ROOT}/src ${RW_BULLET_INCLUDE_DIR})
 #
 # The library dirs
 #
-set(ROBWORKSIM_LIBRARY_DIRS
-    ${Boost_LIBRARY_DIRS} ${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY} ${RWSIM_LIBRARY_OUT_DIR}
-    ${RWSIM_ARCHIVE_OUT_DIR} ${ROBWORK_LIBRARY_DIRS}
+set(ROBWORKSIM_LIBRARY_DIRS ${Boost_LIBRARY_DIRS} ${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}
+    ${RWSIM_LIBRARY_OUT_DIR} ${RWSIM_ARCHIVE_OUT_DIR} ${ROBWORK_LIBRARY_DIRS}
 )
 
 #
