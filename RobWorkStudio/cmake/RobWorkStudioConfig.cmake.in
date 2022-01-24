@@ -140,8 +140,6 @@ if(EXISTS ${RWSCFG_ROOT}/RobWorkStudioBuildConfig_${RWS_BUILD_TYPE}.cmake)
         if(NOT ${RobWork_FOUND})
             find_package(RobWork REQUIRED HINTS ${RWS_BUILD_WITH_RW_ROOT}/cmake)
         endif()
-    else()
-        message(STATUS "RobWork Already Found")
     endif()
 
     # ##############################################################################################

@@ -6,8 +6,14 @@
 # library search ad selection ODE_USE_SINGLE - set if force using double ODE_USE_DOUBLE - set if
 # force using double ODE_USE_DEBUG - set if force using debug created by RobWork, based on code by
 # David Guthrie.  Based on code by Robert Osfield
-
-find_package(ODE QUIET PATHS "$ENV(ODE_ROOT)/lib/cmake/ode-*" NO_MODULE)
+set(RW_ODE_DIR ${ODE_DIR})
+find_package(
+    ODE QUIET
+    PATHS "$ENV(ODE_ROOT)/lib/cmake/ode-*" "${ODE_ROOT}/lib/cmake/ode-*" ${ODE_DIR}
+          "$ENV(ODE_DIR)/lib/cmake/ode-*" "${ODE_DIR}/lib/cmake/ode-*"
+    NO_MODULE
+)
+set(ODE_DIR ${RW_ODE_DIR})
 
 macro(FIND_ODE_LIBRARY MYLIBRARY MYLIBRARYNAME)
     set(CMAKE_FIND_LIBRARY_SUFFIXES .so .a .lib .dylib)
