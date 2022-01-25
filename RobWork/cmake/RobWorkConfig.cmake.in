@@ -57,23 +57,14 @@ if(NOT TARGET sdurw)
         sdurw_simulation
         sdurw_opengl
     )
-    foreach(
-        RW_MODULE
-        ${RW_MODULES_WITH_SWIG}
-        sdurw_calibration
-        sdurw_analytic_geometry
-        sdurw_simplefinger
-        sdurw_csg
-        sdurw_csgjs
+    foreach(RW_MODULE ${RW_MODULES_WITH_SWIG} sdurw_calibration sdurw_analytic_geometry
+                      sdurw_simplefinger sdurw_csg sdurw_csgjs
     )
         if(EXISTS "${RWCFG_ROOT}/targets/${RW_MODULE}.cmake")
             include("${RWCFG_ROOT}/targets/${RW_MODULE}.cmake")
         endif()
     endforeach()
-    foreach(
-        RW_MODULE
-        ${RW_MODULES_WITH_SWIG}
-    )
+    foreach(RW_MODULE ${RW_MODULES_WITH_SWIG})
         if(EXISTS "${RWCFG_ROOT}/targets/${RW_MODULE}_py.cmake")
             include("${RWCFG_ROOT}/targets/${RW_MODULE}_py.cmake")
         endif()
@@ -173,7 +164,7 @@ if(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
         if(IS_FOUND)
             set(ROBWORK_LIBRARIES_TMP ${RW_BUILD_WITH_LIBRARIES_LUA} ${ROBWORK_LIBRARIES_TMP})
             set(RW_BUILD_WITH_INCLUDE_DIR ${RW_BUILD_WITH_LUA_INCLUDE_DIR}
-                                          ${RW_BUILD_WITH_INCLUDE_DIR}
+                ${RW_BUILD_WITH_INCLUDE_DIR}
             )
         endif()
     endif()
@@ -181,7 +172,7 @@ if(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
     if(${RW_BUILD_WITH_XERCES} AND EXISTS ${RW_BUILD_WITH_LIBRARIES_XERCESC})
         set(ROBWORK_LIBRARIES_TMP ${RW_BUILD_WITH_LIBRARIES_XERCESC} ${ROBWORK_LIBRARIES_TMP})
         set(RW_BUILD_WITH_INCLUDE_DIR ${RW_BUILD_WITH_XERCES_INCLUDE_DIR}
-                                      ${RW_BUILD_WITH_INCLUDE_DIR}
+            ${RW_BUILD_WITH_INCLUDE_DIR}
         )
     endif()
 
@@ -233,6 +224,16 @@ if(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
         endif()
     endforeach()
 
+    set(ROBWORK_INCLUDE_DIRS_TMP ${ROBWORK_INCLUDE_DIRS})
+    set(ROBWORK_INCLUDE_DIRS)
+    foreach(l ${ROBWORK_INCLUDE_DIRS_TMP})
+        if(EXISTS "${l}")
+            list(APPEND ROBWORK_INCLUDE_DIRS "${l}")
+        elseif(EXISTS "${l}/..")
+            list(APPEND ROBWORK_INCLUDE_DIRS "${l}/..")
+        endif()
+    endforeach()
+
     set(ROBWORK_INCLUDE_DIR "${ROBWORK_INCLUDE_DIRS}")
 
 else()
@@ -262,8 +263,5 @@ find_package_handle_standard_args(
 mark_as_advanced(ROBWORK_LIBRARIES ROBWORK_INCLUDE_DIRS ROBWORK_INCLUDE_DIR ROBWORK_LIBRARY_DIRS)
 
 if(ROBWORK_FOUND)
-    set(ROBWORK_VERSION
-        ${RobWork_VERSION}
-        CACHE STRING "RobWork version"
-    )
+    set(ROBWORK_VERSION ${RobWork_VERSION} CACHE STRING "RobWork version")
 endif(ROBWORK_FOUND)
