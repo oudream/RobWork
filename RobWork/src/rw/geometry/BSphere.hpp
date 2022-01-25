@@ -4,6 +4,7 @@
 #if !defined(SWIG)
 #include "BV.hpp"
 
+#include <rw/core/Ptr.hpp>
 #include <rw/math/Constants.hpp>
 #include <rw/math/Vector3D.hpp>
 #endif
@@ -12,12 +13,14 @@
 namespace rw {
 namespace geometry {
     class TriMesh;
+    class GeometryData;
 
     /**
      * @brief class representing an Bounding sphere
      */
 
-    template< class T = double > class BSphere : public rw::geometry::BV< rw::geometry::BSphere< T > >
+    template< class T = double >
+    class BSphere : public rw::geometry::BV< rw::geometry::BSphere< T > >
     {
       public:
         typedef T value_type;
@@ -40,7 +43,9 @@ namespace geometry {
          * @brief Copy constroctor
          * @param bs [in] object to copy
          */
-        BSphere (const rw::geometry::BSphere<T>& bs) : _p3d(bs.getPosition()),_radius(bs.getRadius()) {}
+        BSphere (const rw::geometry::BSphere< T >& bs) :
+            _p3d (bs.getPosition ()), _radius (bs.getRadius ())
+        {}
 
         /**
          * @brief get the position of the sphere center
@@ -92,7 +97,7 @@ namespace geometry {
             return os << " BSphere{" << sphere._p3d << "," << sphere._radius << "}";
         }
 #else
-        TOSTRING (rw::geometry::BSphere<T>);
+        TOSTRING (rw::geometry::BSphere< T >);
 #endif
         /**
          * @brief fit a sphere in $O(n)$ to a triangle mesh using Principal Component Analysis (PCA)
@@ -102,6 +107,8 @@ namespace geometry {
          * @return bounding sphere
          */
         static BSphere< T > fitEigen (const rw::geometry::TriMesh& tris);
+        static BSphere< T > fitEigen (const rw::core::Ptr< rw::geometry::TriMesh >& tris);
+        static BSphere< T > fitEigen (const rw::core::Ptr< rw::geometry::GeometryData >& tris);
 
         // static BSphere<T> fitRitter(const rw::geometry::TriMesh& tris);
       private:
@@ -115,8 +122,8 @@ SWIG_DECLARE_TEMPLATE (BVBSphere, rw::geometry::BV< rw::geometry::BSphere< doubl
 SWIG_DECLARE_TEMPLATE (BVBSphere_f, rw::geometry::BV< rw::geometry::BSphere< float > >);
 #if SWIG_VERSION < 0x040000
 SWIG_DECLARE_TEMPLATE (BSphere_d, rw::geometry::BSphere< double >);
-ADD_DEFINITION(BSphere_d,BSphere,sdurw_geometry)
-#else 
+ADD_DEFINITION (BSphere_d, BSphere, sdurw_geometry)
+#else
 SWIG_DECLARE_TEMPLATE (BSphere, rw::geometry::BSphere< double >);
 #endif
 SWIG_DECLARE_TEMPLATE (BSphere_f, rw::geometry::BSphere< float >);

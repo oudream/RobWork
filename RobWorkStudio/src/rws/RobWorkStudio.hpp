@@ -33,6 +33,7 @@
 #include <rw/core/Ptr.hpp>
 #include <rw/models/WorkCell.hpp>
 #include <rw/trajectory/Path.hpp>
+#include <rw/geometry/AABB.hpp>
 
 #include <QMainWindow>
 #include <boost/any.hpp>
@@ -713,6 +714,8 @@ class RobWorkStudio : public QMainWindow
 
     void openDrawable (const QString& filename);
     void openWorkCellFile (const QString& filename);
+
+    rw::geometry::AABB< double > calculateWorkCellSize ();
 
     rw::core::Ptr< rw::core::RobWork > _robwork;
 

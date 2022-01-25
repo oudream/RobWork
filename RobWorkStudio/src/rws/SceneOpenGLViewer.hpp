@@ -55,9 +55,6 @@ namespace rwlibs { namespace opengl {
 class QMouseEvent;
 
 namespace rws {
-
-class RobWorkStudio;
-
 /**
  * @brief Class representing an OpenGL based QT Widget for 3D visualization of the SceneGraph
  * SceneOpenGL.
