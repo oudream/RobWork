@@ -26,12 +26,14 @@
 #include <rw/core/Exception.hpp>
 #include <rw/core/StringUtil.hpp>
 #include <rw/core/os.hpp>
+#include <rw/geometry/BSphere.hpp>
 #include <rw/kinematics/StateStructure.hpp>
 #include <rw/loaders/WorkCellLoader.hpp>
 #include <rw/loaders/dom/DOMPropertyMapLoader.hpp>
 #include <rw/loaders/dom/DOMPropertyMapSaver.hpp>
 #include <rw/loaders/dom/DOMWorkCellSaver.hpp>
 #include <rw/loaders/rwxml/XMLRWLoader.hpp>
+#include <rw/models/Object.hpp>
 #include <rw/models/WorkCell.hpp>
 #include <rw/proximity/CollisionDetector.hpp>
 #include <rw/proximity/CollisionSetup.hpp>
@@ -199,7 +201,7 @@ void RobWorkStudio::closeEvent (QCloseEvent* e)
     _settingsMap->set< int > ("WindowPosY", this->pos ().y ());
     _settingsMap->set< int > ("WindowWidth", this->width ());
     _settingsMap->set< int > ("WindowHeight", this->height ());
-    
+
     closeAllPlugins ();
 
     // close all plugins
@@ -223,7 +225,7 @@ void RobWorkStudio::closeEvent (QCloseEvent* e)
     }
     _propMap = PropertyMap ();
     _propEditor->close ();
-    
+
     _view->clear ();
     _view->close ();
 
@@ -1068,6 +1070,16 @@ void RobWorkStudio::setWorkcell (rw::models::WorkCell::Ptr workcell)
         _view->setWorkCell (_workcell);
         _view->setState (_state);
         openAllPlugins ();
+
+        double scale = this->calculateWorkCellSize ().diagonal ().norm2 ();
+        // set maximum zoom scale at 2m and minimum at 20cm
+        scale = std::min (std::min (0.1, scale / 2.0), 1.0);
+        if (_propMap.has ("ZoomScale")) {
+            _propMap.set ("ZoomScale", scale);
+        }
+        else {
+            _propMap.add ("ZoomScale","value [0-1] scaling the zoom factor of the cameracontroller", scale);
+        }
     }
 }
 
@@ -1437,4 +1449,45 @@ boost::any RobWorkStudio::waitForAnyEvent (const std::string& id, double timeout
     if (reachedTimeout)
         RW_THROW ("Timeout!");
     return listener._data;
+}
+
+rw::geometry::AABB< double > RobWorkStudio::calculateWorkCellSize ()
+{
+    std::vector< rw::geometry::BSphere< double > > spheres;
+    std::vector< Object::Ptr > objects = this->_workcell->getObjects ();
+    State& state                       = this->_state;
+    for (Object::Ptr object : objects) {
+        for (rw::geometry::Geometry::Ptr geom : object->getGeometry (state)) {
+            rw::core::Ptr< Frame > frame = geom->getFrame ();
+            RW_ASSERT (frame);
+            spheres.push_back (
+                rw::geometry::BSphere< double >::fitEigen (geom->getGeometryData ()));
+            spheres.back ().setPosition (spheres.back ().getPosition () + frame->wTf (state).P ());
+        }
+    }
+
+    std::vector< Vector3D< double > > points;
+    for (rw::geometry::BSphere< double >& s : spheres) {
+        double r = s.getRadius ();
+        points.push_back (s.getPosition () + Vector3D< double > (r, 0, 0));
+        points.push_back (s.getPosition () + Vector3D< double > (-r, 0, 0));
+        points.push_back (s.getPosition () + Vector3D< double > (0, r, 0));
+        points.push_back (s.getPosition () + Vector3D< double > (0, -r, 0));
+        points.push_back (s.getPosition () + Vector3D< double > (0, 0, r));
+        points.push_back (s.getPosition () + Vector3D< double > (0, 0, -r));
+    }
+
+    Vector3D< double > axis_max (-99999, -99999, -999999);
+    Vector3D< double > axis_min (99999, 999999, 999999);
+    for (Vector3D< double >& p : points) {
+        for (size_t i = 0; i < p.size (); i++) {
+            if (p[i] > axis_max[i]) {
+                axis_max[i] = p[i];
+            }
+            if (p[i] < axis_min[i]) {
+                axis_min[i] = p[i];
+            }
+        }
+    }
+    return rw::geometry::AABB< double > (axis_min, axis_max);
 }

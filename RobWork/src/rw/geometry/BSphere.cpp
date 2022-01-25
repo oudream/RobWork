@@ -1,12 +1,26 @@
 #include "BSphere.hpp"
 
-//#include <rw/math/Transform3D.hpp>
-#include "TriMesh.hpp"
-#include "Triangle.hpp"
-
+#include <rw/geometry/GeometryData.hpp>
+#include <rw/geometry/TriMesh.hpp>
+#include <rw/geometry/Triangle.hpp>
 #include <rw/math/LinearAlgebra.hpp>
+#include <rw/math/Rotation3D.hpp>
+#include <rw/math/Vector3D.hpp>
+
+#include <Eigen/Core>
 
 using namespace rw::geometry;
+
+template< class T >
+BSphere< T > BSphere< T >::fitEigen (const rw::core::Ptr< rw::geometry::TriMesh >& tris)
+{
+    return fitEigen (*tris);
+}
+template< class T >
+BSphere< T > BSphere< T >::fitEigen (const rw::core::Ptr< rw::geometry::GeometryData >& tris)
+{
+    return fitEigen (tris->getTriMesh ());
+}
 
 template< class T > BSphere< T > BSphere< T >::fitEigen (const rw::geometry::TriMesh& tris)
 {
@@ -82,7 +96,7 @@ template< class T > BSphere< T > BSphere< T >::fitEigen (const rw::geometry::Tri
     // max and min values of each axis
     Rotation3D< T > rotInv = inverse (rot);
 
-    Triangle< > t      = tris.getTriangle (0);
+    Triangle<> t      = tris.getTriangle (0);
     Vector3D< T > p   = rotInv * cast< T > (t[0]);
     Vector3D< T > max = p, min = p;
     for (int i = 0; i < nrOfTris; i++) {
@@ -101,15 +115,15 @@ template< class T > BSphere< T > BSphere< T >::fitEigen (const rw::geometry::Tri
     // 6. use them to generate OBB
     // compute halflength of box and its midpoint
 
-    Vector3D< T > midPoint   = rot * (0.5 * (max + min));
-    //Vector3D< T > halfLength = 0.5 * (max - min);
+    Vector3D< T > midPoint = rot * (0.5 * (max + min));
+    // Vector3D< T > halfLength = 0.5 * (max - min);
 
     T halfLength = 0;
-    for(unsigned int i = 0; i < tris.size(); i++){
-        for(unsigned int p = 0; p < 3; p++){
-            Vector3D<T> point(tris.getTriangle(i).getVertex(p).e());
-            if((point-midPoint).norm2() > halfLength){
-                halfLength = (point-midPoint).norm2();
+    for (unsigned int i = 0; i < tris.size (); i++) {
+        for (unsigned int p = 0; p < 3; p++) {
+            Vector3D< T > point (tris.getTriangle (i).getVertex (p).e ());
+            if ((point - midPoint).norm2 () > halfLength) {
+                halfLength = (point - midPoint).norm2 ();
             }
         }
     }
