@@ -12,6 +12,9 @@
     - apt -y remove *sdurw* || echo "no pkg to remove"
     - apt -y remove robworkstudio* || echo "no pkg to remove"
     - apt -y autoremove || echo "no pkg to remove"
+    - sed -i '/file:/d' /etc/apt/sources.list
+    - add-apt-repository --remove ppa:sdurobotics/robwork
+    - apt update
 
 .CI-common-linux:
   extends: .CI-common
@@ -71,8 +74,8 @@
     - cd RW
     - cmake -DCMAKE_BUILD_TYPE=Release ../../RobWork
     - make -j${THREADS}
-    - make -j${THREADS} python 
-    - make -j${THREADS} lua || make -j${THREADS} lua 
+    - make -j${THREADS} python
+    - make -j${THREADS} lua || make -j${THREADS} lua
     - make -j${THREADS} java
   artifacts:
     paths:
@@ -209,7 +212,6 @@
     - python3 -m unittest discover ./kinematics -p '*.py'
     - python3 -m unittest discover ./math -p '*.py'
     - - "for file in ./models/*.py; do python3 $file || exit 1 ; done"
-    
 
 .linux-install-tests:
   extends: .CI-common-linux
@@ -294,6 +296,8 @@
     - debuild --no-sign
     - mkdir DEBPKG
     - find ../ -maxdepth 1 -type f -name '*.deb' -exec cp '{}' ./DEBPKG ';'
+    - cd ./DEBPKG
+    - dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz
   artifacts:
     paths:
       - ./DEBPKG
@@ -307,11 +311,14 @@
     - linux
   before_script:
     - *uninstall-rw-deb
+    - cd ./DEBPKG
+    - if [[ $(cat /etc/apt/sources.list | grep -c $(pwd)) == 0 ]] ; then echo "deb [trusted=yes] file:$(pwd) ./" >> /etc/apt/sources.list ; fi
     - apt update
-    - apt -y install ./DEBPKG/*.deb
+    - apt -y install libsdurw-all-dev libsdurws-all-dev libsdurwsim-all-dev python3-robwork lua-robwork
     - robworkdata=/home/robworkdata
     - export DISPLAY=:0
     - Xvfb $DISPLAY -screen 0 640x480x24 &
+    - cd ..
 
 .linux-debian-upgrade-test:
   extends: .CI-common-linux
@@ -328,7 +335,7 @@
 
 .ppa-install-tests:
   extends: .linux-install-tests
-  stage: test 
+  stage: test
   tags:
     - linux
   before_script:
