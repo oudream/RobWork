@@ -23,18 +23,18 @@
 #ifndef RW_GRAPHICS_HPP_
 #define RW_GRAPHICS_HPP_
 
-#include "./graphics/DrawableGeometryNode.hpp"
-#include "./graphics/DrawableNode.hpp"
-#include "./graphics/GroupNode.hpp"
-#include "./graphics/Model3D.hpp"
-//#include "./graphics/Model3DLoader.hpp"
-//#include "./graphics/NodeVisitor.hpp"
-#include "./graphics/Render.hpp"
-#include "./graphics/SceneCamera.hpp"
-#include "./graphics/SceneGraph.hpp"
-#include "./graphics/SceneNode.hpp"
-#include "./graphics/SceneViewer.hpp"
-#include "./graphics/TextureData.hpp"
-#include "./graphics/WorkCellScene.hpp"
+#include <rw/graphics/DrawableGeometryNode.hpp>
+#include <rw/graphics/DrawableNode.hpp>
+#include <rw/graphics/GroupNode.hpp>
+#include <rw/graphics/Model3D.hpp>
+//#include <rw/graphics/Model3DLoader.hpp>
+//#include <rw/graphics/NodeVisitor.hpp>
+#include <rw/graphics/Render.hpp>
+#include <rw/graphics/SceneCamera.hpp>
+#include <rw/graphics/SceneGraph.hpp>
+#include <rw/graphics/SceneNode.hpp>
+#include <rw/graphics/SceneViewer.hpp>
+#include <rw/graphics/TextureData.hpp>
+#include <rw/graphics/WorkCellScene.hpp>
 
 #endif /* TRAJECTORY_HPP_ */

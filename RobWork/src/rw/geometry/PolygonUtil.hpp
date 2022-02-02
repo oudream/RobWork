@@ -24,8 +24,7 @@
  * \copydoc rw::geometry::PolygonUtil
  */
 #if !defined(SWIG)
-#include "Polygon.hpp"
-
+#include <rw/geometry/Polygon.hpp>
 #include <rw/math/Vector2D.hpp>
 #endif
 namespace rw { namespace geometry {

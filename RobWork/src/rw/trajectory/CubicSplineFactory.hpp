@@ -22,8 +22,8 @@
  * @file CubicSplineFactory.hpp
  */
 #if !defined(SWIG)
-#include "InterpolatorTrajectory.hpp"
-#include "Path.hpp"
+#include <rw/trajectory/InterpolatorTrajectory.hpp>
+#include <rw/trajectory/Path.hpp>
 
 #include <rw/math/Q.hpp>
 #include <rw/math/Quaternion.hpp>

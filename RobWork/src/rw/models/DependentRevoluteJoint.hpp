@@ -22,8 +22,8 @@
  * @file DependentRevoluteJoint.hpp
  */
 #if !defined(SWIG)
-#include "DependentJoint.hpp"
-#include "RevoluteJoint.hpp"
+#include <rw/models/DependentJoint.hpp>
+#include <rw/models/RevoluteJoint.hpp>
 #endif 
 namespace rw { namespace kinematics {
     class State;

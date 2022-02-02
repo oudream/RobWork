@@ -23,8 +23,8 @@
  */
 
 #if !defined(SWIG)
-#include "Rotation3D.hpp"
-#include "Vector3D.hpp"
+#include <rw/math/Rotation3D.hpp>
+#include <rw/math/Vector3D.hpp>
 
 #include <rw/common/Serializable.hpp>
 

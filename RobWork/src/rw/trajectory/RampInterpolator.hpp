@@ -22,13 +22,13 @@
  * @file RampInterpolator.hpp
  */
 #if !defined(SWIG)
-#include "Interpolator.hpp"
+#include <rw/trajectory/Interpolator.hpp>
 
 #include <rw/math/Math.hpp>
 #include <rw/math/Quaternion.hpp>
 #include <rw/math/Rotation3D.hpp>
 #include <rw/math/Transform3D.hpp>
-//#include "InterpolatorUtil.hpp"
+//#include <rw/trajectory/InterpolatorUtil.hpp>
 #endif
 namespace rw { namespace trajectory {
 

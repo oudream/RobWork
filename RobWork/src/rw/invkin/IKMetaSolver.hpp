@@ -19,7 +19,7 @@
 #define RW_INVKIN_IKMETASOLVER_HPP
 
 #if !defined(SWIG)
-#include "IterativeIK.hpp"
+#include <rw/invkin/IterativeIK.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Q.hpp>

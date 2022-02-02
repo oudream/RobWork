@@ -22,7 +22,7 @@
  * @file SerialDevice.hpp
  */
 #if !defined(SWIG)
-#include "JointDevice.hpp"
+#include <rw/models/JointDevice.hpp>
 
 #include <vector>
 #endif

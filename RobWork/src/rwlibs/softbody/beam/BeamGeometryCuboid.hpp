@@ -18,7 +18,7 @@ Copyright 2013 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
 #ifndef RWLIBS_SOFTBODY_CUBOIDGEOMETRY_HPP
 #define RWLIBS_SOFTBODY_CUBOIDGEOMETRY_HPP
 
-#include "BeamGeometry.hpp"
+#include <rwlibs/softbody/beam/BeamGeometry.hpp>
 
 #include <ostream>
 #include <sstream>

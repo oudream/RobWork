@@ -22,8 +22,8 @@
  * @file StereoCameraModel.hpp
  */
 #if !defined(SWIG)
-#include "Image.hpp"
-#include "SensorModel.hpp"
+#include <rw/sensor/Image.hpp>
+#include <rw/sensor/SensorModel.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rw/math/ProjectionMatrix.hpp>

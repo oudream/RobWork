@@ -19,7 +19,7 @@
 #define RW_MATH_POLYNOMIAL_HPP_
 
 #if !defined(SWIG)
-#include "PolynomialND.hpp"
+#include <rw/math/PolynomialND.hpp>
 
 #include <rw/common/Serializable.hpp>
 #include <rw/core/macros.hpp>

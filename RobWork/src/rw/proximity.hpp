@@ -23,21 +23,21 @@
 #ifndef PROXIMITY_HPP_
 #define PROXIMITY_HPP_
 
-#include "./proximity/CollisionDetector.hpp"
-#include "./proximity/CollisionSetup.hpp"
-#include "./proximity/CollisionStrategy.hpp"
-#include "./proximity/CollisionToleranceStrategy.hpp"
-#include "./proximity/DistanceCalculator.hpp"
-#include "./proximity/DistanceMultiStrategy.hpp"
-#include "./proximity/DistanceStrategy.hpp"
-#include "./proximity/ProximityCache.hpp"
-#include "./proximity/ProximityData.hpp"
-#include "./proximity/ProximityFilter.hpp"
-#include "./proximity/ProximityFilterStrategy.hpp"
-#include "./proximity/ProximityModel.hpp"
-#include "./proximity/ProximitySetup.hpp"
-#include "./proximity/ProximitySetupRule.hpp"
-#include "./proximity/ProximityStrategy.hpp"
-#include "./proximity/ProximityStrategyData.hpp"
+#include <rw/proximity/CollisionDetector.hpp>
+#include <rw/proximity/CollisionSetup.hpp>
+#include <rw/proximity/CollisionStrategy.hpp>
+#include <rw/proximity/CollisionToleranceStrategy.hpp>
+#include <rw/proximity/DistanceCalculator.hpp>
+#include <rw/proximity/DistanceMultiStrategy.hpp>
+#include <rw/proximity/DistanceStrategy.hpp>
+#include <rw/proximity/ProximityCache.hpp>
+#include <rw/proximity/ProximityData.hpp>
+#include <rw/proximity/ProximityFilter.hpp>
+#include <rw/proximity/ProximityFilterStrategy.hpp>
+#include <rw/proximity/ProximityModel.hpp>
+#include <rw/proximity/ProximitySetup.hpp>
+#include <rw/proximity/ProximitySetupRule.hpp>
+#include <rw/proximity/ProximityStrategy.hpp>
+#include <rw/proximity/ProximityStrategyData.hpp>
 
 #endif /* PROXIMITY_HPP_ */

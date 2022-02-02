@@ -24,10 +24,9 @@
  * \copydoc rw::geometry::IndexedQuadraticFaceArray
  */
 #if !defined(SWIG)
-#include "QuadraticShell.hpp"
-
 #include <rw/core/Ptr.hpp>
 #include <rw/geometry/OBB.hpp>
+#include <rw/geometry/analytic/quadratics/QuadraticShell.hpp>
 #include <rw/math/Transform3D.hpp>
 #endif
 namespace rw { namespace geometry {

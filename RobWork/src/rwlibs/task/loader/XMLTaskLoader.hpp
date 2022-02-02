@@ -18,9 +18,9 @@
 #ifndef RWLIBS_TASK_XMLTASKLOADER_HPP
 #define RWLIBS_TASK_XMLTASKLOADER_HPP
 
-#include "../Entity.hpp"
-#include "../Task.hpp"
-#include "TaskLoader.hpp"
+#include <rwlibs/task/Entity.hpp>
+#include <rwlibs/task/Task.hpp>
+#include <rwlibs/task/loader/TaskLoader.hpp>
 
 #include <rw/core/Ptr.hpp>
 

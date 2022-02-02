@@ -19,7 +19,7 @@
 #define RW_GEOMETRY_AABB_HPP_
 
 #if !defined(SWIG)
-#include "BV.hpp"
+#include <rw/geometry/BV.hpp>
 #endif
 #include <rw/common/Traits.hpp>
 namespace rw { namespace geometry {

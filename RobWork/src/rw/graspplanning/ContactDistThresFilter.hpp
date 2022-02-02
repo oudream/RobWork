@@ -19,7 +19,7 @@
 #define RW_GRASPPLANNING_CONTACTDISTTHRESFILTER_HPP_
 
 #if !defined(SWIG)
-#include "GraspValidateFilter.hpp"
+#include <rw/graspplanning/GraspValidateFilter.hpp>
 #endif 
 namespace rw { namespace sensor {
     class Contact3D;

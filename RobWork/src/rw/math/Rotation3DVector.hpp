@@ -22,7 +22,7 @@
  * @file Rotation3DVector.hpp
  */
 #if !defined(SWIG)
-#include "Rotation3D.hpp"
+#include <rw/math/Rotation3D.hpp>
 #endif 
 
 namespace rw { namespace math {

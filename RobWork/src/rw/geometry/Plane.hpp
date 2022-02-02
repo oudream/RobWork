@@ -23,7 +23,7 @@
  * @copydoc rw::geometry::Plane
  */
 #if !defined(SWIG)
-#include "Primitive.hpp"
+#include <rw/geometry/Primitive.hpp>
 
 #include <rw/math/Metric.hpp>
 #endif

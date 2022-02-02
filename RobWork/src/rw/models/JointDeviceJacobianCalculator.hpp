@@ -19,7 +19,7 @@
 #define RW_MODELS_JOINTDEVICEJACOBIANCALCULATOR_HPP
 
 #if !defined(SWIG)
-#include "JacobianCalculator.hpp"
+#include <rw/models/JacobianCalculator.hpp>
 #endif 
 
 namespace rw { namespace kinematics {

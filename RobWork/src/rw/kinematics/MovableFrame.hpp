@@ -22,7 +22,7 @@
  * @file MovableFrame.hpp
  */
 #if !defined(SWIG)
-#include "Frame.hpp"
+#include <rw/kinematics/Frame.hpp>
 #include <rw/core/Ptr.hpp>
 #endif
 namespace rw { namespace kinematics {

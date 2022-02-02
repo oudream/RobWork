@@ -20,8 +20,8 @@
 
 //! @file ConvexHull3D.hpp
 #if !defined(SWIG)
-#include "PlainTriMesh.hpp"
-#include "Triangle.hpp"
+#include <rw/geometry/PlainTriMesh.hpp>
+#include <rw/geometry/Triangle.hpp>
 
 #include <rw/math/Vector3D.hpp>
 #endif 

@@ -22,7 +22,7 @@
  * @file InterpolatorUtil.hpp
  */
 #if !defined(SWIG)
-#include "Interpolator.hpp"
+#include <rw/trajectory/Interpolator.hpp>
 
 #include <rw/math/Quaternion.hpp>
 #include <rw/math/Transform3D.hpp>

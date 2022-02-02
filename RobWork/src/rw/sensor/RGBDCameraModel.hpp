@@ -22,7 +22,7 @@
  * @file RGBDCameraModel.hpp
  */
 #if !defined(SWIG)
-#include "SensorModel.hpp"
+#include <rw/sensor/SensorModel.hpp>
 
 #include <rw/core/Ptr.hpp>
 #endif 

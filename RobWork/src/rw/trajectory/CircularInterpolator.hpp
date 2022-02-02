@@ -22,14 +22,13 @@
  * @file CircularInterpolator.hpp
  */
 #if !defined(SWIG)
-#include "Interpolator.hpp"
-
 #include <rw/core/macros.hpp>
 #include <rw/math/Math.hpp>
 #include <rw/math/MetricUtil.hpp>
 #include <rw/math/Rotation3D.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/Vector3D.hpp>
+#include <rw/trajectory/Interpolator.hpp>
 #endif
 namespace rw { namespace trajectory {
 

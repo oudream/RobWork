@@ -18,7 +18,7 @@
 #ifndef RWLIBS_CALIBRATION_WORKCELLCALIBRATION_HPP
 #define RWLIBS_CALIBRATION_WORKCELLCALIBRATION_HPP
 
-#include "Calibration.hpp"
+#include <rwlibs/calibration/Calibration.hpp>
 
 #include <rw/core/Ptr.hpp>
 

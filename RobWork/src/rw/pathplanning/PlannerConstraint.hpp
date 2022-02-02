@@ -22,8 +22,8 @@
    @file PlannerConstraint.hpp
 */
 #if !defined(SWIG)
-#include "QConstraint.hpp"
-#include "QEdgeConstraint.hpp"
+#include <rw/pathplanning/QConstraint.hpp>
+#include <rw/pathplanning/QEdgeConstraint.hpp>
 #endif
 namespace rw { namespace kinematics {
     class State;

@@ -2,9 +2,8 @@
 #define RW_GEOMETRY_BSPHERE_HPP_
 
 #if !defined(SWIG)
-#include "BV.hpp"
-
 #include <rw/core/Ptr.hpp>
+#include <rw/geometry/BV.hpp>
 #include <rw/math/Constants.hpp>
 #include <rw/math/Vector3D.hpp>
 #endif

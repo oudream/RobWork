@@ -19,8 +19,8 @@
 #define RW_TRAJECTORY_BLENDEDTRAJECTORY_HPP
 
 #if !defined(SWIG)
-#include "Path.hpp"
-#include "Trajectory.hpp"
+#include <rw/trajectory/Path.hpp>
+#include <rw/trajectory/Trajectory.hpp>
 
 #include <vector>
 #endif

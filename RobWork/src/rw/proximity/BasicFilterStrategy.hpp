@@ -19,8 +19,8 @@
 #define RW_PROXIMITY_BasicFilterStrategy_HPP_
 
 #if !defined(SWIG)
-#include "ProximityFilterStrategy.hpp"
-#include "ProximitySetup.hpp"
+#include <rw/proximity/ProximityFilterStrategy.hpp>
+#include <rw/proximity/ProximitySetup.hpp>
 
 #include <rw/kinematics/Frame.hpp>
 #include <rw/kinematics/FrameMap.hpp>

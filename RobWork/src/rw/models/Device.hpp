@@ -22,7 +22,7 @@
  * @file Device.hpp
  */
 #if !defined(SWIG)
-#include "JacobianCalculator.hpp"
+#include <rw/models/JacobianCalculator.hpp>
 
 #include <rw/core/PropertyMap.hpp>
 #include <rw/core/Ptr.hpp>

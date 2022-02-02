@@ -20,7 +20,7 @@
 
 //! @file KinematicSimulator.hpp
 #if !defined(SWIG)
-#include "Simulator.hpp"
+#include <rwlibs/simulation/Simulator.hpp>
 
 #include <rw/core/Ptr.hpp>
 #endif

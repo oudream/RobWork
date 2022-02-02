@@ -24,7 +24,7 @@
  * \copydoc rwlibs::mathematica::ToExpression
  */
 
-#include "Mathematica.hpp"
+#include <rwlibs/mathematica/Mathematica.hpp>
 
 #include <rw/core/Ptr.hpp>
 

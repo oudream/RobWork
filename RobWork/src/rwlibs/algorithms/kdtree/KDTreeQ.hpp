@@ -18,7 +18,7 @@
 #ifndef RWLIBS_ALGORTIHMS_KDTREEQ_HPP_
 #define RWLIBS_ALGORTIHMS_KDTREEQ_HPP_
 
-#include "KDTree.hpp"
+#include <rwlibs/algorithms/kdtree/KDTree.hpp>
 
 #include <rw/common/InputArchive.hpp>
 #include <rw/common/OutputArchive.hpp>

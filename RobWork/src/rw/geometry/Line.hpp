@@ -19,7 +19,7 @@
 #define RW_GEOMETRY_LINE_HPP_
 
 #if !defined(SWIG)
-#include "Primitive.hpp"
+#include <rw/geometry/Primitive.hpp>
 
 #include <rw/math/Metric.hpp>
 

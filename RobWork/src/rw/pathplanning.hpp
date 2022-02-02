@@ -23,18 +23,18 @@
 #ifndef RW_PATHPLANNING_HPP_
 #define RW_PATHPLANNING_HPP_
 
-#include "./pathplanning/PathPlanner.hpp"
-#include "./pathplanning/PlannerConstraint.hpp"
-#include "./pathplanning/PlannerUtil.hpp"
-#include "./pathplanning/QConstraint.hpp"
-#include "./pathplanning/QEdgeConstraint.hpp"
-#include "./pathplanning/QIKSampler.hpp"
-#include "./pathplanning/QNormalizer.hpp"
-#include "./pathplanning/QSampler.hpp"
-#include "./pathplanning/QToQPlanner.hpp"
-#include "./pathplanning/QToQSamplerPlanner.hpp"
-#include "./pathplanning/QToTPlanner.hpp"
-#include "./pathplanning/StateConstraint.hpp"
-#include "./pathplanning/StopCriteria.hpp"
+#include <rw/pathplanning/PathPlanner.hpp>
+#include <rw/pathplanning/PlannerConstraint.hpp>
+#include <rw/pathplanning/PlannerUtil.hpp>
+#include <rw/pathplanning/QConstraint.hpp>
+#include <rw/pathplanning/QEdgeConstraint.hpp>
+#include <rw/pathplanning/QIKSampler.hpp>
+#include <rw/pathplanning/QNormalizer.hpp>
+#include <rw/pathplanning/QSampler.hpp>
+#include <rw/pathplanning/QToQPlanner.hpp>
+#include <rw/pathplanning/QToQSamplerPlanner.hpp>
+#include <rw/pathplanning/QToTPlanner.hpp>
+#include <rw/pathplanning/StateConstraint.hpp>
+#include <rw/pathplanning/StopCriteria.hpp>
 
 #endif /* PATHPLANNING_HPP_ */

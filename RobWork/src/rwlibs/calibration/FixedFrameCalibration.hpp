@@ -18,7 +18,7 @@
 #ifndef RWLIBS_CALIBRATION_FIXEDFRAMECALIBRATION_HPP
 #define RWLIBS_CALIBRATION_FIXEDFRAMECALIBRATION_HPP
 
-#include "Calibration.hpp"
+#include <rwlibs/calibration/Calibration.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rw/kinematics/FixedFrame.hpp>

@@ -18,7 +18,7 @@
 #ifndef RWLIBS_PATHOPTIMIZATION_MINIMUMCLEARANCECALCULATOR_HPP
 #define RWLIBS_PATHOPTIMIZATION_MINIMUMCLEARANCECALCULATOR_HPP
 
-#include "ClearanceCalculator.hpp"
+#include <rwlibs/pathoptimization/clearance/ClearanceCalculator.hpp>
 
 namespace rw { namespace models {
     class WorkCell;

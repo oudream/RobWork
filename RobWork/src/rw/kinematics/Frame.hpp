@@ -22,7 +22,7 @@
  * @file Frame.hpp
  */
 #if !defined(SWIG)
-#include "StateData.hpp"
+#include <rw/kinematics/StateData.hpp>
 
 #include <rw/common/ConcatVectorIterator.hpp>
 #include <rw/core/PairIterator.hpp>

@@ -23,22 +23,22 @@
 #ifndef RW_GRASPPLANNING_HPP_
 #define RW_GRASPPLANNING_HPP_
 
-#include "graspplanning/ApproachMeasure3D.hpp"
-#include "graspplanning/CMDistCCPMeasure3D.hpp"
-#include "graspplanning/CompositeContactFilter.hpp"
-#include "graspplanning/CompositeGraspFilter.hpp"
-#include "graspplanning/ContactDistThresFilter.hpp"
-#include "graspplanning/Contour2DInfoMap.hpp"
-#include "graspplanning/CurvatureThresFilter.hpp"
-#include "graspplanning/DiceContactG3D.hpp"
-#include "graspplanning/Grasp2D.hpp"
-#include "graspplanning/Grasp3D.hpp"
-#include "graspplanning/GraspQualityMeasure3D.hpp"
-#include "graspplanning/GraspTable.hpp"
-#include "graspplanning/GraspValidateFilter.hpp"
-#include "graspplanning/PlaneClearanceFilter.hpp"
-#include "graspplanning/QualityMeasure2D.hpp"
-#include "graspplanning/SemiForceClosureFilter.hpp"
-#include "graspplanning/WrenchMeasure3D.hpp"
+#include <rw/graspplanning/ApproachMeasure3D.hpp>
+#include <rw/graspplanning/CMDistCCPMeasure3D.hpp>
+#include <rw/graspplanning/CompositeContactFilter.hpp>
+#include <rw/graspplanning/CompositeGraspFilter.hpp>
+#include <rw/graspplanning/ContactDistThresFilter.hpp>
+#include <rw/graspplanning/Contour2DInfoMap.hpp>
+#include <rw/graspplanning/CurvatureThresFilter.hpp>
+#include <rw/graspplanning/DiceContactG3D.hpp>
+#include <rw/graspplanning/Grasp2D.hpp>
+#include <rw/graspplanning/Grasp3D.hpp>
+#include <rw/graspplanning/GraspQualityMeasure3D.hpp>
+#include <rw/graspplanning/GraspTable.hpp>
+#include <rw/graspplanning/GraspValidateFilter.hpp>
+#include <rw/graspplanning/PlaneClearanceFilter.hpp>
+#include <rw/graspplanning/QualityMeasure2D.hpp>
+#include <rw/graspplanning/SemiForceClosureFilter.hpp>
+#include <rw/graspplanning/WrenchMeasure3D.hpp>
 
 #endif /* graspplanning_HPP_ */

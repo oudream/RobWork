@@ -3,8 +3,8 @@
 #define RW_GRAPHICS_SCENEVIEWER_HPP_
 
 #if !defined(SWIG)
-#include "SceneCamera.hpp"
-#include "SceneGraph.hpp"
+#include <rw/graphics/SceneCamera.hpp>
+#include <rw/graphics/SceneGraph.hpp>
 
 #include <rw/core/Event.hpp>
 #include <rw/core/PropertyMap.hpp>

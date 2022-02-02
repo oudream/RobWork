@@ -19,8 +19,8 @@
 #define RW_TRAJECTORY_DEVICETRAJECTORY_HPP
 
 #if !defined(SWIG)
-#include "Path.hpp"
-#include "Trajectory.hpp"
+#include <rw/trajectory/Path.hpp>
+#include <rw/trajectory/Trajectory.hpp>
 #endif
 namespace rw { namespace models {
     class Device;

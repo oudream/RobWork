@@ -22,7 +22,7 @@
    @file ARWQToQPlanner.hpp
 */
 
-#include "ARWExpand.hpp"
+#include <rwlibs/pathplanners/arw/ARWExpand.hpp>
 
 #include <rw/pathplanning/PlannerConstraint.hpp>
 #include <rw/pathplanning/QToQPlanner.hpp>

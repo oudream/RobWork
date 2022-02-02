@@ -1,7 +1,7 @@
 #pragma once
 
 #if !defined(SWIG)
-#include "rw/math.hpp"
+#include <rw/math.hpp>
 #endif 
 
 using namespace rw::math;

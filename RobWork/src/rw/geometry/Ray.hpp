@@ -19,7 +19,7 @@
 #define RW_GEOMETRY_RAY_HPP
 
 #if !defined(SWIG)
-#include "Line.hpp"
+#include <rw/geometry/Line.hpp>
 #endif
 
 namespace rw { namespace geometry {

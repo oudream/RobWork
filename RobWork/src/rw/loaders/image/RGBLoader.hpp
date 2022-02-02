@@ -18,7 +18,7 @@
 #ifndef RW_LOADERS_IMAGE_RGBLOADER_HPP
 #define RW_LOADERS_IMAGE_RGBLOADER_HPP
 
-#include "../ImageLoader.hpp"
+#include <rw/loaders/ImageLoader.hpp>
 
 #include <rw/sensor/Image.hpp>
 

@@ -22,7 +22,7 @@
  * @file PointModel.hpp
  */
 
-#include "RANSACModel.hpp"
+#include <rwlibs/algorithms/RANSACModel.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Vector3D.hpp>

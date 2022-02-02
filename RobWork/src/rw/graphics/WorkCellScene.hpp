@@ -19,7 +19,7 @@
 #define RW_GRAPHICS_WORKCELLSCENE_HPP_
 
 #if !defined(SWIG)
-#include "SceneGraph.hpp"
+#include <rw/graphics/SceneGraph.hpp>
 
 #include <rw/kinematics/FKTable.hpp>
 

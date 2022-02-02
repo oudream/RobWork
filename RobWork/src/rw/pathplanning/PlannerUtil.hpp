@@ -22,7 +22,7 @@
    @file PlannerUtil.hpp
 */
 #if !defined(SWIG)
-#include "PlannerConstraint.hpp"
+#include <rw/pathplanning/PlannerConstraint.hpp>
 
 #include <rw/kinematics/State.hpp>
 #include <rw/math/Metric.hpp>

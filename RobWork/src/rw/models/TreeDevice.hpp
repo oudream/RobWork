@@ -22,7 +22,7 @@
  * @file TreeDevice.hpp
  */
 #if !defined(SWIG)
-#include "JointDevice.hpp"
+#include <rw/models/JointDevice.hpp>
 
 #include <rw/core/Ptr.hpp>
 

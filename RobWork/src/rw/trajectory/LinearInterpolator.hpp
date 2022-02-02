@@ -22,7 +22,7 @@
  * @file LinearInterpolator.hpp
  */
 #if !defined(SWIG)
-#include "Interpolator.hpp"
+#include <rw/trajectory/Interpolator.hpp>
 
 #include <rw/core/macros.hpp>
 #include <rw/math/Math.hpp>

@@ -20,7 +20,7 @@
 
 //! @file Model3D.hpp
 #if !defined(SWIG)
-#include "TextureData.hpp"
+#include <rw/graphics/TextureData.hpp>
 
 #include <rw/geometry/Model3D.hpp>
 

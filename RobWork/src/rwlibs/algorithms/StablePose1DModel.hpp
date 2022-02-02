@@ -22,7 +22,7 @@
  * @file StablePose1DModel.hpp
  */
 
-#include "RANSACModel.hpp"
+#include <rwlibs/algorithms/RANSACModel.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Rotation3D.hpp>

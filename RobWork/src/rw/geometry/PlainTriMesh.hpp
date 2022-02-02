@@ -19,7 +19,7 @@
 #define RW_GEOMETRY_PLAINTRIMESH_HPP_
 
 #if !defined(SWIG)
-#include "TriMesh.hpp"
+#include <rw/geometry/TriMesh.hpp>
 #include <type_traits>
 #endif
 

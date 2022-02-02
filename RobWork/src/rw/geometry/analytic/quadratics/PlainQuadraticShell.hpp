@@ -24,7 +24,7 @@
  * \copydoc rw::geometry::PlainQuadraticShell
  */
 #if !defined(SWIG)
-#include "QuadraticShell.hpp"
+#include <rw/geometry/analytic/quadratics/QuadraticShell.hpp>
 #endif
 namespace rw { namespace geometry {
     //! @addtogroup geometry

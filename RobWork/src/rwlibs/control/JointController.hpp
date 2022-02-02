@@ -18,7 +18,7 @@
 #ifndef RWLIBS_CONTROL_JOINTCONTROLLER_HPP_
 #define RWLIBS_CONTROL_JOINTCONTROLLER_HPP_
 
-#include "Controller.hpp"
+#include <rwlibs/control/Controller.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rw/core/macros.hpp>

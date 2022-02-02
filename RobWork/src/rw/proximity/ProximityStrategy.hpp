@@ -23,7 +23,7 @@
  */
 
 #if !defined(SWIG)
-#include "ProximityModel.hpp"
+#include <rw/proximity/ProximityModel.hpp>
 
 #include <rw/core/ExtensionPoint.hpp>
 #include <rw/kinematics/FrameMap.hpp>

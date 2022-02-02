@@ -20,7 +20,7 @@
 
 //! @file LoaderAC3D.hpp
 
-#include "../Model3DLoader.hpp"
+#include <rw/loaders/Model3DLoader.hpp>
 
 #include <rw/math/Rotation3D.hpp>
 #include <rw/math/Vector3D.hpp>

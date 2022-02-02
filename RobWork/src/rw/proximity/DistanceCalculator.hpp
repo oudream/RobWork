@@ -19,7 +19,7 @@
 #define RW_PROXIMITY_DISTANCECALCULATOR_HPP
 
 #if !defined(SWIG)
-#include "DistanceStrategy.hpp"
+#include <rw/proximity/DistanceStrategy.hpp>
 
 #include <rw/common/Timer.hpp>
 #include <rw/proximity/CollisionSetup.hpp>

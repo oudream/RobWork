@@ -25,7 +25,7 @@
  */
 
 #if !defined(SWIG)
-#include "Face.hpp"
+#include <rw/geometry/analytic/Face.hpp>
 #endif
 namespace rw { namespace geometry {
     //! @addtogroup geometry

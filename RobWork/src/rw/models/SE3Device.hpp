@@ -22,7 +22,7 @@
  * @file SE3Device.hpp
  */
 #if !defined(SWIG)
-#include "Device.hpp"
+#include <rw/models/Device.hpp>
 
 #include <rw/kinematics/Frame.hpp>
 #include <rw/kinematics/MovableFrame.hpp>

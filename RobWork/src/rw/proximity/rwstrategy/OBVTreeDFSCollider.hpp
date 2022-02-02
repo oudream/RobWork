@@ -19,8 +19,8 @@
 #define RW_PROXIMITY_OBVTREECOLLIDERDFS_HPP_
 
 #if !defined(SWIG)
-#include "BVTree.hpp"
-#include "BVTreeCollider.hpp"
+#include <rw/proximity/rwstrategy/BVTree.hpp>
+#include <rw/proximity/rwstrategy/BVTreeCollider.hpp>
 
 #include <rw/math/Transform3D.hpp>
 #endif 

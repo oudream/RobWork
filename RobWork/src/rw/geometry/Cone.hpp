@@ -19,7 +19,7 @@
 #define RW_GEOMETRY_CONE_HPP_
 
 #if !defined(SWIG)
-#include "Primitive.hpp"
+#include <rw/geometry/Primitive.hpp>
 #endif
 //! @file rw/geometry/Cone.hpp
 

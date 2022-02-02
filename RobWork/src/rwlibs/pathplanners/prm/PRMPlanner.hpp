@@ -18,7 +18,7 @@
 #ifndef RWLIBS_PATHPLANNERS_PRMPLANNER_HPP
 #define RWLIBS_PATHPLANNERS_PRMPLANNER_HPP
 
-#include "PartialIndexTable.hpp"
+#include <rwlibs/pathplanners/prm/PartialIndexTable.hpp>
 
 #include <rw/common/Timer.hpp>
 #include <rw/core/Ptr.hpp>

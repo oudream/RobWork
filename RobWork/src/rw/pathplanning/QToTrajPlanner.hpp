@@ -22,10 +22,10 @@
    @file QToTPlanner.hpp
 */
 #if !defined(SWIG)
-#include "PathPlanner.hpp"
-#include "QIKSampler.hpp"
-#include "QToQPlanner.hpp"
-#include "QToQSamplerPlanner.hpp"
+#include <rw/pathplanning/PathPlanner.hpp>
+#include <rw/pathplanning/QIKSampler.hpp>
+#include <rw/pathplanning/QToQPlanner.hpp>
+#include <rw/pathplanning/QToQSamplerPlanner.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rw/kinematics/State.hpp>

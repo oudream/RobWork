@@ -21,9 +21,9 @@ Copyright 2013 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
  * @file ModRussel_NLP.hpp
  */
 
-#include "BeamGeometry.hpp"
-#include "BeamObstaclePlane.hpp"
-#include "IpTNLP.hpp"
+#include <rwlibs/softbody/beam/BeamGeometry.hpp>
+#include <rwlibs/softbody/beam/BeamObstaclePlane.hpp>
+#include <rwlibs/softbody/beam/IpTNLP.hpp>
 
 #include <memory>
 

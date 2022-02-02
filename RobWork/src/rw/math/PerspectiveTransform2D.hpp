@@ -19,8 +19,8 @@
 #define RW_MATH_PERSPECTIVETRANSFORM2D_HPP
 
 #if !defined(SWIG)
-#include "Vector2D.hpp"
-#include "Vector3D.hpp"
+#include <rw/math/Vector2D.hpp>
+#include <rw/math/Vector3D.hpp>
 
 #include <rw/common/Serializable.hpp>
 #include <rw/core/macros.hpp>

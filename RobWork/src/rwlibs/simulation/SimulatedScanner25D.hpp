@@ -20,7 +20,7 @@
 
 //! @file SimulatedScanner25D.hpp
 #if !defined(SWIG)
-#include "SimulatedSensor.hpp"
+#include <rwlibs/simulation/SimulatedSensor.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rw/sensor/Scanner25D.hpp>

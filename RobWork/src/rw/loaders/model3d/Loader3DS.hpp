@@ -20,7 +20,7 @@
 
 //! @file Loader3DS.hpp
 
-#include "../Model3DLoader.hpp"
+#include <rw/loaders/Model3DLoader.hpp>
 
 #include <rw/graphics/Model3D.hpp>
 

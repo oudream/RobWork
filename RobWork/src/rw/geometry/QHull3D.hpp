@@ -19,7 +19,7 @@
 #define RW_GEOMETRY_QHULL3D_HPP_
 
 #if !defined(SWIG)
-#include "ConvexHull3D.hpp"
+#include <rw/geometry/ConvexHull3D.hpp>
 
 #include <vector>
 #endif

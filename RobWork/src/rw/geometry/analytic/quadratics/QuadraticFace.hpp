@@ -24,8 +24,8 @@
  * \copydoc rw::geometry::QuadraticFace
  */
 #if !defined(SWIG)
-#include "QuadraticCurve.hpp"
-#include "QuadraticSurface.hpp"
+#include <rw/geometry/analytic/quadratics/QuadraticCurve.hpp>
+#include <rw/geometry/analytic/quadratics/QuadraticSurface.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rw/geometry/OBB.hpp>

@@ -19,7 +19,7 @@
 #define RW_GRASPPLANNING_COMPOSITEGRASPFILTER_HPP_
 
 #if !defined(SWIG)
-#include "GraspValidateFilter.hpp"
+#include <rw/graspplanning/GraspValidateFilter.hpp>
 
 #include <vector>
 #endif 

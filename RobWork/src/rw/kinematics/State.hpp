@@ -22,9 +22,9 @@
  * @file State.hpp
  */
 #if !defined(SWIG)
-#include "QState.hpp"
-#include "StateCache.hpp"
-#include "TreeState.hpp"
+#include <rw/kinematics/QState.hpp>
+#include <rw/kinematics/StateCache.hpp>
+#include <rw/kinematics/TreeState.hpp>
 
 #include <rw/common/Serializable.hpp>
 #include <rw/core/Ptr.hpp>

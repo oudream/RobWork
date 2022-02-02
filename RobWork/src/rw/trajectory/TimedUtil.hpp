@@ -18,8 +18,8 @@
 #ifndef RW_TRAJECTORY_TIMEDUTIL_HPP
 #define RW_TRAJECTORY_TIMEDUTIL_HPP
 #if !defined(SWIG)
-#include "Path.hpp"
-#include "Timed.hpp"
+#include <rw/trajectory/Path.hpp>
+#include <rw/trajectory/Timed.hpp>
 
 #include <rw/math/Q.hpp>
 #endif
