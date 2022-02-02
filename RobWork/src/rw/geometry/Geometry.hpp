@@ -18,7 +18,7 @@
 #ifndef RW_GEOMETRY_GEOMETRY_HPP_
 #define RW_GEOMETRY_GEOMETRY_HPP_
 #if !defined(SWIG)
-#include "GeometryData.hpp"
+#include <rw/geometry/GeometryData.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Transform3D.hpp>

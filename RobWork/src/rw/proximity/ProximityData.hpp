@@ -22,7 +22,7 @@
  * @file rw/proximity/ProximityData.hpp
  */
 #if !defined(SWIG)
-#include "CollisionDetector.hpp"
+#include <rw/proximity/CollisionDetector.hpp>
 #endif 
 namespace rw { namespace proximity {
     class ProximityCache;

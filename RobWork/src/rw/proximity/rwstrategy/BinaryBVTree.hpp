@@ -19,7 +19,7 @@
 #define RW_PROXIMITY_BINARYBVTREE_HPP_
 
 #if !defined(SWIG)
-#include "BVTree.hpp"
+#include <rw/proximity/rwstrategy/BVTree.hpp>
 
 #include <stack>
 #endif 

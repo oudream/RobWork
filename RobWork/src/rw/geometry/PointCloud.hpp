@@ -19,9 +19,8 @@
 #define RW_GEOMETRY_POINTCLOUD_HPP_
 
 #if !defined(SWIG)
-#include "GeometryData.hpp"
-
 #include <rw/core/Ptr.hpp>
+#include <rw/geometry/GeometryData.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/Vector3D.hpp>
 
@@ -101,9 +100,9 @@ namespace rw { namespace geometry {
          * @return point
          */
         rw::math::Vector3D< float >& operator() (int x, int y) { return _data[y * _width + x]; }
-#else 
-        MATRIXOPERATOR(rw::math::Vector3D<float>);
-#endif 
+#else
+        MATRIXOPERATOR (rw::math::Vector3D< float >);
+#endif
 
         /**
          * @brief width of the point cloud data. If the data is unordered then this

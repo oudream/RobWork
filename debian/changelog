@@ -1,3 +1,34 @@
+robwork (2.4.3-2) bionic; urgency=medium
+
+  * Version number updated to 2.4.3-2
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Tue, 01 Feb 2022 12:56:07 +0100
+
+robwork (2.4.3-1) focal; urgency=medium
+
+  * added debian apt install for test
+  * added missing include files for ppa
+  * Version number updated to 2.4.3-1
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Tue, 01 Feb 2022 12:54:38 +0100
+
+robwork (2.4.2-2) bionic; urgency=medium
+
+  * Version number updated to 2.4.2-2
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Thu, 27 Jan 2022 09:20:45 +0100
+
+robwork (2.4.2-1) focal; urgency=medium
+
+  * fixing errors and upgrading Rotation3D
+  * Corrected scaling of zoom in RobWorkStudio
+  * Yaobi include dir
+  * added include test for debian
+  * solving minor issues and adding missing files
+  * Version number updated to 2.4.2-1
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Thu, 27 Jan 2022 09:18:34 +0100
+
 robwork (2.4.1-3) focal; urgency=medium
 
   * Version number updated to 2.4.1-3

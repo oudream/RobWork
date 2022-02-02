@@ -22,7 +22,7 @@
  * @file PGMLoader.hpp
  */
 
-#include "../ImageLoader.hpp"
+#include <rw/loaders/ImageLoader.hpp>
 
 #include <rw/sensor/Image.hpp>
 

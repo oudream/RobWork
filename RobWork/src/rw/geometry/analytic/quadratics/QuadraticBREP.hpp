@@ -24,10 +24,10 @@
  * \copydoc rw::geometry::QuadraticBREP
  */
 #if !defined(SWIG)
-#include "QuadraticCurve.hpp"
-#include "QuadraticFace.hpp"
-#include "QuadraticShell.hpp"
-#include "QuadraticSurface.hpp"
+#include <rw/geometry/analytic/quadratics/QuadraticCurve.hpp>
+#include <rw/geometry/analytic/quadratics/QuadraticFace.hpp>
+#include <rw/geometry/analytic/quadratics/QuadraticShell.hpp>
+#include <rw/geometry/analytic/quadratics/QuadraticSurface.hpp>
 
 #include <rw/geometry/OBB.hpp>
 #include <rw/geometry/analytic/BREP.hpp>

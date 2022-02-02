@@ -18,7 +18,7 @@
 #ifndef RWLIBS_TASK_DOMTASKLOADER_HPP
 #define RWLIBS_TASK_DOMTASKLOADER_HPP
 
-#include "TaskLoader.hpp"
+#include <rwlibs/task/loader/TaskLoader.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rwlibs/task/Entity.hpp>

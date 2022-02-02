@@ -19,7 +19,7 @@
 #define RW_SENSOR_FTSENSORMODEL_HPP
 
 #if !defined(SWIG)
-#include "SensorModel.hpp"
+#include <rw/sensor/SensorModel.hpp>
 
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/Vector3D.hpp>

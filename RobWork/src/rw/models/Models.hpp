@@ -23,7 +23,7 @@
  */
 
 #if !defined(SWIG)
-#include "Device.hpp"
+#include <rw/models/Device.hpp>
 
 #include <rw/kinematics/State.hpp>
 #include <rw/math/Q.hpp>

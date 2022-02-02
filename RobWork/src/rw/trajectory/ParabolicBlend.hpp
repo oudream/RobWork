@@ -22,8 +22,8 @@
  * @file ParabolicBlend.hpp
  */
 #if !defined(SWIG)
-#include "Blend.hpp"
-#include "LinearInterpolator.hpp"
+#include <rw/trajectory/Blend.hpp>
+#include <rw/trajectory/LinearInterpolator.hpp>
 
 #include <rw/core/macros.hpp>
 #endif

@@ -23,21 +23,21 @@
 #ifndef RW_KINEMATICS_HPP_
 #define RW_KINEMATICS_HPP_
 
-#include "./kinematics/FKRange.hpp"
-#include "./kinematics/FKTable.hpp"
-#include "./kinematics/FixedFrame.hpp"
-#include "./kinematics/Frame.hpp"
-#include "./kinematics/FrameMap.hpp"
-#include "./kinematics/FramePairMap.hpp"
-#include "./kinematics/FrameType.hpp"
-#include "./kinematics/Kinematics.hpp"
-#include "./kinematics/MovableFrame.hpp"
-#include "./kinematics/QState.hpp"
-#include "./kinematics/State.hpp"
-#include "./kinematics/StateData.hpp"
-#include "./kinematics/StateSetup.hpp"
-#include "./kinematics/StateStructure.hpp"
-#include "./kinematics/StatelessData.hpp"
-#include "./kinematics/TreeState.hpp"
+#include <rw/kinematics/FKRange.hpp>
+#include <rw/kinematics/FKTable.hpp>
+#include <rw/kinematics/FixedFrame.hpp>
+#include <rw/kinematics/Frame.hpp>
+#include <rw/kinematics/FrameMap.hpp>
+#include <rw/kinematics/FramePairMap.hpp>
+#include <rw/kinematics/FrameType.hpp>
+#include <rw/kinematics/Kinematics.hpp>
+#include <rw/kinematics/MovableFrame.hpp>
+#include <rw/kinematics/QState.hpp>
+#include <rw/kinematics/State.hpp>
+#include <rw/kinematics/StateData.hpp>
+#include <rw/kinematics/StateSetup.hpp>
+#include <rw/kinematics/StateStructure.hpp>
+#include <rw/kinematics/StatelessData.hpp>
+#include <rw/kinematics/TreeState.hpp>
 
 #endif /* KINEMATICS_HPP_ */

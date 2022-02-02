@@ -22,7 +22,7 @@
    @file PathPlanner.hpp
 */
 #if !defined(SWIG)
-#include "StopCriteria.hpp"
+#include <rw/pathplanning/StopCriteria.hpp>
 
 #include <rw/core/PropertyMap.hpp>
 #include <rw/trajectory/Path.hpp>

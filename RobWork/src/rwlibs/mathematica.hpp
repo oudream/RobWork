@@ -24,27 +24,27 @@
  * @brief Include file for all Mathematica headers.
  */
 
-#include "./mathematica/Mathematica.hpp"
+#include <rwlibs/mathematica/Mathematica.hpp>
 
 // Packets
-#include "./mathematica/EnterExpressionPacket.hpp"
-#include "./mathematica/EnterTextPacket.hpp"
-#include "./mathematica/EvaluatePacket.hpp"
-#include "./mathematica/InputNamePacket.hpp"
-#include "./mathematica/MessagePacket.hpp"
-#include "./mathematica/OutputNamePacket.hpp"
-#include "./mathematica/ReturnExpressionPacket.hpp"
-#include "./mathematica/ReturnPacket.hpp"
-#include "./mathematica/ReturnTextPacket.hpp"
-#include "./mathematica/TextPacket.hpp"
+#include <rwlibs/mathematica/EnterExpressionPacket.hpp>
+#include <rwlibs/mathematica/EnterTextPacket.hpp>
+#include <rwlibs/mathematica/EvaluatePacket.hpp>
+#include <rwlibs/mathematica/InputNamePacket.hpp>
+#include <rwlibs/mathematica/MessagePacket.hpp>
+#include <rwlibs/mathematica/OutputNamePacket.hpp>
+#include <rwlibs/mathematica/ReturnExpressionPacket.hpp>
+#include <rwlibs/mathematica/ReturnPacket.hpp>
+#include <rwlibs/mathematica/ReturnTextPacket.hpp>
+#include <rwlibs/mathematica/TextPacket.hpp>
 
 // Functions
-#include "./mathematica/FactorInteger.hpp"
-#include "./mathematica/Image.hpp"
-#include "./mathematica/List.hpp"
-#include "./mathematica/ListPlot.hpp"
-#include "./mathematica/RawArray.hpp"
-#include "./mathematica/Rule.hpp"
-#include "./mathematica/ToExpression.hpp"
+#include <rwlibs/mathematica/FactorInteger.hpp>
+#include <rwlibs/mathematica/Image.hpp>
+#include <rwlibs/mathematica/List.hpp>
+#include <rwlibs/mathematica/ListPlot.hpp>
+#include <rwlibs/mathematica/RawArray.hpp>
+#include <rwlibs/mathematica/Rule.hpp>
+#include <rwlibs/mathematica/ToExpression.hpp>
 
 #endif /* RWLIBS_MATHEMATICA_HPP_ */

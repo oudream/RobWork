@@ -18,7 +18,7 @@
 #ifndef RWLIBS_ALGORITHMS_STABLEPLANEPOSE_HPP_
 #define RWLIBS_ALGORITHMS_STABLEPLANEPOSE_HPP_
 
-#include "StablePose.hpp"
+#include <rwlibs/algorithms/StablePose.hpp>
 
 #include <vector>
 

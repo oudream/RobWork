@@ -24,7 +24,7 @@
  * \copydoc rw::geometry::ParametricCurve
  */
 #if !defined(SWIG)
-#include "Curve.hpp"
+#include <rw/geometry/analytic/Curve.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rw/geometry/OBB.hpp>

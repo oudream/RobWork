@@ -22,7 +22,7 @@
  * @file CCDSolver.hpp
  */
 #if !defined(SWIG)
-#include "IterativeIK.hpp"
+#include <rw/invkin/IterativeIK.hpp>
 
 #include <rw/core/PropertyMap.hpp>
 #include <rw/kinematics/FKRange.hpp>

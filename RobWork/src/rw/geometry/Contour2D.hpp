@@ -19,7 +19,7 @@
 #define RW_GEOMETRY_CONTOUR2D_HPP_
 
 #if !defined(SWIG)
-#include "Covariance.hpp"
+#include <rw/geometry/Covariance.hpp>
 
 #include <rw/math/Rotation2D.hpp>
 #include <rw/math/Vector2D.hpp>

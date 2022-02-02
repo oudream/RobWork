@@ -19,7 +19,7 @@
 #define RW_SENSOR_TACTILEMULTIAXISSENSOR_HPP
 
 #if !defined(SWIG)
-#include "Sensor.hpp"
+#include <rw/sensor/Sensor.hpp>
 
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/Vector3D.hpp>

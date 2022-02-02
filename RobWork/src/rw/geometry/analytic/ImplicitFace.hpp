@@ -25,9 +25,9 @@
  */
 
 #if !defined(SWIG)
-#include "Face.hpp"
-#include "ImplicitSurface.hpp"
-#include "ParametricCurve.hpp"
+#include <rw/geometry/analytic/Face.hpp>
+#include <rw/geometry/analytic/ImplicitSurface.hpp>
+#include <rw/geometry/analytic/ParametricCurve.hpp>
 #endif
 namespace rw { namespace geometry {
 

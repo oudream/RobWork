@@ -22,7 +22,7 @@
  * @file TrajectoryIterator.hpp
  */
 #if !defined(SWIG)
-#include "TrajectoryIterator.hpp"
+#include <rw/trajectory/TrajectoryIterator.hpp>
 #endif
 namespace rw { namespace trajectory {
 

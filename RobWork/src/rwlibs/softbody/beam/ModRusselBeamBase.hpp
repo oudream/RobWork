@@ -17,8 +17,8 @@ Copyright 2013 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
 #ifndef RWLIBS_SOFTBODY_MODRUSSELBEAMBASE_HPP
 #define RWLIBS_SOFTBODY_MODRUSSELBEAMBASE_HPP
 
-#include "BeamGeometry.hpp"
-#include "BeamObstaclePlane.hpp"
+#include <rwlibs/softbody/beam/BeamGeometry.hpp>
+#include <rwlibs/softbody/beam/BeamObstaclePlane.hpp>
 
 #include <rw/math/Transform3D.hpp>
 

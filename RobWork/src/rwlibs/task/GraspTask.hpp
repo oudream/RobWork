@@ -8,8 +8,8 @@
 #ifndef RWLIBS_TASK_GRASPTASK_HPP_
 #define RWLIBS_TASK_GRASPTASK_HPP_
 
-#include "GraspSubTask.hpp"
-#include "Task.hpp"
+#include <rwlibs/task/GraspSubTask.hpp>
+#include <rwlibs/task/Task.hpp>
 
 #include <rw/core/Ptr.hpp>
 

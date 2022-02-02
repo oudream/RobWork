@@ -22,8 +22,8 @@
  * @file FKTable.hpp
  */
 #if !defined(SWIG)
-#include "FrameMap.hpp"
-#include "State.hpp"
+#include <rw/kinematics/FrameMap.hpp>
+#include <rw/kinematics/State.hpp>
 
 #include <rw/math/Transform3D.hpp>
 #endif

@@ -18,8 +18,8 @@
 #ifndef RWLIBS_TASK_TARGET_HPP
 #define RWLIBS_TASK_TARGET_HPP
 
-#include "Entity.hpp"
-#include "TypeRepository.hpp"
+#include <rwlibs/task/Entity.hpp>
+#include <rwlibs/task/TypeRepository.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Q.hpp>

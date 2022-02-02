@@ -23,9 +23,9 @@
  */
 
 #if !defined(SWIG)
-#include "EAA.hpp"
-#include "Transform3D.hpp"
-#include "Vector3D.hpp"
+#include <rw/math/EAA.hpp>
+#include <rw/math/Transform3D.hpp>
+#include <rw/math/Vector3D.hpp>
 #endif
 namespace rw { namespace math {
 

@@ -24,7 +24,7 @@
  * \copydoc rwlibs::mathematica::List
  */
 
-#include "Mathematica.hpp"
+#include <rwlibs/mathematica/Mathematica.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rw/core/macros.hpp>

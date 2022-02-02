@@ -24,7 +24,7 @@
  * \copydoc rwlibs::assembly::PiHStrategy
  */
 
-#include "AssemblyControlStrategy.hpp"
+#include <rwlibs/assembly/AssemblyControlStrategy.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rw/trajectory/Trajectory.hpp>

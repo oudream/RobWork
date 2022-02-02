@@ -25,9 +25,9 @@
  */
 
 #if !defined(SWIG)
-#include "BREP.hpp"
-#include "ImplicitSurface.hpp"
-#include "ParametricCurve.hpp"
+#include <rw/geometry/analytic/BREP.hpp>
+#include <rw/geometry/analytic/ImplicitSurface.hpp>
+#include <rw/geometry/analytic/ParametricCurve.hpp>
 #endif
 
 namespace rw { namespace geometry {

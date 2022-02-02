@@ -20,7 +20,7 @@
 
 //! @file LoaderOBJ.hpp
 
-#include "../Model3DLoader.hpp"
+#include <rw/loaders/Model3DLoader.hpp>
 
 #include <string>
 

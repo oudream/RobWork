@@ -22,7 +22,7 @@
    @file Path.hpp
 */
 #if !defined(SWIG)
-#include "Timed.hpp"
+#include <rw/trajectory/Timed.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rw/kinematics/State.hpp>

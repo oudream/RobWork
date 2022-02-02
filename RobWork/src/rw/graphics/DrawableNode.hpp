@@ -23,7 +23,7 @@
  */
 
 #if !defined(SWIG)
-#include "SceneNode.hpp"
+#include <rw/graphics/SceneNode.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Transform3D.hpp>

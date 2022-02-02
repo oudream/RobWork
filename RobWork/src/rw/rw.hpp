@@ -26,18 +26,18 @@
   This file includes all header files of robwork.
 */
 
-#include "common.hpp"
-#include "geometry.hpp"
-#include "graspplanning.hpp"
-#include "invkin.hpp"
-#include "kinematics.hpp"
-#include "loaders.hpp"
-#include "math.hpp"
-#include "models.hpp"
-#include "pathplanning.hpp"
-#include "proximity.hpp"
-#include "sensor.hpp"
-#include "trajectory.hpp"
+#include <rw/common.hpp>
+#include <rw/geometry.hpp>
+#include <rw/graspplanning.hpp>
+#include <rw/invkin.hpp>
+#include <rw/kinematics.hpp>
+#include <rw/loaders.hpp>
+#include <rw/math.hpp>
+#include <rw/models.hpp>
+#include <rw/pathplanning.hpp>
+#include <rw/proximity.hpp>
+#include <rw/sensor.hpp>
+#include <rw/trajectory.hpp>
 
 #include <rw/core.hpp>
 

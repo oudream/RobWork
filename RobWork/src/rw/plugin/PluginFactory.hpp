@@ -18,7 +18,7 @@
 #ifndef RW_PLUGIN_PLUGINFACTORY_HPP
 #define RW_PLUGIN_PLUGINFACTORY_HPP
 
-#include "PluginFactoryBase.hpp"
+#include <rw/plugin/PluginFactoryBase.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rw/core/macros.hpp>

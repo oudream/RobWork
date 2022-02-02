@@ -18,7 +18,7 @@ Copyright 2013 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
 #define RWLIBS_SOFTBODY_MODRUSSELBEAMIPOPT_HPP
 
 #include "IpIpoptApplication.hpp"
-#include "ModRusselBeamBase.hpp"
+#include <rwlibs/softbody/beam/ModRusselBeamBase.hpp>
 #include <memory>
 
 namespace rwlibs { namespace softbody {

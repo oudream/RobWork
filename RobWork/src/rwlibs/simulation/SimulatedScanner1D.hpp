@@ -20,8 +20,8 @@
 
 //! @file SimulatedScanner1D.hpp
 #if !defined(SWIG)
-#include "FrameGrabber25D.hpp"
-#include "SimulatedSensor.hpp"
+#include <rwlibs/simulation/FrameGrabber25D.hpp>
+#include <rwlibs/simulation/SimulatedSensor.hpp>
 
 #include <rw/math/Constants.hpp>
 #include <rw/sensor/Scanner2D.hpp>

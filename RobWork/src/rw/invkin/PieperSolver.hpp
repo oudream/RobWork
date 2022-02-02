@@ -22,7 +22,7 @@
  * @file PieperSolver.hpp
  */
 #if !defined(SWIG)
-#include "ClosedFormIK.hpp"
+#include <rw/invkin/ClosedFormIK.hpp>
 
 #include <rw/math/Q.hpp>
 #include <rw/math/Transform3D.hpp>

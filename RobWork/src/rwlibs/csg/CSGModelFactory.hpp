@@ -18,7 +18,7 @@
 #ifndef _RWLIBS_CSG_CSGMODELFACTORY_HPP
 #define _RWLIBS_CSG_CSGMODELFACTORY_HPP
 
-#include "CSGModel.hpp"
+#include <rwlibs/csg/CSGModel.hpp>
 
 #include <rw/math/Vector3D.hpp>
 

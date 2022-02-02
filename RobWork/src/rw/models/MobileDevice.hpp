@@ -19,8 +19,8 @@
 #define RW_MODELS_MOBILEDEVICE_HPP
 
 #if !defined(SWIG)
-#include "Device.hpp"
-#include "JointDevice.hpp"
+#include <rw/models/Device.hpp>
+#include <rw/models/JointDevice.hpp>
 
 #include <rw/math/Q.hpp>
 #endif

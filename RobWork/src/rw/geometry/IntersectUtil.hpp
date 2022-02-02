@@ -24,7 +24,7 @@
  */
 
 #if !defined(SWIG)
-#include "Triangle.hpp"
+#include <rw/geometry/Triangle.hpp>
 
 #include <rw/math/Vector3D.hpp>
 #endif 

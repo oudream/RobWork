@@ -22,8 +22,8 @@
    @file StateData.hpp
 */
 #if !defined(SWIG)
-#include "State.hpp"
-#include "StateCache.hpp"
+#include <rw/kinematics/State.hpp>
+#include <rw/kinematics/StateCache.hpp>
 
 #include <rw/kinematics/StateStructure.hpp>
 

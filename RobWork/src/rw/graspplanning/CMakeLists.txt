@@ -1,6 +1,9 @@
 set(SUBSYS_NAME sdurw_graspplanning)
 set(SUBSYS_DESC "A collection of graspplanning algorithms!")
-set(SUBSYS_DEPS PUBLIC sdurw_core sdurw_math sdurw_geometry sdurw_sensor PRIVATE sdurw_common)
+set(SUBSYS_DEPS
+    PUBLIC sdurw_core sdurw_math sdurw_geometry sdurw_sensor
+    PRIVATE sdurw_common
+)
 
 set(build TRUE)
 rw_subsys_option(
@@ -27,9 +30,11 @@ if(build)
         GraspQualityMeasure3D.cpp
         GraspTable.cpp
         GraspValidateFilter.cpp
+        GWSMeasure3D.cpp
         PlaneClearanceFilter.cpp
         SemiForceClosureFilter.cpp
         WrenchMeasure3D.cpp
+        QualityMeasure2D.cpp
     )
 
     set(FILES_HPP
@@ -47,9 +52,11 @@ if(build)
         GraspQualityMeasure3D.hpp
         GraspTable.hpp
         GraspValidateFilter.hpp
+        GWSMeasure3D.hpp
         PlaneClearanceFilter.hpp
         SemiForceClosureFilter.hpp
         WrenchMeasure3D.hpp
+        QualityMeasure2D.hpp
     )
 
     rw_add_library(${SUBSYS_NAME} ${FILES_CPP} ${FILES_HPP})

@@ -19,15 +19,14 @@
 #define RW_GEOMETRY_TRIANGLEUTIL_HPP_
 
 #if !defined(SWIG)
-#include "PlainTriMesh.hpp"
-#include "Plane.hpp"
-#include "TriMesh.hpp"
-#include "Triangle.hpp"
-
+#include <rw/geometry/PlainTriMesh.hpp>
+#include <rw/geometry/Plane.hpp>
+#include <rw/geometry/TriMesh.hpp>
+#include <rw/geometry/Triangle.hpp>
 #include <rw/math/Vector3D.hpp>
 
 #include <stack>
-#endif 
+#endif
 
 namespace rw { namespace geometry {
     //! @addtogroup geometry
@@ -68,7 +67,6 @@ namespace rw { namespace geometry {
                 std::cout << "Job: " << axis << " " << from << "-->" << to << std::endl;
             }
         };
-
 
         /**
          * @brief creates a sorted indexed verticelist. The vertice list is
@@ -209,7 +207,9 @@ namespace rw { namespace geometry {
         /**
          * @brief Recalculate the normals of \b trimesh
          */
-        template< class T > static void recalcNormals (rw::geometry::PlainTriMesh< rw::geometry::TriangleN1< T > >& trimesh)
+        template< class T >
+        static void
+        recalcNormals (rw::geometry::PlainTriMesh< rw::geometry::TriangleN1< T > >& trimesh)
         {
             using namespace rw::math;
             for (size_t i = 0; i < trimesh.getSize (); i++) {
@@ -238,10 +238,10 @@ namespace rw { namespace geometry {
             typename PlainTriMesh< TRI >::Ptr back =
                 rw::core::ownedPtr (new PlainTriMesh< TRI > ());
             for (size_t i = 0; i < trimesh->size (); i++) {
-                const rw::geometry::Triangle < double >& tri = trimesh->getTriangle (i);
-                double d0             = plane->distance (tri.getVertex (0));
-                double d1             = plane->distance (tri.getVertex (1));
-                double d2             = plane->distance (tri.getVertex (2));
+                const rw::geometry::Triangle< double >& tri = trimesh->getTriangle (i);
+                double d0                                   = plane->distance (tri.getVertex (0));
+                double d1                                   = plane->distance (tri.getVertex (1));
+                double d2                                   = plane->distance (tri.getVertex (2));
                 // std::cout<<"d0 = "<<d0<<" d1 = "<<d1<<" d2 = "<<d2<<std::endl;
                 if (d0 <= 0 && d1 <= 0 && d2 <= 0) {
                     back->add (tri);

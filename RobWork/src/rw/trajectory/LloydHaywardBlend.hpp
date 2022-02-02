@@ -22,9 +22,9 @@
  * @file LloydHaywardBlend.hpp
  */
 #if !defined(SWIG)
-#include "Blend.hpp"
-#include "Interpolator.hpp"
-#include "InterpolatorUtil.hpp"
+#include <rw/trajectory/Blend.hpp>
+#include <rw/trajectory/Interpolator.hpp>
+#include <rw/trajectory/InterpolatorUtil.hpp>
 
 #include <rw/math/Rotation3D.hpp>
 #include <rw/math/Transform3D.hpp>

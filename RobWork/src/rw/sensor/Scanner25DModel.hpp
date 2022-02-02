@@ -19,7 +19,7 @@
 #define RW_SENSOR_SCANNER25DMODEL_HPP
 
 #if !defined(SWIG)
-#include "SensorModel.hpp"
+#include <rw/sensor/SensorModel.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rw/geometry/PointCloud.hpp>

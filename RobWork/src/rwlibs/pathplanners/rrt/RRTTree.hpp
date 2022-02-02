@@ -22,7 +22,7 @@
    @file RRTTree.hpp
 */
 
-#include "RRTNode.hpp"
+#include <rwlibs/pathplanners/rrt/RRTNode.hpp>
 
 #include <rw/core/PairIterator.hpp>
 

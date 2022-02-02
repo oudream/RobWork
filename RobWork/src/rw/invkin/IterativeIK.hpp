@@ -23,7 +23,7 @@
  */
 
 #if !defined(SWIG)
-#include "InvKinSolver.hpp"
+#include <rw/invkin/InvKinSolver.hpp>
 
 #include <rw/core/PropertyMap.hpp>
 #include <rw/core/Ptr.hpp>

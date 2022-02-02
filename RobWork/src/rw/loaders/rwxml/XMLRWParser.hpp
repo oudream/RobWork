@@ -18,7 +18,7 @@
 #ifndef RW_LOADERS_XMLDEVICEPARSER_HPP
 #define RW_LOADERS_XMLDEVICEPARSER_HPP
 
-#include "XMLParserUtil.hpp"
+#include <rw/loaders/rwxml/XMLParserUtil.hpp>
 
 #include <boost/shared_ptr.hpp>
 #include <boost/spirit/include/classic_position_iterator.hpp>

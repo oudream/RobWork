@@ -22,9 +22,9 @@
  * @file StateSetup.hpp
  */
 #if !defined(SWIG)
-#include "Frame.hpp"
-#include "StateData.hpp"
-#include "StateStructure.hpp"
+#include <rw/kinematics/Frame.hpp>
+#include <rw/kinematics/StateData.hpp>
+#include <rw/kinematics/StateStructure.hpp>
 
 #include <rw/core/Ptr.hpp>
 #endif

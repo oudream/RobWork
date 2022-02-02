@@ -22,8 +22,8 @@
  * @file JointDevice.hpp
  */
 #if !defined(SWIG)
-#include "Device.hpp"
-#include "JacobianCalculator.hpp"
+#include <rw/models/Device.hpp>
+#include <rw/models/JacobianCalculator.hpp>
 
 #include <vector>
 #endif 

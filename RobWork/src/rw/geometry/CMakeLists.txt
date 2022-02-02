@@ -92,6 +92,7 @@ if(build)
         Contour2D.hpp
         ConvexHull2D.hpp
         ConvexHull3D.hpp
+        ConvexHullND.hpp
         Covariance.hpp
         Cylinder.hpp
         Delaunay.hpp
@@ -105,6 +106,7 @@ if(build)
         IndexedTriArray.hpp
         IndexedTriMesh.hpp
         IndexedTriangle.hpp
+        IntersectUtil.hpp
         Line.hpp
         Model3D.hpp
         OBB.hpp

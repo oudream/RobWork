@@ -22,7 +22,7 @@
    @file SBLSetup.hpp
 */
 
-#include "SBLOptions.hpp"
+#include <rwlibs/pathplanners/sbl/SBLOptions.hpp>
 
 #include <rw/core/Ptr.hpp>
 

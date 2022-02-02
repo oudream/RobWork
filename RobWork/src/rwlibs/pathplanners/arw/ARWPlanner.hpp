@@ -22,7 +22,7 @@
    @file ARWPlanner.hpp
 */
 
-#include "ARWExpand.hpp"
+#include <rwlibs/pathplanners/arw/ARWExpand.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Metric.hpp>

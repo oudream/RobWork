@@ -19,8 +19,8 @@
 #define RW_PROXIMITY_RAYCASTER_HPP_
 
 #if !defined(SWIG)
-#include "ProximityModel.hpp"
-#include "ProximityStrategyData.hpp"
+#include <rw/proximity/ProximityModel.hpp>
+#include <rw/proximity/ProximityStrategyData.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rw/geometry/PlainTriMesh.hpp>

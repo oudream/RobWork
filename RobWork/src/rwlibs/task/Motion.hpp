@@ -18,8 +18,8 @@
 #ifndef RWLIBS_TASK_MOTION_HPP
 #define RWLIBS_TASK_MOTION_HPP
 
-#include "Entity.hpp"
-#include "Target.hpp"
+#include <rwlibs/task/Entity.hpp>
+#include <rwlibs/task/Target.hpp>
 
 #include <rw/core/Ptr.hpp>
 

@@ -23,7 +23,7 @@
  */
 
 #if !defined(SWIG)
-#include "ProximityStrategy.hpp"
+#include <rw/proximity/ProximityStrategy.hpp>
 
 #include <rw/core/ExtensionPoint.hpp>
 #include <rw/core/Ptr.hpp>

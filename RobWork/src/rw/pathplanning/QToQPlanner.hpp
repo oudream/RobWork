@@ -22,7 +22,7 @@
    @file QToQPlanner.hpp
 */
 #if !defined(SWIG)
-#include "PathPlanner.hpp"
+#include <rw/pathplanning/PathPlanner.hpp>
 
 #include <rw/core/Ptr.hpp>
 #endif

@@ -8,7 +8,7 @@
 #ifndef SRC_RWLIBS_TASK_GRASPSUBTASK_HPP_
 #define SRC_RWLIBS_TASK_GRASPSUBTASK_HPP_
 
-#include "GraspTarget.hpp"
+#include <rwlibs/task/GraspTarget.hpp>
 
 #include <rw/math/Q.hpp>
 #include <rw/math/Transform3D.hpp>

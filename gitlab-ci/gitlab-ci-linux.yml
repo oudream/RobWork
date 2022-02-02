@@ -242,6 +242,11 @@
     - make -j${THREADS}
     - "for file in ./ex-*; do if [ -f $file ] && [[ ! $file =~ ex-load-workcell ]] ; then  echo -e '\n EXECUTING: '$file' '$robworkdata && $file ${robworkdata} && EXERW=$EXERW' '$file || exit 1 ; fi; done"
     - ./ex-load-workcell ../../ModelData/XMLScenes/RobotWithHand/Workcell.xml
+    # TEST RW CPP EXTRA FILES
+    - cd $DIR/RobWork/example/tutorial
+    - mkdir Build && cd Build
+    - cmake ..
+    - make -j${THREADS}
     # TEST RW PYTHON FILES
     - cd $DIR/RobWork/example/python
     - "for file in $EXERW ; do echo -e '\n EXECUTING: '$file && python3 ${file}.py ${robworkdata} || exit 1 ; done"
@@ -319,6 +324,9 @@
     - export DISPLAY=:0
     - Xvfb $DISPLAY -screen 0 640x480x24 &
     - cd ..
+    - rm -r ./RobWork/src
+    - rm -r ./RobWorkStudio/src
+    - rm -r ./RobWorkSim/src
 
 .linux-debian-upgrade-test:
   extends: .CI-common-linux
@@ -350,3 +358,6 @@
     - add-apt-repository ppa:sdurobotics/robwork
     - apt-get update
     - apt -y install libsdurw-all-dev libsdurws-all-dev libsdurwsim-all-dev python3-robwork lua-robwork
+    - rm -r ./RobWork/src
+    - rm -r ./RobWorkStudio/src
+    - rm -r ./RobWorkSim/src

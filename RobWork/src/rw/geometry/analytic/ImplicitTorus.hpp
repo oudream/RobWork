@@ -25,7 +25,7 @@
  */
 
 #if !defined(SWIG)
-#include "ImplicitSurface.hpp"
+#include <rw/geometry/analytic/ImplicitSurface.hpp>
 
 #include <rw/geometry/PlainTriMesh.hpp>
 #endif

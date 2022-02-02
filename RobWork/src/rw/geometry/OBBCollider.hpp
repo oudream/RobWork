@@ -19,7 +19,7 @@
 #define RW_GEOMETRY_OBBCOLLIDER_HPP_
 
 #if !defined(SWIG)
-#include "BVCollider.hpp"
+#include <rw/geometry/BVCollider.hpp>
 
 #include <rw/geometry/OBB.hpp>
 #include <rw/math/Vector3D.hpp>

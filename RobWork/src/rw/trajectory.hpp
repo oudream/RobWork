@@ -23,24 +23,24 @@
 #ifndef RW_TRAJECTORY_HPP_
 #define RW_TRAJECTORY_HPP_
 
-#include "./trajectory/Blend.hpp"
-#include "./trajectory/BlendedTrajectory.hpp"
-#include "./trajectory/CircularInterpolator.hpp"
-#include "./trajectory/CubicSplineFactory.hpp"
-#include "./trajectory/CubicSplineInterpolator.hpp"
-#include "./trajectory/Interpolator.hpp"
-#include "./trajectory/InterpolatorTrajectory.hpp"
-#include "./trajectory/InterpolatorUtil.hpp"
-#include "./trajectory/LinearInterpolator.hpp"
-#include "./trajectory/LloydHaywardBlend.hpp"
-#include "./trajectory/ParabolicBlend.hpp"
-#include "./trajectory/Path.hpp"
-#include "./trajectory/RampInterpolator.hpp"
-#include "./trajectory/Timed.hpp"
-#include "./trajectory/TimedUtil.hpp"
-#include "./trajectory/Trajectory.hpp"
-#include "./trajectory/TrajectoryFactory.hpp"
-#include "./trajectory/TrajectoryIterator.hpp"
-#include "./trajectory/TrajectorySequence.hpp"
+#include <rw/trajectory/Blend.hpp>
+#include <rw/trajectory/BlendedTrajectory.hpp>
+#include <rw/trajectory/CircularInterpolator.hpp>
+#include <rw/trajectory/CubicSplineFactory.hpp>
+#include <rw/trajectory/CubicSplineInterpolator.hpp>
+#include <rw/trajectory/Interpolator.hpp>
+#include <rw/trajectory/InterpolatorTrajectory.hpp>
+#include <rw/trajectory/InterpolatorUtil.hpp>
+#include <rw/trajectory/LinearInterpolator.hpp>
+#include <rw/trajectory/LloydHaywardBlend.hpp>
+#include <rw/trajectory/ParabolicBlend.hpp>
+#include <rw/trajectory/Path.hpp>
+#include <rw/trajectory/RampInterpolator.hpp>
+#include <rw/trajectory/Timed.hpp>
+#include <rw/trajectory/TimedUtil.hpp>
+#include <rw/trajectory/Trajectory.hpp>
+#include <rw/trajectory/TrajectoryFactory.hpp>
+#include <rw/trajectory/TrajectoryIterator.hpp>
+#include <rw/trajectory/TrajectorySequence.hpp>
 
 #endif /* TRAJECTORY_HPP_ */

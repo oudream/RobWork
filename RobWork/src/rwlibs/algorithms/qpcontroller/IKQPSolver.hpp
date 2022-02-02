@@ -21,12 +21,10 @@
 /**
  * @file IKQPSolver.hpp
  */
-
-#include "QPController.hpp"
-
 #include <rw/core/PropertyMap.hpp>
 #include <rw/invkin/IterativeIK.hpp>
 #include <rw/kinematics/State.hpp>
+#include <rwlibs/algorithms/qpcontroller/QPController.hpp>
 
 namespace rw { namespace models {
     class SerialDevice;

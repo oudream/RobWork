@@ -9,7 +9,7 @@
 #define RW_GRAPHICS_DRAWABLEGEOMETRYNODE_HPP_
 
 #if !defined(SWIG)
-#include "DrawableNode.hpp"
+#include <rw/graphics/DrawableNode.hpp>
 
 #include <rw/math/Vector3D.hpp>
 

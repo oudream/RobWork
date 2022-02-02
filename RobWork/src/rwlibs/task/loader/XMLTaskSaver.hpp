@@ -18,8 +18,8 @@
 #ifndef RWLIBS_TASK_XMLTASKSAVER_HPP
 #define RWLIBS_TASK_XMLTASKSAVER_HPP
 
-#include "../Task.hpp"
-#include "TaskSaver.hpp"
+#include <rwlibs/task/Task.hpp>
+#include <rwlibs/task/loader/TaskSaver.hpp>
 
 #include <xercesc/util/XercesDefs.hpp>
 

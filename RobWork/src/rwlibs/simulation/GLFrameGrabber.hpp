@@ -22,7 +22,7 @@
  * @file GLFrameGrabber.hpp
  */
 #if !defined(SWIG)
-#include "FrameGrabber.hpp"
+#include <rwlibs/simulation/FrameGrabber.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rw/graphics/SceneViewer.hpp>

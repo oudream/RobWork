@@ -19,8 +19,8 @@
 #define RW_PROXIMITY_SAPFilterStrategy_HPP_
 
 #if !defined(SWIG)
-#include "ProximityFilterStrategy.hpp"
-#include "ProximitySetup.hpp"
+#include <rw/proximity/rwstrategy/ProximityFilterStrategy.hpp>
+#include <rw/proximity/rwstrategy/ProximitySetup.hpp>
 #endif 
 namespace rw { namespace models {
     class WorkCell;

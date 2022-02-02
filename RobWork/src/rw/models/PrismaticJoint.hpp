@@ -22,7 +22,7 @@
  * @file PrismaticJoint.hpp
  */
 #if !defined(SWIG)
-#include "Joint.hpp"
+#include <rw/models/Joint.hpp>
 #endif 
 
 namespace rw { namespace models {

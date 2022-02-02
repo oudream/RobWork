@@ -19,7 +19,7 @@
 #define RW_GRAPHICS_SCENECAMERA_HPP_
 
 #if !defined(SWIG)
-#include "SceneNode.hpp"
+#include <rw/graphics/SceneNode.hpp>
 
 #include <rw/graphics/DrawableNode.hpp>
 #include <rw/math/ProjectionMatrix.hpp>

@@ -22,8 +22,8 @@
  * @file ProximityStrategyRW.hpp
  */
 #if !defined(SWIG)
-#include "BVTreeCollider.hpp"
-#include "BinaryBVTree.hpp"
+#include <rw/proximity/rwstrategy/BVTreeCollider.hpp>
+#include <rw/proximity/rwstrategy/BinaryBVTree.hpp>
 
 #include <rw/common/Cache.hpp>
 #include <rw/core/Ptr.hpp>

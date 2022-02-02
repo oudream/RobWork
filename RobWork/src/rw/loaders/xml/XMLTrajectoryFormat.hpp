@@ -18,7 +18,7 @@
 #ifndef RW_LOADERS_XMLTRAJECTORYFORMAT_HPP
 #define RW_LOADERS_XMLTRAJECTORYFORMAT_HPP
 
-#include "XercesUtils.hpp"
+#include <rw/loaders/xml/XercesUtils.hpp>
 
 #include <xercesc/util/XercesDefs.hpp>
 

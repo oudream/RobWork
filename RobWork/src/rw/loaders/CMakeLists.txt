@@ -70,7 +70,7 @@ if(build)
     )
 
     set(FILES_HPP WorkCellLoader.hpp WorkCellFactory.hpp Model3DFactory.hpp Model3DLoader.hpp
-                  GeometryFactory.hpp
+                  GeometryFactory.hpp ImageLoader.hpp
     )
     set(FILES_HPP_model3d model3d/LoaderAC3D.hpp model3d/Loader3DS.hpp model3d/Model3DS.hpp
                           model3d/LoaderOBJ.hpp model3d/LoaderTRI.hpp model3d/STLFile.hpp

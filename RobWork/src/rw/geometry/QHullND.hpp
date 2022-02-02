@@ -19,15 +19,14 @@
 #define RW_GEOMETRY_QHULLND_HPP_
 
 #if !defined(SWIG)
-#include "ConvexHullND.hpp"
-
 #include <rw/core/macros.hpp>
+#include <rw/geometry/ConvexHullND.hpp>
 #include <rw/geometry/GeometryUtil.hpp>
 #include <rw/math/VectorND.hpp>
 
 #include <float.h>
 #include <vector>
-#endif 
+#endif
 
 namespace rw { namespace geometry {
     /** @addtogroup geometry
@@ -63,7 +62,7 @@ namespace rw { namespace geometry {
          * @param faceNormals
          * @param faceOffsets
          */
-        void build (std::vector<std::vector<double>> coords, std::vector< int >& vertIdxs,
+        void build (std::vector< std::vector< double > > coords, std::vector< int >& vertIdxs,
                     std::vector< int >& faceIdxs, std::vector< double >& faceNormals,
                     std::vector< double >& faceOffsets);
     }    // namespace qhull
@@ -157,11 +156,11 @@ namespace rw { namespace geometry {
         }
 
         /**
-         * @brief Calculates a distance to the hull. 
+         * @brief Calculates a distance to the hull.
          * The distance to the \b vertex is greater or equal to the result
          * @param vertex [in] vertex to calculate minimum distance for.
-         * @return a distance <= the actual distancte to the hull if \b vertex is outside, otherwise zero is
-         * returned.
+         * @return a distance <= the actual distancte to the hull if \b vertex is outside, otherwise
+         * zero is returned.
          */
         virtual double getMinDistOutside (const rw::math::VectorND< N >& vertex)
         {
@@ -205,7 +204,7 @@ namespace rw { namespace geometry {
                 minDist = std::min (-dist, minDist);
             }
 
-            return (minDist>0?minDist:0);
+            return (minDist > 0 ? minDist : 0);
         }
 
         //! @copydoc ConvexHullND::getAvgDistInside

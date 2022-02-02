@@ -24,8 +24,8 @@
  * \copydoc rwlibs::mathematica::RawArray
  */
 
-#include "List.hpp"
-#include "Mathematica.hpp"
+#include <rwlibs/mathematica/List.hpp>
+#include <rwlibs/mathematica/Mathematica.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rw/core/macros.hpp>

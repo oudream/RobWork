@@ -19,7 +19,7 @@
 #define RW_INVKIN_AMGIGUITYRESOLVER_HPP
 
 #if !defined(SWIG)
-#include "InvKinSolver.hpp"
+#include <rw/invkin/InvKinSolver.hpp>
 
 #include <rw/math/Transform3D.hpp>
 #endif

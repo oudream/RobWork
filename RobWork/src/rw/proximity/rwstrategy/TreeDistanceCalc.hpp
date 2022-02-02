@@ -9,7 +9,7 @@
 #define TREEDISTANCECALC_HPP_
 
 #if !defined(SWIG)
-#include "BinaryBVTree.hpp"
+#include <rw/proximity/rwstrategy/BinaryBVTree.hpp>
 
 #include <rw/geometry/OBB.hpp>
 #endif

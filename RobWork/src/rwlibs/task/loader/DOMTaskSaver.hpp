@@ -18,7 +18,7 @@
 #ifndef RWLIBS_TASK_DOMTASKSAVER_HPP
 #define RWLIBS_TASK_DOMTASKSAVER_HPP
 
-#include "TaskSaver.hpp"
+#include <rwlibs/task/loader/TaskSaver.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rwlibs/task/Entity.hpp>

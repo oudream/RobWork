@@ -19,9 +19,9 @@
 #define RW_GEOMETRY_INDEXEDTRIMESH_HPP_
 
 #if !defined(SWIG)
-#include "IndexedTriangle.hpp"
-#include "TriMesh.hpp"
-#include "Triangle.hpp"
+#include <rw/geometry/IndexedTriangle.hpp>
+#include <rw/geometry/TriMesh.hpp>
+#include <rw/geometry/Triangle.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Vector3D.hpp>

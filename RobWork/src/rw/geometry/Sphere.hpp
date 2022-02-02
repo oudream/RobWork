@@ -20,7 +20,7 @@
 
 //! @file rw/geometry/Sphere.hpp
 #if !defined(SWIG)
-#include "Primitive.hpp"
+#include <rw/geometry/Primitive.hpp>
 #endif
 
 namespace rw { namespace geometry {

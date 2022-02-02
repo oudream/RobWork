@@ -23,10 +23,10 @@
  */
 
 #if !defined(SWIG)
-#include "EAA.hpp"
-#include "Math.hpp"
-#include "Transform3D.hpp"
-#include "Vector3D.hpp"
+#include <rw/math/EAA.hpp>
+#include <rw/math/Math.hpp>
+#include <rw/math/Transform3D.hpp>
+#include <rw/math/Vector3D.hpp>
 
 #include <rw/common/Serializable.hpp>
 

@@ -25,7 +25,7 @@
  */
 
 #if !defined(SWIG)
-#include "Shell.hpp"
+#include <rw/geometry/analytic/Shell.hpp>
 
 #include <rw/core/os.hpp>
 #endif

@@ -19,9 +19,9 @@
 #define RW_PROXIMITY_BROADPHASEDETECTOR_HPP
 
 #if !defined(SWIG)
-#include "ProximityCache.hpp"
-#include "ProximityFilter.hpp"
-#include "ProximitySetup.hpp"
+#include <rw/proximity/ProximityCache.hpp>
+#include <rw/proximity/ProximityFilter.hpp>
+#include <rw/proximity/ProximitySetup.hpp>
 #endif 
 
 namespace rw { namespace geometry {

@@ -24,7 +24,7 @@
  * \copydoc rw::geometry::IndexedFaceArray
  */
 #if !defined(SWIG)
-#include "Shell.hpp"
+#include <rw/geometry/analytic/Shell.hpp>
 
 #include <rw/geometry/OBB.hpp>
 #include <rw/math/Transform3D.hpp>

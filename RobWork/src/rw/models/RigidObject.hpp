@@ -19,7 +19,7 @@
 #define RW_MODELS_RIGIDOBJECT_HPP_
 
 #if !defined(SWIG)
-#include "Object.hpp"
+#include <rw/models/Object.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rw/geometry/Geometry.hpp>

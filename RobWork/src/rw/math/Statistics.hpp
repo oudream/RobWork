@@ -3,7 +3,7 @@
 #define RW_MATH_STATISTICS_HPP
 
 #if !defined(SWIG)
-#include "Math.hpp"
+#include <rw/math/Math.hpp>
 
 #include <cmath>
 #include <iostream>

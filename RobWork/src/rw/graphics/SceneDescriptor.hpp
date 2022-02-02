@@ -19,9 +19,9 @@
 #define RW_GRAPHICS_SCENEDESCRIPTOR1_HPP_
 
 #if !defined(SWIG)
-#include "DrawableNode.hpp"
-#include "Model3D.hpp"
-#include "Render.hpp"
+#include <rw/graphics/DrawableNode.hpp>
+#include <rw/graphics/Model3D.hpp>
+#include <rw/graphics/Render.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rw/geometry/PointCloud.hpp>

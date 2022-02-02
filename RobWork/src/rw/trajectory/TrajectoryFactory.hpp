@@ -19,8 +19,8 @@
 #define RW_TRAJECTORY_TRAJECTORYFACTORY_HPP
 
 #if !defined(SWIG)
-#include "Path.hpp"
-#include "Timed.hpp"
+#include <rw/trajectory/Path.hpp>
+#include <rw/trajectory/Timed.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rw/kinematics/State.hpp>

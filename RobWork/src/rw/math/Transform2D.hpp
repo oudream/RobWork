@@ -23,8 +23,8 @@
  */
 
 #if !defined(SWIG)
-#include "Rotation2D.hpp"
-#include "Vector2D.hpp"
+#include <rw/math/Rotation2D.hpp>
+#include <rw/math/Vector2D.hpp>
 
 #include <cassert>
 #endif 

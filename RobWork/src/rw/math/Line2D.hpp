@@ -19,7 +19,7 @@
 #define RW_MATH_LINE2D_HPP
 
 #if !defined(SWIG)
-#include "Vector2D.hpp"
+#include <rw/math/Vector2D.hpp>
 
 #include <rw/common/Serializable.hpp>
 #endif

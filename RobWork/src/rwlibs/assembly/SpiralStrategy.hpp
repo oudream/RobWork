@@ -24,7 +24,7 @@
  * \copydoc rwlibs::assembly::SpiralStrategy
  */
 
-#include "AssemblyControlStrategy.hpp"
+#include <rwlibs/assembly/AssemblyControlStrategy.hpp>
 
 #include <rw/trajectory/Trajectory.hpp>
 namespace rw { namespace core {

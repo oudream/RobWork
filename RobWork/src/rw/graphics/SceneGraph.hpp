@@ -19,8 +19,8 @@
 #define RW_GRAPHICS_SCENEGRAPH_HPP_
 
 #if !defined(SWIG)
-#include "GroupNode.hpp"
-#include "SceneCamera.hpp"
+#include <rw/graphics/GroupNode.hpp>
+#include <rw/graphics/SceneCamera.hpp>
 
 #include <rw/graphics/DrawableGeometryNode.hpp>
 #include <rw/graphics/DrawableNode.hpp>

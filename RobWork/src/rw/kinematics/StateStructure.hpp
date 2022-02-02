@@ -22,7 +22,7 @@
    @file StateStructure.hpp
 */
 #if !defined(SWIG)
-#include "State.hpp"
+#include <rw/kinematics/State.hpp>
 
 #include <rw/core/Event.hpp>
 #include <rw/core/Ptr.hpp>

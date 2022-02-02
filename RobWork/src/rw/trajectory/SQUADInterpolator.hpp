@@ -22,7 +22,7 @@
  * @file RampInterpolator.hpp
  */
 #if !defined(SWIG)
-#include "Interpolator.hpp"
+#include <rw/trajectory/Interpolator.hpp>
 
 #include <rw/core/macros.hpp>
 #include <rw/math/Quaternion.hpp>

@@ -1,7 +1,7 @@
 #ifndef RW_DRAWABLE_LOADERTRI_H
 #define RW_DRAWABLE_LOADERTRI_H
 
-#include "../Model3DLoader.hpp"
+#include <rw/loaders/Model3DLoader.hpp>
 
 #include <rw/graphics/Model3D.hpp>
 

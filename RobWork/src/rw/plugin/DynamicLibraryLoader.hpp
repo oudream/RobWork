@@ -18,7 +18,7 @@
 #ifndef RW_PLUGIN_DYNAMICLIBRARYLOADER_HPP
 #define RW_PLUGIN_DYNAMICLIBRARYLOADER_HPP
 
-#include "DynamicLibraryLoaderBase.hpp"
+#include <rw/plugin/DynamicLibraryLoaderBase.hpp>
 
 namespace rw { namespace plugin {
 
