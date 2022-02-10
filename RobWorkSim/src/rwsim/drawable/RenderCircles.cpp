@@ -18,7 +18,7 @@
 #include "RenderCircles.hpp"
 
 #include <rw/math/EAA.hpp>
-#include <rwlibs/os/rwgl.hpp>
+#include <rwlibs/opengl/rwgl.hpp>
 #include <rwsim/util/CircleModel.hpp>
 
 using namespace rw::graphics;

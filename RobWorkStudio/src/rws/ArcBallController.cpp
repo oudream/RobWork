@@ -20,7 +20,7 @@
 #include <rw/kinematics/Frame.hpp>
 #include <rw/math/Math.hpp>
 #include <rw/models/WorkCell.hpp>
-#include <rwlibs/os/rwgl.hpp>
+#include <rwlibs/opengl/rwgl.hpp>
 
 #include <QMouseEvent>
 #include <cmath>

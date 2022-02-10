@@ -17,7 +17,7 @@
 
 #include "RenderPlanes.hpp"
 
-#include <rwlibs/os/rwgl.hpp>
+#include <rwlibs/opengl/rwgl.hpp>
 #include <rwsim/util/PlaneModel.hpp>
 
 using namespace rw::graphics;

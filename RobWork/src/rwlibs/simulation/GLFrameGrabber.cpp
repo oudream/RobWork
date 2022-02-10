@@ -19,7 +19,7 @@
 
 #include <rw/kinematics/Kinematics.hpp>
 #include <rw/math/Transform3D.hpp>
-#include <rwlibs/os/rwgl.hpp>
+#include <rwlibs/opengl/rwgl.hpp>
 
 using namespace rw::graphics;
 using namespace rwlibs::simulation;

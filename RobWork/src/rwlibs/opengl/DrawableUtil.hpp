@@ -24,7 +24,7 @@
 
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/Vector3D.hpp>
-#include <rwlibs/os/rwgl.hpp>
+#include <rwlibs/opengl/rwgl.hpp>
 
 namespace rwlibs { namespace opengl {
 

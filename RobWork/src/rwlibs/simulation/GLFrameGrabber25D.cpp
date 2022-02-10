@@ -19,7 +19,7 @@
 
 #include <rw/kinematics/Kinematics.hpp>
 #include <rw/math/Constants.hpp>
-#include <rwlibs/os/rwgl.hpp>
+#include <rwlibs/opengl/rwgl.hpp>
 
 using namespace rw::math;
 using namespace rw::graphics;

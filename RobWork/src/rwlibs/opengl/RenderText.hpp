@@ -9,7 +9,7 @@
 #include <rw/core/Ptr.hpp>
 #include <rw/graphics/Render.hpp>
 #include <rwlibs/opengl/SceneOpenGL.hpp>
-#include <rwlibs/os/rwgl.hpp>
+#include <rwlibs/opengl/rwgl.hpp>
 
 #include <string>
 #include <vector>

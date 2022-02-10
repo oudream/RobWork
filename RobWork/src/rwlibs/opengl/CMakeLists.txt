@@ -69,6 +69,8 @@ if(build)
         RenderForceTorque.hpp
         RenderVelocity.hpp
         RenderText.hpp
+        rwgl.hpp
+        glext_win32.h
     )
 
     rw_add_library(${SUBSYS_NAME} ${SRC_FILES} ${SRC_FILES_HPP})

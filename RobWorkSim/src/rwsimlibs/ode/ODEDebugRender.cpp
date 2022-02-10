@@ -23,7 +23,7 @@
 #include <rw/kinematics.hpp>
 #include <rw/math.hpp>
 #include <rwlibs/opengl/DrawableUtil.hpp>
-#include <rwlibs/os/rwgl.hpp>
+#include <rwlibs/opengl/rwgl.hpp>
 
 #include <ode/ode.h>
 

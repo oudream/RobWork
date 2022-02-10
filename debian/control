@@ -968,10 +968,12 @@ Depends:
  ${misc:Depends}
 Conflicts:
   libsdurw-opengl-dev1.2,
-  libsdurw-opengl1.2-dev
+  libsdurw-opengl1.2-dev,
+  libsdurw-os-dev
 Replaces:
   libsdurw-opengl-dev1.2,
-  libsdurw-opengl1.2-dev
+  libsdurw-opengl1.2-dev,
+  libsdurw-os-dev
 Description: Development library for RobWork OpenGL.
  The Development library for RobWork OpenGL.
 
@@ -2599,7 +2601,7 @@ Depends:
  libsdurw-task-dev (=${binary:Version}), 
  libsdurw-simulation-dev (=${binary:Version}), 
  libsdurw-assembly-dev (=${binary:Version}), 
- libsdurw-csg-dev (=${binary:Version}), 
+ libsdurw-csg-dev (=${binary:Version}),
  libsdurw-geometry-dev (=${binary:Version}), 
  libsdurw-geometry-expanded (=${binary:Version}),
  ${misc:Depends}
