@@ -17,7 +17,7 @@
 
 #include "FixedAxisController.hpp"
 
-#include <rwlibs/os/rwgl.hpp>
+#include <rwlibs/opengl/rwgl.hpp>
 
 #include <math.h>    // Needed for sqrtf
 

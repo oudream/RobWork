@@ -31,7 +31,7 @@
 #include <rwlibs/opengl/RenderModel3D.hpp>
 #include <rwlibs/opengl/RenderScan.hpp>
 #include <rwlibs/opengl/RenderText.hpp>
-#include <rwlibs/os/rwgl.hpp>
+#include <rwlibs/opengl/rwgl.hpp>
 
 #include <algorithm>
 #include <stack>

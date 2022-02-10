@@ -27,7 +27,7 @@
 #include <rw/math/RPY.hpp>
 #include <rwlibs/opengl/Drawable.hpp>
 #include <rwlibs/opengl/DrawableUtil.hpp>
-#include <rwlibs/os/rwgl.hpp>
+#include <rwlibs/opengl/rwgl.hpp>
 
 #include <QAction>
 #include <QActionGroup>

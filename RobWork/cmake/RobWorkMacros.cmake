@@ -519,7 +519,7 @@ endmacro()
 # Add a library target. _name The library name. _component The part of RW that this library belongs
 # to. ARGN The source files for the library.
 macro(RW_ADD_LIBRARY _name)
-    set(options STATIC SHARED MODULE NO_EXPORT) # Used to marke flags
+    set(options STATIC SHARED MODULE NO_EXPORT HEADER_ONLY) # Used to marke flags
     set(oneValueArgs COMPONENT EXPORT_SET) # used to marke values with a single value
     set(multiValueArgs)
 
@@ -542,8 +542,12 @@ macro(RW_ADD_LIBRARY _name)
         set(LIB_TYPE MODULE)
     endif()
 
-    add_library(${_name} ${LIB_TYPE} ${SUBSYS_UNPARSED_ARGUMENTS})
-    add_library(${PROJECT_PREFIX}::${_name} ALIAS ${_name})
+    if(SUBSYS_HEADER_ONLY)
+        add_library(${_name} ${LIB_TYPE} IMPORTED)
+    else()
+        add_library(${_name} ${LIB_TYPE} ${SUBSYS_UNPARSED_ARGUMENTS})
+        add_library(${PROJECT_PREFIX}::${_name} ALIAS ${_name})
+    endif()
 
     # Only link if needed
     if(WIN32 AND MSVC)

@@ -30,6 +30,13 @@ extern "C" {
 ** MATERIALS OR THE USE OR OTHER DEALINGS IN THE MATERIALS.
 */
 
+#include <rw/core/os.hpp>
+#ifdef RW_WIN32
+#pragma message("#include <rwlibs/os/glext_win32_old.hpp> is deprecated, and will be deleted in the feuture")
+#else
+#warning "#include <rwlibs/os/glext_win32_old.hpp> is deprecated, and will be deleted in the feuture"
+#endif
+
 #if defined(_WIN32) && !defined(APIENTRY) && !defined(__CYGWIN__) && !defined(__SCITECH_SNAP__)
 #define WIN32_LEAN_AND_MEAN 1
 #include <windows.h>

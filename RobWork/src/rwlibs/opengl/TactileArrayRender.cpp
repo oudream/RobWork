@@ -19,7 +19,7 @@
 
 #include <rw/sensor/TactileArrayModel.hpp>
 #include <rwlibs/opengl/DrawableUtil.hpp>
-#include <rwlibs/os/rwgl.hpp>
+#include <rwlibs/opengl/rwgl.hpp>
 
 using namespace rw::math;
 using namespace rw::sensor;

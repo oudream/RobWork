@@ -20,7 +20,7 @@
 #include "RWGLTexture.hpp"
 
 #include <rw/sensor/Image.hpp>
-#include <rwlibs/os/rwgl.hpp>
+#include <rwlibs/opengl/rwgl.hpp>
 
 using rw::core::ownedPtr;
 using namespace rwlibs::opengl;

@@ -25,7 +25,7 @@
 #include <rw/core/Ptr.hpp>
 #include <rw/graphics/DrawableNode.hpp>
 #include <rw/math/Transform3D.hpp>
-#include <rwlibs/os/rwgl.hpp>
+#include <rwlibs/opengl/rwgl.hpp>
 
 namespace rw { namespace graphics {
     class Render;

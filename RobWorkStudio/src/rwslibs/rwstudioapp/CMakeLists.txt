@@ -25,7 +25,6 @@ if(RWS_USE_STATIC_LINK_PLUGINS)
     endif()
     rw_is_targets(test TARGETS ${SUBSYS_DEPS_TEST} TARGETS_OUT static_plugins)
     list(APPEND SUBSYS_DEPS ${static_plugins})
-    message(STATUS "DEPENDS:  ${static_plugins}")
 endif()
 
 set(build TRUE)

@@ -24,7 +24,7 @@
 
 #include <rw/core/Ptr.hpp>
 #include <rw/graphics/Render.hpp>
-#include <rwlibs/os/rwgl.hpp>
+#include <rwlibs/opengl/rwgl.hpp>
 
 namespace rwlibs { namespace opengl {
 

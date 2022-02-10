@@ -8,7 +8,7 @@
 
 #include <rw/math/Math.hpp>
 #include <rw/sensor/Scanner25DModel.hpp>
-#include <rwlibs/os/rwgl.hpp>
+#include <rwlibs/opengl/rwgl.hpp>
 
 using namespace rwlibs::opengl;
 using namespace rw::math;

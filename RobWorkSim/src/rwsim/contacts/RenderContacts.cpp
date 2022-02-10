@@ -19,7 +19,7 @@
 
 #include "Contact.hpp"
 
-#include <rwlibs/os/rwgl.hpp>
+#include <rwlibs/opengl/rwgl.hpp>
 
 using namespace rw::math;
 using namespace rw::graphics;
