@@ -35,7 +35,6 @@ rw_subsys_option(
 )
 
 if(build)
-    message(STATUS "DEPENDS:  ${SUBSYS_DEPS}")
     # Standard cpp files to compile:
     set(SrcFiles RobWorkStudioApp.cpp)
     set(SRC_FILES_HPP RobWorkStudioApp.hpp)
