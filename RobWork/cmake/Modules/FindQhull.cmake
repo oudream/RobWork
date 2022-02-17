@@ -51,7 +51,7 @@ if(NOT ${Qhull_FOUND})
         PATHS "$ENV{PROGRAMFILES}/QHull" "$ENV{PROGRAMW6432}/QHull" "/usr"
         PATH_SUFFIXES project build bin lib lib/x86_64-linux-gnu lib64
     )
-    message(STATUS "QHULL LIBRARY ${QHULL_LIBRARY}")
+    
     # ##############################################################################################
     # Finalize find package
     # ##############################################################################################
