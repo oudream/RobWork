@@ -14,6 +14,6 @@ IF(RW_ENABLE_INTERNAL_YAOBI_TARGET)
     add_subdirectory(rwyaobi)
 ENDIF()
 
-if(RW_USE_CSGJS)
+if(USE_CSGJS)
     add_subdirectory(csgjs)
 endif()
