@@ -226,19 +226,19 @@ void BtSimulator::resetScene (State& state)
     _rwBtBodyToFrame.clear ();
 
     // Now add new bodies with new initial state
-    for (const Body::Ptr body : _dwc->getBodies ()) {
+    for (const Body::Ptr& body : _dwc->getBodies ()) {
         addBody (body, state);
     }
 
     // Add the constraints
     const DynamicWorkCell::ConstraintList& constraints = _dwc->getConstraints ();
-    for (const Constraint::Ptr constraint : constraints) {
+    for (const Constraint::Ptr& constraint : constraints) {
         addConstraint (constraint);
     }
 
     // Add the sensors
     const DynamicWorkCell::SensorList& sensors = _dwc->getSensors ();
-    for (const SimulatedSensor::Ptr sensor : sensors) {
+    for (const SimulatedSensor::Ptr& sensor : sensors) {
         addSensor (sensor, state);
     }
 

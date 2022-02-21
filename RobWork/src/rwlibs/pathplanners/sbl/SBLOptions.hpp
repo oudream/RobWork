@@ -22,7 +22,7 @@
    @file SBLOptions.hpp
 */
 
-#include "SBLExpand.hpp"
+#include <rwlibs/pathplanners/sbl/SBLExpand.hpp>
 
 #include <rw/pathplanning/QConstraint.hpp>
 #include <rw/pathplanning/QEdgeConstraintIncremental.hpp>

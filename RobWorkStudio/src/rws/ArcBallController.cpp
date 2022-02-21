@@ -20,7 +20,7 @@
 #include <rw/kinematics/Frame.hpp>
 #include <rw/math/Math.hpp>
 #include <rw/models/WorkCell.hpp>
-#include <rwlibs/os/rwgl.hpp>
+#include <rwlibs/opengl/rwgl.hpp>
 
 #include <QMouseEvent>
 #include <cmath>
@@ -68,7 +68,7 @@ ArcBallController::ArcBallController (double NewWidth, double NewHeight,
                                       rw::graphics::SceneCamera::Ptr cam) :
     _centerPt (NewWidth / 2.0, NewHeight / 2.0),
     _stVec (0.0f, 0.0f, 0.0f), _enVec (0.0f, 0.0f, 0.0f), _adjustWidth (0), _adjustHeight (0),
-    _height (0), _width (0), _advancedZoomEnabled (false), _cam (cam)
+    _height (0), _width (0), _zoomScale (1), _advancedZoomEnabled (false), _cam (cam)
 {
     _viewTransform =
         Transform3D<>::makeLookAt (Vector3D<> (5, 5, 5), Vector3D<>::zero (), Vector3D<>::z ());
@@ -148,23 +148,24 @@ void ArcBallController::handleEvent (QEvent* e)
     if (e->type () == QEvent::MouseButtonPress) {
         QMouseEvent* event = static_cast< QMouseEvent* > (e);
 
-        _lastPos (0) = event->pos().x();
-        _lastPos (1) = event->pos().y();
+        _lastPos (0) = event->pos ().x ();
+        _lastPos (1) = event->pos ().y ();
 
-        click (event->pos().x(), event->pos().y());
+        click (event->pos ().x (), event->pos ().y ());
     }
     else if (e->type () == QEvent::MouseMove) {
         QMouseEvent* event = static_cast< QMouseEvent* > (e);
         if (event->buttons () == Qt::LeftButton) {
             if (event->modifiers () == Qt::ControlModifier) {
                 // Zoom
-                Vector3D<> translateVector (0, 0, -(event->pos().y() - _lastPos (1)) / _height * 10);
+                Vector3D<> translateVector (
+                    0, 0, -(event->pos ().y () - _lastPos (1)) / _height * 10);
                 _viewTransform.P () -= _viewTransform.R () * translateVector;
             }
             else {    // The mouse is being dragged
 
-                double rx = (event->pos().x());
-                double ry = (event->pos().y());
+                double rx = (event->pos ().x ());
+                double ry = (event->pos ().y ());
 
                 // Update End Vector And Get Rotation As Quaternion
                 Quaternion< double > quat = drag (rx, ry);
@@ -184,14 +185,14 @@ void ArcBallController::handleEvent (QEvent* e)
         }
         if (event->buttons () == Qt::RightButton) {
             // Move Scene
-            pan (event->pos().x(), event->pos().y());
+            pan (event->pos ().x (), event->pos ().y ());
         }
-        _lastPos (0) = event->pos().x();
-        _lastPos (1) = event->pos().y();
+        _lastPos (0) = event->pos ().x ();
+        _lastPos (1) = event->pos ().y ();
     }
     else if (e->type () == QEvent::Wheel) {
         QWheelEvent* event = static_cast< QWheelEvent* > (e);
-        zoom (event->angleDelta ().y () / 240.0);
+        zoom (event->angleDelta ().y () / (240.0 * _zoomScale));
     }
     setPivotScale ();
 }
@@ -218,9 +219,9 @@ void ArcBallController::setTransform (const rw::math::Transform3D<>& t3d)
 void ArcBallController::zoom (double amount)
 {
     if (_advancedZoomEnabled) {
-        Vector3D<> dist      = _zoomTarget - _viewTransform.P ();
-        if(dist.norm2() > (_pivotPoint- _viewTransform.P()).norm2()){
-            dist = dist/dist.norm2() * (_pivotPoint- _viewTransform.P()).norm2();
+        Vector3D<> dist = _zoomTarget - _viewTransform.P ();
+        if (dist.norm2 () > (_pivotPoint - _viewTransform.P ()).norm2 ()) {
+            dist = dist / dist.norm2 () * (_pivotPoint - _viewTransform.P ()).norm2 ();
         }
         double newAmount     = dist.norm2 () * ZOOM_PERCENTAGE / 100 * amount;
         _advancedZoomEnabled = false;

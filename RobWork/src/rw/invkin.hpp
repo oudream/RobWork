@@ -23,17 +23,17 @@
 #ifndef RW_INVKIN_HPP_
 #define RW_INVKIN_HPP_
 
-#include "./invkin/AmbiguityResolver.hpp"
-#include "./invkin/CCDSolver.hpp"
-#include "./invkin/ClosedFormIK.hpp"
-#include "./invkin/ClosedFormIKSolverKukaIIWA.hpp"
-#include "./invkin/ClosedFormIKSolverUR.hpp"
-#include "./invkin/IKMetaSolver.hpp"
-#include "./invkin/IterativeIK.hpp"
-#include "./invkin/IterativeMultiIK.hpp"
-#include "./invkin/JacobianIKSolver.hpp"
-#include "./invkin/JacobianIKSolverM.hpp"
-#include "./invkin/ParallelIKSolver.hpp"
-#include "./invkin/PieperSolver.hpp"
+#include <rw/invkin/AmbiguityResolver.hpp>
+#include <rw/invkin/CCDSolver.hpp>
+#include <rw/invkin/ClosedFormIK.hpp>
+#include <rw/invkin/ClosedFormIKSolverKukaIIWA.hpp>
+#include <rw/invkin/ClosedFormIKSolverUR.hpp>
+#include <rw/invkin/IKMetaSolver.hpp>
+#include <rw/invkin/IterativeIK.hpp>
+#include <rw/invkin/IterativeMultiIK.hpp>
+#include <rw/invkin/JacobianIKSolver.hpp>
+#include <rw/invkin/JacobianIKSolverM.hpp>
+#include <rw/invkin/ParallelIKSolver.hpp>
+#include <rw/invkin/PieperSolver.hpp>
 
 #endif /* INVKIN_HPP_ */

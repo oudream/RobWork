@@ -20,14 +20,14 @@
 #include <rw/kinematics/Kinematics.hpp>
 #include <rw/math/Q.hpp>
 #include <rw/models/Joint.hpp>
-
+#include <rw/models/Device.hpp>
+#include <rw/kinematics/Kinematics.hpp>
 #include <Eigen/Core>
 
 using namespace rw::math;
 using namespace rw::models;
 using namespace rw::kinematics;
 using namespace rwsim::dynamics;
-
 namespace {
 
 Eigen::MatrixXd getBlockDiagInertia (Device& dev, std::vector< FixedLink* >& parents,
@@ -36,7 +36,7 @@ Eigen::MatrixXd getBlockDiagInertia (Device& dev, std::vector< FixedLink* >& par
     size_t n          = dev.getDOF ();
     Eigen::MatrixXd A = Eigen::MatrixXd::Zero (n * 3, n * 3);
     for (size_t i = 0; i < parents.size () + 1; i++) {
-        Eigen::Block Ar = A.block (i * 3, i * 3, i * 3 + 3, i * 3 + 3);
+        Eigen::MatrixXd Ar = A.block (i * 3, i * 3, i * 3 + 3, i * 3 + 3);
         if (i == parents.size ()) {
             Ar = current->getInertia ().e ();
         }
@@ -49,23 +49,23 @@ Eigen::MatrixXd getBlockDiagInertia (Device& dev, std::vector< FixedLink* >& par
 
 }    // namespace
 
-FixedLink::FixedLink (const BodyInfo& info, rw::kinematics::Frame* base,
+FixedLink::FixedLink (const BodyInfo& info, rw::core::Ptr<rw::kinematics::Frame> base,
                       std::vector< FixedLink* > parents, rw::models::Device& dev,
                       rw::models::Joint& j, const std::vector< rw::kinematics::Frame* >& frames,
                       rw::kinematics::State& state) :
-    Body (ConstraintNode::Link, j, frames),
+    Body (info, frames),
     _jointFrame (j), _dev (dev), _parents (parents), _jac (dev.baseJframe (&j, state)),
     _jacRB (_jac), _base (base), _acc (0.0), _vel (0.0), _pos (*(j.getQ (state))),
     _wTbase (dev.worldTbase (state)), _baseTw (inverse (_wTbase)), _impulseIterations (0)
 
 {
-    _wTb = rw::kinematics::Kinematics::WorldTframe (&_jointFrame, state);
+    _wTb = rw::kinematics::Kinematics::worldTframe (&_jointFrame, state);
     _bTw = inverse (_wTb);
 
-    _baseTb = rw::kinematics::Kinematics::FrameTframe (_base, &_jointFrame, state);
+    _baseTb = rw::kinematics::Kinematics::frameTframe (_base, &_jointFrame, state);
     _bTbase = inverse (_baseTb);
 
-    _wTbase = rw::kinematics::Kinematics::WorldTframe (_base, state);
+    _wTbase = rw::kinematics::Kinematics::worldTframe (_base, state);
     _baseTw = inverse (_wTbase);
 }
 
@@ -81,13 +81,13 @@ void FixedLink::rollBack (State& state)
     _angImpulse = Vector3D<> (0.0, 0.0, 0.0);
 
     _pos = *_jointFrame.getQ (state);
-    _wTb = rw::kinematics::Kinematics::WorldTframe (&_jointFrame, state);
+    _wTb = rw::kinematics::Kinematics::worldTframe (&_jointFrame, state);
     _bTw = inverse (_wTb);
 
-    _baseTb = rw::kinematics::Kinematics::FrameTframe (_base, &_jointFrame, state);
+    _baseTb = rw::kinematics::Kinematics::frameTframe (_base, &_jointFrame, state);
     _bTbase = inverse (_baseTb);
 
-    _wTbase = rw::kinematics::Kinematics::WorldTframe (_base, state);
+    _wTbase = rw::kinematics::Kinematics::worldTframe (_base, state);
     _baseTw = inverse (_wTbase);
 
     _jac = _dev.baseJframe (&_jointFrame, state);

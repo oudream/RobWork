@@ -19,7 +19,7 @@
 #define RW_PROXIMITY_BINARYBVTREE_HPP_
 
 #if !defined(SWIG)
-#include "BVTree.hpp"
+#include <rw/proximity/rwstrategy/BVTree.hpp>
 
 #include <stack>
 #endif 
@@ -283,9 +283,14 @@ namespace proximity {
                 }
             }
             return std::make_pair (ncount, lcount);
+        
         }
 
+#if defined(SWIGPYTHON)
+        void printInfo () const
+#else
         void print () const
+#endif
         {
             std::stack< std::pair< Node*, int > > children;
             children.push (std::make_pair (_root, 0));

@@ -19,7 +19,6 @@
 #define RWSIM_SIMULATOR_ODEJOINT_HPP_
 
 #include <ode/ode.h>
-//#include <rwsim/dynamics/RigidJoint.hpp>
 #include <rw/math/Vector3D.hpp>
 #include <rw/models/Joint.hpp>
 #include <rwsimlibs/ode/ODEBody.hpp>
@@ -53,24 +52,7 @@ namespace rwsim { namespace simulator {
         ODEJoint (rw::models::Joint* rwjoint, ODEBody* parent, ODEBody* child, ODESimulator* sim,
                   const rw::kinematics::State& state);
 
-        /*
-                ODEJoint(JointType jtype,
-                                 dJointID odeJoint,
-                                 dJointID odeMotor,
-                                 dBodyID body,
-                                 dynamics::RigidJoint* rwbody);
-
-                ODEJoint(JointType jtype,
-                                 dJointID odeJoint,
-                                 dJointID odeMotor,
-                                 dBodyID body,
-                                 ODEJoint* owner,
-                                 rw::kinematics::Frame *bframe,
-                                 double scale, double off,
-                                 dynamics::RigidJoint* rwjoint);
-        */
-
-        virtual ~ODEJoint (){};
+        virtual ~ODEJoint (){}
 
         void setForce (double vel)
         {
@@ -192,7 +174,6 @@ namespace rwsim { namespace simulator {
         // dBodyID _bodyId;
         dJointID _jointId, _motorId;
         rw::models::Joint* _rwJoint;
-        // dynamics::RigidJoint *_rwJoint;
 
         ODEJoint* _owner;
         double _scale, _off;

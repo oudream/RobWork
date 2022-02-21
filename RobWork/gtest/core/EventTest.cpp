@@ -20,10 +20,13 @@
 #include <rw/core/Event.hpp>
 
 #include <boost/any.hpp>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #include <boost/function.hpp>
 
 using namespace rw::core;
+
+using boost::placeholders::_1;
+using boost::placeholders::_2;
 
 typedef boost::function<void(const std::string&, boost::any)> GenericAnyEventListener;
 typedef rw::core::Event<GenericAnyEventListener, const std::string&, boost::any> GenericAnyEvent;

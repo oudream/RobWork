@@ -26,12 +26,9 @@ rw_subsys_option(
 if(build)
     include(UseSWIG)
     include_directories(${PYTHON_INCLUDE_DIRS})
-    if(RW_USE_NUMPY)
-        include_directories(${NUMPY_INCLUDE_DIR})
-    endif()
 
-    if(RW_USE_NUMPY)
-    include_directories(${NUMPY_INCLUDE_DIR})
+    if(RWSIM_USE_NUMPY)
+        include_directories(${NUMPY_INCLUDE_DIR})
     endif()
 
     add_library(${SUBSYS_NAME} INTERFACE)
@@ -113,11 +110,23 @@ if(build)
 
     target_link_libraries(${python_NAME_sdurwsim} PUBLIC sdurwsim RW::sdurw RWS::sdurws ${RWSIM_ODE_LIBRARY}
                         ${PYTHON_LIBRARIES})
-                        
-    install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}Targets)
+
+    install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}pythonTargets)
 
     RW_SWIG_COMPILE_TARGET(
             python ${TARGET_NAME}
         )
+
+    export(
+        EXPORT ${PROJECT_PREFIX}_${python_NAME_sdurwsim}Targets
+        FILE "${${PROJECT_PREFIX}_ROOT}/cmake/targets/${RWSIM_MODULE}_py.cmake"
+        NAMESPACE ${PROJECT_PREFIX}::
+    )
+    install(
+        EXPORT ${PROJECT_PREFIX}_${python_NAME_sdurwsim}Targets
+        FILE ${RWSIM_MODULE}_py.cmake
+        NAMESPACE ${PROJECT_PREFIX}::
+        DESTINATION ${RWSIM_INSTALL_DIR}/cmake/targets
+    )
 
 endif()

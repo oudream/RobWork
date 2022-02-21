@@ -1,13 +1,13 @@
 import org.robwork.LoaderRW;
-import org.robwork.sdurw.*;
+import org.robwork.sdurw_math.*;
 import static org.robwork.sdurw.sdurwConstants.*;
 import java.lang.Math;
 
 public class ExEAA {
     public static void main(String[] args) throws Exception {
-        LoaderRW.load("sdurw");
+        LoaderRW.load("sdurw_math");
 
-        EAAd eaa = new EAAd(Math.sqrt(2)/2*Pi,Math.sqrt(2)/2*Pi,0);
+        EAAd eaa = new EAAd(Math.sqrt(2)/2*sdurw_mathConstants.Pi,Math.sqrt(2)/2*sdurw_mathConstants.Pi,0);
         System.out.println("EAA: " + eaa);
         System.out.println(" angle: " + eaa.angle());
         System.out.println(" axis: " + eaa.axis());

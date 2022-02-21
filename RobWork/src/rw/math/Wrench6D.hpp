@@ -23,10 +23,10 @@
  */
 
 #if !defined(SWIG)
-#include "EAA.hpp"
-#include "Math.hpp"
-#include "Transform3D.hpp"
-#include "Vector3D.hpp"
+#include <rw/math/EAA.hpp>
+#include <rw/math/Math.hpp>
+#include <rw/math/Transform3D.hpp>
+#include <rw/math/Vector3D.hpp>
 
 #include <rw/common/Serializable.hpp>
 
@@ -589,10 +589,16 @@ namespace rw { namespace math {
     extern template class rw::math::Wrench6D< double >;
     extern template class rw::math::Wrench6D< float >;
 #else
+  
+#if SWIG_VERSION < 0x040000
     SWIG_DECLARE_TEMPLATE (Wrench6Dd, rw::math::Wrench6D< double >);
-    SWIG_DECLARE_TEMPLATE (Wrench6Df, rw::math::Wrench6D< float >);
+    ADD_DEFINITION (Wrench6Dd, Wrench6D,sdurw_math)
+#else
+    SWIG_DECLARE_TEMPLATE (Wrench6D, rw::math::Wrench6D< double >);
 #endif
 
+    SWIG_DECLARE_TEMPLATE (Wrench6Df, rw::math::Wrench6D< float >);
+#endif
     using Wrench6Dd = Wrench6D< double >;
     using Wrench6Df = Wrench6D< float >;
 

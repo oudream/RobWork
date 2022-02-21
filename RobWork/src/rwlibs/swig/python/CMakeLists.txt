@@ -117,26 +117,25 @@ if(build)
             endif()
 
             # Set build destination
-            target_compile_definitions(${TARGET_NAME} PUBLIC RW_USE_NUMPY)
             add_dependencies(${SUBSYS_NAME} ${TARGET_NAME})
             set(python_targets ${python_targets} ${TARGET_NAME})
 
-            if(NOT ${SWIG_VERSION} VERSION_LESS 4.0.0)
-                find_program(pydoc pydoc3)
-                if(NOT pydoc)
-                    find_program(pydoc pydoc)
-                endif()
-                if(pydoc)
-                    add_custom_command(
-                        TARGET ${TARGET_NAME}
-                        POST_BUILD
-                        COMMAND ${pydoc} -w
-                                ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}/${RW_MODULE}.py
-                        WORKING_DIRECTORY ${SWIG_OUT_ORIG}
-                        COMMENT "Creating pydoc..."
-                    )
-                endif()
-            endif()
+            #if(NOT ${SWIG_VERSION} VERSION_LESS 4.0.0)
+            #    find_program(pydoc pydoc3)
+            #    if(NOT pydoc)
+            #        find_program(pydoc pydoc)
+            #    endif()
+            #    if(pydoc)
+            #        add_custom_command(
+            #            TARGET ${TARGET_NAME}
+            #            POST_BUILD
+            #            COMMAND ${pydoc} -w
+            #                    ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}/${RW_MODULE}.py
+            #            WORKING_DIRECTORY ${SWIG_OUT_ORIG}
+            #            COMMENT "Creating pydoc..."
+            #        )
+            #    endif()
+            #endif()
 
             if(SWIG_DEFAULT_COMPILE OR CMAKE_VERSION VERSION_GREATER 3.16.0)
                 target_link_libraries(${SUBSYS_NAME} INTERFACE ${TARGET_NAME})
@@ -167,11 +166,21 @@ if(build)
                            ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}/__init__.py
             )
 
+            export(
+                EXPORT ${PROJECT_PREFIX}_${TARGET_NAME}Targets
+                FILE "${${PROJECT_PREFIX}_ROOT}/cmake/targets/${RW_MODULE}_py.cmake"
+                NAMESPACE ${PROJECT_PREFIX}::
+            )
+            install(
+                EXPORT ${PROJECT_PREFIX}_${TARGET_NAME}Targets
+                FILE ${RW_MODULE}_py.cmake
+                NAMESPACE ${PROJECT_PREFIX}::
+                DESTINATION ${RW_INSTALL_DIR}/cmake/targets
+            )
         endif()
     endforeach()
 
-    rw_swig_compile_target(python ${python_targets})
-
     install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}pythonTargets)
+    rw_swig_compile_target(python ${python_targets})
 
 endif()

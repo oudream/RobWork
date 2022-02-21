@@ -185,10 +185,6 @@ TEST_P(DistanceMultiStrategyTest, Plane_Cuboid) {
 	EXPECT_EQ(modelA,res.a);
 	EXPECT_EQ(modelB,res.b);
 
-	std::cout << "P1S: " << std::endl;
-	for (size_t i = 0; i < res.p1s.size(); i++){
-		std::cout << " - " << res.p1s[i] << " vs " << res.p2s[i] << " width d: " << res.distances[i] << std::endl;
-	}
 	// todo: change the following from 12 to 11 when redundant pairs can be avoided in PQP
 	ASSERT_EQ(12u,res.p1s.size());
 	ASSERT_EQ(12u,res.p2s.size());
@@ -252,8 +248,10 @@ TEST_P(DistanceMultiStrategyTest, Cuboids_Cuboids) {
     ASSERT_EQ(22u,res.p1prims.size());
     ASSERT_EQ(22u,res.p2prims.size());
     ASSERT_EQ(22u,res.distances.size());
-    EXPECT_EQ(res.p1,res.p1s[0]);
-    EXPECT_EQ(res.p2,res.p2s[0]);
+	for(size_t i = 0; i < 3; i++){
+		EXPECT_NEAR(res.p1[i],res.p1s[0][i],std::numeric_limits<float>::epsilon());
+		EXPECT_NEAR(res.p2[i],res.p2s[0][i],std::numeric_limits<float>::epsilon());
+	}
     EXPECT_NEAR(-s/2, res.p1[0],std::numeric_limits<float>::epsilon());
     EXPECT_NEAR(-s/2, res.p2[0],std::numeric_limits<float>::epsilon());
     EXPECT_NEAR(+(tolerance-eps)/2, res.p1[2],std::numeric_limits<float>::epsilon());

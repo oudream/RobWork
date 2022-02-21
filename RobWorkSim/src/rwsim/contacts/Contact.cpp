@@ -51,12 +51,12 @@ ContactModel::Ptr Contact::getModelB () const
 
 const Frame* Contact::getFrameA () const
 {
-    return _frameA;
+    return _frameA.get();
 }
 
 const Frame* Contact::getFrameB () const
 {
-    return _frameB;
+    return _frameB.get();
 }
 
 const std::string& Contact::getNameA () const
@@ -104,7 +104,7 @@ void Contact::setModelB (ContactModel::Ptr modelB)
     _b = modelB;
 }
 
-void Contact::setFrameA (const Frame* frame)
+void Contact::setFrameA (rw::core::Ptr<const Frame> frame)
 {
     if (frame == NULL)
         _nameA = UNKNOWN_NAME;
@@ -113,7 +113,7 @@ void Contact::setFrameA (const Frame* frame)
     _frameA = frame;
 }
 
-void Contact::setFrameB (const Frame* frame)
+void Contact::setFrameB (rw::core::Ptr<const Frame> frame)
 {
     if (frame == NULL)
         _nameB = UNKNOWN_NAME;
@@ -124,20 +124,20 @@ void Contact::setFrameB (const Frame* frame)
 
 void Contact::setNameA (const std::string& name)
 {
-    _frameA = NULL;
+    _frameA = nullptr;
     _nameA  = name;
 }
 
 void Contact::setNameB (const std::string& name)
 {
-    _frameB = NULL;
+    _frameB = nullptr;
     _nameB  = name;
 }
 
 bool Contact::setFrames (const WorkCell& wc)
 {
-    const Frame* const frameA = wc.findFrame (_nameA);
-    const Frame* const frameB = wc.findFrame (_nameB);
+    rw::core::Ptr<const Frame> const frameA = wc.findFrame (_nameA);
+    rw::core::Ptr<const Frame> const frameB = wc.findFrame (_nameB);
     if (frameA != NULL && frameB != NULL) {
         _frameA = frameA;
         _frameB = frameB;

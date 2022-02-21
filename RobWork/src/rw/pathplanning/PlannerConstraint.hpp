@@ -21,10 +21,10 @@
 /**
    @file PlannerConstraint.hpp
 */
-
-#include "QConstraint.hpp"
-#include "QEdgeConstraint.hpp"
-
+#if !defined(SWIG)
+#include <rw/pathplanning/QConstraint.hpp>
+#include <rw/pathplanning/QEdgeConstraint.hpp>
+#endif
 namespace rw { namespace kinematics {
     class State;
 }}    // namespace rw::kinematics
@@ -78,7 +78,7 @@ namespace rw { namespace pathplanning {
 
            The constraints must be non-null.
         */
-        PlannerConstraint (QConstraint::Ptr constraint, QEdgeConstraint::Ptr edge);
+        PlannerConstraint (rw::core::Ptr<rw::pathplanning::QConstraint> constraint, QEdgeConstraint::Ptr edge);
 
         /**
          * @brief Forwards call to the QConstraint wrapped by the PlannerConstraint
@@ -103,7 +103,7 @@ namespace rw { namespace pathplanning {
         /**
            @brief The configuration constraint pointer.
         */
-        const QConstraint::Ptr& getQConstraintPtr () const { return _constraint; }
+        const rw::core::Ptr<rw::pathplanning::QConstraint>& getQConstraintPtr () const { return _constraint; }
 
         /**
            @brief The edge constraint pointer.
@@ -115,7 +115,7 @@ namespace rw { namespace pathplanning {
 
            This is equivalent to the standard constructor.
         */
-        static PlannerConstraint make (QConstraint::Ptr constraint, QEdgeConstraint::Ptr edge);
+        static PlannerConstraint make (rw::core::Ptr<rw::pathplanning::QConstraint> constraint, QEdgeConstraint::Ptr edge);
 
         /**
            @brief Planner constraint for a collision detector.
@@ -154,7 +154,7 @@ namespace rw { namespace pathplanning {
                                        const rw::kinematics::State& state);
 
       private:
-        QConstraint::Ptr _constraint;
+        rw::core::Ptr<rw::pathplanning::QConstraint> _constraint;
         QEdgeConstraint::Ptr _edge;
     };
 

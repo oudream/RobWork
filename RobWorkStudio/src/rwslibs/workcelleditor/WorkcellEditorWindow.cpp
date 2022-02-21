@@ -26,7 +26,6 @@
 #include <rw/core/Log.hpp>
 #include <rw/core/StringUtil.hpp>
 #include <rw/loaders/WorkCellLoader.hpp>
-#include <rwlibs/swig/ScriptTypes.hpp>
 #include <rws/RobWorkStudio.hpp>
 
 #include <QColor>
@@ -59,7 +58,7 @@ WorkcellEditorWindow::WorkcellEditorWindow (rw::core::Log::Ptr output, rws::RobW
     _tabPane = new QTabWidget ();
     _tabPane->setTabsClosable (true);
     connect (
-        _tabPane, SIGNAL (tabCloseRequested (int)), this, SLOT (on_actionClose_triggered (int)));
+        _tabPane, SIGNAL (tabCloseRequested (int)), this, SLOT (on_actionCloseTriggered (int)));
 
     this->setWindowTitle ("Workcell Editor");
     this->setCentralWidget (_tabPane);
@@ -244,7 +243,7 @@ void WorkcellEditorWindow::on_actionClose_triggered (bool)
     _editors[tab->_editor] = NULL;
 }
 
-void WorkcellEditorWindow::on_actionClose_triggered (int index)
+void WorkcellEditorWindow::on_actionCloseTriggered (int index)
 {
     // todo: if last tab then don't remove it.
     if (_tabPane->count () == 1)

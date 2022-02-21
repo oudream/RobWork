@@ -22,7 +22,7 @@
  * @file FixedFrame.hpp
  */
 #if !defined(SWIG)
-#include "Frame.hpp"
+#include <rw/kinematics/Frame.hpp>
 #include <rw/core/Ptr.hpp>
 #endif
 namespace rw { namespace kinematics {
@@ -71,7 +71,7 @@ namespace rw { namespace kinematics {
          * @param refframe [in] the reference frame.
          * @param state [in] the state giving the current poses.
          */
-        void moveTo (const rw::math::Transform3D<>& refTtarget, rw::kinematics::Frame* refframe, rw::kinematics::State& state);
+        void moveTo (const rw::math::Transform3D<>& refTtarget, rw::core::Ptr<rw::kinematics::Frame> refframe, rw::kinematics::State& state);
 
         /**
          * @brief get the fixed transform of this frame.

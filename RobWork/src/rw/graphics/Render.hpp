@@ -21,10 +21,12 @@
 /**
  * @file Render.hpp
  */
-
-#include "DrawableNode.hpp"
+#if !defined(SWIG)
+#include <rw/graphics/DrawableNode.hpp>
 
 #include <rw/core/Ptr.hpp>
+#endif 
+
 namespace rw { namespace graphics {
 
     /** @addtogroup graphics */

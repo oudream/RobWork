@@ -120,7 +120,7 @@ void State::copy (const State& from)
 
         // also check if the parent that is
         // currently associated, exist in this state
-        Frame* parent = daf->getDafParent (from);
+        rw::core::Ptr<Frame> parent = daf->getDafParent (from);
         RW_ASSERT (parent);    // cannot and must not be null
         int parentIdx = _tree_state.getStateSetup ()->getOffset (*parent);
         if (parentIdx < 0)

@@ -19,7 +19,7 @@
 #define RW_GEOMETRY_PYRAMID_HPP_
 
 #if !defined(SWIG)
-#include "Primitive.hpp"
+#include <rw/geometry/Primitive.hpp>
 #endif 
 
 namespace rw { namespace geometry {

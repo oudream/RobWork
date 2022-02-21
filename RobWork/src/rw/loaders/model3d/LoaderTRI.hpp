@@ -1,7 +1,7 @@
 #ifndef RW_DRAWABLE_LOADERTRI_H
 #define RW_DRAWABLE_LOADERTRI_H
 
-#include "../Model3DLoader.hpp"
+#include <rw/loaders/Model3DLoader.hpp>
 
 #include <rw/graphics/Model3D.hpp>
 
@@ -48,6 +48,9 @@ namespace rw { namespace loaders {
 
         //! @copydoc Model3DLoader::load
         rw::graphics::Model3D::Ptr load (const std::string& filename);
+
+        //! @copydoc Model3DLoader::getModelFormats
+        std::vector< std::string > getModelFormats () {return {".TRI"};}
     };
 
     //! @}

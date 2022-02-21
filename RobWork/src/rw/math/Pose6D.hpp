@@ -23,9 +23,9 @@
  */
 
 #if !defined(SWIG)
-#include "EAA.hpp"
-#include "Transform3D.hpp"
-#include "Vector3D.hpp"
+#include <rw/math/EAA.hpp>
+#include <rw/math/Transform3D.hpp>
+#include <rw/math/Vector3D.hpp>
 #endif
 namespace rw { namespace math {
 
@@ -255,7 +255,14 @@ namespace rw { namespace math {
     extern template class rw::math::Pose6D< double >;
     extern template class rw::math::Pose6D< float >;
 #else
+
+#if SWIG_VERSION < 0x040000
     SWIG_DECLARE_TEMPLATE (Pose6Dd, rw::math::Pose6D< double >);
+    ADD_DEFINITION (Pose6Dd, Pose6D,sdurw_math);
+#else
+    SWIG_DECLARE_TEMPLATE (Pose6D, rw::math::Pose6D< double >);
+#endif
+
     SWIG_DECLARE_TEMPLATE (Pose6Df, rw::math::Pose6D< float >);
 #endif
     using Pose6Dd = Pose6D< double >;

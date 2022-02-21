@@ -28,7 +28,7 @@
 #include <rw/math/InertiaMatrix.hpp>
 
 #include <vector>
-#endif 
+#endif
 
 namespace rw { namespace kinematics {
     class State;
@@ -54,7 +54,7 @@ namespace rw { namespace models {
 
       protected:
         //! constructor
-        Object (rw::kinematics::Frame* baseframe);
+        Object (rw::core::Ptr< rw::kinematics::Frame > baseframe);
         //! constructor - first frame is base
         Object (std::vector< rw::kinematics::Frame* > frames);
 
@@ -67,8 +67,21 @@ namespace rw { namespace models {
          * base frame.
          * @return name of object.
          */
-        const std::string& getName () { return _base->getName (); };
+        const std::string& getName () { return _base->getName (); }
 
+#ifdef RW_USE_PTR
+        /**
+         * @brief get base frame of this object
+         * @return base frame of object
+         */
+        rw::kinematics::Frame::Ptr getBase () {return _base;}
+
+        /**
+         * @brief get base frame of this object
+         * @return base frame of object
+         */
+        rw::kinematics::Frame::CPtr getBase () const {return _base;}
+#else
         /**
          * @brief get base frame of this object
          * @return base frame of object
@@ -80,7 +93,7 @@ namespace rw { namespace models {
          * @return base frame of object
          */
         const rw::kinematics::Frame* getBase () const;
-
+#endif
         /**
          * @brief get all associated frames of this object
          * @return a vector of frames
@@ -91,7 +104,7 @@ namespace rw { namespace models {
          * @brief associate a frame to this Object.
          * @param frame [in] frame to associate to object
          */
-        void addFrame (rw::kinematics::Frame* frame);
+        void addFrame (rw::core::Ptr< rw::kinematics::Frame > frame);
 
         /**
          * @brief get default geometries
@@ -135,6 +148,7 @@ namespace rw { namespace models {
 
         /**
          * @brief get mass in Kg of this object
+         * @param state [in] the state in which the mass should be gotten from
          * @return mass in kilo grams
          */
         virtual double getMass (rw::kinematics::State& state) const = 0;
@@ -144,7 +158,7 @@ namespace rw { namespace models {
          * @param state [in] the state in which to get center of mass
          * @return
          */
-        virtual rw::math::Vector3D<double> getCOM (rw::kinematics::State& state) const = 0;
+        virtual rw::math::Vector3D< double > getCOM (rw::kinematics::State& state) const = 0;
 
         /**
          * @brief returns the inertia matrix of this body calculated around COM with the orientation
@@ -170,7 +184,7 @@ namespace rw { namespace models {
         doGetModels (const rw::kinematics::State& state) const = 0;
 
       private:
-        rw::kinematics::Frame* _base;
+        rw::core::Ptr< rw::kinematics::Frame > _base;
         std::vector< rw::kinematics::Frame* > _frames;
         std::vector< rw::geometry::Geometry::Ptr > _geometry;
         std::vector< rw::geometry::Model3D::Ptr > _models;

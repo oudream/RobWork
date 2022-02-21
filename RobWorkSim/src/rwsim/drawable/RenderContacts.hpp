@@ -4,7 +4,7 @@
 //! @file drawable/RenderContacts.hpp
 
 #include <rw/graphics/Render.hpp>
-#include <rwlibs/os/rwgl.hpp>
+#include <rwlibs/opengl/rwgl.hpp>
 
 namespace rw { namespace sensor {
     class Contact3D;

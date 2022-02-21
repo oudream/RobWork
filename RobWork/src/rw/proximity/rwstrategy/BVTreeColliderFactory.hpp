@@ -23,9 +23,9 @@
 #include <rw/geometry/OBBCollider.hpp>
 #include <rw/geometry/TriTriIntersectDeviller.hpp>
 
-//#include "OBBToleranceCollider.hpp"
-#include "BVTreeCollider.hpp"
-#include "OBVTreeDFSCollider.hpp"
+//#include <rw/proximity/rwstrategy/OBBToleranceCollider.hpp>
+#include <rw/proximity/rwstrategy/BVTreeCollider.hpp>
+#include <rw/proximity/rwstrategy/OBVTreeDFSCollider.hpp>
 #endif 
 namespace rw {
 namespace proximity {

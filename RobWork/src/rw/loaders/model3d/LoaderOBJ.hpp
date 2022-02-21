@@ -20,7 +20,7 @@
 
 //! @file LoaderOBJ.hpp
 
-#include "../Model3DLoader.hpp"
+#include <rw/loaders/Model3DLoader.hpp>
 
 #include <string>
 
@@ -48,6 +48,9 @@ namespace rw { namespace loaders {
 
         //! @copydoc Model3DLoader::load
         rw::graphics::Model3D::Ptr load (const std::string& filename);
+
+        //! @copydoc Model3DLoader::getModelFormats
+        std::vector< std::string > getModelFormats () {return {".OBJ"};}
     };
 
     //! @}

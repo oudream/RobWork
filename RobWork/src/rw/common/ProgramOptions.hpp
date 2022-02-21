@@ -40,6 +40,15 @@ namespace rw { namespace common {
                               const std::string& desc);
 
         /**
+         * @brief add a bool option that is only allowed to occur once on the command line
+         * @param name [in] name of option
+         * @param defval [in] the default value when arg not present
+         * @param desc [in] description of commandline option
+         */
+        void addBoolOption (const std::string& name, bool defval,
+                              const std::string& desc);
+
+        /**
          * @brief Set \b name of option number \b i.
          * @param name [in] the name.
          * @param i [in] index of the option.
@@ -89,6 +98,7 @@ namespace rw { namespace common {
         rw::core::PropertyMap _pmap;
         std::string _inputFile, _version;
         std::vector< std::string > _additionalStringOptions;
+        std::vector< std::string > _additionalBoolOptions;
         boost::program_options::options_description _optionDesc;
         boost::program_options::positional_options_description _posOptionDesc;
     };

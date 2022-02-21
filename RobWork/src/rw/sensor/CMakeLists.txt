@@ -56,6 +56,7 @@ if(build)
         Scanner2D.hpp
         Scanner2DModel.hpp
         Sensor.hpp
+        SensorData.hpp
         SensorModel.hpp
         StereoCameraModel.hpp
         TactileArray.hpp

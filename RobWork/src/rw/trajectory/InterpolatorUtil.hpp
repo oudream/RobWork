@@ -21,12 +21,12 @@
 /**
  * @file InterpolatorUtil.hpp
  */
-
-#include "Interpolator.hpp"
+#if !defined(SWIG)
+#include <rw/trajectory/Interpolator.hpp>
 
 #include <rw/math/Quaternion.hpp>
 #include <rw/math/Transform3D.hpp>
-
+#endif
 namespace rw { namespace trajectory {
 
     /** @addtogroup trajectory */
@@ -78,7 +78,7 @@ namespace rw { namespace trajectory {
                 res.R () = quar.toRotation3D ();
             }
             else {
-                res.R () = rw::math::Rotation3D<>::identity ();
+                res.R () = rw::math::Rotation3D<T>::identity ();
             }
             return res;
         }

@@ -1,18 +1,24 @@
 set(SUBSYS_NAME sdurws_robworkstudioapp)
 set(SUBSYS_DESC "A rwstudio application that may be started in a thread.")
-set(SUBSYS_DEPS sdurws RW::sdurw)
+set(SUBSYS_DEPS
+    PUBLIC  sdurws
+    PRIVATE RW::sdurw_trajectory
+            RW::sdurw_common
+            RW::sdurw_core
+)
 
 if(RWS_USE_STATIC_LINK_PLUGINS)
+    message(STATUS "USE STATIC PLUGINS")
     set(SUBSYS_DEPS_TEST
-        sdurws_jog
-        sdurws_log
-        sdurws_planning
-        sdurws_playback
-        sdurws_pythoneditor
-        sdurws_sensors
-        sdurws_treeview
-        sdurws_propertyview
-        sdurws_workcelleditorplugin
+        RWS::sdurws_jog
+        RWS::sdurws_log
+        RWS::sdurws_planning
+        RWS::sdurws_playback
+        RWS::sdurws_pythoneditor
+        RWS::sdurws_sensors
+        RWS::sdurws_treeview
+        RWS::sdurws_propertyview
+        RWS::sdurws_workcelleditorplugin
     )
     if(SWIG_DEFAULT_COMPILE)
         set(SUBSYS_DEPS_TEST ${SUBSYS_DEPS_TEST} sdurws_luaeditor sdurws_luapl)
@@ -37,8 +43,9 @@ if(build)
     rw_add_includes(${SUBSYS_NAME} "rwslibs/rwstudioapp" ${SRC_FILES_HPP})
     target_link_libraries(
         ${SUBSYS_NAME}
-        PUBLIC sdurws ${QT_LIBRARIES}
-        PRIVATE ${SUBSYS_DEPS} ${GLUT_glut_LIBRARY}
+        ${SUBSYS_DEPS}
+        PUBLIC ${QT_LIBRARIES}
+        PRIVATE ${GLUT_glut_LIBRARY}
     )
     target_include_directories(
         ${SUBSYS_NAME} INTERFACE $<BUILD_INTERFACE:${RWS_ROOT}/src>

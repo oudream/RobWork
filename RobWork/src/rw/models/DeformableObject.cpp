@@ -7,7 +7,7 @@ using namespace rw::geometry;
 using namespace rw::models;
 using namespace rw::math;
 
-DeformableObject::DeformableObject (rw::kinematics::Frame* baseframe, int nr_of_nodes) :
+DeformableObject::DeformableObject (rw::core::Ptr<rw::kinematics::Frame> baseframe, int nr_of_nodes) :
     Object (baseframe),
     _rstate (1, rw::core::ownedPtr (new DeformableObjectCache (nr_of_nodes)).cast< StateCache > ())
 {
@@ -32,7 +32,7 @@ DeformableObject::DeformableObject (rw::kinematics::Frame* baseframe, int nr_of_
         new rw::geometry::Geometry (_mesh, std::string (baseframe->getName () + "_G")));
 }
 
-DeformableObject::DeformableObject (rw::kinematics::Frame* baseframe,
+DeformableObject::DeformableObject (rw::core::Ptr<rw::kinematics::Frame> baseframe,
                                     rw::geometry::Model3D::Ptr model) :
     Object (baseframe),
     _rstate (1, NULL)
@@ -51,7 +51,7 @@ DeformableObject::DeformableObject (rw::kinematics::Frame* baseframe,
         new rw::geometry::Geometry (_mesh, std::string (baseframe->getName () + "_G")));
 }
 
-DeformableObject::DeformableObject (rw::kinematics::Frame* baseframe,
+DeformableObject::DeformableObject (rw::core::Ptr<rw::kinematics::Frame> baseframe,
                                     rw::geometry::Geometry::Ptr geom) :
     Object (baseframe),
     _rstate (1, NULL)    // we change that imidiately below

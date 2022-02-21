@@ -19,10 +19,11 @@
 #define RW_GRAPHICS_MODEL3DLOADER_HPP_
 
 //! @file Model3DLoader.hpp
-
+#if !defined(SWIG)
 #include <rw/common/FileCache.hpp>
 #include <rw/core/ExtensionPoint.hpp>
 #include <rw/graphics/Model3D.hpp>
+#endif
 
 namespace rw { namespace loaders {
     /** @addtogroup loaders */
@@ -47,6 +48,12 @@ namespace rw { namespace loaders {
         virtual rw::graphics::Model3D::Ptr load (const std::string& filename) = 0;
 
         // virtual void save(Model3DPtr model, const std::string& filename) = 0;
+
+        /**
+         * @brief get the list of supported 3D model formats (as extensions)
+         * @return
+         */
+        virtual std::vector< std::string > getModelFormats () = 0;
 
         /**
          * @addtogroup extensionpoints

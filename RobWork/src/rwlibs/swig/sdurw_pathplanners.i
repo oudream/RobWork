@@ -4,7 +4,12 @@
 #include <rwlibs/swig/ScriptTypes.hpp>
 #include <rw/core/Ptr.hpp>
 #include <rw/models.hpp>
+#include <rw/kinematics/FixedFrame.hpp>
+#include <rw/kinematics/MovableFrame.hpp>
 #include <rw/math.hpp>
+
+#include <rw/invkin/JacobianIKSolver.hpp>
+#include <rw/invkin/IKMetaSolver.hpp>
 
 using namespace rwlibs::swig;
 using rw::math::Metric;
@@ -14,6 +19,7 @@ using rw::trajectory::Path;
 %}
 
 %include <exception.i>
+%include <rwlibs/swig/swig_macros.i>
 
 %import <rwlibs/swig/sdurw_trajectory.i>
 %import <rwlibs/swig/sdurw_core.i>
@@ -21,30 +27,34 @@ using rw::trajectory::Path;
 %import <rwlibs/swig/sdurw_math.i>
 %import <rwlibs/swig/sdurw_kinematics.i>
 %import <rwlibs/swig/sdurw_models.i>
+%import <rwlibs/swig/sdurw_pathplanning.i>
 
 %pragma(java) jniclassimports=%{
-import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
 import org.robwork.sdurw_math.*;
 import org.robwork.sdurw_kinematics.*;
 import org.robwork.sdurw_models.*;
+import org.robwork.sdurw_proximity.*;
+import org.robwork.sdurw_pathplanning.*;
 %}
 %pragma(java) moduleimports=%{
-import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
 import org.robwork.sdurw_math.*;
 import org.robwork.sdurw_kinematics.*;
 import org.robwork.sdurw_models.*;
+import org.robwork.sdurw_proximity.*;
+import org.robwork.sdurw_pathplanning.*;
 %}
 %typemap(javaimports) SWIGTYPE %{
-import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
 import org.robwork.sdurw_math.*;
 import org.robwork.sdurw_kinematics.*;
 import org.robwork.sdurw_models.*;
+import org.robwork.sdurw_proximity.*;
+import org.robwork.sdurw_pathplanning.*;
 %}
 
 /**
@@ -103,7 +113,7 @@ public:
      */
 	static rw::core::Ptr<ARWExpand> make(
         const std::pair<rw::math::Q, rw::math::Q>& bounds,
-        const PlannerConstraint& constraint,
+        const rw::pathplanning::PlannerConstraint& constraint,
         const rw::math::Q& minVariances = rw::math::Q(),
         int historySize = -1);
 
@@ -166,8 +176,8 @@ public:
      *
      * @param nearDistance [in] Threshold for distance to goal node.
      */
-	static rw::core::Ptr<QToQPlanner> makeQToQPlanner(
-        const PlannerConstraint& constraint,
+	static rw::core::Ptr<rw::pathplanning::QToQPlanner> makeQToQPlanner(
+        const rw::pathplanning::PlannerConstraint& constraint,
 		rw::core::Ptr<ARWExpand> expand,
 		rw::core::Ptr< rw::math::Metric< rw::math::Q > > metric,
         double nearDistance);
@@ -196,8 +206,8 @@ public:
      * to include in computation of the next expand step. If \b historySize
      * is negative, a default value for the parameter is chosen.
      */
-	static rw::core::Ptr<QToQPlanner> makeQToQPlanner(
-        const PlannerConstraint& constraint,
+	static rw::core::Ptr<rw::pathplanning::QToQPlanner> makeQToQPlanner(
+        const rw::pathplanning::PlannerConstraint& constraint,
 		rw::core::Ptr<rw::models::Device> device,
 		rw::core::Ptr< rw::math::Metric< rw::math::Q > > metric = NULL,
         double nearDistance = -1,
@@ -254,7 +264,7 @@ OWNEDPTR(ARWPlanner);
  *      Multi-Robot Coordination, G. Sanchez, J.C. Latombe. The International
  *      Journal of Robotics Research, Vol. 21, No. 1, pages 5-26, 2002
  */
-class PRMPlanner: public QToQPlanner
+class PRMPlanner: public rw::pathplanning::QToQPlanner
 {
 public:
     /**
@@ -287,8 +297,8 @@ public:
      * @param state [in] State of rest of the workcell
      */
     PRMPlanner(
-    	rw::core::Ptr<QConstraint> constraint,
-		rw::core::Ptr<QSampler> sampler,
+    	rw::core::Ptr<rw::pathplanning::QConstraint> constraint,
+		rw::core::Ptr<rw::pathplanning::QSampler> sampler,
         double resolution,
         const rw::models::Device& device,
         const rw::kinematics::State& state);
@@ -463,9 +473,9 @@ public:
      *
      * @param type [in] The particular variation the RRT planner algorithm.
      */
-	static rw::core::Ptr<QToQPlanner> makeQToQPlanner(
-        const PlannerConstraint& constraint,
-		rw::core::Ptr<QSampler> sampler,
+	static rw::core::Ptr<rw::pathplanning::QToQPlanner> makeQToQPlanner(
+        const rw::pathplanning::PlannerConstraint& constraint,
+		rw::core::Ptr<rw::pathplanning::QSampler> sampler,
 		rw::core::Ptr< rw::math::Metric< rw::math::Q > > metric,
         double extend,
         PlannerType type = RRTBalancedBidirectional);
@@ -483,8 +493,8 @@ public:
      *
      * @param type [in] The particular variation the RRT planner algorithm.
      */
-	static rw::core::Ptr<QToQPlanner> makeQToQPlanner(
-        const PlannerConstraint& constraint,
+	static rw::core::Ptr<rw::pathplanning::QToQPlanner> makeQToQPlanner(
+        const rw::pathplanning::PlannerConstraint& constraint,
 		rw::core::Ptr<rw::models::Device> device,
         PlannerType type = RRTBalancedBidirectional);
 };
@@ -584,7 +594,7 @@ public:
      * makeUniformBox().
      */
     static rw::core::Ptr<SBLExpand> makeShrinkingUniformBox(
-    	rw::core::Ptr<QConstraint> constraint,
+    	rw::core::Ptr<rw::pathplanning::QConstraint> constraint,
         const QBox& outer,
         const QBox& inner);
 
@@ -600,7 +610,7 @@ public:
      * makeUniformBox().
      */
     static rw::core::Ptr<SBLExpand> makeShrinkingUniformBox(
-    	rw::core::Ptr<QConstraint> constraint,
+    	rw::core::Ptr<rw::pathplanning::QConstraint> constraint,
         const QBox& outer,
         double ratio);
 
@@ -625,7 +635,7 @@ public:
      * The inner box shrinks in size as 1, 1/2, 1/3, ...
      */
     static rw::core::Ptr<SBLExpand> makeShrinkingUniformJacobianBox(
-    	rw::core::Ptr<QConstraint> constraint,
+    	rw::core::Ptr<rw::pathplanning::QConstraint> constraint,
 		rw::core::Ptr<rw::models::Device> device,
         const rw::kinematics::State& state,
         rw::core::Ptr<rw::models::JacobianCalculator> jacobian,
@@ -696,8 +706,8 @@ public:
      */
     static
     SBLSetup make(
-		rw::core::Ptr<QConstraint> constraint,
-		rw::core::Ptr<QEdgeConstraintIncremental> edgeConstraint,
+		rw::core::Ptr<rw::pathplanning::QConstraint> constraint,
+		rw::core::Ptr<rw::pathplanning::QEdgeConstraintIncremental> edgeConstraint,
         rw::core::Ptr<SBLExpand> expansion,
 		rw::core::Ptr< rw::math::Metric< rw::math::Q > > metric,
         double connectRadius);
@@ -732,8 +742,8 @@ public:
      */
     static
     SBLSetup make(
-		rw::core::Ptr<QConstraint> constraint,
-		rw::core::Ptr<QEdgeConstraintIncremental> edgeConstraint,
+		rw::core::Ptr<rw::pathplanning::QConstraint> constraint,
+		rw::core::Ptr<rw::pathplanning::QEdgeConstraintIncremental> edgeConstraint,
 		rw::core::Ptr<rw::models::Device> device,
         double expandRadius = -1,
         double connectRadius = -1);
@@ -756,8 +766,8 @@ public:
 	 * @param qconstraint [in] a constraint giving the valid (collision free) configurations.
 	 * @param edgeconstraint [in] a constraint for checking the edges in-between valid configurations.
 	 */
-	SBLPlannerConstraint(rw::core::Ptr<QConstraint> qconstraint, 
-		rw::core::Ptr<QEdgeConstraintIncremental> edgeconstraint):
+	SBLPlannerConstraint(rw::core::Ptr<rw::pathplanning::QConstraint> qconstraint, 
+		rw::core::Ptr<rw::pathplanning::QEdgeConstraintIncremental> edgeconstraint):
 	_qconstraint(qconstraint),
 	_edgeConstraint(edgeconstraint);
 
@@ -766,14 +776,14 @@ public:
 	 *
 	 * @return a reference to the constraint.
 	 */
-	const QConstraint& getQConstraint() const;
+	const rw::pathplanning::QConstraint& getQConstraint() const;
 
 	/**
 	 * @brief Get the part that checks edges in-between valid configurations.
 	 *
 	 * @return a reference to the edge constraint.
 	 */
-	const QEdgeConstraintIncremental& getEdgeConstraint() const;
+	const rw::pathplanning::QEdgeConstraintIncremental& getEdgeConstraint() const;
 };
 
 /**
@@ -799,8 +809,8 @@ public:
 	 * @param connectRadius [in] connect trees if the distance to the nearest neighbor is below this threshold.
 	 */
     SBLOptions(
-		rw::core::Ptr<QConstraint>& constraint,
-		rw::core::Ptr<QEdgeConstraintIncremental>& edgeConstraint,
+		rw::core::Ptr<rw::pathplanning::QConstraint>& constraint,
+		rw::core::Ptr<rw::pathplanning::QEdgeConstraintIncremental>& edgeConstraint,
 		rw::core::Ptr<SBLExpand> expansion,
 		rw::core::Ptr< rw::math::Metric< rw::math::Q > > metric,
         double connectRadius);
@@ -862,14 +872,14 @@ public:
      *
      * @param setup [in] Setup for the planner.
      */
-	static rw::core::Ptr<QToQSamplerPlanner> makeQToQSamplerPlanner(const SBLSetup& setup);
+	static rw::core::Ptr<rw::pathplanning::QToQSamplerPlanner> makeQToQSamplerPlanner(const SBLSetup& setup);
 
     /**
      * @brief An SBL based point-to-point planner.
      *
      * @param setup [in] Setup for the planner.
      */
-	static rw::core::Ptr<QToQPlanner> makeQToQPlanner(const SBLSetup& setup);
+	static rw::core::Ptr<rw::pathplanning::QToQPlanner> makeQToQPlanner(const SBLSetup& setup);
 
     /**
      * @brief An SBL based point-to-tool-position planner.
@@ -877,9 +887,9 @@ public:
      * @param setup [in] Setup for the planner.
      * @param ikSampler [in] Sampler of IK solutions for the target transform.
      */
-	static rw::core::Ptr<QToTPlanner> makeQToTPlanner(
+	static rw::core::Ptr<rw::pathplanning::QToTPlanner> makeQToTPlanner(
         const SBLSetup& setup,
-		rw::core::Ptr<QIKSampler> ikSampler);
+		rw::core::Ptr<rw::pathplanning::QIKSampler> ikSampler);
 };
 
 //! @brief Smart pointer type for a SBLPlanner.
@@ -910,9 +920,9 @@ public:
      * repeatCnt is negative (the default), the attempts are repeated until
      * the stop criteria returns true.
      */
-	static rw::core::Ptr<QToQPlanner> makeQToQPlanner(
-		rw::core::Ptr<QSampler> sampler,
-		rw::core::Ptr<QToQPlanner> localPlanner,
+	static rw::core::Ptr<rw::pathplanning::QToQPlanner> makeQToQPlanner(
+		rw::core::Ptr<rw::pathplanning::QSampler> sampler,
+		rw::core::Ptr<rw::pathplanning::QToQPlanner> localPlanner,
         int nodeCnt = -1,
         int repeatCnt = -1);
 
@@ -927,8 +937,8 @@ public:
      *
      * @param device [in] Device for which the path is planned.
      */
-	static rw::core::Ptr<QToQPlanner> makeQToQPlanner(
-        const PlannerConstraint& constraint,
+	static rw::core::Ptr<rw::pathplanning::QToQPlanner> makeQToQPlanner(
+        const rw::pathplanning::PlannerConstraint& constraint,
 		rw::core::Ptr<rw::models::Device> device);
 
     /**
@@ -958,10 +968,10 @@ public:
      * slideImprovement is negative, a default value for \b slideImprovement
      * is chosen based on the value of \b extend.
      */
-	static rw::core::Ptr<QToQPlanner> makeSlidingQToQPlanner(
-        const PlannerConstraint& constraint,
-		rw::core::Ptr<QSampler> directionSampler,
-		rw::core::Ptr<QConstraint> boundsConstraint,
+	static rw::core::Ptr<rw::pathplanning::QToQPlanner> makeSlidingQToQPlanner(
+        const rw::pathplanning::PlannerConstraint& constraint,
+		rw::core::Ptr<rw::pathplanning::QSampler> directionSampler,
+		rw::core::Ptr<rw::pathplanning::QConstraint> boundsConstraint,
 		rw::core::Ptr< rw::math::Metric< rw::math::Q > > metric,
         double extend,
         double slideImprovement = -1);
@@ -989,8 +999,8 @@ public:
      * slideImprovement is negative, a default value for \b slideImprovement
      * is chosen based on the value of \b extend.
      */
-    static rw::core::Ptr<QToQPlanner> makeSlidingQToQPlanner(
-        const PlannerConstraint& constraint,
+    static rw::core::Ptr<rw::pathplanning::QToQPlanner> makeSlidingQToQPlanner(
+        const rw::pathplanning::PlannerConstraint& constraint,
 		rw::core::Ptr<rw::models::Device> device,
 		rw::core::Ptr< rw::math::Metric< rw::math::Q > > metric = 0,
         double extend = -1,
@@ -1003,14 +1013,14 @@ OWNEDPTR(Z3Planner);
 
 %inline %{
 
-	rw::core::Ptr<QToTPlanner> makeToNearestRRT(rw::core::Ptr<rw::proximity::CollisionDetector> cdect, rw::core::Ptr<rw::models::Device> dev)
+	rw::core::Ptr<rw::pathplanning::QToTPlanner> makeToNearestRRT(rw::core::Ptr<rw::proximity::CollisionDetector> cdect, rw::core::Ptr<rw::models::Device> dev)
     { 
 		rw::kinematics::State state = dev->getStateStructure()->getDefaultState();
       
         const rw::pathplanning::PlannerConstraint constraint = rw::pathplanning::PlannerConstraint::make(
             cdect.get(), dev, state);
       
-        rw::core::Ptr<QToQPlanner> planner = rwlibs::pathplanners::RRTPlanner::makeQToQPlanner(constraint, dev);
+        rw::core::Ptr<rw::pathplanning::QToQPlanner> planner = rwlibs::pathplanners::RRTPlanner::makeQToQPlanner(constraint, dev);
 
 		// creaty ikmeta solver for the planer
         rw::invkin::JacobianIKSolver::Ptr iksolver = rw::core::ownedPtr( new rw::invkin::JacobianIKSolver(dev,state) );

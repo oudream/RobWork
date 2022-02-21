@@ -19,7 +19,7 @@
 #define RW_MODELS_DEFORMABLEOBJECT_HPP_
 
 #if !defined(SWIG)
-#include "Object.hpp"
+#include <rw/models/Object.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rw/geometry/IndexedTriMesh.hpp>
@@ -65,7 +65,7 @@ namespace rw { namespace models {
          * @param baseframe [in] base frame of object
          * @param nr_of_nodes [in] the number of controlling nodes in the deformable object
          */
-        DeformableObject (rw::kinematics::Frame* baseframe, int nr_of_nodes);
+        DeformableObject (rw::core::Ptr<rw::kinematics::Frame> baseframe, int nr_of_nodes);
 
         /**
          * @brief constructor - control nodes are taken as vertices in the Model3D. Vertices that
@@ -79,7 +79,7 @@ namespace rw { namespace models {
          * @param baseframe [in] base frame of object
          * @param model [in]
          */
-        DeformableObject (rw::kinematics::Frame* baseframe,
+        DeformableObject (rw::core::Ptr<rw::kinematics::Frame> baseframe,
                           rw::core::Ptr< rw::geometry::Model3D > model);
 
         /**
@@ -92,7 +92,7 @@ namespace rw { namespace models {
          * @param baseframe [in] base frame of object
          * @param geom [in] geometry to define the faces and nodes
          */
-        DeformableObject (rw::kinematics::Frame* baseframe,
+        DeformableObject (rw::core::Ptr<rw::kinematics::Frame> baseframe,
                           rw::core::Ptr< rw::geometry::Geometry > geom);
 
         //! @brief destructor

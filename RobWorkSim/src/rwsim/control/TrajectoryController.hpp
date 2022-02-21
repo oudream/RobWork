@@ -6,11 +6,7 @@
 #include <rwlibs/control/JointController.hpp>
 #include <rwlibs/control/SyncVelocityRamp.hpp>
 #include <rwlibs/simulation/SimulatedController.hpp>
-
-namespace rwsim { namespace dynamics {
-    class RigidDevice;
-}}    // namespace rwsim::dynamics
-
+#include <rwsim/dynamics/RigidDevice.hpp>
 namespace rwsim { namespace control {
     //! @addtogroup rwsim_control
     //! @{
@@ -30,9 +26,10 @@ namespace rwsim { namespace control {
          * @param rdev
          * @param state
          */
-        TrajectoryController (RigidDevice* rdev, const rw::kinematics::State& state) :
-            JointController (&rdev->getModel ()), _ddev (rdev), _time (0.0),
-            _target (rdev->getModel ().getQ (state)),
+        TrajectoryController (rwsim::dynamics::RigidDevice* rdev,
+                              const rw::kinematics::State& state) :
+            JointController (&rdev->getModel ()),
+            _ddev (rdev), _time (0.0), _target (rdev->getModel ().getQ (state)),
             _lastError (rw::math::Q::zero (rdev->getModel ().getDOF ())),
             _velramp (&(rdev->getModel ())), _currentQ (_target)
         {
@@ -101,12 +98,13 @@ namespace rwsim { namespace control {
         }
 
       private:
-        RigidDevice* _ddev;
+        rwsim::dynamics::RigidDevice* _ddev;
         double _time;
         rw::math::Q _target;
         rw::math::Q _lastError;
         rw::control::SyncVelocityRamp _velramp;
         rw::math::Q _currentQ;
+        rw::math::Q _currentVel;
         rw::math::Q _maxVel;
         rw::math::Q _x;
         int _mode;

@@ -8,22 +8,22 @@
 #ifndef RWS_HPP_
 #define RWS_HPP_
 
-#include "AboutBox.hpp"
-#include "ArcBallController.hpp"
-#include "CameraController.hpp"
-#include "FixedAxisController.hpp"
-#include "HelpAssistant.hpp"
-#include "ImageUtil.hpp"
-#include "ImageView.hpp"
-#include "RWSImageLoaderPlugin.hpp"
-#include "RWStudioView3D.hpp"
-#include "RobWorkStudio.hpp"
-#include "RobWorkStudioPlugin.hpp"
-#include "SceneOpenGLViewer.hpp"
-#include "SceneViewerWidget.hpp"
-#include "propertyview/PropertyViewDialog.hpp"
-#include "propertyview/PropertyViewEditor.hpp"
-#include "propertyview/VariantManager.hpp"
+#include <rws/AboutBox.hpp>
+#include <rws/ArcBallController.hpp>
+#include <rws/CameraController.hpp>
+#include <rws/FixedAxisController.hpp>
+#include <rws/HelpAssistant.hpp>
+#include <rws/ImageUtil.hpp>
+#include <rws/ImageView.hpp>
+#include <rws/RWSImageLoaderPlugin.hpp>
+#include <rws/RWStudioView3D.hpp>
+#include <rws/RobWorkStudio.hpp>
+#include <rws/RobWorkStudioPlugin.hpp>
+#include <rws/SceneOpenGLViewer.hpp>
+#include <rws/SceneViewerWidget.hpp>
+#include <rws/propertyview/PropertyViewDialog.hpp>
+#include <rws/propertyview/PropertyViewEditor.hpp>
+#include <rws/propertyview/VariantManager.hpp>
 
 #define RWS_USE_RWP_NAMESPACE \
     namespace rws {           \

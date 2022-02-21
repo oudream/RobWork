@@ -5,9 +5,7 @@ Build-Depends:
   debhelper (>= 10), 
   cmake(>= 3.5), 
   libfcl-dev(>= 0.3), 
-  libboost-dev (>= 1.54), 
   libboost-program-options-dev (>= 1.54), 
-  libboost-date-time-dev (>= 1.54), 
   libboost-filesystem-dev (>= 1.54),
   libboost-serialization-dev (>= 1.54), 
   libboost-system-dev (>= 1.54), 
@@ -26,9 +24,7 @@ Build-Depends:
   libglu1-mesa-dev (>= 9), 
   libomp-dev (>= 3.7), 
   qtbase5-dev (>=5), 
-  libqt5opengl5-dev, 
   libode-dev (>=2), 
-  libdc1394-22-dev (>=2),
   freeglut3-dev (>=2.8)
 Standards-Version: 4.1.2
 Section: libs
@@ -702,9 +698,7 @@ Architecture: amd64
 Multi-Arch: same
 Depends: 
  libsdurw (=${binary:Version}), 
- libsdurw-core-dev (=${binary:Version}), 
- libsdurw-math-dev (=${binary:Version}), 
- libsdurw-common-dev (=${binary:Version}), 
+ ${cmakedep:Depends},
  libxerces-c-dev,
  libfcl-dev,
  libassimp-dev,
@@ -724,6 +718,7 @@ Architecture: amd64
 Multi-Arch: same
 Depends: 
  libsdurw-core (=${binary:Version}), 
+ ${cmakedep:Depends},
  libboost-dev (>= 1.54), 
  libboost-program-options-dev (>= 1.54), 
  libboost-date-time-dev (>= 1.54), 
@@ -747,8 +742,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends:
- libsdurw-core-dev (=${binary:Version}), 
  libsdurw-common (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurw-common-dev1.2,
@@ -764,10 +759,9 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends:
- libsdurw-core-dev (=${binary:Version}), 
- libsdurw-common-dev (=${binary:Version}), 
- libeigen3-dev,
  libsdurw-math (=${binary:Version}), 
+ ${cmakedep:Depends},
+ libeigen3-dev,
  ${misc:Depends}
 Conflicts:
   libsdurw-math-dev1.2,
@@ -783,13 +777,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends: 
- libsdurw-core-dev (=${binary:Version}), 
- libsdurw-common-dev (=${binary:Version}), 
- libsdurw-math-dev (=${binary:Version}), 
- libsdurw-kinematics-dev (=${binary:Version}), 
- libsdurw-geometry-dev (=${binary:Version}), 
- libsdurw-sensor-dev (=${binary:Version}), 
- libsdurw-models-dev (=${binary:Version}), 
+ libsdurw-graphics (=${binary:Version}),
+ ${cmakedep:Depends},
  ${shlibs:Depends}, 
  ${misc:Depends}
 Description: Graphical engine of RobWork development package
@@ -800,11 +789,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends:
- libsdurw-core-dev (=${binary:Version}), 
- libsdurw-common-dev (=${binary:Version}), 
- libsdurw-math-dev (=${binary:Version}), 
- libsdurw-geometry-dev (=${binary:Version}), 
- libsdurw-sensor-dev (=${binary:Version}), 
+ libsdurw-graspplanning (=${binary:Version}),
+ ${cmakedep:Depends},
  ${shlibs:Depends}, 
  ${misc:Depends}
 Description: Grasp planning
@@ -815,12 +801,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends: 
- libsdurw-core-dev (=${binary:Version}), 
- libsdurw-math-dev (=${binary:Version}), 
- libsdurw-kinematics-dev (=${binary:Version}), 
- libsdurw-models-dev (=${binary:Version}), 
- libsdurw-trajectory-dev (=${binary:Version}),
- libsdurw-proximity-dev (=${binary:Version}),
+ libsdurw-invkin (=${binary:Version}),
+ ${cmakedep:Depends},
  ${shlibs:Depends}, 
  ${misc:Depends}
 Description: Inverse Kinematics
@@ -831,16 +813,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends: 
- libsdurw-core-dev (=${binary:Version}), 
- libsdurw-common-dev (=${binary:Version}), 
- libsdurw-math-dev (=${binary:Version}), 
- libsdurw-kinematics-dev (=${binary:Version}), 
- libsdurw-geometry-dev (=${binary:Version}), 
- libsdurw-sensor-dev (=${binary:Version}), 
- libsdurw-models-dev (=${binary:Version}), 
- libsdurw-trajectory-dev (=${binary:Version}),
- libsdurw-proximity-dev (=${binary:Version}),
- libsdurw-graphics-dev (=${binary:Version}), 
+ libsdurw-loaders (=${binary:Version}),
+ ${cmakedep:Depends},
  ${shlibs:Depends}, 
  ${misc:Depends}
 Description: File loading
@@ -851,9 +825,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends: 
- libsdurw-core-dev (=${binary:Version}), 
- libsdurw-common-dev (=${binary:Version}), 
- libsdurw-math-dev (=${binary:Version}),
+ libsdurw-kinematics (=${binary:Version}),
+ ${cmakedep:Depends},
  ${shlibs:Depends}, 
  ${misc:Depends}
 Description: Headers for Kinematics framework
@@ -864,11 +837,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends:
- libsdurw-core-dev (=${binary:Version}), 
- libsdurw-math-dev (=${binary:Version}), 
- libsdurw-kinematics-dev (=${binary:Version}), 
- libsdurw-geometry-dev (=${binary:Version}), 
- libsdurw-sensor-dev (=${binary:Version}), 
+ libsdurw-models (=${binary:Version}),
+ ${cmakedep:Depends},
  ${shlibs:Depends}, 
  ${misc:Depends}
 Description: Robot Modeling
@@ -879,13 +849,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends:
- libsdurw-core-dev (=${binary:Version}), 
- libsdurw-math-dev (=${binary:Version}), 
- libsdurw-kinematics-dev (=${binary:Version}),
- libsdurw-models-dev (=${binary:Version}), 
- libsdurw-trajectory-dev (=${binary:Version}),
- libsdurw-proximity-dev (=${binary:Version}),
- libsdurw-invkin-dev (=${binary:Version}), 
+ libsdurw-pathplanning (=${binary:Version}),
+ ${cmakedep:Depends},
  ${shlibs:Depends}, 
  ${misc:Depends}
 Description: headers for pathplanning 
@@ -896,7 +861,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends: 
- libsdurw-core-dev (=${binary:Version}),
+ libsdurw-plugin (=${binary:Version}),
+ ${cmakedep:Depends},
  ${shlibs:Depends}, 
  ${misc:Depends}
 Description: plugin library
@@ -907,12 +873,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends: 
- libsdurw-core-dev (=${binary:Version}), 
- libsdurw-common-dev (=${binary:Version}), 
- libsdurw-math-dev (=${binary:Version}), 
- libsdurw-kinematics-dev (=${binary:Version}), 
- libsdurw-geometry-dev (=${binary:Version}), 
- libsdurw-models-dev (=${binary:Version}), 
+ libsdurw-proximity (=${binary:Version}),
+ ${cmakedep:Depends},
  ${shlibs:Depends}, 
  ${misc:Depends}
 Description: proximity calculation framework
@@ -923,11 +885,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends: 
- libsdurw-core-dev (=${binary:Version}), 
- libsdurw-common-dev (=${binary:Version}), 
- libsdurw-math-dev (=${binary:Version}), 
- libsdurw-kinematics-dev (=${binary:Version}), 
- libsdurw-geometry-dev (=${binary:Version}), 
+ libsdurw-sensor (=${binary:Version}),
+ ${cmakedep:Depends},
  ${shlibs:Depends}, 
  ${misc:Depends}
 Description: sensor library
@@ -938,9 +897,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends: 
- libsdurw-core-dev (=${binary:Version}), 
- libsdurw-math-dev (=${binary:Version}), 
- libsdurw-models-dev (=${binary:Version}), 
+ libsdurw-trajectory (=${binary:Version}),
+ ${cmakedep:Depends},
  ${shlibs:Depends}, 
  ${misc:Depends}
 Description: trajectory library
@@ -951,8 +909,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends: 
- libsdurw-dev (=${binary:Version}), 
- libsdurw-algorithms (=${binary:Version}), 
+ libsdurw-algorithms (=${binary:Version}),
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurw-algorithms-dev1.2,
@@ -968,8 +926,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends: 
- libsdurw-dev (=${binary:Version}), 
- libsdurw-calibration (=${binary:Version}), 
+ libsdurw-calibration (=${binary:Version}),
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurw-calibration-dev1.2,
@@ -985,8 +943,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends: 
- libsdurw-dev (=${binary:Version}), 
- libsdurw-control (=${binary:Version}), 
+ libsdurw-control (=${binary:Version}),
+ ${cmakedep:Depends},
  ${misc:Depends}, ${shlibs:Depends} 
 Conflicts:
   libsdurw-control-dev1.2,
@@ -1002,18 +960,20 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends: 
- libsdurw-dev (=${binary:Version}), 
  libsdurw-opengl (=${binary:Version}), 
+ ${cmakedep:Depends},
  libglu1-mesa-dev,
  libopengl0,
  freeglut3-dev,
  ${misc:Depends}
 Conflicts:
   libsdurw-opengl-dev1.2,
-  libsdurw-opengl1.2-dev
+  libsdurw-opengl1.2-dev,
+  libsdurw-os-dev
 Replaces:
   libsdurw-opengl-dev1.2,
-  libsdurw-opengl1.2-dev
+  libsdurw-opengl1.2-dev,
+  libsdurw-os-dev
 Description: Development library for RobWork OpenGL.
  The Development library for RobWork OpenGL.
 
@@ -1022,8 +982,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends:
- libsdurw-dev (=${binary:Version}), 
  libsdurw-proximitystrategies (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurw-proximitystrategies-dev1.2,
@@ -1041,9 +1001,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends: 
- libsdurw-dev (=${binary:Version}), 
- libsdurw-proximitystrategies-dev (=${binary:Version}), 
  libsdurw-pathoptimization (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurw-pathoptimization-dev1.2,
@@ -1059,13 +1018,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends:
- libsdurw-core-dev (=${binary:Version}),
- libsdurw-math-dev (=${binary:Version}),
- libsdurw-kinematics-dev (=${binary:Version}),
- libsdurw-models-dev (=${binary:Version}),
- libsdurw-trajectory-dev (=${binary:Version}),
- libsdurw-algorithms-dev (=${binary:Version}),
  libsdurw-pathplanners (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurw-pathplanners-dev1.2,
@@ -1081,8 +1035,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends: 
- libsdurw-dev (=${binary:Version}), 
  libsdurw-task (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurw-task-dev1.2,
@@ -1098,9 +1052,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends: 
- libsdurw-control-dev (= ${binary:Version}),
- libsdurw-dev (=${binary:Version}), 
  libsdurw-simulation (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurw-simulation-dev1.2,
@@ -1116,9 +1069,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends: 
- libsdurw-dev (=${binary:Version}), 
- libsdurw-task-dev (=${binary:Version}), 
  libsdurw-assembly (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurw-assembly-dev1.2,
@@ -1134,11 +1086,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends: 
- libsdurw-core-dev (=${binary:Version}), 
- libsdurw-common-dev (=${binary:Version}), 
- libsdurw-math-dev (=${binary:Version}),
- libsdurw-geometry-dev (=${binary:Version}),
  libsdurw-csg (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurw-csg-dev1.2,
@@ -1154,11 +1103,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends:
- libsdurw-core-dev (=${binary:Version}), 
- libsdurw-common-dev (=${binary:Version}), 
- libsdurw-math-dev (=${binary:Version}), 
- libsdurw-kinematics-dev (=${binary:Version}), 
  libsdurw-geometry (=${binary:Version}), 
+ ${cmakedep:Depends},
  libqhull-dev,
  ${misc:Depends}
 Conflicts:
@@ -1190,6 +1136,7 @@ Architecture: amd64
 Multi-Arch: same
 Depends: 
  libsdurws (= ${binary:Version}), 
+ ${cmakedep:Depends},
  sdurws-cmake (=${binary:Version}),
  qtbase5-dev, 
  python3-dev,
@@ -1215,6 +1162,7 @@ Architecture: amd64
 Multi-Arch: same
 Depends: 
  libsdurws-atask (= ${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurws-atask-dev1.2,
@@ -1231,6 +1179,7 @@ Architecture: amd64
 Multi-Arch: same
 Depends: 
  libsdurws-gtask (= ${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurws-gtask-dev1.2,
@@ -1247,6 +1196,7 @@ Architecture: amd64
 Multi-Arch: same
 Depends: 
  libsdurws-jog (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurws-jog-dev1.2,
@@ -1263,6 +1213,7 @@ Architecture: amd64
 Multi-Arch: same
 Depends: 
  libsdurws-log (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurws-log-dev1.2,
@@ -1279,7 +1230,7 @@ Architecture: amd64
 Multi-Arch: same
 Depends: 
  libsdurws-luapl (=${binary:Version}), 
- libsdurws-luaeditor-dev (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurws-luapl-dev1.2,
@@ -1296,6 +1247,7 @@ Architecture: amd64
 Multi-Arch: same
 Depends: 
  libsdurws-luaeditor (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurws-luaeditor-dev1.2,
@@ -1312,6 +1264,7 @@ Architecture: amd64
 Multi-Arch: same
 Depends: 
  libsdurws-planning (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurws-planning-dev1.2,
@@ -1328,6 +1281,7 @@ Architecture: amd64
 Multi-Arch: same
 Depends: 
  libsdurws-playback (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurws-playback-dev1.2,
@@ -1344,6 +1298,7 @@ Architecture: amd64
 Multi-Arch: same
 Depends: 
  libsdurws-propertyview (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends} 
 Conflicts:
   libsdurws-propertyview-dev1.2,
@@ -1360,6 +1315,7 @@ Architecture: amd64
 Multi-Arch: same
 Depends: 
  libsdurws-sensors (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurws-sensors-dev1.2,
@@ -1376,6 +1332,7 @@ Architecture: amd64
 Multi-Arch: same
 Depends: 
  libsdurws-treeview (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurws-treeview-dev1.2,
@@ -1391,8 +1348,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends:
- libsdurws-workcelleditor-dev (=${binary:Version}), 
  libsdurws-workcelleditorplugin (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurws-workcelleditorplugin-dev1.2,
@@ -1409,6 +1366,7 @@ Architecture: amd64
 Multi-Arch: same
 Depends: 
  libsdurws-workcelleditor (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurws-workcelleditor-dev1.2,
@@ -1425,6 +1383,7 @@ Architecture: amd64
 Multi-Arch: same
 Depends: 
  libsdurws-robworkstudioapp (=${binary:Version}), 
+ ${cmakedep:Depends},
   ${misc:Depends}
 Conflicts:
   libsdurws-robworkstudioapp-dev1.2,
@@ -1453,6 +1412,7 @@ Architecture: amd64
 Multi-Arch: same
 Depends: 
  libsdurwsim (=${binary:Version}),
+ ${cmakedep:Depends},
  libode-dev (>=2),  
  ${misc:Depends}
 Conflicts:
@@ -1470,6 +1430,7 @@ Architecture: amd64
 Multi-Arch: same
 Depends: 
  libsdurwsim-bullet (=${binary:Version}), 
+ ${cmakedep:Depends},
  libbullet-dev (>= 2.81), 
  ${misc:Depends}
 Conflicts:
@@ -1487,6 +1448,7 @@ Architecture: amd64
 Multi-Arch: same
 Depends: 
  libsdurwsim-ode (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurwsim-ode-dev1.2,
@@ -1502,8 +1464,8 @@ Section: libdevel
 Architecture: amd64
 Multi-Arch: same
 Depends: 
- libsdurws-dev (= ${binary:Version}),
  libsdurwsim-gui (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Conflicts:
   libsdurwsim-gui-dev1.2,
@@ -1520,9 +1482,7 @@ Architecture: amd64
 Multi-Arch: same
 Depends: 
  libsdurwsim-test (=${binary:Version}),
- libsdurw-core-dev (=${binary:Version}),
- libsdurw-math-dev (=${binary:Version}),
- libsdurw-trajectory-dev (=${binary:Version}), 
+ ${cmakedep:Depends},
  ${misc:Depends}
 Description: Development library for test of engines.
  The Development library for Physics Engine tests.
@@ -1550,6 +1510,7 @@ Depends:
  python3-sdurw-graspplanning (=${binary:Version}),  
  libsdurw (>=${binary:Version}), 
  python3,
+ python3-numpy,
  ${shlibs:Depends}, 
  ${misc:Depends}
 Conflicts:
@@ -1566,6 +1527,7 @@ Multi-Arch: no
 Depends:
  libsdurw-core (>=${binary:Version}), 
  python3,
+ python3-numpy,
  ${shlibs:Depends}, 
  ${misc:Depends}
 Conflicts:
@@ -1583,6 +1545,7 @@ Depends:
  libsdurw-common (>=${binary:Version}), 
  python3-sdurw-core (=${binary:Version}), 
  python3,
+ python3-numpy,
  ${shlibs:Depends}, 
  ${misc:Depends}
 Conflicts:
@@ -1599,6 +1562,7 @@ Multi-Arch: no
 Depends:
  libsdurw-math (>=${binary:Version}), 
  python3,
+ python3-numpy,
  ${shlibs:Depends}, 
  ${misc:Depends}
 Description: Python wrapping for RobWork-math
@@ -1611,6 +1575,7 @@ Multi-Arch: no
 Depends:
  libsdurw-kinematics (>=${binary:Version}), 
  python3,
+ python3-numpy,
  ${shlibs:Depends}, 
  ${misc:Depends}
 Description: Python wrapping for RobWork-math
@@ -1623,6 +1588,7 @@ Multi-Arch: no
 Depends:
  libsdurw-geometry (>=${binary:Version}), 
  python3,
+ python3-numpy,
  ${shlibs:Depends}, 
  ${misc:Depends}
 Description: Python wrapping for RobWork-geometry
@@ -1635,6 +1601,7 @@ Multi-Arch: no
 Depends:
  libsdurw-sensor (>=${binary:Version}), 
  python3,
+ python3-numpy,
  ${shlibs:Depends}, 
  ${misc:Depends}
 Description: Python wrapping for RobWork-sensor
@@ -1647,6 +1614,7 @@ Multi-Arch: no
 Depends:
  libsdurw-models (>=${binary:Version}), 
  python3,
+ python3-numpy,
  ${shlibs:Depends}, 
  ${misc:Depends}
 Description: Python wrapping for RobWork-models
@@ -1659,6 +1627,7 @@ Multi-Arch: no
 Depends:
  libsdurw-graspplanning (>=${binary:Version}), 
  python3,
+ python3-numpy,
  ${shlibs:Depends}, 
  ${misc:Depends}
 Description: Python wrapping for RobWork-graspplanning
@@ -1672,6 +1641,7 @@ Depends:
  python3-sdurw (=${binary:Version}), 
  libsdurw-control (>=${binary:Version}), 
  python3, 
+ python3-numpy,
  ${misc:Depends}, 
  ${shlibs:Depends} 
 Conflicts:
@@ -1689,6 +1659,7 @@ Depends:
  python3-sdurw (=${binary:Version}), 
  libsdurw-opengl (>=${binary:Version}), 
  python3,
+ python3-numpy,
  ${shlibs:Depends},
  ${misc:Depends}
 Conflicts:
@@ -1706,6 +1677,7 @@ Depends:
  python3-sdurw (=${binary:Version}), 
  libsdurw-proximitystrategies (>=${binary:Version}), 
  python3, 
+ python3-numpy,
  ${shlibs:Depends},
  ${misc:Depends}
 Conflicts:
@@ -1724,6 +1696,7 @@ Depends:
  python3-sdurw-proximitystrategies (=${binary:Version}), 
  libsdurw-pathoptimization (>=${binary:Version}), 
  python3, 
+ python3-numpy,
  ${shlibs:Depends},
  ${misc:Depends}
 Conflicts:
@@ -1741,6 +1714,7 @@ Depends:
  python3-sdurw (=${binary:Version}), 
  libsdurw-pathplanners (>=${binary:Version}), 
  python3, 
+ python3-numpy,
  ${shlibs:Depends},
  ${misc:Depends}
 Conflicts:
@@ -1758,6 +1732,7 @@ Depends:
  python3-sdurw (=${binary:Version}), 
  libsdurw-task (>=${binary:Version}), 
  python3,
+ python3-numpy,
  ${shlibs:Depends},
  ${misc:Depends}
 Conflicts:
@@ -1775,6 +1750,7 @@ Depends:
  python3-sdurw (=${binary:Version}), 
  libsdurw-simulation (>=${binary:Version}), 
  python3,
+ python3-numpy,
  ${shlibs:Depends},
  ${misc:Depends}
 Conflicts:
@@ -1793,12 +1769,164 @@ Depends:
  python3-sdurw-task (=${binary:Version}), 
  libsdurw-assembly (>=${binary:Version}), 
  python3,
+ python3-numpy,
  ${shlibs:Depends}, 
  ${misc:Depends}
 Conflicts:
   python3-sdurw-assembly1.2
 Replaces:
   python3-sdurw-assembly1.2
+Description: Python wrapping for RobWork
+ This is a python wrapper for RobWork
+
+Package: python3-sdurw-algorithms
+Section: libs
+Architecture: amd64
+Multi-Arch: no
+Depends:
+ python3-sdurw (=${binary:Version}),
+ libsdurw-algorithms (>=${binary:Version}),
+ python3,
+ python3-numpy,
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: Python wrapping for RobWork
+ This is a python wrapper for RobWork
+
+Package: python3-sdurw-graphics
+Section: libs
+Architecture: amd64
+Multi-Arch: no
+Depends:
+ python3-sdurw (=${binary:Version}),
+ python3-sdurw-core (=${binary:Version}),
+ python3-sdurw-common (=${binary:Version}),
+ python3-sdurw-math (=${binary:Version}),
+ python3-sdurw-kinematics (=${binary:Version}),
+ python3-sdurw-geometry (=${binary:Version}),
+ python3-sdurw-models (=${binary:Version}),
+ python3-sdurw-sensor (=${binary:Version}),
+ libsdurw-graphics (>=${binary:Version}),
+ python3,
+ python3-numpy,
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: Python wrapping for RobWork
+ This is a python wrapper for RobWork
+
+Package: python3-sdurw-invkin
+Section: libs
+Architecture: amd64
+Multi-Arch: no
+Depends:
+ python3-sdurw (=${binary:Version}),
+ python3-sdurw-core (=${binary:Version}),
+ python3-sdurw-common (=${binary:Version}),
+ python3-sdurw-math (=${binary:Version}),
+ python3-sdurw-kinematics (=${binary:Version}),
+ python3-sdurw-geometry (=${binary:Version}),
+ python3-sdurw-models (=${binary:Version}),
+ libsdurw-invkin (>=${binary:Version}),
+ python3,
+ python3-numpy,
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: Python wrapping for RobWork
+ This is a python wrapper for RobWork
+
+Package: python3-sdurw-loaders
+Section: libs
+Architecture: amd64
+Multi-Arch: no
+Depends:
+ python3-sdurw (=${binary:Version}),
+ python3-sdurw-core (=${binary:Version}),
+ python3-sdurw-common (=${binary:Version}),
+ python3-sdurw-math (=${binary:Version}),
+ python3-sdurw-kinematics (=${binary:Version}),
+ python3-sdurw-geometry (=${binary:Version}),
+ python3-sdurw-sensor (=${binary:Version}),
+ python3-sdurw-models (=${binary:Version}),
+ python3-sdurw-proximity (=${binary:Version}),
+ python3-sdurw-graphics (=${binary:Version}),
+ python3-sdurw-trajectory (=${binary:Version}),
+ libsdurw-loaders (>=${binary:Version}),
+ python3,
+ python3-numpy,
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: Python wrapping for RobWork
+ This is a python wrapper for RobWork
+
+Package: python3-sdurw-pathplanning
+Section: libs
+Architecture: amd64
+Multi-Arch: no
+Depends:
+ python3-sdurw (=${binary:Version}),
+ python3-sdurw-core (=${binary:Version}),
+ python3-sdurw-math (=${binary:Version}),
+ python3-sdurw-kinematics (=${binary:Version}),
+ python3-sdurw-models (=${binary:Version}),
+ python3-sdurw-proximity (=${binary:Version}),
+ python3-sdurw-invkin (=${binary:Version}),
+ python3-sdurw-trajectory (=${binary:Version}),
+ libsdurw-pathplanning (>=${binary:Version}),
+ python3,
+ python3-numpy,
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: Python wrapping for RobWork
+ This is a python wrapper for RobWork
+
+Package: python3-sdurw-plugin
+Section: libs
+Architecture: amd64
+Multi-Arch: no
+Depends:
+ python3-sdurw (=${binary:Version}),
+ python3-sdurw-core (=${binary:Version}),
+ libsdurw-plugin (>=${binary:Version}),
+ python3,
+ python3-numpy,
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: Python wrapping for RobWork
+ This is a python wrapper for RobWork
+
+Package: python3-sdurw-proximity
+Section: libs
+Architecture: amd64
+Multi-Arch: no
+Depends:
+ python3-sdurw (=${binary:Version}),
+ python3-sdurw-core (=${binary:Version}),
+ python3-sdurw-common (=${binary:Version}),
+ python3-sdurw-math (=${binary:Version}),
+ python3-sdurw-kinematics (=${binary:Version}),
+ python3-sdurw-models (=${binary:Version}),
+ libsdurw-proximity (>=${binary:Version}),
+ python3,
+ python3-numpy,
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: Python wrapping for RobWork
+ This is a python wrapper for RobWork
+
+Package: python3-sdurw-trajectory
+Section: libs
+Architecture: amd64
+Multi-Arch: no
+Depends:
+ python3-sdurw (=${binary:Version}),
+ python3-sdurw-core (=${binary:Version}),
+ python3-sdurw-math (=${binary:Version}),
+ python3-sdurw-models (=${binary:Version}),
+ libsdurw-trajectory (>=${binary:Version}),
+ python3,
+ python3-numpy,
+ ${shlibs:Depends},
+ ${misc:Depends}
 Description: Python wrapping for RobWork
  This is a python wrapper for RobWork
 
@@ -1811,6 +1939,7 @@ Depends:
  python3-sdurw-simulation (=${binary:Version}), 
  libsdurws (>=${binary:Version}), 
  python3,
+ python3-numpy,
  ${shlibs:Depends}, 
  ${misc:Depends}
 Conflicts:
@@ -1828,6 +1957,7 @@ Depends:
  python3-sdurws (=${binary:Version}), 
  libsdurwsim (>=${binary:Version}), 
  python3,
+ python3-numpy,
  ${shlibs:Depends}, 
  ${misc:Depends}
 Conflicts:
@@ -2015,6 +2145,239 @@ Replaces:
 Description: Lua wrapping for RobWork
  This is a lua wrapper for RobWork
 
+Package: lua-sdurw-algorithms
+Section: libs
+Architecture: amd64
+Multi-Arch: same
+Depends:
+ lua-sdurw (=${binary:Version}),
+ lua-sdurw-task (=${binary:Version}),
+ libsdurw-algorithms (=${binary:Version}),
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: Lua wrapping for RobWork
+ This is a lua wrapper for RobWork
+
+Package: lua-sdurw-geometry
+Section: libs
+Architecture: amd64
+Multi-Arch: same
+Depends:
+ lua-sdurw (=${binary:Version}),
+ lua-sdurw-core (=${binary:Version}),
+ lua-sdurw-common (=${binary:Version}),
+ lua-sdurw-math (=${binary:Version}),
+ lua-sdurw-kinematics (=${binary:Version}),
+ libsdurw-geometry (=${binary:Version}),
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: Lua wrapping for RobWork
+ This is a lua wrapper for RobWork
+
+Package: lua-sdurw-graphics
+Section: libs
+Architecture: amd64
+Multi-Arch: same
+Depends:
+ lua-sdurw (=${binary:Version}),
+ lua-sdurw-core (=${binary:Version}),
+ lua-sdurw-common (=${binary:Version}),
+ lua-sdurw-math (=${binary:Version}),
+ lua-sdurw-kinematics (=${binary:Version}),
+ lua-sdurw-geometry (=${binary:Version}),
+ lua-sdurw-sensor (=${binary:Version}),
+ lua-sdurw-models (=${binary:Version}),
+ libsdurw-graphics (=${binary:Version}),
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: Lua wrapping for RobWork
+ This is a lua wrapper for RobWork
+
+Package: lua-sdurw-graspplanning
+Section: libs
+Architecture: amd64
+Multi-Arch: same
+Depends:
+ lua-sdurw (=${binary:Version}),
+ lua-sdurw-core (=${binary:Version}),
+ lua-sdurw-common (=${binary:Version}),
+ lua-sdurw-math (=${binary:Version}),
+ lua-sdurw-geometry (=${binary:Version}),
+ lua-sdurw-sensor (=${binary:Version}),
+ libsdurw-graspplanning (=${binary:Version}),
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: Lua wrapping for RobWork
+ This is a lua wrapper for RobWork
+
+Package: lua-sdurw-invkin
+Section: libs
+Architecture: amd64
+Multi-Arch: same
+Depends:
+ lua-sdurw (=${binary:Version}),
+ lua-sdurw-core (=${binary:Version}),
+ lua-sdurw-math (=${binary:Version}),
+ lua-sdurw-kinematics (=${binary:Version}),
+ lua-sdurw-models (=${binary:Version}),
+ lua-sdurw-trajectory (=${binary:Version}),
+ lua-sdurw-proximity (=${binary:Version}),
+ libsdurw-invkin (=${binary:Version}),
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: Lua wrapping for RobWork
+ This is a lua wrapper for RobWork
+
+Package: lua-sdurw-kinematics
+Section: libs
+Architecture: amd64
+Multi-Arch: same
+Depends:
+ lua-sdurw (=${binary:Version}),
+ lua-sdurw-core (=${binary:Version}),
+ lua-sdurw-common (=${binary:Version}),
+ lua-sdurw-math (=${binary:Version}),
+ libsdurw-kinematics (=${binary:Version}),
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: Lua wrapping for RobWork
+ This is a lua wrapper for RobWork
+
+Package: lua-sdurw-loaders
+Section: libs
+Architecture: amd64
+Multi-Arch: same
+Depends:
+ lua-sdurw (=${binary:Version}),
+ lua-sdurw-core (=${binary:Version}),
+ lua-sdurw-common (=${binary:Version}),
+ lua-sdurw-math (=${binary:Version}),
+ lua-sdurw-kinematics (=${binary:Version}),
+ lua-sdurw-geometry (=${binary:Version}),
+ lua-sdurw-sensor (=${binary:Version}),
+ lua-sdurw-models (=${binary:Version}),
+ lua-sdurw-proximity (=${binary:Version}),
+ lua-sdurw-graphics (=${binary:Version}),
+ lua-sdurw-trajectory (=${binary:Version}),
+ libsdurw-loaders (=${binary:Version}),
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: Lua wrapping for RobWork
+ This is a lua wrapper for RobWork
+
+Package: lua-sdurw-math
+Section: libs
+Architecture: amd64
+Multi-Arch: same
+Depends:
+ lua-sdurw (=${binary:Version}),
+ lua-sdurw-core (=${binary:Version}),
+ lua-sdurw-common (=${binary:Version}),
+ libsdurw-math (=${binary:Version}),
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: Lua wrapping for RobWork
+ This is a lua wrapper for RobWork
+
+Package: lua-sdurw-models
+Section: libs
+Architecture: amd64
+Multi-Arch: same
+Depends:
+ lua-sdurw (=${binary:Version}),
+ lua-sdurw-core (=${binary:Version}),
+ lua-sdurw-common (=${binary:Version}),
+ lua-sdurw-math (=${binary:Version}),
+ lua-sdurw-kinematics (=${binary:Version}),
+ lua-sdurw-geometry (=${binary:Version}),
+ lua-sdurw-sensor (=${binary:Version}),
+ libsdurw-models (=${binary:Version}),
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: Lua wrapping for RobWork
+ This is a lua wrapper for RobWork
+
+Package: lua-sdurw-pathplanning
+Section: libs
+Architecture: amd64
+Multi-Arch: same
+Depends:
+ lua-sdurw (=${binary:Version}),
+ lua-sdurw-core (=${binary:Version}),
+ lua-sdurw-math (=${binary:Version}),
+ lua-sdurw-kinematics (=${binary:Version}),
+ lua-sdurw-proximity (=${binary:Version}),
+ lua-sdurw-models (=${binary:Version}),
+ lua-sdurw-trajectory (=${binary:Version}),
+ lua-sdurw-invkin (=${binary:Version}),
+ libsdurw-pathplanning (=${binary:Version}),
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: Lua wrapping for RobWork
+ This is a lua wrapper for RobWork
+
+Package: lua-sdurw-plugin
+Section: libs
+Architecture: amd64
+Multi-Arch: same
+Depends:
+ lua-sdurw (=${binary:Version}),
+ lua-sdurw-core (=${binary:Version}),
+ libsdurw-plugin (=${binary:Version}),
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: Lua wrapping for RobWork
+ This is a lua wrapper for RobWork
+
+Package: lua-sdurw-proximity
+Section: libs
+Architecture: amd64
+Multi-Arch: same
+Depends:
+ lua-sdurw (=${binary:Version}),
+ lua-sdurw-core (=${binary:Version}),
+ lua-sdurw-common (=${binary:Version}),
+ lua-sdurw-math (=${binary:Version}),
+ lua-sdurw-geometry (=${binary:Version}),
+ lua-sdurw-models (=${binary:Version}),
+ libsdurw-proximity (=${binary:Version}),
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: Lua wrapping for RobWork
+ This is a lua wrapper for RobWork
+
+Package: lua-sdurw-sensor
+Section: libs
+Architecture: amd64
+Multi-Arch: same
+Depends:
+ lua-sdurw (=${binary:Version}),
+ lua-sdurw-core (=${binary:Version}),
+ lua-sdurw-common (=${binary:Version}),
+ lua-sdurw-math (=${binary:Version}),
+ lua-sdurw-geometry (=${binary:Version}),
+ lua-sdurw-kinematics (=${binary:Version}),
+ libsdurw-sensor (=${binary:Version}),
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: Lua wrapping for RobWork
+ This is a lua wrapper for RobWork
+
+Package: lua-sdurw-trajectory
+Section: libs
+Architecture: amd64
+Multi-Arch: same
+Depends:
+ lua-sdurw (=${binary:Version}),
+ lua-sdurw-core (=${binary:Version}),
+ lua-sdurw-math (=${binary:Version}),
+ lua-sdurw-models (=${binary:Version}),
+ libsdurw-trajectory (=${binary:Version}),
+ ${shlibs:Depends},
+ ${misc:Depends}
+Description: Lua wrapping for RobWork
+ This is a lua wrapper for RobWork
+
 Package: lua-sdurws
 Section: libs
 Architecture: amd64
@@ -2054,15 +2417,23 @@ Depends:
  python3-sdurw-core (=${binary:Version}), 
  python3-sdurw-common (=${binary:Version}), 
  python3-sdurw-math (=${binary:Version}), 
+ python3-sdurw-plugin (=${binary:Version}), 
  python3-sdurw-kinematics (=${binary:Version}), 
  python3-sdurw-geometry (=${binary:Version}), 
+ python3-sdurw-graphics (=${binary:Version}),
  python3-sdurw-sensor (=${binary:Version}), 
  python3-sdurw-models (=${binary:Version}), 
+ python3-sdurw-invkin (=${binary:Version}), 
  python3-sdurw-graspplanning (=${binary:Version}), 
+ python3-sdurw-proximity (=${binary:Version}), 
+ python3-sdurw-trajectory (=${binary:Version}), 
+ python3-sdurw-algorithms (=${binary:Version}), 
+ python3-sdurw-loaders (=${binary:Version}), 
  python3-sdurw-assembly (=${binary:Version}), 
  python3-sdurw-control (=${binary:Version}), 
  python3-sdurw-opengl (=${binary:Version}), 
- python3-sdurw-pathoptimization (=${binary:Version}), 
+ python3-sdurw-pathoptimization (=${binary:Version}),
+ python3-sdurw-pathplanning (=${binary:Version}),  
  python3-sdurw-pathplanners (=${binary:Version}), 
  python3-sdurw-proximitystrategies (=${binary:Version}), 
  python3-sdurw-simulation (=${binary:Version}), 
@@ -2087,10 +2458,24 @@ Depends:
  lua-sdurw (=${binary:Version}), 
  lua-sdurw-core (=${binary:Version}), 
  lua-sdurw-common (=${binary:Version}), 
+ lua-sdurw-math (=${binary:Version}), 
+ lua-sdurw-plugin (=${binary:Version}), 
+ lua-sdurw-kinematics (=${binary:Version}), 
+ lua-sdurw-geometry (=${binary:Version}), 
+ lua-sdurw-graphics (=${binary:Version}),
+ lua-sdurw-sensor (=${binary:Version}), 
+ lua-sdurw-models (=${binary:Version}), 
+ lua-sdurw-invkin (=${binary:Version}), 
+ lua-sdurw-graspplanning (=${binary:Version}), 
+ lua-sdurw-proximity (=${binary:Version}), 
+ lua-sdurw-trajectory (=${binary:Version}), 
+ lua-sdurw-algorithms (=${binary:Version}), 
+ lua-sdurw-loaders (=${binary:Version}), 
  lua-sdurw-assembly (=${binary:Version}), 
  lua-sdurw-control (=${binary:Version}), 
  lua-sdurw-opengl (=${binary:Version}), 
- lua-sdurw-pathoptimization (=${binary:Version}), 
+ lua-sdurw-pathoptimization (=${binary:Version}),
+ lua-sdurw-pathplanning (=${binary:Version}),  
  lua-sdurw-pathplanners (=${binary:Version}), 
  lua-sdurw-proximitystrategies (=${binary:Version}), 
  lua-sdurw-simulation (=${binary:Version}), 
@@ -2128,6 +2513,7 @@ Depends:
  libsdurw-assembly (=${binary:Version}), 
  libsdurw-csg (=${binary:Version}), 
  libsdurw-geometry (=${binary:Version}), 
+ libsdurw-geometry-expanded (=${binary:Version}), 
  ${misc:Depends}
 Conflicts:
   libsdurw1.2-all
@@ -2192,6 +2578,18 @@ Depends:
  libsdurw-core-dev (=${binary:Version}), 
  libsdurw-common-dev (=${binary:Version}), 
  libsdurw-math-dev (=${binary:Version}), 
+ libsdurw-kinematics-dev (=${binary:Version}),
+ libsdurw-geometry-dev (=${binary:Version}),
+ libsdurw-graphics-dev (=${binary:Version}),
+ libsdurw-graspplanning-dev (=${binary:Version}),
+ libsdurw-pathplanning-dev (=${binary:Version}),
+ libsdurw-plugin-dev (=${binary:Version}),
+ libsdurw-proximity-dev (=${binary:Version}),
+ libsdurw-sensor-dev (=${binary:Version}),
+ libsdurw-trajectory-dev (=${binary:Version}),
+ libsdurw-models-dev (=${binary:Version}),
+ libsdurw-invkin-dev (=${binary:Version}),
+ libsdurw-loaders-dev (=${binary:Version}),
  libsdurw-dev (=${binary:Version}), 
  libsdurw-algorithms-dev (=${binary:Version}), 
  libsdurw-calibration-dev (=${binary:Version}), 
@@ -2203,8 +2601,9 @@ Depends:
  libsdurw-task-dev (=${binary:Version}), 
  libsdurw-simulation-dev (=${binary:Version}), 
  libsdurw-assembly-dev (=${binary:Version}), 
- libsdurw-csg-dev (=${binary:Version}), 
+ libsdurw-csg-dev (=${binary:Version}),
  libsdurw-geometry-dev (=${binary:Version}), 
+ libsdurw-geometry-expanded (=${binary:Version}),
  ${misc:Depends}
 Conflicts:
   libsdurw1.2-all-dev

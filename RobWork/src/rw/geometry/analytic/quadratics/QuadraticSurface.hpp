@@ -24,7 +24,7 @@
  * \copydoc rw::geometry::QuadraticSurface
  */
 #if !defined(SWIG)
-#include "QuadraticCurve.hpp"
+#include <rw/geometry/analytic/quadratics/QuadraticCurve.hpp>
 
 #include <rw/geometry/PlainTriMesh.hpp>
 #include <rw/geometry/analytic/ImplicitSurface.hpp>

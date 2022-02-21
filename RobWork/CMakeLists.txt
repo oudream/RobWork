@@ -17,8 +17,8 @@ endif()
 if(NOT DEFINED RWP_ROOT)
 include("cmake/HunterGate.cmake")
 HunterGate(
-    URL "https://github.com/cpp-pm/hunter/archive/v0.23.297.tar.gz"
-    SHA1 "3319fe6a3b08090df7df98dee75134d68e2ef5a3"
+    URL "https://github.com/cpp-pm/hunter/archive/v0.23.314.tar.gz"
+    SHA1 "95c47c92f68edb091b5d6d18924baabe02a6962a"
 )
 else()
     function(hunter_add_package)     
@@ -125,12 +125,6 @@ configure_file(${RW_ROOT}/cmake/RobWorkConfigMacros.cmake.in
                "${RW_ROOT}/cmake/RobWorkConfigMacros.cmake" @ONLY
 )
 
-export(
-    EXPORT ${PROJECT_PREFIX}Targets
-    FILE "${RW_ROOT}/cmake/${PROJECT_NAME}Targets.cmake"
-    NAMESPACE ${PROJECT_PREFIX}::
-)
-
 if(RW_HAVE_GTEST)
     if (NOT RW_GTEST_FROM_HUNTER AND NOT (debug IN_LIST GTEST_LIBRARIES))
 
@@ -194,13 +188,6 @@ install(
     FILES "${RW_ROOT}/src/RobWorkConfig.hpp"
     DESTINATION "${INCLUDE_INSTALL_DIR}"
     COMPONENT sdurw
-)
-
-install(
-    EXPORT ${PROJECT_PREFIX}Targets
-    FILE ${PROJECT_NAME}Targets.cmake
-    NAMESPACE ${PROJECT_PREFIX}::
-    DESTINATION ${RW_INSTALL_DIR}/cmake
 )
 
 

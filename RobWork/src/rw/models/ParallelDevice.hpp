@@ -22,7 +22,7 @@
  * @file ParallelDevice.hpp
  */
 #if !defined(SWIG)
-#include "JointDevice.hpp"
+#include <rw/models/JointDevice.hpp>
 
 #include <string>
 #include <vector>
@@ -78,8 +78,8 @@ namespace rw { namespace models {
          * @param junctions [in] a list of junctions.
          * Each junction is given by a list of legs that must begin and end in the same frame.
          */
-        ParallelDevice (const std::string name, rw::kinematics::Frame* base,
-                        rw::kinematics::Frame* end, const std::vector< rw::models::Joint* >& joints,
+        ParallelDevice (const std::string name, rw::core::Ptr<rw::kinematics::Frame> base,
+                        rw::core::Ptr<rw::kinematics::Frame> end, const std::vector< rw::models::Joint* >& joints,
                         const rw::kinematics::State& state, const std::vector< Legs >& junctions);
 
         /** @brief Destructor */
@@ -117,7 +117,7 @@ namespace rw { namespace models {
                            rw::kinematics::State& state) const;
 
         /** @copydoc Device::baseJframe */
-        rw::math::Jacobian baseJframe (const rw::kinematics::Frame* frame,
+        rw::math::Jacobian baseJframe (const rw::core::Ptr<rw::kinematics::Frame> frame,
                                    const rw::kinematics::State& state) const;
 
         /** @copydoc Device::baseJend */

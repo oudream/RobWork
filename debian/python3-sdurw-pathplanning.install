@@ -1,0 +1,5 @@
+usr/lib/*/dist-packages/sdurw_pathplanning/sdurw_pathplanning.py
+usr/lib/*/dist-packages/sdurw_pathplanning/_sdurw_pathplanning*.so
+usr/lib/*/dist-packages/sdurw_pathplanning/__init__.py
+usr/share/robwork-*/cmake/targets/sdurw_pathplanning_py.cmake
+usr/share/robwork-*/cmake/targets/sdurw_pathplanning_py-*.cmake

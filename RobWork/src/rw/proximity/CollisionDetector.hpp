@@ -217,7 +217,7 @@ namespace rw { namespace proximity {
          * @param frame [in] Frame to associate geometry to
          * @param geometry [in] Geometry to add
          */
-        void addGeometry (rw::kinematics::Frame* frame,
+        bool addGeometry (rw::core::Ptr<rw::kinematics::Frame> frame,
                           const rw::core::Ptr< rw::geometry::Geometry > geometry);
 
         /**
@@ -228,7 +228,7 @@ namespace rw { namespace proximity {
          * @param frame [in] The frame which has the geometry associated
          * @param geometry [in] Geometry with the id to be removed
          */
-        void removeGeometry (rw::kinematics::Frame* frame,
+        void removeGeometry (rw::core::Ptr<rw::kinematics::Frame> frame,
                              const rw::core::Ptr< rw::geometry::Geometry > geometry);
 
         /**
@@ -239,26 +239,26 @@ namespace rw { namespace proximity {
          * @param frame [in] The frame which has the geometry associated
          * @param geometryId [in] Id of geometry to be removed
          */
-        void removeGeometry (rw::kinematics::Frame* frame, const std::string geometryId);
+        void removeGeometry (rw::core::Ptr<rw::kinematics::Frame> frame, const std::string geometryId);
 
         /**
          * @brief return the ids of all the geometries of this frames.
          */
-        std::vector< std::string > getGeometryIDs (rw::kinematics::Frame* frame);
+        std::vector< std::string > getGeometryIDs (rw::core::Ptr<rw::kinematics::Frame> frame);
 
         /**
          * @brief Returns whether frame has an associated geometry with \b geometryId.
          * @param frame [in] Frame in question
          * @param geometryId [in] Id of the geometry
          */
-        bool hasGeometry (rw::kinematics::Frame* frame, const std::string& geometryId);
+        bool hasGeometry (rw::core::Ptr<rw::kinematics::Frame> frame, const std::string& geometryId);
 
         /**
          * @brief Get the geometry from its ID
          * @param ID [in] the ID of the geometry
          * @return Pointer to the geometry
          */
-        rw::core::Ptr< rw::geometry::Geometry > getGeometry (rw::kinematics::Frame* frame,
+        rw::core::Ptr< rw::geometry::Geometry > getGeometry (rw::core::Ptr<rw::kinematics::Frame> frame,
                                                              const std::string& geometryId);
 
         static rw::core::Ptr< rw::proximity::CollisionDetector >

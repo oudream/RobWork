@@ -61,7 +61,7 @@ namespace rwsim { namespace dynamics {
          * @param state [in] the current state.
          * @return the parent body, or NULL if not found.
          */
-        static Body::Ptr getParentBody (rw::kinematics::Frame* child,
+        static Body::Ptr getParentBody (rw::core::Ptr<rw::kinematics::Frame> child,
                                         rw::core::Ptr< DynamicWorkCell > dwc,
                                         const rw::kinematics::State& state);
     };

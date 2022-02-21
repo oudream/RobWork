@@ -9,7 +9,7 @@
 #include <QPythonHighlighter>
 #include <QSyntaxStyle>
 #include <QWidget>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
 using rw::kinematics::State;
 using rw::models::WorkCell;

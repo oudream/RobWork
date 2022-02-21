@@ -173,7 +173,7 @@ namespace rwsim { namespace control {
          */
         struct CompiledTarget
         {
-            CompiledTarget () : ftcontrol (false), velcontrol (false), fttime (0.01) {}
+            CompiledTarget () : ftcontrol (false), velcontrol (false), fttime (0.01), toId(0) {}
             rw::trajectory::QTrajectory::Ptr qtraj;
             rw::trajectory::Transform3DTrajectory::Ptr t3dtraj;
             rw::math::Wrench6D<> _wrenchTarget;
@@ -243,7 +243,7 @@ namespace rwsim { namespace control {
         // Hybrid/Force torque control
         Eigen::VectorXd _q_error, _q_error_last;
         Eigen::Matrix< double, 6, 1 > _S;
-        rw::kinematics::Frame* _taskFrame;
+        rw::core::Ptr<rw::kinematics::Frame> _taskFrame;
         rw::math::Rotation3D<> _eRoffset;
         rw::math::Transform3D<> _bXd;
         rw::math::Wrench6D<> _bFd;

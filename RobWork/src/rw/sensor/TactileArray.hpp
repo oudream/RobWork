@@ -19,8 +19,8 @@
 #define RW_SENSOR_TACTILEARRAY_HPP
 
 #if !defined(SWIG)
-#include "Sensor.hpp"
-#include "TactileArrayModel.hpp"
+#include <rw/sensor/Sensor.hpp>
+#include <rw/sensor/TactileArrayModel.hpp>
 
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/Vector2D.hpp>

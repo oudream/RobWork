@@ -14,6 +14,7 @@
 *.csettings
 *tmp
 *__pycache__
+.qt_for_python
 
 # /
 /cmake_install.cmake
@@ -1586,6 +1587,9 @@ RobWork/example/java/src/*.log
 # /RobWork/src/rwlibs/swig/ext_i
 RobWork/src/rwlibs/swig/ext_i/os.i
 
+# /RobWork/src/rwlibs/swig/typemaps
+RobWork/src/rwlibs/swig/typemaps/*.i
+
 # /RobWork/src/rwlibs/task/
 /RobWork/src/rwlibs/task/cmake_install.cmake
 /RobWork/src/rwlibs/task/CMakeCache.txt
@@ -2614,6 +2618,8 @@ RobWorkSim/example/python/serialdev-out.txt
 # RobWorkSim/example/tutorials/
 /RobWorkSim/example/tutorials/build
 
+#/RobWorkSim/gtest/testfiles
+/RobWorkSim/gtest/testfiles/SavedFiles
 # /RobWorkSim/src/
 /RobWorkSim/src/cmake_install.cmake
 /RobWorkSim/src/CMakeCache.txt
@@ -3634,4 +3640,5 @@ RobWorkSim/src/rwsimlibs/swig/python/RobWorkSim-*.egg-info
 
 /debian/sdurw-doc1.2/DEBIAN/md5sums
 
+/RobWork*/cmake/targets/*.cmake
 

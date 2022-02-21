@@ -18,7 +18,7 @@
 #ifndef RW_LOADERS_XMLPARSER_HPP
 #define RW_LOADERS_XMLPARSER_HPP
 
-#include "XMLErrorHandler.hpp"
+#include <rw/loaders/rwxml/XMLErrorHandler.hpp>
 
 // Complex must be loaded before phoenix1.hpp
 #include <complex>

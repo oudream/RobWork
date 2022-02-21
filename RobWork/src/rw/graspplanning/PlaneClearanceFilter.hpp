@@ -19,8 +19,8 @@
 #define RW_GRASPPLANNING_PLANECLEARANCEFILTER_HPP_
 
 #if !defined(SWIG)
-#include "ContactValidateFilter.hpp"
-#include "GraspValidateFilter.hpp"
+#include <rw/graspplanning/ContactValidateFilter.hpp>
+#include <rw/graspplanning/GraspValidateFilter.hpp>
 
 #include <rw/math/Transform3D.hpp>
 #endif 

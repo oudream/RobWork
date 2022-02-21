@@ -54,7 +54,7 @@ namespace rwlibs { namespace algorithms {
          * @param state [in] State giving the assembly of the workcell
          * @param dt [in] Time step size
          */
-        NullSpaceProjection (rw::models::Device* device, rw::kinematics::Frame* controlFrame,
+        NullSpaceProjection (rw::models::Device* device, rw::core::Ptr<rw::kinematics::Frame> controlFrame,
                              const rw::kinematics::State& state, double dt);
 
         /**
@@ -145,7 +145,7 @@ namespace rwlibs { namespace algorithms {
                                       const rw::math::Q& dq);
 
         rw::models::Device* _device;
-        rw::kinematics::Frame* _controlFrame;
+        rw::core::Ptr<rw::kinematics::Frame> _controlFrame;
         rw::kinematics::State _state;
         int _dof;
         double _dt;

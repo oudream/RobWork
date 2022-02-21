@@ -27,7 +27,50 @@ set(RobWorkStudio_REQUIRED ${RobWorkStudio_FIND_REQUIRED})
 get_robworkstudio_build_type(${RWSCFG_ROOT} RWS_BUILD_TYPE)
 
 if(NOT TARGET sdurws)
-    include("${RWSCFG_ROOT}/RobWorkStudioTargets.cmake")
+    set(RWS_MODULES_WITH_SWIG
+        sdurws
+    )
+    foreach(
+        RWS_MODULE
+        ${RWS_MODULES_WITH_SWIG}
+        sdurws_jog
+        sdurws_log
+        sdurws_lua
+        sdurws_luaeditor
+        sdurws_luapl
+        sdurws_planning
+        sdurws_playback
+        sdurws_propertyview
+        sdurws_pythoneditor
+        sdurws_robworkstudioapp
+        sdurws_sensors
+        sdurws_treeview
+        sdurws_workcelleditor
+        sdurws_workcelleditorplugin
+        sdurws_atask
+        sdurws_gtask
+    )
+        if(EXISTS "${RWSCFG_ROOT}/targets/${RWS_MODULE}.cmake")
+            include("${RWSCFG_ROOT}/targets/${RWS_MODULE}.cmake")
+        endif()
+    endforeach()
+    foreach(
+        RWS_MODULE
+        ${RWS_MODULES_WITH_SWIG}
+    )
+        if(EXISTS "${RWSCFG_ROOT}/targets/${RWS_MODULE}_py.cmake")
+            include("${RWSCFG_ROOT}/targets/${RWS_MODULE}_py.cmake")
+        endif()
+        if(EXISTS "${RWSCFG_ROOT}/targets/${RWS_MODULE}_lua_s.cmake")
+            include("${RWSCFG_ROOT}/targets/${RWS_MODULE}_lua_s.cmake")
+        endif()
+        if(EXISTS "${RWSCFG_ROOT}/targets/${RWS_MODULE}_lua.cmake")
+            include("${RWSCFG_ROOT}/targets/${RWS_MODULE}_lua.cmake")
+        endif()
+        if(EXISTS "${RWSCFG_ROOT}/targets/${RWS_MODULE}_jni.cmake")
+            include("${RWSCFG_ROOT}/targets/${RWS_MODULE}_jni.cmake")
+        endif()
+    endforeach()
 
     if(EXISTS "${RWSCFG_ROOT}/RobWorkStudioluaTargets.cmake")
         include("${RWSCFG_ROOT}/RobWorkStudioluaTargets.cmake")
@@ -66,14 +109,9 @@ if(EXISTS ${RWSCFG_ROOT}/RobWorkStudioBuildConfig_${RWS_BUILD_TYPE}.cmake)
         find_package(Qt5Core 5.5.1 REQUIRED)
         find_package(Qt5Gui 5.5.1 REQUIRED)
         find_package(Qt5Widgets 5.5.1 REQUIRED)
-        find_package(Qt5OpenGL 5.5.1 REQUIRED)
         get_target_property(QT_UIC_EXECUTABLE Qt5::uic LOCATION)
-        set(QT_LIBRARIES ${Qt5Core_LIBRARIES} ${Qt5Gui_LIBRARIES} ${Qt5Widgets_LIBRARIES}
-                         ${Qt5OpenGL_LIBRARIES}
-        )
-        set(QT_INCLUDES ${Qt5Core_INCLUDE_DIRS} ${Qt5Gui_INCLUDE_DIRS} ${Qt5Widgets_INCLUDE_DIRS}
-                        ${Qt5OpenGL_INCLUDE_DIRS}
-        )
+        set(QT_LIBRARIES ${Qt5Core_LIBRARIES} ${Qt5Gui_LIBRARIES} ${Qt5Widgets_LIBRARIES})
+        set(QT_INCLUDES ${Qt5Core_INCLUDE_DIRS} ${Qt5Gui_INCLUDE_DIRS} ${Qt5Widgets_INCLUDE_DIRS})
     endif()
 
     # Find and setup OpenGL.
@@ -102,8 +140,6 @@ if(EXISTS ${RWSCFG_ROOT}/RobWorkStudioBuildConfig_${RWS_BUILD_TYPE}.cmake)
         if(NOT ${RobWork_FOUND})
             find_package(RobWork REQUIRED HINTS ${RWS_BUILD_WITH_RW_ROOT}/cmake)
         endif()
-    else()
-        message(STATUS "RobWork Already Found")
     endif()
 
     # ##############################################################################################

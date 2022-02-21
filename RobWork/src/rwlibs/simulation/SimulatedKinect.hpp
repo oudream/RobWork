@@ -19,14 +19,14 @@
 #define RWLIBS_SIMULATION_SimulatedKinect_HPP_
 
 //! @file SimulatedKinect.hpp
-
-#include "SimulatedSensor.hpp"
+#if !defined(SWIG)
+#include <rwlibs/simulation/SimulatedSensor.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rw/graphics/SceneViewer.hpp>
 #include <rw/sensor/CameraModel.hpp>
 #include <rw/sensor/Scanner25DModel.hpp>
-
+#endif
 namespace rw { namespace sensor {
     class Scanner25D;
 }}    // namespace rw::sensor
@@ -41,12 +41,15 @@ namespace rwlibs { namespace simulation {
     class SimulatedKinect : public SimulatedSensor
     {
       public:
+
+        typedef rw::core::Ptr<SimulatedKinect> Ptr;
+
         /**
          * @brief constructor
          * @param name [in] name of this simulated scanner
          * @param frame [in] the frame the scanner is attached to.
          */
-        SimulatedKinect (const std::string& name, rw::kinematics::Frame* frame);
+        SimulatedKinect (const std::string& name, rw::core::Ptr<rw::kinematics::Frame> frame);
 
         /**
          * @brief constructor
@@ -55,15 +58,15 @@ namespace rwlibs { namespace simulation {
          * @param frame [in] the frame the scanner is attached to.
          */
         SimulatedKinect (const std::string& name, const std::string& desc,
-                         rw::kinematics::Frame* frame);
+                         rw::core::Ptr<rw::kinematics::Frame> frame);
 
         /**
          * @brief constructor
          * @param camModel [in] the camera model to use
          * @param scannerModel [in] the scanner model to use
          */
-        SimulatedKinect (rw::sensor::CameraModel::Ptr camModel,
-                         rw::sensor::Scanner25DModel::Ptr scannerModel);
+        SimulatedKinect (rw::core::Ptr<rw::sensor::CameraModel> camModel,
+                         rw::core::Ptr<rw::sensor::Scanner25DModel> scannerModel);
 
         //! @brief destructor
         virtual ~SimulatedKinect ();
@@ -74,7 +77,7 @@ namespace rwlibs { namespace simulation {
          * @return true if initialization succeeded, false otherwise (depends on the capabilities of
          * the SceneViewer).
          */
-        bool init (rw::graphics::SceneViewer::Ptr drawer);
+        bool init (rw::core::Ptr<rw::graphics::SceneViewer> drawer);
 
         /**
          * @brief set the framerate in frames per sec.
@@ -115,7 +118,7 @@ namespace rwlibs { namespace simulation {
         const rw::sensor::Image& getImage ();
 
         //! @copydoc SimulatedSensor::update
-        void update (const Simulator::UpdateInfo& info, rw::kinematics::State& state);
+        void update (const rwlibs::simulation::Simulator::UpdateInfo& info, rw::kinematics::State& state);
 
         //! @copydoc SimulatedSensor::reset
         void reset (const rw::kinematics::State& state);
@@ -125,7 +128,7 @@ namespace rwlibs { namespace simulation {
          * simulator
          * @param simulator [in] the simulator in which the handle is active
          */
-        rw::sensor::Sensor::Ptr getSensorHandle (rwlibs::simulation::Simulator::Ptr simulator);
+        rw::core::Ptr<rw::sensor::Sensor> getSensorHandle (rw::core::Ptr<rwlibs::simulation::Simulator> simulator);
 
         /**
          * @brief set to true to enable realistic noise on the scan.
@@ -154,12 +157,12 @@ namespace rwlibs { namespace simulation {
         /**
          * @brief get the model of the camera of this kinect
          */
-        rw::sensor::CameraModel::Ptr getCameraModel () { return _camModel; }
+        rw::core::Ptr<rw::sensor::CameraModel> getCameraModel () { return _camModel; }
 
         /**
          * @brief get the model of the range scannger of this kinect
          */
-        rw::sensor::Scanner25DModel::Ptr getScannerModel () { return _scannerModel; }
+        rw::core::Ptr<rw::sensor::Scanner25DModel> getScannerModel () { return _scannerModel; }
 
       private:
         rw::sensor::CameraModel::Ptr _camModel;

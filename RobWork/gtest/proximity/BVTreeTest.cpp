@@ -85,7 +85,7 @@ TEST(BVTreeFactory, Quadratics) {
                 BinaryTree::NodeIterator itRight = it.right();
                 EXPECT_LT(itLeft.bv().calcVolume(), it.bv().calcVolume());
                 EXPECT_LT(itRight.bv().calcVolume(), it.bv().calcVolume());
-                EXPECT_EQ(0, itLeft.bv().calcVolume());
+                EXPECT_NEAR(0, itLeft.bv().calcVolume(),1e-15);
                 EXPECT_EQ(std::size_t(6), itLeft.primitiveIdx());
                 // RE-INSTATE when qhull works again
                 //EXPECT_EQ(std::size_t(0), itRight.primitiveIdx());

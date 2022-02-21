@@ -21,13 +21,13 @@
 /**
  * @file JacobianIKSolver.hpp
  */
-
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
 #include <rw/invkin/IterativeIK.hpp>
 #include <rw/kinematics/FKRange.hpp>
 
 #include <vector>
-
+#endif
 namespace rw { namespace models {
     class Device;
     class JacobianCalculator;
@@ -38,6 +38,7 @@ namespace rw { namespace invkin {
     /** \addtogroup invkin */
     /*@{*/
 
+#if !defined(SWIGJAVA)
     /**
      * \brief A Jacobian based iterative inverse kinematics algorithm for devices with a single end
      * effector.
@@ -82,7 +83,22 @@ namespace rw { namespace invkin {
      *
      *
      */
-    class JacobianIKSolver : public IterativeIK
+#else
+    /**
+     * \brief A Jacobian based iterative inverse kinematics algorithm for devices with a single end
+     * effector.
+     *
+     * This algorithm does implicitly handle joint limits, however it is possible to force the
+     * solution within joint limits using clamping in each iterative step. If joint clamping is not
+     * enabled then this algorithm might contain joint values that are out of bounds.
+     *
+     * The method uses an Newton-Raphson iterative approach and is based on using the inverse of
+     * the device Jacobian to compute each local solution in each iteration. Several methods for
+     * calculating/approximating the inverse Jacobian are available, where the SVD method currently
+     * is the most stable, see the JacobianSolverType option for additional options.
+     */
+#endif
+    class JacobianIKSolver : public rw::invkin::IterativeIK
     {
       public:
         //! @brief smart pointer type to this class
@@ -99,7 +115,7 @@ namespace rw { namespace invkin {
          * @param state [in] the initial state.
          */
         JacobianIKSolver (rw::core::Ptr< const rw::models::Device > device,
-                          const kinematics::State& state);
+                          const rw::kinematics::State& state);
 
         /**
          * @brief Constructs JacobianIKSolver for device, where the frame \b foi will
@@ -109,13 +125,14 @@ namespace rw { namespace invkin {
          * @param state [in] the initial state.
          */
         JacobianIKSolver (rw::core::Ptr< const rw::models::Device > device,
-                          const rw::kinematics::Frame* foi, const kinematics::State& state);
+                          rw::core::Ptr< const rw::kinematics::Frame > foi,
+                          const kinematics::State& state);
 
         /**
          * @copydoc IterativeIK::solve
          */
-        std::vector< math::Q > solve (const math::Transform3D<>& baseTend,
-                                      const kinematics::State& state) const;
+        std::vector< math::Q > solve (const rw::math::Transform3D<double>& baseTend,
+                                      const rw::kinematics::State& state) const;
 
         /**
          * @brief sets the maximal step length that is allowed on the
@@ -149,7 +166,7 @@ namespace rw { namespace invkin {
          * @return true if error is below max error
          * @note the result will be saved in state
          */
-        bool solveLocal (const math::Transform3D<>& bTed, double maxError, kinematics::State& state,
+        bool solveLocal (const rw::math::Transform3D<double>& bTed, double maxError, rw::kinematics::State& state,
                          int maxIter) const;
 
         /**

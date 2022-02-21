@@ -1,5 +1,5 @@
 sdurw_kinematics module
-============
+=======================
 
 .. automodule:: sdurw_kinematics
     :members:

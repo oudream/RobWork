@@ -73,7 +73,7 @@ DistanceCalculator::DistanceCalculator (WorkCell::Ptr workcell, DistanceStrategy
     initializeDistancePairs ();
 }
 
-DistanceCalculator::DistanceCalculator (Frame* root, WorkCell::Ptr workcell,
+DistanceCalculator::DistanceCalculator (rw::core::Ptr<Frame> root, WorkCell::Ptr workcell,
                                         DistanceStrategy::Ptr strategy, const State& initialState) :
     _root (root),
     _strategy (strategy), _state (initialState)
@@ -111,7 +111,7 @@ void DistanceCalculator::initializeGeometry (rw::core::Ptr< const WorkCell > wc)
     State state                        = wc->getDefaultState ();
     for (Object::Ptr object : objects) {
         for (geometry::Geometry::Ptr geom : object->getGeometry (state)) {
-            Frame* frame = geom->getFrame ();    // this is not const - should it be?
+            rw::core::Ptr<Frame> frame = geom->getFrame ();    // this is not const - should it be?
             RW_ASSERT (frame);
             _strategy->addModel (frame, geom);
             //_frameToModels[*frame] = _npstrategy->getModel(frame);
@@ -149,10 +149,10 @@ void DistanceCalculator::initializeDistancePairs ()
 
     typedef StringPairList::const_iterator EI;
     for (EI p = exclude.cbegin (); p != exclude.cend (); ++p) {
-        Frame* first  = lookupFrame (frameMap, p->first);
-        Frame* second = lookupFrame (frameMap, p->second);
-        exclude_pairs.push_back (FramePair (first, second));
-        exclude_pairs.push_back (FramePair (second, first));
+        rw::core::Ptr<Frame> first  = lookupFrame (frameMap, p->first);
+        rw::core::Ptr<Frame> second = lookupFrame (frameMap, p->second);
+        exclude_pairs.push_back (FramePair (first.get(), second.get()));
+        exclude_pairs.push_back (FramePair (second.get(), first.get()));
     }
 
     // Include in the final list only the pairs that are not present in the
@@ -186,8 +186,8 @@ DistanceCalculator::distance (const State& state,
 
     typedef FramePairList::const_iterator I;
     for (I p = _distancePairs.cbegin (); p != _distancePairs.cend (); ++p) {
-        const Frame* a = p->first;
-        const Frame* b = p->second;
+        const rw::core::Ptr<Frame> a = p->first;
+        const rw::core::Ptr<Frame> b = p->second;
 
         DistanceStrategy::Result* dist;
         if (distance.distance == DBL_MAX || _thresholdStrategy == NULL || result != NULL) {
@@ -234,10 +234,10 @@ DistanceResult DistanceCalculator::distanceOMP (const State& state,
 #endif
     for (i = 0; i < N; i++) {
         // for (I p = _distancePairs.begin(); p != _distancePairs.end(); ++p) {
-        // const Frame* a = p->first;
-        // const Frame* b = p->second;
-        const Frame* a = _distancePairs[i].first;
-        const Frame* b = _distancePairs[i].second;
+        // const rw::core::Ptr<Frame> a = p->first;
+        // const rw::core::Ptr<Frame> b = p->second;
+        const rw::core::Ptr<Frame> a = _distancePairs[i].first;
+        const rw::core::Ptr<Frame> b = _distancePairs[i].second;
 
         DistanceResult* dist;
 #ifdef RW_HAVE_OMP
@@ -275,7 +275,7 @@ DistanceResult DistanceCalculator::distanceOMP (const State& state,
 }
 
 DistanceStrategy::Result
-DistanceCalculator::distance (const State& state, const Frame* frame,
+DistanceCalculator::distance (const State& state, const rw::core::Ptr<Frame> frame,
                               std::vector< DistanceStrategy::Result >* result) const
 {
     ScopedTimer stimer (_timer);
@@ -289,8 +289,8 @@ DistanceCalculator::distance (const State& state, const Frame* frame,
     distance.distance = DBL_MAX;
     typedef FramePairList::const_iterator I;
     for (I p = _distancePairs.cbegin (); p != _distancePairs.cend (); ++p) {
-        const Frame* a = p->first;
-        const Frame* b = p->second;
+        const rw::core::Ptr<Frame> a = p->first;
+        const rw::core::Ptr<Frame> b = p->second;
 
         if (a == frame || b == frame) {
             DistanceStrategy::Result* dist;
@@ -322,7 +322,7 @@ void DistanceCalculator::setDistanceStrategy (DistanceStrategy::Ptr strategy)
     _strategy = strategy;
 }
 
-bool DistanceCalculator::addDistanceModel (const Frame* frame, const rw::geometry::Geometry& faces)
+bool DistanceCalculator::addDistanceModel (const rw::core::Ptr<Frame> frame, const rw::geometry::Geometry& faces)
 {
     bool res = _strategy->addModel (frame, faces);
     if (res)

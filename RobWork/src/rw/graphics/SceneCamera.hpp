@@ -18,11 +18,13 @@
 #ifndef RW_GRAPHICS_SCENECAMERA_HPP_
 #define RW_GRAPHICS_SCENECAMERA_HPP_
 
-#include "SceneNode.hpp"
+#if !defined(SWIG)
+#include <rw/graphics/SceneNode.hpp>
 
 #include <rw/graphics/DrawableNode.hpp>
 #include <rw/math/ProjectionMatrix.hpp>
 #include <rw/sensor/Image.hpp>
+#endif
 
 namespace rw { namespace geometry {
     class PointCloud;
@@ -155,7 +157,7 @@ namespace rw { namespace graphics {
          * @brief get the camera name
          * @return camera name
          */
-        const std::string& getName () { return _name; }
+        std::string getName ();
 
         /**
          * @brief Attach camera to scene node.
@@ -206,8 +208,9 @@ namespace rw { namespace graphics {
         SceneNode::Ptr _subGraph;
         //! @brief Node that the camera is attached to.
         SceneNode::Ptr _attachedTo;
-        //! @brief Name of the camera.
-        std::string _name;
+
+        // @brief Name of the camera.
+        std::string _cameraName;
 
         //! @brief Transform of the camera.
         rw::math::Transform3D<> _t3d;

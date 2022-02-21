@@ -9,7 +9,7 @@
 
 #include <rw/common/TimerUtil.hpp>
 
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #include <boost/thread.hpp>
 #include <boost/thread/mutex.hpp>
 

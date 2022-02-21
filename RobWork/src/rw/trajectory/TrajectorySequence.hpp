@@ -18,8 +18,10 @@
 #ifndef RW_TRAJETORY_TRAJETORYSEQUENCE
 #define RW_TRAJETORY_TRAJETORYSEQUENCE
 
+#if !defined(SWIG)
 #include <rw/core/macros.hpp>
 #include <rw/trajectory/Trajectory.hpp>
+#endif
 
 namespace rw { namespace math {
     class Q;
@@ -43,7 +45,7 @@ namespace rw { namespace trajectory {
      *
      * Access to a value is O(lg n) with n being the number of trajectories combined.
      */
-    template< class T > class TrajectorySequence : public Trajectory< T >
+    template< class T > class TrajectorySequence : public rw::trajectory::Trajectory< T >
     {
       public:
         //! @brief smart pointer type
@@ -54,7 +56,7 @@ namespace rw { namespace trajectory {
          *
          * @param trajectories [in] Trajectories to join.
          */
-        TrajectorySequence (const std::vector< typename Trajectory< T >::Ptr > trajectories) :
+        TrajectorySequence (const std::vector< typename rw::trajectory::Trajectory< T >::Ptr > trajectories) :
             _trajectories (trajectories)
         {
             initialize ();
@@ -66,8 +68,8 @@ namespace rw { namespace trajectory {
          * @param trajectory1 [in] First trajectory
          * @param trajectory2 [in] Second trajectory
          */
-        TrajectorySequence (typename Trajectory< T >::Ptr trajectory1,
-                            typename Trajectory< T >::Ptr trajectory2)
+        TrajectorySequence (typename rw::trajectory::Trajectory< T >::Ptr trajectory1,
+                            typename rw::trajectory::Trajectory< T >::Ptr trajectory2)
         {
             _trajectories.push_back (trajectory1);
             _trajectories.push_back (trajectory2);
@@ -76,7 +78,7 @@ namespace rw { namespace trajectory {
         }
 
         /**
-         * @copydoc Trajectory::x
+         * @copydoc rw::trajectory::Trajectory::x
          */
         virtual T x (double t) const
         {
@@ -87,7 +89,7 @@ namespace rw { namespace trajectory {
         }
 
         /**
-         * @copydoc Trajectory::dx
+         * @copydoc rw::trajectory::Trajectory::dx
          */
         virtual T dx (double t) const
         {
@@ -98,7 +100,7 @@ namespace rw { namespace trajectory {
         }
 
         /**
-         * @copydoc Trajectory::ddx
+         * @copydoc rw::trajectory::Trajectory::ddx
          */
         virtual T ddx (double t) const
         {
@@ -109,7 +111,7 @@ namespace rw { namespace trajectory {
         }
 
         /**
-         * @copydoc Trajectory::duration
+         * @copydoc rw::trajectory::Trajectory::duration
          */
         virtual double duration () const
         {
@@ -120,12 +122,12 @@ namespace rw { namespace trajectory {
         }
 
         /**
-         * @copydoc Trajectory::startTime
+         * @copydoc rw::trajectory::Trajectory::startTime
          */
         virtual double startTime () const { return _trajectories.front ()->startTime (); }
 
       private:
-        std::vector< typename Trajectory< T >::Ptr > _trajectories;
+        std::vector< typename rw::trajectory::Trajectory< T >::Ptr > _trajectories;
 
         std::vector< double > _times;
 
@@ -135,7 +137,7 @@ namespace rw { namespace trajectory {
             if (_trajectories.size () > 0)
                 last = _trajectories.front ()->startTime ();
 
-            for (typename Trajectory< T >::Ptr& traj : _trajectories) {
+            for (typename rw::trajectory::Trajectory< T >::Ptr& traj : _trajectories) {
                 last += traj->duration ();
                 _times.push_back (last);
             }
@@ -162,7 +164,7 @@ namespace rw { namespace trajectory {
         /**
          * @brief Bi-directional iterator for running efficiently through a trajectory
          */
-        template< class U > class TrajectorySequenceIterator : public TrajectoryIterator< U >
+        template< class U > class TrajectorySequenceIterator : public rw::trajectory::TrajectoryIterator< U >
         {
           public:
             /**
@@ -183,12 +185,12 @@ namespace rw { namespace trajectory {
             }
 
             /**
-             * @copydoc TrajectoryIterator::getTime()
+             * @copydoc rw::trajectory::TrajectoryIterator::getTime()
              */
             double getTime () const { return _time; }
 
             /**
-             * @copydoc TrajectoryIterator::dec(double)
+             * @copydoc rw::trajectory::TrajectoryIterator::dec(double)
              */
             virtual void dec (double dt)
             {
@@ -204,7 +206,7 @@ namespace rw { namespace trajectory {
             }
 
             /**
-             * @copydoc TrajectoryIterator::inc(double)
+             * @copydoc rw::trajectory::TrajectoryIterator::inc(double)
              */
             virtual void inc (double dt)
             {
@@ -220,70 +222,70 @@ namespace rw { namespace trajectory {
             }
 
             /**
-             * @copydoc TrajectoryIterator::inc()
+             * @copydoc rw::trajectory::TrajectoryIterator::inc()
              */
             virtual void inc () { inc (_dt); }
 
             /**
-             * @copydoc TrajectoryIterator::operator--()
+             * @copydoc rw::trajectory::TrajectoryIterator::operator--()
              */
             virtual void dec () { dec (_dt); }
 
             /**
-             * @copydoc TrajectoryIterator::isEnd()
+             * @copydoc rw::trajectory::TrajectoryIterator::isEnd()
              */
             bool isEnd () const { return _time >= _trajectory->endTime (); }
 
             /**
-             * @copydoc TrajectoryIterator::isBegin()
+             * @copydoc rw::trajectory::TrajectoryIterator::isBegin()
              */
             bool isBegin () const { return _time <= _trajectory->startTime (); }
 
             /**
-             * @copydoc TrajectoryIterator::operator*()
+             * @copydoc rw::trajectory::TrajectoryIterator::operator*()
              */
             T operator* () const { return x (); }
 
             /**
-             * @copydoc TrajectoryIterator::x()
+             * @copydoc rw::trajectory::TrajectoryIterator::x()
              */
             T x () const
             {
-                const Trajectory< rw::math::Q >::Ptr& traj =
+                const rw::trajectory::Trajectory< rw::math::Q >::Ptr& traj =
                     _trajectory->_trajectories[_currentIndex];
                 return traj->x (_trajectory->time (_time, _currentIndex));
             }
 
             /**
-             * @copydoc TrajectoryIterator::dx()
+             * @copydoc rw::trajectory::TrajectoryIterator::dx()
              */
             T dx () const
             {
-                const Trajectory< rw::math::Q >::Ptr& traj =
+                const rw::trajectory::Trajectory< rw::math::Q >::Ptr& traj =
                     _trajectory->_trajectories[_currentIndex];
                 return traj->dx (_trajectory->time (_time, _currentIndex));
             }
 
             /**
-             * @copydoc TrajectoryIterator::ddx()
+             * @copydoc rw::trajectory::TrajectoryIterator::ddx()
              */
             T ddx () const
             {
-                const Trajectory< rw::math::Q >::Ptr& traj =
+                const rw::trajectory::Trajectory< rw::math::Q >::Ptr& traj =
                     _trajectory->_trajectories[_currentIndex];
                 return traj->ddx (_trajectory->time (_time, _currentIndex));
             }
 
           private:
             typename TrajectorySequence< U >::Ptr _trajectory;
-            std::vector< typename Trajectory< U >::Ptr >& _trajectories;
+            std::vector< typename rw::trajectory::Trajectory< U >::Ptr >& _trajectories;
             size_t _currentIndex;
             double _time;
             double _dt;
         };
 
       public:
-        typename TrajectoryIterator< T >::Ptr getIterator (double dt) const
+        typename rw::trajectory::TrajectoryIterator< T >::Ptr getIterator (double dt) const
         {
             return rw::core::ownedPtr (new TrajectorySequenceIterator< T > (
                 const_cast< TrajectorySequence< T >* > (this), dt));

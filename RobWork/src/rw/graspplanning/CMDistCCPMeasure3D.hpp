@@ -19,7 +19,7 @@
 #define RW_GRASPPLANNING_CMDISTCCPMEASURE_HPP_
 
 #if !defined(SWIG)
-#include "GraspQualityMeasure3D.hpp"
+#include <rw/graspplanning/GraspQualityMeasure3D.hpp>
 
 #include <rw/math/Vector3D.hpp>
 #endif 

@@ -26,7 +26,7 @@
 #include <rwsim/dynamics/KinematicBody.hpp>
 #include <rwsim/dynamics/RigidBody.hpp>
 
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #include <ode/ode.h>
 
 using namespace rw::kinematics;

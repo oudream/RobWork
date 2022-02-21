@@ -188,7 +188,7 @@ bool QuadraticSurface::equals (const Surface& surface, double threshold) const
         if (std::fabs (_u - qsurf->_u) > threshold)
             return false;
         std::vector< bool > omatched (qsurf->_conditions.size (), false);
-        for (const QuadraticSurface::TrimmingRegion treg : _conditions) {
+        for (const QuadraticSurface::TrimmingRegion& treg : _conditions) {
             bool tmatched = false;
             for (std::size_t i = 0; i < qsurf->_conditions.size (); i++) {
                 if (treg->equals (*qsurf->_conditions[i], threshold)) {
@@ -240,7 +240,7 @@ void QuadraticSurface::reuseTrimmingRegions (const ImplicitSurface::Ptr surface)
     if (!qsurf.isNull ()) {
         for (std::size_t i = 0; i < qsurf->_conditions.size (); i++) {
             const QuadraticSurface::TrimmingRegion reg = qsurf->_conditions[i];
-            for (const QuadraticSurface::TrimmingRegion treg : _conditions) {
+            for (const QuadraticSurface::TrimmingRegion& treg : _conditions) {
                 if (reg->equals (*treg, 1e-15)) {
                     qsurf->_conditions[i] = treg;
                     break;
@@ -253,7 +253,7 @@ void QuadraticSurface::reuseTrimmingRegions (const ImplicitSurface::Ptr surface)
         std::vector< ImplicitTorus::TrimmingRegion > regs = tsurf->getTrimmingConditions ();
         for (std::size_t i = 0; i < regs.size (); i++) {
             const ImplicitTorus::TrimmingRegion reg = regs[i];
-            for (const ImplicitTorus::TrimmingRegion treg : _conditions) {
+            for (const ImplicitTorus::TrimmingRegion& treg : _conditions) {
                 if (reg->equals (*treg, 1e-15)) {
                     regs[i] = treg;
                     break;

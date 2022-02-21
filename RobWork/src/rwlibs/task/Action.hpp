@@ -18,7 +18,7 @@
 #ifndef RWLIBS_TASK_ACTION_HPP
 #define RWLIBS_TASK_ACTION_HPP
 
-#include "Entity.hpp"
+#include <rwlibs/task/Entity.hpp>
 
 #include <rw/core/Ptr.hpp>
 

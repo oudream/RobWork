@@ -21,12 +21,12 @@
 /**
    @file QToTPlanner.hpp
 */
-
-#include "PathPlanner.hpp"
+#if !defined(SWIG)
+#include <rw/pathplanning/PathPlanner.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Metric.hpp>
-
+#endif
 namespace rw { namespace pathplanning {
     class QIKSampler;
     class QToQSamplerPlanner;
@@ -41,7 +41,7 @@ namespace rw { namespace pathplanning {
        An approach planner plans a path from a configuration for the device to a
        configuration for the tool.
     */
-    class QToTPlanner : public PathPlanner< rw::math::Q, const rw::math::Transform3D<> >
+    class QToTPlanner : public PathPlanner< rw::math::Q, const rw::math::Transform3D<double> >
     {
       public:
         //! @brief smart pointer type to this class

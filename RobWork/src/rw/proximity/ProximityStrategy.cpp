@@ -19,8 +19,10 @@
 #include <rw/kinematics/Frame.hpp>
 #include <rw/models/Object.hpp>
 #include <rw/models/RigidObject.hpp>
+#include <rw/models/DeformableObject.hpp>
 #include <rw/proximity/rwstrategy/ProximityStrategyRW.hpp>
 
+#include <thread>
 #include <vector>
 
 using namespace rw::proximity;
@@ -30,12 +32,14 @@ using namespace rw::core;
 using namespace rw::models;
 
 ProximityStrategy::ProximityStrategy () : _frameToModel (NULL, 100)
-{}
+{
+    useThreads (-1);
+}
 
 ProximityStrategy::~ProximityStrategy ()
 {}
 
-ProximityModel::Ptr ProximityStrategy::getModel (const rw::kinematics::Frame* frame)
+ProximityModel::Ptr ProximityStrategy::getModel (const rw::core::Ptr<rw::kinematics::Frame> frame)
 {
     ProximityModel::Ptr model = _frameToModel[*frame];
     return model;
@@ -46,7 +50,19 @@ bool ProximityStrategy::addModel (rw::models::Object::Ptr object)
     if (RigidObject::Ptr robj = object.cast< RigidObject > ()) {
         std::vector< Geometry::Ptr > geoms = robj->getGeometry ();
         for (Geometry::Ptr geom : geoms) {
-            Frame* geoframe = geom->getFrame ();
+            rw::core::Ptr<Frame> geoframe = geom->getFrame ();
+            if (!hasModel (geoframe)) {
+                _frameToModel[*geoframe] = createModel ();
+                _frameToModel[*geoframe]->setFrame (geoframe);
+            }
+            ProximityModel::Ptr model = getModel (geoframe);
+            model->addGeometry (geom);
+        }
+        return true;
+    }else if(object.cast< DeformableObject > () == NULL ){
+        std::vector< Geometry::Ptr > geoms = object->getGeometry ();
+        for (Geometry::Ptr geom : geoms) {
+            rw::core::Ptr<Frame> geoframe = geom->getFrame ();
             if (!hasModel (geoframe)) {
                 _frameToModel[*geoframe] = createModel ();
                 _frameToModel[*geoframe]->setFrame (geoframe);
@@ -59,7 +75,7 @@ bool ProximityStrategy::addModel (rw::models::Object::Ptr object)
     return false;
 }
 
-bool ProximityStrategy::addModel (const Frame* frame, const rw::geometry::Geometry& geom)
+bool ProximityStrategy::addModel (const rw::core::Ptr<Frame> frame, const rw::geometry::Geometry& geom)
 {
     ProximityModel::Ptr model = getModel (frame);
     if (model == NULL) {
@@ -73,7 +89,7 @@ bool ProximityStrategy::addModel (const Frame* frame, const rw::geometry::Geomet
     return res;
 }
 
-bool ProximityStrategy::addModel (const Frame* frame, rw::geometry::Geometry::Ptr geom,
+bool ProximityStrategy::addModel (const rw::core::Ptr<Frame> frame, rw::geometry::Geometry::Ptr geom,
                                   bool forceCopy)
 {
     ProximityModel::Ptr model = getModel (frame);
@@ -88,7 +104,7 @@ bool ProximityStrategy::addModel (const Frame* frame, rw::geometry::Geometry::Pt
     return res;
 }
 
-bool ProximityStrategy::hasModel (const rw::kinematics::Frame* frame)
+bool ProximityStrategy::hasModel (const rw::core::Ptr<rw::kinematics::Frame> frame)
 {
     if (!_frameToModel.has (*frame) || _frameToModel[*frame] == NULL) {
         // if (CollisionModelInfo::get(frame).size()>0)
@@ -98,7 +114,7 @@ bool ProximityStrategy::hasModel (const rw::kinematics::Frame* frame)
     return true;
 }
 
-void ProximityStrategy::clearFrame (const rw::kinematics::Frame* frame)
+void ProximityStrategy::clearFrame (const rw::core::Ptr<rw::kinematics::Frame> frame)
 {
     if (!_frameToModel.has (*frame) || _frameToModel[*frame] == NULL)
         return;
@@ -171,4 +187,14 @@ ProximityStrategy::getGeometrys (rw::proximity::ProximityModel* model)
 {
     RW_THROW ("This Is a Virtual Function and needs to be replaced when Inherited");
     return std::vector< rw::core::Ptr< rw::geometry::Geometry > > ();
+}
+
+void ProximityStrategy::useThreads (int threads)
+{
+    if (threads <= 0) {
+        this->_threads = std::thread::hardware_concurrency () - 1;
+    }
+    else {
+        this->_threads = threads;
+    }
 }

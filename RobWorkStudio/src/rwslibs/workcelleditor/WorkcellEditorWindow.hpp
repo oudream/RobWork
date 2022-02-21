@@ -87,7 +87,7 @@ class WorkcellEditorWindow : public QMainWindow
 
     void on_actionClose_triggered (bool);
 
-    void on_actionClose_triggered (int);
+    void on_actionCloseTriggered (int);
 
     void on_actionAdd_Frame_triggered (bool);
 

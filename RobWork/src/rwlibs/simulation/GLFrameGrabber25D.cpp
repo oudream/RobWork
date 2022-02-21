@@ -19,10 +19,9 @@
 
 #include <rw/kinematics/Kinematics.hpp>
 #include <rw/math/Constants.hpp>
-#include <rwlibs/os/rwgl.hpp>
+#include <rwlibs/opengl/rwgl.hpp>
 
 using namespace rw::math;
-using namespace rw::common;
 using namespace rw::graphics;
 using namespace rwlibs::simulation;
 
@@ -94,7 +93,7 @@ void GLFrameGrabber25D::setMinDepth (double depth)
             _fieldOfView, (int) getWidth (), (int) getHeight (), _minDepth, _maxDepth);
 }
 
-void GLFrameGrabber25D::grab (rw::kinematics::Frame* frame, const rw::kinematics::State& state)
+void GLFrameGrabber25D::grab (rw::core::Ptr<rw::kinematics::Frame> frame, const rw::kinematics::State& state)
 {
     if (_view.isNull ())
         RW_THROW ("GLFrameGrabber25D must be initialized before grab is called!");

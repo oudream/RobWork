@@ -1,6 +1,28 @@
 set(SUBSYS_NAME sdurwsim)
 set(SUBSYS_DESC "Simulation libraries")
-set(SUBSYS_DEPS RWS::sdurws RW::sdurw)
+set(SUBSYS_DEPS
+    PRIVATE RW::sdurw_algorithms
+            RW::sdurw_assembly
+            RW::sdurw_opengl
+            RW::sdurw_pathplanners
+            RW::sdurw_proximitystrategies
+            RW::sdurw_graspplanning
+            RW::sdurw_loaders
+    PUBLIC
+            RW::sdurw_simulation
+            RW::sdurw_task
+            RW::sdurw_control
+            RW::sdurw_proximity
+            RW::sdurw_geometry
+            RW::sdurw_models
+            RW::sdurw_trajectory
+            RW::sdurw_graphics
+            RW::sdurw_sensor
+            RW::sdurw_kinematics
+            RW::sdurw_common
+            RW::sdurw_math
+            RW::sdurw_core
+)
 
 set(build TRUE)
 set(DEFAULT TRUE)
@@ -27,7 +49,6 @@ if(build)
         dynamics/Body.cpp
         dynamics/RigidBody.cpp
         dynamics/BeamBody.cpp
-        dynamics/RigidJoint.cpp
         dynamics/KinematicBody.cpp
         dynamics/FixedBody.cpp
         dynamics/DynamicDevice.cpp
@@ -50,6 +71,7 @@ if(build)
         sensor/BodyContactSensor.cpp
         sensor/SimulatedFTSensor.cpp
         loaders/DynamicWorkCellLoader.cpp
+        loaders/DynamicWorkCellSaver.cpp
         loaders/ScapePoseFormat.cpp
         util/MovingAverage.cpp
         util/PointRANSACFitting.cpp
@@ -153,7 +175,6 @@ if(build)
         dynamics/Body.hpp
         dynamics/RigidBody.hpp
         dynamics/BeamBody.hpp
-        dynamics/RigidJoint.hpp
         dynamics/KinematicBody.hpp
         dynamics/FixedBody.hpp
         dynamics/DynamicDevice.hpp
@@ -176,6 +197,7 @@ if(build)
         sensor/BodyContactSensor.hpp
         sensor/SimulatedFTSensor.hpp
         loaders/DynamicWorkCellLoader.hpp
+        loaders/DynamicWorkCellSaver.hpp
         loaders/ScapePoseFormat.hpp
         util/MovingAverage.hpp
         util/PointRANSACFitting.hpp
@@ -288,17 +310,8 @@ if(build)
     )
     target_link_libraries(
         ${SUBSYS_NAME}
-        PUBLIC RW::sdurw_algorithms
-               RW::sdurw_assembly
-               RW::sdurw_opengl
-               RW::sdurw_proximitystrategies
-               RW::sdurw_pathplanners
-               RW::sdurw_simulation
-               RW::sdurw_task
-               RW::sdurw_core
-               RW::sdurw_math
-               RW::sdurw
-               ${OPENGL_LIBRARIES}
+        ${SUBSYS_DEPS}
+        PUBLIC  ${OPENGL_LIBRARIES}
     )
 
     target_include_directories(

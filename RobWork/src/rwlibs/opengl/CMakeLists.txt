@@ -1,6 +1,9 @@
 set(SUBSYS_NAME sdurw_opengl)
 set(SUBSYS_DESC "Opengl visualization for RobWork")
-set(SUBSYS_DEPS sdurw sdurw_core sdurw_sensor sdurw_models)
+set(SUBSYS_DEPS
+    PUBLIC sdurw_common sdurw_core sdurw_math sdurw_graphics sdurw_sensor
+    PRIVATE sdurw_models sdurw_loaders sdurw_kinematics
+)
 
 if(OPENGL_FOUND AND OPENGL_GLU_FOUND)
     set(DEFAULT TRUE)
@@ -66,12 +69,14 @@ if(build)
         RenderForceTorque.hpp
         RenderVelocity.hpp
         RenderText.hpp
+        rwgl.hpp
+        glext_win32.h
     )
 
     rw_add_library(${SUBSYS_NAME} ${SRC_FILES} ${SRC_FILES_HPP})
     rw_add_includes(${SUBSYS_NAME} "rwlibs/opengl" ${SRC_FILES_HPP})
 
-    target_link_libraries(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS} ${OPENGL_LIBRARIES} PRIVATE ${GLUT_glut_LIBRARY})
+    target_link_libraries(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS} PUBLIC ${OPENGL_LIBRARIES} PRIVATE ${GLUT_glut_LIBRARY})
     target_include_directories(${SUBSYS_NAME}
         PUBLIC
         $<BUILD_INTERFACE:${RW_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>

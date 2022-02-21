@@ -26,12 +26,14 @@
 #include <rw/core/Exception.hpp>
 #include <rw/core/StringUtil.hpp>
 #include <rw/core/os.hpp>
+#include <rw/geometry/BSphere.hpp>
 #include <rw/kinematics/StateStructure.hpp>
 #include <rw/loaders/WorkCellLoader.hpp>
 #include <rw/loaders/dom/DOMPropertyMapLoader.hpp>
 #include <rw/loaders/dom/DOMPropertyMapSaver.hpp>
 #include <rw/loaders/dom/DOMWorkCellSaver.hpp>
 #include <rw/loaders/rwxml/XMLRWLoader.hpp>
+#include <rw/models/Object.hpp>
 #include <rw/models/WorkCell.hpp>
 #include <rw/proximity/CollisionDetector.hpp>
 #include <rw/proximity/CollisionSetup.hpp>
@@ -42,6 +44,7 @@
 #include <QCloseEvent>
 #include <QFileDialog>
 #include <QIcon>
+#include <QInputDialog>
 #include <QMenu>
 #include <QMenuBar>
 #include <QMessageBox>
@@ -52,13 +55,14 @@
 #include <QStringList>
 #include <QToolBar>
 #include <QUrl>
+
 #ifdef RWS_USE_PYTHON
 #include <rws/pythonpluginloader/PyPlugin.hpp>
 #endif    // RWS_USE_PYTHON
 #include <RobWorkConfig.hpp>
 #include <rws/propertyview/PropertyViewEditor.hpp>
 
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #include <boost/filesystem.hpp>
 #include <sstream>
 
@@ -198,6 +202,14 @@ void RobWorkStudio::closeEvent (QCloseEvent* e)
     _settingsMap->set< int > ("WindowWidth", this->width ());
     _settingsMap->set< int > ("WindowHeight", this->height ());
 
+    closeAllPlugins ();
+
+    // close all plugins
+    typedef std::vector< RobWorkStudioPlugin* >::iterator I;
+    for (I it = _plugins.begin (); it != _plugins.end (); ++it) {
+        (*it)->QWidget::close ();
+    }
+
     if (!_propMap.get< PropertyMap > ("cmdline").has ("NoSave")) {
         _propMap.set ("cmdline", PropertyMap ());
         _propMap.erase ("LuaState");
@@ -214,15 +226,8 @@ void RobWorkStudio::closeEvent (QCloseEvent* e)
     _propMap = PropertyMap ();
     _propEditor->close ();
 
-    closeAllPlugins ();
     _view->clear ();
     _view->close ();
-
-    // close all plugins
-    typedef std::vector< RobWorkStudioPlugin* >::iterator I;
-    for (I it = _plugins.begin (); it != _plugins.end (); ++it) {
-        (*it)->QWidget::close ();
-    }
 
     // now call accept
     e->accept ();
@@ -295,7 +300,7 @@ void RobWorkStudio::setupFileActions ()
 
     QAction* closeAction =
         new QAction (QIcon (":/images/close.png"), tr ("&Close"), this);    // owned
-    connect (closeAction, SIGNAL (triggered ()), this, SLOT (closeWorkCell ()));
+    connect (closeAction, SIGNAL (triggered ()), this, SLOT (onCloseWorkCell ()));
 
     QAction* saveAction = new QAction (QIcon (":/images/save.png"), tr ("&Save"), this);    // owned
     connect (saveAction, SIGNAL (triggered ()), this, SLOT (saveWorkCell ()));
@@ -383,16 +388,35 @@ void RobWorkStudio::showPropertyEditor ()
     _propEditor->resize (400, 600);
 }
 
-void RobWorkStudio::setupPluginsMenu ()
+void RobWorkStudio::setupPluginsMenu (bool create)
 {
     QAction* loadPluginAction = new QAction (QIcon (""), tr ("Load plugin"), this);
     connect (loadPluginAction, SIGNAL (triggered ()), this, SLOT (loadPlugin ()));
 
-    _pluginsMenu = menuBar ()->addMenu (tr ("&Plugins"));
+    QAction* removePluginAction = new QAction (QIcon (""), tr ("Unload plugin"), this);
+    connect (removePluginAction, SIGNAL (triggered ()), this, SLOT (unloadPlugin ()));
+
+    if (_pluginsMenu == nullptr) {
+        create = true;
+    }
+
+    if (create) {
+        _pluginsMenu = menuBar ()->addMenu (tr ("&Plugins"));
+    }
+    else {
+        _pluginsMenu->clear ();
+    }
     _pluginsMenu->addAction (loadPluginAction);
+    _pluginsMenu->addAction (removePluginAction);
     _pluginsMenu->addSeparator ();
-    _pluginsToolBar = addToolBar (tr ("Plugins"));
-    _pluginsToolBar->setObjectName ("PluginsBar");
+
+    if (create) {
+        _pluginsToolBar = addToolBar (tr ("Plugins"));
+        _pluginsToolBar->setObjectName ("PluginsBar");
+    }
+    else {
+        _pluginsToolBar->clear ();
+    }
 }
 
 void RobWorkStudio::loadPlugin (std::string pluginFile, bool visible, int dock)
@@ -425,6 +449,51 @@ void RobWorkStudio::loadPlugin ()
 
         setupPlugin (pathname, filename, 0, 1);
     }
+}
+
+void RobWorkStudio::unloadPlugin ()
+{
+    QStringList list;
+    for (RobWorkStudioPlugin* pl : _plugins) {
+        list.append (pl->name ());
+    }
+
+    bool ok;
+    QString text = QInputDialog::getItem (
+        this, tr ("Unload plugin"), tr ("Which Plugin should be removed"), list, 0, false, &ok);
+
+    if (ok) {
+        std::cout << "OK: " << text.toStdString () << std::endl;
+        for (RobWorkStudioPlugin* pl : _plugins) {
+            if (pl->name () == text) {
+                bool test = unloadPlugin (pl);
+                std::cout << "test: " << test << std::endl;
+                break;
+            }
+        }
+    }
+}
+
+bool RobWorkStudio::unloadPlugin (RobWorkStudioPlugin* pl)
+{
+    removeDockWidget (pl);
+    setupPluginsMenu (false);
+    int remove = -1;
+    for (size_t i = 0; i < _plugins.size (); i++) {
+        if (_plugins[i] == pl) {
+            remove = i;
+        }
+        else {
+            _plugins[i]->setupMenu (_pluginsMenu);
+            _plugins[i]->setupToolBar (_pluginsToolBar);
+        }
+    }
+    if (remove < 0) {
+        return false;
+    }
+    _plugins.erase (_plugins.begin () + remove);
+    _plugins_loaded[_plugin2fileName[pl->name ().toStdString ()]] = false;
+    return true;
 }
 
 void RobWorkStudio::setupHelpMenu ()
@@ -510,8 +579,7 @@ void RobWorkStudio::openPlugin (RobWorkStudioPlugin& plugin)
 #if !defined(RW_MACOS)
         QMessageBox::information (NULL, buf.str ().c_str (), "Unknown error", QMessageBox::Ok);
 #else
-        this->log ().info () << buf.str () << std::endl
-                             << " With message: "  << std::endl;
+        this->log ().info () << buf.str () << std::endl << " With message: " << std::endl;
 #endif
     }
 }
@@ -648,14 +716,13 @@ void RobWorkStudio::setupPlugin (const QString& fullname, bool visible, int dock
 
         QObject* pluginObject = loader.instance ();
         if (pluginObject != NULL) {
-
             RobWorkStudioPlugin* testP = dynamic_cast< RobWorkStudioPlugin* > (pluginObject);
             if (testP == NULL) {
                 RW_THROW ("Loaded plugin is NULL, tried loading \"" << fullname.toStdString ()
                                                                     << "\"");
             }
             RobWorkStudioPlugin* plugin = qobject_cast< RobWorkStudioPlugin* > (pluginObject);
-
+            _plugin2fileName[plugin->name ().toStdString ()] = base;
             if (plugin) {
                 addPlugin (plugin, visible, dockarea);
             }
@@ -903,8 +970,6 @@ void RobWorkStudio::openFile (const std::string& file)
     catch (const rw::core::Exception& exp) {
         QMessageBox::information (
             NULL, "Exception", exp.getMessage ().getText ().c_str (), QMessageBox::Ok);
-
-        // closeWorkCell();
     }
     // std::cout << "Update handler!" << std::endl;
     updateHandler ();
@@ -991,22 +1056,30 @@ void RobWorkStudio::openWorkCellFile (const QString& filename)
 void RobWorkStudio::setWorkcell (rw::models::WorkCell::Ptr workcell)
 {
     // Always close the workcell.
-    if (_workcell && _workcell != _workcell)
+    if (_workcell && workcell != _workcell) {
         closeWorkCell ();
+    }
 
     // Open a new workcell if there is one.<
-    if (workcell) {
-        std::cout << "Number of devices in workcell in RobWorkStudio::setWorkCell:"
-                  << workcell->getDevices ().size () << std::endl;
+    if (workcell && workcell != _workcell) {
         // don't set any variables before we know they are good
         CollisionDetector::Ptr detector = makeCollisionDetector (workcell);
-
-        _workcell = workcell;
-        _state    = _workcell->getDefaultState ();
-        _detector = detector;
+        _workcell                       = workcell;
+        _state                          = _workcell->getDefaultState ();
+        _detector                       = detector;
         _view->setWorkCell (_workcell);
         _view->setState (_state);
         openAllPlugins ();
+
+        double scale = this->calculateWorkCellSize ().diagonal ().norm2 ();
+        // set maximum zoom scale at 2m and minimum at 20cm
+        scale = std::min (std::min (0.1, scale / 2.0), 1.0);
+        if (_propMap.has ("ZoomScale")) {
+            _propMap.set ("ZoomScale", scale);
+        }
+        else {
+            _propMap.add ("ZoomScale","value [0-1] scaling the zoom factor of the cameracontroller", scale);
+        }
     }
 }
 
@@ -1017,6 +1090,9 @@ rw::models::WorkCell::Ptr RobWorkStudio::getWorkcell ()
 
 void RobWorkStudio::closeWorkCell ()
 {
+    _workcell = nullptr;
+    _detector = nullptr;
+    _state    = State ();
     // Clear everything from the view
     _view->clear ();
 
@@ -1124,10 +1200,8 @@ class RobWorkStudioEventHS
         int cnt = 0;
         while (_hs != NULL && *_hs == false && cnt < 100) {
             TimerUtil::sleepMs (5);
-            // std::cout << "Wait1: " << *_hs << std::endl;
             cnt++;
         }
-        // std::cout << "Wait done: " << std::endl;
     }
 
     rw::core::Ptr< bool > _hs;
@@ -1293,7 +1367,7 @@ bool RobWorkStudio::event (QEvent* event)
         return true;
     }
     else if (event->type () == RobWorkStudioEvent::CloseWorkCell) {
-        closeWorkCell ();
+        onCloseWorkCell ();
         rwse->done ();
         return true;
     }
@@ -1311,7 +1385,7 @@ bool RobWorkStudio::event (QEvent* event)
         return true;
     }
     else if (event->type () == RobWorkStudioEvent::ExitEvent) {
-        closeWorkCell ();
+        onCloseWorkCell ();
         rwse->done ();
         close ();
         return true;
@@ -1375,4 +1449,45 @@ boost::any RobWorkStudio::waitForAnyEvent (const std::string& id, double timeout
     if (reachedTimeout)
         RW_THROW ("Timeout!");
     return listener._data;
+}
+
+rw::geometry::AABB< double > RobWorkStudio::calculateWorkCellSize ()
+{
+    std::vector< rw::geometry::BSphere< double > > spheres;
+    std::vector< Object::Ptr > objects = this->_workcell->getObjects ();
+    State& state                       = this->_state;
+    for (Object::Ptr object : objects) {
+        for (rw::geometry::Geometry::Ptr geom : object->getGeometry (state)) {
+            rw::core::Ptr< Frame > frame = geom->getFrame ();
+            RW_ASSERT (frame);
+            spheres.push_back (
+                rw::geometry::BSphere< double >::fitEigen (geom->getGeometryData ()));
+            spheres.back ().setPosition (spheres.back ().getPosition () + frame->wTf (state).P ());
+        }
+    }
+
+    std::vector< Vector3D< double > > points;
+    for (rw::geometry::BSphere< double >& s : spheres) {
+        double r = s.getRadius ();
+        points.push_back (s.getPosition () + Vector3D< double > (r, 0, 0));
+        points.push_back (s.getPosition () + Vector3D< double > (-r, 0, 0));
+        points.push_back (s.getPosition () + Vector3D< double > (0, r, 0));
+        points.push_back (s.getPosition () + Vector3D< double > (0, -r, 0));
+        points.push_back (s.getPosition () + Vector3D< double > (0, 0, r));
+        points.push_back (s.getPosition () + Vector3D< double > (0, 0, -r));
+    }
+
+    Vector3D< double > axis_max (-99999, -99999, -999999);
+    Vector3D< double > axis_min (99999, 999999, 999999);
+    for (Vector3D< double >& p : points) {
+        for (size_t i = 0; i < p.size (); i++) {
+            if (p[i] > axis_max[i]) {
+                axis_max[i] = p[i];
+            }
+            if (p[i] < axis_min[i]) {
+                axis_min[i] = p[i];
+            }
+        }
+    }
+    return rw::geometry::AABB< double > (axis_min, axis_max);
 }

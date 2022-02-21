@@ -24,7 +24,7 @@
  * \copydoc rw::math::PolynomialSolver
  */
 #if !defined(SWIG)
-#include "Polynomial.hpp"
+#include <rw/math/Polynomial.hpp>
 
 #include <complex>
 #include <vector>

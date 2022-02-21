@@ -18,7 +18,7 @@
 #include "RenderLines.hpp"
 
 #include <rw/geometry/Line.hpp>
-#include <rwlibs/os/rwgl.hpp>
+#include <rwlibs/opengl/rwgl.hpp>
 
 using namespace rw::math;
 using namespace rwlibs::opengl;

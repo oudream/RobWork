@@ -19,7 +19,7 @@
 #define RW_GRASPPLANNING_GRASPTABLE_HPP_
 
 #if !defined(SWIG)
-#include "Grasp3D.hpp"
+#include <rw/graspplanning/Grasp3D.hpp>
 
 #include <rw/core/PropertyMap.hpp>
 #include <rw/math/Pose6D.hpp>

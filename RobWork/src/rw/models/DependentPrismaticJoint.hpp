@@ -22,8 +22,8 @@
  * @file DependentPrismaticJoint.hpp
  */
 #if !defined(SWIG)
-#include "DependentJoint.hpp"
-#include "PrismaticJoint.hpp"
+#include <rw/models/DependentJoint.hpp>
+#include <rw/models/PrismaticJoint.hpp>
 #endif 
 namespace rw { namespace kinematics {
     class State;

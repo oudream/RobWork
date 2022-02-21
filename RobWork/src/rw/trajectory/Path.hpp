@@ -21,8 +21,8 @@
 /**
    @file Path.hpp
 */
-
-#include "Timed.hpp"
+#if !defined(SWIG)
+#include <rw/trajectory/Timed.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rw/kinematics/State.hpp>
@@ -42,7 +42,7 @@
 #include <boost/serialization/serialization.hpp>
 #include <boost/serialization/vector.hpp>
 #endif
-
+#endif
 namespace rw { namespace trajectory {
 
     template< class T > class Path : public std::vector< T >
@@ -69,7 +69,7 @@ namespace rw { namespace trajectory {
          * @param value [in] Values with which to initialize elements.
          */
         Path (size_t cnt, const T& value) : std::vector< T > (cnt, value) {}
-
+#if !defined(SWIG)
         /**
          * @brief Constructs Path and copies elements from \b start to \b end into the path
          * @param start [in] Start of iterator to input data
@@ -78,6 +78,7 @@ namespace rw { namespace trajectory {
         template< typename input_iterator >
         Path (input_iterator start, input_iterator end) : std::vector< T > (start, end)
         {}
+#endif
 
         /**
          * @brief Construct Path and copies elements from \b v
@@ -89,10 +90,12 @@ namespace rw { namespace trajectory {
          * @brief Construct Path and copies elements from \b v
          * @param v [in] vector to copy data from
          */
-        Path<T>& operator= (const std::vector<T>& rhs) {
-          return (*this) = Path<T>(rhs);
-        }
+        Path< T >& operator= (const std::vector< T >& rhs) { return (*this) = Path< T > (rhs); }
 
+#if defined(SWIG)
+        SWIG_PATH_FUNCTIONS ();
+#endif
+#if !defined(SWIG)
 #if !defined(__GNUC__) || BOOST_VERSION >= 106400 || __GNUC__ >= 7 ||                   \
     (__GNUC__ == 6 && __GNUC_MINOR__ >= 1) || (__GNUC__ == 5 && __GNUC_MINOR__ >= 4) || \
     (__GNUC__ == 4 && __GNUC_MINOR__ >= 9 && __GNUC_PATCHLEVEL__ >= 4)
@@ -103,6 +106,7 @@ namespace rw { namespace trajectory {
         {
             ar& boost::serialization::base_object< std::vector< T > > (*this);
         }
+#endif
 #endif
     };
 

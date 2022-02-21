@@ -137,7 +137,7 @@ std::vector< Grasp3D > DiceContactG3D::generateContactSet (int maxNrOfContacts, 
             grasps.push_back (tmpGrasp);
         }
     }
-    std::cout << "NrofTries: " << nrOfTries << std::endl;
+    // std::cout << "NrofTries: " << nrOfTries << std::endl;
     return grasps;
 }
 

@@ -20,7 +20,7 @@
 
 //! @file LoaderAC3D.hpp
 
-#include "../Model3DLoader.hpp"
+#include <rw/loaders/Model3DLoader.hpp>
 
 #include <rw/math/Rotation3D.hpp>
 #include <rw/math/Vector3D.hpp>
@@ -57,6 +57,9 @@ namespace rw { namespace loaders {
         rw::graphics::Model3D::Ptr load (const std::string& filename);
 
         // void save(Model3DPtr model, const std::string& filename);
+
+        //! @copydoc Model3DLoader::getModelFormats
+        std::vector< std::string > getModelFormats () {return {".AC",".AC3D"};}
 
       private:
         void initialize (std::istream& in, float alpha);

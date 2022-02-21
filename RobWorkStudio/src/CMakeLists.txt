@@ -7,7 +7,7 @@ add_subdirectory(rws)
 add_subdirectory(rwslibs)
 
 if(POLICY CMP0077) # Introduce cmake 3.13
-    cmake_policy(SET CMP0077 OLD)
+    cmake_policy(SET CMP0077 NEW)
 endif()
 
 # Propagate libraries to parent directory

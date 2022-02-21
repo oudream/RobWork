@@ -22,10 +22,10 @@
  * @file VelocityScrew6D.hpp
  */
 #if !defined(SWIG)
-#include "EAA.hpp"
-#include "Math.hpp"
-#include "Transform3D.hpp"
-#include "Vector3D.hpp"
+#include <rw/math/EAA.hpp>
+#include <rw/math/Math.hpp>
+#include <rw/math/Transform3D.hpp>
+#include <rw/math/Vector3D.hpp>
 
 #include <rw/common/Serializable.hpp>
 
@@ -115,8 +115,8 @@ namespace rw { namespace math {
          */
         VelocityScrew6D (const VelocityScrew6D& vs)
         {
-            for(size_t i = 0; i < vs.size(); i++){
-                this->_screw[i]=vs[i];
+            for (size_t i = 0; i < vs.size (); i++) {
+                this->_screw[i] = vs[i];
             }
         }
 
@@ -157,8 +157,7 @@ namespace rw { namespace math {
         /**
          * @brief get the size of the underlying vector
          */
-        size_t size() const {return 6;}
-
+        size_t size () const { return 6; }
 
 #if !defined(SWIG)
         /**
@@ -640,7 +639,14 @@ namespace rw { namespace math {
     extern template class rw::math::VelocityScrew6D< double >;
     extern template class rw::math::VelocityScrew6D< float >;
 #else
+
+#if SWIG_VERSION < 0x040000
     SWIG_DECLARE_TEMPLATE (VelocityScrew6Dd, rw::math::VelocityScrew6D< double >);
+    ADD_DEFINITION (VelocityScrew6Dd, VelocityScrew6D, sdurw_math);
+#else
+    SWIG_DECLARE_TEMPLATE (VelocityScrew6D, rw::math::VelocityScrew6D< double >);
+#endif
+
     SWIG_DECLARE_TEMPLATE (VelocityScrew6Df, rw::math::VelocityScrew6D< float >);
 #endif
     using VelocityScrew6Dd = VelocityScrew6D< double >;

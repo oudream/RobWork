@@ -53,7 +53,7 @@ namespace rwlibs { namespace algorithms {
          * which the joints should move
          * @param dt [in] Step size
          */
-        BasicGPM (rw::models::Device* device, rw::kinematics::Frame* controlFrame,
+        BasicGPM (rw::models::Device* device, rw::core::Ptr<rw::kinematics::Frame> controlFrame,
                   const rw::kinematics::State& state, const rw::math::Q& qhome, double dt);
 
         /**
@@ -151,7 +151,7 @@ namespace rwlibs { namespace algorithms {
 
       private:
         rw::models::Device* _device;
-        rw::kinematics::Frame* _controlFrame;
+        rw::core::Ptr<rw::kinematics::Frame> _controlFrame;
         rw::kinematics::State _state;
         rw::math::Q _qhome;
         int _dof;

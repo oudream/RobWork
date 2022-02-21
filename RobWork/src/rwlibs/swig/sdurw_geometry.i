@@ -5,8 +5,11 @@
 %include <rwlibs/swig/swig_macros.i>
 %include <rwlibs/swig/ext_i/os.i>
 
-%import <rwlibs/swig/ext_i/std.i>
+#if defined(SWIGPYTHON) && defined(RW_USE_NUMPY)
+%include <rwlibs/swig/ext_i/eigen.i>
+#endif 
 
+%import <rwlibs/swig/ext_i/std.i>
 %import <rwlibs/swig/sdurw_core.i>
 %import <rwlibs/swig/sdurw_common.i>
 %import <rwlibs/swig/sdurw_math.i>
@@ -312,6 +315,11 @@ NAMED_OWNEDPTR(IndexedTriangleN3_32,rw::geometry::IndexedTriangleN3<uint32_t>);
 NAMED_OWNEDPTR(Line,rw::geometry::Line);
 NAMED_OWNEDPTR(MetricLine,rw::math::Metric<rw::geometry::Line>);
 %template(VectorLine) std::vector<rw::geometry::Line>;
+
+%{
+	#include <rw/geometry/Object3D.hpp>
+%}
+%include <rw/geometry/Object3D.hpp>
 
 %{
 	#include <rw/geometry/Model3D.hpp>

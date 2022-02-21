@@ -19,8 +19,8 @@
 #define RW_MODELS_MOBILEDEVICE_HPP
 
 #if !defined(SWIG)
-#include "Device.hpp"
-#include "JointDevice.hpp"
+#include <rw/models/Device.hpp>
+#include <rw/models/JointDevice.hpp>
 
 #include <rw/math/Q.hpp>
 #endif
@@ -152,7 +152,7 @@ namespace rw { namespace models {
            @copydoc Device::baseJframe
            Not implemented.
         */
-        virtual rw::math::Jacobian baseJframe (const rw::kinematics::Frame* frame,
+        virtual rw::math::Jacobian baseJframe (const rw::core::Ptr<rw::kinematics::Frame> frame,
                                                const rw::kinematics::State& state) const;
 
         /**

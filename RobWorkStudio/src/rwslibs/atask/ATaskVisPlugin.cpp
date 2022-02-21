@@ -17,7 +17,7 @@
 #include <rws/propertyview/PropertyViewEditor.hpp>
 
 #include <QFileDialog>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
 using namespace rw::core;
 using namespace rw::math;
@@ -152,14 +152,14 @@ void ATaskVisPlugin::genericAnyEventListener (const std::string& event, boost::a
             _contactLabel->setText (QString::fromStdString (sstr.str ()));
             if (_contactPointRender != NULL) {
                 _contactPointRender->clear ();
-                for (const Transform3D<> contact : astate.contacts) {
+                for (const Transform3D<>& contact : astate.contacts) {
                     const Vector3D<> p = contact.P ();
                     _contactPointRender->addPoint (p);
                 }
             }
             if (_contactNormalRender != NULL) {
                 _contactNormalRender->clear ();
-                for (const Transform3D<> contact : astate.contacts) {
+                for (const Transform3D<>& contact : astate.contacts) {
                     const Vector3D<> p = contact.P ();
                     const Vector3D<> n = contact.R ().getCol (2);
                     _contactNormalRender->addLine (p, p + 0.01 * n);

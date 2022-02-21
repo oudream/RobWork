@@ -22,7 +22,7 @@
  * @file LinearInterpolator.hpp
  */
 #if !defined(SWIG)
-#include "Interpolator.hpp"
+#include <rw/trajectory/Interpolator.hpp>
 
 #include <rw/core/macros.hpp>
 #include <rw/math/Math.hpp>
@@ -48,7 +48,7 @@ namespace rw { namespace trajectory {
      *
      * For use with a rw::math::Transform3D see the template specialization
      */
-    template< class T > class LinearInterpolator : public Interpolator< T >
+    template< class T > class LinearInterpolator : public rw::trajectory::Interpolator< T >
     {
       public:
         //! @brief smart pointer type to instance of class

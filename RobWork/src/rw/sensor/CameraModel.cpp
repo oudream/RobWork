@@ -21,7 +21,7 @@ using namespace rw::sensor;
 using namespace rw::kinematics;
 
 CameraModel::CameraModel (const rw::math::ProjectionMatrix& projection, const std::string& name,
-                          rw::kinematics::Frame* frame, const std::string& modelInfo) :
+                          rw::core::Ptr<rw::kinematics::Frame> frame, const std::string& modelInfo) :
     SensorModel (name, frame, modelInfo),
     _pmatrix (projection),
     _sdata (1, rw::core::ownedPtr (new CameraModelCache ()).cast< StateCache > ())

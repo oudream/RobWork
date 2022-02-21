@@ -32,10 +32,30 @@
     import org.robwork.sdurw_math.*;
 %}
 
+/*************************************
+ *  CODE for Handeling Ptr<Ptr<Type>>
+ *************************************/
+%{
+namespace rw{ namespace core{
+    template <class T, class R>
+    T ownedPtr(R frame){
+        return frame;
+    }
+}}
+%}
+namespace rw{ namespace core {
+    template <class T, class R>
+    T ownedPtr(R frame);
+}}
 
+/*************************************
+ *  START of SWIG
+ *************************************/
+%include <rwlibs/swig/typemaps/statedatacptr.i>
+%include <rwlibs/swig/typemaps/statedataptr.i>
 
-%ignore rw::kinematics::StateData::getData;
-%ignore rw::kinematics::StateData::setData;
+%warnfilter(508) rw::core::Ptr<rw::kinematics::StateData>::operator==;
+%warnfilter(508) rw::kinematics::StateData::operator==;
 %ignore rw::kinematics::StateData::getCache() const;
 %ignore rw::kinematics::StateData::getCache(rw::kinematics::State &);
 %{
@@ -88,27 +108,28 @@ NAMED_OWNEDPTR(StateData, rw::kinematics::StateData);
 
 
 %ignore rw::kinematics::Frame::getPropertyMap() const;
-
 %ignore rw::kinematics::Frame::getDafParent(rw::kinematics::State const &) const;
-
 %ignore rw::kinematics::Frame::getDafChildren(rw::kinematics::State const &) const;
-#if defined(SWIGJAVA)
-%ignore rw::kinematics::Frame::getChildren();
-%ignore rw::kinematics::Frame::getParent();
 %ignore rw::kinematics::Frame::getParent(rw::kinematics::State const &) const;
 %ignore rw::kinematics::Frame::getChildren(rw::kinematics::State const &) const;
-#else 
 %ignore rw::kinematics::Frame::getChildren() const;
 %ignore rw::kinematics::Frame::getParent() const;
 
-#endif 
+%include <rwlibs/swig/typemaps/framecptr.i>
+%include <rwlibs/swig/typemaps/frameptr.i>
+%include <rwlibs/swig/typemaps/frame_pointer.i>
+
+%warnfilter(508) rw::core::Ptr<rw::kinematics::Frame>::operator==;
+%warnfilter(508) rw::kinematics::Frame::operator==;
+#pragma SWIG nowarn=508
+
 %{
     #include <rw/kinematics/Frame.hpp>
 %}
 %include <rw/kinematics/Frame.hpp>
-
 NAMED_OWNEDPTR(Frame, rw::kinematics::Frame);
 
+%template (ownedPtr) rw::core::ownedPtr<rw::core::Ptr<rw::kinematics::Frame>,rw::core::Ptr<rw::kinematics::Frame>>;
 %template (FrameVector) std::vector<rw::kinematics::Frame*>;
 %template (FramePair) std::pair< rw::kinematics::Frame *, rw::kinematics::Frame * >;
 %template (FramePairVector) std::vector< std::pair< rw::kinematics::Frame *, rw::kinematics::Frame * > >;
@@ -120,7 +141,47 @@ NAMED_OWNEDPTR(Frame, rw::kinematics::Frame);
 %}
 %include <rw/kinematics/FixedFrame.hpp>
 %template(VectorFixedFrame) std::vector<rw::kinematics::FixedFrame*>;
+%template (ownedPtr) rw::core::ownedPtr<rw::core::Ptr<rw::kinematics::FixedFrame>,rw::core::Ptr<rw::kinematics::FixedFrame>>;
 NAMED_OWNEDPTR(FixedFrame, rw::kinematics::FixedFrame);
+
+#if defined(SWIGPYTHON)
+%pythoncode {
+FixedFrameClass = FixedFrame
+class FixedFrame(FixedFrameClass):
+    def __new__(clc,name,transform):
+        return ownedPtr(FixedFrameClass(name,transform))
+}
+#endif
+
+%extend rw::core::Ptr<rw::kinematics::FixedFrame> {
+    bool operator == (rw::kinematics::Frame* rhs){
+        return $self->get() == rhs;
+    }
+}
+
+
+%{
+    #include <rw/kinematics/MovableFrame.hpp>
+%}
+%include <rw/kinematics/MovableFrame.hpp>
+%template (MovableFrameVector) std::vector<rw::kinematics::MovableFrame *> ;
+%template (ownedPtr) rw::core::ownedPtr<rw::core::Ptr<rw::kinematics::MovableFrame>,rw::core::Ptr<rw::kinematics::MovableFrame>>;
+NAMED_OWNEDPTR(MovableFrame, rw::kinematics::MovableFrame);
+
+#if defined(SWIGPYTHON)
+%pythoncode {
+movableFrameClass = MovableFrame
+class MovableFrame(movableFrameClass):
+    def __new__(clc,name):
+        return ownedPtr(movableFrameClass(name))
+}
+#endif
+
+%extend rw::core::Ptr<rw::kinematics::MovableFrame> {
+    bool operator == (rw::kinematics::Frame* rhs){
+        return $self->get() == rhs;
+    }
+}
 
 %{
     #include <rw/kinematics/FKRange.hpp>
@@ -160,12 +221,6 @@ NAMED_OWNEDPTR(FrameType,rw::kinematics::FrameType);
 %include <rw/kinematics/Kinematics.hpp>
 NAMED_OWNEDPTR(Kinematics,rw::kinematics::Kinematics);
 
-%{
-    #include <rw/kinematics/MovableFrame.hpp>
-%}
-%include <rw/kinematics/MovableFrame.hpp>
-%template (MovableFrameVector) std::vector<rw::kinematics::MovableFrame *> ;
-NAMED_OWNEDPTR(MovableFrame, rw::kinematics::MovableFrame);
 
 %ignore rw::kinematics::QState::getQ;
 %ignore rw::kinematics::QState::setQ;
@@ -250,6 +305,7 @@ NAMED_OWNEDPTR(StateCache, rw::kinematics::StateCache);
 NAMED_OWNEDPTR(StateSetup, rw::kinematics::StateSetup);
 
 %ignore rw::kinematics::StateStructure::getRoot() const;
+%ignore rw::kinematics::StateStructure::addData(rw::kinematics::StateData*);
 %{
     #include <rw/kinematics/StateStructure.hpp>
 %}

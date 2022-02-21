@@ -24,14 +24,14 @@ class RPYTest(unittest.TestCase):
 
     def test_RPY(self):
         #Test default constructor
-        rpy0 = sdurw_math.RPYd()
+        rpy0 = sdurw_math.RPY()
 
         self.assertEqual(rpy0[0] , 0.)
         self.assertEqual(rpy0[1] , 0.)
         self.assertEqual(rpy0[2] , 0.)
 
         # Test RPY(T alpha, T beta, T gamma) constructor
-        rpy1 = sdurw_math.RPYd(0.1, 0.2, 0.3)
+        rpy1 = sdurw_math.RPY(0.1, 0.2, 0.3)
         self.assertEqual(rpy1[0] , 0.1)
         self.assertEqual(rpy1[1] , 0.2)
         self.assertEqual(rpy1[2] , 0.3)
@@ -39,7 +39,7 @@ class RPYTest(unittest.TestCase):
         # Test toRotation3D and RPY(const Rotation3D<T>&) constructor
         rot3d = rpy1.toRotation3D()
 
-        rpy2 = sdurw_math.RPYd(rot3d)
+        rpy2 = sdurw_math.RPY(rot3d)
         self.assertLess(math.fabs(rpy2[0] - rpy1[0]), 1e-16)
         self.assertLess(math.fabs(rpy2[1] - rpy1[1]), 1e-16)
         self.assertLess(math.fabs(rpy2[2] - rpy1[2]), 1e-16)
@@ -53,7 +53,7 @@ class RPYTest(unittest.TestCase):
         self.assertEqual(rot3d[1,1] , 1)
         self.assertEqual(rot3d[2,0] , -1)
 
-        rpy3 = sdurw_math.RPYd(rot3d)
+        rpy3 = sdurw_math.RPY(rot3d)
         self.assertEqual(rpy3[0] , rpy1[0])
         self.assertEqual(rpy3[1] , rpy1[1])
         self.assertEqual(rpy3[2] , rpy1[2])
@@ -68,13 +68,23 @@ class RPYTest(unittest.TestCase):
         # qualified lookup would be same test in python
 
         # Test comparison operators operator== and operator!=
-        comp1 = sdurw_math.RPYd(1.1, -2.2, 3.3)
-        comp2 = sdurw_math.RPYd(1.1, -2.2, 3.3)
+        comp1 = sdurw_math.RPY(1.1, -2.2, 3.3)
+        comp2 = sdurw_math.RPY(1.1, -2.2, 3.3)
         self.assertEqual(comp1 , comp2)
         self.assertTrue(not (comp1 != comp2))
-        comp3 = sdurw_math.RPYd(1.1, 2.2, -3.3)
+        comp3 = sdurw_math.RPY(1.1, 2.2, -3.3)
         self.assertNotEqual(comp1 , comp3)
         self.assertTrue(not (comp1 == comp3))
+
+    def test_RPY_Conversion(self):
+        #Test conversion, if it contains "Swig Object" then it is a failure
+        obj1 = sdurw_math.RPY()
+        s = str(obj1)
+        self.assertNotIn("Swig Object", s)
+
+        obj1f = sdurw_math.RPYf()
+        s = str(obj1f)
+        self.assertNotIn("Swig Object", s)
 
 
 if __name__ == '__main__':

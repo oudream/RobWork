@@ -52,7 +52,7 @@ class CameraWrapper : public rw::sensor::Camera
 
 }    // namespace
 
-SimulatedCamera::SimulatedCamera (const std::string& name, double fov, Frame* frame,
+SimulatedCamera::SimulatedCamera (const std::string& name, double fov, rw::core::Ptr<Frame> frame,
                                   FrameGrabber::Ptr frameGrabber) :
     SimulatedSensor (ownedPtr (
         new CameraModel (rw::math::ProjectionMatrix::makePerspective (

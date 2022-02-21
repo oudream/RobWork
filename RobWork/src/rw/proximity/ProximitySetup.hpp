@@ -18,7 +18,7 @@
 #ifndef RW_COLLISION_PROXIMITYSETUP_HPP
 #define RW_COLLISION_PROXIMITYSETUP_HPP
 #if !defined(SWIG)
-#include "ProximitySetupRule.hpp"
+#include <rw/proximity/ProximitySetupRule.hpp>
 
 #include <rw/core/PropertyMap.hpp>
 #include <rw/core/Ptr.hpp>

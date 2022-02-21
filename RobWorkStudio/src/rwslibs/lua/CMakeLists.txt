@@ -1,6 +1,13 @@
 set(SUBSYS_NAME sdurws_luapl)
 set(SUBSYS_DESC "A lua plugin")
-set(SUBSYS_DEPS sdurws sdurws_luaeditor sdurws_lua_s sdurws_robworkstudioapp)
+set(SUBSYS_DEPS
+    PUBLIC  sdurws
+            RW::sdurw_trajectory
+            RW::sdurw_kinematics
+            RW::sdurw_core
+    PRIVATE sdurws_luaeditor
+            sdurws_lua_s
+)
 
 set(DEFAULT ${RWS_HAVE_LUA})
 set(REASON)
@@ -26,12 +33,12 @@ if(build)
     endif()
 
     # Set extra linker flags for apple macos computers
-    rws_add_plugin(${SUBSYS_NAME} ${RWS_DEFAULT_LIB_TYPE} EXPORT_SET RobWorkStudioluaTargets USING_SWIG ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles})
+    rws_add_plugin(${SUBSYS_NAME} ${RWS_DEFAULT_LIB_TYPE} USING_SWIG ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles})
     rw_add_includes(${SUBSYS_NAME} "rwslibs/lua" ${SRC_FILES_HPP})
     target_link_libraries(
         ${SUBSYS_NAME}
-        PUBLIC sdurws ${QT_LIBRARIES} RW::sdurw
-        PRIVATE sdurws_luaeditor sdurws_lua_s
+        ${SUBSYS_DEPS}
+        PUBLIC ${QT_LIBRARIES}
     )
     target_include_directories(
         ${SUBSYS_NAME} INTERFACE $<BUILD_INTERFACE:${RWS_ROOT}/src>

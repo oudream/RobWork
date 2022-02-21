@@ -18,7 +18,7 @@
 #ifndef RWLIBS_SIMULATION_RWGLFRAMEBUFFER_HPP
 #define RWLIBS_SIMULATION_RWGLFRAMEBUFFER_HPP
 
-#include <rwlibs/os/rwgl.hpp>
+#include <rwlibs/opengl/rwgl.hpp>
 #if defined(RW_CYGWIN)
 #include <GL/glext.h>
 #elif defined(RW_WIN32)

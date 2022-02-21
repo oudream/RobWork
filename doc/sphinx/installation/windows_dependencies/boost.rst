@@ -92,10 +92,10 @@ Compile Boost
 To compile the Boost libraries from source, get the source and run
 something similar from a command prompt (only for expert users!):
 
-::
+.. code-block:: none
     git clone https://github.com/boostorg/boost
     cd boost
-    git checkout boost-1.72.0
+    git checkout boost-1.74.0
     bootstrap.bat
     b2 --prefix=C:\Local\boost -j4 --with-filesystem --with-system --with-program_options --with-serialization --with-thread --with-date_time --with-chrono --prefix=.\ address-model=64 link=shared install
 

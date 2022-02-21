@@ -20,7 +20,7 @@
 
 //! @file RenderUtil.hpp
 
-#include "RenderLines.hpp"
+#include <rwlibs/opengl/RenderLines.hpp>
 
 #include <rw/core/Ptr.hpp>
 

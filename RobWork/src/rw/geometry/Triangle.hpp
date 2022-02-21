@@ -409,9 +409,9 @@ namespace rw { namespace geometry {
     SWIG_DECLARE_TEMPLATE (Triangle_d, rw::geometry::Triangle< double >);
     SWIG_DECLARE_TEMPLATE (TriangleN1_d, rw::geometry::TriangleN1< double >);
     SWIG_DECLARE_TEMPLATE (TriangleN3_d, rw::geometry::TriangleN3< double >);
-    ADD_DEFINITION (Triangle_d, Triangle)
-    ADD_DEFINITION (TriangleN1_d, TriangleN1)
-    ADD_DEFINITION (TriangleN3_d, TriangleN3)
+    ADD_DEFINITION (Triangle_d, Triangle,sdurw_geometry)
+    ADD_DEFINITION (TriangleN1_d, TriangleN1,sdurw_geometry)
+    ADD_DEFINITION (TriangleN3_d, TriangleN3,sdurw_geometry)
 #else
     SWIG_DECLARE_TEMPLATE (Triangle, rw::geometry::Triangle< double >);
     SWIG_DECLARE_TEMPLATE (TriangleN1, rw::geometry::TriangleN1< double >);

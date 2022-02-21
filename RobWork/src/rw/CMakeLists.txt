@@ -35,10 +35,23 @@ if(build)
 
     install(
         TARGETS sdurw
-        EXPORT ${PROJECT_PREFIX}Targets
+        EXPORT ${PROJECT_PREFIX}_${SUBSYS_NAME}Targets
         RUNTIME DESTINATION ${BIN_INSTALL_DIR} COMPONENT sdurw
         LIBRARY DESTINATION ${lib_dir} COMPONENT sdurw
         ARCHIVE DESTINATION ${lib_dir} COMPONENT sdurw
+    )
+
+    export(
+        EXPORT ${PROJECT_PREFIX}_${SUBSYS_NAME}Targets
+        FILE "${RW_ROOT}/cmake/targets/${SUBSYS_NAME}.cmake"
+        NAMESPACE ${PROJECT_PREFIX}::
+    )
+
+    install(
+        EXPORT ${PROJECT_PREFIX}_${SUBSYS_NAME}Targets
+        FILE sdurw.cmake
+        NAMESPACE ${PROJECT_PREFIX}::
+        DESTINATION ${RW_INSTALL_DIR}/cmake/targets
     )
 
 endif()

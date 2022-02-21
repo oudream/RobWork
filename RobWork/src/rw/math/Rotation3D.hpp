@@ -453,11 +453,11 @@ namespace rw { namespace math {
          * @brief Calculate the inverse.
          * @note This function changes the object that it is invoked on, but this is about x5 faster
          * than rot = inverse( rot )
-         * @see rw::math::inverse(const rw::math::Rotation3D< T > &) for the (slower) version that does not change the
-         * rotation object itself.
+         * @see rw::math::inverse(const rw::math::Rotation3D< T > &) for the (slower) version that
+         * does not change the rotation object itself.
          * @return the inverse rotation.
          */
-         #endif
+#endif
         inline Rotation3D< T >& inverse ()
         {
             T tmpVal  = _m (0, 1);
@@ -494,7 +494,7 @@ namespace rw { namespace math {
         T tr () const { return (*this) (0, 0) + (*this) (1, 1) + (*this) (2, 2); }
 
 #if defined(SWIG)
-        TOSTRING ();
+        TOSTRING (rw::math::Rotation3D< T >);
 #endif
 
       private:
@@ -538,7 +538,8 @@ namespace rw { namespace math {
      */
 
 #endif
-    template< class T > const rw::math::Rotation3D< T > inverse (const rw::math::Rotation3D< T >& aRb)
+    template< class T >
+    const rw::math::Rotation3D< T > inverse (const rw::math::Rotation3D< T >& aRb)
     {
         return Rotation3D< T > (aRb (0, 0),
                                 aRb (1, 0),
@@ -573,7 +574,14 @@ namespace rw { namespace math {
     extern template class rw::math::Rotation3D< double >;
     extern template class rw::math::Rotation3D< float >;
 #else
+
+#if SWIG_VERSION < 0x040000
     SWIG_DECLARE_TEMPLATE (Rotation3Dd, rw::math::Rotation3D< double >);
+    ADD_DEFINITION (Rotation3Dd, Rotation3D, sdurw_math)
+#else
+    SWIG_DECLARE_TEMPLATE (Rotation3D, rw::math::Rotation3D< double >);
+#endif
+
     SWIG_DECLARE_TEMPLATE (Rotation3Df, rw::math::Rotation3D< float >);
 #endif
     using Rotation3Dd = Rotation3D< double >;

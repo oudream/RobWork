@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurw_common)
 set(SUBSYS_DESC
-    "This is some commone functinality used by most of the other robwork packages"
+    "This is some common functionality used by most of the other robwork packages"
 )
 set(SUBSYS_DEPS sdurw_core)
 

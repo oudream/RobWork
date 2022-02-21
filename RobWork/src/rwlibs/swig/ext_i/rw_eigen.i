@@ -50,21 +50,23 @@ namespace Eigen{
 
     };
 }
-
-#if  defined(SWIGPYTHON) && RW_USE_NUMPY
+%include <rwlibs/swig/ext_i/os.i>
+#if  defined(SWIGPYTHON) && defined(RW_USE_NUMPY)
 %include <rwlibs/swig/ext_i/eigen.i>
-
 #define dxx double,-1,-1
+#define dXX double,Eigen::Dynamic,Eigen::Dynamic
 #define d22 double,2,2
 #define d33 double,3,3
 #define d44 double,4,4
 
 #define fxx float,-1,-1
+#define fXX float,Eigen::Dynamic,Eigen::Dynamic
 #define f22 float,2,2
 #define f33 float,3,3
 #define f44 float,4,4
 
 #define dx1 double,-1,1
+#define dX1 double,Eigen::Dynamic,1
 #define d21 double,2,1
 #define d31 double,3,1
 #define d41 double,4,1
@@ -72,6 +74,7 @@ namespace Eigen{
 #define d71 double,7,1
 
 #define fx1 float,-1,1
+#define fX1 float,Eigen::Dynamic,1
 #define f21 flaot,2,1
 #define f31 float,3,1
 #define f41 float,4,1
@@ -85,16 +88,19 @@ namespace Eigen{
 #define cd33 std::complex<double>,3,3
 
 %eigen_typemaps(Eigen::Matrix<dxx>);
+%eigen_typemaps(Eigen::Matrix<dXX>);
 %eigen_typemaps(Eigen::Matrix<d22>);
 %eigen_typemaps(Eigen::Matrix<d33>);
 %eigen_typemaps(Eigen::Matrix<d44>);
 
 %eigen_typemaps(Eigen::Matrix<fxx>);
+%eigen_typemaps(Eigen::Matrix<fXX>);
 %eigen_typemaps(Eigen::Matrix<f22>);
 %eigen_typemaps(Eigen::Matrix<f33>);
 %eigen_typemaps(Eigen::Matrix<f44>);
 
 %eigen_typemaps(Eigen::Matrix<dx1>);
+%eigen_typemaps(Eigen::Matrix<dX1>);
 %eigen_typemaps(Eigen::Matrix<d21>);
 %eigen_typemaps(Eigen::Matrix<d31>);
 %eigen_typemaps(Eigen::Matrix<d41>);
@@ -102,6 +108,7 @@ namespace Eigen{
 %eigen_typemaps(Eigen::Matrix<d71>);
 
 %eigen_typemaps(Eigen::Matrix<fx1>);
+%eigen_typemaps(Eigen::Matrix<fX1>);
 %eigen_typemaps(Eigen::Matrix<f21>);
 %eigen_typemaps(Eigen::Matrix<f31>);
 %eigen_typemaps(Eigen::Matrix<f41>);
@@ -115,7 +122,6 @@ namespace Eigen{
 %eigen_typemaps(Eigen::Matrix<cd33>);
 
 #else
-
 %template(EigenMatrixXf) Eigen::Matrix<float,-1,-1>;
 %template(EigenMatrixXd) Eigen::Matrix<double,-1,-1>;
 %template(EigenMatrix2f) Eigen::Matrix<float,2,2>;
@@ -142,7 +148,6 @@ namespace Eigen{
 %template(EigenVector3id) Eigen::Matrix<std::complex<double>,3,1>;
 %template(EigenRowVector3id) Eigen::Matrix<std::complex<double>,1,3>;
 %template(EigenMatrix3id) Eigen::Matrix<std::complex<double>,3,3>;
-
 #endif
 
 #if ! SWIG_VERSION <= 0x030008

@@ -206,7 +206,7 @@ namespace rw { namespace core {
          * @brief Converts a string pattern with wild card characters * and ? into a regular
          * expression
          *
-         * The format of the regular expression matches boost::regex.
+         * The format of the regular expression matches std::regex.
          *
          * @param pattern [in] pattern with wild card characters
          * @return patterns expressed as regular expression.

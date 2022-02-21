@@ -2,12 +2,14 @@
 #ifndef RW_GRAPHICS_SCENEVIEWER_HPP_
 #define RW_GRAPHICS_SCENEVIEWER_HPP_
 
-#include "SceneCamera.hpp"
-#include "SceneGraph.hpp"
+#if !defined(SWIG)
+#include <rw/graphics/SceneCamera.hpp>
+#include <rw/graphics/SceneGraph.hpp>
 
 #include <rw/core/Event.hpp>
 #include <rw/core/PropertyMap.hpp>
 #include <rw/math/Vector3D.hpp>
+#endif 
 
 namespace rw { namespace graphics {
 
@@ -193,13 +195,13 @@ namespace rw { namespace graphics {
         // virtual SceneCamera::Ptr addSlaveCamera(const std::string& name) = 0;
         // virtual void removeSlaveCamera(const std::string& name) = 0;
 
-        /**
+        /*
          * @brief the current camera can be either the view camera or one of the slave cameras
          * @return
          */
         // virtual SceneCamera::Ptr getCurrentCamera() = 0;
         // virtual void setCurrentCamera(const std::string& name) = 0;
-
+#if !defined(SWIG)
         /**
          * @brief Defines a listener for position change events
          *
@@ -223,7 +225,7 @@ namespace rw { namespace graphics {
          * @return REference to the PositionSelectedEvent
          */
         PositionSelectedEvent& positionSelectedEvent () { return _positionSelectedEvent; }
-
+#endif
         // ----------------- ABSTRACT view manipulation Functions, use getViewCamera()
         /**
          * @brief set the orientation of the view. The view will look in the

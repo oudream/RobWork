@@ -23,9 +23,8 @@
 #include <rw/common/Serializable.hpp>
 
 #include <Eigen/Core>
-#include <boost/cstdint.hpp>
-#include <boost/type_traits.hpp>
-#include <boost/utility/enable_if.hpp>
+#include <stdint.h>
+#include <type_traits>
 #endif 
 namespace rw { namespace common {
     /**
@@ -122,21 +121,21 @@ namespace rw { namespace common {
          */
         virtual void doWrite (bool val, const std::string& id) = 0;
         //! @copydoc doWrite(bool,const std::string&)
-        virtual void doWrite (boost::int8_t val, const std::string& id) = 0;
+        virtual void doWrite (int8_t val, const std::string& id) = 0;
         //! @copydoc doWrite(bool,const std::string&)
-        virtual void doWrite (boost::uint8_t val, const std::string& id) = 0;
+        virtual void doWrite (uint8_t val, const std::string& id) = 0;
         //! @copydoc doWrite(bool,const std::string&)
-        virtual void doWrite (boost::int16_t val, const std::string& id) = 0;
+        virtual void doWrite (int16_t val, const std::string& id) = 0;
         //! @copydoc doWrite(bool,const std::string&)
-        virtual void doWrite (boost::uint16_t val, const std::string& id) = 0;
+        virtual void doWrite (uint16_t val, const std::string& id) = 0;
         //! @copydoc doWrite(bool,const std::string&)
-        virtual void doWrite (boost::int32_t val, const std::string& id) = 0;
+        virtual void doWrite (int32_t val, const std::string& id) = 0;
         //! @copydoc doWrite(bool,const std::string&)
-        virtual void doWrite (boost::uint32_t val, const std::string& id) = 0;
+        virtual void doWrite (uint32_t val, const std::string& id) = 0;
         //! @copydoc doWrite(bool,const std::string&)
-        virtual void doWrite (boost::int64_t val, const std::string& id) = 0;
+        virtual void doWrite (int64_t val, const std::string& id) = 0;
         //! @copydoc doWrite(bool,const std::string&)
-        virtual void doWrite (boost::uint64_t val, const std::string& id) = 0;
+        virtual void doWrite (uint64_t val, const std::string& id) = 0;
         //! @copydoc doWrite(bool,const std::string&)
         virtual void doWrite (float val, const std::string& id) = 0;
         //! @copydoc doWrite(bool,const std::string&)
@@ -151,21 +150,21 @@ namespace rw { namespace common {
          */
         virtual void doWrite (const std::vector< bool >& val, const std::string& id) = 0;
         //! @copydoc doWrite(const std::vector<bool>&,const std::string&)
-        virtual void doWrite (const std::vector< boost::int8_t >& val, const std::string& id) = 0;
+        virtual void doWrite (const std::vector< int8_t >& val, const std::string& id) = 0;
         //! @copydoc doWrite(const std::vector<bool>&,const std::string&)
-        virtual void doWrite (const std::vector< boost::uint8_t >& val, const std::string& id) = 0;
+        virtual void doWrite (const std::vector< uint8_t >& val, const std::string& id) = 0;
         //! @copydoc doWrite(const std::vector<bool>&,const std::string&)
-        virtual void doWrite (const std::vector< boost::int16_t >& val, const std::string& id) = 0;
+        virtual void doWrite (const std::vector< int16_t >& val, const std::string& id) = 0;
         //! @copydoc doWrite(const std::vector<bool>&,const std::string&)
-        virtual void doWrite (const std::vector< boost::uint16_t >& val, const std::string& id) = 0;
+        virtual void doWrite (const std::vector< uint16_t >& val, const std::string& id) = 0;
         //! @copydoc doWrite(const std::vector<bool>&,const std::string&)
-        virtual void doWrite (const std::vector< boost::int32_t >& val, const std::string& id) = 0;
+        virtual void doWrite (const std::vector< int32_t >& val, const std::string& id) = 0;
         //! @copydoc doWrite(const std::vector<bool>&,const std::string&)
-        virtual void doWrite (const std::vector< boost::uint32_t >& val, const std::string& id) = 0;
+        virtual void doWrite (const std::vector< uint32_t >& val, const std::string& id) = 0;
         //! @copydoc doWrite(const std::vector<bool>&,const std::string&)
-        virtual void doWrite (const std::vector< boost::int64_t >& val, const std::string& id) = 0;
+        virtual void doWrite (const std::vector< int64_t >& val, const std::string& id) = 0;
         //! @copydoc doWrite(const std::vector<bool>&,const std::string&)
-        virtual void doWrite (const std::vector< boost::uint64_t >& val, const std::string& id) = 0;
+        virtual void doWrite (const std::vector< uint64_t >& val, const std::string& id) = 0;
         //! @copydoc doWrite(const std::vector<bool>&,const std::string&)
         virtual void doWrite (const std::vector< float >& val, const std::string& id) = 0;
         //! @copydoc doWrite(const std::vector<bool>&,const std::string&)
@@ -216,12 +215,13 @@ namespace rw { namespace common {
         virtual void doWriteLeaveScope (const std::string& id) = 0;
 
       private:
+        template<bool B, typename T = void> using disable_if = std::enable_if<!B, T>;
         /**
          * this function should only be called if the object inherits from Serializable
          */
         template< class T >
         void writeImpl (T& object, const std::string& id,
-                        typename boost::enable_if_c< boost::is_base_of< Serializable, T >::value,
+                        typename std::enable_if< std::is_base_of< Serializable, T >::value,
                                                      T >::type* def = NULL)
         {
             object.write (*this, id);
@@ -234,19 +234,10 @@ namespace rw { namespace common {
         template< typename T >
         void writeImpl (
             T& object, const std::string& id,
-            typename boost::disable_if_c< boost::is_base_of< Serializable, T >::value, T >::type*
+            typename disable_if< std::is_base_of< Serializable, T >::value, T >::type*
                 def                                                                        = NULL,
-            typename boost::disable_if_c< boost::is_pointer< T >::value, T >::type* defptr = NULL)
+            typename disable_if< std::is_pointer< T >::value, T >::type* defptr = NULL)
         {
-            // BOOST_MPL_ASSERT_MSG(boost::is_reference<T>::value, "type T cannot be of type
-            // reference!" , (T) );
-
-            // if( boost::is_floating_point<T>::value || boost::is_integral<T>::value){
-            //	T* val = new T;
-            //	write(*val, id);
-            //}
-
-            // try and use overloaded method
             serialization::write (object, *this, id);
         }
 
@@ -256,27 +247,12 @@ namespace rw { namespace common {
         template< typename T >
         void writeImpl (
             T& object, const std::string& id,
-            typename boost::disable_if_c< boost::is_base_of< Serializable, T >::value, T >::type*
+            typename disable_if< std::is_base_of< Serializable, T >::value, T >::type*
                 def                                                                       = NULL,
-            typename boost::enable_if_c< boost::is_pointer< T >::value, T >::type* defptr = NULL)
+            typename std::enable_if< std::is_pointer< T >::value, T >::type* defptr = NULL)
         {
-            doWrite ((boost::uint64_t) object, id);
+            doWrite (uint64_t(object), id);
         }
-
-        /*
-            template<class T>
-            void writeImpl(T& object, const std::string& id, typename
-           boost::enable_if_c<boost::is_pointer<T>::value, T>::type* def=NULL){
-                    write((uint64_t)object, id);
-            }
-        */
-
-        // template<class T>
-        // void writeImpl(T& object, const std::string& id, typename
-        // boost::enable_if_c<boost::is_pointer<T>::value, T>::type* def=NULL){
-        //	BOOST_MPL_ASSERT_MSG(boost::is_pointer<T>::value, "type T cannot be of type
-        // reference!");
-        //}
     };
 
 }}    // namespace rw::common

@@ -397,7 +397,14 @@ namespace rw { namespace math {
             return v;
         }
 #if defined(SWIG)
-        TOSTRING ();
+        TOSTRING (rw::math::Q);
+#else
+        /**
+         * @brief Streaming operator.
+         *
+         * @relates Q
+         */
+        friend std::ostream& operator<< (std::ostream& out, const Q& v);
 #endif
 
       private:
@@ -486,13 +493,6 @@ namespace rw { namespace math {
      * @param value [in] Value to initialize
      */
     template<> Q::Q (size_t n, double values);
-
-    /**
-     * @brief Streaming operator.
-     *
-     * @relates Q
-     */
-    std::ostream& operator<< (std::ostream& out, const Q& v);
 
 #if !defined(SWIG)
     /**

@@ -23,11 +23,11 @@
  */
 
 #if !defined(SWIG)
-#include "CollisionStrategy.hpp"
-#include "DistanceMultiStrategy.hpp"
-#include "DistanceStrategy.hpp"
-#include "ProximityCache.hpp"
-#include "ProximityModel.hpp"
+#include <rw/proximity/CollisionStrategy.hpp>
+#include <rw/proximity/DistanceMultiStrategy.hpp>
+#include <rw/proximity/DistanceStrategy.hpp>
+#include <rw/proximity/ProximityCache.hpp>
+#include <rw/proximity/ProximityModel.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rw/kinematics/Frame.hpp>

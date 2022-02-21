@@ -19,9 +19,9 @@
 #define RW_MATH_LINE2DPOLAR_HPP
 
 #if !defined(SWIG)
-#include "Line2D.hpp"
-#include "Pose2D.hpp"
-#include "Vector2D.hpp"
+#include <rw/math/Line2D.hpp>
+#include <rw/math/Pose2D.hpp>
+#include <rw/math/Vector2D.hpp>
 
 #include <rw/common/Serializable.hpp>
 #endif 

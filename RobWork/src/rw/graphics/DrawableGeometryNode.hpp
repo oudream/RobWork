@@ -8,11 +8,14 @@
 #ifndef RW_GRAPHICS_DRAWABLEGEOMETRYNODE_HPP_
 #define RW_GRAPHICS_DRAWABLEGEOMETRYNODE_HPP_
 
-#include "DrawableNode.hpp"
+#if !defined(SWIG)
+#include <rw/graphics/DrawableNode.hpp>
 
 #include <rw/math/Vector3D.hpp>
 
 #include <vector>
+
+#endif
 
 namespace rw { namespace geometry {
     class Geometry;

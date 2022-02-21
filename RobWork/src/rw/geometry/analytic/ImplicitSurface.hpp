@@ -25,7 +25,7 @@
  */
 
 #if !defined(SWIG)
-#include "Surface.hpp"
+#include <rw/geometry/analytic/Surface.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Transform3D.hpp>

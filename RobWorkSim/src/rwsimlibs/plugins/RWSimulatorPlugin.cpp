@@ -47,7 +47,7 @@
 #include <rwsim/simulator/DynamicSimulator.hpp>
 #include <rwsim/simulator/PhysicsEngine.hpp>
 
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #include <fstream>
 #include <sstream>
 

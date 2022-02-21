@@ -9,11 +9,12 @@ macro(RWS_ADD_PLUGIN _name _lib_type)
     cmake_parse_arguments(PL "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
     if("${PL_EXPORT_SET}" STREQUAL "")
-        set(PL_EXPORT_SET ${PROJECT_PREFIX}Targets)
+        set(PL_EXPORT_SET ${PROJECT_PREFIX}_${_name}Targets)
     endif()
 
     add_library(${_name} ${_lib_type} ${PL_UNPARSED_ARGUMENTS})
-    add_dependencies(${_name} sdurws)
+    add_library(${PROJECT_PREFIX}::${_name} ALIAS ${_name})
+
     # Only link if needed
     if(WIN32 AND MSVC)
         set_target_properties(${_name} PROPERTIES LINK_FLAGS_RELEASE /OPT:REF)
@@ -63,6 +64,19 @@ macro(RWS_ADD_PLUGIN _name _lib_type)
             LIBRARY DESTINATION "${LIB_INSTALL_DIR}/RobWork/rwsplugins" COMPONENT ${_component}
             ARCHIVE DESTINATION "${LIB_INSTALL_DIR}/RobWork/rwsplugins" COMPONENT ${_component}
         )
+
+        export(
+            EXPORT ${PROJECT_PREFIX}_${_name}Targets
+            FILE "${RWS_ROOT}/cmake/targets/${_name}.cmake"
+            NAMESPACE ${PROJECT_PREFIX}::
+        )
+
+        install(
+            EXPORT ${PL_EXPORT_SET}
+            FILE ${_name}.cmake
+            NAMESPACE ${PROJECT_PREFIX}::
+            DESTINATION ${RWS_INSTALL_DIR}/cmake/targets
+        )
     endif()
 
 endmacro()
@@ -77,7 +91,7 @@ macro(RWS_ADD_COMPONENT _name)
     cmake_parse_arguments(PL "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
     if("${PL_EXPORT_SET}" STREQUAL "")
-        set(PL_EXPORT_SET ${PROJECT_PREFIX}Targets)
+        set(PL_EXPORT_SET ${PROJECT_PREFIX}_${_name}Targets)
     endif()
 
     add_library(${_name} ${PROJECT_LIB_TYPE} ${PL_UNPARSED_ARGUMENTS})
@@ -119,6 +133,19 @@ macro(RWS_ADD_COMPONENT _name)
         RUNTIME DESTINATION ${BIN_INSTALL_DIR} COMPONENT ${_name}
         LIBRARY DESTINATION ${LIB_INSTALL_DIR} COMPONENT ${_name}
         ARCHIVE DESTINATION ${LIB_INSTALL_DIR} COMPONENT ${_name}
+    )
+
+    export(
+        EXPORT ${PROJECT_PREFIX}_${_name}Targets
+        FILE "${RWS_ROOT}/cmake/targets/${_name}.cmake"
+        NAMESPACE ${PROJECT_PREFIX}::
+    )
+
+    install(
+        EXPORT ${PL_EXPORT_SET}
+        FILE ${_name}.cmake
+        NAMESPACE ${PROJECT_PREFIX}::
+        DESTINATION ${RWS_INSTALL_DIR}/cmake/targets
     )
     endif()
 

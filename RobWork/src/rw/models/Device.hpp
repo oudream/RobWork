@@ -22,7 +22,7 @@
  * @file Device.hpp
  */
 #if !defined(SWIG)
-#include "JacobianCalculator.hpp"
+#include <rw/models/JacobianCalculator.hpp>
 
 #include <rw/core/PropertyMap.hpp>
 #include <rw/core/Ptr.hpp>
@@ -204,7 +204,7 @@ namespace rw { namespace models {
          * @f$ \robabx{b}{f}{\mathbf{T}} @f$
          * @return the homogeneous transform @f$ \robabx{b}{f}{\mathbf{T}} @f$
          */
-        rw::math::Transform3D< double > baseTframe (const rw::kinematics::Frame* f,
+        rw::math::Transform3D< double > baseTframe (rw::core::Ptr<const rw::kinematics::Frame> f,
                                                     const rw::kinematics::State& state) const;
 
         /**
@@ -323,7 +323,7 @@ namespace rw { namespace models {
          *
          * By default the method forwards to baseJframes().
          */
-        virtual rw::math::Jacobian baseJframe (const rw::kinematics::Frame* frame,
+        virtual rw::math::Jacobian baseJframe (rw::core::Ptr<const rw::kinematics::Frame> frame,
                                                const rw::kinematics::State& state) const;
 
         /**
@@ -355,7 +355,7 @@ namespace rw { namespace models {
            By default this method forwards to baseDJframes().
         */
         virtual rw::core::Ptr< rw::models::JacobianCalculator >
-        baseJCframe (const rw::kinematics::Frame* frame, const rw::kinematics::State& state) const;
+        baseJCframe ( rw::core::Ptr< const rw::kinematics::Frame> frame, const rw::kinematics::State& state) const;
 
         /**
          * @brief DeviceJacobian for a sequence of frames.

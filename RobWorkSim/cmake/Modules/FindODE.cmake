@@ -6,8 +6,14 @@
 # library search ad selection ODE_USE_SINGLE - set if force using double ODE_USE_DOUBLE - set if
 # force using double ODE_USE_DEBUG - set if force using debug created by RobWork, based on code by
 # David Guthrie.  Based on code by Robert Osfield
-
-find_package(ODE QUIET PATHS "$ENV(ODE_ROOT)/lib/cmake/ode-*" NO_MODULE)
+set(RW_ODE_DIR ${ODE_DIR})
+find_package(
+    ODE QUIET
+    PATHS "$ENV(ODE_ROOT)/lib/cmake/ode-*" "${ODE_ROOT}/lib/cmake/ode-*" ${ODE_DIR}
+          "$ENV(ODE_DIR)/lib/cmake/ode-*" "${ODE_DIR}/lib/cmake/ode-*"
+    NO_MODULE
+)
+set(ODE_DIR ${RW_ODE_DIR})
 
 macro(FIND_ODE_LIBRARY MYLIBRARY MYLIBRARYNAME)
     set(CMAKE_FIND_LIBRARY_SUFFIXES .so .a .lib .dylib)
@@ -103,6 +109,7 @@ if(NOT ${ODE_FOUND})
 
     else()
         if(ODE_USE_SINGLE)
+            message(STATUS "USE SINGLE")
             set(RELEASE_LIST ode_single ode)
             set(DEBUG_LIST ode_singled oded)
             find_ode_library(ODE_LIBRARY_TMP "${RELEASE_LIST};${DEBUG_LIST}")
@@ -114,14 +121,15 @@ if(NOT ${ODE_FOUND})
             set(ODE_BUILD_WITH "DOUBLE")
 
         else()
-            # first try single
-            set(RELEASE_LIST ode_single ode ode_singled oded)
+
+            # first try double
+            set(RELEASE_LIST ode_double ode)
             find_ode_library(ODE_LIBRARY_TMP "${RELEASE_LIST}")
-            set(ODE_BUILD_WITH "SINGLE")
+            set(ODE_BUILD_WITH "DOUBLE")
             if(NOT ODE_LIBRARY_TMP)
-                set(RELEASE_LIST ode_double ode)
+                set(RELEASE_LIST ode_single ode)
                 find_ode_library(ODE_LIBRARY_TMP "${RELEASE_LIST}")
-                set(ODE_BUILD_WITH "DOUBLE")
+                set(ODE_BUILD_WITH "SINGLE")
             endif()
             # try debug
             if(NOT ODE_LIBRARY_TMP)
@@ -143,6 +151,7 @@ if(NOT ${ODE_FOUND})
         set(ODE_LIBRARIES ${ODE_LIBRARY})
     endif(ODE_LIBRARY_TMP AND ODE_INCLUDE_DIR)
 else()
+    set(ODE_BUILD_WITH "DOUBLE")
     if("${ODE_INCLUDE_DIR}" STREQUAL "")
         set(ODE_INCLUDE_DIR ${ODE_INCLUDE_DIRS})
     endif()

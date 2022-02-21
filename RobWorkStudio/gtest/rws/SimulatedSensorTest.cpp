@@ -40,6 +40,7 @@
 
 #include <string>
 
+using rw::common::TimerUtil;
 using rw::geometry::PointCloud;
 using rw::kinematics::Frame;
 using rw::loaders::WorkCellLoader;

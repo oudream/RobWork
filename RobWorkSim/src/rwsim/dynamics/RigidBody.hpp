@@ -115,7 +115,6 @@ namespace rwsim { namespace dynamics {
         }
 
       public:
-        // rw::math::InertiaMatrix<> getEffectiveMassW(const rw::math::Vector3D<>& wPc);
 
         /**
          * @brief return the parent frame

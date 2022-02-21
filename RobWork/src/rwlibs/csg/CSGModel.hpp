@@ -22,8 +22,6 @@
 #include <rw/geometry/TriMesh.hpp>
 #include <rw/math/Transform3D.hpp>
 
-
-
 struct csgjs_model;
 
 namespace rwlibs { namespace csg {
@@ -90,7 +88,7 @@ namespace rwlibs { namespace csg {
         /** @brief Saves the CSGModel in Stl format. */
         void saveToStl (const std::string& filename);
 
-      private:
+      protected:
         /** @brief Converts internal csgjs geometry representation to TriMesh. */
         void _convertToTriMesh ();
 

@@ -1,3 +1,5 @@
 usr/lib/*/dist-packages/sdurw_pathoptimization/sdurw_pathoptimization.py
 usr/lib/*/dist-packages/sdurw_pathoptimization/_sdurw_pathoptimization*.so
 usr/lib/*/dist-packages/sdurw_pathoptimization/__init__.py
+usr/share/robwork-*/cmake/targets/sdurw_pathoptimization_py.cmake
+usr/share/robwork-*/cmake/targets/sdurw_pathoptimization_py-*.cmake

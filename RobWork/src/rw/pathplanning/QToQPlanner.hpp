@@ -21,11 +21,11 @@
 /**
    @file QToQPlanner.hpp
 */
-
-#include "PathPlanner.hpp"
+#if !defined(SWIG)
+#include <rw/pathplanning/PathPlanner.hpp>
 
 #include <rw/core/Ptr.hpp>
-
+#endif
 namespace rw { namespace pathplanning {
     class PlannerConstraint;
     class QToQSamplerPlanner;

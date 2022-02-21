@@ -79,7 +79,7 @@ void MovableFrame::moveTo (const Transform3D<>& wTtarget, State& state)
     setTransform (parentTmframe, state);
 }
 
-void MovableFrame::moveTo (const Transform3D<>& refTtarget, Frame* refframe, State& state)
+void MovableFrame::moveTo (const Transform3D<>& refTtarget,  rw::core::Ptr<Frame> refframe, State& state)
 {
     // first calculate transform from refframe to parent frame
     Transform3D<> parentTref    = Kinematics::frameTframe (getParent (state), refframe, state);

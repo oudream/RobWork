@@ -46,7 +46,7 @@ const Transform3D<>& FKTable::get (const Frame& frame) const
     const bool has        = _transforms.has (frame);
     Transform3D<>& result = _transforms[frame];
     if (!has) {
-        const Frame* parent = frame.getParent (getState ());
+        rw::core::Ptr<const Frame> parent = frame.getParent (getState ());
         if (!parent)
             result = frame.getTransform (getState ());
         else
@@ -61,7 +61,7 @@ const Transform3D<>& FKTable::get (const Frame& frame) const
     if (p == _end) {
         Entry entry(&frame);
 
-        const Frame* parent = frame.getParent(getState());
+        const rw::core::Ptr< Frame> parent = frame.getParent(getState());
         if (!parent)
             entry.transform = frame.getTransform(getState());
         else
@@ -79,7 +79,7 @@ const Transform3D<>& FKTable::get (const Frame& frame) const
     TransformMap::iterator p = _transforms.find(&frame);
 
     if (p == _transforms.end()) {
-        const Frame* parent = frame.getParent(getState());
+        const rw::core::Ptr< Frame> parent = frame.getParent(getState());
         if (!parent) {
             const Transform3D<>& local = frame.getTransform(getState());
             p = _transforms.insert(Entry(&frame, local)).first;

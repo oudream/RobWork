@@ -25,7 +25,7 @@
 #include <rw/kinematics/StateStructure.hpp>
 #include <rw/sensor/SensorModel.hpp>
 
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
 using namespace rw::models;
 using namespace rw::kinematics;
@@ -333,6 +333,10 @@ std::ostream& rw::models::operator<< (std::ostream& out, const WorkCell& workcel
 State WorkCell::getDefaultState () const
 {
     return _tree->getDefaultState ();
+}
+
+void WorkCell::setDefaultState (const State& state){
+    _tree->setDefaultState (state);
 }
 
 std::vector< rw::core::Ptr< rw::sensor::SensorModel > > WorkCell::getSensors () const

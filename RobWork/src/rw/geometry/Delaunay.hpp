@@ -25,7 +25,7 @@
  */
 
 #if !defined(SWIG)
-#include "IndexedTriMesh.hpp"
+#include <rw/geometry/IndexedTriMesh.hpp>
 
 #include <rw/math/Vector2D.hpp>
 

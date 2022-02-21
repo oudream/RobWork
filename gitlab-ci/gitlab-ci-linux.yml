@@ -12,6 +12,9 @@
     - apt -y remove *sdurw* || echo "no pkg to remove"
     - apt -y remove robworkstudio* || echo "no pkg to remove"
     - apt -y autoremove || echo "no pkg to remove"
+    - sed -i '/file:/d' /etc/apt/sources.list
+    - add-apt-repository --remove ppa:sdurobotics/robwork
+    - apt update
 
 .CI-common-linux:
   extends: .CI-common
@@ -69,10 +72,10 @@
     - cd Build
     # Build RobWork
     - cd RW
-    - cmake -DCMAKE_BUILD_TYPE=Release ../../RobWork
+    - cmake -DCMAKE_BUILD_TYPE=Release -DUSE_gtest=ON ../../RobWork
     - make -j${THREADS}
-    - make -j${THREADS} python 
-    - make -j${THREADS} lua || make -j${THREADS} lua 
+    - make -j${THREADS} python
+    - make -j${THREADS} lua || make -j${THREADS} lua
     - make -j${THREADS} java
   artifacts:
     paths:
@@ -118,7 +121,7 @@
     - cd Build
     # Build RobWorkSim
     - cd RWSim
-    - cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=$WERROR ../../RobWorkSim
+    - cmake -DCMAKE_BUILD_TYPE=Release -DUSE_WERROR=$WERROR -DDEBUG=TRUE ../../RobWorkSim
     - make -j${THREADS}
     - make -j${THREADS} python
     - make -j${THREADS} lua
@@ -205,8 +208,10 @@
     - export PYTHONPATH=$PYTHONPATH:$(pwd)/Build/RW/libs/release
     - ls $(pwd)/Build/RW/libs/release
     - cd RobWork/unittest
-    - python3 -m unittest discover ./math -p '*.py'
     - python3 -m unittest discover ./core -p '*.py'
+    - python3 -m unittest discover ./kinematics -p '*.py'
+    - python3 -m unittest discover ./math -p '*.py'
+    - - "for file in ./models/*.py; do python3 $file || exit 1 ; done"
 
 .linux-install-tests:
   extends: .CI-common-linux
@@ -237,6 +242,11 @@
     - make -j${THREADS}
     - "for file in ./ex-*; do if [ -f $file ] && [[ ! $file =~ ex-load-workcell ]] ; then  echo -e '\n EXECUTING: '$file' '$robworkdata && $file ${robworkdata} && EXERW=$EXERW' '$file || exit 1 ; fi; done"
     - ./ex-load-workcell ../../ModelData/XMLScenes/RobotWithHand/Workcell.xml
+    # TEST RW CPP EXTRA FILES
+    - cd $DIR/RobWork/example/tutorial
+    - mkdir Build && cd Build
+    - cmake ..
+    - make -j${THREADS}
     # TEST RW PYTHON FILES
     - cd $DIR/RobWork/example/python
     - "for file in $EXERW ; do echo -e '\n EXECUTING: '$file && python3 ${file}.py ${robworkdata} || exit 1 ; done"
@@ -291,6 +301,8 @@
     - debuild --no-sign
     - mkdir DEBPKG
     - find ../ -maxdepth 1 -type f -name '*.deb' -exec cp '{}' ./DEBPKG ';'
+    - cd ./DEBPKG
+    - dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz
   artifacts:
     paths:
       - ./DEBPKG
@@ -304,11 +316,17 @@
     - linux
   before_script:
     - *uninstall-rw-deb
+    - cd ./DEBPKG
+    - if [[ $(cat /etc/apt/sources.list | grep -c $(pwd)) == 0 ]] ; then echo "deb [trusted=yes] file:$(pwd) ./" >> /etc/apt/sources.list ; fi
     - apt update
-    - apt -y install ./DEBPKG/*.deb
+    - apt -y install libsdurw-all-dev libsdurws-all-dev libsdurwsim-all-dev python3-robwork lua-robwork
     - robworkdata=/home/robworkdata
     - export DISPLAY=:0
     - Xvfb $DISPLAY -screen 0 640x480x24 &
+    - cd ..
+    - rm -r ./RobWork/src
+    - rm -r ./RobWorkStudio/src
+    - rm -r ./RobWorkSim/src
 
 .linux-debian-upgrade-test:
   extends: .CI-common-linux
@@ -320,5 +338,26 @@
     - add-apt-repository ppa:sdurobotics/robwork
     - apt-get update
   script:
-    - apt -y install libsdurw-all-dev libsdurws-all-dev libsdurwsim-all-dev 
-    - apt -y install ./DEBPKG/*.deb
+    - apt -y install libsdurw-all-dev libsdurws-all-dev libsdurwsim-all-dev python3-robwork
+    - apt -y --allow-downgrades install ./DEBPKG/*.deb
+
+.ppa-install-tests:
+  extends: .linux-install-tests
+  stage: test
+  tags:
+    - linux
+  before_script:
+    - *remove-rw-install
+    - *uninstall-rw-deb
+    - rm -r ../*.deb || echo "Nothing to remove"
+    - rm -r ../robwork_* || echo "Nothing to remove"
+    - THREADS=$(nproc --all)
+    - robworkdata=/home/robworkdata
+    - export DISPLAY=:0
+    - Xvfb $DISPLAY -screen 0 640x480x24 &
+    - add-apt-repository ppa:sdurobotics/robwork
+    - apt-get update
+    - apt -y install libsdurw-all-dev libsdurws-all-dev libsdurwsim-all-dev python3-robwork lua-robwork
+    - rm -r ./RobWork/src
+    - rm -r ./RobWorkStudio/src
+    - rm -r ./RobWorkSim/src

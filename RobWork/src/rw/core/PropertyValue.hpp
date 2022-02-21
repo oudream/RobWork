@@ -24,7 +24,7 @@
  */
 
 #if !defined(SWIG)
-#include "PropertyValueBase.hpp"
+#include <rw/core/PropertyValueBase.hpp>
 #endif
 
 namespace rw { namespace core {

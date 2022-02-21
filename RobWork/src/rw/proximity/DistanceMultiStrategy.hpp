@@ -22,7 +22,7 @@
  */
 
 #if !defined(SWIG)
-#include "ProximityStrategy.hpp"
+#include <rw/proximity/ProximityStrategy.hpp>
 
 #include <rw/core/ExtensionPoint.hpp>
 #include <rw/math/Transform3D.hpp>
@@ -130,8 +130,8 @@ namespace rw { namespace proximity {
          * @return shortest distance if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * separated and not in collision.
          */
-        Result distances (const kinematics::Frame* a, const math::Transform3D<double>& wTa,
-                          const kinematics::Frame* b, const math::Transform3D<double>& wTb,
+        Result distances (const rw::core::Ptr<kinematics::Frame> a, const math::Transform3D<double>& wTa,
+                          const rw::core::Ptr<kinematics::Frame> b, const math::Transform3D<double>& wTb,
                           double tolerance);
 
         /**
@@ -149,8 +149,8 @@ namespace rw { namespace proximity {
          * @return shortest distance if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * separated and not in collision.
          */
-        Result& distances (const kinematics::Frame* a, const math::Transform3D<double>& wTa,
-                           const kinematics::Frame* b, const math::Transform3D<double>& wTb,
+        Result& distances (const rw::core::Ptr<kinematics::Frame> a, const math::Transform3D<double>& wTa,
+                           const rw::core::Ptr<kinematics::Frame> b, const math::Transform3D<double>& wTb,
                            double tolerance, class ProximityStrategyData& data);
 
         /**

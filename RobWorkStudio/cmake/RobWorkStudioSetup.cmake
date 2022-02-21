@@ -56,7 +56,7 @@ if(NOT PYTHONINTERP_FOUND)
 endif()
 
 if(PYTHONINTERP_FOUND AND PYTHONLIBS_FOUND)
-    message(STATUS )
+    message(STATUS)
     if(NOT (${PYTHONLIBS_VERSION_STRING} STREQUAL ${PYTHON_VERSION_STRING}))
         string(ASCII 27 Esc)
         message(
@@ -93,9 +93,8 @@ if(Qt6Core_FOUND
    AND Qt6OpenGL_FOUND
    AND Qt6OpenGLWidgets_FOUND
 )
-    set(QT_LIBRARIES ${Qt6Core_LIBRARIES} ${Qt6Gui_LIBRARIES} ${Qt6Widgets_LIBRARIES}
-                     ${Qt6OpenGL_LIBRARIES} ${Qt6OpenGLWidgets_LIBRARIES}
-    )
+    set(QT_LIBRARIES Qt6::Core Qt6::Gui Qt6::Widgets)
+    set(QTGL_LIBRARIES ${Qt6OpenGL_LIBRARIES} ${Qt6OpenGLWidgets_LIBRARIES})
     message(STATUS "RobWorkStudio: Using Qt ${Qt6_VERSION}.")
     set(CMAKE_AUTOMOC ON)
 else()
@@ -132,15 +131,12 @@ else()
     find_package(Qt5Core 5.5.1 QUIET)
     find_package(Qt5Gui 5.5.1 QUIET)
     find_package(Qt5Widgets 5.5.1 QUIET)
-    find_package(Qt5OpenGL 5.5.1 QUIET)
     if(Qt5Core_FOUND
        AND Qt5Gui_FOUND
        AND Qt5Widgets_FOUND
-       AND Qt5OpenGL_FOUND
     )
-        set(QT_LIBRARIES ${Qt5Core_LIBRARIES} ${Qt5Gui_LIBRARIES} ${Qt5Widgets_LIBRARIES}
-                         ${Qt5OpenGL_LIBRARIES}
-        )
+        set(QT_LIBRARIES ${Qt5Core_LIBRARIES} ${Qt5Gui_LIBRARIES} ${Qt5Widgets_LIBRARIES})
+        set(QTGL_LIBRARIES)
         message(STATUS "RobWorkStudio: Using Qt ${Qt5Core_VERSION}.")
         set(CMAKE_AUTOMOC ON)
     else()
@@ -160,13 +156,6 @@ else()
         else()
             message(
                 STATUS "RobWorkStudio: - Qt5Widgets NOT found. Please set Qt5Widgets_DIR to find."
-            )
-        endif()
-        if(Qt5OpenGL_FOUND)
-            message(STATUS "RobWorkStudio: - Qt5OpenGL found.")
-        else()
-            message(
-                STATUS "RobWorkStudio: - Qt5OpenGL NOT found. Please set Qt5OpenGL_DIR to find."
             )
         endif()
         message(
@@ -276,9 +265,8 @@ endif()
 rw_is_release(IS_RELEASE)
 
 if(NOT DEFINED RWS_CXX_FLAGS)
-    set(RWS_CXX_FLAGS
-        "${RW_BUILD_WITH_CXX_FLAGS} ${RWS_CXX_FLAGS_TMP}"
-        CACHE STRING "Change this to force using your own flags and not those of RobWorkSutdio"
+    set(RWS_CXX_FLAGS "${RW_BUILD_WITH_CXX_FLAGS} ${RWS_CXX_FLAGS_TMP}" CACHE STRING
+        "Change this to force using your own flags and not those of RobWorkSutdio"
     )
 endif()
 
@@ -289,10 +277,8 @@ if(NOT DEFINED RWS_DEFINITIONS)
         set(RWS_DEFINITIONS_TMP "-DQT_DEBUG")
     endif()
 
-    set(RWS_DEFINITIONS
-        "${RW_BUILD_WITH_DEFINITIONS};${RWS_DEFINITIONS_TMP}"
-        CACHE STRING
-              "Change this to force using your own definitions and not those of RobWorkSutdio"
+    set(RWS_DEFINITIONS "${RW_BUILD_WITH_DEFINITIONS};${RWS_DEFINITIONS_TMP}" CACHE STRING
+        "Change this to force using your own definitions and not those of RobWorkSutdio"
     )
 endif()
 
@@ -306,14 +292,12 @@ message(STATUS "RobWorkStudio: Addubg RWS definitions: ${RWS_DEFINITIONS}")
 # automatically set.
 #
 if(DEFINED RWS_LINKER_FLAGS)
-    set(CMAKE_SHARED_LINKER_FLAGS
-        "${CMAKE_SHARED_LINKER_FLAGS} ${RWS_LINKER_FLAGS}"
-        CACHE STRING "" FORCE
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${RWS_LINKER_FLAGS}" CACHE STRING
+        "" FORCE
     )
     if(WIN32)
-        set(CMAKE_EXE_LINKER_FLAGS
-            "${CMAKE_EXE_LINKER_FLAGS} ${RWS_LINKER_FLAGS}"
-            CACHE STRING "" FORCE
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${RWS_LINKER_FLAGS}" CACHE STRING ""
+            FORCE
         )
     endif()
 
@@ -331,22 +315,27 @@ set(ROBWORKSTUDIO_LIBRARY_DIRS ${RWS_LIBS_DIR})
 # The include dirs
 #
 set(ROBWORKSTUDIO_INCLUDE_DIR ${RWS_ROOT}/src ${Boost_INCLUDE_DIR}
-                              ${RWS_ROOT}/ext/qtpropertybrowser/src/
+    ${RWS_ROOT}/ext/qtpropertybrowser/src/
 )
 
 #
 # The library dirs
 #
 set(ROBWORKSTUDIO_LIBRARY_DIRS ${Boost_LIBRARY_DIRS}
-                               ${CMAKE_CURRENT_BINARY_DIR}/libs/${RWS_BUILD_TYPE}
+    ${CMAKE_CURRENT_BINARY_DIR}/libs/${RWS_BUILD_TYPE}
 )
 
 #
 # Setup the Library List here. We need to make sure the correct order is maintained which is crucial
 # for some compilers.
 #
-set(ROBWORKSTUDIO_LIBRARIES_INTERNAL sdurws_robworkstudioapp sdurws_workcelleditor sdurws_luaeditor
-                                     ${RWS_LUA} sdurws qtpropertybrowser
+set(ROBWORKSTUDIO_LIBRARIES_INTERNAL
+    sdurws_robworkstudioapp
+    sdurws_workcelleditor
+    sdurws_luaeditor
+    ${RWS_LUA}
+    sdurws
+    qtpropertybrowser
 )
 set(ROBWORKSTUDIO_PLUGIN_LIBRARIES
     sdurws_jog
@@ -361,7 +350,7 @@ set(ROBWORKSTUDIO_PLUGIN_LIBRARIES
 )
 
 set(ROBWORKSTUDIO_LIBRARIES_EXTERNAL ${QT_LIBRARIES} ${Boost_LIBRARIES} ${OPENGL_LIBRARIES}
-                                     ${GLUT_glut_LIBRARY}
+    ${GLUT_glut_LIBRARY}
 )
 
 set(ROBWORKSTUDIO_LIBRARIES)

@@ -25,7 +25,7 @@
 #include <rw/trajectory/TrajectoryFactory.hpp>
 #include <rws/RobWorkStudio.hpp>
 
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #include <chrono>
 #include <thread>
 

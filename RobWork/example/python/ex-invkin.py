@@ -18,13 +18,13 @@ if __name__ == '__main__':
     defState = wc.getDefaultState()
     solver = ClosedFormIKSolverUR(device.cptr(), defState)
 
-    Tdesired = Transform3Dd(Vector3Dd(0.2, -0.2, 0.5), EAAd(0, Pi, 0).toRotation3D())
+    Tdesired = Transform3D(Vector3D(0.2, -0.2, 0.5), EAA(0, Pi, 0).toRotation3D())
     solutions = solver.solve(Tdesired, defState)
 
     print("Inverse Kinematics for " + device.getName() + ".")
     print(" Base frame: " + device.getBase().getName())
     print(" End/TCP frame: " + solver.getTCP().getName())
     print(" Target Transform: " + str(Tdesired))
-    print("Found " + str(solutions.size()) + " solutions.")
+    print("Found " + str(len(solutions)) + " solutions.")
     for solution in solutions:
         print(" " + str(solution))

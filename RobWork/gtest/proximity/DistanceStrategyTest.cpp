@@ -150,8 +150,8 @@ TEST_P(DistanceStrategyTest, Plane_Triangle) {
     EXPECT_FLOAT_EQ(static_cast<float>(tolerance-eps),static_cast<float>(res.distance));
 
     // Check result
-    EXPECT_EQ(NULL,res.f1);
-    EXPECT_EQ(NULL,res.f2);
+    EXPECT_TRUE(res.f1.isNull());
+    EXPECT_TRUE(res.f2.isNull());
     EXPECT_EQ(modelA,res.a);
     EXPECT_EQ(modelB,res.b);
     EXPECT_FLOAT_EQ(0.f,static_cast<float>((res.p1)[2]));
@@ -207,8 +207,8 @@ TEST_P(DistanceStrategyTest, Plane_Cuboid) {
     EXPECT_NEAR(tolerance-eps,res.distance,std::numeric_limits<float>::epsilon());
 
     // Check result
-    EXPECT_EQ(NULL,res.f1);
-    EXPECT_EQ(NULL,res.f2);
+    EXPECT_TRUE(res.f1.isNull());
+    EXPECT_TRUE(res.f2.isNull());
     EXPECT_EQ(modelA,res.a);
     EXPECT_EQ(modelB,res.b);
     EXPECT_FLOAT_EQ(0.f,static_cast<float>(res.p1[2]));
@@ -276,8 +276,8 @@ TEST_P(DistanceStrategyTest, Cuboids_Cuboids) {
     EXPECT_NEAR(tolerance-eps,res.distance,std::numeric_limits<float>::epsilon());
 
     // Check result
-    EXPECT_EQ(NULL,res.f1);
-    EXPECT_EQ(NULL,res.f2);
+    EXPECT_TRUE(res.f1.isNull());
+    EXPECT_TRUE(res.f2.isNull());
     EXPECT_EQ(modelA,res.a);
     EXPECT_EQ(modelB,res.b);
     EXPECT_NEAR(+(tolerance-eps)/2, res.p1[2],std::numeric_limits<float>::epsilon());

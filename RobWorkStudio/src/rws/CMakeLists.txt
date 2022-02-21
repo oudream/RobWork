@@ -1,6 +1,20 @@
 set(SUBSYS_NAME sdurws)
 set(SUBSYS_DESC "Visulization tool")
-set(SUBSYS_DEPS RW::sdurw)
+set(SUBSYS_DEPS
+    PUBLIC  RW::sdurw_opengl
+            RW::sdurw_sensor
+            RW::sdurw_proximity
+            RW::sdurw_models
+            RW::sdurw_trajectory
+            RW::sdurw_kinematics
+            RW::sdurw_graphics
+            RW::sdurw_math
+            RW::sdurw_core
+    PRIVATE
+            RW::sdurw_proximitystrategies
+            RW::sdurw_loaders
+            RW::sdurw_geometry
+)
 
 set(build TRUE)
 set(DEFAULT TRUE)
@@ -105,7 +119,7 @@ if(build)
 
     # Add the cmake binary dir because this is where the ui files are placed
     target_include_directories(
-        sdurws
+        ${SUBSYS_NAME}
         PUBLIC $<BUILD_INTERFACE:${RWS_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
         PRIVATE ${CMAKE_CURRENT_BINARY_DIR} ${PYTHON_INCLUDE_DIRS}
     )
@@ -115,10 +129,9 @@ if(build)
         PUBLIC RWS::qtpropertybrowser
                ${PYTHON_LIBRARIES}
                ${QT_LIBRARIES}
-               RW::sdurw_proximitystrategies
-               RW::sdurw_opengl
-               RW::sdurw
-               ${OPENGL_LIBRARIES}
+               ${QTGL_LIBRARIES}
+               ${SUBSYS_DEPS}
+        PUBLIC ${OPENGL_LIBRARIES}
         PRIVATE ${GLUT_glut_LIBRARY} ${PYTHON_LIBRARIES}
     )
 
@@ -134,7 +147,11 @@ if(build)
     
     set(SUBSYS_NAME_PLUGIN ${SUBSYS_NAME}_plugin.rwplugin)
     set(SUBSYS_DESC_PLUGIN "Plugin providing extensions to RobWork from RobWorkStudio!")
-    set(SUBSYS_DEPS_PLUGIN ${SUBSYS_NAME})
+    set(SUBSYS_DEPS_PLUGIN
+        PRIVATE ${SUBSYS_NAME}
+                RW::sdurw_loaders
+        PUBLIC  RW::sdurw_core
+    )
 
     set(build_plugin TRUE)
     rw_subsys_option(
@@ -147,7 +164,7 @@ if(build)
         rw_add_plugin(${SUBSYS_NAME_PLUGIN} MODULE RWSImageLoaderPlugin.cpp
                       RWSImageLoaderPlugin.hpp
         )
-        target_link_libraries(${SUBSYS_NAME_PLUGIN} sdurws ${QT_LIBRARIES} RW::sdurw)
+        target_link_libraries(${SUBSYS_NAME_PLUGIN} PRIVATE ${SUBSYS_DEPS_PLUGIN} ${QT_LIBRARIES})
     endif()
 
 endif()

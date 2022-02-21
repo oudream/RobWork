@@ -18,7 +18,7 @@
 #ifndef RWLIBS_PATHPLANNERS_PRMPLANNER_HPP
 #define RWLIBS_PATHPLANNERS_PRMPLANNER_HPP
 
-#include "PartialIndexTable.hpp"
+#include <rwlibs/pathplanners/prm/PartialIndexTable.hpp>
 
 #include <rw/common/Timer.hpp>
 #include <rw/core/Ptr.hpp>
@@ -26,8 +26,6 @@
 #include <rw/pathplanning/QToQPlanner.hpp>
 #include <rwlibs/algorithms/kdtree/KDTreeQ.hpp>
 
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/archive/text_oarchive.hpp>
 #include <boost/graph/adjacency_list.hpp>
 #include <boost/graph/astar_search.hpp>
 #include <memory>
@@ -283,17 +281,6 @@ namespace rwlibs { namespace pathplanners {
 
             //! Has the node been checked for collision
             bool checked;
-
-          private:
-            friend class boost::serialization::access;
-            // When the class Archive corresponds to an output archive, the
-            // & operator is defined similar to <<.  Likewise, when the class Archive
-            // is a type of input archive the & operator is defined similar to >>.
-            template< class Archive > void serialize (Archive& ar, const unsigned int version)
-            {
-                ar& q;
-                ar& checked;
-            }
         };
 
         /**
@@ -313,19 +300,6 @@ namespace rwlibs { namespace pathplanners {
 
             rw::math::Q q1;
             rw::math::Q q2;
-
-          private:
-            friend class boost::serialization::access;
-            // When the class Archive corresponds to an output archive, the
-            // & operator is defined similar to <<.  Likewise, when the class Archive
-            // is a type of input archive the & operator is defined similar to >>.
-            template< class Archive > void serialize (Archive& ar, const unsigned int version)
-            {
-                ar& weight;
-                ar& resolution;
-                ar& q1;
-                ar& q2;
-            }
         };
 
         /**

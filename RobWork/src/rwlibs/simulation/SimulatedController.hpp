@@ -19,14 +19,14 @@
 #define RWLIBS_SIMULATION_CONTROLLER_HPP_
 
 //! @file SimulatedController.hpp
-
-#include "Simulator.hpp"
+#if !defined(SWIG)
+#include <rwlibs/simulation/Simulator.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rw/kinematics/Stateless.hpp>
 #include <rw/models/ControllerModel.hpp>
 #include <rwlibs/control/Controller.hpp>
-
+#endif 
 namespace rw { namespace kinematics {
     class State;
 }}    // namespace rw::kinematics
@@ -62,7 +62,7 @@ namespace rwlibs { namespace simulation {
          * @param info [in] update information related to the time step.
          * @param state [in/out] the current state
          */
-        virtual void update (const Simulator::UpdateInfo& info, rw::kinematics::State& state) = 0;
+        virtual void update (const rwlibs::simulation::Simulator::UpdateInfo& info, rw::kinematics::State& state) = 0;
 
         /**
          * @brief reset the controller to the applied state
@@ -75,14 +75,14 @@ namespace rwlibs { namespace simulation {
          * controller
          * @return
          */
-        virtual rwlibs::control::Controller::Ptr
-        getControllerHandle (rwlibs::simulation::Simulator::Ptr sim) = 0;
+        virtual rw::core::Ptr<rwlibs::control::Controller>
+        getControllerHandle (rw::core::Ptr<rwlibs::simulation::Simulator> sim) = 0;
 
         /**
          * @brief get the controllermodel of this simulated controller
          * @return
          */
-        rw::models::ControllerModel::Ptr getControllerModel () { return _model; }
+        rw::core::Ptr<rw::models::ControllerModel> getControllerModel () { return _model; }
 
         /**
          * @brief disable or enable this controller

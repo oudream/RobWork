@@ -21,8 +21,8 @@
 /**
  * @file Frame.hpp
  */
-#if!defined(SWIG)
-#include "StateData.hpp"
+#if !defined(SWIG)
+#include <rw/kinematics/StateData.hpp>
 
 #include <rw/common/ConcatVectorIterator.hpp>
 #include <rw/core/PairIterator.hpp>
@@ -54,9 +54,9 @@ namespace rw { namespace kinematics {
      * the transform of a frame may depend on the joint values for other frames
      * also.
      */
-    class Frame : public StateData
+    class Frame : public rw::kinematics::StateData
     {
-        typedef std::vector< Frame* > ChildList;
+        typedef std::vector< rw::kinematics::Frame* > ChildList;
 
       public:
         //! @brief Smart pointer type for a Frame object
@@ -81,7 +81,8 @@ namespace rw { namespace kinematics {
          * @param state [in] Joint values for the forward kinematics tree.
          * @param result [in] The transform of the frame in the world frame.
          */
-        void multiplyTransform (const rw::math::Transform3D<>& parent, const rw::kinematics::State& state,
+        void multiplyTransform (const rw::math::Transform3D<>& parent,
+                                const rw::kinematics::State& state,
                                 rw::math::Transform3D<>& result) const
         {
             doMultiplyTransform (parent, state, result);
@@ -145,12 +146,12 @@ namespace rw { namespace kinematics {
         /**
          * @brief The parent of the frame or NULL if the frame is a DAF.
          */
-        const rw::kinematics::Frame* getParent () const { return _parent; }
+        const rw::kinematics::Frame* getParent () const { return _parent.get(); }
 
         /**
          * @brief The parent of the frame or NULL if the frame is a DAF.
          */
-        rw::kinematics::Frame* getParent () { return _parent; }
+        rw::kinematics::Frame* getParent () { return _parent.get(); }
 
         /**
          * @brief Returns the parent of the frame
@@ -253,7 +254,7 @@ namespace rw { namespace kinematics {
          * @param parent [in] The frame to attach \b frame to.
          * @param state [inout] The state to which the attachment is written.
          */
-        void attachTo (rw::kinematics::Frame* parent, rw::kinematics::State& state);
+        void attachTo (rw::core::Ptr<rw::kinematics::Frame> parent, rw::kinematics::State& state);
 
         /**
          * @brief Test if this frame is a Dynamically Attachable Frame
@@ -274,7 +275,35 @@ namespace rw { namespace kinematics {
          * @param state [in] the state.
          * @return transform of frame \b to relative to this frame.
          */
-        rw::math::Transform3D<> fTf (const Frame* to, const rw::kinematics::State& state) const;
+        rw::math::Transform3D<> fTf (const rw::core::Ptr<rw::kinematics::Frame> to, const rw::kinematics::State& state) const;
+
+
+        /**
+         * @brief Compares the Frame to see if they are the same
+         * Checks the statedata, parent frame and chld frame
+         * @param rhs [in] the Frame to compare with
+         * @return true if equal
+         * @return false if not equal
+         */
+        bool operator== (const Frame& rhs);
+
+        /**
+         * @brief Check if not equal
+         * @param rhs [in] the Frame to compare with
+         * @return true if not equal
+         * @return false if equal
+         */
+        bool operator!= (const Frame& rhs) { return !(*this == rhs); }
+
+
+#if !defined(SWIG)
+        /**
+           @brief Streaming operator.
+        */
+        friend std::ostream& operator<< (std::ostream& out, const Frame& frame);
+#else
+        TOSTRING (rw::kinematics::Frame);
+#endif
 
       protected:
         /**
@@ -297,20 +326,22 @@ namespace rw { namespace kinematics {
         /**
          * @brief Subclass implementation of the getTransform() method.
          */
-        virtual void doMultiplyTransform (const rw::math::Transform3D<>& parent, const rw::kinematics::State& state,
+        virtual void doMultiplyTransform (const rw::math::Transform3D<>& parent,
+                                          const rw::kinematics::State& state,
                                           rw::math::Transform3D<>& result) const = 0;
 
         /**
          * brief Subclass implementation of the multiplyTransform() method
          */
-        virtual rw::math::Transform3D<> doGetTransform (const rw::kinematics::State& state) const = 0;
+        virtual rw::math::Transform3D<>
+        doGetTransform (const rw::kinematics::State& state) const = 0;
 
       private:
         friend class StateStructure;
 
-        void setParent (rw::kinematics::Frame* const frame) { _parent = frame; }
+        void setParent (rw::core::Ptr<rw::kinematics::Frame> frame) { _parent = frame; }
 
-        void removeChild (const rw::kinematics::Frame* const frame)
+        void removeChild (const rw::core::Ptr<rw::kinematics::Frame> frame)
         {
             for (ChildList::iterator it = _children.begin (); it != _children.end (); ++it)
                 if ((*it) == frame) {
@@ -325,10 +356,10 @@ namespace rw { namespace kinematics {
         core::PropertyMap _propertyMap;
 
         // static connected parent and children
-        Frame* _parent;
+        rw::core::Ptr<rw::kinematics::Frame> _parent;
         ChildList _children;
 
-        void addChild (Frame* const child) { _children.push_back (child); }
+        void addChild (rw::core::Ptr<rw::kinematics::Frame> const child) { _children.push_back (child.get()); }
 
         static iterator_pair makeIteratorPair (const ChildList& children)
         {
@@ -368,12 +399,12 @@ namespace rw { namespace kinematics {
     /**
        @brief A pair of frames
      */
-    typedef std::pair< Frame*, Frame* > FramePair;
+    typedef std::pair< rw::kinematics::Frame*, rw::kinematics::Frame* > FramePair;
 
     /**
        @brief A pair of constant frames
      */
-    typedef std::pair< const Frame*, const Frame* > ConstFramePair;
+    typedef std::pair< const rw::kinematics::Frame*, const rw::kinematics::Frame* > ConstFramePair;
 
     /**
        @brief A set of frames.
@@ -398,12 +429,6 @@ namespace rw { namespace kinematics {
      */
     typedef std::vector< kinematics::FramePair > FramePairList;
 
-    /**
-       @brief Streaming operator.
-    */
-    std::ostream& operator<< (std::ostream& out, const Frame& frame);
-
     /*@}*/
-}}    // namespace rw::kinematics
-
+}}        // namespace rw::kinematics
 #endif    // end include guard

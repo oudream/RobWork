@@ -1,5 +1,6 @@
 from sdurw import *
 from sdurw_simulation import *
+from sdurw_loaders import *
 from sdurws import *
 import sys
 
@@ -27,7 +28,7 @@ if __name__ == '__main__':
     rwstudio.postOpenWorkCell(WC_FILE);
     sleep(5);
     gldrawer = rwstudio.getView().getSceneViewer();
-    framegrabber = ownedPtr( GLFrameGrabber(width,height,fovy) );
+    framegrabber = sdurw_simulation.ownedPtr( GLFrameGrabber(width,height,fovy) );
     framegrabber.init(gldrawer);
     simcam = SimulatedCamera("SimulatedCamera", fovy, camera, framegrabber.asFrameGrabberPtr());
     simcam.setFrameRate(100);

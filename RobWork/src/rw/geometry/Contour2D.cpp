@@ -308,7 +308,7 @@ Contour2D::Ptr Contour2D::getOuterContour (const Contour2D& contour, double res)
     const double CMAX = 10000, CMIN = -10000;
     double xmin (CMAX), xmax (CMIN), ymin (CMAX), ymax (CMIN);
 
-    std::cout << "Get min max" << std::endl;
+    //std::cout << "Get min max" << std::endl;
     for (size_t i = 0; i < contour.size (); i++) {
         const Vector2D<> p = contour[i].P ();
         if (p (0) < xmin)
@@ -321,8 +321,8 @@ Contour2D::Ptr Contour2D::getOuterContour (const Contour2D& contour, double res)
             ymax = p (1);
     }
 
-    std::cout << "X minmax: (" << xmin << "," << xmax << ") Y minmax: (" << ymin << "," << ymax
-              << ")" << std::endl;
+    /*std::cout << "X minmax: (" << xmin << "," << xmax << ") Y minmax: (" << ymin << "," << ymax
+              << ")" << std::endl;*/
     // now use the resolution to create a
 
     int xResolution = (int) (fabs (xmax - xmin) / res);
@@ -336,12 +336,12 @@ Contour2D::Ptr Contour2D::getOuterContour (const Contour2D& contour, double res)
         return NULL;
     double yStep = fabs (ymax - ymin) / yResolution;
 
-    std::cout << "Step: (" << xStep << "," << yStep << ")" << std::endl;
+    //std::cout << "Step: (" << xStep << "," << yStep << ")" << std::endl;
 
     std::vector< double > xVmin (yResolution + 1, CMAX), xVmax (yResolution + 1, CMIN);
     std::vector< double > yVmin (xResolution + 1, CMAX), yVmax (xResolution + 1, CMIN);
 
-    std::cout << "RunA" << std::endl;
+    //std::cout << "RunA" << std::endl;
     Vector2D<> lastPoint = contour.points ().back ().P ();
     for (size_t i = 0; i < contour.size (); i++) {
         const Vector2D<> p1 = lastPoint;
@@ -369,7 +369,7 @@ Contour2D::Ptr Contour2D::getOuterContour (const Contour2D& contour, double res)
         int xIdxFrom = calcIdx (p1 (0) - xmin, xStep);
         int xIdxTo   = calcIdx (p (0) - xmin, xStep);
 
-        std::cout << "Idx : " << xIdxFrom << " -> " << xIdxTo << " ";
+        //std::cout << "Idx : " << xIdxFrom << " -> " << xIdxTo << " ";
         int mXIdx = xIdxTo - xIdxFrom;
         for (int j = 0; j <= abs (mXIdx); j++) {
             int xIdx = xIdxFrom;
@@ -377,14 +377,14 @@ Contour2D::Ptr Contour2D::getOuterContour (const Contour2D& contour, double res)
                 xIdx -= j;
             else
                 xIdx += j;
-            std::cout << xIdx << " ";
+            //std::cout << xIdx << " ";
             double val = p1 (1);
             if (mXIdx != 0)
                 val += (p (1) - p1 (1)) * j * 1.0 / mXIdx;
             yVmin[xIdx] = std::min (val, yVmin[xIdx]);
             yVmax[xIdx] = std::max (val, yVmax[xIdx]);
         }
-        std::cout << std::endl;
+        //std::cout << std::endl;
         lastPoint = p;
     }
     /*
@@ -396,7 +396,7 @@ Contour2D::Ptr Contour2D::getOuterContour (const Contour2D& contour, double res)
                 break;
 
             lastPnt = Vector2D<>( xVmin[i], (i+0.5)*yStep+ymin );
-            std::cout << lastPnt << std::endl;
+            //std::cout << lastPnt << std::endl;
             pnts.push_back( Contour2D::Point(lastPnt,defDir) );
 
         }
@@ -409,7 +409,7 @@ Contour2D::Ptr Contour2D::getOuterContour (const Contour2D& contour, double res)
                 y++;
             }
             lastPnt = Vector2D<>( xVmin[i], (i+0.5)*yStep+ymin );
-            std::cout << lastPnt << std::endl;
+            //std::cout << lastPnt << std::endl;
             pnts.push_back( Contour2D::Point(lastPnt,defDir) );
 
         }

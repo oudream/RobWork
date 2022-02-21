@@ -1,5 +1,6 @@
 import sdurw_models
 from sdurw import *
+from sdurw_loaders import *
 from sdurw_pathplanners import RRTPlanner
 from sdurw_proximitystrategies import ProximityStrategyFactory
 import sys

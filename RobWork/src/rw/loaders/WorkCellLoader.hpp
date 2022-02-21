@@ -21,13 +21,13 @@
 /**
  * @file WorkCellLoader.hpp
  */
-
+#if !defined(SWIG)
 #include <rw/core/ExtensionPoint.hpp>
 #include <rw/graphics/WorkCellScene.hpp>
 #include <rw/models/WorkCell.hpp>
 
 #include <string>
-
+#endif
 // Forward declarations
 // namespace rw { namespace models { class WorkCell; }}
 

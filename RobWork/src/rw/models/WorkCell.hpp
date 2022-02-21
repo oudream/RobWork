@@ -142,20 +142,18 @@ namespace rw { namespace models {
          */
         rw::kinematics::Frame* getWorldFrame () const;
 
-#if !defined(SWIGJAVA)
-/**
- * @brief Adds \b frame with \b parent as parent.
- *
- * If parent == NULL, then \b world is used as parent
- *
- * @param frame [in] Frame to add
- * @param parent [in] Parent frame - uses World is parent == NULL
- * @deprecated Since January 2018.
- * Please use the addFrame method using smart pointers instead.
- */
 #if !defined(SWIG)
+        /**
+         * @brief Adds \b frame with \b parent as parent.
+         *
+         * If parent == NULL, then \b world is used as parent
+         *
+         * @param frame [in] Frame to add
+         * @param parent [in] Parent frame - uses World is parent == NULL
+         * @deprecated Since January 2018.
+         * Please use the addFrame method using smart pointers instead.
+         */
         DEPRECATED ("Use Frame::Ptr insted of Frame*")
-#endif
         void addFrame (rw::kinematics::Frame* frame, rw::kinematics::Frame* parent = NULL);
 #endif
         /**
@@ -168,21 +166,19 @@ namespace rw { namespace models {
          */
         void addFrame (rw::core::Ptr< rw::kinematics::Frame > frame,
                        rw::core::Ptr< rw::kinematics::Frame > parent = NULL);
-#if !defined(SWIGJAVA)
-/**
- * @brief Adds dynamically attachable frame (DAF) \b frame with
- * \b parent as parent.
- *
- * If parent == NULL, then \b world is used as parent
- *
- * @param frame [in] Frame to add
- * @param parent [in] Parent frame - uses World is parent == NULL
- * @deprecated Since January 2018.
- * Please use the addDAF method using smart pointers instead.
- */
 #if !defined(SWIG)
+        /**
+         * @brief Adds dynamically attachable frame (DAF) \b frame with
+         * \b parent as parent.
+         *
+         * If parent == NULL, then \b world is used as parent
+         *
+         * @param frame [in] Frame to add
+         * @param parent [in] Parent frame - uses World is parent == NULL
+         * @deprecated Since January 2018.
+         * Please use the addDAF method using smart pointers instead.
+         */
         DEPRECATED ("Use Frame::Ptr insted of Frame*")
-#endif
         void addDAF (rw::kinematics::Frame* frame, rw::kinematics::Frame* parent = NULL);
 #endif
         /**
@@ -205,14 +201,18 @@ namespace rw { namespace models {
          * Please use remove(rw::core::Ptr<rw::kinematics::Frame>)
          * instead.
          */
-        void remove (rw::kinematics::Frame* frame);
+        void remove (rw::core::Ptr< rw::kinematics::Frame > frame);
 
+#if !defined(SWIG)
         /**
          * @brief Removes \b frame from work cell
          *
          * @param frame [in] Frame to remove
          */
-        void remove (rw::core::Ptr< rw::kinematics::Frame > frame);
+
+        DEPRECATED ("Use Frame::Ptr insted of Frame*")
+        void remove (rw::kinematics::Frame* frame);
+#endif
 
         /**
          * @brief Removes \b object from workcell
@@ -342,10 +342,16 @@ namespace rw { namespace models {
 
         /**
          * @brief Returns a default State
-         *
          * @return default State
          */
         rw::kinematics::State getDefaultState () const;
+
+        /**
+         * @brief set the default state of the WorkCell.
+         * if the given state is an older state then states valid in both
+         * new and old version will be copied to the default state.
+         */
+        void setDefaultState (const rw::kinematics::State& state);
 
         /**
          * @brief Returns sensor with the specified name.
@@ -606,7 +612,7 @@ namespace rw { namespace models {
         WorkCell (const WorkCell&);
         WorkCell& operator= (const WorkCell&);
     };
-
+#if !defined(SWIG)
     /**
      * @brief Streaming operator.
      * @param out [out] output stream to write to.
@@ -614,8 +620,11 @@ namespace rw { namespace models {
      * @return the output stream \b out .
      */
     std::ostream& operator<< (std::ostream& out, const WorkCell& workcell);
-
+#endif
     /*@}*/
 }}    // namespace rw::models
+#if defined(SWIG)
+TOSTRING_OUTOFCLASSDEF (rw::models::WorkCell);
+#endif
 
 #endif    // end include guard

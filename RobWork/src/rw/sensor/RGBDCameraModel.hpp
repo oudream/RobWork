@@ -22,7 +22,7 @@
  * @file RGBDCameraModel.hpp
  */
 #if !defined(SWIG)
-#include "SensorModel.hpp"
+#include <rw/sensor/SensorModel.hpp>
 
 #include <rw/core/Ptr.hpp>
 #endif 
@@ -47,7 +47,7 @@ namespace rw { namespace sensor {
          * @param frame documentation missing !
          * @param modelInfo [in] info string
          */
-        RGBDCameraModel (const std::string& name, rw::kinematics::Frame* frame,
+        RGBDCameraModel (const std::string& name, rw::core::Ptr<rw::kinematics::Frame> frame,
                          const std::string& modelInfo);
 
         /**

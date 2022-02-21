@@ -27,7 +27,7 @@
 
 #include <xercesc/util/XercesDefs.hpp>
 
-//#include "XercesErrorHandler.hpp"
+//#include <rw/loaders/xml/XercesErrorHandler.hpp>
 
 /*
 #include <xercesc/dom/DOM.hpp>

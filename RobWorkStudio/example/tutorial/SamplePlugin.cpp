@@ -5,7 +5,7 @@
 #include <QPushButton>
 #include <QGridLayout>
 
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
 USE_ROBWORK_NAMESPACE
 using namespace robwork;

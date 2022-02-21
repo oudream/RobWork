@@ -46,6 +46,26 @@ ParallelLeg::ParallelLeg (std::vector< Frame* > frames) : _kinematicChain (frame
     _jacobian = new Jacobian (Jacobian::zero (6, getJointDOFs ()).e ());
 }
 
+ParallelLeg::ParallelLeg (std::vector< Frame::Ptr > frames) :
+    _kinematicChain (frames.size ()), _kinematicChainPtr (frames)
+{
+    int i                                    = 0;
+    std::vector< Frame::Ptr >::iterator iter = frames.begin ();
+    for (; iter != frames.end (); ++iter) {
+        _kinematicChain[i++] = iter->get ();
+        Joint* joint         = (*iter).cast< Joint > ().get ();
+        if (joint != NULL) {
+            if (joint->isActive ()) {
+                _actuatedJoints.push_back (joint);
+            }
+            else {
+                _unactuatedJoints.push_back (joint);
+            }
+        }
+    }
+    _jacobian = new Jacobian (Jacobian::zero (6, getJointDOFs ()).e ());
+}
+
 ParallelLeg::~ParallelLeg ()
 {
     delete _jacobian;
@@ -91,7 +111,7 @@ const Jacobian& ParallelLeg::baseJend (const State& state)
     return *_jacobian;
 }
 
-Jacobian ParallelLeg::baseJframe (const Frame* frame, const State& state) const
+Jacobian ParallelLeg::baseJframe (rw::core::Ptr< const Frame > frame, const State& state) const
 {
     Jacobian jac (Jacobian::zero (6, getJointDOFs ()).e ());
 
@@ -141,8 +161,8 @@ Q ParallelLeg::getQ (const State& state) const
     std::size_t k = 0;
     for (iter = _kinematicChain.begin (); iter != _kinematicChain.end (); ++iter) {
         // if Frame is not a joint then continue
-        Frame* f = (Frame*) *iter;
-        if (Joint* joint = dynamic_cast< Joint* > (f)) {
+        rw::core::Ptr< Frame > f = (Frame*) *iter;
+        if (Joint::Ptr joint = f.cast< Joint > ()) {
             for (int d = 0; d < joint->getDOF (); d++) {
                 q[k] = f->getData (state)[d];
                 k++;
@@ -158,8 +178,8 @@ void ParallelLeg::setQ (const Q& q, State& state) const
     std::size_t k = 0;
     for (iter = _kinematicChain.begin (); iter != _kinematicChain.end (); ++iter) {
         // if Frame is not a joint then continue
-        Frame* f = (Frame*) *iter;
-        if (Joint* joint = dynamic_cast< Joint* > (f)) {
+        rw::core::Ptr< Frame > f = (Frame*) *iter;
+        if (Joint::Ptr joint = f.cast< Joint > ()) {
             f->setData (state, &q[k]);
             k += joint->getDOF ();
         }
@@ -171,7 +191,8 @@ Transform3D< double > ParallelLeg::baseTend (const State& state) const
     return Kinematics::frameTframe (_kinematicChain.front (), _kinematicChain.back (), state);
 }
 
-Transform3D< double > ParallelLeg::baseTframe (const Frame* frame, const State& state) const
+Transform3D< double > ParallelLeg::baseTframe (rw::core::Ptr< const Frame > frame,
+                                               const State& state) const
 {
     return Kinematics::frameTframe (_kinematicChain.front (), frame, state);
 }

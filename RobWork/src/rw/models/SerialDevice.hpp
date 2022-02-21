@@ -22,7 +22,7 @@
  * @file SerialDevice.hpp
  */
 #if !defined(SWIG)
-#include "JointDevice.hpp"
+#include <rw/models/JointDevice.hpp>
 
 #include <vector>
 #endif
@@ -56,7 +56,7 @@ namespace rw { namespace models {
          * @param name [in] name of device
          * @param state [in] the connectedness of the frames
          */
-        SerialDevice (rw::kinematics::Frame* first, rw::kinematics::Frame* last,
+        SerialDevice (rw::core::Ptr<rw::kinematics::Frame> first, rw::core::Ptr<rw::kinematics::Frame> last,
                       const std::string& name, const rw::kinematics::State& state);
 
         //! @brief destructor

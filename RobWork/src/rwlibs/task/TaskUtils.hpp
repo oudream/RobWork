@@ -18,8 +18,8 @@
 #ifndef RWLIBS_TASK_TASKUTILS_HPP
 #define RWLIBS_TASK_TASKUTILS_HPP
 
-#include "Target.hpp"
-#include "Task.hpp"
+#include <rwlibs/task/Target.hpp>
+#include <rwlibs/task/Task.hpp>
 
 namespace rwlibs { namespace task {
 

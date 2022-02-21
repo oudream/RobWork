@@ -24,6 +24,7 @@
 
 #include <iosfwd>
 #include <string>
+#include <stdint.h>
 #endif
 
 namespace rw { namespace common {
@@ -89,14 +90,14 @@ namespace rw { namespace common {
         ///////////////////////// WRITING
 
         void doWrite (bool val, const std::string& id);
-        void doWrite (boost::int8_t val, const std::string& id) { writeValue (val, id); };
-        void doWrite (boost::uint8_t val, const std::string& id) { writeValue (val, id); };
-        void doWrite (boost::int16_t val, const std::string& id) { writeValue (val, id); };
-        void doWrite (boost::uint16_t val, const std::string& id) { writeValue (val, id); };
-        void doWrite (boost::int32_t val, const std::string& id) { writeValue (val, id); };
-        void doWrite (boost::uint32_t val, const std::string& id) { writeValue (val, id); };
-        void doWrite (boost::int64_t val, const std::string& id) { writeValue (val, id); };
-        void doWrite (boost::uint64_t val, const std::string& id) { writeValue (val, id); };
+        void doWrite (int8_t val, const std::string& id) { writeValue (val, id); };
+        void doWrite (uint8_t val, const std::string& id) { writeValue (val, id); };
+        void doWrite (int16_t val, const std::string& id) { writeValue (val, id); };
+        void doWrite (uint16_t val, const std::string& id) { writeValue (val, id); };
+        void doWrite (int32_t val, const std::string& id) { writeValue (val, id); };
+        void doWrite (uint32_t val, const std::string& id) { writeValue (val, id); };
+        void doWrite (int64_t val, const std::string& id) { writeValue (val, id); };
+        void doWrite (uint64_t val, const std::string& id) { writeValue (val, id); };
         void doWrite (float val, const std::string& id) { writeValue (val, id); };
         void doWrite (double val, const std::string& id) { writeValue (val, id); };
         void doWrite (const std::string& val, const std::string& id);
@@ -105,35 +106,35 @@ namespace rw { namespace common {
         {
             writeValue (val, id);
         };
-        void doWrite (const std::vector< boost::int8_t >& val, const std::string& id)
+        void doWrite (const std::vector< int8_t >& val, const std::string& id)
         {
             writeValue (val, id);
         };
-        void doWrite (const std::vector< boost::uint8_t >& val, const std::string& id)
+        void doWrite (const std::vector< uint8_t >& val, const std::string& id)
         {
             writeValue (val, id);
         };
-        void doWrite (const std::vector< boost::int16_t >& val, const std::string& id)
+        void doWrite (const std::vector< int16_t >& val, const std::string& id)
         {
             writeValue (val, id);
         };
-        void doWrite (const std::vector< boost::uint16_t >& val, const std::string& id)
+        void doWrite (const std::vector< uint16_t >& val, const std::string& id)
         {
             writeValue (val, id);
         };
-        void doWrite (const std::vector< boost::int32_t >& val, const std::string& id)
+        void doWrite (const std::vector< int32_t >& val, const std::string& id)
         {
             writeValue (val, id);
         };
-        void doWrite (const std::vector< boost::uint32_t >& val, const std::string& id)
+        void doWrite (const std::vector< uint32_t >& val, const std::string& id)
         {
             writeValue (val, id);
         };
-        void doWrite (const std::vector< boost::int64_t >& val, const std::string& id)
+        void doWrite (const std::vector< int64_t >& val, const std::string& id)
         {
             writeValue (val, id);
         };
-        void doWrite (const std::vector< boost::uint64_t >& val, const std::string& id)
+        void doWrite (const std::vector< uint64_t >& val, const std::string& id)
         {
             writeValue (val, id);
         };
@@ -159,11 +160,11 @@ namespace rw { namespace common {
         //! @copydoc OutputArchive::doWrite(const std::vector<bool>&,const std::string&)
         template< class T > void writeValue (const std::vector< T >& val, const std::string& id)
         {
-            boost::uint32_t s = static_cast< boost::uint32_t > (val.size ());
+            uint32_t s = static_cast< uint32_t > (val.size ());
             if (val.size () != static_cast< std::size_t > (s))
                 RW_THROW ("BINArchive could not write values, as the vector is too long!");
             _ofs->write ((char*) &s, sizeof (s));
-            for (boost::uint32_t i = 0; i < s; i++) {
+            for (uint32_t i = 0; i < s; i++) {
                 const T& rval = val[i];
                 _ofs->write ((char*) &rval, sizeof (rval));
             }
@@ -186,8 +187,8 @@ namespace rw { namespace common {
         {
             typedef
                 typename Eigen::DenseCoeffsBase< Derived, Eigen::ReadOnlyAccessors >::Index Index;
-            boost::uint32_t m = static_cast< boost::uint32_t > (val.rows ());
-            boost::uint32_t n = static_cast< boost::uint32_t > (val.cols ());
+            uint32_t m = static_cast< uint32_t > (val.rows ());
+            uint32_t n = static_cast< uint32_t > (val.cols ());
             if (val.rows () != static_cast< Index > (m) || val.cols () != static_cast< Index > (n))
                 RW_THROW ("BINArchive could not write matrix, as it is too big!");
             _ofs->write ((char*) &m, sizeof (m));
@@ -203,72 +204,72 @@ namespace rw { namespace common {
         ///////////////// READING
 
         virtual void doRead (bool& val, const std::string& id);
-        virtual void doRead (boost::int8_t& val, const std::string& id)
+        virtual void doRead (int8_t& val, const std::string& id)
         {
-            readValue< boost::int8_t > (val, id);
+            readValue< int8_t > (val, id);
         }
-        virtual void doRead (boost::uint8_t& val, const std::string& id)
+        virtual void doRead (uint8_t& val, const std::string& id)
         {
-            readValue< boost::uint8_t > (val, id);
+            readValue< uint8_t > (val, id);
         }
-        virtual void doRead (boost::int16_t& val, const std::string& id)
+        virtual void doRead (int16_t& val, const std::string& id)
         {
-            readValue< boost::int16_t > (val, id);
+            readValue< int16_t > (val, id);
         }
-        virtual void doRead (boost::uint16_t& val, const std::string& id)
+        virtual void doRead (uint16_t& val, const std::string& id)
         {
-            readValue< boost::uint16_t > (val, id);
+            readValue< uint16_t > (val, id);
         }
-        virtual void doRead (boost::int32_t& val, const std::string& id)
+        virtual void doRead (int32_t& val, const std::string& id)
         {
-            readValue< boost::int32_t > (val, id);
+            readValue< int32_t > (val, id);
         }
-        virtual void doRead (boost::uint32_t& val, const std::string& id)
+        virtual void doRead (uint32_t& val, const std::string& id)
         {
-            readValue< boost::uint32_t > (val, id);
+            readValue< uint32_t > (val, id);
         }
-        virtual void doRead (boost::int64_t& val, const std::string& id)
+        virtual void doRead (int64_t& val, const std::string& id)
         {
-            readValue< boost::int64_t > (val, id);
+            readValue< int64_t > (val, id);
         }
-        virtual void doRead (boost::uint64_t& val, const std::string& id)
+        virtual void doRead (uint64_t& val, const std::string& id)
         {
-            readValue< boost::uint64_t > (val, id);
+            readValue< uint64_t > (val, id);
         }
         virtual void doRead (float& val, const std::string& id) { readValue< float > (val, id); }
         virtual void doRead (double& val, const std::string& id) { readValue< double > (val, id); }
         virtual void doRead (std::string& val, const std::string& id);
 
         virtual void doRead (std::vector< bool >& val, const std::string& id);
-        virtual void doRead (std::vector< boost::int8_t >& val, const std::string& id)
+        virtual void doRead (std::vector< int8_t >& val, const std::string& id)
         {
             readValue (val, id);
         }
-        virtual void doRead (std::vector< boost::uint8_t >& val, const std::string& id)
+        virtual void doRead (std::vector< uint8_t >& val, const std::string& id)
         {
             readValue (val, id);
         }
-        virtual void doRead (std::vector< boost::int16_t >& val, const std::string& id)
+        virtual void doRead (std::vector< int16_t >& val, const std::string& id)
         {
             readValue (val, id);
         }
-        virtual void doRead (std::vector< boost::uint16_t >& val, const std::string& id)
+        virtual void doRead (std::vector< uint16_t >& val, const std::string& id)
         {
             readValue (val, id);
         }
-        virtual void doRead (std::vector< boost::int32_t >& val, const std::string& id)
+        virtual void doRead (std::vector< int32_t >& val, const std::string& id)
         {
             readValue (val, id);
         }
-        virtual void doRead (std::vector< boost::uint32_t >& val, const std::string& id)
+        virtual void doRead (std::vector< uint32_t >& val, const std::string& id)
         {
             readValue (val, id);
         }
-        virtual void doRead (std::vector< boost::int64_t >& val, const std::string& id)
+        virtual void doRead (std::vector< int64_t >& val, const std::string& id)
         {
             readValue (val, id);
         }
-        virtual void doRead (std::vector< boost::uint64_t >& val, const std::string& id)
+        virtual void doRead (std::vector< uint64_t >& val, const std::string& id)
         {
             readValue (val, id);
         }
@@ -291,11 +292,11 @@ namespace rw { namespace common {
         //! @copydoc InputArchive::doRead(std::vector<bool>&,const std::string&)
         template< class T > void readValue (std::vector< T >& val, const std::string& id)
         {
-            boost::uint32_t s = 0;
-            _ifs->read ((char*) &s, sizeof (boost::uint32_t));
+            uint32_t s = 0;
+            _ifs->read ((char*) &s, sizeof (uint32_t));
             // std::cout << "LEN:" << s << std::endl;
             val.resize (s);
-            for (boost::uint32_t i = 0; i < s; i++) {
+            for (uint32_t i = 0; i < s; i++) {
                 T& tmp = val[i];
                 _ifs->read ((char*) &(tmp), sizeof (T));
             }
@@ -317,10 +318,10 @@ namespace rw { namespace common {
         void readMatrix (Eigen::PlainObjectBase< Derived >& val, const std::string& id)
         {
             typedef typename Eigen::PlainObjectBase< Derived >::Index Index;
-            boost::uint32_t m = 0;
-            boost::uint32_t n = 0;
-            _ifs->read ((char*) &m, sizeof (boost::uint32_t));
-            _ifs->read ((char*) &n, sizeof (boost::uint32_t));
+            uint32_t m = 0;
+            uint32_t n = 0;
+            _ifs->read ((char*) &m, sizeof (uint32_t));
+            _ifs->read ((char*) &n, sizeof (uint32_t));
             val.resize (m, n);
             for (Index i = 0; i < val.rows (); i++) {
                 for (Index j = 0; j < val.cols (); j++) {

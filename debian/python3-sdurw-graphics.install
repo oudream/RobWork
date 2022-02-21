@@ -1,0 +1,5 @@
+usr/lib/*/dist-packages/sdurw_graphics/sdurw_graphics.py
+usr/lib/*/dist-packages/sdurw_graphics/_sdurw_graphics*.so
+usr/lib/*/dist-packages/sdurw_graphics/__init__.py
+usr/share/robwork-*/cmake/targets/sdurw_graphics_py.cmake
+usr/share/robwork-*/cmake/targets/sdurw_graphics_py-*.cmake

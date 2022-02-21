@@ -19,12 +19,12 @@
 #define RWLIBS_SIMULATION_SIMULATEDSCANNER25D_HPP_
 
 //! @file SimulatedScanner25D.hpp
-
-#include "SimulatedSensor.hpp"
+#if !defined(SWIG)
+#include <rwlibs/simulation/SimulatedSensor.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rw/sensor/Scanner25D.hpp>
-
+#endif
 namespace rwlibs { namespace simulation {
     class FrameGrabber25D;
 
@@ -35,7 +35,7 @@ namespace rwlibs { namespace simulation {
      * @brief a simulated range scanner for 2.5D images, that is basically
      * pointclouds without color information.
      */
-    class SimulatedScanner25D : public SimulatedSensor
+    class SimulatedScanner25D : public rwlibs::simulation::SimulatedSensor
     {
       public:
         //! @brief smart pointer type of this class
@@ -48,8 +48,8 @@ namespace rwlibs { namespace simulation {
          * @param frame [in] the frame the scanner is attached to.
          * @param framegrabber [in] the framegrabber used for grabbing 2.5D images
          */
-        SimulatedScanner25D (const std::string& name, rw::kinematics::Frame* frame,
-                             rw::core::Ptr< FrameGrabber25D > framegrabber);
+        SimulatedScanner25D (const std::string& name, rw::core::Ptr<rw::kinematics::Frame> frame,
+                             rw::core::Ptr< rwlibs::simulation::FrameGrabber25D > framegrabber);
 
         /**
          * @brief constructor
@@ -59,8 +59,8 @@ namespace rwlibs { namespace simulation {
          * @param framegrabber [in] the framegrabber used for grabbing 2.5D images
          */
         SimulatedScanner25D (const std::string& name, const std::string& desc,
-                             rw::kinematics::Frame* frame,
-                             rw::core::Ptr< FrameGrabber25D > framegrabber);
+                             rw::core::Ptr<rw::kinematics::Frame> frame,
+                             rw::core::Ptr< rwlibs::simulation::FrameGrabber25D > framegrabber);
 
         /**
          * @brief destructor
@@ -110,11 +110,11 @@ namespace rwlibs { namespace simulation {
          * simulator
          * @param instance [in] the simulator in which the handle is active
          */
-        rw::sensor::Sensor::Ptr getSensorHandle (rwlibs::simulation::Simulator::Ptr instance);
+        rw::core::Ptr<rw::sensor::Sensor> getSensorHandle (rw::core::Ptr<rwlibs::simulation::Simulator> instance);
 
         //! get instance of scanner
-        rw::sensor::Scanner25D::Ptr
-        getScanner25DSensor (rwlibs::simulation::Simulator::Ptr instance);
+        rw::core::Ptr<rw::sensor::Scanner25D>
+        getScanner25DSensor (rw::core::Ptr<rwlibs::simulation::Simulator> instance);
 
       private:
         rw::core::Ptr< FrameGrabber25D > _framegrabber;

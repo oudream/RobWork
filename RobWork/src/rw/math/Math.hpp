@@ -22,11 +22,11 @@
  * @file rw/math/Math.hpp
  */
 #if !defined(SWIG)
-#include "EAA.hpp"
-#include "Q.hpp"
-#include "Quaternion.hpp"
-#include "RPY.hpp"
-#include "Transform3D.hpp"
+#include <rw/math/EAA.hpp>
+#include <rw/math/Q.hpp>
+#include <rw/math/Quaternion.hpp>
+#include <rw/math/RPY.hpp>
+#include <rw/math/Transform3D.hpp>
 
 #include <algorithm>
 #include <cmath>

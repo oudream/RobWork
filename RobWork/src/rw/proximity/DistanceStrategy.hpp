@@ -22,7 +22,7 @@
  */
 
 #if !defined(SWIG)
-#include "ProximityStrategy.hpp"
+#include <rw/proximity/ProximityStrategy.hpp>
 
 #include <rw/core/ExtensionPoint.hpp>
 #include <rw/core/Ptr.hpp>
@@ -60,10 +60,10 @@ namespace rw { namespace proximity {
             {}
 
             //! @brief reference to the first frame
-            const kinematics::Frame* f1;
+            rw::core::Ptr<const kinematics::Frame> f1;
 
             //! @brief reference to the second frame
-            const kinematics::Frame* f2;
+            rw::core::Ptr<const kinematics::Frame> f2;
 
             /**
              * @brief pointer to the ProximityModel containing the geometries for the first frame
@@ -153,8 +153,8 @@ namespace rw { namespace proximity {
          * @return shortest distance if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * separated and not in collision.
          */
-        Result distance (const kinematics::Frame* a, const math::Transform3D<double>& wTa,
-                         const kinematics::Frame* b, const math::Transform3D<double>& wTb);
+        Result distance (const rw::core::Ptr<kinematics::Frame> a, const math::Transform3D<double>& wTa,
+                         const rw::core::Ptr<kinematics::Frame> b, const math::Transform3D<double>& wTb);
 
         /**
          * @brief Calculates the distance between two given frames @f$ \mathcal{F}_a @f$ and
@@ -170,8 +170,8 @@ namespace rw { namespace proximity {
          * @return shortest distance if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * separated and not in collision.
          */
-        Result& distance (const kinematics::Frame* a, const math::Transform3D<double>& wTa,
-                          const kinematics::Frame* b, const math::Transform3D<double>& wTb,
+        Result& distance (const rw::core::Ptr<kinematics::Frame> a, const math::Transform3D<double>& wTa,
+                          const rw::core::Ptr<kinematics::Frame> b, const math::Transform3D<double>& wTb,
                           class ProximityStrategyData& data);
 
         /**
@@ -210,8 +210,8 @@ namespace rw { namespace proximity {
          * @return shortest distance if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * separated and not in collision.
          */
-        Result distance (const kinematics::Frame* a, const math::Transform3D<double>& wTa,
-                         const kinematics::Frame* b, const math::Transform3D<double>& wTb,
+        Result distance (const rw::core::Ptr<kinematics::Frame> a, const math::Transform3D<double>& wTa,
+                         const rw::core::Ptr<kinematics::Frame> b, const math::Transform3D<double>& wTb,
                          double threshold);
 
         /**
@@ -227,9 +227,9 @@ namespace rw { namespace proximity {
          * @return shortest distance if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * separated and not in collision.
          */
-        DistanceStrategy::Result& distance (const kinematics::Frame* a,
+        DistanceStrategy::Result& distance (const rw::core::Ptr<kinematics::Frame> a,
                                             const math::Transform3D<double>& wTa,
-                                            const kinematics::Frame* b,
+                                            const rw::core::Ptr<kinematics::Frame> b,
                                             const math::Transform3D<double>& wTb, double threshold,
                                             ProximityStrategyData& data);
 

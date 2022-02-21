@@ -156,16 +156,16 @@ if(build)
                     )
                 endif()
 
-                if(SWIG_DEFAULT_COMPILE OR CMAKE_VERSION VERSION_GREATER 3.16.0)
-                    install(TARGETS ${RW_MODULE}_lua_plugin.rwplugin
-                            LIBRARY DESTINATION ${RW_PLUGIN_INSTALL_DIR}
-                    )
-                endif()
+                install(TARGETS ${RW_MODULE}_lua_plugin.rwplugin
+                        EXPORT ${PROJECT_PREFIX}_${RW_MODULE}_lua_plugin.rwpluginTargets
+                        LIBRARY DESTINATION ${RW_PLUGIN_INSTALL_DIR}
+                )
             endif()
 
 
             # ############### Linking #####################
             get_in_map(depends RW_SUBSYS_DEPEND ${RW_MODULE})
+            
             target_link_libraries(${RW_MODULE}_lua  PUBLIC ${RW_MODULE} ${depends} ${LUA_LIBRARIES})
             if(CMAKE_VERSION VERSION_GREATER 3.12.0)
                 list(TRANSFORM depends APPEND "_lua_s")
@@ -178,6 +178,7 @@ if(build)
                 set(depends "${cpd}")
                 set(depends2 "${cpd}")
             endif()
+
             if(${RW_MODULE} STREQUAL "sdurw_core")
                 target_link_libraries(${RW_MODULE}_lua_s PUBLIC ${RW_MODULE} ${depends} ${LUA_LIBRARIES})
             else()
@@ -204,15 +205,29 @@ if(build)
 
         endif()
 
-        get_in_map(depends RW_SUBSYS_DEPEND ${RW_MODULE})
-        foreach(dep ${depends})
-            add_dependencies(${TARGET_NAME} ${lua_NAME_${dep}})
-        endforeach()
+        #get_in_map(depends RW_SUBSYS_DEPEND ${RW_MODULE})
+        #foreach(dep ${depends})
+        #    add_dependencies(${TARGET_NAME} ${lua_NAME_${dep}})
+        #endforeach()
 
     endforeach()
 
     install(TARGETS ${SUBSYS_NAME}_all EXPORT ${PROJECT_PREFIX}luaTargets)
 
     rw_swig_compile_target(lua ${lua_targets})
+
+    foreach(name ${lua_targets})
+        export(
+            EXPORT ${PROJECT_PREFIX}_${name}Targets
+            FILE "${${PROJECT_PREFIX}_ROOT}/cmake/targets/${name}.cmake"
+            NAMESPACE ${PROJECT_PREFIX}::
+        )
+        install(
+            EXPORT ${PROJECT_PREFIX}_${name}Targets
+            FILE ${name}.cmake
+            NAMESPACE ${PROJECT_PREFIX}::
+            DESTINATION ${RW_INSTALL_DIR}/cmake/targets
+        )
+    endforeach()
 
 endif()

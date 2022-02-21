@@ -22,7 +22,7 @@
  * @file DrawableFactory.hpp
  */
 
-#include "Drawable.hpp"
+#include <rwlibs/opengl/Drawable.hpp>
 
 #include <rw/common/FileCache.hpp>
 

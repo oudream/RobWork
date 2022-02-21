@@ -23,8 +23,8 @@
  */
 
 #if !defined(SWIG)
-#include "Rotation3D.hpp"
-#include "Vector3D.hpp"
+#include <rw/math/Rotation3D.hpp>
+#include <rw/math/Vector3D.hpp>
 
 #include <rw/common/Serializable.hpp>
 
@@ -231,6 +231,37 @@ namespace rw { namespace math {
         TOSTRING (rw::math::InertiaMatrix< T >);
 #endif
 
+
+        /**
+         * @brief Comparison operator.
+         *
+         * The comparison operator makes a element wise comparison.
+         * Returns true only if all elements are equal.
+         *
+         * @param rhs [in] InertiaMatrix to compare with
+         * @return True if equal.
+         */
+        bool operator== (const InertiaMatrix& rhs) const
+        {
+            for (int i = 0; i < 3; i++)
+                for (int j = 0; j < 3; j++)
+                    if (!(_matrix (i, j) == rhs (i, j)))
+                        return false;
+            return true;
+        }
+
+        /**
+         * @brief Comparison operator.
+         *
+         * The comparison operator makes a element wise comparison.
+         * Returns true if any of the elements are different.
+         *
+         * @param rhs [in] InertiaMatrix to compare with
+         * @return True if not equal.
+         */
+        bool operator!= (const InertiaMatrix& rhs) const { return !(*this == rhs); }
+
+
         /**
          * @brief Make inertia matrix for a solid sphere.
          * @param mass [in] mass of solid sphere.
@@ -276,6 +307,15 @@ namespace rw { namespace math {
                                        0,
                                        (T) (1 / 12.0 * mass * (x * x + y * y)));
         }
+        
+        /**
+         * @brief get The diagonal of the Matrix
+         * @return Vector3D< T > 
+         */
+        rw::math::Vector3D< T > diag () const
+        {
+            return Vector3D< T > (_matrix (0, 0), _matrix (1, 1), _matrix (2, 2));
+        }
 
       private:
         Base _matrix;
@@ -294,8 +334,8 @@ namespace rw { namespace math {
      * @f$ \robabx{b}{a}{\mathbf{R}} = \robabx{a}{b}{\mathbf{R}}^{-1} =
      * \robabx{a}{b}{\mathbf{R}}^T @f$
      */
-    
-    #endif 
+
+#endif
     template< class Q > InertiaMatrix< Q > inverse (const InertiaMatrix< Q >& aRb)
     {
         return InertiaMatrix< Q > (aRb.e ().inverse ());

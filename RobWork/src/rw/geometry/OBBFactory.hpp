@@ -19,10 +19,9 @@
 #define RW_GEOMETRY_OBBFACTORY_HPP_
 
 #if !defined(SWIG)
-#include "BV.hpp"
-#include "OBB.hpp"
-
+#include <rw/geometry/BV.hpp>
 #include <rw/geometry/Covariance.hpp>
+#include <rw/geometry/OBB.hpp>
 #include <rw/geometry/QHull3D.hpp>
 #include <rw/geometry/analytic/Shell.hpp>
 #include <rw/math/EigenDecomposition.hpp>
@@ -265,7 +264,7 @@ namespace rw { namespace geometry {
     SWIG_DECLARE_TEMPLATE (BVFactoryOBB_f, rw::geometry::BVFactory< rw::geometry::OBB< float > >);
 #if SWIG_VERSION < 0x040000
     SWIG_DECLARE_TEMPLATE (OBBFactory_d, rw::geometry::OBBFactory< double >);
-    ADD_DEFINITION (OBBFactory_d, OBBFactory)
+    ADD_DEFINITION (OBBFactory_d, OBBFactory, sdurw_geometry)
 #else
     SWIG_DECLARE_TEMPLATE (OBBFactory, rw::geometry::OBBFactory< double >);
 #endif

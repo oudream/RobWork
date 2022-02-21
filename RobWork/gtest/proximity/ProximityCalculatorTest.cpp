@@ -47,7 +47,7 @@ TEST (ProximityCalculator, DistanceStrategyConstructor)
         wc, ProximityStrategyFactory::makeDefaultDistanceStrategy ());
 
     EXPECT_DOUBLE_EQ (calc.getComputationTime (), 0.0);
-    EXPECT_EQ (calc.getNoOfCalls (), 0);
+    EXPECT_EQ (calc.getNoOfCalls (), 0u);
 
     std::string IDs[4] = {"Box1d", "Box2d", "Box3d", "Box4d"};
     int i              = 0;

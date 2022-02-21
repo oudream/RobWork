@@ -29,6 +29,8 @@ if(build)
     include(UseJava)
     include(UseSWIG)
 
+    add_library(${SUBSYS_NAME} INTERFACE)
+
     set(build_doc TRUE)
     if(WIN32 OR CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         set(build_doc FALSE)
@@ -75,6 +77,8 @@ if(build)
                   ${RW_LIBS}/sdurw_sensor_java.jar
                   ${RW_LIBS}/sdurw_models_java.jar
                   ${RW_LIBS}/sdurw_proximity_java.jar
+                  ${RW_LIBS}/sdurw_graphics_java.jar
+                  ${RW_LIBS}/sdurw_trajectory_java.jar
         JAVADOC_LINK ${RW_LIBS}/javadoc/sdurw
                      ${RW_LIBS}/javadoc/sdurw_core
                      ${RW_LIBS}/javadoc/sdurw_common
@@ -84,6 +88,8 @@ if(build)
                      ${RW_LIBS}/javadoc/sdurw_sensor
                      ${RW_LIBS}/javadoc/sdurw_models
                      ${RW_LIBS}/javadoc/sdurw_proximity
+                     ${RW_LIBS}/javadoc/sdurw_graphics
+                     ${RW_LIBS}/javadoc/sdurw_trajectory
         WINDOW_TITLE "RobWorkSim Java API Documentation"
                      LOADER_SOURCE_FILE "${CMAKE_CURRENT_SOURCE_DIR}/LoaderRWSim.java"
                      LOADER_DST_FILE "java_src_sdurwsim/org/robwork/LoaderRWSim.java" BUILD_DOC
@@ -108,7 +114,26 @@ if(build)
     )
     set(CMAKE_SWIG_OUTDIR ${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 
+    if(SWIG_DEFAULT_COMPILE OR CMAKE_VERSION VERSION_GREATER 3.16.0)
+        target_link_libraries(${SUBSYS_NAME} INTERFACE sdurws_jni)
+    endif()
+
+    install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}javaTargets)
+    add_library(${PROJECT_PREFIX}::${SUBSYS_NAME} ALIAS ${SUBSYS_NAME})
+
     rw_swig_compile_target(
         java sdurwsim_jni ${java_NAME_sdurwsim}_java_doc ${java_NAME_sdurwsim}_libs
+    )
+
+    export(
+        EXPORT ${PROJECT_PREFIX}_sdurwsim_jniTargets
+        FILE "${${PROJECT_PREFIX}_ROOT}/cmake/targets/sdurwsim_jni.cmake"
+        NAMESPACE ${PROJECT_PREFIX}::
+    )
+    install(
+        EXPORT ${PROJECT_PREFIX}_sdurwsim_jniTargets
+        FILE sdurwsim_jni.cmake
+        NAMESPACE ${PROJECT_PREFIX}::
+        DESTINATION ${RWSIM_INSTALL_DIR}/cmake/targets
     )
 endif()

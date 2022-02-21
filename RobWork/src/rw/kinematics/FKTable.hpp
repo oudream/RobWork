@@ -22,8 +22,8 @@
  * @file FKTable.hpp
  */
 #if !defined(SWIG)
-#include "FrameMap.hpp"
-#include "State.hpp"
+#include <rw/kinematics/FrameMap.hpp>
+#include <rw/kinematics/State.hpp>
 
 #include <rw/math/Transform3D.hpp>
 #endif
@@ -74,7 +74,7 @@ namespace rw { namespace kinematics {
         const rw::math::Transform3D<>& get (const rw::kinematics::Frame& frame) const;
 
         //! @copydoc get(const Frame&) const
-        inline const rw::math::Transform3D<>& get (const rw::kinematics::Frame* frame) const { return get (*frame); }
+        inline const rw::math::Transform3D<>& get ( rw::core::Ptr<const rw::kinematics::Frame> frame) const { return get (*frame); }
 
         /**
          * @brief Returns State associated with the FKTable

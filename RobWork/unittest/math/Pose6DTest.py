@@ -23,7 +23,7 @@ import sdurw_math
 class Pose6DTest(unittest.TestCase):
 
     def test_Pose6D(self):
-        p = sdurw_math.Pose6Dd(1.1,2.2,3.3,4.4,5.5,6.6)
+        p = sdurw_math.Pose6D(1.1,2.2,3.3,4.4,5.5,6.6)
 
         self.assertEqual(p[0] , 1.1)
         self.assertEqual(p[1] , 2.2)
@@ -36,6 +36,16 @@ class Pose6DTest(unittest.TestCase):
         pf = sdurw_math.castToFloat(p)
         for i in range(6):
             self.assertAlmostEqual(pf[i],p[i],delta=1e-7)
+
+    def test_Pose6D_Conversion(self):
+        #Test conversion, if it contains "Swig Object" then it is a failure
+        obj1 = sdurw_math.Pose6D()
+        s = str(obj1)
+        self.assertNotIn("Swig Object", s)
+
+        obj1f = sdurw_math.Pose6Df()
+        s = str(obj1f)
+        self.assertNotIn("Swig Object", s)
 
 
 if __name__ == '__main__':

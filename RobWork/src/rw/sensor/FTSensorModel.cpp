@@ -19,7 +19,7 @@
 
 using namespace rw::sensor;
 
-FTSensorModel::FTSensorModel (const std::string& name, rw::kinematics::Frame* frame,
+FTSensorModel::FTSensorModel (const std::string& name, rw::core::Ptr<rw::kinematics::Frame> frame,
                               const std::string& desc) :
     SensorModel (name, frame, desc)
 {

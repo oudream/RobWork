@@ -113,12 +113,6 @@ configure_file(${RWSIM_ROOT}/src/rwsimlibs/gui/RWSimGuiConfig.hpp.in
 # process sub directories add_subdirectory(ext)
 add_subdirectory(src)
 
-export(
-    EXPORT ${PROJECT_PREFIX}Targets
-    FILE "${RWSIM_ROOT}/cmake/${PROJECT_NAME}Targets.cmake"
-    NAMESPACE ${PROJECT_PREFIX}::
-)
-
 # ##################################################################################################
 # Installation stuff
 #
@@ -140,13 +134,6 @@ install(FILES DESTINATION ${RWSIM_INSTALL_DIR}/cmake)
 
 # misc
 install(FILES LICENSE.txt NOTICE.txt DESTINATION "${RWSIM_INSTALL_DIR}/")
-
-install(
-    EXPORT ${PROJECT_PREFIX}Targets
-    FILE ${PROJECT_NAME}Targets.cmake
-    NAMESPACE ${PROJECT_PREFIX}::
-    DESTINATION ${RWSIM_INSTALL_DIR}/cmake
-)
 
 # ##################################################################################################
 # setup testing

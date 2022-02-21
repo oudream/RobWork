@@ -50,7 +50,7 @@ class Scanner25DWrapper : public rw::sensor::Scanner25D
 
 }    // namespace
 
-SimulatedScanner25D::SimulatedScanner25D (const std::string& name, rw::kinematics::Frame* frame,
+SimulatedScanner25D::SimulatedScanner25D (const std::string& name, rw::core::Ptr<rw::kinematics::Frame> frame,
                                           FrameGrabber25D::Ptr framegrabber) :
     SimulatedSensor (rw::core::ownedPtr (
         new Scanner25DModel (name, static_cast< int > (framegrabber->getWidth ()),
@@ -60,7 +60,7 @@ SimulatedScanner25D::SimulatedScanner25D (const std::string& name, rw::kinematic
 {}
 
 SimulatedScanner25D::SimulatedScanner25D (const std::string& name, const std::string& desc,
-                                          rw::kinematics::Frame* frame,
+                                          rw::core::Ptr<rw::kinematics::Frame> frame,
                                           FrameGrabber25D::Ptr framegrabber) :
     SimulatedSensor (rw::core::ownedPtr (
         new Scanner25DModel (name, static_cast< int > (framegrabber->getWidth ()),

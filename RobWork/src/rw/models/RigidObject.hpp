@@ -19,7 +19,7 @@
 #define RW_MODELS_RIGIDOBJECT_HPP_
 
 #if !defined(SWIG)
-#include "Object.hpp"
+#include <rw/models/Object.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rw/geometry/Geometry.hpp>
@@ -57,21 +57,21 @@ namespace rw { namespace models {
          * @brief constructor
          * @param baseFrame [in] base frame of the object
          */
-        RigidObject (rw::kinematics::Frame* baseframe);
+        RigidObject (rw::core::Ptr<rw::kinematics::Frame> baseframe);
 
         /**
          * @brief constructor
          * @param baseFrame [in] base frame of the object
          * @param geom [in] the Geometry Forming the object
          */
-        RigidObject (rw::kinematics::Frame* baseframe, rw::geometry::Geometry::Ptr geom);
+        RigidObject (rw::core::Ptr<rw::kinematics::Frame> baseframe, rw::geometry::Geometry::Ptr geom);
 
         /**
          * @brief constructor
          * @param baseFrame [in] base frame of the object
          * @param geom [in] the Geometry Forming the object
          */
-        RigidObject (rw::kinematics::Frame* baseframe,
+        RigidObject (rw::core::Ptr<rw::kinematics::Frame> baseframe,
                      std::vector< rw::geometry::Geometry::Ptr > geom);
 
         /**

@@ -157,7 +157,7 @@ namespace rw { namespace kinematics {
 #else
     #if SWIG_VERSION < 0x040000
     SWIG_DECLARE_TEMPLATE (FrameMap_d, rw::kinematics::FrameMap< double >);
-    ADD_DEFINITION (FrameMap_d, FrameMap)
+    ADD_DEFINITION (FrameMap_d, FrameMap,sdurw_geometry)
 #else
     SWIG_DECLARE_TEMPLATE (FrameMap, rw::kinematics::FrameMap< double >);
 #endif

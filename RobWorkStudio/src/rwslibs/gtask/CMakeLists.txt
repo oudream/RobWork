@@ -1,6 +1,14 @@
 set(SUBSYS_NAME sdurws_gtask)
 set(SUBSYS_DESC "A sensor view plugin")
-set(SUBSYS_DEPS sdurws)
+set(SUBSYS_DEPS
+    PUBLIC  sdurws
+            RW::sdurw_core
+    PRIVATE RW::sdurw_task
+            RW::sdurw_opengl
+            RW::sdurw_kinematics
+            RW::sdurw_graphics
+            RW::sdurw_geometry
+)
 
 set(build TRUE)
 rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON DEPENDS ${SUBSYS_DEPS} ADD_DOC)
@@ -44,8 +52,9 @@ if(build)
     )
     target_link_libraries(
         ${SUBSYS_NAME}
-        PUBLIC ${SUBSYS_DEPS} ${QT_LIBRARIES}
-        PRIVATE ${OPENGL_LIBRARIES} RW::sdurw_task RW::sdurw
+        ${SUBSYS_DEPS}
+        PUBLIC ${QT_LIBRARIES}
+        PRIVATE ${OPENGL_LIBRARIES}
     )
     target_include_directories(
         ${SUBSYS_NAME}

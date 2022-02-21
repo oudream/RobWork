@@ -17,11 +17,12 @@
 
 #ifndef RW_PATHPLANNING_PATHANALYZER_HPP_
 #define RW_PATHPLANNING_PATHANALYZER_HPP_
-
+#if !defined(SWIG)
 #include <rw/math/Metric.hpp>
 #include <rw/math/Q.hpp>
 #include <rw/math/Vector3D.hpp>
 #include <rw/trajectory/Path.hpp>
+#endif
 
 /**
  * @file PathAnalyzer.hpp
@@ -169,7 +170,7 @@ namespace rw { namespace pathplanning {
          * @return Result of the analysis.
          */
         CartesianAnalysis analyzeCartesian (const rw::trajectory::QPath& path,
-                                            const rw::kinematics::Frame* frame);
+                                            const rw::core::Ptr< rw::kinematics::Frame > frame);
 
         /**
          * @brief Peforms analysis of the time

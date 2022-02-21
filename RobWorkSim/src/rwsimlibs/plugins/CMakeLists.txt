@@ -8,7 +8,15 @@ set(RccSrcFiles resources.qrc)
 #
 set(SUBSYS_NAME RWSimulatorPlugin)
 set(SUBSYS_DESC "A RobWorkStudioPlugin.")
-set(SUBSYS_DEPS RWS::sdurws RW::sdurw_simulation RW::sdurw_opengl RW::sdurw sdurwsim)
+set(SUBSYS_DEPS
+    PUBLIC  RWS::sdurws
+            RW::sdurw_trajectory
+            RW::sdurw_math
+            RW::sdurw_core
+    PRIVATE sdurwsim
+            RW::sdurw_simulation
+            RW::sdurw_opengl
+)
 
 set(build TRUE)
 set(DEFAULT TRUE)
@@ -26,10 +34,7 @@ if(build)
     add_library(${SUBSYS_NAME} MODULE ${SrcFiles} ${HppFiles} ${RccSrcFiles})
     target_link_libraries(
         ${SUBSYS_NAME}
-        PRIVATE sdurwsim
-        PUBLIC RWS::sdurws
-        PRIVATE RW::sdurw_simulation RW::sdurw_opengl
-        PUBLIC RW::sdurw
+        ${SUBSYS_DEPS}
     )
 
     # to avoid windows compile bug
@@ -55,7 +60,12 @@ endif()
 #
 set(SUBSYS_NAME SimUtilityPlugin)
 set(SUBSYS_DESC "A RobWorkStudioPlugin.")
-set(SUBSYS_DEPS sdurwsim_gui sdurwsim RWS::sdurws RW::sdurw)
+set(SUBSYS_DEPS
+    PRIVATE sdurwsim_gui
+            sdurwsim
+    PUBLIC  RWS::sdurws
+            RW::sdurw_core
+)
 
 set(build TRUE)
 set(DEFAULT TRUE)
@@ -75,8 +85,7 @@ if(build)
     add_library(${SUBSYS_NAME} MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles})
     target_link_libraries(
         ${SUBSYS_NAME}
-        PRIVATE sdurwsim_gui sdurwsim
-        PUBLIC RWS::sdurws RW::sdurw
+        ${SUBSYS_DEPS}
     )
     if(MSVC) # to avoid multiple access to resource file
         add_dependencies(${SUBSYS_NAME} RWSimulatorPlugin)
@@ -91,7 +100,14 @@ endif()
 #
 set(SUBSYS_NAME GraspTableGeneratorPlugin)
 set(SUBSYS_DESC "A RobWorkStudioPlugin.")
-set(SUBSYS_DEPS sdurwsim_gui sdurwsim RWS::sdurws RW::sdurw)
+set(SUBSYS_DEPS
+    PUBLIC  sdurwsim_gui
+            sdurwsim
+            RWS::sdurws
+            RW::sdurw_kinematics
+            RW::sdurw_core
+    PRIVATE RW::sdurw_loaders
+)
 
 set(build TRUE)
 set(DEFAULT TRUE)
@@ -109,7 +125,7 @@ if(build)
 
     # The shared library to build:
     add_library(${SUBSYS_NAME} MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles})
-    target_link_libraries(${SUBSYS_NAME} PUBLIC sdurwsim_gui sdurwsim RWS::sdurws RW::sdurw)
+    target_link_libraries(${SUBSYS_NAME} ${SUBSYS_DEPS})
 
     # Need to add the current binary dir to the include directory because the generated source files
     # are placed here
@@ -129,13 +145,15 @@ endif()
 set(SUBSYS_NAME RWSimPlugin)
 set(SUBSYS_DESC "A RobWorkStudioPlugin.")
 set(SUBSYS_DEPS
-    sdurwsim_gui
-    sdurwsim
-    RWS::sdurws
-    RW::sdurw_opengl
-    RW::sdurw_simulation
-    RW::sdurw_control
-    RW::sdurw
+    PUBLIC  sdurwsim
+            RWS::sdurws
+            RW::sdurw_trajectory
+            RW::sdurw_core
+    PRIVATE sdurwsim_gui
+            RW::sdurw_opengl
+            RW::sdurw_simulation
+            RW::sdurw_control
+            RW::sdurw_models
 )
 
 set(build TRUE)
@@ -165,12 +183,8 @@ if(build)
 
     target_link_libraries(
         ${SUBSYS_NAME}
-        PRIVATE sdurwsim_gui
-        PUBLIC sdurwsim
+        ${SUBSYS_DEPS}
         PRIVATE ${RWSIM_LUA_LIB}
-        PUBLIC RWS::sdurws
-        PRIVATE RW::sdurw_opengl RW::sdurw_simulation RW::sdurw_control
-        PUBLIC RW::sdurw
     )
 
     # Need to add the current binary dir to the include directory because the generated source files
@@ -190,7 +204,13 @@ endif()
 #
 set(SUBSYS_NAME SimTaskPlugin)
 set(SUBSYS_DESC "A RobWorkStudioPlugin.")
-set(SUBSYS_DEPS sdurwsim_gui sdurwsim RWS::sdurws RW::sdurw_task RW::sdurw_opengl RW::sdurw)
+set(SUBSYS_DEPS
+    PUBLIC  sdurwsim RWS::sdurws
+            RW::sdurw_common
+    PRIVATE sdurwsim_gui
+            RW::sdurw_task
+            RW::sdurw_opengl
+)
 
 set(build TRUE)
 set(DEFAULT TRUE)
@@ -210,10 +230,7 @@ if(build)
 
     target_link_libraries(
         ${SUBSYS_NAME}
-        PRIVATE sdurwsim_gui
-        PUBLIC sdurwsim RWS::sdurws
-        PRIVATE RW::sdurw_task RW::sdurw_opengl
-        PUBLIC RW::sdurw
+        ${SUBSYS_DEPS}
     )
 
     # Need to add the current binary dir to the include directory because the generated source files
@@ -238,7 +255,11 @@ endif()
 
 set(SUBSYS_NAME EngineTestPlugin)
 set(SUBSYS_DESC "A plugin for executing standard tests for Physics Engines.")
-set(SUBSYS_DEPS sdurwsim_gui RWS::sdurws)
+set(SUBSYS_DEPS
+    PUBLIC  sdurwsim_test
+            RWS::sdurws
+    PRIVATE sdurwsim_gui
+)
 
 set(build TRUE)
 set(DEFAULT TRUE)
@@ -259,9 +280,7 @@ if(build)
     add_library(${SUBSYS_NAME} MODULE ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles})
     target_link_libraries(
         ${SUBSYS_NAME}
-        PUBLIC sdurwsim_test
-        PRIVATE sdurwsim_gui
-        PUBLIC RWS::sdurws
+        ${SUBSYS_DEPS}
     )
 
     # Need to add the current binary dir to the include directory because the generated source files

@@ -22,7 +22,7 @@
  * @file TreeDevice.hpp
  */
 #if !defined(SWIG)
-#include "JointDevice.hpp"
+#include <rw/models/JointDevice.hpp>
 
 #include <rw/core/Ptr.hpp>
 
@@ -97,7 +97,7 @@ namespace rw { namespace models {
          * @param name [in] name of device
          * @param state [in] the initial state of everything
          */
-        TreeDevice (rw::kinematics::Frame* base, const std::vector< rw::kinematics::Frame* >& ends,
+        TreeDevice (rw::core::Ptr<rw::kinematics::Frame> base, const std::vector< rw::kinematics::Frame* >& ends,
                     const std::string& name, const rw::kinematics::State& state);
 
         //! @brief destructor

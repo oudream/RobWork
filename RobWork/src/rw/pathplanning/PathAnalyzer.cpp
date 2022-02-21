@@ -56,7 +56,7 @@ PathAnalyzer::JointSpaceAnalysis PathAnalyzer::analyzeJointSpace (const QPath& p
 }
 
 PathAnalyzer::CartesianAnalysis PathAnalyzer::analyzeCartesian (const QPath& path,
-                                                                const Frame* frame)
+                                                                const rw::core::Ptr<Frame> frame)
 {
     CartesianAnalysis analysis;
     if (path.size () < 1)

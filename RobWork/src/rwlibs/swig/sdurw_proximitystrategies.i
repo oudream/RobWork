@@ -3,29 +3,38 @@
 %{
 #include <rwlibs/swig/ScriptTypes.hpp>
 #include <rw/core/Ptr.hpp>
+#include <rw/models/Joint.hpp>
+#include <rw/models/PrismaticSphericalJoint.hpp>
+#include <rw/models/PrismaticUniversalJoint.hpp>
+#include <rw/models/SphericalJoint.hpp>
+#include <rw/models/UniversalJoint.hpp>
+#include <rw/models/VirtualJoint.hpp>
+#include <rw/models/DependentJoint.hpp>
+#include <rw/models/DependentRevoluteJoint.hpp>
+#include <rw/models/DependentPrismaticJoint.hpp>
+#include <rw/models/RevoluteJoint.hpp>
+#include <rw/models/PrismaticJoint.hpp>
+#include <rw/kinematics/MovableFrame.hpp>
+#include <rw/kinematics/FixedFrame.hpp>
 
+#include <rw/geometry/IndexedTriMesh.hpp>
 using namespace rwlibs::swig;
 %}
-
+%include <rwlibs/swig/swig_macros.i>
 %include <exception.i>
 
 %import <rwlibs/swig/sdurw_core.i>
 %import <rwlibs/swig/sdurw_proximity.i>
-%import <rwlibs/swig/sdurw.i>
-
 
 %pragma(java) jniclassimports=%{
-import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_proximity.*;
 %}
 %pragma(java) moduleimports=%{
-import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_proximity.*;
 %}
 %typemap(javaimports) SWIGTYPE %{
-import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_proximity.*;
 %}

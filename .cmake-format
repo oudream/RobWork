@@ -150,6 +150,12 @@
                     }
                 }
             }
+        },
+        "set": {
+            "kwargs": {
+                "PUBLIC": "*",
+                "PRIVATE":"*"
+            }
         }
     },
     "always_wrap": [],

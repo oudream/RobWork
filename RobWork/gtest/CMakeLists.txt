@@ -41,7 +41,7 @@ target_link_libraries(sdurw-gtest-main ${RWMAIN_TEST_LIBRARIES})
 # ##################################################################################################
 
 if(TARGET sdurw_algorithms)
-    set(ALGORITHMS_TEST_LIBRARIES sdurw-gtest-main ${GTEST_BOTH_LIBRARIES} sdurw sdurw_algorithms)
+    set(ALGORITHMS_TEST_LIBRARIES sdurw-gtest-main ${GTEST_BOTH_LIBRARIES} sdurw_algorithms)
 
     set(ALGORITHMS_TEST_SRC algorithms/RANSACTest.cpp)
     add_executable(sdurw_algorithms-gtest ${ALGORITHMS_TEST_SRC})
@@ -54,7 +54,7 @@ endif()
 # ##################################################################################################
 
 if(TARGET sdurw_calibration)
-    set(CALIBRATION_TEST_LIBRARIES sdurw-gtest-main ${GTEST_BOTH_LIBRARIES} sdurw sdurw_calibration)
+    set(CALIBRATION_TEST_LIBRARIES sdurw-gtest-main ${GTEST_BOTH_LIBRARIES} sdurw_calibration)
 
     set(CALIBRATION_TEST_SRC calibration/CalibrationTest.cpp)
     add_executable(sdurw_calibration-gtest ${CALIBRATION_TEST_SRC})
@@ -128,8 +128,10 @@ endif()
 # Geometry
 # ##################################################################################################
 
-if(TARGET sdurw)
-    set(GEOMETRY_TEST_LIBRARIES sdurw-gtest-main ${GTEST_BOTH_LIBRARIES} sdurw)
+if(TARGET sdurw_geometry AND TARGET sdurw_kinematics AND TARGET sdurw_loaders)
+    set(GEOMETRY_TEST_LIBRARIES sdurw-gtest-main ${GTEST_BOTH_LIBRARIES}
+        sdurw_geometry sdurw_kinematics sdurw_loaders
+    )
 
     set(GEOMETRY_TEST_SRC
         geometry/DelaunayTest.cpp
@@ -156,8 +158,10 @@ endif()
 # Graphics
 # ##################################################################################################
 
-if(TARGET sdurw)
-    set(GRAPHICS_TEST_LIBRARIES sdurw-gtest-main ${GTEST_BOTH_LIBRARIES} sdurw)
+if(TARGET sdurw_graphics AND TARGET sdurw_models AND TARGET sdurw_loaders)
+    set(GRAPHICS_TEST_LIBRARIES sdurw-gtest-main ${GTEST_BOTH_LIBRARIES}
+        sdurw_graphics sdurw_models sdurw_loaders
+    )
 
     set(GRAPHICS_TEST_SRC graphics/SceneGraphTest.cpp graphics/WorkCellSceneTest.cpp
                           graphics/GraphicsTest.cpp
@@ -171,8 +175,9 @@ endif()
 # Inverse Kinematics
 # ##################################################################################################
 
-if(TARGET sdurw)
-    set(INVKIN_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARIES} sdurw)
+if(TARGET sdurw_invkin AND TARGET sdurw_models AND TARGET sdurw_loaders)
+    set(INVKIN_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARIES}
+        sdurw_invkin sdurw_models sdurw_loaders)
 
     set(INVKIN_TEST_SRC
         invkin/ClosedFormIKSolverKukaIIWATest.cpp invkin/ParallelIKSolverTest.cpp
@@ -187,8 +192,8 @@ endif()
 # Kinematics
 # ##################################################################################################
 
-if(TARGET sdurw)
-    set(KINEMATICS_TEST_LIBRARIES ${GTEST_BOTH_LIBRARIES} sdurw)
+if(TARGET sdurw_kinematics AND TARGET sdurw_models)
+    set(KINEMATICS_TEST_LIBRARIES ${GTEST_BOTH_LIBRARIES} sdurw_kinematics sdurw_models)
 
     set(KINEMATICS_TEST_SRC kinematics/StaticFrameGroupsTest.cpp kinematics/KinematicsTest.cpp)
     add_executable(sdurw_kinematics-gtest ${KINEMATICS_TEST_SRC})
@@ -200,8 +205,10 @@ endif()
 # Loaders
 # ##################################################################################################
 
-if(TARGET sdurw)
-    set(LOADERS_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARIES} sdurw sdurw_proximitystrategies)
+if(TARGET sdurw_loaders AND TARGET sdurw_models)
+    set(LOADERS_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARIES}
+        sdurw_proximitystrategies sdurw_loaders sdurw_models
+    )
 
     set(LOADERS_TEST_SRC
         loaders/DOMProximitySetupSaver.cpp loaders/DOMPropertyMap.cpp loaders/ImageLoaderTest.cpp
@@ -216,14 +223,13 @@ endif()
 # Math
 # ##################################################################################################
 
-if(TARGET sdurw)
-    set(MATH_TEST_LIBRARIES ${GTEST_BOTH_LIBRARIES} sdurw)
+if(TARGET sdurw_math)
+    set(MATH_TEST_LIBRARIES ${GTEST_BOTH_LIBRARIES} sdurw_math)
 
     set(MATH_TEST_SRC
         math/EAATest.cpp
         math/MetricFactoryTest.cpp
         math/PolynomialTest.cpp
-        math/SerializationTest.cpp
         math/StatisticsTest.cpp
         math/QuaternionTest.cpp
         math/Vector3DTest.cpp
@@ -251,7 +257,7 @@ endif()
 # ##################################################################################################
 
 if(TARGET sdurw_mathematica)
-    set(MATHEMATICA_TEST_LIBRARIES sdurw-gtest-main ${GTEST_BOTH_LIBRARIES} sdurw sdurw_mathematica)
+    set(MATHEMATICA_TEST_LIBRARIES sdurw-gtest-main ${GTEST_BOTH_LIBRARIES} sdurw_mathematica)
 
     set(MATHEMATICA_TEST_SRC mathematica/MathematicaTest.cpp)
     add_executable(sdurw_mathematica-gtest ${MATHEMATICA_TEST_SRC})
@@ -263,8 +269,8 @@ endif()
 # Models
 # ##################################################################################################
 
-if(TARGET sdurw)
-    set(MODELS_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARIES} sdurw)
+if(TARGET sdurw_models AND TARGET sdurw_loaders)
+    set(MODELS_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARIES} sdurw_models sdurw_loaders)
 
     set(MODELS_TEST_SRC
         models/JointTest.cpp models/ParallelDeviceTest.cpp models/ParallelLegTest.cpp
@@ -280,7 +286,7 @@ endif()
 # ##################################################################################################
 
 if(TARGET sdurw_opengl)
-    set(OPENGL_TEST_LIBRARIES sdurw-gtest-main ${GTEST_BOTH_LIBRARIES} sdurw sdurw_opengl)
+    set(OPENGL_TEST_LIBRARIES sdurw-gtest-main ${GTEST_BOTH_LIBRARIES} sdurw_opengl)
 
     set(OPENGL_TEST_SRC opengl/DrawableTest.cpp)
     add_executable(sdurw_opengl-gtest ${OPENGL_TEST_SRC})
@@ -292,8 +298,8 @@ endif()
 # Pathoptimization
 # ##################################################################################################
 
-if(TARGET sdurw)
-    set(PATHOPTIMIZATION_TEST_LIBRARIES ${GTEST_BOTH_LIBRARIES} sdurw_pathoptimization sdurw)
+if(TARGET sdurw_pathoptimization)
+    set(PATHOPTIMIZATION_TEST_LIBRARIES ${GTEST_BOTH_LIBRARIES} sdurw_pathoptimization sdurw_pathoptimization)
 
     set(PATHOPTIMIZATION_TEST_SRC pathoptimization/ClearanceOptimizerTest.cpp
                                   pathoptimization/PathLengthOptimizerTest.cpp
@@ -307,9 +313,9 @@ endif()
 # Pathplanning
 # ##################################################################################################
 
-if(TARGET sdurw_pathplanners)
-    set(PATHPLANNING_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARIES} sdurw_pathplanners sdurw
-                                    sdurw_math sdurw_proximitystrategies
+if(TARGET sdurw_pathplanners AND TARGET sdurw_loaders)
+    set(PATHPLANNING_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARIES} sdurw_pathplanners
+                                    sdurw_math sdurw_proximitystrategies sdurw_loaders
     )
 
     set(PATHPLANNING_TEST_SRC pathplanning/PathPlanningTest.cpp)
@@ -322,9 +328,10 @@ endif()
 # Proximity
 # ##################################################################################################
 
-if(TARGET sdurw_proximitystrategies)
-    set(PROXIMITY_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARIES} sdurw
-                                 sdurw_proximitystrategies
+if(TARGET sdurw_proximitystrategies AND TARGET sdurw_models AND TARGET sdurw_loaders
+    AND TARGET sdurw_pathplanning)
+    set(PROXIMITY_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARIES}
+        sdurw_proximitystrategies sdurw_models sdurw_loaders sdurw_pathplanning
     )
 
     set(PROXIMITY_TEST_SRC
@@ -352,10 +359,10 @@ endif()
 # Sensor
 # ##################################################################################################
 
-if(TARGET sdurw)
+if(TARGET sdurw_sensor)
     set(SENSOR_TEST_SRC sensor/TactileArrayTest.cpp)
     add_executable(sdurw_sensor-gtest ${SENSOR_TEST_SRC})
-    target_link_libraries(sdurw_sensor-gtest ${GTEST_BOTH_LIBRARIES} sdurw)
+    target_link_libraries(sdurw_sensor-gtest ${GTEST_BOTH_LIBRARIES} sdurw_sensor)
     add_rw_gtest(sdurw_sensor-gtest)
 endif()
 
@@ -364,7 +371,7 @@ endif()
 # ##################################################################################################
 
 if(TARGET sdurw_task)
-    set(TASK_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARIES} sdurw_task sdurw)
+    set(TASK_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARIES} sdurw_task)
 
     set(TASK_TEST_SRC task/TaskLoaderTest.cpp task/TaskSaverTest.cpp task/GraspTaskTest.cpp)
     add_executable(sdurw_task-gtest ${TASK_TEST_SRC})
@@ -376,8 +383,8 @@ endif()
 # Trajectory
 # ##################################################################################################
 
-if(TARGET sdurw AND TARGET sdurw_control)
-    set(TRAJECTORY_TEST_LIBRARIES sdurw-gtest-main ${GTEST_BOTH_LIBRARIES} sdurw sdurw_control)
+if(TARGET sdurw_trajectory AND TARGET sdurw_loaders AND TARGET sdurw_control)
+    set(TRAJECTORY_TEST_LIBRARIES sdurw-gtest-main ${GTEST_BOTH_LIBRARIES} sdurw_trajectory sdurw_loaders sdurw_control)
     set(TRAJECTORY_TEST_SRC
         trajectory/PathTest.cpp
         trajectory/ParabolicBlendTest.cpp

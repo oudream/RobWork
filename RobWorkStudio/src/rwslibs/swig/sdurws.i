@@ -30,6 +30,7 @@ using rw::pathplanning::PathPlanner;
 %import <rwlibs/swig/sdurw_models.i>
 %import <rwlibs/swig/sdurw_sensor.i>
 %import <rwlibs/swig/sdurw_proximity.i>
+%import <rwlibs/swig/sdurw_trajectory.i>
 %import <rwlibs/swig/sdurw.i> 
 
 %pragma(java) jniclassclassmodifiers="class"
@@ -43,6 +44,7 @@ import org.robwork.sdurw_kinematics.*;
 import org.robwork.sdurw_models.*;
 import org.robwork.sdurw_sensor.*;
 import org.robwork.sdurw_proximity.*;
+import org.robwork.sdurw_trajectory.*;
 %}
 %pragma(java) moduleimports=%{
 import org.robwork.sdurw.*;
@@ -53,6 +55,7 @@ import org.robwork.sdurw_kinematics.*;
 import org.robwork.sdurw_models.*;
 import org.robwork.sdurw_sensor.*;
 import org.robwork.sdurw_proximity.*;
+import org.robwork.sdurw_trajectory.*;
 %}
 %typemap(javaimports) SWIGTYPE %{
 import org.robwork.sdurw.*;
@@ -63,6 +66,7 @@ import org.robwork.sdurw_kinematics.*;
 import org.robwork.sdurw_models.*;
 import org.robwork.sdurw_sensor.*;
 import org.robwork.sdurw_proximity.*;
+import org.robwork.sdurw_trajectory.*;
 %}
 
 /********************************************
@@ -167,10 +171,10 @@ public:
     void showPivotPoint(bool visible);  
     //void setDrawType(rw::graphics::DrawableNode::DrawType drawType); 
     rw::kinematics::Frame* pickFrame(int x, int y);
-    rw::core::Ptr<DrawableNode> pick(int x, int y);
+    rw::core::Ptr<rw::graphics::DrawableNode> pick(int x, int y);
  
-    rw::core::Ptr<WorkCellScene> getWorkCellScene(); 
-    rw::core::Ptr<SceneViewer> getSceneViewer(); 
+    rw::core::Ptr<rw::graphics::WorkCellScene> getWorkCellScene(); 
+    rw::core::Ptr<rw::graphics::SceneViewer> getSceneViewer(); 
     void saveBufferToFile(const QString& filename);
 
 };
@@ -190,11 +194,11 @@ public:
 
     rw::core::Ptr<rw::proximity::CollisionDetector> getCollisionDetector();
 
-    rw::core::Ptr<WorkCellScene> getWorkCellScene();
+    rw::core::Ptr<rw::graphics::WorkCellScene> getWorkCellScene();
 
     rw::core::Ptr<RWStudioView3D> getView();
 
-    const Path<Timed<rw::kinematics::State> >& getTimedStatePath();
+    const rw::trajectory::Path<rw::trajectory::Timed<rw::kinematics::State> >& getTimedStatePath();
 
     rw::core::Log& log();
 
@@ -204,7 +208,7 @@ public:
     void postState(const rw::kinematics::State& state);
     void postUpdateAndRepaint();
     void postSaveViewGL(const std::string& str);
-    void postTimedStatePath(const Path<Timed<rw::kinematics::State> >& path);
+    void postTimedStatePath(const rw::trajectory::Path<rw::trajectory::Timed<rw::kinematics::State> >& path);
     void postWorkCell(rw::core::Ptr<rw::models::WorkCell> workcell);
     void postOpenWorkCell(const std::string& str);
     void postExit();
@@ -213,7 +217,7 @@ public:
 
 
     %extend {
-        void setTimedStatePath(rw::core::Ptr<Path<Timed<rw::kinematics::State> > > path){
+        void setTimedStatePath(rw::core::Ptr<rw::trajectory::Path<rw::trajectory::Timed<rw::kinematics::State> > > path){
             $self->postTimedStatePath(*path);
         }
 

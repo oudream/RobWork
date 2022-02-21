@@ -4,57 +4,40 @@
 #include <rwlibs/swig/ScriptTypes.hpp>
 #include <rw/core/Ptr.hpp>
 #include <rw/models.hpp>
+#include <rw/kinematics/FixedFrame.hpp>
 
 using namespace rwlibs::swig;
 %}
 
 %include <exception.i>
+%include <rwlibs/swig/swig_macros.i>
 
 %import <rwlibs/swig/sdurw_core.i>
 %import <rwlibs/swig/sdurw_models.i>
-%import <rwlibs/swig/sdurw.i>
 %import(module=rwlibs/swig/sdurw_math) <rw/math/Q.hpp>
 
 %pragma(java) jniclassimports=%{
-import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_math.*;
 import org.robwork.sdurw_models.*;
 %}
 %pragma(java) moduleimports=%{
-import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_math.*;
 import org.robwork.sdurw_models.*;
 %}
 %typemap(javaimports) SWIGTYPE %{
-import org.robwork.sdurw.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_math.*;
 import org.robwork.sdurw_models.*;
 %}
 
 %nodefaultctor Controller;
-/**
- * @brief interface that defines functionality for control of devices and actuators
- */
-class Controller {
-public:
-    /**
-     * @brief get the unique name of this controller
-     *
-     * @return name of the controller.
-     */
-	const std::string& getName() const;
-
-    /**
-     * @brief set the name of the controller
-     *
-     * @param name [in] the name
-     */
-	void setName(const std::string& name);
-};
-NAMED_OWNEDPTR(Controller, Controller);
+%{
+    #include <rwlibs/control/Controller.hpp>
+%}
+%include <rwlibs/control/Controller.hpp>
+NAMED_OWNEDPTR(Controller, rwlibs::control::Controller);
 
 %nodefaultctor JointController;
 /**

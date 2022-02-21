@@ -22,7 +22,7 @@
  * @file MovableFrame.hpp
  */
 #if !defined(SWIG)
-#include "Frame.hpp"
+#include <rw/kinematics/Frame.hpp>
 #include <rw/core/Ptr.hpp>
 #endif
 namespace rw { namespace kinematics {
@@ -80,7 +80,7 @@ namespace rw { namespace kinematics {
          * @param refframe [in] the reference frame.
          * @param state [out] state into which to set the transform
          */
-        void moveTo (const math::Transform3D<>& transform, Frame* refframe, rw::kinematics::State& state);
+        void moveTo (const math::Transform3D<>& transform,  rw::core::Ptr<Frame> refframe, rw::kinematics::State& state);
 
       private:
         void doMultiplyTransform (const math::Transform3D<>& parent, const rw::kinematics::State& state,

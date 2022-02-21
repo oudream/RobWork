@@ -34,7 +34,7 @@ struct BallBallStrategy::Model
     std::string geoId;
     double radius;
     rw::math::Vector3D<> center;
-    const rw::kinematics::Frame* frame;
+    rw::core::Ptr<const rw::kinematics::Frame> frame;
 };
 
 class BallBallStrategy::BallModel : public ContactModel

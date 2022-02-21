@@ -17,7 +17,7 @@
 #include <QFileDialog>
 #include <QMessageBox>
 
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #include <boost/numeric/conversion/cast.hpp>
 
 #include <stack>

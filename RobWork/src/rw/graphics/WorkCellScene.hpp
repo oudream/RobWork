@@ -18,11 +18,13 @@
 #ifndef RW_GRAPHICS_WORKCELLSCENE_HPP_
 #define RW_GRAPHICS_WORKCELLSCENE_HPP_
 
-#include "SceneGraph.hpp"
+#if !defined(SWIG)
+#include <rw/graphics/SceneGraph.hpp>
 
 #include <rw/kinematics/FKTable.hpp>
 
 #include <map>
+#endif
 
 namespace rw { namespace geometry {
     class Model3D;
@@ -43,7 +45,7 @@ namespace rw { namespace sensor {
 }}    // namespace rw::sensor
 
 namespace rw { namespace graphics {
-
+    class Render;
     /**
      * @brief  class for wrapping the SceneGraph interface such that it extends the scene-graph
      * functionality to work on frames and workcells.
@@ -117,28 +119,28 @@ namespace rw { namespace graphics {
          * @param f [in] the frame.
          * @param visible [in] true if frame should be visible, false otherwise
          */
-        void setVisible (bool visible, const rw::kinematics::Frame* f);
+        void setVisible (bool visible, const rw::core::Ptr<rw::kinematics::Frame> f);
 
         /**
          * @brief test if a frame is visible or not
          * @param f [in] the frame
          * @return true if frame is visible, false if not
          */
-        bool isVisible (const rw::kinematics::Frame* f) const;
+        bool isVisible (const rw::core::Ptr<rw::kinematics::Frame> f) const;
 
         /**
          * @brief sets a frame to be highlighted or not.
          * @param f [in] the frame.
          * @param highlighted [in] true if frame should be highlighted, false otherwise
          */
-        void setHighlighted (bool highlighted, const rw::kinematics::Frame* f);
+        void setHighlighted (bool highlighted, const rw::core::Ptr<rw::kinematics::Frame> f);
 
         /**
          * @brief test if a frame is highlighted or not
          * @param f [in] the frame
          * @return true if frame is highlighted, false if not
          */
-        bool isHighlighted (const rw::kinematics::Frame* f) const;
+        bool isHighlighted (const rw::core::Ptr<rw::kinematics::Frame> f) const;
 
         /**
          * @brief enables the drawing of the frame-axis of a frame.
@@ -146,14 +148,14 @@ namespace rw { namespace graphics {
          * @param f [in] the frame
          * @param size [in] size of the frame-axis (default = 0.25)
          */
-        void setFrameAxisVisible (bool visible, rw::kinematics::Frame* f, double size = 0.25);
+        void setFrameAxisVisible (bool visible, rw::core::Ptr<rw::kinematics::Frame> f, double size = 0.25);
 
         /**
          * @brief test if frame-axis is visible
          * @param f [in] the frame
          * @return true if frame axis of frame is set to be drawn, false otherwise
          */
-        bool isFrameAxisVisible (const rw::kinematics::Frame* f) const;
+        bool isFrameAxisVisible (const rw::core::Ptr<rw::kinematics::Frame> f) const;
 
         /**
          * @brief enables the drawing of the frame label of a frame.
@@ -174,35 +176,35 @@ namespace rw { namespace graphics {
          * @param type [in] the drawtype
          * @param f [in] the Frame
          */
-        void setDrawType (DrawableNode::DrawType type, const rw::kinematics::Frame* f);
+        void setDrawType (DrawableNode::DrawType type, const rw::core::Ptr<rw::kinematics::Frame> f);
 
         /**
          * @brief get how drawables of a specific frame is to be rendered
          * @param f [in] the Frame
          * @return the drawtype
          */
-        DrawableNode::DrawType getDrawType (const rw::kinematics::Frame* f) const;
+        DrawableNode::DrawType getDrawType (const rw::core::Ptr<rw::kinematics::Frame> f) const;
 
         /**
          * @brief set the draw mask of the drawables of a specific frame
          * @param mask [in] draw mask
          * @param f [in] the frame
          */
-        void setDrawMask (unsigned int mask, const rw::kinematics::Frame* f);
+        void setDrawMask (unsigned int mask, const rw::core::Ptr<rw::kinematics::Frame> f);
 
         /**
          * @brief get the draw mask of the drawables of a specific frame
          * @param f [in] the frame
          * @return the drawmask
          */
-        unsigned int getDrawMask (const rw::kinematics::Frame* f) const;
+        unsigned int getDrawMask (const rw::core::Ptr<rw::kinematics::Frame> f) const;
 
         /**
          * @brief set drawables of a frame to be translusent
          * @param alpha [in] range [0-1] where 1 is fully opaque and 0 is folly transparent
          * @param f [in] frame
          */
-        void setTransparency (double alpha, const rw::kinematics::Frame* f);
+        void setTransparency (double alpha, const rw::core::Ptr<rw::kinematics::Frame> f);
 
         //******************************** interface for adding drawables  ***/
         /**
@@ -213,9 +215,9 @@ namespace rw { namespace graphics {
          * @param dmask [in] the drawable mask
          * @return the drawable node geometry
          */
-        DrawableGeometryNode::Ptr addLines (const std::string& name,
+        rw::core::Ptr<rw::graphics::DrawableGeometryNode> addLines (const std::string& name,
                                             const std::vector< rw::geometry::Line >& lines,
-                                            rw::kinematics::Frame* frame,
+                                            rw::core::Ptr<rw::kinematics::Frame> frame,
                                             int dmask = DrawableNode::Physical);
 
         /**
@@ -226,9 +228,9 @@ namespace rw { namespace graphics {
          * @param dmask [in] the drawable mask
          * @return the drawable node geometry
          */
-        DrawableGeometryNode::Ptr addGeometry (const std::string& name,
+        rw::core::Ptr<rw::graphics::DrawableGeometryNode> addGeometry (const std::string& name,
                                                rw::core::Ptr< rw::geometry::Geometry > geom,
-                                               rw::kinematics::Frame* frame,
+                                               rw::core::Ptr<rw::kinematics::Frame> frame,
                                                int dmask = DrawableNode::Physical);
 
         /**
@@ -240,7 +242,7 @@ namespace rw { namespace graphics {
          * @return the drawable node geometry
          */
         DrawableNode::Ptr addFrameAxis (const std::string& name, double size,
-                                        rw::kinematics::Frame* frame,
+                                        rw::core::Ptr<rw::kinematics::Frame> frame,
                                         int dmask = DrawableNode::Virtual);
 
         /**
@@ -252,7 +254,7 @@ namespace rw { namespace graphics {
          * @return the drawable node geometry
          */
         DrawableNode::Ptr addModel3D (const std::string& name, rw::core::Ptr<rw::geometry::Model3D > model,
-                                      rw::kinematics::Frame* frame,
+                                      rw::core::Ptr<rw::kinematics::Frame> frame,
                                       int dmask = DrawableNode::Physical);
 
         /**
@@ -266,7 +268,7 @@ namespace rw { namespace graphics {
          * scale.
          */
         DrawableNode::Ptr addImage (const std::string& name, const rw::sensor::Image& img,
-                                    rw::kinematics::Frame* frame,
+                                    rw::core::Ptr<rw::kinematics::Frame> frame,
                                     int dmask = DrawableNode::Virtual);
 
         /**
@@ -278,7 +280,7 @@ namespace rw { namespace graphics {
          * @return the drawable node
          */
         DrawableNode::Ptr addScan (const std::string& name, const rw::geometry::PointCloud& scan,
-                                   rw::kinematics::Frame* frame, int dmask = DrawableNode::Virtual);
+                                   rw::core::Ptr<rw::kinematics::Frame> frame, int dmask = DrawableNode::Virtual);
 
         /**
          * @brief create and add a drawable node of a textlabel
@@ -300,8 +302,8 @@ namespace rw { namespace graphics {
          * @param dmask [in] the drawable mask
          * @return the drawable node
          */
-        DrawableNode::Ptr addRender (const std::string& name, rw::core::Ptr< class Render > render,
-                                     rw::kinematics::Frame* frame,
+        DrawableNode::Ptr addRender (const std::string& name, rw::core::Ptr< rw::graphics::Render > render,
+                                     rw::core::Ptr<rw::kinematics::Frame> frame,
                                      int dmask = DrawableNode::Physical);
 
         /**
@@ -311,7 +313,7 @@ namespace rw { namespace graphics {
          * @param dmask [in] the drawable mask
          * @return the drawable node
          */
-        DrawableNode::Ptr addDrawable (const std::string& filename, rw::kinematics::Frame* frame,
+        DrawableNode::Ptr addDrawable (const std::string& filename, rw::core::Ptr<rw::kinematics::Frame> frame,
                                        int dmask = DrawableNode::Physical);
 
         /**
@@ -319,7 +321,7 @@ namespace rw { namespace graphics {
          * @param drawable [in] the drawable
          * @param frame [in] the frame where the drawable is to be placed
          */
-        void addDrawable (DrawableNode::Ptr drawable, rw::kinematics::Frame* frame);
+        void addDrawable (DrawableNode::Ptr drawable, rw::core::Ptr<rw::kinematics::Frame> frame);
 
         /**
          * @brief get all drawables of the WorkCellScene
@@ -332,7 +334,7 @@ namespace rw { namespace graphics {
          * @param f [in] the frame
          * @return a list of drawables
          */
-        std::vector< DrawableNode::Ptr > getDrawables (const rw::kinematics::Frame* f) const;
+        std::vector< DrawableNode::Ptr > getDrawables (const rw::core::Ptr<rw::kinematics::Frame> f) const;
 
         /**
          * @brief get all drawables of a frame and all frames that kinematicly is connected to
@@ -341,7 +343,7 @@ namespace rw { namespace graphics {
          * @param state [in] the current state
          * @return a list of drawables
          */
-        std::vector< DrawableNode::Ptr > getDrawablesRec (rw::kinematics::Frame* f,
+        std::vector< DrawableNode::Ptr > getDrawablesRec (rw::core::Ptr<rw::kinematics::Frame> f,
                                                           rw::kinematics::State& state);
 
         /**
@@ -358,7 +360,7 @@ namespace rw { namespace graphics {
          * @return a drawable with name \b name or NULL if no such drawable exist in the scene
          */
         DrawableNode::Ptr findDrawable (const std::string& name,
-                                        const rw::kinematics::Frame* frame);
+                                        const rw::core::Ptr<rw::kinematics::Frame> frame);
 
         /**
          * @brief find all drawables by name \b name.
@@ -372,7 +374,7 @@ namespace rw { namespace graphics {
          * @param f [in] the frame
          * @return true if successfull
          */
-        bool removeDrawables (const rw::kinematics::Frame* f);
+        bool removeDrawables (const rw::core::Ptr<rw::kinematics::Frame> f);
 
         /**
          * @brief remove all drawables with name \n name
@@ -394,7 +396,7 @@ namespace rw { namespace graphics {
          * @param f [in] the frame
          * @return true if successfull
          */
-        bool removeDrawable (DrawableNode::Ptr drawable, const rw::kinematics::Frame* f);
+        bool removeDrawable (DrawableNode::Ptr drawable, const rw::core::Ptr<rw::kinematics::Frame> f);
 
         /**
          * @brief remove first drawable by name \b name
@@ -409,7 +411,7 @@ namespace rw { namespace graphics {
          * @param f [in] the frame
          * @return true if successfull
          */
-        bool removeDrawable (const std::string& name, const rw::kinematics::Frame* f);
+        bool removeDrawable (const std::string& name, const rw::core::Ptr<rw::kinematics::Frame> f);
 
         /**
          * @brief get the frame that a specific drawable \b d is associated to
@@ -424,7 +426,7 @@ namespace rw { namespace graphics {
          * @param frame [in] the frame.
          * @return group node.
          */
-        rw::graphics::GroupNode::Ptr getNode (const rw::kinematics::Frame* frame) const;
+        rw::graphics::GroupNode::Ptr getNode (const rw::core::Ptr<rw::kinematics::Frame> frame) const;
 
       private:
         /**
@@ -457,7 +459,7 @@ namespace rw { namespace graphics {
             _frameDrawableMap;
 
         std::map< rw::core::Ptr< rw::models::DeformableObject >,
-                  std::vector< rw::core::Ptr<rw::geometry::Model3D > > >
+                  std::vector< rw::core::Ptr< rw::geometry::Model3D > > >
             _deformableObjectsMap;
 
         //! world node

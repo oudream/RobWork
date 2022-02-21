@@ -47,7 +47,7 @@ namespace rwsim { namespace sensor {
          * @param frame [in] (optional) the reference frame - default is the \b body1 body frame.
          */
         SimulatedFTSensor (const std::string& name, dynamics::Body::Ptr body,
-                           dynamics::Body::Ptr body1, rw::kinematics::Frame* frame = NULL);
+                           dynamics::Body::Ptr body1, rw::core::Ptr<rw::kinematics::Frame> frame = NULL);
 
         //! @brief destructor
         virtual ~SimulatedFTSensor ();
@@ -116,7 +116,7 @@ namespace rwsim { namespace sensor {
          * differently).
          * @return a pointer to the sensor frame.
          */
-        rw::kinematics::Frame* getSensorFrame () const { return _sframe; }
+        rw::kinematics::Frame* getSensorFrame () const { return _sframe.get(); }
 
         /**
          * @brief Acquire new force reading.
@@ -148,7 +148,7 @@ namespace rwsim { namespace sensor {
 
       private:
         rwsim::dynamics::Body::Ptr _body, _body1;
-        rw::kinematics::Frame* _sframe;
+        rw::core::Ptr<rw::kinematics::Frame> _sframe;
         rw::core::Ptr< rw::sensor::FTSensorModel > _ftmodel;
 
         struct FTStateData

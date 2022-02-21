@@ -31,8 +31,8 @@ CollisionToleranceStrategy::CollisionToleranceStrategy ()
 CollisionToleranceStrategy::~CollisionToleranceStrategy ()
 {}
 
-bool CollisionToleranceStrategy::isWithinDistance (const Frame* a, const Transform3D<>& wTa,
-                                                   const Frame* b, const Transform3D<>& wTb,
+bool CollisionToleranceStrategy::isWithinDistance (const rw::core::Ptr<Frame> a, const Transform3D<>& wTa,
+                                                   const rw::core::Ptr<Frame> b, const Transform3D<>& wTb,
                                                    double tolerance)
 {
     if (getModel (a) == NULL || getModel (b) == NULL)
@@ -41,8 +41,8 @@ bool CollisionToleranceStrategy::isWithinDistance (const Frame* a, const Transfo
     return isWithinDistance (getModel (a), wTa, getModel (b), wTb, tolerance, data);
 }
 
-bool CollisionToleranceStrategy::isWithinDistance (const Frame* a, const Transform3D<>& wTa,
-                                                   const Frame* b, const Transform3D<>& wTb,
+bool CollisionToleranceStrategy::isWithinDistance (const rw::core::Ptr<Frame> a, const Transform3D<>& wTa,
+                                                   const rw::core::Ptr<Frame> b, const Transform3D<>& wTb,
                                                    double tolerance, ProximityStrategyData& data)
 {
     if (getModel (a) == NULL || getModel (b) == NULL)

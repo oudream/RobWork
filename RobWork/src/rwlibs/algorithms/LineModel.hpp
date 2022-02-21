@@ -22,7 +22,7 @@
  * @file LineModel.hpp
  */
 
-#include "RANSACModel.hpp"
+#include <rwlibs/algorithms/RANSACModel.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rw/geometry/Line.hpp>

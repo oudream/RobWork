@@ -145,7 +145,7 @@ namespace rwsim { namespace dynamics {
         template< class T > std::vector< rw::core::Ptr< T > > findBodies () const
         {
             std::vector< rw::core::Ptr< T > > bodies;
-            for (const Body::Ptr b : _allbodies) {
+            for (const Body::Ptr& b : _allbodies) {
                 if (rw::core::Ptr< T > tb = b.cast< T > ()) {
                     bodies.push_back (tb);
                 }
@@ -316,12 +316,17 @@ namespace rwsim { namespace dynamics {
         /**
          * @brief gets the body associated with frame f if any.
          */
-        Body::Ptr getBody (rw::kinematics::Frame* f);
+        Body::Ptr getBody (rw::core::Ptr< rw::kinematics::Frame > f);
 
         /**
          * @brief gets the default kinematic workcell
          */
         rw::models::WorkCell::Ptr getWorkcell () const { return _workcell; };
+
+        /**
+         * @brief gets the default kinematic workcell
+         */
+        rw::models::WorkCell::Ptr getWorkCell () const { return _workcell; };
 
         /**
          * @brief the collision margin describe how close

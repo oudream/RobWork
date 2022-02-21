@@ -70,13 +70,13 @@ void ParallelIKSolver::updateDeltaX (const std::vector< Target >& targets,
     std::size_t index = nCon;
     for (std::size_t ti = 0; ti < targets.size (); ti++) {
         const Target& target = targets[ti];
-        const Frame* const targetRefFrame =
-            (targets[ti].refFrame == NULL) ? _device->getBase () : targets[ti].refFrame;
+        rw::core::Ptr<const Frame> targetRefFrame =
+            (targets[ti].refFrame == NULL) ? rw::core::Ptr<const Frame>(_device->getBase ()) : targets[ti].refFrame.cptr();
         if (!targetLegs.has (targetRefFrame, target.tcpFrame))
             RW_THROW ("The frame " << target.tcpFrame->getName ()
                                    << " is not valid as end-effector in ParallelIKSolver! The "
                                       "frame must lie in one of the legs.");
-        const ParallelLeg::Ptr tleg = targetLegs (targetRefFrame, target.tcpFrame);
+        const ParallelLeg::Ptr tleg = targetLegs (targetRefFrame.get(), target.tcpFrame);
         const Transform3D<>& T      = target.refTtcp;
 
         // calculate the difference from current pose to dest pose
@@ -118,8 +118,8 @@ void ParallelIKSolver::updateJacobian (const std::vector< Target >& targets,
 
     for (std::size_t ti = 0; ti < targets.size (); ti++) {
         const Target& target = targets[ti];
-        const Frame* const targetRefFrame =
-            (targets[ti].refFrame == NULL) ? _device->getBase () : targets[ti].refFrame;
+        rw::core::Ptr<const Frame>  targetRefFrame =
+            (targets[ti].refFrame == NULL) ? rw::core::Ptr<const Frame>(_device->getBase ()) : targets[ti].refFrame.cptr();
         if (!targetLegs.has (targetRefFrame, target.tcpFrame))
             RW_THROW ("The frame " << target.tcpFrame->getName ()
                                    << " is not valid as end-effector in ParallelIKSolver! The "
@@ -187,15 +187,15 @@ std::vector< Q > ParallelIKSolver::solve (const std::vector< Target >& targets,
     FramePairMap< ParallelLeg::Ptr > targetLegs;
     const std::vector< Joint* > allJoints = _device->getAllJoints ();
     for (std::size_t i = 0; i < targets.size (); i++) {
-        Frame* refFrame = NULL;
-        const Frame* const targetRefFrame =
-            (targets[i].refFrame == NULL) ? _device->getBase () : targets[i].refFrame;
+        rw::core::Ptr<Frame> refFrame = NULL;
+        rw::core::Ptr< const Frame> targetRefFrame =
+            (targets[i].refFrame == NULL) ? rw::core::Ptr<const Frame>(_device->getBase ()) : targets[i].refFrame.cptr();
         for (std::size_t i = 0; i < _junctions.size (); i++) {
             const std::vector< ParallelLeg* >& legs = _junctions[i];
             for (std::size_t legI = 0; legI < legs.size (); legI++) {
                 const ParallelLeg* const leg       = legs[legI];
                 const std::vector< Frame* >& chain = leg->getKinematicChain ();
-                Frame* searchFrame                 = chain.back ();
+                rw::core::Ptr<Frame> searchFrame                 = chain.back ();
                 while (searchFrame != NULL && refFrame == NULL) {
                     if (searchFrame == targetRefFrame) {
                         refFrame = searchFrame;
@@ -208,8 +208,8 @@ std::vector< Q > ParallelIKSolver::solve (const std::vector< Target >& targets,
             RW_THROW ("Could not find reference frame " << targetRefFrame->getName ()
                                                         << " in parallel device!");
 
-        Frame* tcpFrame    = NULL;
-        const Frame* frame = targets[i].tcpFrame;
+        rw::core::Ptr<Frame> tcpFrame    = NULL;
+        rw::core::Ptr<const Frame> frame = targets[i].tcpFrame;
         while (frame != NULL && tcpFrame == NULL) {
             for (std::size_t i = 0; i < allJoints.size (); i++) {
                 if (allJoints[i] == frame)
@@ -225,7 +225,7 @@ std::vector< Q > ParallelIKSolver::solve (const std::vector< Target >& targets,
         if (!targetLegs.has (targetRefFrame, targets[i].tcpFrame)) {
             std::vector< Frame* > chain =
                 Kinematics::parentToChildChain (refFrame, tcpFrame, wstate);
-            chain.push_back (tcpFrame);
+            chain.push_back (tcpFrame.get());
             if (chain.size () == 0)
                 RW_THROW ("Could not find connection from reference frame "
                           << targetRefFrame->getName () << " to end frame "

@@ -19,6 +19,7 @@
 #define RWS_SWIG_REMOTETYPES_HPP_
 
 #include <rw/core/Ptr.hpp>
+#include <rw/geometry/Geometry.hpp>
 #include <rw/kinematics/Frame.hpp>
 #include <rw/kinematics/MovableFrame.hpp>
 #include <rw/kinematics/FixedFrame.hpp>
@@ -26,6 +27,12 @@
 #include <rwlibs/swig/ScriptTypes.hpp>
 #include <rws/RobWorkStudio.hpp>
 #include <rws/RobWorkStudioPlugin.hpp>
+#include <rw/models/JointDevice.hpp>
+#include <rw/models/SerialDevice.hpp>
+#include <rw/models/TreeDevice.hpp>
+#include <rw/models/ParallelDevice.hpp>
+
+
 /*
 #ifdef __cplusplus
 extern "C" {

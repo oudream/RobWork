@@ -24,7 +24,7 @@ using namespace rw::models;
 using namespace rw::math;
 using namespace rw::kinematics;
 
-Transform3D< double > Device::baseTframe (const Frame* f, const State& state) const
+Transform3D< double > Device::baseTframe (rw::core::Ptr<const Frame> f, const State& state) const
 {
     return Kinematics::frameTframe (getBase (), f, state);
 }
@@ -46,9 +46,9 @@ Jacobian Device::baseJend (const State& state) const
     return baseJframe (getEnd (), state);
 }
 
-Jacobian Device::baseJframe (const Frame* frame, const State& state) const
+Jacobian Device::baseJframe (rw::core::Ptr<const Frame> frame, const State& state) const
 {
-    std::vector< Frame* > frames (1, const_cast< Frame* > (frame));    // Dirty.
+    std::vector< Frame* > frames (1, const_cast< Frame* > (frame.get()));    // Dirty.
     return baseJframes (frames, state);
 }
 
@@ -57,9 +57,9 @@ JacobianCalculator::Ptr Device::baseJCend (const State& state) const
     return baseJCframe (getEnd (), state);
 }
 
-JacobianCalculator::Ptr Device::baseJCframe (const Frame* frame, const State& state) const
+JacobianCalculator::Ptr Device::baseJCframe (rw::core::Ptr<const Frame> frame, const State& state) const
 {
-    std::vector< Frame* > frames (1, const_cast< Frame* > (frame));    // Dirty.
+    std::vector< Frame* > frames (1,const_cast< Frame* > ( frame.get()));    // Dirty.
     return baseJCframes (frames, state);
 }
 

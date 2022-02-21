@@ -19,13 +19,13 @@
 #define RWLIBS_SIMULATION_GLFRAMEGRAPPER25D_HPP
 
 //! @file GLFrameGrabber25D.hpp
-
-#include "FrameGrabber25D.hpp"
+#if !defined(SWIG)
+#include <rwlibs/simulation/FrameGrabber25D.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rw/graphics/SceneViewer.hpp>
 #include <rw/math/Transform3D.hpp>
-
+#endif
 namespace rw { namespace kinematics {
     class Frame;
     class State;
@@ -97,7 +97,7 @@ namespace rwlibs { namespace simulation {
         void setMinDepth (double depth);
 
         //! @copydoc FrameGrabber::grab
-        void grab (rw::kinematics::Frame* frame, const rw::kinematics::State& state);
+        void grab (rw::core::Ptr<rw::kinematics::Frame> frame, const rw::kinematics::State& state);
 
         //! @copydoc FrameGrabber25D::getMaxDepth()
         double getMaxDepth () { return _maxDepth; };

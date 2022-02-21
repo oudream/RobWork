@@ -133,8 +133,8 @@ namespace rw { namespace geometry {
 #if SWIG_VERSION < 0x040000
     SWIG_DECLARE_TEMPLATE (Polygon_d, rw::geometry::Polygon< rw::math::Vector3D< double > >);
     SWIG_DECLARE_TEMPLATE (Polygon2D_d, rw::geometry::Polygon< rw::math::Vector2D< double > >);
-    ADD_DEFINITION (Polygon_d, Polygon)
-    ADD_DEFINITION (Polygon2D_d, Polygon2D)
+    ADD_DEFINITION (Polygon_d, Polygon,sdurw_geometry)
+    ADD_DEFINITION (Polygon2D_d, Polygon2D,sdurw_geometry)
 #else
     SWIG_DECLARE_TEMPLATE (Polygon, rw::geometry::Polygon< rw::math::Vector3D< double > >);
     SWIG_DECLARE_TEMPLATE (Polygon2D, rw::geometry::Polygon< rw::math::Vector2D< double > >);

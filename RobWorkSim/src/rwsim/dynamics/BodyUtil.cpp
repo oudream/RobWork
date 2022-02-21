@@ -59,11 +59,11 @@ Body::Ptr BodyUtil::getParentBody (rwsim::dynamics::Body::Ptr child,
     return getParentBody (child->getBodyFrame (), dwc, state);
 }
 
-Body::Ptr BodyUtil::getParentBody (rw::kinematics::Frame* child,
+Body::Ptr BodyUtil::getParentBody (rw::core::Ptr<rw::kinematics::Frame> child,
                                    rwsim::dynamics::DynamicWorkCell::Ptr dwc,
                                    const rw::kinematics::State& state)
 {
-    Frame* f        = child;
+    Frame::Ptr f        = child;
     Body::Ptr pbody = NULL;
     while (pbody == NULL) {
         f = f->getParent (state);

@@ -19,7 +19,7 @@
 #define RW_GEOMETRY_AABB_HPP_
 
 #if !defined(SWIG)
-#include "BV.hpp"
+#include <rw/geometry/BV.hpp>
 #endif
 #include <rw/common/Traits.hpp>
 namespace rw { namespace geometry {
@@ -30,13 +30,26 @@ namespace rw { namespace geometry {
 
 #if !defined(SWIGJAVA)
     template< class T > class AABB : public BV< AABB< T > >
-#else 
+#else
     template< class T > class AABB
-#endif 
+#endif
     {
       public:
         //! constructor
         AABB () : _position (0, 0, 0), _halfLng (0, 0, 0) {}
+
+        /**
+         * @brief Construct an AABB by defining the two oposit corners
+         * @param corner1 [in] the first corner
+         * @param corner2 [in] the second corner
+         */
+        AABB (const rw::math::Vector3D< T >& corner1, const rw::math::Vector3D< T >& corner2) :
+            _position ((corner1 + corner2) / 2.0), _halfLng ((corner1 - corner2) / 2.0)
+        {
+            _halfLng[0] = abs (_halfLng[0]);
+            _halfLng[1] = abs (_halfLng[1]);
+            _halfLng[2] = abs (_halfLng[2]);
+        }
 
         //! destructor
         virtual ~AABB () {}
@@ -68,6 +81,12 @@ namespace rw { namespace geometry {
             return 2 * (h * 2 * w * 2) + 2 * (h * 2 * l * 2) + 2 * (w * 2 * l * 2);
         }
 
+        /**
+         * @brief returns the diagonal of the box
+         * @return Vector3D<double>
+         */
+        rw::math::Vector3D< T > diagonal () { return _halfLng * 2; }
+
       private:
         rw::math::Vector3D< T > _position, _halfLng;
     };
@@ -83,8 +102,8 @@ extern template class rw::geometry::AABB< float >;
 SWIG_DECLARE_TEMPLATE (BvAABB, rw::geometry::BV< rw::geometry::AABB< double > >);
 #if SWIG_VERSION < 0x040000
 SWIG_DECLARE_TEMPLATE (AABB_d, rw::geometry::AABB< double >);
-ADD_DEFINITION(AABB_d,AABB)
-#else 
+ADD_DEFINITION (AABB_d, AABB, sdurw_geometry)
+#else
 SWIG_DECLARE_TEMPLATE (AABB, rw::geometry::AABB< double >);
 #endif
 #endif

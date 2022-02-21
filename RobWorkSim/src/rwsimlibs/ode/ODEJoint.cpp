@@ -274,52 +274,7 @@ ODEJoint::ODEJoint (rw::models::Joint* rwjoint, ODEBody* parent, ODEBody* child,
         RW_THROW ("Unsupported joint type!");
     }
 }
-/*
 
-ODEJoint::ODEJoint(
-                JointType jtype,
-         dJointID odeJoint,
-         dJointID odeMotor,
-         dBodyID body,
-         dynamics::RigidJoint* rwjoint):
-                         _jtype(jtype),
-             _jointId(odeJoint),
-             _child->getBodyID()(body),
-             _motorId(odeMotor),
-             _rwJoint(rwjoint),
-             _owner(NULL),
-             _type(ODEJoint::RIGID),
-             _bodyFrame(rwjoint->getBodyFrame()),
-             _offset( rwjoint->getInfo().masscenter )
-{
-
-}
-
-ODEJoint::ODEJoint(
-                 JointType jtype,
-                 dJointID odeJoint,
-         dJointID odeMotor,
-         dBodyID body,
-         ODEJoint* owner,
-         rw::kinematics::Frame *bframe,
-         double scale,
-         double off,
-         dynamics::RigidJoint* rwjoint):
-                         _jtype(jtype),
-             _jointId(odeJoint),
-             _motorId(odeMotor),
-             _child->getBodyID()(body),
-             _owner(owner),
-             _scale(scale),
-             _rwJoint(rwjoint),
-             _off(off),
-             _type(ODEJoint::DEPEND),
-             _bodyFrame(bframe),
-             _offset(rwjoint->getInfo().masscenter)
-{
-
-}
-*/
 /*
 ODEJoint* ODEJoint::make(RevoluteJoint* joint, dBodyID parent, dWorldID worldId){
     const double qinit = rwjoint->getQ(initState)[0];

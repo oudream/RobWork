@@ -75,7 +75,7 @@ TEST (RANSACTest, RANSACLineTest)
     ifstream inFile (filePath.c_str ());
     vector< Transform3D<> > data = readData (inFile);
     inFile.close ();
-    EXPECT_EQ (data.size () , 15);
+    EXPECT_EQ (data.size () , 15u);
 
     // extract positions
     vector< Vector3D<> > pos;
@@ -93,7 +93,7 @@ TEST (RANSACTest, RANSACLineTest)
         LineModel bestModel        = LineModel::bestModel (models);
 
         // check if any model found
-        EXPECT_GT (models.size () , 0);
+        EXPECT_GT (models.size () , 0u);
 
         // check if the model is acceptably close to ground truth
         rw::geometry::Line referenceLine (

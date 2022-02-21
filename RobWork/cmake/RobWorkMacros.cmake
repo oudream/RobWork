@@ -519,7 +519,7 @@ endmacro()
 # Add a library target. _name The library name. _component The part of RW that this library belongs
 # to. ARGN The source files for the library.
 macro(RW_ADD_LIBRARY _name)
-    set(options STATIC SHARED MODULE NO_EXPORT) # Used to marke flags
+    set(options STATIC SHARED MODULE NO_EXPORT HEADER_ONLY) # Used to marke flags
     set(oneValueArgs COMPONENT EXPORT_SET) # used to marke values with a single value
     set(multiValueArgs)
 
@@ -530,7 +530,7 @@ macro(RW_ADD_LIBRARY _name)
     endif()
 
     if("${SUBSYS_EXPORT_SET}" STREQUAL "")
-        set(SUBSYS_EXPORT_SET ${PROJECT_PREFIX}Targets)
+        set(SUBSYS_EXPORT_SET ${PROJECT_PREFIX}_${_name}Targets)
     endif()
 
     set(LIB_TYPE ${PROJECT_LIB_TYPE})
@@ -542,8 +542,12 @@ macro(RW_ADD_LIBRARY _name)
         set(LIB_TYPE MODULE)
     endif()
 
-    add_library(${_name} ${LIB_TYPE} ${SUBSYS_UNPARSED_ARGUMENTS})
-    add_library(${PROJECT_PREFIX}::${_name} ALIAS ${_name})
+    if(SUBSYS_HEADER_ONLY)
+        add_library(${_name} ${LIB_TYPE} IMPORTED)
+    else()
+        add_library(${_name} ${LIB_TYPE} ${SUBSYS_UNPARSED_ARGUMENTS})
+        add_library(${PROJECT_PREFIX}::${_name} ALIAS ${_name})
+    endif()
 
     # Only link if needed
     if(WIN32 AND MSVC)
@@ -586,6 +590,19 @@ macro(RW_ADD_LIBRARY _name)
             ARCHIVE DESTINATION ${lib_dir} COMPONENT ${_component}
         )
     endif()
+
+    export(
+        EXPORT ${SUBSYS_EXPORT_SET}
+        FILE "${${PROJECT_PREFIX}_ROOT}/cmake/targets/${_name}.cmake"
+        NAMESPACE ${PROJECT_PREFIX}::
+    )
+
+    install(
+        EXPORT ${SUBSYS_EXPORT_SET}
+        FILE ${_name}.cmake
+        NAMESPACE ${PROJECT_PREFIX}::
+        DESTINATION ${${PROJECT_PREFIX}_INSTALL_DIR}/cmake/targets
+    )
 
 endmacro()
 
@@ -753,7 +770,7 @@ macro(RW_ADD_SWIG _name _language _type)
                    RUNTIME_OUTPUT_DIRECTORY "${SLIB_BINARY_OUTPUT_DIR}"
     )
 
-    target_include_directories(${SLIB_TARGET_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+    target_include_directories(${SLIB_TARGET_NAME} PRIVATE ${XERCESC_INCLUDE_DIR} ${CMAKE_CURRENT_SOURCE_DIR})
     add_library(${PROJECT_PREFIX}::${SLIB_TARGET_NAME} ALIAS ${SLIB_TARGET_NAME})
 
     if((CMAKE_COMPILER_IS_GNUCC) OR (CMAKE_C_COMPILER_ID STREQUAL "Clang"))
@@ -770,39 +787,11 @@ macro(RW_ADD_SWIG _name _language _type)
 
     install(
         TARGETS ${SLIB_TARGET_NAME}
-        EXPORT ${PROJECT_PREFIX}${_language}Targets
+        EXPORT ${PROJECT_PREFIX}_${SLIB_TARGET_NAME}Targets
         RUNTIME DESTINATION ${SLIB_INSTALL_DIR} COMPONENT swig
         LIBRARY DESTINATION ${SLIB_INSTALL_DIR} COMPONENT swig
         ARCHIVE DESTINATION ${SLIB_INSTALL_DIR} COMPONENT swig
     )
-endmacro()
-
-macro(RW_SWIG_COMPILE_TARGET _language)
-
-    if(TARGET ${_language})
-        add_dependencies(${_language} ${ARGN})
-    else()
-        add_custom_target(
-            ${_language}
-            COMMAND ${CMAKE_COMMAND} -E echo "Done Building"
-            DEPENDS ${ARGN}
-        )
-    endif()
-
-    export(
-        EXPORT ${PROJECT_PREFIX}${_language}Targets
-        FILE "${${PROJECT_PREFIX}_ROOT}/cmake/${PROJECT_NAME}${_language}Targets.cmake"
-        NAMESPACE ${PROJECT_PREFIX}::
-    )
-
-    if(SWIG_DEFAULT_COMPILE OR CMAKE_VERSION VERSION_GREATER 3.16.0)
-        install(
-            EXPORT ${PROJECT_PREFIX}${_language}Targets
-            FILE ${PROJECT_NAME}${_language}Targets.cmake
-            NAMESPACE ${PROJECT_PREFIX}::
-            DESTINATION ${${PROJECT_PREFIX}_INSTALL_DIR}/cmake
-        )
-    endif()
 endmacro()
 
 macro(RW_SWIG_COMPILE_TARGET _language)
@@ -938,7 +927,6 @@ macro(RW_ADD_JAVA_LIB _name)
         )
     endif()
     set_target_properties(${java_NAME_${_name}}_java_doc PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD TRUE)
-
 endmacro()
 
 # ##################################################################################################
@@ -1009,6 +997,9 @@ macro(RW_SUBSYS_OPTION _var _name _desc _default)
     set(oneValueArgs REASON) # used to marke values with a single value
     set(multiValueArgs DEPENDS DEPENDS_EXT)
     cmake_parse_arguments(SUBSYS "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
+    if(SUBSYS_DEPENDS)
+        list(REMOVE_ITEM SUBSYS_DEPENDS "PUBLIC" "PRIVATE")
+    endif()
 
     set(_opt_name "BUILD_${_name}")
     rw_get_subsys_hyperstatus(subsys_status ${_name})

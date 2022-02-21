@@ -32,7 +32,7 @@ namespace rw { namespace core {
     {
       public:
         //! @brief Construct empty null pointer.
-        AnyPtr () : content (NULL) {}
+        AnyPtr () : content (nullptr) {}
 
         /**
          * @brief constructor - ownership of pointer is taken
@@ -55,7 +55,7 @@ namespace rw { namespace core {
          * @brief Copy constructor - ownership is shared.
          * @param other [in] other AnyPtr object.
          */
-        AnyPtr (const AnyPtr& other) : content (other.content ? other.content->clone () : NULL) {}
+        AnyPtr (const AnyPtr& other) : content (other.content) {}
 
         //! @brief Destructor.
         ~AnyPtr ()
@@ -82,7 +82,7 @@ namespace rw { namespace core {
          * @brief The pointer stored in the object.
          * @return raw pointer.
          */
-        template< class S > S* get ()
+        template< class S > S* get () const
         {
             rw::core::Ptr< holder< S > > content_cast = content.cast< holder< S > > ();
             if (content_cast.isNull ())
@@ -94,7 +94,13 @@ namespace rw { namespace core {
         /**
          * @brief Support for implicit conversion to bool.
          */
-        operator void* () const { return content->getVoidPtr (); }
+        operator void* () const
+        {
+            if (content.isNull ()) {
+                return NULL;
+            }
+            return content->getVoidPtr ();
+        }
 #endif
         /**
          * @brief Equality operator. This only tests if the pointers to the referenced objects are
@@ -104,8 +110,32 @@ namespace rw { namespace core {
          */
         template< class A > bool operator== (const Ptr< A >& p) const
         {
+            if (content == p) {
+                return true;
+            }
+            if (content.isNull ()) {
+                return false;
+            }
             return content->getVoidPtr () == p.get ();
         }
+
+        /**
+         * @brief Equality operator. This only tests if the pointers to the referenced objects are
+         * the same and NOT if the smart pointers are the same.
+         * @param p [in] any pointer to compare with
+         * @return true if the referenced objects are the same
+         */
+        bool operator== (const AnyPtr& p) const
+        {
+            if (content == p.content) {
+                return true;
+            }
+            if (content.isNull () || p.content.isNull()) {
+                return false;
+            }
+            return content->getVoidPtr () == p.content->getVoidPtr ();
+        }
+
 #if !defined(SWIG)
         /**
          * @brief Tests if the smart pointer points to the same instance as \b p

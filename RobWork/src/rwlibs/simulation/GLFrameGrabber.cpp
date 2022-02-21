@@ -19,9 +19,8 @@
 
 #include <rw/kinematics/Kinematics.hpp>
 #include <rw/math/Transform3D.hpp>
-#include <rwlibs/os/rwgl.hpp>
+#include <rwlibs/opengl/rwgl.hpp>
 
-using namespace rw::common;
 using namespace rw::graphics;
 using namespace rwlibs::simulation;
 
@@ -33,7 +32,7 @@ GLFrameGrabber::GLFrameGrabber (int width, int height, double fov, double nearAr
 GLFrameGrabber::~GLFrameGrabber ()
 {}
 
-void GLFrameGrabber::grab (rw::kinematics::Frame* frame, const rw::kinematics::State& state)
+void GLFrameGrabber::grab (rw::core::Ptr<rw::kinematics::Frame> frame, const rw::kinematics::State& state)
 {
     if (_view.isNull ())
         RW_THROW ("GLFrameGrabber must be initialized before grab is called!");

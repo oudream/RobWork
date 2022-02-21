@@ -18,7 +18,7 @@
 #ifndef RW_SENSOR_SCANNER1D_HPP
 #define RW_SENSOR_SCANNER1D_HPP
 #if !defined(SWIG)
-#include "Scanner.hpp"
+#include <rw/sensor/Scanner.hpp>
 #endif
 namespace rw { namespace sensor {
 

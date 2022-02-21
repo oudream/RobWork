@@ -19,7 +19,7 @@
 #define RW_PROXIMITY_BVTREEFACTORY_HPP_
 
 #if !defined(SWIG)
-#include "BinaryBVTree.hpp"
+#include <rw/proximity/rwstrategy/BinaryBVTree.hpp>
 
 #include <rw/common/Timer.hpp>
 #include <rw/core/macros.hpp>

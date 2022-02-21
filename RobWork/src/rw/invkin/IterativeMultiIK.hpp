@@ -21,14 +21,14 @@
 /**
  * @file IterativeIK.hpp
  */
-
+#if !defined(SWIG)
 #include <rw/core/PropertyMap.hpp>
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Q.hpp>
 #include <rw/math/Transform3D.hpp>
 
 #include <vector>
-
+#endif 
 namespace rw { namespace kinematics {
     class State;
 }}    // namespace rw::kinematics
@@ -85,7 +85,7 @@ namespace rw { namespace invkin {
          * @return List of solutions. Notice that the list may be empty.
          */
         virtual std::vector< rw::math::Q >
-        solve (const std::vector< math::Transform3D<> >& baseTend,
+        solve (const std::vector< rw::math::Transform3D<double> >& baseTend,
                const kinematics::State& state) const = 0;
 
         /**

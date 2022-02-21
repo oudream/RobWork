@@ -22,8 +22,8 @@
  * @file Camera.hpp
  */
 #if !defined(SWIG)
-#include "Image.hpp"
-#include "Sensor.hpp"
+#include <rw/sensor/Image.hpp>
+#include <rw/sensor/Sensor.hpp>
 
 #include <rw/core/Ptr.hpp>
 

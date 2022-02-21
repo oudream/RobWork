@@ -155,6 +155,9 @@ namespace rw { namespace math {
             return os << "RPY {" << rpy (0) << ", " << rpy (1) << ", " << rpy (2) << "}";
             // return os << rpy._rpy;
         }
+
+#else
+    TOSTRING (rw::math::RPY<T>);
 #endif 
       private:
         Vector3D< T > _rpy;
@@ -176,10 +179,16 @@ namespace rw { namespace math {
     extern template class rw::math::RPY< double >;
     extern template class rw::math::RPY< float >;
 #else
-    SWIG_DECLARE_TEMPLATE (RPYd, rw::math::RPY< double >);
-    SWIG_DECLARE_TEMPLATE (RPYf, rw::math::RPY< float >);
-#endif
 
+#if SWIG_VERSION < 0x040000
+    SWIG_DECLARE_TEMPLATE (RPYd, rw::math::RPY< double >);
+    ADD_DEFINITION (RPYd, RPY,sdurw_math)
+#else
+    SWIG_DECLARE_TEMPLATE (RPY, rw::math::RPY< double >);
+#endif
+    SWIG_DECLARE_TEMPLATE (RPYf, rw::math::RPY< float >);
+
+#endif
     using RPYd = RPY< double >;
     using RPYf = RPY< float >;
 

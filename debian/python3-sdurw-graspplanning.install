@@ -1,3 +1,5 @@
 usr/lib/*/dist-packages/sdurw_graspplanning/sdurw_graspplanning.py
 usr/lib/*/dist-packages/sdurw_graspplanning/_sdurw_graspplanning*.so
 usr/lib/*/dist-packages/sdurw_graspplanning/__init__.py
+usr/share/robwork-*/cmake/targets/sdurw_graspplanning_py.cmake
+usr/share/robwork-*/cmake/targets/sdurw_graspplanning_py-*.cmake

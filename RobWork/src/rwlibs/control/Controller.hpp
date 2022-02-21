@@ -17,10 +17,11 @@
 
 #ifndef RWLIBS_CONTROL_CONTROLLER_HPP_
 #define RWLIBS_CONTROL_CONTROLLER_HPP_
-
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
 
 #include <string>
+#endif 
 
 namespace rwlibs { namespace control {
 

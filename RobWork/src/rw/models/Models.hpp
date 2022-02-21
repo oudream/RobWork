@@ -23,7 +23,7 @@
  */
 
 #if !defined(SWIG)
-#include "Device.hpp"
+#include <rw/models/Device.hpp>
 
 #include <rw/kinematics/State.hpp>
 #include <rw/math/Q.hpp>
@@ -167,7 +167,7 @@ namespace rw { namespace models {
         */
         static rw::core::Ptr< rw::models::Device >
         makeDevice (rw::core::Ptr< rw::models::Device > device, const rw::kinematics::State& state,
-                    rw::kinematics::Frame* base = NULL, rw::kinematics::Frame* end = NULL);
+                    rw::core::Ptr<rw::kinematics::Frame> base = NULL, rw::core::Ptr<rw::kinematics::Frame> end = NULL);
     };
 
     /*@}*/

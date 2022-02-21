@@ -19,7 +19,7 @@
 #define RW_GRASPPLANNING_SEMIFORCECLOSUREFILTER_HPP_
 
 #if !defined(SWIG)
-#include "GraspValidateFilter.hpp"
+#include <rw/graspplanning/GraspValidateFilter.hpp>
 
 #include <cstddef>
 #endif 

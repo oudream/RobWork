@@ -18,9 +18,9 @@
 #ifndef RW_LOADERS_XMLPATHWRITER_HPP
 #define RW_LOADERS_XMLPATHWRITER_HPP
 
-#include "XMLBasisTypes.hpp"
-#include "XMLPathFormat.hpp"
-#include "XercesUtils.hpp"
+#include <rw/loaders/xml/XMLBasisTypes.hpp>
+#include <rw/loaders/xml/XMLPathFormat.hpp>
+#include <rw/loaders/xml/XercesUtils.hpp>
 
 #include <rw/trajectory/Path.hpp>
 #include <rw/trajectory/Timed.hpp>

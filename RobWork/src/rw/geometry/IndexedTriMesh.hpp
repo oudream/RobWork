@@ -19,9 +19,9 @@
 #define RW_GEOMETRY_INDEXEDTRIMESH_HPP_
 
 #if !defined(SWIG)
-#include "IndexedTriangle.hpp"
-#include "TriMesh.hpp"
-#include "Triangle.hpp"
+#include <rw/geometry/IndexedTriangle.hpp>
+#include <rw/geometry/TriMesh.hpp>
+#include <rw/geometry/Triangle.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Vector3D.hpp>
@@ -249,7 +249,7 @@ namespace rw { namespace geometry {
 #if defined(SWIG)
 #if SWIG_VERSION < 0x040000
     SWIG_DECLARE_TEMPLATE (IndexedTriMesh_d, rw::geometry::IndexedTriMesh< double >);
-    ADD_DEFINITION (IndexedTriMesh_d, IndexedTriMesh)
+    ADD_DEFINITION (IndexedTriMesh_d, IndexedTriMesh,sdurw_geometry)
 #else
     SWIG_DECLARE_TEMPLATE (IndexedTriMesh, rw::geometry::IndexedTriMesh< double >);
 #endif
@@ -630,7 +630,7 @@ namespace rw { namespace geometry {
 
 #if SWIG_VERSION < 0x040000
     SWIG_DECLARE_TEMPLATE (IndexedTriMeshN0_d, INDEXEDTRIIMESHN0_TYPE);
-    ADD_DEFINITION (IndexedTriMeshN0_d, IndexedTriMeshN0)
+    ADD_DEFINITION (IndexedTriMeshN0_d, IndexedTriMeshN0,sdurw_geometry)
 #else
     SWIG_DECLARE_TEMPLATE (IndexedTriMeshN0, INDEXEDTRIIMESHN0_TYPE);
 #endif

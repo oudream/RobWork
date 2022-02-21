@@ -19,7 +19,7 @@
 #define RW_PROXIMITY_DISTANCECALCULATOR_HPP
 
 #if !defined(SWIG)
-#include "DistanceStrategy.hpp"
+#include <rw/proximity/DistanceStrategy.hpp>
 
 #include <rw/common/Timer.hpp>
 #include <rw/proximity/CollisionSetup.hpp>
@@ -78,7 +78,7 @@ namespace rw { namespace proximity {
          * @param initial_state [in] - the work cell state to use for the
          * initial traversal of the tree.
          */
-        DistanceCalculator (rw::kinematics::Frame* root,
+        DistanceCalculator (rw::core::Ptr<rw::kinematics::Frame> root,
                             rw::core::Ptr< rw::models::WorkCell > workcell,
                             rw::core::Ptr<rw::proximity::DistanceStrategy> strategy,
                             const rw::kinematics::State& initial_state);
@@ -146,7 +146,7 @@ namespace rw { namespace proximity {
          * @return the shortest distance between frame and frame tree
          */
         rw::proximity::DistanceStrategy::Result
-        distance (const kinematics::State& state, const kinematics::Frame* frame,
+        distance (const kinematics::State& state, const rw::core::Ptr<kinematics::Frame> frame,
                   std::vector< rw::proximity::DistanceStrategy::Result >* result = 0) const;
 
         /**
@@ -170,7 +170,7 @@ namespace rw { namespace proximity {
          * @return true if a distance model was succesfully created and linked
          * with the frame; false otherwise.
          */
-        bool addDistanceModel (const rw::kinematics::Frame* frame,
+        bool addDistanceModel (const rw::core::Ptr<rw::kinematics::Frame> frame,
                                const rw::geometry::Geometry& faces);
 
         /**
@@ -192,7 +192,7 @@ namespace rw { namespace proximity {
         mutable rw::common::Timer _timer;
         mutable int _cnt;
 
-        rw::kinematics::Frame* _root;
+        rw::core::Ptr<rw::kinematics::Frame> _root;
         rw::proximity::CollisionSetup _setup;
 
         rw::core::Ptr<rw::proximity::DistanceStrategy> _strategy;

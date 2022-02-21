@@ -25,6 +25,17 @@ import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
 %}
 
+%{
+    #include <rw/math/Vector3D.hpp>
+%}
+
+
+%constant double Pi = rw::math::Pi;
+%constant double Inch2Meter = rw::math::Inch2Meter;
+%constant double Meter2Inch = rw::math::Meter2Inch;
+%constant double Deg2Rad = rw::math::Deg2Rad;
+%constant double Rad2Deg = rw::math::Rad2Deg;
+
 %rename(copy) rw::math::Rotation3DVector::operator=;
 %{
     #include <rw/math/Rotation3DVector.hpp>
@@ -59,9 +70,6 @@ FRIEND_OPERATOR_RET(rw::math::Vector3D<double>, rw::math::EAA<double>, ==, bool)
 FRIEND_OPERATOR_RET(rw::math::Vector3D<float>, rw::math::EAA<float>, ==, bool);
 FRIEND_OPERATOR_RET(rw::math::Vector3D<double>, rw::math::EAA<double>, !=, bool);
 FRIEND_OPERATOR_RET(rw::math::Vector3D<float>, rw::math::EAA<float>, !=, bool);
-
-%template(cross) rw::math::cross<double>;
-%template(cross) rw::math::cross<float>;
 
 %ignore rw::math::EigenDecomposition::MapSort;
 %{
@@ -108,6 +116,18 @@ FRIEND_OPERATOR(rw::math::Rotation3D<float>,rw::math::InertiaMatrix<float>,*);
     #include <rw/math/LinearAlgebra.hpp>
 %}
 %include <rw/math/LinearAlgebra.hpp>
+%template(eigenDecompositionSymmetric) rw::math::LinearAlgebra::eigenDecompositionSymmetric<double>;
+%template(eigenDecomposition) rw::math::LinearAlgebra::eigenDecomposition<double>;
+%template(pairEigenMatrixXComplex_d_EigenVectorXComplex_d) std::pair<rw::math::LinearAlgebra::EigenMatrix<std::complex<double>>::type,rw::math::LinearAlgebra::EigenVector<std::complex<double>>::type>;
+%template(pairEigenMatrixX_d_EigenVectorX_d) std::pair<rw::math::LinearAlgebra::EigenMatrix<double>::type,rw::math::LinearAlgebra::EigenVector<double>::type>;
+
+%extend rw::math::LinearAlgebra {
+    static bool isSO(Eigen::Matrix<double,3,3> var){
+        return rw::math::LinearAlgebra::isSO(var);
+    }
+}
+
+//%template(isSO_f) rw::math::LinearAlgebra::isSO<float>;
 
 %extend rw::math::LinearAlgebra {
     static bool isSO(Eigen::Matrix<double,3,3> var){
@@ -226,11 +246,11 @@ NAMED_OWNEDPTR(MetricRotation3D, rw::math::Metric<rw::math::Rotation3D<double>>)
 %template(WeightedInfinityMetricVector3D) rw::math::WeightedInfinityMetric< rw::math::Vector3D<double> >;
 
 %template(Rotation3DAngleMetric_d) rw::math::Rotation3DAngleMetric<double>;
-ADD_DEFINITION(Rotation3DAngleMetric_d, Rotation3DAngleMetric);
+ADD_DEFINITION(Rotation3DAngleMetric_d, Rotation3DAngleMetric,sdurw_math);
 %template(Rotation3DAngleMetric_f) rw::math::Rotation3DAngleMetric<float>;
 
 %template(Transform3DAngleMetric_d) rw::math::Transform3DAngleMetric <double>;
-ADD_DEFINITION(Transform3DAngleMetric_d, Transform3DAngleMetric);
+ADD_DEFINITION(Transform3DAngleMetric_d, Transform3DAngleMetric,sdurw_math);
 %template(Transform3DAngleMetric_f) rw::math::Transform3DAngleMetric <float>;
 
 %{
@@ -345,6 +365,8 @@ ADD_DEFINITION(Transform3DAngleMetric_d, Transform3DAngleMetric);
 %}
 %include <rw/math/Q.hpp>
 %template(PairQ) std::pair<rw::math::Q,rw::math::Q>;
+%template(PairConstQ) std::pair<const rw::math::Q, const rw::math::Q>;
+%template(VectorQ) std::vector<rw::math::Q>;
 
 %rename(copy) rw::math::Quaternion::operator=;
 %ignore rw::math::Quaternion::e() const;
@@ -382,6 +404,8 @@ FRIEND_OPERATOR(rw::math::Rotation3D<float>, rw::math::Wrench6D<float>, *);
     #include <rw/math/Rotation3D.hpp>
 %}
 %include <rw/math/Rotation3D.hpp>
+%template(VectorRotation3D) std::vector<rw::math::Rotation3D<double>>;
+%template(VectorRotation3D_f) std::vector<rw::math::Rotation3D<float>>;
 
 %{
     #include <rw/math/RPY.hpp>
@@ -401,6 +425,8 @@ FRIEND_OPERATOR(rw::math::Rotation3D<float>, rw::math::Wrench6D<float>, *);
 %include <rw/math/Transform3D.hpp>
 %template(inverse) rw::math::inverse<double>;
 %template(inverse) rw::math::inverse<float>;
+%template(VectorTransform3D) std::vector<rw::math::Transform3D<double>>;
+%template(VectorTransform3D_f) std::vector<rw::math::Transform3D<float>>;
 
 %{
     #include <rw/math/Transform3DVector.hpp>
@@ -487,8 +513,7 @@ FRIEND_OPERATOR(rw::math::Rotation3D<float>, rw::math::VelocityScrew6D<float>, *
 %template (norm1) rw::math::norm1<double>;
 %template (norm2) rw::math::norm2<float>;
 %template (norm2) rw::math::norm2<double>;
-%template (cross) rw::math::cross<double>;
-%template (cross) rw::math::cross<float>;
+
 %template (normInf) rw::math::normInf<float>;
 %template (normInf) rw::math::normInf<double>;
 %template (castToFloat) rw::math::cast<float,double>;

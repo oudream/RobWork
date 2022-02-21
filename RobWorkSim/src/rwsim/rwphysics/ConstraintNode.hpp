@@ -95,12 +95,12 @@ namespace rwsim { namespace simulator {
 
         ConstraintNode* getParentNode () { return _parentNode; }
 
-        void setFrame (rw::kinematics::Frame* frame) { _frame = frame; }
+        void setFrame (rw::core::Ptr<rw::kinematics::Frame> frame) { _frame = frame; }
 
         /**
          * @brief return the frames which this node is associated with
          */
-        rw::kinematics::Frame* getFrame () { return _frame; }
+        rw::kinematics::Frame* getFrame () { return _frame.get(); }
 
         inline void setID (int id) { _id = id; }
 
@@ -130,7 +130,7 @@ namespace rwsim { namespace simulator {
         std::list< ConstraintEdge* > _edges;
 
         // the frame that this node is associated with
-        rw::kinematics::Frame* _frame;
+        rw::core::Ptr<rw::kinematics::Frame> _frame;
 
         RWBody* _body;
 

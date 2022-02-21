@@ -130,7 +130,7 @@ namespace rw { namespace models {
 
         static void set (const DHParameterSet& dhset, rw::core::PropertyMap& pmap);
 
-        static void set (const DHParameterSet& dhset, rw::kinematics::Frame* joint);
+        static void set (const DHParameterSet& dhset, rw::core::Ptr<rw::kinematics::Frame> joint);
 
       private:
         /** @brief \f$ \alpha_{i-1}\f$ **/

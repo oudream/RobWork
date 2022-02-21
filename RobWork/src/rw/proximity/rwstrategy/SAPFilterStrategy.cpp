@@ -51,7 +51,7 @@ void SAPFilterStrategy::initialize ()
 
     for (Object::Ptr object : objects) {
         for (geometry::Geometry::Ptr geom : object->getGeometry ()) {
-            Frame* frame = geom->getFrame ();
+            rw::core::Ptr<Frame> frame = geom->getFrame ();
             RW_ASSERT (frame);
             _frameToGeoIdMap[*frame].push_back (geom->getName ());
         }
@@ -82,7 +82,7 @@ ProximitySetup& SAPFilterStrategy::getProximitySetup ()
     return _psetup;
 }
 
-void SAPFilterStrategy::addGeometry (rw::kinematics::Frame* frame,
+void SAPFilterStrategy::addGeometry (rw::core::Ptr<rw::kinematics::Frame> frame,
                                      const rw::geometry::Geometry::Ptr geo)
 {
     if (geo == NULL)
@@ -95,7 +95,7 @@ void SAPFilterStrategy::addGeometry (rw::kinematics::Frame* frame,
     initializeCollisionFramePairs (_workcell->getDefaultState ());
 }
 
-void SAPFilterStrategy::removeGeometry (rw::kinematics::Frame* frame,
+void SAPFilterStrategy::removeGeometry (rw::core::Ptr<rw::kinematics::Frame> frame,
                                         const rw::geometry::Geometry::Ptr geo)
 {
     if (geo == NULL)
@@ -104,7 +104,7 @@ void SAPFilterStrategy::removeGeometry (rw::kinematics::Frame* frame,
     removeGeometry (frame, geo->getName ());
 }
 
-void SAPFilterStrategy::removeGeometry (rw::kinematics::Frame* frame, const std::string& geoName)
+void SAPFilterStrategy::removeGeometry (rw::core::Ptr<rw::kinematics::Frame> frame, const std::string& geoName)
 {
     if (frame == NULL)
         RW_THROW ("Unable to add geometry to NULL frame");

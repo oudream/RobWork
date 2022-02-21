@@ -72,6 +72,8 @@ if(build)
                   ${RW_LIBS}/sdurw_sensor_java.jar
                   ${RW_LIBS}/sdurw_models_java.jar
                   ${RW_LIBS}/sdurw_proximity_java.jar
+                  ${RW_LIBS}/sdurw_graphics_java.jar
+                  ${RW_LIBS}/sdurw_trajectory_java.jar
                   ${RW_LIBS}/sdurw_java.jar
         JAVADOC_LINK ${RW_LIBS}/javadoc/sdurw
                      ${RW_LIBS}/javadoc/sdurw_core
@@ -82,6 +84,8 @@ if(build)
                      ${RW_LIBS}/javadoc/sdurw_sensor
                      ${RW_LIBS}/javadoc/sdurw_models
                      ${RW_LIBS}/javadoc/sdurw_proximity
+                     ${RW_LIBS}/javadoc/sdurw_trajectory
+                     ${RW_LIBS}/javadoc/sdurw_graphics
         WINDOW_TITLE "RobWorkStudio Java API Documentation"
     )
     set(CMAKE_SWIG_OUTDIR ${RWS_CMAKE_LIBRARY_OUTPUT_DIRECTORY})
@@ -98,5 +102,17 @@ if(build)
     add_library(${PROJECT_PREFIX}::${SUBSYS_NAME} ALIAS ${SUBSYS_NAME})
 
     rw_swig_compile_target(java sdurws_jni ${java_NAME_sdurws}_java_doc ${java_NAME_sdurws}_libs)
+
+    export(
+        EXPORT ${PROJECT_PREFIX}_sdurws_jniTargets
+        FILE "${${PROJECT_PREFIX}_ROOT}/cmake/targets/sdurws_jni.cmake"
+        NAMESPACE ${PROJECT_PREFIX}::
+    )
+    install(
+        EXPORT ${PROJECT_PREFIX}_sdurws_jniTargets
+        FILE sdurws_jni.cmake
+        NAMESPACE ${PROJECT_PREFIX}::
+        DESTINATION ${RWS_INSTALL_DIR}/cmake/targets
+    )
 
 endif()

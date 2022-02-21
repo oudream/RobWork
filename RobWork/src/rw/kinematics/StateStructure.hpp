@@ -22,7 +22,7 @@
    @file StateStructure.hpp
 */
 #if !defined(SWIG)
-#include "State.hpp"
+#include <rw/kinematics/State.hpp>
 
 #include <rw/core/Event.hpp>
 #include <rw/core/Ptr.hpp>
@@ -68,7 +68,7 @@ namespace rw { namespace kinematics {
          * @note the search includes the union of StateData in all
          * StateSetup's that belong to the StateStructure
          */
-        bool has (const StateData* data);
+        bool has (rw::core::Ptr<const StateData> data);
 
         /**
          * @brief gets the max ID of any StateData/Frame currently in the tree.
@@ -87,7 +87,8 @@ namespace rw { namespace kinematics {
          * @note Ownership is taken, the data object may not have been added to
          * any StateStructure before.
          */
-        void addData (StateData* data);
+        DEPRECATED("use rw::core::Ptr<StateData> instead of StateData*")
+        void addData (StateData*  data);
 
         /**
          * @brief adds a statedata to the frame tree and allocates memory
@@ -132,7 +133,7 @@ namespace rw { namespace kinematics {
          * children then all of these will change parent relation ship such that
          * world will become their parent.
          */
-        void remove (StateData* data);
+        void remove (rw::core::Ptr<StateData> data);
 
         /**
          * @brief upgrades the state to the default state, but without
@@ -180,13 +181,13 @@ namespace rw { namespace kinematics {
          * @brief get root of state structure
          * @return the root frame of the StateStructure
          */
-        const Frame* getRoot () const { return _root; }
+        const Frame* getRoot () const { return _root.get(); }
 
         /**
          * @brief get root of state structure
          * @return the root frame of the StateStructure
          */
-        Frame* getRoot () { return _root; }
+        rw::kinematics::Frame* getRoot () { return _root.get(); }
 
         /**
          * @brief destructs all frames and statedata that is not used any more.
@@ -268,7 +269,7 @@ namespace rw { namespace kinematics {
         int _version;
 
         // this specify the root frame
-        Frame* _root;
+        rw::core::Ptr<Frame> _root;
 
         // the default state
         State _defaultState;

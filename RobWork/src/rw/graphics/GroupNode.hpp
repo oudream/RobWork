@@ -18,11 +18,13 @@
 #ifndef RW_GRAPHICS_GROUPNODE_HPP_
 #define RW_GRAPHICS_GROUPNODE_HPP_
 
-#include "SceneNode.hpp"
+#if !defined(SWIG)
+#include <rw/graphics/SceneNode.hpp>
 
 #include <rw/math/Transform3D.hpp>
 
 #include <list>
+#endif
 
 namespace rw { namespace graphics {
 

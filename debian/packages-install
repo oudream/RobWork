@@ -17,9 +17,9 @@
 # static    = lib ends on .a
 
 ########################### ROBWORK #############################   
-pkg=sdurw nolib=true gotsoname=false dir=none inclfile=RobWorkConfig.hpp inclfile=rw/RobWork.hpp inclfile=rw/rw.hpp  
+pkg=sdurw nolib=true gotsoname=false dir=none inclfile=rw/RobWork.hpp inclfile=rw/rw.hpp
 
-pkg=sdurw_core          dir=/rw/core            inclfile=rw/core.hpp
+pkg=sdurw_core          dir=/rw/core            inclfile=rw/core.hpp           inclfile=RobWorkConfig.hpp
 pkg=sdurw_common        dir=/rw/common          inclfile=rw/common.hpp 
 pkg=sdurw_math          dir=/rw/math            inclfile=rw/math.hpp 
 pkg=sdurw_geometry      dir=/rw/geometry        inclfile=rw/geometry.hpp

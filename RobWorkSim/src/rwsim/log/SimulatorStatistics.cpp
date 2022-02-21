@@ -37,7 +37,7 @@ void SimulatorStatistics::update ()
     // Collect all data from children (of type SimulatorLogValues or SimulatorLogScope)
     DataSeries data;
     const std::vector< SimulatorLog::Ptr > children = _log->getChildren ();
-    for (const SimulatorLog::Ptr child : children) {
+    for (const SimulatorLog::Ptr& child : children) {
         if (const SimulatorLogScope::Ptr scope = child.cast< SimulatorLogScope > ()) {
             const rw::core::Ptr< const SimulatorStatistics > stats = scope->getStatistics ();
             if (!stats.isNull ()) {

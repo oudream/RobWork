@@ -1,3 +1,5 @@
 usr/lib/*/dist-packages/sdurw_opengl/sdurw_opengl.py
 usr/lib/*/dist-packages/sdurw_opengl/_sdurw_opengl*.so
 usr/lib/*/dist-packages/sdurw_opengl/__init__.py
+usr/share/robwork-*/cmake/targets/sdurw_opengl_py.cmake
+usr/share/robwork-*/cmake/targets/sdurw_opengl_py-*.cmake

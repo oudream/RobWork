@@ -2,6 +2,7 @@
 #define RWSIM_DYNAMICS_BEAMBODY_HPP_
 
 #include "Body.hpp"
+#include <rw/core/Ptr.hpp>
 
 namespace rwsim { namespace dynamics {
     //! @addtogroup rwsim_dynamics
@@ -18,6 +19,8 @@ namespace rwsim { namespace dynamics {
     class BeamBody : public Body
     {
       public:
+        //! @brief Smart pointer type for a BeamBody.
+        typedef rw::core::Ptr< BeamBody > Ptr;
         /**
          * @brief calculates the relative velocity of a point p on the body
          * described in world frames.

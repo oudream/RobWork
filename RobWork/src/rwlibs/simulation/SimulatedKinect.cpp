@@ -21,7 +21,7 @@
 #include <rw/math/Constants.hpp>
 #include <rw/math/Random.hpp>
 #include <rw/sensor/Scanner25D.hpp>
-#include <rwlibs/os/rwgl.hpp>
+#include <rwlibs/opengl/rwgl.hpp>
 
 using namespace rwlibs::simulation;
 using namespace rw::sensor;
@@ -75,7 +75,7 @@ class KinectSensorModel : public SensorModel
 };
 
 rw::core::Ptr< CameraModel > makeDefaultCameraModel (const std::string& name,
-                                                     rw::kinematics::Frame* frame, double fov,
+                                                     rw::core::Ptr<rw::kinematics::Frame> frame, double fov,
                                                      int w, int h, double nearVal, double farVal)
 {
     return rw::core::ownedPtr (new CameraModel (
@@ -83,7 +83,7 @@ rw::core::Ptr< CameraModel > makeDefaultCameraModel (const std::string& name,
 }
 
 rw::core::Ptr< Scanner25DModel > makeDefaultScannerModel (const std::string& name,
-                                                          rw::kinematics::Frame* frame, double fov,
+                                                          rw::core::Ptr<rw::kinematics::Frame> frame, double fov,
                                                           int w, int h, double nearVal,
                                                           double farVal)
 {
@@ -92,7 +92,7 @@ rw::core::Ptr< Scanner25DModel > makeDefaultScannerModel (const std::string& nam
 
 }    // namespace
 
-SimulatedKinect::SimulatedKinect (const std::string& name, rw::kinematics::Frame* frame) :
+SimulatedKinect::SimulatedKinect (const std::string& name, rw::core::Ptr<rw::kinematics::Frame> frame) :
     SimulatedSensor (
         KinectSensorModel::make (makeDefaultCameraModel (name, frame, 43, 640, 480, 0.01, 6),
                                  makeDefaultScannerModel (name, frame, 43, 640, 480, 0.01, 6))),
@@ -106,7 +106,7 @@ SimulatedKinect::SimulatedKinect (const std::string& name, rw::kinematics::Frame
 }
 
 SimulatedKinect::SimulatedKinect (const std::string& name, const std::string& desc,
-                                  rw::kinematics::Frame* frame) :
+                                  rw::core::Ptr<rw::kinematics::Frame> frame) :
     SimulatedSensor (
         KinectSensorModel::make (makeDefaultCameraModel (name, frame, 43, 640, 480, 0.01, 6),
                                  makeDefaultScannerModel (name, frame, 43, 640, 480, 0.01, 6))),

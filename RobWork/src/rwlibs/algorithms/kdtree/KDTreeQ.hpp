@@ -18,7 +18,7 @@
 #ifndef RWLIBS_ALGORTIHMS_KDTREEQ_HPP_
 #define RWLIBS_ALGORTIHMS_KDTREEQ_HPP_
 
-#include "KDTree.hpp"
+#include <rwlibs/algorithms/kdtree/KDTree.hpp>
 
 #include <rw/common/InputArchive.hpp>
 #include <rw/common/OutputArchive.hpp>
@@ -511,7 +511,7 @@ namespace rwlibs { namespace algorithms {
         // copy the KDNodes into the tree nodes
         for (unsigned int i = 0; i < tNodes->size (); i++) {
             (*tNodes)[i]          = new TreeNode ();
-            (*tNodes)[i]->_kdnode = new KDTreeQ< T >::KDNode (nodes[i]);
+            (*tNodes)[i]->_kdnode = new typename KDTreeQ< T >::KDNode (nodes[i]);
         }
 
         // create a simple median balanced tree

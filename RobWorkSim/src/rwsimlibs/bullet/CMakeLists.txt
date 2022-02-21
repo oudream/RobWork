@@ -1,6 +1,12 @@
 set(SUBSYS_NAME sdurwsim_bullet)
 set(SUBSYS_DESC "Bullet based physics engine plugin for RobWorkSim")
-set(SUBSYS_DEPS sdurwsim)
+set(SUBSYS_DEPS
+    PRIVATE RW::sdurw_geometry
+    PUBLIC  sdurwsim
+            RW::sdurw_simulation
+            RW::sdurw_math
+            RW::sdurw_core
+)
 
 set(build FALSE)
 set(DEFAULT TRUE)
@@ -113,7 +119,10 @@ if(build)
     rw_add_library(${SUBSYS_NAME} ${SRC_FILES} ${SRC_FILES_HPP})
     rw_add_includes(${SUBSYS_NAME} "rwsimlibs/bullet" ${SRC_FILES_HPP})
 
-    target_link_libraries(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS} PRIVATE ${BULLET_LIBRARIES})
+    target_link_libraries(${SUBSYS_NAME}
+        ${SUBSYS_DEPS}
+        PRIVATE ${BULLET_LIBRARIES}
+    )
 
     target_include_directories(${SUBSYS_NAME} PRIVATE ${BULLET_INCLUDE_DIRS}
         INTERFACE

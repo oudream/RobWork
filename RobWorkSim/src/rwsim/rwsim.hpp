@@ -1,98 +1,107 @@
-/*
- * rwsim.hpp
+/********************************************************************************
+ * Copyright 2011 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
  *
- *  Created on: 27/01/2011
- *      Author: jimali
- */
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ ********************************************************************************/
 
 #ifndef RWSIM_RWSIM_HPP_
 #define RWSIM_RWSIM_HPP_
 
-#include "./contacts/BallBallStrategy.hpp"
-#include "./contacts/Contact.hpp"
-#include "./contacts/ContactDetector.hpp"
-#include "./contacts/ContactDetectorData.hpp"
-#include "./contacts/ContactModel.hpp"
-#include "./contacts/ContactStrategy.hpp"
-#include "./contacts/ContactStrategyData.hpp"
-#include "./dynamics/Body.hpp"
-#include "./dynamics/DynamicDevice.hpp"
-#include "./dynamics/DynamicWorkCell.hpp"
-#include "./dynamics/FixedBody.hpp"
-#include "./dynamics/KinematicBody.hpp"
-#include "./dynamics/KinematicDevice.hpp"
-#include "./dynamics/RigidBody.hpp"
-#include "./dynamics/RigidDevice.hpp"
-#include "./dynamics/RigidJoint.hpp"
-//#include "./#dynamics/Contact.hpp"
-#include "./dynamics/ContactCluster.hpp"
-#include "./dynamics/ContactDataMap.hpp"
-#include "./dynamics/ContactManifold.hpp"
-#include "./dynamics/ContactPoint.hpp"
-#include "./dynamics/DynamicUtil.hpp"
-#include "./dynamics/MaterialDataMap.hpp"
-#include "./dynamics/OBRManifold.hpp"
-#include "./dynamics/SuctionCup.hpp"
-#include "./loaders/DynamicWorkCellLoader.hpp"
-#include "./loaders/ScapePoseFormat.hpp"
-#include "./sensor/BodyContactSensor.hpp"
-#include "./sensor/SimulatedFTSensor.hpp"
-#include "./sensor/SimulatedTactileSensor.hpp"
-#include "./sensor/TactileArraySensor.hpp"
-#include "./util/CircleModel.hpp"
-#include "./util/DistModel.hpp"
-#include "./util/MovingAverage.hpp"
-#include "./util/PlanarSupportPoseGenerator.hpp"
-#include "./util/PlaneModel.hpp"
-#include "./util/PointRANSACFitting.hpp"
-#include "./util/SupportPose.hpp"
-//#include "./#util/LineFit.hpp"
-//#include "./#util/LinePolar.hpp"
+#include <rwsim/contacts/BallBallStrategy.hpp>
+#include <rwsim/contacts/Contact.hpp>
+#include <rwsim/contacts/ContactDetector.hpp>
+#include <rwsim/contacts/ContactDetectorData.hpp>
+#include <rwsim/contacts/ContactModel.hpp>
+#include <rwsim/contacts/ContactStrategy.hpp>
+#include <rwsim/contacts/ContactStrategyData.hpp>
+#include <rwsim/control/PDController.hpp>
+#include <rwsim/control/SerialDeviceController.hpp>
+#include <rwsim/control/SuctionCupController.hpp>
+#include <rwsim/control/SyncPDController.hpp>
+#include <rwsim/control/VelRampController.hpp>
+#include <rwsim/drawable/RenderCircles.hpp>
+#include <rwsim/drawable/RenderContacts.hpp>
+#include <rwsim/drawable/RenderGhost.hpp>
+#include <rwsim/drawable/RenderPlanes.hpp>
+#include <rwsim/drawable/RenderPoints.hpp>
+#include <rwsim/dynamics/Body.hpp>
+#include <rwsim/dynamics/ContactCluster.hpp>
+#include <rwsim/dynamics/ContactDataMap.hpp>
+#include <rwsim/dynamics/ContactManifold.hpp>
+#include <rwsim/dynamics/ContactPoint.hpp>
+#include <rwsim/dynamics/DynamicDevice.hpp>
+#include <rwsim/dynamics/DynamicUtil.hpp>
+#include <rwsim/dynamics/DynamicWorkCell.hpp>
+#include <rwsim/dynamics/FixedBody.hpp>
+#include <rwsim/dynamics/KinematicBody.hpp>
+#include <rwsim/dynamics/KinematicDevice.hpp>
+#include <rwsim/dynamics/MaterialDataMap.hpp>
+#include <rwsim/dynamics/OBRManifold.hpp>
+#include <rwsim/dynamics/RigidBody.hpp>
+#include <rwsim/dynamics/RigidDevice.hpp>
+#include <rwsim/dynamics/SuctionCup.hpp>
+#include <rwsim/loaders/DynamicWorkCellLoader.hpp>
+#include <rwsim/loaders/ScapePoseFormat.hpp>
+#include <rwsim/rwphysics/BodyController.hpp>
+#include <rwsim/rwphysics/BodyIntegrator.hpp>
+#include <rwsim/rwphysics/CNodePairMap.hpp>
+#include <rwsim/rwphysics/CNodePool.hpp>
+#include <rwsim/rwphysics/ConstantForceManipulator.hpp>
+#include <rwsim/rwphysics/ConstraintEdge.hpp>
+#include <rwsim/rwphysics/ConstraintNode.hpp>
+#include <rwsim/rwphysics/ConstraintSolver.hpp>
+#include <rwsim/rwphysics/ContactGraph.hpp>
+#include <rwsim/rwphysics/ContactModel.hpp>
+#include <rwsim/rwphysics/ContactModelFactory.hpp>
+#include <rwsim/rwphysics/EulerIntegrator.hpp>
+#include <rwsim/rwphysics/RWBody.hpp>
+#include <rwsim/rwphysics/RWBodyPool.hpp>
+#include <rwsim/rwphysics/RWDebugRender.hpp>
+#include <rwsim/rwphysics/RWSimulator.hpp>
+#include <rwsim/rwphysics/SequintialImpulseSolver.hpp>
+#include <rwsim/sensor/BodyContactSensor.hpp>
+#include <rwsim/sensor/SimulatedFTSensor.hpp>
+#include <rwsim/sensor/SimulatedTactileSensor.hpp>
+#include <rwsim/sensor/TactileArraySensor.hpp>
+#include <rwsim/simulator/DynamicSimulator.hpp>
+#include <rwsim/simulator/PhysicsEngineFactory.hpp>
+#include <rwsim/simulator/ThreadSimulator.hpp>
+#include <rwsim/util/CircleModel.hpp>
+#include <rwsim/util/CollisionFreeSampler.hpp>
+#include <rwsim/util/DistModel.hpp>
+#include <rwsim/util/FiniteStateSampler.hpp>
+#include <rwsim/util/GraspPolicy.hpp>
+#include <rwsim/util/GraspPolicyFactory.hpp>
+#include <rwsim/util/GraspStrategy.hpp>
+#include <rwsim/util/GraspStrategyFactory.hpp>
+#include <rwsim/util/HughLineExtractor.hpp>
+#include <rwsim/util/MovingAverage.hpp>
+#include <rwsim/util/PlanarSupportPoseGenerator.hpp>
+#include <rwsim/util/PlaneModel.hpp>
+#include <rwsim/util/PointRANSACFitting.hpp>
+#include <rwsim/util/PreshapeSampler.hpp>
+#include <rwsim/util/RestingPoseGenerator.hpp>
+#include <rwsim/util/SpherePoseSampler.hpp>
+#include <rwsim/util/StateSampler.hpp>
+#include <rwsim/util/SupportPose.hpp>
+#include <rwsim/util/TargetConfigGraspPolicy.hpp>
+//#include <rwsim/rwphysics/GuendelContactModel.hpp>
+//#include <rwsim/#rwphysics/ConstraintSolver.hpp>
+//#include <rwsim/#util/LineFit.hpp>
+//#include <rwsim/#util/LinePolar.hpp>
 
-#include "./control/PDController.hpp"
-#include "./control/SerialDeviceController.hpp"
-#include "./control/SuctionCupController.hpp"
-#include "./control/SyncPDController.hpp"
-#include "./control/VelRampController.hpp"
-#include "./drawable/RenderCircles.hpp"
-#include "./drawable/RenderContacts.hpp"
-#include "./drawable/RenderGhost.hpp"
-#include "./drawable/RenderPlanes.hpp"
-#include "./drawable/RenderPoints.hpp"
-#include "./rwphysics/BodyController.hpp"
-#include "./rwphysics/BodyIntegrator.hpp"
-#include "./rwphysics/CNodePairMap.hpp"
-#include "./rwphysics/CNodePool.hpp"
-#include "./rwphysics/ConstantForceManipulator.hpp"
-#include "./rwphysics/ConstraintEdge.hpp"
-#include "./rwphysics/ConstraintNode.hpp"
-#include "./rwphysics/ConstraintSolver.hpp"
-#include "./rwphysics/ContactGraph.hpp"
-#include "./rwphysics/ContactModel.hpp"
-#include "./rwphysics/ContactModelFactory.hpp"
-#include "./rwphysics/EulerIntegrator.hpp"
-#include "./rwphysics/RWBody.hpp"
-#include "./rwphysics/RWBodyPool.hpp"
-#include "./rwphysics/RWDebugRender.hpp"
-#include "./rwphysics/RWSimulator.hpp"
-#include "./rwphysics/SequintialImpulseSolver.hpp"
-#include "./simulator/DynamicSimulator.hpp"
-#include "./simulator/PhysicsEngineFactory.hpp"
-#include "./simulator/ThreadSimulator.hpp"
-#include "./util/CollisionFreeSampler.hpp"
-#include "./util/FiniteStateSampler.hpp"
-#include "./util/GraspPolicy.hpp"
-#include "./util/GraspPolicyFactory.hpp"
-#include "./util/GraspStrategy.hpp"
-#include "./util/GraspStrategyFactory.hpp"
-#include "./util/HughLineExtractor.hpp"
-#include "./util/PreshapeSampler.hpp"
-#include "./util/RestingPoseGenerator.hpp"
-#include "./util/SpherePoseSampler.hpp"
-#include "./util/StateSampler.hpp"
-#include "./util/TargetConfigGraspPolicy.hpp"
-//#include "./rwphysics/GuendelContactModel.hpp"
-//#include "./#rwphysics/ConstraintSolver.hpp"
+//#include <rwsim/#dynamics/Contact.hpp>
 
 #define USE_ROBWORKSIM_NAMESPACE              \
     namespace rwsim { namespace contacts {    \

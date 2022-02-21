@@ -242,7 +242,7 @@ TactileArraySensor::TactileArraySensor (const std::string& name, dynamics::Body:
     //	RW_THROW("No geometry has been associated with the frame " <<
     //_body->getBodyFrame()->getName());
     ProximityModel::Ptr model = _narrowStrategy->createModel ();
-    for (const Geometry::Ptr geom : _body->getGeometry ()) {
+    for (const Geometry::Ptr& geom : _body->getGeometry ()) {
         _narrowStrategy->addGeometry (model.get (), geom, false);
     }
     ProximityStrategyData pdata;
@@ -637,7 +637,7 @@ void TactileArraySensor::ClassState::update (const rwlibs::simulation::Simulator
         // ProximityModelPtr modelA = _narrowStrategy->getModel(tframe);
         // ProximityModel::Ptr modelB = _tsensor->_narrowStrategy->getModel(bframe);
         ProximityModel::Ptr modelB = _tsensor->_narrowStrategy->createModel ();
-        for (const Geometry::Ptr geom : body->getGeometry ()) {
+        for (const Geometry::Ptr& geom : body->getGeometry ()) {
             _tsensor->_narrowStrategy->addGeometry (modelB.get (), geom, false);
         }
 

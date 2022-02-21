@@ -19,7 +19,7 @@
 #define RW_GEOMETRY_OBBCOLLIDER_HPP_
 
 #if !defined(SWIG)
-#include "BVCollider.hpp"
+#include <rw/geometry/BVCollider.hpp>
 
 #include <rw/geometry/OBB.hpp>
 #include <rw/math/Vector3D.hpp>
@@ -225,7 +225,7 @@ namespace rw { namespace geometry {
 #else
 #if SWIG_VERSION < 0x040000
     SWIG_DECLARE_TEMPLATE (OBBCollider_d, rw::geometry::OBBCollider< double >);
-    ADD_DEFINITION (OBBCollider_d, OBBCollider)
+    ADD_DEFINITION (OBBCollider_d, OBBCollider,sdurw_geometry)
 #else
     SWIG_DECLARE_TEMPLATE (OBBCollider, rw::geometry::OBBCollider< double >);
 #endif

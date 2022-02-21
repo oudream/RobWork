@@ -24,13 +24,13 @@
  * \copydoc rwlibs::mathematica::ListPlot
  */
 
-#include "Mathematica.hpp"
+#include <rwlibs/mathematica/Mathematica.hpp>
 
 #include <rw/core/Ptr.hpp>
 
 #if __cplusplus >= 201103L
-#include "List.hpp"
-#include "Rule.hpp"
+#include <rwlibs/mathematica/List.hpp>
+#include <rwlibs/mathematica/Rule.hpp>
 
 #include <initializer_list>
 #endif

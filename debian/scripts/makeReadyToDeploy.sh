@@ -114,13 +114,13 @@ handleMergeConflicts () {
 makeSourcePkg () {
     
     result=1
-    gbp dch -R -N "$MAJOR.$MINOR.$PATCH-$DEBREV" --ignore-branch --upstream-branch=master
+    gbp dch -R -N "$MAJOR.$MINOR.$PATCH-$DEBREV" --ignore-branch
     git add -A
     git commit -m "Updated Changelog to version $MAJOR.$MINOR.$PATCH-$DEBREV"
     git push || exit 1
     
     rm -r ../build
-    gbp buildpackage --git-tag --git-export-dir=../.rw_deb -S --git-upstream-tree=SLOPPY --git-ignore-branch  --no-sign || result=0
+    gbp buildpackage --git-export-dir=../.rw_deb -S --git-upstream-tree=SLOPPY --git-debian-branch=$(git rev-parse --abbrev-ref HEAD) --no-sign || result=0
     if [ $result -eq 1 ] ; then
         debsign -k $key ../.rw_deb/robwork_${MAJOR}.${MINOR}.${PATCH}-${DEBREV}_source.changes || result=0
         if [ $result -eq 1 ] ; then

@@ -19,8 +19,8 @@
 #define RW_GEOMETRY_TRIMESH_HPP_
 
 #if !defined(SWIG)
-#include "GeometryData.hpp"
-#include "Triangle.hpp"
+#include <rw/geometry/GeometryData.hpp>
+#include <rw/geometry/Triangle.hpp>
 
 #include <rw/core/Ptr.hpp>
 #endif
@@ -187,6 +187,7 @@ namespace rw { namespace geometry {
       private:
         bool _isConvex;
     };
+
     //! @}
 }}    // namespace rw::geometry
 

@@ -23,9 +23,9 @@
 #include <rw/common/Serializable.hpp>
 
 #include <Eigen/Core>
-#include <boost/cstdint.hpp>
-#include <boost/type_traits.hpp>
-#include <boost/utility/enable_if.hpp>
+
+#include <stdint.h>
+#include  <type_traits>
 #endif
 namespace rw { namespace common {
     /**
@@ -90,30 +90,30 @@ namespace rw { namespace common {
             return b;
         };
         //! read 8 bit integer
-        boost::int8_t readInt8 (const std::string& id)
+        int8_t readInt8 (const std::string& id)
         {
-            boost::int8_t b;
+            int8_t b;
             read (b, id);
             return b;
         };
         //! read 8 bit unsigned integer
-        boost::uint8_t readUInt8 (const std::string& id)
+        uint8_t readUInt8 (const std::string& id)
         {
-            boost::uint8_t b;
+            uint8_t b;
             read (b, id);
             return b;
         };
         //! read 64 bit integer
-        boost::int64_t readInt64 (const std::string& id)
+        int64_t readInt64 (const std::string& id)
         {
-            boost::int64_t b;
+            int64_t b;
             read (b, id);
             return b;
         };
         //! read 64 bit unsigned integer
-        boost::uint64_t readUInt64 (const std::string& id)
+        uint64_t readUInt64 (const std::string& id)
         {
-            boost::uint64_t b;
+            uint64_t b;
             read (b, id);
             return b;
         };
@@ -178,21 +178,21 @@ namespace rw { namespace common {
          */
         virtual void doRead (bool& val, const std::string& id) = 0;
         //! @copydoc doRead(bool&,const std::string&)
-        virtual void doRead (boost::int8_t& val, const std::string& id) = 0;
+        virtual void doRead (int8_t& val, const std::string& id) = 0;
         //! @copydoc doRead(bool&,const std::string&)
-        virtual void doRead (boost::uint8_t& val, const std::string& id) = 0;
+        virtual void doRead (uint8_t& val, const std::string& id) = 0;
         //! @copydoc doRead(bool&,const std::string&)
-        virtual void doRead (boost::int16_t& val, const std::string& id) = 0;
+        virtual void doRead (int16_t& val, const std::string& id) = 0;
         //! @copydoc doRead(bool&,const std::string&)
-        virtual void doRead (boost::uint16_t& val, const std::string& id) = 0;
+        virtual void doRead (uint16_t& val, const std::string& id) = 0;
         //! @copydoc doRead(bool&,const std::string&)
-        virtual void doRead (boost::int32_t& val, const std::string& id) = 0;
+        virtual void doRead (int32_t& val, const std::string& id) = 0;
         //! @copydoc doRead(bool&,const std::string&)
-        virtual void doRead (boost::uint32_t& val, const std::string& id) = 0;
+        virtual void doRead (uint32_t& val, const std::string& id) = 0;
         //! @copydoc doRead(bool&,const std::string&)
-        virtual void doRead (boost::int64_t& val, const std::string& id) = 0;
+        virtual void doRead (int64_t& val, const std::string& id) = 0;
         //! @copydoc doRead(bool&,const std::string&)
-        virtual void doRead (boost::uint64_t& val, const std::string& id) = 0;
+        virtual void doRead (uint64_t& val, const std::string& id) = 0;
         //! @copydoc doRead(bool&,const std::string&)
         virtual void doRead (float& val, const std::string& id) = 0;
         //! @copydoc doRead(bool&,const std::string&)
@@ -207,21 +207,21 @@ namespace rw { namespace common {
          */
         virtual void doRead (std::vector< bool >& val, const std::string& id) = 0;
         //! @copydoc doRead(std::vector<bool>&,const std::string&)
-        virtual void doRead (std::vector< boost::int8_t >& val, const std::string& id) = 0;
+        virtual void doRead (std::vector< int8_t >& val, const std::string& id) = 0;
         //! @copydoc doRead(std::vector<bool>&,const std::string&)
-        virtual void doRead (std::vector< boost::uint8_t >& val, const std::string& id) = 0;
+        virtual void doRead (std::vector< uint8_t >& val, const std::string& id) = 0;
         //! @copydoc doRead(std::vector<bool>&,const std::string&)
-        virtual void doRead (std::vector< boost::int16_t >& val, const std::string& id) = 0;
+        virtual void doRead (std::vector< int16_t >& val, const std::string& id) = 0;
         //! @copydoc doRead(std::vector<bool>&,const std::string&)
-        virtual void doRead (std::vector< boost::uint16_t >& val, const std::string& id) = 0;
+        virtual void doRead (std::vector< uint16_t >& val, const std::string& id) = 0;
         //! @copydoc doRead(std::vector<bool>&,const std::string&)
-        virtual void doRead (std::vector< boost::int32_t >& val, const std::string& id) = 0;
+        virtual void doRead (std::vector< int32_t >& val, const std::string& id) = 0;
         //! @copydoc doRead(std::vector<bool>&,const std::string&)
-        virtual void doRead (std::vector< boost::uint32_t >& val, const std::string& id) = 0;
+        virtual void doRead (std::vector< uint32_t >& val, const std::string& id) = 0;
         //! @copydoc doRead(std::vector<bool>&,const std::string&)
-        virtual void doRead (std::vector< boost::int64_t >& val, const std::string& id) = 0;
+        virtual void doRead (std::vector< int64_t >& val, const std::string& id) = 0;
         //! @copydoc doRead(std::vector<bool>&,const std::string&)
-        virtual void doRead (std::vector< boost::uint64_t >& val, const std::string& id) = 0;
+        virtual void doRead (std::vector< uint64_t >& val, const std::string& id) = 0;
         //! @copydoc doRead(std::vector<bool>&,const std::string&)
         virtual void doRead (std::vector< float >& val, const std::string& id) = 0;
         //! @copydoc doRead(std::vector<bool>&,const std::string&)
@@ -256,9 +256,11 @@ namespace rw { namespace common {
         virtual void doReadLeaveScope (const std::string& id) = 0;
 
       private:
+        template<bool B, typename T = void> using disable_if = std::enable_if<!B, T>;
+        
         template< class T >
         void readImpl (T& object, const std::string& id,
-                       typename boost::enable_if_c< std::is_base_of< Serializable, T >::value,
+                       typename std::enable_if< std::is_base_of< Serializable, T >::value,
                                                     T >::type* def = NULL)
         {
             object.read (*this, id);
@@ -266,17 +268,17 @@ namespace rw { namespace common {
 
         template< class T >
         void readImpl (T& object, const std::string& id,
-                       typename boost::disable_if_c< std::is_base_of< Serializable, T >::value,
+                       typename disable_if< std::is_base_of< Serializable, T >::value,
                                                      T >::type* def = NULL)
         {
             // first test if T is any of the primitives
-            if (boost::is_const< T >::value) {
+            if (std::is_const< T >::value) {
                 RW_THROW ("type T cannot be of type const!");
             }
-            else if (boost::is_reference< T >::value) {
+            else if (std::is_reference< T >::value) {
                 RW_THROW ("type T cannot be of type reference!");
             }
-            else if (boost::is_floating_point< T >::value || boost::is_integral< T >::value) {
+            else if (std::is_floating_point< T >::value || std::is_integral< T >::value) {
                 read (object, id);
             }
             else {

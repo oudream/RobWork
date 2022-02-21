@@ -19,7 +19,7 @@
 #define RW_MODELS_JOINTDEVICEJACOBIANCALCULATOR_HPP
 
 #if !defined(SWIG)
-#include "JacobianCalculator.hpp"
+#include <rw/models/JacobianCalculator.hpp>
 #endif 
 
 namespace rw { namespace kinematics {
@@ -58,7 +58,7 @@ namespace rw { namespace models {
          * @param state [in] State giving how frame are connected
          */
         JointDeviceJacobianCalculator (rw::core::Ptr< rw::models::JointDevice > device,
-                                       const rw::kinematics::Frame* base,
+                                       rw::core::Ptr<const rw::kinematics::Frame> base,
                                        const std::vector< rw::kinematics::Frame* >& tcps,
                                        const rw::kinematics::State& state);
 
@@ -74,7 +74,7 @@ namespace rw { namespace models {
         virtual rw::math::Jacobian get (const rw::kinematics::State& state) const;
 
       private:
-        const rw::kinematics::Frame* _base;
+        rw::core::Ptr<const rw::kinematics::Frame> _base;
         std::vector< rw::kinematics::Frame* > _tcps;
         size_t _dof;
         std::vector< rw::models::Joint* > _joints;    // Ordered list with the joints to include

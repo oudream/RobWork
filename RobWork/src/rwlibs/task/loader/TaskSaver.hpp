@@ -24,7 +24,7 @@
  * \copydoc rwlibs::task::TaskSaver
  */
 
-#include "../Task.hpp"
+#include <rwlibs/task/Task.hpp>
 
 #include <rw/core/ExtensionPoint.hpp>
 #include <rw/core/Ptr.hpp>

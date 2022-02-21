@@ -116,6 +116,8 @@ namespace rwsim { namespace control {
             return this;
         }
 
+        std::vector< SpringParam > getParameters () const { return _springParams; }
+
       private:
         SpringJointController ();
 

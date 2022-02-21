@@ -1,7 +1,7 @@
 #include <rw/common/ThreadPool.hpp>
 #include <rw/loaders/ImageLoader.hpp>
 
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #include <boost/function.hpp>
 
 using namespace rw::common;

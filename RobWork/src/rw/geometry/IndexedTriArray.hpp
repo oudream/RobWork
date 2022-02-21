@@ -85,6 +85,7 @@ namespace rw { namespace geometry {
             }
         }
 
+#if !defined(SWIG)
         /**
          * @brief constructor - creates a proxy that only references part of
          * the triangle mesh. the part is specified in the range from
@@ -108,7 +109,7 @@ namespace rw { namespace geometry {
             _idxArr (idxArr), _centerArr (centerArr), _valArr (valArr),
             _valCenterArr (valCenterArr), _first (first), _last (last)
         {}
-
+#endif
         //! @brief destructor
         virtual ~IndexedTriArray () {}
 
@@ -311,7 +312,7 @@ namespace rw { namespace geometry {
 #if defined(SWIG)
 #if SWIG_VERSION < 0x040000
     SWIG_DECLARE_TEMPLATE (IndexedTriArray_size_t, rw::geometry::IndexedTriArray< std::size_t >);
-    ADD_DEFINITION (IndexedTriArray_size_t, IndexedTriArray)
+    ADD_DEFINITION (IndexedTriArray_size_t, IndexedTriArray,sdurw_geometry)
 #else
     SWIG_DECLARE_TEMPLATE (IndexedTriArray, rw::geometry::IndexedTriArray< std ::size_t >);
 #endif

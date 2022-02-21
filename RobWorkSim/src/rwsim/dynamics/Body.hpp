@@ -46,7 +46,7 @@ namespace rwsim { namespace dynamics {
     {
       public:
         //! @brief Construct empty body info.
-        BodyInfo () : material (""), objectType (""), mass (0), masscenter (0, 0, 0){};
+        BodyInfo () : material (""), objectType (""), mass (0), masscenter (0, 0, 0){}
 
         //! @brief The type of material of the body. This determines the frictional effects.
         std::string material;
@@ -72,7 +72,7 @@ namespace rwsim { namespace dynamics {
             // std::cout << "Frames: \n";
             // RW_ASSERT(frames.size()>0);
             // std::cout << "- " << frames[0]->getName() << "\n";
-            // for(rw::kinematics::Frame* frame: frames){
+            // for(rw::core::Ptr<rw::kinematics::Frame> frame: frames){
             //	std::cout <<"-- "<< frame->getName() << "\n";
             //}
             std::cout << std::endl;
@@ -89,7 +89,7 @@ namespace rwsim { namespace dynamics {
             // ostr << "Frames: \n";
             // RW_ASSERT(frames.size()>0);
             // ostr << "- " << frames[0]->getName() << "\n";
-            // for(rw::kinematics::Frame* frame: frames){
+            // for(rw::core::Ptr<rw::kinematics::Frame> frame: frames){
             //	ostr <<"-- "<< frame->getName() << "\n";
             //}
             ostr << std::endl;
@@ -119,7 +119,7 @@ namespace rwsim { namespace dynamics {
         typedef rw::core::Ptr< Body > Ptr;
 
         //! @brief Destructor.
-        virtual ~Body (){};
+        virtual ~Body (){}
 
         /**
          * @brief name of body which is the name of the BodyFrame
@@ -127,12 +127,19 @@ namespace rwsim { namespace dynamics {
          */
         const std::string& getName () const { return _bodyframe->getName (); }
 
+#ifdef RW_USE_PTR
+        /**
+         * @brief Returns the frame that the bodies dynamic variables are described relative to.
+         * @return pointer to the body reference frame.
+         */
+        rw::kinematics::Frame::Ptr getBodyFrame () const { return _obj->getBase (); }
+#else
         /**
          * @brief Returns the frame that the bodies dynamic variables are described relative to.
          * @return pointer to the body reference frame.
          */
         rw::kinematics::Frame* getBodyFrame () const { return _obj->getBase (); }
-
+#endif
         /**
          * @brief Get all geometry associated with this body.
          * @param state [in] the current state (for deformable bodies).
@@ -164,27 +171,27 @@ namespace rwsim { namespace dynamics {
          * @brief get the body info
          * @return the body info.
          */
-        const BodyInfo& getInfo () const { return _info; };
+        const BodyInfo& getInfo () const { return _info; }
 
         /**
          * @brief retrieve body information
          * @return the body information.
          * @note changing this will not force a changed event.
          */
-        BodyInfo& getInfo () { return _info; };
+        BodyInfo& getInfo () { return _info; }
 
         /**
          * @brief Material identifier of this object.
          * @return the identifier.
          */
-        const std::string& getMaterialID () const { return _info.material; };
+        const std::string& getMaterialID () const { return _info.material; }
 
         /**
          * @brief get the inertia matrix of this body. The inertia is described
          * around the center of mass and relative to the parent frame.
          * @return the inertia matrix.
          */
-        const rw::math::InertiaMatrix<>& getInertia () const { return _info.inertia; };
+        const rw::math::InertiaMatrix<>& getInertia () const { return _info.inertia; }
 
         //! @brief Types of events a body can emit.
         typedef enum {
@@ -564,10 +571,10 @@ namespace rwsim { namespace dynamics {
          * @brief Get the geometry information for the body.
          * @return the object.
          */
-        rw::models::Object::Ptr getObject () const { return _obj; };
+        rw::models::Object::Ptr getObject () const { return _obj; }
 
       private:
-        rw::kinematics::Frame* _bodyframe;
+        rw::core::Ptr<rw::kinematics::Frame> _bodyframe;
         std::vector< rw::kinematics::Frame* > _frames;
 
         rw::models::Object::Ptr _obj;

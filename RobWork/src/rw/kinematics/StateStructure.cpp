@@ -24,8 +24,10 @@
 #include "TreeState.hpp"
 
 #include <rw/math/Transform3D.hpp>
+#include <rw/math/Rotation3D.hpp>
 
 using rw::math::Transform3D;
+using rw::math::Rotation3D;
 using namespace rw::kinematics;
 
 StateStructure::StateStructure () : _version (0), _root (NULL), _stateSetupUniqueId (0)
@@ -34,7 +36,7 @@ StateStructure::StateStructure () : _version (0), _root (NULL), _stateSetupUniqu
     // now add the state data of the frame
     //_frames.push_back(_root);
     addDataInternal (_root);
-    _frames[_root->getID ()] = _root;
+    _frames[_root->getID ()] = _root.get ();
     // and setup the static frame-parent relationship
     _root->setParent (NULL);
     _frameIdxMap[_root->getName ()] = _root->getID ();
@@ -57,13 +59,13 @@ StateStructure::~StateStructure ()
     }
 }
 
-bool StateStructure::has (const StateData* const data)
+bool StateStructure::has (rw::core::Ptr<const StateData> const data)
 {
     const int id = data->getID ();
     return (id >= 0 && id < getMaxID () && _allDatas[id] != NULL);
 }
 
-void StateStructure::addData (StateData* const data)
+void StateStructure::addData (StateData* data)
 {
     addDataInternal (data);
 
@@ -72,7 +74,7 @@ void StateStructure::addData (StateData* const data)
     _stateDataAddedEvent.fire (data);
 }
 
-void StateStructure::addData (const rw::core::Ptr< StateData > data)
+void StateStructure::addData (rw::core::Ptr< StateData > data)
 {
     addDataInternal (data);
 
@@ -81,7 +83,7 @@ void StateStructure::addData (const rw::core::Ptr< StateData > data)
     _stateDataAddedEvent.fire (data.get ());
 }
 
-void StateStructure::addDataInternal (StateData* const data)
+void StateStructure::addDataInternal (StateData* data)
 {
     // frame must not be in tree allready
     if (has (data))
@@ -101,7 +103,7 @@ void StateStructure::addDataInternal (StateData* const data)
     // lastly update the default state
 }
 
-void StateStructure::addDataInternal (const rw::core::Ptr< StateData > data)
+void StateStructure::addDataInternal (rw::core::Ptr< StateData > data)
 {
     // frame must not be in tree allready
     if (has (data.get ())) {
@@ -173,6 +175,27 @@ void StateStructure::addFrame (Frame::Ptr frame, Frame::Ptr parent)
     cleanup ();
 
     _stateDataAddedEvent.fire (frame.get ());
+
+    Transform3D<> t = frame->getTransform (getDefaultState ());
+    if (t.R () == Rotation3D< double > (0, 0, 0, 0, 0, 0, 0, 0, 0)) {
+        double q[12];
+        q[0] = 0;
+        q[1] = 0;
+        q[2] = 0;
+
+        q[3]    = 1;
+        q[4]    = 0;
+        q[5]    = 0;
+        q[6]    = 0;
+        q[7]    = 1;
+        q[8]    = 0;
+        q[9]    = 0;
+        q[10]   = 0;
+        q[11]   = 1;
+        State s = getDefaultState ();
+        frame->setData (s, q);
+        setDefaultState (s);
+    }
 }
 
 void StateStructure::addDAF (Frame::Ptr frame, Frame::Ptr parent)
@@ -210,7 +233,7 @@ void StateStructure::addDAF (Frame::Ptr frame, Frame::Ptr parent)
     _stateDataAddedEvent.fire (frame.get ());
 }
 
-void StateStructure::remove (StateData* data)
+void StateStructure::remove (rw::core::Ptr<StateData> data)
 {
     RW_ASSERT (data);
     RW_ASSERT (data->getID () > 0);
@@ -223,7 +246,7 @@ void StateStructure::remove (StateData* data)
             RW_THROW (
                 "Frame has staticly connected children and therefore cannot be removed from tree!");
         // make sure the parent frame gets any static connections deleted to the frame
-        Frame* parent = _frames[id]->getParent ();
+        rw::core::Ptr< Frame > parent = _frames[id]->getParent ();
         if (parent != NULL)
             parent->removeChild (_frames[id]);
 
@@ -237,7 +260,7 @@ void StateStructure::remove (StateData* data)
     updateDefaultState ();
     // perform cleanup
     cleanup (id);
-    _stateDataRemovedEvent.fire (data);
+    _stateDataRemovedEvent.fire (data.get());
 }
 
 State StateStructure::upgradeState (const State& oldState)
@@ -292,7 +315,7 @@ void StateStructure::cleanup (int ID)
                 // if its a frame then remove it from its parent
 
                 if (_frames[id] != NULL) {
-                    Frame* frame = _frames[id];
+                    rw::core::Ptr< Frame > frame = _frames[id];
                     if (frame->getParent () != NULL) {
                         frame->getParent ()->removeChild (frame);
                     }

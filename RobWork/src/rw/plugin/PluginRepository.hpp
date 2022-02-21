@@ -24,7 +24,7 @@
  * Defines the rw::plugin::PluginRepository
  */
 
-#include "PluginFactory.hpp"
+#include <rw/plugin/PluginFactory.hpp>
 
 #include <boost/function.hpp>
 #include <map>

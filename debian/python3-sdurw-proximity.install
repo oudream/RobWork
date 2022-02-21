@@ -1,0 +1,5 @@
+usr/lib/*/dist-packages/sdurw_proximity/sdurw_proximity.py
+usr/lib/*/dist-packages/sdurw_proximity/_sdurw_proximity*.so
+usr/lib/*/dist-packages/sdurw_proximity/__init__.py
+usr/share/robwork-*/cmake/targets/sdurw_proximity_py.cmake
+usr/share/robwork-*/cmake/targets/sdurw_proximity_py-*.cmake

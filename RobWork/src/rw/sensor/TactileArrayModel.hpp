@@ -19,7 +19,7 @@
 #define RW_SENSOR_TACTILEARRAYMODEL_HPP
 
 #if !defined(SWIG)
-#include "SensorModel.hpp"
+#include <rw/sensor/SensorModel.hpp>
 
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/Vector2D.hpp>
@@ -58,7 +58,7 @@ namespace rw { namespace sensor {
          * @param cell_width [in] width of cell
          * @param cell_height [in] height of cell
          */
-        TactileArrayModel (const std::string& name, rw::kinematics::Frame* sensorframe,
+        TactileArrayModel (const std::string& name, rw::core::Ptr<rw::kinematics::Frame> sensorframe,
                            const rw::math::Transform3D<>& fThmap, const ValueMatrix& heightMap,
                            double cell_width, double cell_height);
 

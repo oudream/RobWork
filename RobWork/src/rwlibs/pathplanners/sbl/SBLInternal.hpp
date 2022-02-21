@@ -24,7 +24,7 @@
    @brief SBL path planner.
 */
 
-#include "SBLSetup.hpp"
+#include <rwlibs/pathplanners/sbl/SBLSetup.hpp>
 
 namespace rw { namespace math {
     class Q;

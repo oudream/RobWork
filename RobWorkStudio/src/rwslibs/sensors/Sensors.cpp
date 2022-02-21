@@ -33,7 +33,7 @@
 
 #include <QMessageBox>
 #include <QTimer>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 #include <sstream>
 
 using namespace rw::math;

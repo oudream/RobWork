@@ -19,8 +19,8 @@
 #define RW_PROXIMITY_BasicFilterStrategy_HPP_
 
 #if !defined(SWIG)
-#include "ProximityFilterStrategy.hpp"
-#include "ProximitySetup.hpp"
+#include <rw/proximity/ProximityFilterStrategy.hpp>
+#include <rw/proximity/ProximitySetup.hpp>
 
 #include <rw/kinematics/Frame.hpp>
 #include <rw/kinematics/FrameMap.hpp>
@@ -135,7 +135,7 @@ namespace rw { namespace proximity {
          * @brief Adds geometry associated to frame
          * @param frame [in] Frame which has the geometry associated
          */
-        virtual void addGeometry (rw::kinematics::Frame* frame,
+        virtual void addGeometry (rw::core::Ptr<rw::kinematics::Frame> frame,
                                   const rw::core::Ptr< rw::geometry::Geometry >);
 
         /**
@@ -144,7 +144,7 @@ namespace rw { namespace proximity {
          *
          * @param frame [in] Frame which has the geometry associated
          */
-        virtual void removeGeometry (rw::kinematics::Frame* frame,
+        virtual void removeGeometry (rw::core::Ptr<rw::kinematics::Frame> frame,
                                      const rw::core::Ptr< rw::geometry::Geometry >);
 
         /**
@@ -154,7 +154,7 @@ namespace rw { namespace proximity {
          * @param frame [in] Frame which has the geometry associated
          * @param geometryId [in] Geometry
          */
-        virtual void removeGeometry (rw::kinematics::Frame* frame, const std::string& geometryId);
+        virtual void removeGeometry (rw::core::Ptr<rw::kinematics::Frame> frame, const std::string& geometryId);
 
         /**
          * @copydoc ProximityFilterStrategy::addRule

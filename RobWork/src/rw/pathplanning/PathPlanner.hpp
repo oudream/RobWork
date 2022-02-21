@@ -21,12 +21,12 @@
 /**
    @file PathPlanner.hpp
 */
-
-#include "StopCriteria.hpp"
+#if !defined(SWIG)
+#include <rw/pathplanning/StopCriteria.hpp>
 
 #include <rw/core/PropertyMap.hpp>
 #include <rw/trajectory/Path.hpp>
-
+#endif
 namespace rw { namespace pathplanning {
 
     /** @addtogroup pathplanning */

@@ -44,9 +44,9 @@ Ptr< Trajectory< X > > makeLinearXTrajectory (const std::vector< Timed< X > >& p
         double dt = 0;
         for (size_t i = 1; i < path.size (); i++) {
             dt = path[i].getTime () - path[i - 1].getTime ();
-            if (!(dt >= 0)) {
-                RW_WARN ("dt is wrong in trajectory. dt=" << dt << ". dt is force to 0.");
-                dt = 0;
+            if (!(dt > 0)) {
+                RW_WARN ("dt must be greater than 0. dt=" << dt << ". dt is force to 1e-15.");
+                dt = 1e-15;
             }
             trajectory->add (ownedPtr (
                 new LinearInterpolator< X > (path[i - 1].getValue (), path[i].getValue (), dt)));

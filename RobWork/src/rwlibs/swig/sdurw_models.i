@@ -2,7 +2,9 @@
 
 %include <stl.i>
 %include <std_vector.i>
+%include <exception.i>
 %include <rwlibs/swig/swig_macros.i>
+%include <exception.i>
 
 %import <rwlibs/swig/sdurw_core.i>
 %import <rwlibs/swig/sdurw_common.i>
@@ -14,6 +16,7 @@
 %import <rwlibs/swig/ext_i/std.i>
 
 %{
+	#include <rw/kinematics/Frame.hpp>
 	#include <rw/kinematics/FixedFrame.hpp>
 	#include <rw/sensor/CameraModel.hpp>
 	#include <rw/sensor/TactileArrayModel.hpp>
@@ -49,6 +52,40 @@ import org.robwork.sdurw_geometry.*;
 import org.robwork.sdurw_sensor.*;
 %}
 
+%exception {
+    try {
+        //printf("Entering function : $name\n"); // uncomment to get a print out of all function calls
+        $action
+    }catch(rw::core::Exception& e ){
+        SWIG_exception(SWIG_RuntimeError,e.what());
+    }catch(...){
+        SWIG_exception(SWIG_RuntimeError,"unknown error");
+    }
+}
+
+%{
+	template<class T>
+	char* rw_kinematics_Frame___str__(T* f){
+		return printCString<rw::kinematics::Frame>(*f);
+	}
+	template<class T>
+	char* rw_kinematics_Frame_toString(T* f){
+		return printCString<rw::kinematics::Frame>(*f);
+	}
+%}
+
+%exception {
+    try {
+        //printf("Entering function : $name\n"); // uncomment to get a print out of all function calls
+        $action
+    }catch(rw::core::Exception& e ){
+        SWIG_exception(SWIG_RuntimeError,e.what());
+    }catch(...){
+        SWIG_exception(SWIG_RuntimeError,"unknown error");
+    }
+}
+
+
 %{
 	#include <rw/proximity/CollisionSetup.hpp>
 	#include <rw/proximity/CollisionSetup.cpp>
@@ -80,6 +117,21 @@ NAMED_OWNEDPTR(Object,rw::models::Object);
 %include <rw/models/Device.hpp>
 NAMED_OWNEDPTR(Device,rw::models::Device);
 %template (DevicePtrVector) std::vector<rw::core::Ptr<rw::models::Device> >;
+
+
+%{
+	std::vector< double,std::allocator< double > > rw_kinematics_StateData_getData(rw::kinematics::StateData *self,rw::kinematics::State &state){
+        double* data = self->getData(state);
+        std::vector<double> ret(self->size());
+        for(int i = 0; i < self->size(); i++){
+            ret.push_back(data[i]);
+        }
+        return ret;
+    }
+	void rw_kinematics_StateData_setData(rw::kinematics::StateData *self,rw::kinematics::State &state,std::vector< double,std::allocator< double > > const vals){
+        self->setData(state,vals.data());
+    }
+%}
 
 %{
 	#include<rw/models/Joint.hpp>
@@ -254,10 +306,12 @@ NAMED_OWNEDPTR(ParallelDevice,rw::models::ParallelDevice);
 %}
 %include <rw/models/ParallelLeg.hpp>
 NAMED_OWNEDPTR(ParallelLeg,rw::models::ParallelLeg);
-    %template(VectorParallelLegPtr) std::vector<rw::core::Ptr<rw::models::ParallelLeg>>;
-    %template(VectorParallelLeg_p) std::vector<rw::models::ParallelLeg*>;
-    %template(VectorVectorParallelLeg_p) std::vector<std::vector<rw::models::ParallelLeg*>>;
 
+%template(VectorParallelLegPtr) std::vector<rw::core::Ptr<rw::models::ParallelLeg>>;
+%template(VectorParallelLeg_p) std::vector<rw::models::ParallelLeg*>;
+%template(VectorVectorParallelLeg_p) std::vector<std::vector<rw::models::ParallelLeg*>>;
+
+ADD_DEFINITION(VectorParallelLeg_p,ParallelLegs,sdurw_model)
 
 
 %{
@@ -341,6 +395,7 @@ NAMED_OWNEDPTR(VirtualJoint,rw::models::VirtualJoint);
 %include <rw/models/WorkCell.hpp>
 NAMED_OWNEDPTR(WorkCell,rw::models::WorkCell);
 //%template (WorkCellChangedEvent) rw::core::Event< rw::models::WorkCell::WorkCellChangedListener, int >;
+
 
 %extend rw::models::WorkCell {
 	/**

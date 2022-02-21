@@ -43,7 +43,6 @@
 #include <rwsim/dynamics/MaterialDataMap.hpp>
 #include <rwsim/dynamics/RigidBody.hpp>
 #include <rwsim/dynamics/RigidDevice.hpp>
-#include <rwsim/dynamics/RigidJoint.hpp>
 
 #include <boost/lexical_cast.hpp>
 #include <boost/optional.hpp>
@@ -1485,6 +1484,9 @@ void getWorkCellOptionally (const PTree& tree, ParserState& state)
 DynamicWorkCell::Ptr readDynamicWC (PTree& tree, ParserState& state)
 {
     getWorkCellOptionally (tree, state);
+    if (state.wc.isNull ()) {
+        RW_THROW ("Failed to Load WorkCell. WorkCell is Null");
+    }
     state.rwstate = state.wc->getDefaultState ();
     for (Device::Ptr dev : state.wc->getDevices ()) {
         state.deviceBases.push_back (dev->getBase ());
@@ -1639,7 +1641,14 @@ rw::core::Ptr< DynamicWorkCell > DynamicWorkCellLoader::load (const string& file
         read_xml (file, tree);
 
         // XML::printTree(tree);
-        dwc = readDynamicWC (tree.get_child ("DynamicWorkcell"), state);
+
+        boost::optional< ptree& > child = tree.get_child_optional ("DynamicWorkcell");
+        if (!child) {
+            dwc = readDynamicWC (tree.get_child ("DynamicWorkCell"), state);
+        }
+        else {
+            dwc = readDynamicWC (tree.get_child ("DynamicWorkcell"), state);
+        }
     }
     catch (const ptree_error& e) {
         // Convert from parse errors to RobWork errors.

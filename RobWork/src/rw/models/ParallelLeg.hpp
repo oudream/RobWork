@@ -64,6 +64,11 @@ namespace rw { namespace models {
          */
         ParallelLeg (std::vector< rw::kinematics::Frame* > frames);
 
+         /**
+         * @brief Constructs leg from frames
+         * @param frames [in] list of Frame's
+         */
+        ParallelLeg (std::vector< rw::core::Ptr<rw::kinematics::Frame> > frames);
         /**
          * @brief Destructor
          */
@@ -82,7 +87,7 @@ namespace rw { namespace models {
          * @param state [in] State for which to calculate the Jacobian
          * @return the Jacobian
          */
-        rw::math::Jacobian baseJframe (const rw::kinematics::Frame* frame,
+        rw::math::Jacobian baseJframe (rw::core::Ptr<const rw::kinematics::Frame> frame,
                                        const rw::kinematics::State& state) const;
 
         /**
@@ -98,7 +103,7 @@ namespace rw { namespace models {
          * @param state [in] State for which to calculate the transform
          * @return the transform
          */
-        rw::math::Transform3D< double > baseTframe (const rw::kinematics::Frame* frame,
+        rw::math::Transform3D< double > baseTframe (rw::core::Ptr<const rw::kinematics::Frame> frame,
                                                     const rw::kinematics::State& state) const;
 
         /**
@@ -171,6 +176,7 @@ namespace rw { namespace models {
 
       private:
         std::vector< rw::kinematics::Frame* > _kinematicChain;
+        std::vector< rw::core::Ptr<rw::kinematics::Frame> > _kinematicChainPtr;
         std::vector< models::Joint* > _actuatedJoints;
         std::vector< models::Joint* > _unactuatedJoints;
         rw::math::Jacobian* _jacobian;

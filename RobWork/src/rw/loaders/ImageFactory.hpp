@@ -18,6 +18,12 @@
 #ifndef RW_LOADERS_IMAGEFACTORY_HPP
 #define RW_LOADERS_IMAGEFACTORY_HPP
 
-#include "ImageLoader.hpp"
+#include <rw/loaders/ImageLoader.hpp>
+#ifdef RW_WIN32
+#pragma message( \
+    "#include <rw/loaders/ImageFactory.hpp> is deprecated use #include <rw/loaders/ImageLoader.hpp> instead")
+#else
+#warning "#include <rw/loaders/ImageFactory.hpp> is deprecated use #include <rw/loaders/ImageLoader.hpp> instead"
+#endif
 
 #endif    // end include guard

@@ -24,7 +24,7 @@
  * \copydoc rwlibs::assembly::CircularPiHParameterization
  */
 
-#include "AssemblyParameterization.hpp"
+#include <rwlibs/assembly/AssemblyParameterization.hpp>
 
 #include <rw/core/Ptr.hpp>
 

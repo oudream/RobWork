@@ -28,7 +28,7 @@ using namespace rwlibs::pathplanners;
 using namespace rwlibs::pathoptimization;
 using namespace rwlibs::proximitystrategies;
 
-Planning::Planning(WorkCell::Ptr wc, Device::Ptr device, Device::Ptr gripper, Frame* objectFrame, Transform3D<> tcpTgoal, GraspDB::Ptr db):
+Planning::Planning(WorkCell::Ptr wc, Device::Ptr device, Device::Ptr gripper, rw::core::Ptr<Frame> objectFrame, Transform3D<> tcpTgoal, GraspDB::Ptr db):
 	_db(db),
 	_device(device),
 	_gripper(gripper),

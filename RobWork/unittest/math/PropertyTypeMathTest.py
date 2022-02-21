@@ -24,34 +24,34 @@ class PropertyTypeMath(unittest.TestCase):
 
     def test_getType(self):
 
-        value = sdurw_math.Vector3Dd()
+        value = sdurw_math.Vector3D()
         self.assertEqual(sdurw_core.PropertyType.Vector3D, sdurw_core.PropertyType.getType(value).getId())
 
-        value = sdurw_math.Vector2Dd()
+        value = sdurw_math.Vector2D()
         self.assertEqual(sdurw_core.PropertyType.Vector2D, sdurw_core.PropertyType.getType(value).getId())
 
         value = sdurw_math.Q()
         self.assertEqual(sdurw_core.PropertyType.Q, sdurw_core.PropertyType.getType(value).getId())
 
-        value = sdurw_math.Transform3Dd()
+        value = sdurw_math.Transform3D()
         self.assertEqual(sdurw_core.PropertyType.Transform3D, sdurw_core.PropertyType.getType(value).getId())
 
-        value = sdurw_math.Rotation3Dd()
+        value = sdurw_math.Rotation3D()
         self.assertEqual(sdurw_core.PropertyType.Rotation3D, sdurw_core.PropertyType.getType(value).getId())
 
-        value = sdurw_math.Rotation2Dd()
+        value = sdurw_math.Rotation2D()
         self.assertEqual(sdurw_core.PropertyType.Rotation2D, sdurw_core.PropertyType.getType(value).getId())
 
-        value = sdurw_math.RPYd()
+        value = sdurw_math.RPY()
         self.assertEqual(sdurw_core.PropertyType.RPY, sdurw_core.PropertyType.getType(value).getId())
 
-        value = sdurw_math.EAAd()
+        value = sdurw_math.EAA()
         self.assertEqual(sdurw_core.PropertyType.EAA, sdurw_core.PropertyType.getType(value).getId())
 
         value = sdurw_math.Q()
         self.assertEqual(sdurw_core.PropertyType.Q, sdurw_core.PropertyType.getType(value).getId())
 
-        value = sdurw_math.VelocityScrew6Dd()
+        value = sdurw_math.VelocityScrew6D()
         self.assertEqual(sdurw_core.PropertyType.VelocityScrew6D, sdurw_core.PropertyType.getType(value).getId())
 
 

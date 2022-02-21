@@ -63,7 +63,7 @@ void compareJointWithReferenceJoints(Joint* const joint, const std::vector<Joint
 	EXPECT_TRUE(joint->getFixedTransform().equal(T));
 
 	StateStructure sstate;
-	sstate.addData(joint); // StateStructure takes ownership of the joint
+	sstate.addData(rw::core::Ptr<Joint>(joint)); // StateStructure takes ownership of the joint
 	for (std::size_t i = 0; i < refJoints.size(); i++)
 		sstate.addData(refJoints[i]); // StateStructure takes ownership of the joint
 	State state = sstate.getDefaultState();
@@ -197,7 +197,7 @@ TEST(Joint, Revolute) {
 	EXPECT_TRUE(joint->getFixedTransform().equal(T));
 
 	StateStructure sstate;
-	sstate.addData(joint); // StateStructure takes ownership of the joint
+	sstate.addData(rw::core::Ptr<Joint>(joint)); // StateStructure takes ownership of the joint
 	State state = sstate.getDefaultState();
 
 	EXPECT_EQ(0, joint->getData(state)[0]);

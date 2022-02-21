@@ -22,7 +22,7 @@
  * @file Scanner2DModel.hpp
  */
 #if !defined(SWIG)
-#include "SensorModel.hpp"
+#include <rw/sensor/SensorModel.hpp>
 
 #include <rw/geometry/PointCloud.hpp>
 #endif 
@@ -59,7 +59,7 @@ namespace rw { namespace sensor {
          * @param frame [in] the sensor frame
          */
         Scanner2DModel (const std::string& name, double angularRangeInRad, int maxDataPoints,
-                        rw::kinematics::Frame* frame);
+                        rw::core::Ptr<rw::kinematics::Frame> frame);
 
         /**
          * @brief Destructor. Closes scanner connection if not already closed.

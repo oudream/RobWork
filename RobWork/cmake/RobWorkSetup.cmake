@@ -63,14 +63,37 @@ if(${RW_BUILD_TYPE} STREQUAL "release")
 endif()
 
 # hunter_add_package(Boost COMPONENTS filesystem serialization system thread program_options)
+if((NOT DEFINED Boost_DIR OR NOT DEFINED BOOST_ROOT) AND WIN32)
+    file(
+        GLOB BOOST_ROOT
+        LIST_DIRECTORIES TRUE
+        "C:/local/boost*"
+    )
+    if(EXISTS ${BOOST_ROOT})
+        file(
+            GLOB Boost_DIR
+            LIST_DIRECTORIES TRUE
+            "${BOOST_ROOT}/lib64*/cmake/Boost-*"
+        )
+        if(NOT EXISTS ${Boost_DIR})
+            unset(Boost_DIR)
+        endif()
+    else()
+        unset(BOOST_ROOT)
+    endif()
+endif()
+
+# Packages needed: Filesystem system thread program_options Package depends: date_time Package
+# removed: serialization
+
 find_package(
     Boost QUIET
-    COMPONENTS filesystem serialization system thread program_options date_time
+    COMPONENTS filesystem system thread program_options date_time
     CONFIG
-    HINTS "C:\\local"
+    PATHS "C:/local"
 )
 if(NOT Boost_FOUND)
-    find_package(Boost REQUIRED COMPONENTS filesystem serialization system thread program_options date_time)
+    find_package(Boost REQUIRED COMPONENTS filesystem system thread program_options date_time)
 endif()
 if(TARGET Boost::headers)
     set(Boost_LIBRARIES ${Boost_LIBRARIES} Boost::headers)
@@ -194,31 +217,13 @@ else()
     set(PQP_INCLUDE_DIR "")
 endif()
 
-#
-# If the user wants to use FCL then search for it, OPTIONAL
-#
-set(RW_HAVE_FCL False)
-cmake_dependent_option(RW_USE_FCL "Set to ON to include FCL support." ON "NOT RW_DISABLE_FCL" OFF)
-if(RW_USE_FCL)
-    find_package(FCL QUIET)
-    if(FCL_FOUND)
-        message(STATUS "RobWork: Native FCL installation FOUND! - version ${FCL_VERSION}")
-        set(RW_HAVE_FCL True)
-        set(ROBWORK_LIBRARIES_EXTERNAL ${ROBWORK_LIBRARIES_EXTERNAL} ${FCL_LIBRARIES})
-    else()
-        message(STATUS "RobWork: FCL not foun, and is DISABLED!")
-    endif()
-else()
-    message(STATUS "RobWork: FCL DISABLED!")
-endif()
-
 find_package(Eigen3 QUIET)
 if(EIGEN3_FOUND)
-    message(STATUS "RobWork: EIGEN3 installation FOUND! - version ${EIGEN3_VERSION}")
+    message(STATUS "RobWork: EIGEN3 ${EIGEN3_VERSION} Found")
 else()
     hunter_add_package(Eigen)
     find_package(Eigen3 REQUIRED)
-    message(STATUS "RobWork: EIGEN3 installed through Hunter! - version ${EIGEN3_VERSION}")
+    message(STATUS "RobWork: EIGEN3 ${EIGEN3_VERSION} Found w. Hunter")
 endif()
 
 #
@@ -226,7 +231,7 @@ endif()
 #
 find_package(Qhull QUIET MODULE)
 if(Qhull_FOUND)
-    message(STATUS "RobWork: Qhull found")
+    message(STATUS "RobWork: Qhull Found")
     if(NOT DEFINED QHULL_ROOT)
         set(QHULL_ROOT "${QHULL_INCLUDE_DIRS}/..")
     endif()
@@ -235,61 +240,77 @@ else()
     find_package(Qhull REQUIRED)
 endif()
 
+#
+# If the user wants to use FCL then search for it, OPTIONAL
+#
+set(RW_HAVE_FCL False)
+option(USE_FCL "Set to ON to include FCL support." ON )
+if(USE_FCL)
+    find_package(FCL QUIET)
+    if(FCL_FOUND)
+        message(STATUS "USE_FCL ${USE_FCL} : FCL ${FCL_VERSION} Found")
+        set(RW_HAVE_FCL True)
+        set(ROBWORK_LIBRARIES_EXTERNAL ${ROBWORK_LIBRARIES_EXTERNAL} ${FCL_LIBRARIES})
+    else()
+        message(STATUS "USE_FCL ${USE_FCL} : FCL not Found")
+    endif()
+else()
+    message(STATUS "USE_FCL ${USE_FCL} : Disabled Manually")
+endif()
+
+
 # CSGJS
-option(RW_USE_CSGJS "Set to ON to use ext CSGJS." ON)
-if(RW_USE_CSGJS)
-    message(STATUS "Using CsgJs.")
+option(USE_CSGJS "Set to ON to use ext CSGJS." ON)
+if(USE_CSGJS)
+    message(STATUS "USE_CSGJS ${USE_CSGJS}: Enabled by default")
     set(CSGJS_INCLUDE_DIRS "${RW_ROOT}/ext/csgjs/src")
     set(CSGJS_LIBRARIES "sdurw_csgjs")
     set(CSGJS_DEFINITIONS "")
     set(ROBWORK_LIBRARIES_INTERNAL ${ROBWORK_LIBRARIES_INTERNAL} ${CSGJS_LIBRARIES})
+else()
+    message(STATUS "USE_CSGJS ${USE_CSGJS}: Disabled Manually")
 endif()
 
+message(STATUS "USE_Bullet OFF : Disable Hard Coded")
 find_package(Bullet QUIET)
 set(RW_HAVE_BULLET FALSE)
 if(BULLET_FOUND)
-    message("Bullet found! ${BULLET_INCLUDE_DIRS}")
-    message("Bullet libs: ${BULLET_LIBRARIES}")
     set(BULLET_LIBRARIES "")
     set(BULLET_INCLUDE_DIRS "")
 else()
     set(BULLET_INCLUDE_DIRS "")
 endif()
 
-#
-# If the user wants to use LUA then search for it or use the default
-#
-set(RW_HAVE_LUA False)
-set(RW_HAVE_SWIG False)
-
-find_package(SWIG 3.0.0 QUIET) # At least SWIG 3 to support C++11
-if(SWIG_FOUND)
-    set(RW_HAVE_SWIG true)
-else()
-
-endif()
-
-cmake_dependent_option(
-    RW_USE_LUA "Set to ON to include LUA support. " ON "SWIG_FOUND;NOT RW_DISABLE_LUA" OFF
+option(USE_SWIG
+       "Enable to allow finding SWIG. This is used for compiling java, python and lua wrappers" ON
 )
 
-if(RW_USE_LUA)
+set(RW_HAVE_SWIG False)
+if(USE_SWIG)
+    find_package(SWIG 3.0.0 QUIET) # At least SWIG 3 to support C++11
+    if(SWIG_FOUND)
+        set(RW_HAVE_SWIG true)
+        message(STATUS "USE_SWIG ${USE_SWIG} : Swig ${SWIG_VERSION} Found")
+    else()
+        message(STATUS "USE_SWIG OFF : Swig not Found")
+    endif()
+else()
+    message(STATUS "USE_SWIG ${USE_SWIG} : Disabled Manually")
+endif()
 
+cmake_dependent_option(USE_LUA "Set to ON to include LUA support. " ON "SWIG_FOUND" OFF)
+
+set(RW_HAVE_LUA False)
+if(USE_LUA)
     find_package(Lua 5.4 QUIET)
     if(NOT LUA_FOUND)
         find_package(Lua QUIET)
     endif()
     if(LUA_FOUND)
+        message(STATUS "USE_LUA ${USE_LUA} : lua ${LUA_VERSION_STRING} FOUND!")
         if(LUA_VERSION_MAJOR GREATER "5" OR LUA_VERSION_MINOR GREATER "0")
-            message(STATUS "RobWork: lua ${LUA_VERSION_STRING} FOUND!")
             set(ROBWORK_LIBRARIES_EXTERNAL ${ROBWORK_LIBRARIES_EXTERNAL} ${LUA_LIBRARIES})
         endif()
-    else()
-        message(STATUS "RobWork: Lua not FOUND")
-    endif()
-
-    if(SWIG_FOUND AND LUA_FOUND)
-        message(STATUS "RobWork: LUA ENABLED! Both SWIG ${SWIG_VERSION} and Lua FOUND!")
         set(RW_HAVE_LUA true)
         set(RW_LUA_LIBS
             sdurw_core_lua_s
@@ -309,28 +330,30 @@ if(RW_USE_LUA)
     else()
         set(RW_HAVE_LUA False)
         set(LUA_INCLUDE_DIR)
-        message(STATUS "RobWork: Lua DISABLED! Since SWIG 3+ or LUA was NOT FOUND!")
+        message(STATUS "USE_LUA ${USE_LUA} : LUA was NOT FOUND!")
     endif()
 else()
-    message(STATUS "RobWork: LUA DISABLED!")
+    if(SWIG_FOUND)
+        message(STATUS "USE_LUA ${USE_LUA} : Manually Disabled")
+    else()
+        message(STATUS "USE_LUA ${USE_LUA} : Swig not found")
+    endif()
+
     set(LUA_INCLUDE_DIR)
 endif()
 
-if(RW_BUILD_SANDBOX)
-    message(STATUS "RobWork: Sandbox ENABLED!")
+option(BUILD_sdurw_sandbox "Enable to combile sandbox code" OFF)
+if(BUILD_sdurw_sandbox)
     set(SANDBOX_LIB "sdurw_sandbox")
     set(ROBWORK_LIBRARIES_INTERNAL ${ROBWORK_LIBRARIES_INTERNAL} ${SANDBOX_LIB})
-else()
-    message(STATUS "RobWork: Sandbox DISABLED!")
 endif()
 
 #
 # If the user wants to use the softbody package
 #
 
-option(RW_BUILD_SOFTBODY "Set when you want to build softbody module" OFF)
-if(RW_BUILD_SOFTBODY)
-    message(STATUS "RobWork: Softbody ENABLED!")
+option(BUILD_sdurw_softbody "Set when you want to build softbody module" OFF)
+if(BUILD_sdurw_softbody)
     # Make sure to have set environment variable, e.g. in .bashrc export
     # IPOPT_HOME=/home/arf/Documents/Ipopt-3.10.3
     find_package(MUMPS REQUIRED)
@@ -341,10 +364,8 @@ if(RW_BUILD_SOFTBODY)
 
     set(ROBWORK_LIBRARIES_INTERNAL ${ROBWORK_LIBRARIES_INTERNAL} sdurw_softbody)
     set(ROBWORK_LIBRARIES_EXTERNAL ${ROBWORK_LIBRARIES_EXTERNAL} ${MUMPS_LIBRARIES}
-                                   ${IPOPT_LIBRARIES}
+        ${IPOPT_LIBRARIES}
     )
-else()
-    message(STATUS "RobWork: Softbody DISABLED!")
 endif()
 
 #
@@ -355,104 +376,147 @@ endif()
 set(RW_HAVE_ASSIMP FALSE)
 
 # Make option for user to disable Assimp
-cmake_dependent_option(
-    RW_USE_ASSIMP
+option(
+    USE_ASSIMP
     "Set to ON to include Assimp support.
                 Set ASSIMP_INCLUDE_DIR and ASSIMP_LIBRARY_DIR
                 to specify your own Assimp else RobWork Assimp will
                 be used!"
     ON
-    "NOT RW_DISABLE_ASSIMP"
-    OFF
 )
 
 set(ASSIMP_INCLUDE_DIRS "")
 set(ASSIMP_LIBRARIES "")
-if(RW_USE_ASSIMP)
+if(USE_ASSIMP)
     # Now try to find Assimp
     find_package(Assimp QUIET)
     if(ASSIMP_FOUND)
-        message(STATUS "RobWork: Native Assimp installation FOUND!")
+        message(STATUS "USE_ASSIMP ${USE_ASSIMP} : Assimp installation FOUND!")
         set(RW_HAVE_ASSIMP TRUE)
         set(ROBWORK_LIBRARIES_EXTERNAL ${ROBWORK_LIBRARIES_EXTERNAL} ${ASSIMP_LIBRARIES})
     else()
         set(ASSIMP_LIBRARIES)
         set(ASSIMP_INCLUDE_DIRS)
-        message(STATUS "RobWork: Assimp not found and is now DISABLED!")
+        message(STATUS "USE_ASSIMP OFF : Assimp not found and is now DISABLED!")
     endif()
 else()
-    message(STATUS "RobWork: Assimp DISABLED!")
+    message(STATUS "USE_ASSIMP ${USE_ASSIMP} : Disabled Manualy")
 endif()
 
-# Find Python - prefer version 3 (should be done before GTest) set(Python_ADDITIONAL_VERSIONS 3.8)
-if(CMAKE_VERSION VERSION_LESS "3.12")
-    find_package(PythonInterp 3 QUIET)
-    find_package(PythonLibs 3 QUIET)
+option(USE_Python "Disable to disalow looking for python" ON)
 
-    if(NOT PYTHONINTERP_FOUND)
-        find_package(PythonInterp QUIET)
-    endif()
-    if(NOT PYTHONLIBS_FOUND)
-        find_package(PythonLibs QUIET)
+if(USE_Python)
+    # Find Python - prefer version 3 (should be done before GTest) set(Python_ADDITIONAL_VERSIONS
+    # 3.8)
+    if(CMAKE_VERSION VERSION_LESS "3.12")
+        find_package(PythonInterp 3 QUIET)
+        find_package(PythonLibs 3 QUIET)
+
+        if(NOT PYTHONINTERP_FOUND)
+            find_package(PythonInterp QUIET)
+        endif()
+        if(NOT PYTHONLIBS_FOUND)
+            find_package(PythonLibs QUIET)
+        endif()
+
+        if(PYTHONINTERP_FOUND AND PYTHONLIBS_FOUND)
+            if(NOT PYTHONLIBS_VERSION_STRING STREQUAL PYTHON_VERSION_STRING)
+                string(ASCII 27 Esc)
+                message(
+                    WARNING
+                        "${Esc}[33mMatching Versions of python intepretor and python library NOT FOUND. \r"
+                        "Found versions are python libs ${PYTHONLIBS_VERSION_STRING} and python intepretor ${PYTHON_VERSION_STRING}. \n"
+                        "This can be because you haven't installed python${PYTHON_VERSION_MAJOR}-dev package\n${Esc}[m"
+                )
+            endif()
+        endif()
+    else()
+        find_package(Python3 QUIET COMPONENTS Interpreter Development)
+        if(Python3_FOUND)
+            set(PYTHONINTERP_FOUND ${Python3_Interpreter_FOUND})
+            set(PYTHONLIBS_FOUND ${Python3_Development_FOUND})
+            set(PYTHON_LIBRARIES ${Python3_LIBRARIES})
+            set(PYTHON_INCLUDE_DIRS ${Python3_INCLUDE_DIRS})
+            set(PYTHON_EXECUTABLE ${Python3_EXECUTABLE})
+        endif()
     endif()
 
     if(PYTHONINTERP_FOUND AND PYTHONLIBS_FOUND)
-        if(NOT ((PYTHONLIBS_VERSION_MAJOR STREQUAL PYTHON_VERSION_MAJOR)
-                AND (PYTHONLIBS_VERSION_MINOR STREQUAL PYTHON_VERSION_MINOR))
-        )
-            string(ASCII 27 Esc)
-            message(
-                WARNING
-                    "${Esc}[33mMatching Versions of python intepretor and python library NOT FOUND. \r"
-                    "Found versions are python libs ${PYTHONLIBS_VERSION_STRING} and python intepretor ${PYTHON_VERSION_STRING}. \n"
-                    "This can be because you haven't installed python${PYTHON_VERSION_MAJOR}-dev package\n${Esc}[m"
-            )
-        endif()
+        message(STATUS "USE_Python ${USE_Python} : Python ${PYTHON_VERSION_STRING} Found")
+    elseif(PYTHONLIBS_FOUND)
+        message(STATUS "USE_Python OFF : PythonLibs Not found")
+    elseif(PYTHONINTERP_FOUND)
+        message(STATUS "USE_Python OFF : Python Not found")
+    else()
+        message(STATUS "USE_Python OFF : PythonLibs And Python Not found")
     endif()
+
+    if(PYTHON_LIBRARY STREQUAL "NOTFOUND")
+        set(PYTHON_LIBRARY "")
+    endif()
+
 else()
-    find_package(Python3 QUIET COMPONENTS Interpreter Development)
-    if(Python3_FOUND)
-        set(PYTHONINTERP_FOUND ${Python3_Interpreter_FOUND})
-        set(PYTHONLIBS_FOUND ${Python3_Development_FOUND})
-        set(PYTHON_LIBRARIES ${Python3_LIBRARIES})
-        set(PYTHON_INCLUDE_DIRS ${Python3_INCLUDE_DIRS})
-        set(PYTHON_EXECUTABLE ${Python_EXECUTABLE})
-    endif()
+    message(STATUS "USE_Python ${USE_Python} : Disabled Manualy")
 endif()
 
-if(PYTHONINTERP_FOUND)
-    message(STATUS "Found Python interpreter ${PYTHON_VERSION_STRING}")
-endif()
-if(PYTHONLIBS_FOUND)
-    message(STATUS "Found Python libraries ${PYTHONLIBS_VERSION_STRING}")
-endif()
-if(PYTHON_LIBRARY STREQUAL "NOTFOUND")
-    set(PYTHON_LIBRARY "")
-endif()
-
-#
-# Use numpy for swing bindings if available
-#
-if(SWIG_FOUND)
+cmake_dependent_option(
+    USE_numpy "Allow python bindings to use numpy library while wrapping" ON
+    "SWIG_FOUND;PYTHONINTERP_FOUND" OFF
+)
+if(USE_numpy)
     execute_process(
         COMMAND ${PYTHON_EXECUTABLE} -c
                 "try: \n\timport numpy; print(\"ON\");\nexcept ImportError:\n\tprint(\"OFF\");"
         OUTPUT_VARIABLE RW_USE_NUMPY
         OUTPUT_STRIP_TRAILING_WHITESPACE
     )
-    if(RW_USE_NUMPY)
-        message(STATUS "RobWork is compiled with Numpy")
+    if(NOT RW_USE_NUMPY)
         execute_process(
-            COMMAND python3 -c "import numpy; print(numpy.__file__);"
+            COMMAND ${PYTHON_EXECUTABLE} -c
+                    "try: \n\timport pip; print(\"ON\");\nexcept ImportError:\n\tprint(\"OFF\");"
+            OUTPUT_VARIABLE RW_GOT_PIP
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+        )
+        if(NOT RW_GOT_PIP AND WIN32)
+            execute_process(COMMAND powershell -Command Invoke-WebRequest -Uri
+                                    https://bootstrap.pypa.io/get-pip.py -OutFile get-pip.py
+                            COMMAND ${PYTHON_EXECUTABLE} get-pip.py
+            )
+        endif()
+
+        execute_process(COMMAND ${PYTHON_EXECUTABLE} - m pip install numpy)
+    endif()
+
+    execute_process(
+        COMMAND ${PYTHON_EXECUTABLE} -c
+                "try: \n\timport numpy; print(\"ON\");\nexcept ImportError:\n\tprint(\"OFF\");"
+        OUTPUT_VARIABLE RW_USE_NUMPY
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+
+    if(RW_USE_NUMPY)
+        execute_process(
+            COMMAND ${PYTHON_EXECUTABLE} -c "import numpy; print(numpy.__file__);"
             OUTPUT_VARIABLE NUMPY_INCLUDE_DIR
             OUTPUT_STRIP_TRAILING_WHITESPACE
         )
         get_filename_component(NUMPY_INCLUDE_DIR "${NUMPY_INCLUDE_DIR}" DIRECTORY)
         set(NUMPY_INCLUDE_DIR "${NUMPY_INCLUDE_DIR}/core/include")
-        message(STATUS "numpy found at: ${NUMPY_INCLUDE_DIR}")
+        message(STATUS "USE_numpy ${USE_numpy} : numpy Found")
     else()
-        message(STATUS "RobWork can't find Numpy.")
+        message(STATUS "USE_numpy OFF : can't find Numpy.")
     endif()
+else()
+    if(SWIG_FOUND AND PYTHONINTERP_FOUND)
+        message(STATUS "USE_numpy ${USE_numpy} : Disabled Manually")
+    elseif(SWIG_FOUND)
+        message(STATUS "USE_numpy OFF : Swig Not Found")
+    elseif(PYTHONINTERP_FOUND)
+        message(STATUS "USE_numpy OFF : Python Not Found")
+    else()
+        message(STATUS "USE_numpy OFF} : Swig and Python Not found")
+    endif()
+
 endif()
 
 #
@@ -460,21 +524,18 @@ endif()
 # disable Google Test completely.
 #
 # Make option for user to disable Google Test
-cmake_dependent_option(
-    RW_USE_GTEST
+option(
+    USE_gtest
     "Set to ON to include Google Test support. Set GTEST_ROOT or GTEST_SOURCE to specify your own Google Test installation."
-    ON
-    "NOT RW_DISABLE_GTEST"
     OFF
 )
 set(RW_HAVE_GTEST FALSE)
 set(RW_GTEST_FROM_HUNTER FALSE)
-if(RW_USE_GTEST)
+
+if(USE_gtest)
+    message(STATUS "USE_gtest  ${USE_gtest} : Enabled Manualy")
     # Now try to find Google Test
-    set(gtest_force_shared_crt
-        ON
-        CACHE BOOL "Use /MD on Windows systems."
-    )
+    set(gtest_force_shared_crt ON CACHE BOOL "Use /MD on Windows systems.")
     find_package(GTest QUIET)
     if(GTEST_FOUND)
         set(GTEST_SHARED_LIBS ${BUILD_SHARED_LIBS})
@@ -492,17 +553,15 @@ if(RW_USE_GTEST)
         set(RW_GTEST_FROM_HUNTER TRUE)
     endif()
 else()
-    message(STATUS "RobWork: Google Test DISABLED!")
+    message(STATUS "USE_gtest  ${USE_gtest} : Disabled by default")
 endif()
 
 # Mathematica
-cmake_dependent_option(
-    RW_USE_MATHEMATICA "Set to ON to include Mathematica support." ON "RW_ENABLE_MATHEMATICA" OFF
-)
-if(RW_USE_MATHEMATICA)
+option(USE_Mathematica "Set to ON to include Mathematica support." OFF)
+if(USE_Mathematica)
     find_package(Mathematica QUIET)
     if(Mathematica_WSTP_FOUND)
-        message(STATUS "RobWork: Mathematica WSTP installation FOUND!")
+        message(STATUS "USE_Mathematica ${USE_Mathematica} : Enabled by default")
         foreach(math_lib_dirs ${Mathematica_LIBRARY_DIRS})
             if(${math_lib_dirs} MATCHES "/Libraries/")
                 set(UUID_LIB_DIR ${math_lib_dirs})
@@ -516,11 +575,11 @@ if(RW_USE_MATHEMATICA)
 
         set(ROBWORK_LIBRARIES_EXTERNAL ${ROBWORK_LIBRARIES_EXTERNAL} ${RW_MATHEMATICA_LIB})
     else()
-        message(STATUS "RobWork: Mathematica NOT FOUND!")
+        message(STATUS "USE_Mathematica OFF : Mathematica NOT FOUND!")
         set(RW_HAVE_MATHEMATICA FALSE)
     endif()
 else()
-    message(STATUS "RobWork: Mathematica DISABLED!")
+    message(STATUS "USE_Mathematica ${USE_Mathematica} : Disabled by default")
     set(RW_HAVE_MATHEMATICA FALSE)
 endif()
 
@@ -531,12 +590,12 @@ endif()
 #
 # Enable the RW_ASSERT() macro.
 #
-option(RW_ENABLE_ASSERT "Enables RW_ASSERT macro: on|off" ON)
-if(RW_ENABLE_ASSERT)
-    message(STATUS "RobWork: RW_ASSERT enabled.")
+option(USE_RW_ASSERT "Enables RW_ASSERT macro: on|off" ON)
+if(USE_RW_ASSERT)
+    message(STATUS "USE_RW_ASSERT ${USE_RW_ASSERT} : Enabled by Default")
     add_definitions(-DRW_ENABLE_ASSERT)
 else()
-    message(STATUS "RobWork: RW_ASSERT disabled.")
+    message(STATUS "USE_RW_ASSERT ${USE_RW_ASSERT} : Disabled Manually")
 endif()
 
 rw_is_release(IS_RELEASE)
@@ -557,9 +616,7 @@ if("${RW_C_FLAGS}" STREQUAL "")
         set(RW_C_FLAGS_TMP "${RW_C_FLAGS_TMP} ${RW_C_FLAGS_EXTRA}")
     endif()
 
-    set(RW_C_FLAGS
-        "${RW_C_FLAGS_TMP}"
-        CACHE STRING "Change this to force using your own
+    set(RW_C_FLAGS "${RW_C_FLAGS_TMP}" CACHE STRING "Change this to force using your own
 					  flags and not those of RobWork" FORCE
     )
 endif()
@@ -612,9 +669,7 @@ if("${RW_CXX_FLAGS}" STREQUAL "")
         set(RW_CXX_FLAGS_TMP "${RW_CXX_FLAGS_TMP} ${RW_CXX_FLAGS_EXTRA}")
     endif()
 
-    set(RW_CXX_FLAGS
-        "${RW_CXX_FLAGS_TMP}"
-        CACHE STRING "Change this to force using your own
+    set(RW_CXX_FLAGS "${RW_CXX_FLAGS_TMP}" CACHE STRING "Change this to force using your own
 					  flags and not those of RobWork" FORCE
     )
 endif()
@@ -622,41 +677,41 @@ endif()
 #
 # Enable the use of OMP definitions.
 #
-option(RW_ENABLE_OMP "Enables use of OpenMP #pragmas: on|off" ON)
-if(RW_ENABLE_OMP)
-    message(STATUS "RobWork: OpenMP enabled.")
+option(USE_OpenMP "Enables use of OpenMP #pragmas: on|off" ON)
+if(USE_OpenMP)
     find_package(OpenMP QUIET)
     if(${CMAKE_VERSION} VERSION_LESS "3.9")
         if(OPENMP_FOUND)
             if(${CMAKE_VERSION} VERSION_LESS "3.7")
-                message(STATUS "RobWork: OpenMP CXX FOUND!")
+                message(STATUS "USE_OpenMP ${USE_OpenMP} :  OpenMP CXX FOUND!")
             else()
                 message(
-                    STATUS "RobWork: OpenMP CXX FOUND! - Specification date ${OpenMP_CXX_SPEC_DATE}"
+                    STATUS
+                        "USE_OpenMP ${USE_OpenMP} :  OpenMP CXX FOUND! - Specification date ${OpenMP_CXX_SPEC_DATE}"
                 )
             endif()
             set(RW_HAVE_OMP TRUE)
             set(RW_CXX_FLAGS "${RW_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
         else()
-            message(STATUS "RobWork: OpenMP CXX NOT FOUND!")
+            message(STATUS "USE_OpenMP OFF : OpenMP CXX NOT FOUND!")
             set(RW_HAVE_OMP FALSE)
         endif()
     else() # CMake 3.9 and newer
         if(OpenMP_CXX_FOUND)
             message(
                 STATUS
-                    "RobWork: OpenMP ${OpenMP_CXX_VERSION} CXX FOUND! - Specification date ${OpenMP_CXX_SPEC_DATE}"
+                    "USE_OpenMP ${USE_OpenMP} : OpenMP ${OpenMP_CXX_VERSION} CXX FOUND! - Specification date ${OpenMP_CXX_SPEC_DATE}"
             )
             set(RW_HAVE_OMP TRUE)
             set(RW_CXX_FLAGS "${RW_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
             # Todo: use OpenMP_CXX_LIB_NAMES, OpenMP_CXX_LIBRARY and/or OpenMP_CXX_LIBRARIES ?
         else()
-            message(STATUS "RobWork: OpenMP CXX NOT FOUND!")
+            message(STATUS "USE_OpenMP OFF : OpenMP CXX NOT FOUND!")
             set(RW_HAVE_OMP FALSE)
         endif()
     endif()
 else()
-    message(STATUS "RobWork: OpenMP disabled.")
+    message(STATUS "USE_OpenMP ${USE_OpenMP} : Disabled Manually")
 endif()
 
 if("${RW_DEFINITIONS}" STREQUAL "")
@@ -710,9 +765,7 @@ if("${RW_DEFINITIONS}" STREQUAL "")
         set(RW_DEFINITIONS_EXTRA_TMP "${RW_DEFINITIONS_EXTRA_TMP} ${RW_DEFINITIONS_EXTRA_EXTRA}")
     endif()
 
-    set(RW_DEFINITIONS
-        "${RW_DEFINITIONS_TMP}"
-        CACHE STRING "Change this to force using your own
+    set(RW_DEFINITIONS "${RW_DEFINITIONS_TMP}" CACHE STRING "Change this to force using your own
 					  flags and not those of RobWork" FORCE
     )
 endif()
@@ -747,19 +800,14 @@ if(NOT DEFINED RW_LINKER_FLAGS)
     endif()
 endif()
 set(RW_BUILD_WITH_LINKER_FLAGS "${RW_LINKER_FLAGS}")
-set(CMAKE_SHARED_LINKER_FLAGS
-    "${CMAKE_SHARED_LINKER_FLAGS} ${RW_LINKER_FLAGS}"
-    CACHE STRING "" FORCE
+set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${RW_LINKER_FLAGS}" CACHE STRING ""
+    FORCE
 )
-set(CMAKE_MODULE_LINKER_FLAGS
-    "${CMAKE_MODULE_LINKER_FLAGS} ${RW_LINKER_FLAGS}"
-    CACHE STRING "" FORCE
+set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} ${RW_LINKER_FLAGS}" CACHE STRING ""
+    FORCE
 )
 if(WIN32)
-    set(CMAKE_EXE_LINKER_FLAGS
-        "${CMAKE_EXE_LINKER_FLAGS} ${RW_LINKER_FLAGS}"
-        CACHE STRING "" FORCE
-    )
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${RW_LINKER_FLAGS}" CACHE STRING "" FORCE)
 endif()
 message(STATUS "RobWork: RW linker flags: ${RW_LINKER_FLAGS}")
 

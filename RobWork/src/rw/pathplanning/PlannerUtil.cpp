@@ -79,7 +79,7 @@ QMetric::Ptr PlannerUtil::timeMetric (const Device& device)
     return timeMetric (device.getVelocityLimits ());
 }
 
-Q PlannerUtil::estimateMotionWeights (const Device& device, const Frame* frame,
+Q PlannerUtil::estimateMotionWeights (const Device& device, rw::core::Ptr<const Frame> frame,
                                       const State& initialState, EstimateType type, size_t samples)
 {
     QSampler::Ptr sampler = QSampler::makeUniform (device);

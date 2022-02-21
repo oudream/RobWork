@@ -18,10 +18,10 @@
 #ifndef RWLIBS_TASK_TASK_HPP
 #define RWLIBS_TASK_TASK_HPP
 
-#include "Action.hpp"
-#include "Entity.hpp"
-#include "Motion.hpp"
-#include "Target.hpp"
+#include <rwlibs/task/Action.hpp>
+#include <rwlibs/task/Entity.hpp>
+#include <rwlibs/task/Motion.hpp>
+#include <rwlibs/task/Target.hpp>
 
 #include <rw/core/Ptr.hpp>
 

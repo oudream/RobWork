@@ -39,7 +39,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/yaobi_config.h.cmake
 
 install(
     TARGETS yaobi
-    EXPORT ${PROJECT_PREFIX}Targets
+    EXPORT ${PROJECT_PREFIX}_sdurw_proximitystrategiesTargets
     RUNTIME DESTINATION ${BIN_INSTALL_DIR} COMPONENT yaobi
     LIBRARY DESTINATION ${LIB_INSTALL_DIR} COMPONENT yaobi
     ARCHIVE DESTINATION ${LIB_INSTALL_DIR} COMPONENT yaobi

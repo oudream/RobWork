@@ -22,11 +22,12 @@
  * @file IterativeIK.hpp
  */
 
-#include "InvKinSolver.hpp"
+#if !defined(SWIG)
+#include <rw/invkin/InvKinSolver.hpp>
 
 #include <rw/core/PropertyMap.hpp>
 #include <rw/core/Ptr.hpp>
-
+#endif
 namespace rw { namespace kinematics {
     class State;
 }}    // namespace rw::kinematics

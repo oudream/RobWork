@@ -1,6 +1,6 @@
 set(SUBSYS_NAME sdurw_geometry)
 set(SUBSYS_DESC "The core RobWork library!")
-set(SUBSYS_DEPS sdurw_core sdurw_common sdurw_math sdurw_kinematics)
+set(SUBSYS_DEPS PUBLIC sdurw_core sdurw_common sdurw_math PRIVATE sdurw_kinematics)
 
 set(build TRUE)
 rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON DEPENDS ${SUBSYS_DEPS})
@@ -37,6 +37,7 @@ if(build)
         OBBCollider.cpp
         OBBFactory.cpp
         OBBToleranceCollider.cpp
+        Object3D.cpp
         PlainTriMesh.cpp
         Plane.cpp
         PointCloud.cpp
@@ -91,6 +92,7 @@ if(build)
         Contour2D.hpp
         ConvexHull2D.hpp
         ConvexHull3D.hpp
+        ConvexHullND.hpp
         Covariance.hpp
         Cylinder.hpp
         Delaunay.hpp
@@ -104,6 +106,7 @@ if(build)
         IndexedTriArray.hpp
         IndexedTriMesh.hpp
         IndexedTriangle.hpp
+        IntersectUtil.hpp
         Line.hpp
         Model3D.hpp
         OBB.hpp
@@ -112,6 +115,7 @@ if(build)
         OBBToleranceCollider.hpp
         OBBToleranceCollider.hpp
         OBVDistanceCalc.hpp
+        Object3D.hpp
         PlainTriMesh.hpp
         Plane.hpp
         PointCloud.hpp

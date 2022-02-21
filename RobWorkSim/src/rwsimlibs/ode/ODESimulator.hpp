@@ -266,12 +266,12 @@ namespace rwsim { namespace simulator {
             return _rwFrameToODEBody[frame];
         }
 
-        dBodyID getODEBodyId (rw::kinematics::Frame* frame)
+        dBodyID getODEBodyId (rw::kinematics::Frame::Ptr frame)
         {
-            if (_rwFrameToODEBody.find (frame) == _rwFrameToODEBody.end ()) {
+            if (_rwFrameToODEBody.find (frame.get()) == _rwFrameToODEBody.end ()) {
                 return NULL;
             }
-            return _rwFrameToODEBody[frame]->getBodyID ();
+            return _rwFrameToODEBody[frame.get()]->getBodyID ();
         }
 
         dBodyID getODEBodyId (rwsim::dynamics::Body* body)
@@ -299,15 +299,6 @@ namespace rwsim { namespace simulator {
         {
             return _contactingBodies;
         }
-
-        /**
-         * @brief Returns a vector of all contact points
-         *
-         * @return vector of tuples (name1, name2, contact point)
-         */ /*
-        std::vector<boost::tuple<std::string, std::string, dynamics::ContactPoint> > getContactPoints() const {
-			return _contactPoints;
-		} */
 
         void handleCollisionBetween (dGeomID o0, dGeomID o1);
 

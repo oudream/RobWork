@@ -22,7 +22,7 @@
  * @file CompositeJointDevice.hpp
  */
 #if !defined(SWIG)
-#include "JointDevice.hpp"
+#include <rw/models/JointDevice.hpp>
 
 #include <vector>
 #endif 
@@ -76,8 +76,8 @@ namespace rw { namespace models {
            @param name [in] the name of the device
            @param state [in] the kinematic structure assumed for Jacobian computations
         */
-        CompositeJointDevice (rw::kinematics::Frame* base,
-                              const std::vector<rw::core::Ptr<rw::models::Device> >& devices, rw::kinematics::Frame* end,
+        CompositeJointDevice (rw::core::Ptr<rw::kinematics::Frame> base,
+                              const std::vector<rw::core::Ptr<rw::models::Device> >& devices, rw::core::Ptr<rw::kinematics::Frame> end,
                               const std::string& name, const rw::kinematics::State& state);
 
         /**
@@ -89,7 +89,7 @@ namespace rw { namespace models {
            @param name [in] the name of the device
            @param state [in] the kinematic structure assumed for Jacobian computations
         */
-        CompositeJointDevice (rw::kinematics::Frame* base,
+        CompositeJointDevice (rw::core::Ptr<rw::kinematics::Frame> base,
                               const std::vector< rw::core::Ptr< rw::models::Device>>& devices,
                               const std::vector< rw::kinematics::Frame* >& ends,
                               const std::string& name, const rw::kinematics::State& state);

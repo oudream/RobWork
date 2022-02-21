@@ -22,8 +22,8 @@
  * @file CameraModel.hpp
  */
 #if !defined(SWIG)
-#include "Image.hpp"
-#include "SensorModel.hpp"
+#include <rw/sensor/Image.hpp>
+#include <rw/sensor/SensorModel.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rw/math/ProjectionMatrix.hpp>
@@ -62,7 +62,7 @@ namespace rw { namespace sensor {
          * @param modelInfo [in] text description of the camera
          */
         CameraModel (const rw::math::ProjectionMatrix& projection, const std::string& name,
-                     rw::kinematics::Frame* frame, const std::string& modelInfo = "");
+                     rw::core::Ptr<rw::kinematics::Frame> frame, const std::string& modelInfo = "");
 
         /**
          * @brief destructor

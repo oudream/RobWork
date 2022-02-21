@@ -148,6 +148,8 @@ class ArcBallController : public CameraController
     //! @copydoc CameraController::setDrawable
     void setDrawable (rw::graphics::DrawableNode::Ptr obj) { _pivotObj = obj; }
 
+    void zoomScale (double scale = 1){_zoomScale = scale;}
+
   private:
     rw::math::Vector2D<> _centerPt;    // Center of the ball
     rw::math::Vector3D<> _stVec;       // Saved click vector
@@ -160,6 +162,7 @@ class ArcBallController : public CameraController
     rw::math::Vector3D<> _lastPos, _pivotPoint;
     rw::math::Transform3D<> _camTransform;
 
+    double _zoomScale;
     bool _advancedZoomEnabled;
     rw::math::Vector3D< double > _zoomTarget;
 

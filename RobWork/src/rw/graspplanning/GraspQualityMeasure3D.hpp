@@ -34,6 +34,8 @@ namespace rw { namespace graspplanning {
         //! smart pointer type of this class
         typedef rw::core::Ptr< GraspQualityMeasure3D > Ptr;
 
+        virtual ~GraspQualityMeasure3D() {}
+
         /**
          * @brief computes the quality of the grasp such that the quality
          * is in the interval [0;1] with 1 being the highest quality.

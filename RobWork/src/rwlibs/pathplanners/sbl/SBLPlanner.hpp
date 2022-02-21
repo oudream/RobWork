@@ -22,7 +22,7 @@
    @file SBLPlanner.hpp
 */
 
-#include "SBLSetup.hpp"
+#include <rwlibs/pathplanners/sbl/SBLSetup.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rw/pathplanning/QToQPlanner.hpp>

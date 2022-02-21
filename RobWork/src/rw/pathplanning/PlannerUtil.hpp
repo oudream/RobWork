@@ -21,8 +21,8 @@
 /**
    @file PlannerUtil.hpp
 */
-
-#include "PlannerConstraint.hpp"
+#if !defined(SWIG)
+#include <rw/pathplanning/PlannerConstraint.hpp>
 
 #include <rw/kinematics/State.hpp>
 #include <rw/math/Metric.hpp>
@@ -31,7 +31,7 @@
 #include <rw/proximity/CollisionDetector.hpp>
 
 #include <vector>
-
+#endif
 namespace rw { namespace pathplanning {
 
     /** @addtogroup pathplanning */
@@ -85,8 +85,8 @@ namespace rw { namespace pathplanning {
          * estimateMotionWeights(EsitmateType, size_t) method
          */
         enum EstimateType {
-            WORSTCASE = 0, /** Estimate weights corresponding to the maximal distance */
-            AVERAGE        /** Estimate weights corresponding to the average distance */
+            WORSTCASE = 0, ///< Estimate weights corresponding to the maximal distance */
+            AVERAGE        ///< Estimate weights corresponding to the average distance */
         };
 
         /**
@@ -139,7 +139,7 @@ namespace rw { namespace pathplanning {
          * @return Weights representing the distance
          */
         static rw::math::Q estimateMotionWeights (const rw::models::Device& device,
-                                                  const rw::kinematics::Frame* frame,
+                                                  rw::core::Ptr<const rw::kinematics::Frame> frame,
                                                   const rw::kinematics::State& initialState,
                                                   EstimateType type, size_t samples);
 

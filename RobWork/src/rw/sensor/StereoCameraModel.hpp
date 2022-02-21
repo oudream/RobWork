@@ -22,8 +22,8 @@
  * @file StereoCameraModel.hpp
  */
 #if !defined(SWIG)
-#include "Image.hpp"
-#include "SensorModel.hpp"
+#include <rw/sensor/Image.hpp>
+#include <rw/sensor/SensorModel.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rw/math/ProjectionMatrix.hpp>
@@ -71,7 +71,7 @@ namespace rw { namespace sensor {
          */
         StereoCameraModel (const std::string& name, double fov, double width, double height,
                            const rw::math::Transform3D<>& TL, const rw::math::Transform3D<>& TR,
-                           rw::kinematics::Frame* frame, const std::string& modelInfo = "");
+                           rw::core::Ptr<rw::kinematics::Frame> frame, const std::string& modelInfo = "");
         /**
          * @brief destructor
          */

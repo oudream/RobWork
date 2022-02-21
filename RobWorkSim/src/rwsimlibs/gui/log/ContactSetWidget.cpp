@@ -339,7 +339,7 @@ void ContactSetWidget::scalingChanged (double d)
 
     const double radius = _ui->_scalingRadius->value () / 1000.;
     const double normal = _ui->_scalingNormal->value () / 1000.;
-    for (const RenderContacts::Ptr render : _contactRenders) {
+    for (const RenderContacts::Ptr& render : _contactRenders) {
         render->setSphereRadius (radius);
         render->setNormalLength (normal);
     }
@@ -363,7 +363,7 @@ void ContactSetWidget::showChanged (int state)
     const bool pointB  = _ui->_showPointB->isChecked ();
     const bool normalA = _ui->_showNormalA->isChecked ();
     const bool normalB = _ui->_showNormalB->isChecked ();
-    for (const RenderContacts::Ptr render : _contactRenders) {
+    for (const RenderContacts::Ptr& render : _contactRenders) {
         render->showPoints (pointA, pointB);
         render->showNormals (normalA, normalB);
     }

@@ -45,6 +45,9 @@ namespace rwsim { namespace dynamics {
     class KinematicDevice : public DynamicDevice
     {
       public:
+        //! @brief Smart pointer type for a KinematicDevice.
+        typedef rw::core::Ptr< KinematicDevice > Ptr;
+
         /**
          * @brief Construct new kinematic device.
          * @param base [in] base of the device.

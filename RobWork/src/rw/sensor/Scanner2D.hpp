@@ -22,7 +22,7 @@
  * @file Scanner2D.hpp
  */
 #if !defined(SWIG)
-#include "Scanner.hpp"
+#include <rw/sensor/Scanner.hpp>
 
 #include <rw/geometry/PointCloud.hpp>
 #endif 

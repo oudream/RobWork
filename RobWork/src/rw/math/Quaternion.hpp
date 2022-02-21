@@ -401,6 +401,15 @@ namespace rw { namespace math {
             return v * s;
         }
 #endif
+
+        /**
+         * @brief Scalar Devision.
+         */
+        inline const Quaternion< T > operator/ (T s) const
+        {
+            return Quaternion< T > (_q.x () / s, _q.y () / s, _q.z () / s, _q.w () / s);
+        }
+
         /**
          * @brief element whise division
          * @param lhs [in] the scalar to devide with
@@ -552,7 +561,7 @@ namespace rw { namespace math {
         inline bool operator!= (const Quaternion< T >& r) const { return !((*this) == r); }
 
 #if defined(SWIG)
-        TOSTRING ();
+        TOSTRING (rw::math::Quaternion<T>);
 #endif
       private:
         Eigen::Quaternion< T > _q;
@@ -621,7 +630,7 @@ namespace rw { namespace math {
 
 #if SWIG_VERSION < 0x040000
     SWIG_DECLARE_TEMPLATE (Quaternion_d, rw::math::Quaternion< double >);
-    ADD_DEFINITION (Quaternion_d, Quaternion)
+    ADD_DEFINITION (Quaternion_d, Quaternion,sdurw_math)
 #else
     SWIG_DECLARE_TEMPLATE (Quaternion, rw::math::Quaternion< double >);
 #endif

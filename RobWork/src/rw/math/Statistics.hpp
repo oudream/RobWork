@@ -3,7 +3,7 @@
 #define RW_MATH_STATISTICS_HPP
 
 #if !defined(SWIG)
-#include "Math.hpp"
+#include <rw/math/Math.hpp>
 
 #include <cmath>
 #include <iostream>
@@ -11,8 +11,7 @@
 #include <vector>
 #endif
 
-namespace rw {
-namespace math {
+namespace rw { namespace math {
 
     /**
      * @brief Class for collecting data and calculating simple statistics.
@@ -258,7 +257,8 @@ namespace math {
          * @brief Provides reference to the internal data container
          */
         const std::list< T >& data () const { return _data; }
-
+        
+#if !defined(SWIG)
         /**
          * @brief Statitics to stream
          * @param os [in/out] stream to use
@@ -276,6 +276,9 @@ namespace math {
             os << "Min Value: " << minAndMax.first << std::endl;
             return os << "Max Value: " << minAndMax.second << std::endl;
         }
+#else
+        TOSTRING (rw::math::Statistics< T >);
+#endif
 
       private:
         std::list< T > _data;
@@ -284,13 +287,12 @@ namespace math {
 #if defined(SWIG)
 #if SWIG_VERSION < 0x040000
     SWIG_DECLARE_TEMPLATE (Statistics_d, rw::math::Statistics< double >);
-    ADD_DEFINITION (Statistics_d, Statistics)
+    ADD_DEFINITION (Statistics_d, Statistics,sdurw_geometry)
 #else
     SWIG_DECLARE_TEMPLATE (Statistics, rw::math::Statistics< double >);
 #endif
     SWIG_DECLARE_TEMPLATE (Statistics_f, rw::math::Statistics< float >);
 #endif
-}
-}    // namespace rw::math
+}}    // namespace rw::math
 
 #endif /* RW_PATH_STATISTICS_HPP */

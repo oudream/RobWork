@@ -24,15 +24,15 @@ import numpy as np
 class EAA(unittest.TestCase):
 
     def test_ADL(self):
-        vec1 = sdurw_math.Vector3Dd(0.1, 0.2, 0.3)
-        eaa2 = sdurw_math.EAAd(0.4, 0.5, 0.6)
+        vec1 = sdurw_math.Vector3D(0.1, 0.2, 0.3)
+        eaa2 = sdurw_math.EAA(0.4, 0.5, 0.6)
         c = sdurw_math.cross(vec1, eaa2)
         self.assertLess(math.fabs(c[0] - (0.2 * 0.6 - 0.3 * 0.5)), 1e-15)
         self.assertLess(math.fabs(c[1] + (0.1 * 0.6 - 0.3 * 0.4)), 1e-15)
         self.assertLess(math.fabs(c[2] - (0.1 * 0.5 - 0.4 * 0.2)), 1e-15)
 
     def test_CastTest(self):
-        eaacast = sdurw_math.EAAd(0.1, 0.2, 0.3)
+        eaacast = sdurw_math.EAA(0.1, 0.2, 0.3)
         eaaf = sdurw_math.castToFloat(eaacast)
         for i in range(0,3,1):
             self.assertAlmostEqual(eaaf[i], float(eaacast[i]), 7)
@@ -41,8 +41,8 @@ class EAA(unittest.TestCase):
             self.assertAlmostEqual(eaaf[i], float(eaacast[i]), 7)
 
     def test_CrossProductTest(self):
-        vec1 = sdurw_math.Vector3Dd(0.1, 0.2, 0.3)
-        eaa2 = sdurw_math.EAAd(0.4, 0.5, 0.6)
+        vec1 = sdurw_math.Vector3D(0.1, 0.2, 0.3)
+        eaa2 = sdurw_math.EAA(0.4, 0.5, 0.6)
         c = sdurw_math.cross(vec1, eaa2)
         self.assertLess(math.fabs(c[0] - (0.2 * 0.6 - 0.3 * 0.5)), 1e-15)
         self.assertLess(math.fabs(c[1] + (0.1 * 0.6 - 0.3 * 0.4)), 1e-15)
@@ -55,32 +55,32 @@ class EAA(unittest.TestCase):
 
     def test_MiscTest(self):
         # 0 degree
-        e0 = sdurw_math.EAAd(0.0, 0.0, 0.0)
+        e0 = sdurw_math.EAA(0.0, 0.0, 0.0)
         self.assertEqual(e0.angle () , 0)
         self.assertEqual((e0.axis ()).normInf() , 0)
-        xe0 = sdurw_math.EAAd(e0.toRotation3D())
+        xe0 = sdurw_math.EAA(e0.toRotation3D())
         self.assertEqual(xe0.angle() , e0.angle())
         self.assertEqual((xe0.axis () - e0.axis ()).normInf() , 0)
 
         # 180 degree
-        e180_1 = sdurw_math.EAAd(math.pi, 0.0, 0.0)
+        e180_1 = sdurw_math.EAA(math.pi, 0.0, 0.0)
         self.assertLess(math.fabs(e180_1.angle () - math.pi), 1e-16)
-        self.assertEqual((e180_1.axis () - sdurw_math.Vector3Dd (1.0, 0.0, 0.0)).normInf() , 0)
-        xe180_1 = sdurw_math.EAAd(e180_1.toRotation3D())
+        self.assertEqual((e180_1.axis () - sdurw_math.Vector3D (1.0, 0.0, 0.0)).normInf() , 0)
+        xe180_1 = sdurw_math.EAA(e180_1.toRotation3D())
         self.assertLess(math.fabs (xe180_1.angle () - e180_1.angle ()) , 1e-16)
         self.assertEqual((xe180_1.axis () - e180_1.axis ()).normInf() , 0)
 
-        e180_2 = sdurw_math.EAAd(0.0, math.pi, 0.0)
+        e180_2 = sdurw_math.EAA(0.0, math.pi, 0.0)
         self.assertEqual(e180_2.angle (), math.pi)
-        self.assertEqual((e180_2.axis () - sdurw_math.Vector3Dd (0.0, 1.0, 0.0)).normInf (), 0)
-        xe180_2 = sdurw_math.EAAd(e180_2.toRotation3D())
+        self.assertEqual((e180_2.axis () - sdurw_math.Vector3D (0.0, 1.0, 0.0)).normInf (), 0)
+        xe180_2 = sdurw_math.EAA(e180_2.toRotation3D())
         self.assertEqual(xe180_2.angle (), e180_2.angle ())
         self.assertEqual((xe180_2.axis () - e180_2.axis ()).normInf(), 0)
 
-        e180_3 = sdurw_math.EAAd(0.0, 0.0, math.pi)
+        e180_3 = sdurw_math.EAA(0.0, 0.0, math.pi)
         self.assertEqual(e180_3.angle (), math.pi)
-        self.assertEqual((e180_3.axis () - sdurw_math.Vector3Dd (0.0, 0.0, 1.0)).normInf (), 0)
-        xe180_3 = sdurw_math.EAAd(e180_3.toRotation3D())
+        self.assertEqual((e180_3.axis () - sdurw_math.Vector3D (0.0, 0.0, 1.0)).normInf (), 0)
+        xe180_3 = sdurw_math.EAA(e180_3.toRotation3D())
         self.assertEqual(xe180_3.angle (), e180_3.angle ())
         self.assertEqual((xe180_3.axis () - e180_3.axis ()).normInf(), 0)
 
@@ -91,15 +91,15 @@ class EAA(unittest.TestCase):
         for sign1 in [-1,1]:
             for sign2 in [-1,1]:
                 for sign3 in [-1,1]:
-                    axisInput = sdurw_math.Vector3Dd(sign1 * val1, sign2 * val2, sign3 * val3)
+                    axisInput = sdurw_math.Vector3D(sign1 * val1, sign2 * val2, sign3 * val3)
                     axisInput = axisInput.normalize()
-                    e180 = sdurw_math.EAAd(axisInput * math.pi)
+                    e180 = sdurw_math.EAA(axisInput * math.pi)
 
                     self.assertAlmostEqual(e180.angle (), math.pi, 15)
 
                     e180axis = e180.axis ()
                     self.assertAlmostEqual((e180axis - axisInput).normInf (), 0.0, delta = 1e-15)
-                    xe180 = sdurw_math.EAAd(e180.toRotation3D ())
+                    xe180 = sdurw_math.EAA(e180.toRotation3D ())
                     self.assertAlmostEqual(xe180.angle (), e180.angle (), delta = 1e-13)
                     xe180axis = xe180.axis ()
                     # vector can point both ways and still be valid
@@ -112,13 +112,13 @@ class EAA(unittest.TestCase):
         for sign1 in [-1,1]:
             for sign2 in [-1,1]:
                 for sign3 in [-1,1]:
-                    axisInput = sdurw_math.Vector3Dd(sign1 * val1, sign2 * val2, sign3 * val3)
+                    axisInput = sdurw_math.Vector3D(sign1 * val1, sign2 * val2, sign3 * val3)
                     axisInput = axisInput.normalize()
-                    e180 = sdurw_math.EAAd(axisInput * (math.pi - eps))
+                    e180 = sdurw_math.EAA(axisInput * (math.pi - eps))
                     self.assertAlmostEqual(e180.angle (), math.pi - eps, delta = 1e-13)
                     e180axis = e180.axis ()
                     self.assertAlmostEqual((e180axis - axisInput).normInf (), 0.0, delta = 1e-15)
-                    xe180 = sdurw_math.EAAd(e180.toRotation3D ())
+                    xe180 = sdurw_math.EAA(e180.toRotation3D ())
                     self.assertAlmostEqual(xe180.angle (), e180.angle (), 13)
                     xe180axis = xe180.axis ()
                     self.assertAlmostEqual((xe180axis - e180axis).normInf (), 0.0, delta = 1e-7)
@@ -127,40 +127,40 @@ class EAA(unittest.TestCase):
         for sign1 in [-1,1]:
             for sign2 in [-1,1]:
                 for sign3 in [-1,1]:
-                    axisInput = sdurw_math.Vector3Dd(sign1 * val1, sign2 * val2, sign3 * val3)
+                    axisInput = sdurw_math.Vector3D(sign1 * val1, sign2 * val2, sign3 * val3)
                     axisInput = axisInput.normalize()
-                    e180 = sdurw_math.EAAd(axisInput * (math.pi + eps))
+                    e180 = sdurw_math.EAA(axisInput * (math.pi + eps))
                     self.assertAlmostEqual(e180.angle (), math.pi + eps, delta = 1e-13)
                     e180axis = e180.axis ()
                     self.assertAlmostEqual((e180axis - axisInput).normInf (), 0.0, delta = 1e-15)
-                    xe180 = sdurw_math.EAAd(e180.toRotation3D ())
+                    xe180 = sdurw_math.EAA(e180.toRotation3D ())
                     self.assertAlmostEqual(xe180.angle (), math.pi - eps, 13)           # should choose angle < Pi
                     xe180axis = xe180.axis ()
                     self.assertAlmostEqual((xe180axis + e180axis).normInf (), 0.0, delta = 1e-7)   # should flip vector to get angle < Pi
 
        #  90 degree's around x axis
-        v1 = sdurw_math.Vector3Dd(1.0, 0.0, 0.0)
-        e1 = sdurw_math.EAAd(v1,  math.pi / 2.0)
+        v1 = sdurw_math.Vector3D(1.0, 0.0, 0.0)
+        e1 = sdurw_math.EAA(v1,  math.pi / 2.0)
         self.assertEqual(e1.angle (), math.pi / 2.0)
         self.assertEqual((e1.axis () - v1).normInf (), 0)
         rot = e1.toRotation3D ()
-        e2 = sdurw_math.EAAd(rot)      # Make a copy of obj1 using c++ copy constructor
+        e2 = sdurw_math.EAA(rot)      # Make a copy of obj1 using c++ copy constructor
         self.assertEqual((e1.axis () - e2.axis ()).normInf (), 0)
         self.assertEqual(e1.angle (), e2.angle ())
 
         # Test comparison operators operator== and operator!= 
-        comp1 = sdurw_math.EAAd(1.1, -2.2, 3.3)
-        comp2 = sdurw_math.EAAd(1.1, -2.2, 3.3)
+        comp1 = sdurw_math.EAA(1.1, -2.2, 3.3)
+        comp2 = sdurw_math.EAA(1.1, -2.2, 3.3)
         self.assertTrue(comp1 == comp2)
         self.assertFalse(comp1 != comp2)
-        comp3 = sdurw_math.EAAd(1.1, -2.2, 3.3)
+        comp3 = sdurw_math.EAA(1.1, -2.2, 3.3)
         self.assertTrue(comp1 == comp3)
         self.assertFalse(comp1 != comp3)
 
          # Test different "problematic setups which previously has resulted in NaN errors
 
-        t0 = sdurw_math.Transform3Dd(sdurw_math.Vector3Dd(0.0004406670, 0.1325120000, 0.0236778000), 
-                                     sdurw_math.Rotation3Dd(0.9990961814,
+        t0 = sdurw_math.Transform3D(sdurw_math.Vector3D(0.0004406670, 0.1325120000, 0.0236778000), 
+                                     sdurw_math.Rotation3D(0.9990961814,
                                                             -0.0003891806,
                                                             -0.0425144844,
                                                             0.0004163897,
@@ -169,8 +169,8 @@ class EAA(unittest.TestCase):
                                                             0.0425143000,
                                                             -0.0006440670,
                                                             0.9990960000))
-        t1 = sdurw_math.Transform3Dd(sdurw_math.Vector3Dd(0.0004406670, 0.1325120000, 0.0236778000), 
-                                     sdurw_math.Rotation3Dd(-0.0000000000,
+        t1 = sdurw_math.Transform3D(sdurw_math.Vector3D(0.0004406670, 0.1325120000, 0.0236778000), 
+                                     sdurw_math.Rotation3D(-0.0000000000,
                                                             -0.0000000000,
                                                             1.0000000000,
                                                             0.0000000000,
@@ -181,11 +181,11 @@ class EAA(unittest.TestCase):
                                                             0.0000000000))
         r0 = (sdurw_math.inverse (t0) * t1).R () 
         r0.normalize()
-        eaa0 = sdurw_math.EAAd(r0)
+        eaa0 = sdurw_math.EAA(r0)
         self.assertFalse(sdurw_math.Math.isNaN (eaa0.angle ()))
 
-        t2 = sdurw_math.Transform3Dd(sdurw_math.Vector3Dd(0.0004406670, 0.1325120000, 0.0236778000),
-                                     sdurw_math.Rotation3Dd(-1.0000000000,
+        t2 = sdurw_math.Transform3D(sdurw_math.Vector3D(0.0004406670, 0.1325120000, 0.0236778000),
+                                     sdurw_math.Rotation3D(-1.0000000000,
                                                             -0.0000000000,
                                                             0.0000000000,
                                                             0.0000000000,
@@ -196,11 +196,11 @@ class EAA(unittest.TestCase):
                                                             1.0000000000))
         r1 = (sdurw_math.inverse (t0) * t2).R ()
         r1.normalize()
-        eaa1 = sdurw_math.EAAd(r1)
+        eaa1 = sdurw_math.EAA(r1)
         self.assertFalse(sdurw_math.Math.isNaN (eaa1.angle ()))
 
-        t3 = sdurw_math.Transform3Dd(sdurw_math.Vector3Dd(0.0004406670, 0.1325120000, 0.0236778000),
-                                     sdurw_math.Rotation3Dd(1.0000000000,        
+        t3 = sdurw_math.Transform3D(sdurw_math.Vector3D(0.0004406670, 0.1325120000, 0.0236778000),
+                                     sdurw_math.Rotation3D(1.0000000000,        
                                                             -0.0000000000,
                                                             -0.0000000000,
                                                             -0.0000000000,
@@ -211,11 +211,11 @@ class EAA(unittest.TestCase):
                                                             -1.0000000000))
         r2 = (sdurw_math.inverse (t0) * t3).R ()
         r2.normalize()
-        eaa2 = sdurw_math.EAAd(r2)
+        eaa2 = sdurw_math.EAA(r2)
         self.assertFalse(sdurw_math.Math.isNaN (eaa2.angle ()))
 
-        t4 = sdurw_math.Transform3Dd(sdurw_math.Vector3Dd(0.0004406670, 0.1325120000, 0.0236778000),
-                                     sdurw_math.Rotation3Dd(-0.9993793864,
+        t4 = sdurw_math.Transform3D(sdurw_math.Vector3D(0.0004406670, 0.1325120000, 0.0236778000),
+                                     sdurw_math.Rotation3D(-0.9993793864,
                                                             -0.0352195084,
                                                             -0.0004122380,
                                                             -0.0004294999,
@@ -224,8 +224,8 @@ class EAA(unittest.TestCase):
                                                             -0.0352193000,
                                                             0.9993790000,
                                                             -0.0005113220))
-        t5 = sdurw_math.Transform3Dd(sdurw_math.Vector3Dd(0.0004406670, 0.1325120000, 0.0236778000),
-                                     sdurw_math.Rotation3Dd(0.0000000000,
+        t5 = sdurw_math.Transform3D(sdurw_math.Vector3D(0.0004406670, 0.1325120000, 0.0236778000),
+                                     sdurw_math.Rotation3D(0.0000000000,
                                                             -1.0000000000,
                                                             -0.0000000000,
                                                             0.0000000000,
@@ -236,11 +236,11 @@ class EAA(unittest.TestCase):
                                                             0.0000000000))
         r3 = (sdurw_math.inverse (t4) * t5).R ()
         r3.normalize()
-        eaa3 = sdurw_math.EAAd(r3)
+        eaa3 = sdurw_math.EAA(r3)
         self.assertFalse(sdurw_math.Math.isNaN (eaa3.angle ()))
 
-        t6 = sdurw_math.Transform3Dd(sdurw_math.Vector3Dd(0.0004406670, 0.1325120000, 0.0236778000),
-                                     sdurw_math.Rotation3Dd(0.0000000000,
+        t6 = sdurw_math.Transform3D(sdurw_math.Vector3D(0.0004406670, 0.1325120000, 0.0236778000),
+                                     sdurw_math.Rotation3D(0.0000000000,
                                                             1.0000000000,
                                                             0.0000000000,
                                                             0.0000000000,
@@ -251,11 +251,11 @@ class EAA(unittest.TestCase):
                                                             0.0000000000))
         r4 = (sdurw_math.inverse (t4) * t6).R ()
         r4.normalize()
-        eaa4 = sdurw_math.EAAd(r4)
+        eaa4 = sdurw_math.EAA(r4)
         self.assertFalse(sdurw_math.Math.isNaN (eaa4.angle ()))
 
-        t7 = sdurw_math.Transform3Dd(sdurw_math.Vector3Dd(0.0004406670, 0.1325120000, 0.0236778000),
-                                     sdurw_math.Rotation3Dd(-1.0000000000,
+        t7 = sdurw_math.Transform3D(sdurw_math.Vector3D(0.0004406670, 0.1325120000, 0.0236778000),
+                                     sdurw_math.Rotation3D(-1.0000000000,
                                                             0.0000000000,
                                                             0.0000000000,
                                                             -0.0000000000,
@@ -266,11 +266,11 @@ class EAA(unittest.TestCase):
                                                             -0.0000000000))
         r5 = (sdurw_math.inverse (t4) * t7).R ()
         r5.normalize()
-        eaa5 = sdurw_math.EAAd(r5)
+        eaa5 = sdurw_math.EAA(r5)
         self.assertFalse(sdurw_math.Math.isNaN (eaa5.angle ()))
 
     def test_scalarOperatorTest(self):
-        obj = sdurw_math.EAAd(3, 3, 3)
+        obj = sdurw_math.EAA(3, 3, 3)
 
         test1 = obj.elemMultiply(2)
         test2 = obj.elemDivide(2)
@@ -284,8 +284,8 @@ class EAA(unittest.TestCase):
             self.assertEqual(test4[i], 1.0)
 
     def test_Vector3DOperatorTest(self):
-        obj1 = sdurw_math.EAAd(3, 3, 3)
-        obj2 = sdurw_math.Vector3Dd(2, 2, 2)
+        obj1 = sdurw_math.EAA(3, 3, 3)
+        obj2 = sdurw_math.Vector3D(2, 2, 2)
 
         test1 = obj1.elemMultiply(obj2)
         test2 = obj1.elemDivide(obj2)
@@ -293,9 +293,9 @@ class EAA(unittest.TestCase):
         test3x = obj2 + obj1
         test4 = obj1 - obj2
         test4x = obj2 - obj1
-        test7 = sdurw_math.EAAd(obj1)      # Make a copy of obj1 using c++ copy constructor
+        test7 = sdurw_math.EAA(obj1)      # Make a copy of obj1 using c++ copy constructor
         test7 += obj2
-        test8 = sdurw_math.EAAd(obj1)      # Make a copy of obj1 using c++ copy constructor
+        test8 = sdurw_math.EAA(obj1)      # Make a copy of obj1 using c++ copy constructor
         test8 -= obj2
 
         for i in range(0, obj1.size(), 1):
@@ -319,8 +319,8 @@ class EAA(unittest.TestCase):
         self.assertFalse(obj2 != obj1)
 
     def test_EAAOperatorTest(self):
-        obj1 = sdurw_math.EAAd(3, 3, 3)
-        obj2 = sdurw_math.EAAd(2, 2, 2)
+        obj1 = sdurw_math.EAA(3, 3, 3)
+        obj2 = sdurw_math.EAA(2, 2, 2)
 
         test1 = obj1 * obj2
         test2 = obj1.elemMultiply(obj2)
@@ -335,16 +335,16 @@ class EAA(unittest.TestCase):
             self.assertEqual(test4[i], 5.0)
             self.assertEqual(test5[i], 1.0)
 
-        comp1 = sdurw_math.EAAd(1.1, -2.2, 3.3)
-        comp2 = sdurw_math.EAAd(comp1)       # Make a copy of comp1 using c++ copy constructor
-        comp3 = -sdurw_math.EAAd(comp1)      # Make a copy of comp1 using c++ copy constructor
+        comp1 = sdurw_math.EAA(1.1, -2.2, 3.3)
+        comp2 = sdurw_math.EAA(comp1)       # Make a copy of comp1 using c++ copy constructor
+        comp3 = -sdurw_math.EAA(comp1)      # Make a copy of comp1 using c++ copy constructor
         self.assertEqual(comp1, comp2)
         self.assertFalse(comp1 != comp2)
         self.assertTrue(comp1 != comp3)
         self.assertFalse(comp1 == comp3)
 
     def test_EigenOperatorTest(self):
-        obj1 = sdurw_math.EAAd(3, 3, 3)
+        obj1 = sdurw_math.EAA(3, 3, 3)
         obj2 = np.array([2, 2, 2])           # This how we define Eigen in python using NumPy arrays 
 
 #  TODO Awaits instantiating of NumPy object 
@@ -381,10 +381,10 @@ class EAA(unittest.TestCase):
 #        self.assertFalse(obj2 != obj1)
 
     def test_MathOperators(self):
-        obj1 = sdurw_math.EAAd(1, 2, 3)
-        obj2 = sdurw_math.EAAd(3, 2, 1)
-        obj3 = sdurw_math.Vector3Dd(1,2,3)
-        obj4 = sdurw_math.Vector3Dd(3,2,1)
+        obj1 = sdurw_math.EAA(1, 2, 3)
+        obj2 = sdurw_math.EAA(3, 2, 1)
+        obj3 = sdurw_math.Vector3D(1,2,3)
+        obj4 = sdurw_math.Vector3D(3,2,1)
 
         test1 = obj1.cross(obj2)
         test2 = obj1.dot(obj2)
@@ -402,6 +402,16 @@ class EAA(unittest.TestCase):
         self.assertEqual(test4, test2)
         self.assertEqual(test5, test1)
         self.assertEqual(test6, test2)
+
+    def test_EAA_Conversion(self):
+        #Test conversion, if it contains "Swig Object" then it is a failure
+        obj1 = sdurw_math.EAA()
+        s = str(obj1)
+        self.assertNotIn("Swig Object", s)
+
+        obj1f = sdurw_math.EAAf()
+        s = str(obj1f)
+        self.assertNotIn("Swig Object", s)
 
 
 if __name__ == '__main__':

@@ -22,10 +22,13 @@
  * @file DrawableNode.hpp
  */
 
-#include "SceneNode.hpp"
+#if !defined(SWIG)
+#include <rw/graphics/SceneNode.hpp>
 
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Transform3D.hpp>
+
+#endif
 
 namespace rw { namespace kinematics {
     class State;
@@ -81,9 +84,12 @@ namespace rw { namespace graphics {
          * can be specified.
          */
         enum DrawType {
-            SOLID,     //! Render in solid
-            WIRE,      //! Render in wireframe
-            OUTLINE    //! Render both solid and wireframe
+            //! Render in solid
+            SOLID,  
+            //! Render in wireframe   
+            WIRE, 
+            //! Render both solid and wireframe     
+            OUTLINE    
         };
 
         //! @brief Information for rendering.
@@ -149,7 +155,7 @@ namespace rw { namespace graphics {
          * @brief Sets up the color alpha value.
          *
          * @param alpha [in] \f$ 0.0 \f$ corresponds to fully transparent and
-         * \f$1.0\f$ to completely solid.
+         * \f$ 1.0\f$ to completely solid.
          */
         virtual void setTransparency (float alpha) = 0;
 

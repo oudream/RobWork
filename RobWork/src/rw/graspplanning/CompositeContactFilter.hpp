@@ -19,7 +19,7 @@
 #define RW_GRASPPLANNING_COMPOSITECONTACTFILTER_HPP_
 
 #if !defined(SWIG)
-#include "ContactValidateFilter.hpp"
+#include <rw/graspplanning/ContactValidateFilter.hpp>
 
 #include <vector>
 #endif 

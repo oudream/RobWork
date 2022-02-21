@@ -71,14 +71,14 @@ std::vector< Frame* > endFrames (const std::vector< Device::Ptr >& devices)
 }
 }    // namespace
 
-CompositeJointDevice::CompositeJointDevice (Frame* base, const std::vector< Device::Ptr >& devices,
-                                            Frame* end, const std::string& name,
+CompositeJointDevice::CompositeJointDevice (rw::core::Ptr<Frame> base, const std::vector< Device::Ptr >& devices,
+                                            rw::core::Ptr<Frame> end, const std::string& name,
                                             const State& state) :
     JointDevice (name, base, end, concatDevices (devices), state),
     _devices (devices), _ends (endFrames (devices)), _djmulti (baseJCframes (_ends, state))
 {}
 
-CompositeJointDevice::CompositeJointDevice (Frame* base, const std::vector< Device::Ptr >& devices,
+CompositeJointDevice::CompositeJointDevice (rw::core::Ptr<Frame> base, const std::vector< Device::Ptr >& devices,
                                             const std::vector< Frame* >& ends,
                                             const std::string& name, const State& state) :
     JointDevice (name, base, ends.front (), concatDevices (devices), state),

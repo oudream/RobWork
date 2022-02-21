@@ -22,7 +22,7 @@
 
 #include <QComboBox>
 #include <QGridLayout>
-#include <boost/bind.hpp>
+#include <boost/bind/bind.hpp>
 
 using namespace rw::kinematics;
 using namespace rw::models;
