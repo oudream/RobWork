@@ -251,7 +251,7 @@ namespace rw { namespace trajectory {
              */
             T x () const
             {
-                const rw::trajectory::Trajectory< rw::math::Q >::Ptr& traj =
+                const typename rw::trajectory::Trajectory< T >::Ptr& traj =
                     _trajectory->_trajectories[_currentIndex];
                 return traj->x (_trajectory->time (_time, _currentIndex));
             }
@@ -261,7 +261,7 @@ namespace rw { namespace trajectory {
              */
             T dx () const
             {
-                const rw::trajectory::Trajectory< rw::math::Q >::Ptr& traj =
+                const typename rw::trajectory::Trajectory< T >::Ptr& traj =
                     _trajectory->_trajectories[_currentIndex];
                 return traj->dx (_trajectory->time (_time, _currentIndex));
             }
@@ -271,7 +271,7 @@ namespace rw { namespace trajectory {
              */
             T ddx () const
             {
-                const rw::trajectory::Trajectory< rw::math::Q >::Ptr& traj =
+                const typename rw::trajectory::Trajectory< T >::Ptr& traj =
                     _trajectory->_trajectories[_currentIndex];
                 return traj->ddx (_trajectory->time (_time, _currentIndex));
             }

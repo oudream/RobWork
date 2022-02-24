@@ -198,25 +198,21 @@ namespace rw { namespace core {
         {
             return PropertyType (QPath);
         }
-#if !defined(SWIG)
         //! @copydoc getType(const rw::core::PropertyMap&)
         static PropertyType getType (const rw::core::Ptr<rw::trajectory::Path<rw::math::Q> >& value)
         {
             return PropertyType (QPathPtr);
         }
-#endif
         //! @copydoc getType(const rw::core::PropertyMap&)
         static PropertyType getType (const rw::trajectory::Path< rw::math::Transform3D< double > >& value)
         {
             return PropertyType (Transform3DPath);
         }
-#if !defined(SWIG)
         //! @copydoc getType(const rw::core::PropertyMap&)
         static PropertyType getType (const rw::core::Ptr<rw::trajectory::Path< rw::math::Transform3D< double > > >& value)
         {
             return PropertyType (Transform3DPathPtr);
         }
-#endif
         //! @copydoc getType(const rw::core::PropertyMap&)
         static PropertyType getType (const std::vector< std::string >& value)
         {

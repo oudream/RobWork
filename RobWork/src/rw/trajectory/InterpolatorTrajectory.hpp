@@ -156,7 +156,7 @@ namespace rw { namespace trajectory {
         /**
          * @copydoc rw::trajectory::Trajectory::getIterator
          */
-        typename rw::trajectory::TrajectoryIterator< T >::Ptr getIterator (double dt) const
+        typename rw::trajectory::TrajectoryIterator< T >::Ptr getIterator (double dt = 1) const
         {
             return rw::core::ownedPtr (new InterpolatorTrajectoryIterator< T > (
                 const_cast< InterpolatorTrajectory* > (this), dt));
@@ -393,7 +393,8 @@ namespace rw { namespace trajectory {
         /**
          * @brief Bi-directional iterator for running efficiently through a trajectory
          */
-        template< class U > class InterpolatorTrajectoryIterator : public rw::trajectory::TrajectoryIterator< U >
+        template< class U >
+        class InterpolatorTrajectoryIterator : public rw::trajectory::TrajectoryIterator< U >
         {
           public:
             /**

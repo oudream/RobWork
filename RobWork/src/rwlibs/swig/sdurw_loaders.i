@@ -4,6 +4,7 @@
 %include <std_vector.i>
 %include <exception.i>
 %include <rwlibs/swig/swig_macros.i>
+%include <exception.i>
 
 %import <rwlibs/swig/sdurw_core.i>
 %import <rwlibs/swig/sdurw_common.i>
@@ -19,6 +20,7 @@
 %import <rwlibs/swig/ext_i/std.i>
 
 %{
+#include <rw/math/Vector2D.hpp>
 #include <rw/models/Joint.hpp>
 #include <rw/models/PrismaticSphericalJoint.hpp>
 #include <rw/models/PrismaticUniversalJoint.hpp>
@@ -36,6 +38,9 @@
 #include <rw/geometry/IndexedTriMesh.hpp>
 #include <rw/trajectory/Trajectory.hpp>
 #include <rw/trajectory/InterpolatorTrajectory.hpp>
+#include <rw/trajectory/TrajectorySequence.hpp> 
+#include <rw/trajectory/LloydHaywardBlend.hpp>
+#include <rw/trajectory/ParabolicBlend.hpp>
 %}
 
 %pragma(java) jniclassimports=%{

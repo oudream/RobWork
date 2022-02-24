@@ -4,6 +4,7 @@
 
 %include <std_vector.i>
 %include <stl.i>
+%include <exception.i>
 
 %import <rwlibs/swig/sdurw_core.i>
 %import <rwlibs/swig/sdurw_math.i>
@@ -11,6 +12,17 @@
 %import <rwlibs/swig/sdurw_models.i>
 
 %import <rwlibs/swig/ext_i/std.i>
+
+%exception {
+    try {
+        //printf("Entering function : $name\n"); // uncomment to get a print out of all function calls
+        $action
+    }catch(rw::core::Exception& e ){
+        SWIG_exception(SWIG_RuntimeError,e.what());
+    }catch(...){
+        SWIG_exception(SWIG_RuntimeError,"unknown error");
+    }
+}
 
 %pragma(java) jniclassimports=%{
     import org.robwork.sdurw_core.*;
@@ -68,6 +80,8 @@
 
 	#include <rw/geometry/IndexedTriMesh.hpp>
 
+	#include <rw/trajectory/TrajectorySequence.hpp>		//Ken addon
+
 	#include <vector>
 %}
 
@@ -122,6 +136,7 @@
 	ADD_DEFINITION(NAME_T3D(name),NAME_SE3(name),sdurw_trejectory);
 %enddef
 
+%include <rwlibs/swig/typemaps/blendPtr.i>
 %{
 	#include <rw/trajectory/Blend.hpp>
 %}
@@ -129,6 +144,7 @@
 ADD_TRAJECTORY_STANDARD_TEMPLATE(Blend,rw::trajectory::Blend);
 
 
+%include <rwlibs/swig/typemaps/interpolatorPtr.i>
 %{
 	#include <rw/trajectory/Interpolator.hpp>
 %}
@@ -211,6 +227,7 @@ ADD_TRAJECTORY_STANDARD_TEMPLATE(RampInterpolator,rw::trajectory::RampInterpolat
 %include <rw/trajectory/CubicSplineFactory.hpp>
 %template(makeNaturalSpline) rw::trajectory::CubicSplineFactory::makeNaturalSpline<rw::math::Vector3D<double>>;
 %template(makeNaturalSpline) rw::trajectory::CubicSplineFactory::makeNaturalSpline<rw::math::Transform3DVector<double>>;
+%template(makeNaturalSpline) rw::trajectory::CubicSplineFactory::makeNaturalSpline<rw::math::Q>;								// Ken addon
 %template(makeNaturalSpline) rw::trajectory::CubicSplineFactory::makeNaturalSpline<rw::math::Quaternion<double>>;
 
 %template(makeClampedSpline) rw::trajectory::CubicSplineFactory::makeClampedSpline<rw::math::Vector3D<double>>;
@@ -311,15 +328,28 @@ ADD_TRAJECTORY_STANDARD_TEMPLATE(Timed,rw::trajectory::Timed);
 #if !defined(SWIGJAVA)
 ADD_TRAJECTORY_STANDARD_TEMPLATE(Path,rw::trajectory::Path);
 #endif
+//Quaternion
+%template (VectorQuaternion) std::vector<rw::math::Quaternion<double>>;
+%template (PathQuaternion) rw::trajectory::Path<rw::math::Quaternion<double>>;
+
+//Transform3DVector
+%template (VectorTransform3dVector) std::vector<rw::math::Transform3DVector<double>>;
+%template (PathTransform3DVector) rw::trajectory::Path<rw::math::Transform3DVector<double>>;
+
+
+//State
 %template (VectorState) std::vector<rw::kinematics::State>;
 %template (PathState) rw::trajectory::Path<rw::kinematics::State>;
 NAMED_OWNEDPTR(PathState, rw::trajectory::Path<rw::kinematics::State>);
 
 //Q
+%template (VectorPathQ) std::vector< rw::trajectory::Path< rw::math::Q > >;
 %template (VectorTimedQ) std::vector<rw::trajectory::Timed< rw::math::Q > >;
 %template (PathTimedQ) rw::trajectory::Path<rw::trajectory::Timed< rw::math::Q > >;
 NAMED_OWNEDPTR(VectorTimedQ, std::vector<rw::trajectory::Timed< rw::math::Q > >);
 NAMED_OWNEDPTR(PathTimedQ,rw::trajectory::Path<rw::trajectory::Timed< rw::math::Q > >);
+ADD_DEFINITION(PathQ,QPath,sdurw_trajectory)
+ADD_DEFINITION(VectorPathQ,VectorQPath,sdurw_trajectory)
 
 // State
 %template (TimedStateVector) std::vector<rw::trajectory::Timed<rw::kinematics::State> >;
@@ -442,4 +472,7 @@ ADD_TRAJECTORY_STANDARD_TEMPLATE(TrajectoryIterator,rw::trajectory::TrajectoryIt
 	#include <rw/trajectory/TrajectorySequence.hpp>
 %}
 %include <rw/trajectory/TrajectorySequence.hpp>
+ADD_TRAJECTORY_STANDARD_TEMPLATE(TrajectorySequence,rw::trajectory::TrajectorySequence);
+
+%template (VectorTrajectoryQPtr) std::vector< rw::core::Ptr  < rw::trajectory::Trajectory<  rw::math::Q  > > >;
 

@@ -53,14 +53,14 @@ namespace rw { namespace math {
         /**
          * @brief default constructor
          */
-        Transform3DVector ():Transform3DVector(Vector3D<T>(),Quaternion<T>()) {}
+        Transform3DVector ():Transform3DVector(rw::math::Vector3D<T>(),rw::math::Quaternion<T>()) {}
 
         /**
          * @brief Constuct a Transformation matrix as a Vector
          * @param vec [in] the vector of the transform
          * @param rot [in] the rotation of the transform
          */
-        Transform3DVector (const Vector3D< T >& vec, const Quaternion< T >& rot)
+        Transform3DVector (const rw::math::Vector3D< T >& vec, const rw::math::Quaternion< T >& rot)
         {
             _t3d[0] = vec[0];
             _t3d[1] = vec[1];
@@ -76,7 +76,7 @@ namespace rw { namespace math {
          * @param vec [in] the vector of the transform
          * @param rot [in] the rotation of the transform
          */
-        Transform3DVector (const Vector3D< T >& vec, const Rotation3DVector< T >& rot)
+        Transform3DVector (const rw::math::Vector3D< T >& vec, const rw::math::Rotation3DVector< T >& rot)
         {
             Quaternion< T > rotq (rot);
             _t3d[0] = vec[0];
@@ -92,8 +92,8 @@ namespace rw { namespace math {
          * @brief Constuct a Transform3DVector from a Transform3D
          * @param t3d [in] Transform3D
          */
-        Transform3DVector (const Transform3D< T >& t3d) :
-            Transform3DVector (t3d.P (), Quaternion< T > (t3d.R ()))
+        Transform3DVector (const rw::math::Transform3D< T >& t3d) :
+            Transform3DVector (t3d.P (), rw::math::Quaternion< T > (t3d.R ()))
         {}
 
         /**
@@ -118,7 +118,7 @@ namespace rw { namespace math {
          * @param rhs [in] the right hand side value
          * @return result of devision
          */
-        Transform3DVector< T > operator+ (const Vector3D< T >& rhs) const
+        Transform3DVector< T > operator+ (const rw::math::Vector3D< T >& rhs) const
         {
             Transform3DVector< T > ret = *this;
             for (size_t i = 0; i < rhs.size (); i++) {
@@ -132,7 +132,7 @@ namespace rw { namespace math {
          * @param rhs [in] the right hand side value
          * @return result of devision
          */
-        Transform3DVector< T > operator- (const Vector3D< T >& rhs) const
+        Transform3DVector< T > operator- (const rw::math::Vector3D< T >& rhs) const
         {
             Transform3DVector< T > ret = *this;
             for (size_t i = 0; i < rhs.size (); i++) {
@@ -146,7 +146,7 @@ namespace rw { namespace math {
          * @param rhs [in] the right hand side value
          * @return result of multiplication
          */
-        Vector3D< T > operator* (const Vector3D< T >& rhs) const
+        rw::math::Vector3D< T > operator* (const rw::math::Vector3D< T >& rhs) const
         {
             return this->toTransform3D () * rhs;
         }
@@ -158,7 +158,7 @@ namespace rw { namespace math {
          * @param rhs [in] the right hand side value
          * @return result of devision
          */
-        Transform3DVector< T > operator+ (const Quaternion< T >& rhs) const
+        Transform3DVector< T > operator+ (const rw::math::Quaternion< T >& rhs) const
         {
             Transform3DVector< T > ret = *this;
             for (size_t i = 0; i < rhs.size (); i++) {
@@ -172,7 +172,7 @@ namespace rw { namespace math {
          * @param rhs [in] the right hand side value
          * @return result of devision
          */
-        Transform3DVector< T > operator- (const Quaternion< T >& rhs) const
+        Transform3DVector< T > operator- (const rw::math::Quaternion< T >& rhs) const
         {
             Transform3DVector< T > ret = *this;
             for (size_t i = 0; i < rhs.size (); i++) {
@@ -186,7 +186,7 @@ namespace rw { namespace math {
          * @param rhs [in] the right hand side value
          * @return result of devision
          */
-        Transform3DVector< T > operator/ (const Quaternion< T >& rhs) const
+        Transform3DVector< T > operator/ (const rw::math::Quaternion< T >& rhs) const
         {
             Transform3DVector< T > ret = *this;
             for (size_t i = 0; i < rhs.size (); i++) {
@@ -200,7 +200,7 @@ namespace rw { namespace math {
          * @param rhs [in] the right hand side value
          * @return result of multiplication
          */
-        Transform3DVector< T > operator* (const Quaternion< T >& rhs) const
+        Transform3DVector< T > operator* (const rw::math::Quaternion< T >& rhs) const
         {
             Transform3DVector< T > ret = *this;
             for (size_t i = 0; i < rhs.size (); i++) {
@@ -394,13 +394,13 @@ namespace rw { namespace math {
          * @brief get the position Vector of the transform
          * @return a copy of the position vector
          */
-        Vector3D< T > toVector3D () const { return Vector3D< T > (_t3d[0], _t3d[1], _t3d[2]); }
+        rw::math::Vector3D< T > toVector3D () const { return Vector3D< T > (_t3d[0], _t3d[1], _t3d[2]); }
 
         /**
          * @brief get the Rotation of the transform
          * @return a copy of the quaternion rotation
          */
-        Quaternion< T > toQuaternion () const
+        rw::math::Quaternion< T > toQuaternion () const
         {
             return Quaternion< T > (_t3d[3], _t3d[4], _t3d[5], _t3d[6]);
         }
@@ -409,13 +409,13 @@ namespace rw { namespace math {
          * @brief convert the rotation part to EAA
          * @return toration in EAA form
          */
-        EAA< T > toEAA () const { return EAA< T > (this->toQuaternion ().toRotation3D ()); }
+        rw::math::EAA< T > toEAA () const { return EAA< T > (this->toQuaternion ().toRotation3D ()); }
 
         /**
          * @brief Returns the corresponding Trandforma3D matrix
          * @return The transformation matrix
          */
-        Transform3D< T > toTransform3D () const
+        rw::math::Transform3D< T > toTransform3D () const
         {
             return Transform3D< T > (this->toVector3D (), this->toQuaternion ());
         }
@@ -431,6 +431,9 @@ namespace rw { namespace math {
             return os << "Transform3DVector(" << t.toVector3D () << ", " << t.toQuaternion ()
                       << ")";
         }
+
+#else 
+    TOSTRING(rw::math::Transform3DVector<T>);
 #endif
         // ###################################################
         // #             assignement Operators               #
@@ -475,7 +478,7 @@ namespace rw { namespace math {
          * @param rhs the new rotation
          * @return a copy of this object
          */
-        Transform3DVector< T >& operator= (const Quaternion< T >& rhs)
+        Transform3DVector< T >& operator= (const rw::math::Quaternion< T >& rhs)
         {
             *this = Transform3DVector< T > (this->toVector3D (), rhs);
             return *this;
@@ -486,7 +489,7 @@ namespace rw { namespace math {
          * @param rhs the rotation to be added
          * @return a copy of this object
          */
-        Transform3DVector< T >& operator+= (const Quaternion< T >& rhs)
+        Transform3DVector< T >& operator+= (const rw::math::Quaternion< T >& rhs)
         {
             *this = *this + rhs;
             return *this;
@@ -497,7 +500,7 @@ namespace rw { namespace math {
          * @param rhs the rotation to be added
          * @return a copy of this object
          */
-        Transform3DVector< T >& operator-= (const Quaternion< T >& rhs)
+        Transform3DVector< T >& operator-= (const rw::math::Quaternion< T >& rhs)
         {
             *this = *this - rhs;
             return *this;
@@ -509,7 +512,7 @@ namespace rw { namespace math {
          * @param rhs the transform to copy
          * @return a copy of this object
          */
-        Transform3DVector< T >& operator= (const Transform3D< T >& rhs)
+        Transform3DVector< T >& operator= (const rw::math::Transform3D< T >& rhs)
         {
             this->_t3d = Transform3DVector< T > (rhs)._t3d;
             return *this;
@@ -521,7 +524,7 @@ namespace rw { namespace math {
          * @param rhs the new position
          * @return a copy of this object
          */
-        Transform3DVector< T >& operator= (const Vector3D< T >& rhs)
+        Transform3DVector< T >& operator= (const rw::math::Vector3D< T >& rhs)
         {
             *this = Transform3DVector< T > (rhs, this->toQuaternion ());
             return *this;
@@ -532,7 +535,7 @@ namespace rw { namespace math {
          * @param rhs the new position
          * @return a copy of this object
          */
-        Transform3DVector< T >& operator+= (const Vector3D< T >& rhs)
+        Transform3DVector< T >& operator+= (const rw::math::Vector3D< T >& rhs)
         {
             *this = *this + rhs;
             return *this;
@@ -543,7 +546,7 @@ namespace rw { namespace math {
          * @param rhs the new position
          * @return a copy of this object
          */
-        Transform3DVector< T >& operator-= (const Vector3D< T >& rhs)
+        Transform3DVector< T >& operator-= (const rw::math::Vector3D< T >& rhs)
         {
             *this = *this - rhs;
             return *this;
@@ -582,7 +585,18 @@ namespace rw { namespace math {
     using Transform3DVectord = Transform3DVector< double >;
     using Transform3DVectorf = Transform3DVector< float >;
 
+#else
+#if SWIG_VERSION < 0x040000
+    SWIG_DECLARE_TEMPLATE (Transform3DVector_d, rw::math::Transform3DVector< double >);
+    ADD_DEFINITION (Transform3DVector_d, Transform3DVector,sdurw_math)
+#else
+    SWIG_DECLARE_TEMPLATE (Transform3DVector, rw::math::Transform3DVector< double >);
 #endif
+
+    SWIG_DECLARE_TEMPLATE (Transform3DVector_f, rw::math::Transform3DVector< float >);
+#endif
+
+
     /**@}*/
 }}    // namespace rw::math
 

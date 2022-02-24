@@ -98,3 +98,43 @@ generate_typemap_check(
     "toStateDataPtr"
     ADD_RWPTR_FRAGMENT
 )
+
+generate_typemap_check(
+    "rw::core::Ptr< rw::trajectory::Interpolator< rw::math::Vector2D<double>>>"
+    TYPES
+    "rw::core::Ptr< rw::trajectory::Interpolator< rw::math::Vector2D<double>>>"
+    "rw::core::Ptr< rw::trajectory::LinearInterpolator< rw::math::Vector2D<double>>>"
+    "int"
+    FILE
+    "./interpolatorPtr.i"
+    CONVERTER
+    "toInterpolatorPtr"
+    ADD_RWPTR_FRAGMENT
+)
+
+generate_typemap_check(
+    "rw::core::Ptr< rw::trajectory::Blend< rw::math::Vector2D<double>>>"
+    TYPES
+    "rw::core::Ptr< rw::trajectory::Blend< rw::math::Vector2D<double>>>"
+    "rw::core::Ptr< rw::trajectory::ParabolicBlend< rw::math::Vector2D<double>>>"
+    "rw::trajectory::ParabolicBlend< rw::math::Vector2D<double>>"
+    "rw::trajectory::Blend< rw::math::Vector2D<double>>"
+    "int"
+    FILE
+    "./blendPtr.i"
+    CONVERTER
+    "toBlendPtr"
+    ADD_RWPTR_FRAGMENT
+)
+
+generate_typemap_check(
+    "rw::core::Ptr<rw::trajectory::Trajectory<rw::math::Q>>"
+    TYPES 
+    "rw::core::Ptr<rw::trajectory::Trajectory<rw::math::Q>>"
+    "rw::core::Ptr<rw::trajectory::InterpolatorTrajectory<rw::math::Q>>"
+    FILE 
+    "./TrajectoryPtr.i"
+    CONVERTER 
+    "toTrajectoryPtr"
+    ADD_RWPTR_FRAGMENT
+)
