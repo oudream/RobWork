@@ -73,6 +73,7 @@ namespace rw { namespace trajectory {
             init ();
         }
 
+
         /**
          * @copydoc Interpolator::x()
          */
@@ -167,17 +168,17 @@ namespace rw { namespace trajectory {
             using namespace rw::math;
             // calculate max time
             double maxtime = 0;
-            for (size_t i = 0; i < size(_b); i++) {
+            for (size_t i = 0; i < size (_b); i++) {
                 double t   = 0;
-                double tau = item(_vel,i) / item(_acc ,i);
-                double eps = sqrt (fabs (item(_b ,i) / item(_acc ,i)));
+                double tau = item (_vel, i) / item (_acc, i);
+                double eps = sqrt (fabs (item (_b, i) / item (_acc, i)));
                 // std::cout<<"tau = "<<tau<<std::endl;
                 // std::cout<<"eps = "<<eps<<std::endl;
                 if (eps < tau)
                     t = 2 * eps;
                 else {
-                    double dtau = tau * item(_vel,i);
-                    double Ttmp = (fabs (item(_b,i)) - dtau) / item(_vel, i);
+                    double dtau = tau * item (_vel, i);
+                    double Ttmp = (fabs (item (_b, i)) - dtau) / item (_vel, i);
                     t           = Ttmp + 2 * tau;
                 }
                 maxtime = std::max (t, maxtime);
@@ -189,13 +190,13 @@ namespace rw { namespace trajectory {
             _dwmax = 1e10;
             _ws    = 0;
 
-            for (size_t i = 0; i < size(_a); i++) {
+            for (size_t i = 0; i < size (_a); i++) {
                 // double dq = fabs(_qend(i)-_qstart(i));
-                double dq = fabs (item(_b,i));
+                double dq = fabs (item (_b, i));
                 // std::cout<<"dq = "<<dq<<std::endl;
                 if (dq != 0) {
-                    _wmax  = std::min (_wmax, item(_vel,i) / dq);
-                    _dwmax = std::min (_dwmax, item(_acc,i) / dq);
+                    _wmax  = std::min (_wmax, item (_vel, i) / dq);
+                    _dwmax = std::min (_dwmax, item (_acc, i) / dq);
                 }
             }
             // std::cout<<"wmax = "<<_wmax<<std::endl;
@@ -232,27 +233,13 @@ namespace rw { namespace trajectory {
         double _tau_s;
         double _tau_e;
 
-        template<class R> 
-        size_t size(R& val){
-            return val.size();
-        }
-        size_t size(float& val){
-            return 1;
-        }
-        size_t size(double& val){
-            return 1;
-        }
+        template< class R > size_t size (R& val) { return val.size (); }
+        size_t size (float& val) { return 1; }
+        size_t size (double& val) { return 1; }
 
-        template<class R> 
-        typename R::value_type item(R& val,size_t idx){
-            return val(idx);
-        }
-        float item(float& val,size_t idx){
-            return val;
-        }
-        double item(double& val,size_t idx){
-            return val;
-        }
+        template< class R > typename R::value_type item (R& val, size_t idx) { return val (idx); }
+        float item (float& val, size_t idx) { return val; }
+        double item (double& val, size_t idx) { return val; }
     };
 
     template<> class RampInterpolator< double > : public rw::trajectory::Interpolator< double >

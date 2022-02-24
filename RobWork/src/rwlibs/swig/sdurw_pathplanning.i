@@ -13,6 +13,8 @@
 %import <rwlibs/swig/ext_i/std.i>
 
 %{
+
+    #include <rw/math/Vector2D.hpp>
     #include <rw/models/CompositeJointDevice.hpp>
     #include <rw/models/CompositeDevice.hpp>
     #include <rw/models/ParallelDevice.hpp>
@@ -39,6 +41,10 @@
     #include <rw/geometry/IndexedTriMesh.hpp>
     #include <rw/trajectory/Trajectory.hpp>
     #include <rw/trajectory/InterpolatorTrajectory.hpp>
+	#include <rw/trajectory/TrajectorySequence.hpp>
+    #include <rw/trajectory/LloydHaywardBlend.hpp>
+    #include <rw/trajectory/ParabolicBlend.hpp>
+
 %}
 %pragma(java) jniclassimports=%{
 import org.robwork.sdurw_core.*;

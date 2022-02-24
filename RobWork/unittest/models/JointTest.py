@@ -16,7 +16,8 @@
  #################################################################################
 
 import unittest                                     # now we can use python unittest framework
-import math, sys
+import math 
+import sys
 import sdurw_math
 import sdurw_kinematics
 import sdurw_models

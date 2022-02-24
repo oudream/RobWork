@@ -44,8 +44,6 @@ class Property(unittest.TestCase):
         self.assertEqual(0.1, propertyA.getPropertyValue().getValue())
         self.assertEqual(sdurw_core.PropertyType.Double, propertyA.getPropertyValue().getType().getId())        
         clone = propertyA.clone()
-        
-        print("\n HVORDAN BRUGER MAN arrow operator ->  I PYTHON ?")
 
 
 if __name__ == '__main__':

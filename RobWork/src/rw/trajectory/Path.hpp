@@ -110,6 +110,7 @@ namespace rw { namespace trajectory {
 #endif
     };
 
+#ifndef NOTYPEMAPS
     /**
      *  @brief Path of rw::math::Q
      */
@@ -149,7 +150,7 @@ namespace rw { namespace trajectory {
        @brief A pointer to a Path of rw::kinematics::State with associated times
     */
     typedef rw::core::Ptr< Path< TimedState > > TimedStatePathPtr;
-
+#endif
 }}    // namespace rw::trajectory
 
 #endif    // end include guard

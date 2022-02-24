@@ -177,7 +177,7 @@ macro(GENERATE_STANDARD_POINTER_FRAGMENT _type)
 
     cmake_parse_arguments(STD_POINTER_F "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
     set(fragment)
-    set(fragment "${fragment}%fragment(\"${STD_POINTER_F_CONVERTER}\", \"header\"){")
+    set(fragment "${fragment}%fragment(\"${STD_POINTER_F_CONVERTER}\", \"header\"){\n")
     set(fragment "${fragment}    template<class T>\n")
     set(fragment "${fragment}    ${_type} ${STD_POINTER_F_CONVERTER}(rw::core::Ptr<T>* in){\n")
     set(fragment "${fragment}        return in->get();\n")

@@ -233,6 +233,13 @@ NAMED_OWNEDPTR(LogWriter, rw::core::LogWriter);
 NAMED_OWNEDPTR(Plugin, rw::core::Plugin);
 
 %{
+    #define SWIG_PATH_FUNCTIONS void testBody
+    void testBody() {}
+    #define NOTYPEMAPS
+    #define SWIG
+    #include <rw/trajectory/Path.hpp>
+    #undef SWIG
+    #undef NOTYPEMAPS
     #include <rw/core/PropertyType.hpp>
 %}
 %include <rw/core/PropertyType.hpp>

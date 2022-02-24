@@ -5,6 +5,7 @@
 #include <rw/core/Ptr.hpp>
 #include <rw/models.hpp>
 #include <rw/kinematics/FixedFrame.hpp>
+#include <rw/trajectory/Trajectory.hpp>
 
 using namespace rwlibs::swig;
 %}
@@ -20,16 +21,22 @@ using namespace rwlibs::swig;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_math.*;
 import org.robwork.sdurw_models.*;
+import org.robwork.sdurw_kinematics.*;
+import org.robwork.sdurw_trajectory.*;
 %}
 %pragma(java) moduleimports=%{
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_math.*;
 import org.robwork.sdurw_models.*;
+import org.robwork.sdurw_kinematics.*;
+import org.robwork.sdurw_trajectory.*;
 %}
 %typemap(javaimports) SWIGTYPE %{
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_math.*;
 import org.robwork.sdurw_models.*;
+import org.robwork.sdurw_kinematics.*;
+import org.robwork.sdurw_trajectory.*;
 %}
 
 %nodefaultctor Controller;
@@ -104,3 +111,10 @@ public:
 };
 
 %template (JointControllerPtr) rw::core::Ptr<JointController>;
+
+// Kens addon
+%{
+    #include <rwlibs/control/SyncVelocityRamp.hpp>
+%}
+%include <rwlibs/control/SyncVelocityRamp.hpp>
+NAMED_OWNEDPTR(SyncVelocityRamp, rw::control::SyncVelocityRamp);

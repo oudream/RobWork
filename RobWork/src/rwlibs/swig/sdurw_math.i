@@ -275,6 +275,8 @@ ADD_DEFINITION(Transform3DAngleMetric_d, Transform3DAngleMetric,sdurw_math);
 %template(normInf) rw::math::MetricUtil::normInf<rw::math::Q>;
 //%template(dist1) rw::math::MetricUtil::dist1<double>;
 //%template(dist1) rw::math::MetricUtil::dist1<float>;
+%template(dist2) rw::math::MetricUtil::dist2<rw::math::Vector3D<double>>;        // Ken addon
+%template(dist2) rw::math::MetricUtil::dist2<rw::math::Q>;                       // Ken addon
 
 
 %ignore rw::math::PerspectiveTransform2D::e() const;
@@ -432,6 +434,7 @@ FRIEND_OPERATOR(rw::math::Rotation3D<float>, rw::math::Wrench6D<float>, *);
     #include <rw/math/Transform3DVector.hpp>
 %}
 %include <rw/math/Transform3DVector.hpp>
+
 
 %ignore rw::math::Vector::e() const;
 %{

@@ -18,6 +18,7 @@
 #include <rw/kinematics/MovableFrame.hpp>
 #include <rw/kinematics/FixedFrame.hpp>
 #include <rw/geometry/IndexedTriMesh.hpp>
+#include <rw/math/Vector2D.hpp>
 
 using namespace rwlibs::swig;
 using rw::trajectory::Path;
