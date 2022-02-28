@@ -789,7 +789,7 @@ void TreeView::scaleSlot ()
 
     bool ok           = false;
     const float scale = (float) QInputDialog::getDouble (
-        this, "Select Scale", "Scale:", drawables[0]->getScale (), 0, 1000, 1, &ok);
+        this, "Select Scale", "Scale:", drawables[0]->getScale (), 0, 1000, 6, &ok);
 
     if (ok) {
         for (DrawableNode::Ptr& node : drawables)

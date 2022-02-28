@@ -695,12 +695,14 @@ Polytope
 **Attributes**
 
 - **file:** the geometry file
+- **scale:** (Optional, Default = 1.0) How to scale the model. Example: 1.0 for meters and 0.001 for model in millimeters 
 
 **Example**
 
 .. code-block:: xml
 
    <Polytope file="c:/geometry/object.stl" />
+   <Polytope file="c:/geometry/object.stl scale="0.001" />
 
 Plane
 ^^^^^^^^

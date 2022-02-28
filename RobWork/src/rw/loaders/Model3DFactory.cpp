@@ -149,7 +149,7 @@ Model3D::Ptr Model3DFactory::loadModel (const std::string& raw_filename, const s
         model->optimize (30 * rw::math::Deg2Rad);
 
         getCache ().add (filename, model, moddate);
-        return getCache ().get (filename);
+        return ownedPtr (new Model3D (*(getCache ().get (filename))));
     }
     else if (filetype == ".PCD") {
         rw::geometry::PointCloud::Ptr img = rw::geometry::PointCloud::loadPCD (filename);
@@ -159,25 +159,25 @@ Model3D::Ptr Model3DFactory::loadModel (const std::string& raw_filename, const s
         Model3D::Material mat_gray ("gray_pcd", 0.7f, 0.7f, 0.7f);
         model->addGeometry (mat_gray, geom);
         getCache ().add (filename, model, moddate);
-        return getCache ().get (filename);
+        return ownedPtr (new Model3D (*(getCache ().get (filename))));
     }
     else if (filetype == ".3DS") {
         Loader3DS loader;
         Model3D::Ptr model = loader.load (filename);
         getCache ().add (filename, model, moddate);
-        return getCache ().get (filename);
+        return ownedPtr (new Model3D (*(getCache ().get (filename))));
     }
     else if (filetype == ".AC" || filetype == ".AC3D") {
         LoaderAC3D loader;
         Model3D::Ptr model = loader.load (filename);
         getCache ().add (filename, model, moddate);
-        return getCache ().get (filename);
+        return ownedPtr (new Model3D (*(getCache ().get (filename))));
     }
     else if (filetype == ".TRI") {
         LoaderTRI loader;
         Model3D::Ptr model = loader.load (filename);
         getCache ().add (filename, model, moddate);
-        return getCache ().get (filename);
+        return ownedPtr (new Model3D (*(getCache ().get (filename))));
     }
     else if (filetype == ".OBJ") {
         Model3D::Ptr model;
@@ -197,14 +197,14 @@ Model3D::Ptr Model3DFactory::loadModel (const std::string& raw_filename, const s
 #endif
         }
         getCache ().add (filename, model, moddate);
-        return getCache ().get (filename);
+        return ownedPtr (new Model3D (*(getCache ().get (filename))));
 #if RW_HAVE_ASSIMP
     }
     else if (filetype == ".DAE") {
         LoaderAssimp loader;
         Model3D::Ptr model = loader.load (filename);
         getCache ().add (filename, model, moddate);
-        return getCache ().get (filename);
+        return ownedPtr (new Model3D (*(getCache ().get (filename))));
 #endif
     }
     else {
@@ -212,7 +212,7 @@ Model3D::Ptr Model3DFactory::loadModel (const std::string& raw_filename, const s
             const Model3DLoader::Ptr loader = Model3DLoader::Factory::getModel3DLoader (filetype);
             Model3D::Ptr model              = loader->load (filename);
             getCache ().add (filename, model, moddate);
-            return getCache ().get (filename);
+            return ownedPtr (new Model3D (*(getCache ().get (filename))));
         }
         RW_THROW ("Unknown extension "
                   << StringUtil::quote (StringUtil::getFileExtension (filename)) << " for file "

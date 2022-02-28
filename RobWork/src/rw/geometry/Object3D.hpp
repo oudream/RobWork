@@ -158,6 +158,8 @@ namespace rw { namespace geometry {
          */
         virtual GeometryType getType () const { return GeometryType::UserType; }
 
+        virtual Object3DGeneric::Ptr copy() const = 0;
+
       protected:
         /**
          * @brief constructor
@@ -309,7 +311,16 @@ namespace rw { namespace geometry {
         virtual rw::core::Ptr< TriMesh > clone () const
         {
             return rw::core::ownedPtr (new Object3D< T > (*this));
-        };
+        }
+
+        /**
+         * @brief make a clone of this triangle mesh
+         * @return clone of this Object3D
+         */
+        virtual Object3DGeneric::Ptr copy() const {
+
+            return rw::core::ownedPtr (new Object3D< T > (*this));
+        }
 
         /**
          * @brief list containing indexed polygons. The polygons index into the

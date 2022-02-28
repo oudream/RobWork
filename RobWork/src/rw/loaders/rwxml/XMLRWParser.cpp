@@ -26,12 +26,11 @@ using namespace rw::math;
 
 #include <rw/core/macros.hpp>
 #include <rw/math/Constants.hpp>
-
-#include <boost/spirit/include/classic_parse_tree.hpp>
-
+#include <rw/math/RPY.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/Vector3D.hpp>
-#include <rw/math/RPY.hpp>
+
+#include <boost/spirit/include/classic_parse_tree.hpp>
 #include <memory>
 
 using namespace phoenix;
@@ -87,18 +86,22 @@ struct Transform3DParser
 
                 ;
 
-            auto func_s = [&] (double d) {_t3d_v.clear(); _t3d_v.push_back(d); };   
-            auto func = [&] (double d) {_t3d_v.push_back(d);};
-            auto func_e = [&] (double d) {_t3d_v.push_back(d); for( size_t i = 0; i < _t3d_v.size(); i++) {_t3d(i/4,i%4) = _t3d_v[i]; } };
+            auto func_s = [&] (double d) {
+                _t3d_v.clear ();
+                _t3d_v.push_back (d);
+            };
+            auto func   = [&] (double d) { _t3d_v.push_back (d); };
+            auto func_e = [&] (double d) {
+                _t3d_v.push_back (d);
+                for (size_t i = 0; i < _t3d_v.size (); i++) {
+                    _t3d (i / 4, i % 4) = _t3d_v[i];
+                }
+            };
             matrix_transform_r = XMLElem_p (
                 "Transform",
-                    real_p[func_s] >> real_p[func] >>
-                    real_p[func] >> real_p[func] >>
-                    real_p[func] >> real_p[func] >>
-                    real_p[func] >> real_p[func] >>
-                    real_p[func] >> real_p[func] >>
-                    real_p[func] >>
-                    real_p[func_e][self.result_ = var (_t3d)]);
+                real_p[func_s] >> real_p[func] >> real_p[func] >> real_p[func] >> real_p[func] >>
+                    real_p[func] >> real_p[func] >> real_p[func] >> real_p[func] >> real_p[func] >>
+                    real_p[func] >> real_p[func_e][self.result_ = var (_t3d)]);
         }
 
       private:
@@ -107,7 +110,7 @@ struct Transform3DParser
         rule< ScannerT, result_closure< Vector3D< double > >::context_t > pos_r;
         // temp variables
         Transform3D< double > _t3d;
-        std::vector<double> _t3d_v;
+        std::vector< double > _t3d_v;
         RPY< double > _rpy;
         Vector3D< double > _pos;
     };
@@ -207,7 +210,6 @@ struct ModelParser : public grammar< ModelParser, result_closure< DummyModel >::
                 (XMLAttElem_p (
                     "CollisionModel",
                     (XMLAtt_p ("name", attrstr_p[var (_model._name) = arg1])) >>
-
                         !(XMLAtt_p ("refframe", attrstr_p[var (_model._refframe) = arg1])),
                     !transform3d_p[var (_model._transform) = arg1] >>
 
@@ -238,7 +240,8 @@ struct ModelParser : public grammar< ModelParser, result_closure< DummyModel >::
                      XMLAtt_p (
                          "file",
                          attrstr_p[var (_geo._filename) = arg1][var (_geo._type) = PolyType]) >>
-                         filepos_p[var (_geo._pos) = arg1],
+                         filepos_p[var (_geo._pos) = arg1] >>
+                         *XMLAtt_p ("scale", real_p[var (_geo._scale) = arg1]),
                      eps_p)    // save position of file
 
                  | XMLAttElem_p ("Plane", eps_p[var (_geo._type) = PlaneType], eps_p) |
@@ -559,9 +562,8 @@ struct XMLDeviceParser : public grammar< XMLDeviceParser, result_closure< DummyD
                               !(XMLAtt_p ("refframe", attrstr_p[var (_frame._refframe) = arg1])) >>
                               XMLAtt_p ("type", attrstr_p[var (_frame._type) = arg1]) >>
                               !(XMLAtt_p ("state", jointstate_r)),
-                              !(t3d_p[var (_frame._transform) = arg1]) >>
-                              *(jointlimit_r[push_back_a (_frame._limits)] | 
-                                depend_r |
+                          !(t3d_p[var (_frame._transform) = arg1]) >>
+                              *(jointlimit_r[push_back_a (_frame._limits)] | depend_r |
                                 property_p[push_back_a (_frame._properties)] |
                                 model_p[push_back_a (_frame._models)]));
             // T alpha, T a,   beta, b,

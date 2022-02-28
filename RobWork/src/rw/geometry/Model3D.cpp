@@ -62,6 +62,15 @@ Model3D::Model3D (const std::string& name) :
     _name (name), _filePath (""), _mask (rw::geometry::Geometry::PhysicalGroup), _isDynamic (false)
 {}
 
+Model3D::Model3D (const Model3D& model) :
+    _materials (model._materials), _objects(0),_transform (model._transform), _name (model._name),
+    _filePath (model._filePath), _mask (model._mask), _isDynamic (model._isDynamic)
+{
+    for(Object3DGeneric::Ptr obj: model._objects){
+        this->_objects.push_back(obj->copy());
+    }
+}
+
 Model3D::~Model3D ()
 {}
 
