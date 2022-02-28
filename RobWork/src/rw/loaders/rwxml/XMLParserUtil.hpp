@@ -131,12 +131,13 @@ struct DummyCalibration
 struct DummyGeometry
 {
     DummyGeometry () :
-        _radius (1.0), _x (1.0), _y (1.0), _z (1.0), _filename (""), _type (CubeType), _level (20)
+        _radius (1.0), _x (1.0), _y (1.0), _z (1.0),_scale(1.0), _filename (""), _type (CubeType), _level (20)
     {}
     double _radius;    // sphere, cone
     double _x;         // cube
     double _y;         // cube
     double _z;         // cube, cone
+    double _scale;
     boost::spirit::classic::file_position _pos;
     std::string _filename;
     std::string _parameters;

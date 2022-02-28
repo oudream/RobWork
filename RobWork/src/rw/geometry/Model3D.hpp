@@ -61,6 +61,13 @@ namespace rw { namespace geometry {
          */
         Model3D (const std::string& name);
 
+        /**
+         * @brief Copy constructor, make a copy of the 3D object
+         * 
+         * @param model 
+         */
+        Model3D(const Model3D& model);
+
         //! @brief destructor
         virtual ~Model3D ();
 
