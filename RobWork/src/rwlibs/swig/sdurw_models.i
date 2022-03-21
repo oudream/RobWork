@@ -111,6 +111,8 @@ NAMED_OWNEDPTR(Object,rw::models::Object);
 	%ignore rw::models::Device::getEnd() const;
 	%ignore rw::models::Device::getPropertyMap() const;
 #endif 
+%include <rwlibs/swig/typemaps/constDevicePtr.i>
+%include <rwlibs/swig/typemaps/devicePtr.i>
 %{
 	#include<rw/models/Device.hpp>
 %}
@@ -178,43 +180,6 @@ NAMED_OWNEDPTR(CompositeDevice,rw::models::CompositeDevice);
 	rw::core::Ptr<rw::models::JointDevice> asJointDevicePtr() { return *$self; }
 	rw::core::Ptr<rw::models::JointDevice const> asJointDeviceCPtr() { return *$self; }
 }
-#if defined(SWIGPYTHON)
-#ifndef SWIG_POINTER_NO_NULL
-#define SWIG_POINTER_NO_NULL 0 
-#endif
-%typecheck(SWIG_TYPECHECK_SWIGOBJECT) rw::core::Ptr<rw::models::Device const>{
-	int res = SWIG_ConvertPtr($input, 0, $descriptor(rw::core::Ptr<rw::models::Device const> *),SWIG_POINTER_NO_NULL | 0);
-	if (SWIG_IsOK(res)) {
-		$1 = 1;
-	}
-	else {
-		int res = SWIG_ConvertPtr($input, 0, $descriptor(rw::core::Ptr<rw::models::CompositeDevice const> *),SWIG_POINTER_NO_NULL | 0);
-		if (SWIG_IsOK(res)) {
-			$1 = 1;
-		}
-		else {
-			$1 = 0;
-		}
-	}
-}
-%typemap(in) rw::core::Ptr<rw::models::Device const> (void * argp){
-	int res = SWIG_ConvertPtr($input, &argp, $descriptor(rw::core::Ptr<rw::models::Device const> *),SWIG_POINTER_NO_NULL | 0);
-	if (SWIG_IsOK(res)) {
-		rw::core::Ptr<rw::models::Device const> * tmp_var = reinterpret_cast< rw::core::Ptr<rw::models::Device const> * > (argp);
-		$1 = *tmp_var;
-	}
-	else {
-		int res = SWIG_ConvertPtr($input, &argp, $descriptor(rw::core::Ptr<rw::models::CompositeDevice const> *),SWIG_POINTER_NO_NULL | 0);
-		if (SWIG_IsOK(res)) {
-			rw::core::Ptr<rw::models::CompositeDevice const> * tmp_var = reinterpret_cast< rw::core::Ptr<rw::models::CompositeDevice const> *> (argp);
-			$1 = tmp_var->cast<rw::models::Device const>();
-		}
-		else {
-			SWIG_exception_fail(SWIG_ArgError(res), "could not convert to type rw::core::Ptr<rw::models::Device const>");
-		}
-	}
-}
-#endif 
 
 %{
 	#include<rw/models/CompositeJointDevice.hpp>

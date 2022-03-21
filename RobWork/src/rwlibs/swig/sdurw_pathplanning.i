@@ -83,6 +83,7 @@ NAMED_ABSTRACTPTR(StopCriteria,rw::pathplanning::StopCriteria);
 %template (VectorStopCriteriaPtr) std::vector<rw::core::Ptr<rw::pathplanning::StopCriteria> >;
 
 
+%include <rwlibs/swig/typemaps/ConstQConstraintPtr.i>
 %{
 	#include <rw/pathplanning/QConstraint.hpp>
 %}

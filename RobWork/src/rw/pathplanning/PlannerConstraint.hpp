@@ -78,7 +78,8 @@ namespace rw { namespace pathplanning {
 
            The constraints must be non-null.
         */
-        PlannerConstraint (rw::core::Ptr<rw::pathplanning::QConstraint> constraint, QEdgeConstraint::Ptr edge);
+        PlannerConstraint (rw::core::Ptr< rw::pathplanning::QConstraint > constraint,
+                           QEdgeConstraint::Ptr edge);
 
         /**
          * @brief Forwards call to the QConstraint wrapped by the PlannerConstraint
@@ -103,7 +104,10 @@ namespace rw { namespace pathplanning {
         /**
            @brief The configuration constraint pointer.
         */
-        const rw::core::Ptr<rw::pathplanning::QConstraint>& getQConstraintPtr () const { return _constraint; }
+        const rw::core::Ptr< rw::pathplanning::QConstraint >& getQConstraintPtr () const
+        {
+            return _constraint;
+        }
 
         /**
            @brief The edge constraint pointer.
@@ -115,38 +119,39 @@ namespace rw { namespace pathplanning {
 
            This is equivalent to the standard constructor.
         */
-        static PlannerConstraint make (rw::core::Ptr<rw::pathplanning::QConstraint> constraint, QEdgeConstraint::Ptr edge);
+        static PlannerConstraint make (rw::core::Ptr< rw::pathplanning::QConstraint > constraint,
+                                       QEdgeConstraint::Ptr edge);
 
         /**
-           @brief Planner constraint for a collision detector.
-
-           Path are checked discretely for a default device dependent
-           resolution.
-        */
+         * @brief Planner constraint for a collision detector.
+         *
+         * Path are checked discretely for a default device dependent
+         * resolution.
+         */
         static PlannerConstraint make (rw::core::Ptr< rw::proximity::CollisionDetector > detector,
                                        rw::core::Ptr< const rw::models::Device > device,
                                        const rw::kinematics::State& state);
 
         /**
-   @brief Planner constraint for a collision strategy.
-
-   Path are checked discretely for a default device dependent
-   resolution.
-
-   The default collision setup of the workcell is used.
-*/
+         * @brief Planner constraint for a collision strategy.
+         *
+         * Path are checked discretely for a default device dependent
+         * resolution.
+         *
+         * The default collision setup of the workcell is used.
+         */
         static PlannerConstraint make (rw::core::Ptr< rw::proximity::CollisionStrategy > strategy,
                                        rw::core::Ptr< rw::models::WorkCell > workcell,
                                        rw::core::Ptr< const rw::models::Device > device,
                                        const rw::kinematics::State& state);
 
         /**
-           @brief Planner constraint for a collision strategy and collision
-           setup.
-
-           Path are checked discretely for a default device dependent
-           resolution.
-        */
+         * @brief Planner constraint for a collision strategy and collision
+         *  setup.
+         *
+         * Path are checked discretely for a default device dependent
+         * resolution.
+         */
         static PlannerConstraint make (rw::core::Ptr< rw::proximity::CollisionStrategy > strategy,
                                        const rw::proximity::CollisionSetup& setup,
                                        rw::core::Ptr< rw::models::WorkCell > workcell,
@@ -154,7 +159,7 @@ namespace rw { namespace pathplanning {
                                        const rw::kinematics::State& state);
 
       private:
-        rw::core::Ptr<rw::pathplanning::QConstraint> _constraint;
+        rw::core::Ptr< rw::pathplanning::QConstraint > _constraint;
         QEdgeConstraint::Ptr _edge;
     };
 

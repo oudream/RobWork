@@ -155,8 +155,8 @@ namespace rw { namespace proximity {
          */
         ProximityStrategyData
         calculate (const rw::kinematics::State& state,
-                   rw::core::Ptr< ProximityStrategyData > settings               = NULL,
-                   rw::core::Ptr< std::vector< ProximityStrategyData > > results = NULL);
+                   rw::core::Ptr< ProximityStrategyData > settings               = rw::core::Ptr< ProximityStrategyData >(),
+                   rw::core::Ptr< std::vector< ProximityStrategyData > > results = rw::core::Ptr< std::vector< ProximityStrategyData > >());
 
         /**
          * @brief The Proximity Filter strategy of the ProximityCalculator.

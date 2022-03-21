@@ -3,6 +3,42 @@ set(DEFINES "#ifndef SWIG_POINTER_NO_NULL\n#define SWIG_POINTER_NO_NULL 0\n#endi
     "#else\n#define SWIGPtr_pre\n#endif\n#endif\n\n\n"
 )
 
+macro(GENERATE_INCLUDES )
+    set(options APPEND) # Used to marke flags
+    set(oneValueArgs CONVERTER FILE) # used to marke values with a single value
+    set(multiValueArgs TYPES)
+
+    cmake_parse_arguments(INC "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
+
+    set(_include)
+    foreach(arg ${ARGN})
+        string(REPLACE "rw::core::Ptr<" "" arg ${arg})
+        string(REPLACE ">" "" arg ${arg})
+        string(REPLACE " " "" arg ${arg})
+        string(REPLACE "::" "/" arg ${arg})
+        string(REPLACE "<" "\\;" arg ${arg})
+
+        string(REPLACE "const" "" arg ${arg})
+        foreach(subarg ${arg})
+            if(EXISTS ${RW_ROOT}/src/${subarg}.hpp)
+                list(APPEND _include "#include <${subarg}.hpp>")
+            endif()
+        endforeach()
+    endforeach()
+    list(REMOVE_DUPLICATES _include)
+    string(REPLACE ";" "\n" _include "${_include}")
+
+    set(_include "\n\n%fragment(\"${INC_CONVERTER}Include\", \"header\")%{\n${_include}\n%}\n\n")
+
+    if(NOT ${INC_FILE} STREQUAL "")
+        if(INC_APPEND)
+            file(APPEND ${INC_FILE} "${_include}")
+        else()
+            file(WRITE ${INC_FILE} ${DEFINES} "${_include}")
+        endif()
+    endif()
+endmacro()
+
 macro(GENERATE_TYPECHECK _type)
     set(options APPEND) # Used to marke flags
     set(oneValueArgs RESULT FILE) # used to marke values with a single value
@@ -140,7 +176,7 @@ macro(GENERATE_STANDARD_PTR_FRAGMENT _type)
 
     cmake_parse_arguments(STD_PTR_F "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
     set(fragment)
-    set(fragment "${fragment}%fragment(\"${STD_PTR_F_CONVERTER}\", \"header\"){")
+    set(fragment "${fragment}%fragment(\"${STD_PTR_F_CONVERTER}\", \"header\",fragment=\"${STD_PTR_F_CONVERTER}Include\"){\n")
     set(fragment "${fragment}    template<class T>\n")
     set(fragment "${fragment}    ${_type} ${STD_PTR_F_CONVERTER}(rw::core::Ptr<T>* in){\n")
     set(fragment "${fragment}        return *in;\n")
@@ -177,7 +213,7 @@ macro(GENERATE_STANDARD_POINTER_FRAGMENT _type)
 
     cmake_parse_arguments(STD_POINTER_F "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
     set(fragment)
-    set(fragment "${fragment}%fragment(\"${STD_POINTER_F_CONVERTER}\", \"header\"){\n")
+    set(fragment "${fragment}%fragment(\"${STD_POINTER_F_CONVERTER}\", \"header\",fragment=\"${STD_POINTER_F_CONVERTER}Include\"){\n")
     set(fragment "${fragment}    template<class T>\n")
     set(fragment "${fragment}    ${_type} ${STD_POINTER_F_CONVERTER}(rw::core::Ptr<T>* in){\n")
     set(fragment "${fragment}        return in->get();\n")
@@ -205,6 +241,8 @@ macro(GENERATE_TYPEMAP_CHECK _type)
     cmake_parse_arguments(TMC "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
     generate_typecheck("${_type}" TYPES ${TMC_TYPES} FILE ${TMC_FILE})
+    GENERATE_INCLUDES(TYPES ${TMC_TYPES} CONVERTER "${TMC_CONVERTER}" FILE ${TMC_FILE} APPEND)
+
     if(TMC_ADD_RWPTR_FRAGMENT)
         generate_standard_ptr_fragment(
             "${_type}" CONVERTER "${TMC_CONVERTER}" FILE ${TMC_FILE} APPEND
