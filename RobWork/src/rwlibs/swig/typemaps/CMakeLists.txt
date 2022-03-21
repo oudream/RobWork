@@ -100,6 +100,70 @@ generate_typemap_check(
 )
 
 generate_typemap_check(
+    "rw::core::Ptr<rw::models::Device>"
+    TYPES
+    "rw::models::Device"
+    "rw::models::JointDevice"
+    "rw::models::MobileDevice"
+    "rw::models::SE3Device"
+    "rw::models::CompositeDevice"
+    "rw::models::CompositeJointDevice"
+    "rw::models::ParallelDevice"
+    "rw::models::SerialDevice"
+    "rw::models::TreeDevice"
+    "rw::core::Ptr<rw::models::Device>"
+    "rw::core::Ptr<rw::models::JointDevice>"
+    "rw::core::Ptr<rw::models::MobileDevice>"
+    "rw::core::Ptr<rw::models::SE3Device>"
+    "rw::core::Ptr<rw::models::CompositeDevice>"
+    "rw::core::Ptr<rw::models::CompositeJointDevice>"
+    "rw::core::Ptr<rw::models::ParallelDevice>"
+    "rw::core::Ptr<rw::models::SerialDevice>"
+    "rw::core::Ptr<rw::models::TreeDevice>"
+    FILE
+    "./devicePtr.i"
+    CONVERTER
+    "toDevicePtr"
+    ADD_RWPTR_FRAGMENT
+)
+generate_typemap_check(
+    "rw::core::Ptr<rw::models::Device const>"
+    TYPES
+    "rw::models::Device"
+    "rw::models::JointDevice"
+    "rw::models::MobileDevice"
+    "rw::models::SE3Device"
+    "rw::models::CompositeDevice"
+    "rw::models::CompositeJointDevice"
+    "rw::models::ParallelDevice"
+    "rw::models::SerialDevice"
+    "rw::models::TreeDevice"
+    "rw::core::Ptr<rw::models::Device const>"
+    "rw::core::Ptr<rw::models::JointDevice const>"
+    "rw::core::Ptr<rw::models::MobileDevice const>"
+    "rw::core::Ptr<rw::models::SE3Device const>"
+    "rw::core::Ptr<rw::models::CompositeDevice const>"
+    "rw::core::Ptr<rw::models::CompositeJointDevice const>"
+    "rw::core::Ptr<rw::models::ParallelDevice const>"
+    "rw::core::Ptr<rw::models::SerialDevice const>"
+    "rw::core::Ptr<rw::models::TreeDevice const>"
+    "rw::core::Ptr<rw::models::Device>"
+    "rw::core::Ptr<rw::models::JointDevice>"
+    "rw::core::Ptr<rw::models::MobileDevice>"
+    "rw::core::Ptr<rw::models::SE3Device>"
+    "rw::core::Ptr<rw::models::CompositeDevice>"
+    "rw::core::Ptr<rw::models::CompositeJointDevice>"
+    "rw::core::Ptr<rw::models::ParallelDevice>"
+    "rw::core::Ptr<rw::models::SerialDevice>"
+    "rw::core::Ptr<rw::models::TreeDevice>"
+    FILE
+    "./constDevicePtr.i"
+    CONVERTER
+    "toConstDevicePtr"
+    ADD_RWPTR_FRAGMENT
+)
+
+generate_typemap_check(
     "rw::core::Ptr< rw::trajectory::Interpolator< rw::math::Vector2D<double>>>"
     TYPES
     "rw::core::Ptr< rw::trajectory::Interpolator< rw::math::Vector2D<double>>>"
@@ -136,5 +200,19 @@ generate_typemap_check(
     "./TrajectoryPtr.i"
     CONVERTER 
     "toTrajectoryPtr"
+    ADD_RWPTR_FRAGMENT
+)
+
+generate_typemap_check(
+    "rw::core::Ptr<rw::pathplanning::QConstraint const>"
+    TYPES 
+    "const rw::pathplanning::QConstraint"
+    "rw::pathplanning::QConstraint"
+    "rw::core::Ptr<rw::pathplanning::QConstraint const>"
+    "rw::core::Ptr<rw::pathplanning::QConstraint>"
+    FILE 
+    "./ConstQConstraintPtr.i"
+    CONVERTER 
+    "toConstQConstraintPtr"
     ADD_RWPTR_FRAGMENT
 )
