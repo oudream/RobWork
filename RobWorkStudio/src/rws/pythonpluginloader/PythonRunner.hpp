@@ -23,7 +23,6 @@
 struct _ts;
 
 namespace rws { namespace python {
-    class PythonLock;
     using PyThreadState = _ts;
     /**
      * @brief a class for running multiple python environments in a threadsafe manner
@@ -54,25 +53,7 @@ namespace rws { namespace python {
         PyThreadState* _threadState;
     };
 
-    /**
-     * @brief a Python lock for making sure only one thread can talk with python at a time
-     */
-    class PythonLock
-    {
-      public:
-        /**
-         * @brief get the lock for Threadstate
-         */
-        PythonLock (PyThreadState*);
 
-        /**
-         * @brief release lock
-         */
-        ~PythonLock ();
-
-      private:
-        PyThreadState* _threadState;
-    };
 
 }}    // namespace rws::python
 #endif
