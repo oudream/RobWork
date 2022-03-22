@@ -29,7 +29,9 @@ on your Visual C++ toolset version below:
 | | Boost Version | | Maximum Visual C++ | | Maximum Visual C++    |
 | |               | | Toolset (Source)   | | Toolset (Precompiled) |
 +=================+======================+=========================+
-| 1.71.0 - 1.74.0 | 14.20 (VS 16.0)      | 14.2x                   |
+| 1.78.0          | 14.20 (VS 16.0)      | 14.3x                   |
++-----------------+----------------------+-------------------------+
+| 1.71.0 - 1.77.0 | 14.20 (VS 16.0)      | 14.2x                   |
 +-----------------+----------------------+-------------------------+
 | 1.68.0 - 1.70.0 | 14.12 (VS 15.5)      | 14.1x                   |
 +-----------------+----------------------+-------------------------+
@@ -92,7 +94,8 @@ Compile Boost
 To compile the Boost libraries from source, get the source and run
 something similar from a command prompt (only for expert users!):
 
-.. code-block:: none
+.. code-block:: batch
+
     git clone https://github.com/boostorg/boost
     cd boost
     git checkout boost-1.74.0

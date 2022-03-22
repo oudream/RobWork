@@ -563,7 +563,7 @@ namespace rwlibs { namespace algorithms {
 
     extern template class KDTree< rw::math::Vector3D<>, 3 >;
 
-    /**@}*/
+    /* @} */
 
 }}    // namespace rwlibs::algorithms
 

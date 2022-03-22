@@ -80,7 +80,7 @@ sec_lua_interpreter) is as follows:
 
 \include ex-simple-output.txt
 
-# Executing Lua from commandline using rw-lua tool # {#sec_lua_robworkstudio}
+# Executing Lua from commandline using rw-lua tool
 
 # Executing Lua code in RobWorkStudio # {#sec_lua_robworkstudio}
 

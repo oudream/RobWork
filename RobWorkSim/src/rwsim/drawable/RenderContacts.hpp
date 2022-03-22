@@ -53,8 +53,7 @@ namespace rwsim { namespace drawable {
          */
         void setColor (double r, double g, double b);
 
-        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info,
-        //! DrawableNode::DrawType type, double alpha) const
+        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info, DrawableNode::DrawType type, double alpha) const
         virtual void draw (const rw::graphics::DrawableNode::RenderInfo& info, DrawType type,
                            double alpha) const;
 

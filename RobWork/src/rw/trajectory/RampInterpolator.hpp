@@ -75,7 +75,7 @@ namespace rw { namespace trajectory {
 
 
         /**
-         * @copydoc Interpolator::x()
+         * @copydoc rw::trajectory::Interpolator::x
          */
         T x (double t) const
         {
@@ -106,7 +106,7 @@ namespace rw { namespace trajectory {
         }
 
         /**
-         * @copydoc Interpolator::dx()
+         * @copydoc rw::trajectory::Interpolator::dx
          */
         T dx (double t) const
         {
@@ -132,7 +132,7 @@ namespace rw { namespace trajectory {
         };
 
         /**
-         * @copydoc Interpolator::ddx()
+         * @copydoc rw::trajectory::Interpolator::ddx
          */
         T ddx (double t) const
         {
@@ -158,7 +158,7 @@ namespace rw { namespace trajectory {
         T getEnd () const { return _a + _b; }
 
         /**
-         * @copydoc Interpolator::duration()
+         * @copydoc rw::trajectory::Interpolator::duration
          */
         double duration () const { return _durationRamp; }
 
@@ -465,6 +465,7 @@ namespace rw { namespace trajectory {
          * @param end [in] End of interpolator
          * @param velLimit [in] the max velocity in m/sec
          * @param accLimit [in] the max acceleration in m/sec^2
+         * @param duration [in] (optional) the duration in seconds.
          */
         RampInterpolator (const rw::math::Vector3D< T >& start, const rw::math::Vector3D< T >& end,
                           const rw::math::Vector3D< T >& velLimit,
@@ -673,7 +674,7 @@ namespace rw { namespace trajectory {
      */
     typedef RampInterpolator< rw::math::Transform3D<> > CartesianRampInterpolator;
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::trajectory
 

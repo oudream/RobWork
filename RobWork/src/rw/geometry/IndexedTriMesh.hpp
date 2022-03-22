@@ -89,7 +89,7 @@ namespace rw { namespace geometry {
             return *_normals;
         }
 
-        //! @copydoc IndexedTriMesh::getNormals
+        //! @copydoc rw::geometry::IndexedTriMesh::getNormals() const
         std::vector< rw::math::Vector3D< T > >& getNormals ()
         {
             RW_ASSERT (_normals);
@@ -106,7 +106,7 @@ namespace rw { namespace geometry {
             return *_vertices;
         }
 
-        //! @copydoc IndexedTriMesh::getVertices
+        //! @copydoc rw::geometry::IndexedTriMesh::getVertices() const
         std::vector< rw::math::Vector3D< T > >& getVertices ()
         {
             RW_ASSERT (_vertices);
@@ -131,7 +131,7 @@ namespace rw { namespace geometry {
          */
         uint8_t* getIndexPtr () { return _triIdxArr; }
 
-        //! @copydoc TriMesh::size
+        //! @copydoc rw::geometry::TriMesh::size
         virtual size_t size () const { return getNrTris (); }
 
         /**
@@ -170,7 +170,7 @@ namespace rw { namespace geometry {
          */
         virtual const rw::math::Vector3D< T >& getVertexNormal (size_t i, VertexIdx vidx) const = 0;
 
-        //! @copydoc IndexedTriMesh::getVertexNormal
+        //! @copydoc rw::geometry::IndexedTriMesh::getVertexNormal(size_t, VertexIdx) const
         virtual rw::math::Vector3D< T >& getVertexNormal (size_t i, VertexIdx vidx) = 0;
 
         /**
@@ -184,7 +184,7 @@ namespace rw { namespace geometry {
          */
         virtual const rw::math::Vector3D< T >& getVertex (size_t i, VertexIdx vidx) const = 0;
 
-        //! @copydoc IndexedTriMesh::getVertex(size_t,VertexIdx) const
+        //! @copydoc rw::geometry::IndexedTriMesh::getVertex(size_t,VertexIdx) const
         virtual rw::math::Vector3D< T >& getVertex (size_t i, VertexIdx vidx) = 0;
 
         /**
@@ -202,7 +202,7 @@ namespace rw { namespace geometry {
          */
         virtual int getNrTris () const = 0;
 
-        //! @copydoc GeometryData::getType
+        //! @copydoc rw::geometry::GeometryData::getType
         GeometryData::GeometryType getType () const { return GeometryData::IdxTriMesh; }
 
         /**
@@ -211,7 +211,7 @@ namespace rw { namespace geometry {
          */
         void* getIndices () { return (void*) _triIdxArr; }
 
-        //! @copydoc TriMesh::scale
+        //! @copydoc rw::geometry::TriMesh::scale
         void scale (double scale)
         {
             for (size_t i = 0; i < _vertices->size (); i++) {

@@ -21,11 +21,11 @@
 //! @file ConvexHull2D.hpp
 #if !defined(SWIG)
 #include <rw/math/Vector2D.hpp>
-#endif 
+#endif
 
 namespace rw { namespace geometry {
     //! @addtogroup geometry
-    // @{
+    //! @{
 
     /**
      * @brief interface for convexhull calculators on 2d point sets

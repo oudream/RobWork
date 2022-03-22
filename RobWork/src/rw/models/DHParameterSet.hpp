@@ -83,7 +83,6 @@ namespace rw { namespace models {
          * @param beta [in] documentation missing !
          * @param b [in] documentation missing !
          * @param parallel [in] documentation missing !
-         * @param theta [in] \f$ \theta_{i-1}\f$
          */
         DHParameterSet (double alpha, double a, double beta, double b, bool parallel) :
             _alpha (alpha), _a (a), _d (0), _theta (0), _beta (beta), _b (b),

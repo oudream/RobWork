@@ -90,6 +90,9 @@ if(build)
         VelocityScrew6D.hpp
         Wrench6D.hpp
     )
+    if(CMAKE_COMPILER_IS_GNUCXX)
+      set_source_files_properties(LinearAlgebra.cpp COMPILE_FLAGS -Wno-maybe-uninitialized)
+    endif()
 
     rw_add_library(${SUBSYS_NAME} ${FILES_CPP} ${FILES_HPP})
     rw_add_includes(${SUBSYS_NAME} "rw/math" ${FILES_HPP})

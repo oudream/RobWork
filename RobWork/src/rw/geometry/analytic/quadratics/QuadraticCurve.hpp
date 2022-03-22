@@ -87,7 +87,7 @@ namespace rw { namespace geometry {
         virtual ~QuadraticCurve ();
 
         // Curve interface
-        //! @copydoc ParametricCurve::transform(const rw::math::Transform3D<>&) const
+        //! @copydoc ParametricCurve::transform(const rw::math::Transform3D<double>&) const
         QuadraticCurve::Ptr transform (const rw::math::Transform3D< double>& T) const;
 
         //! @copydoc ParametricCurve::transform(const rw::math::Vector3D<double>&) const

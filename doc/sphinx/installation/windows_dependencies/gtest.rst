@@ -12,13 +12,13 @@ choose the target directory. The target directory must be an empty or
 non-existing directory. Finally, press clone to clone the Git
 repository.
 
-.. figure:: ../../gfx/installation/GTest_clone.png
+.. figure:: ../../../gfx/installation/GTest_clone.png
 
     Cloning Google Test source with the Git GUI.
 
 After cloning, you should see the following directory layout:
 
-.. figure:: ../../gfx/installation/GTest_layout.png
+.. figure:: ../../../gfx/installation/GTest_layout.png
 
     Google Test directory layout.
 

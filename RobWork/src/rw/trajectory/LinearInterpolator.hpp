@@ -77,9 +77,7 @@ namespace rw { namespace trajectory {
         }
 
         /**
-         * @cond
-         * @copydoc Interpolator::x()
-         * @endcond
+         * @copydoc rw::trajectory::Interpolator::x
          */
         T x (double t) const
         {
@@ -87,16 +85,12 @@ namespace rw { namespace trajectory {
         }
 
         /**
-         * @cond
-         * @copydoc Interpolator::dx()
-         * @endcond
+         * @copydoc rw::trajectory::Interpolator::dx
          */
         T dx (double t) const { return _a; };
 
         /**
-         * @cond
-         * @copydoc Interpolator::ddx()
-         * @endcond
+         * @copydoc rw::trajectory::Interpolator::ddx
          */
         T ddx (double t) const { return _b*0; }
 
@@ -113,7 +107,7 @@ namespace rw { namespace trajectory {
         T getEnd () const { return _a *_duration + _b; }
 
         /**
-         * @copydoc Interpolator::duration()
+         * @copydoc rw::trajectory::Interpolator::duration
          */
         double duration () const { return _duration; }
 
@@ -362,7 +356,7 @@ namespace rw { namespace trajectory {
      */
     typedef LinearInterpolator< rw::math::Transform3D<> > CartesianLinearInterpolator;
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::trajectory
 

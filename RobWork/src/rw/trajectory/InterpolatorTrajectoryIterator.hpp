@@ -142,7 +142,7 @@ namespace rw { namespace trajectory {
         double _dt;
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::trajectory
 

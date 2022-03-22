@@ -184,9 +184,9 @@ namespace rw { namespace math {
         }
 #if !defined(SWIG)
         /**
-         * @brief Ouputs EAA to stream
+         * @brief Ouputs Pose2D to stream
          * @param os [in/out] stream to use
-         * @param eaa [in] equivalent axis-angle
+         * @param pose [in] pose to output.
          * @return the resulting stream
          */
         friend std::ostream& operator<< (std::ostream& os, const Pose2D< T >& pose)

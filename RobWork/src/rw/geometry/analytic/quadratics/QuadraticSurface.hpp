@@ -95,8 +95,7 @@ namespace rw { namespace geometry {
             const Eigen::Diagonal< Eigen::Matrix3d >& A, const Eigen::Vector3d& a, double u,
             const std::vector< TrimmingRegion >& conditions = std::vector< TrimmingRegion > ());
 
-        //! @copydoc QuadraticSurface(const Eigen::Diagonal<Eigen::Matrix3d>&, const
-        //! Eigen::Vector3d&, double, const std::vector<TrimmingRegion>&)
+        //! @copydoc QuadraticSurface(const Eigen::Diagonal<Eigen::Matrix3d>&, const Eigen::Vector3d&, double, const std::vector<TrimmingRegion>&)
         QuadraticSurface (
             const Eigen::DiagonalMatrix< double, 3, 3 >& A, const Eigen::Vector3d& a, double u,
             const std::vector< TrimmingRegion >& conditions = std::vector< TrimmingRegion > ());
@@ -116,8 +115,7 @@ namespace rw { namespace geometry {
             const Eigen::Vector3d& a, double u,
             const std::vector< TrimmingRegion >& conditions = std::vector< TrimmingRegion > ());
 
-        //! @copydoc QuadraticSurface(const Eigen::SelfAdjointView<const Eigen::Matrix3d,
-        //! Eigen::Upper>&, const Eigen::Vector3d&, double, const std::vector<TrimmingRegion>&)
+        //! @copydoc QuadraticSurface(const Eigen::SelfAdjointView<const Eigen::Matrix3d, Eigen::Upper>&, const Eigen::Vector3d&, double, const std::vector<TrimmingRegion>&)
         QuadraticSurface (
             const Eigen::SelfAdjointView< Eigen::Matrix3d, Eigen::Upper >& A,
             const Eigen::Vector3d& a, double u,
@@ -138,8 +136,7 @@ namespace rw { namespace geometry {
             const Eigen::Vector3d& a, double u,
             const std::vector< TrimmingRegion >& conditions = std::vector< TrimmingRegion > ());
 
-        //! @copydoc QuadraticSurface(const Eigen::SelfAdjointView<const Eigen::Matrix3d,
-        //! Eigen::Lower>&, const Eigen::Vector3d&, double, const std::vector<TrimmingRegion>&)
+        //! @copydoc QuadraticSurface(const Eigen::SelfAdjointView<const Eigen::Matrix3d, Eigen::Lower>&, const Eigen::Vector3d&, double, const std::vector<TrimmingRegion>&)
         QuadraticSurface (
             const Eigen::SelfAdjointView< Eigen::Matrix3d, Eigen::Lower >& A,
             const Eigen::Vector3d& a, double u,
@@ -149,8 +146,8 @@ namespace rw { namespace geometry {
         virtual ~QuadraticSurface ();
 
         // From ImplicitSurface
-        //! @copydoc ImplicitSurface::transform(const rw::math::Transform3D<>&) const
-        QuadraticSurface::Ptr transform (const rw::math::Transform3D<>& T) const;
+        //! @copydoc ImplicitSurface::transform(const rw::math::Transform3D<double>&) const
+        QuadraticSurface::Ptr transform (const rw::math::Transform3D<double>& T) const;
 
         //! @copydoc ImplicitSurface::transform(const rw::math::Vector3D<double>&) const
         QuadraticSurface::Ptr transform (const rw::math::Vector3D<double>& P) const;

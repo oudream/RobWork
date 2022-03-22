@@ -20,7 +20,7 @@ reflects the directory containing the code. For example
    using namespace rw::models; //Namespace for WorkCell included by #include<rw/models/WorkCell.hpp>
    using namespace rw::kinematics; //Namespace for Frame included by #include <rw/kinematics/Frame.hpp>
 
-All classes related to the RobWorkStudio package are placed in a namespace rws. All classes related to RobWorkHardware are in the namespace rwhw;
+All classes related to the RobWorkStudio package are placed in a namespace rws.
 
 Libraries
 =========

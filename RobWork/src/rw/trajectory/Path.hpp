@@ -87,8 +87,8 @@ namespace rw { namespace trajectory {
         Path (const std::vector< T >& v) : std::vector< T > (v) {}
 
         /**
-         * @brief Construct Path and copies elements from \b v
-         * @param v [in] vector to copy data from
+         * @brief Construct Path and copies elements from \b rhs
+         * @param rhs [in] vector to copy data from
          */
         Path< T >& operator= (const std::vector< T >& rhs) { return (*this) = Path< T > (rhs); }
 

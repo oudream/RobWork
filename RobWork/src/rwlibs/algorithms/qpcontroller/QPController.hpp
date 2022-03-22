@@ -111,7 +111,7 @@ namespace rwlibs { namespace algorithms {
         int* _posLimit;
     };
 
-    /**@}*/
+    /*@}*/
 
 }}    // namespace rwlibs::algorithms
 

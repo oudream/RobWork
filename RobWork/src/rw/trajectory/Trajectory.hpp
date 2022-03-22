@@ -168,7 +168,7 @@ namespace rw { namespace trajectory {
     //! A trajectory on a rw::math::Transform3D
     typedef Trajectory< math::Transform3D<> > Transform3DTrajectory;
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::trajectory
 

@@ -93,7 +93,7 @@ namespace rw { namespace loaders {
         int _warCnt;
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::loaders
 

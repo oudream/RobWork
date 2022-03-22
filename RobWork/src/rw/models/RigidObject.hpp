@@ -55,20 +55,20 @@ namespace rw { namespace models {
 
         /**
          * @brief constructor
-         * @param baseFrame [in] base frame of the object
+         * @param baseframe [in] base frame of the object
          */
         RigidObject (rw::core::Ptr<rw::kinematics::Frame> baseframe);
 
         /**
          * @brief constructor
-         * @param baseFrame [in] base frame of the object
+         * @param baseframe [in] base frame of the object
          * @param geom [in] the Geometry Forming the object
          */
         RigidObject (rw::core::Ptr<rw::kinematics::Frame> baseframe, rw::geometry::Geometry::Ptr geom);
 
         /**
          * @brief constructor
-         * @param baseFrame [in] base frame of the object
+         * @param baseframe [in] base frame of the object
          * @param geom [in] the Geometry Forming the object
          */
         RigidObject (rw::core::Ptr<rw::kinematics::Frame> baseframe,
@@ -142,8 +142,8 @@ namespace rw { namespace models {
         rw::math::InertiaMatrix<> getInertia () const { return _Ibody; };
 
         /**
-         *  @brief set inertia of this rigid object
-         * @param initia [in] the inertia of this object
+         * @brief set inertia of this rigid object
+         * @param inertia [in] the inertia of this object
          */
         void setInertia (const rw::math::InertiaMatrix<>& inertia) { _Ibody = inertia; }
 

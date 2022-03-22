@@ -70,7 +70,7 @@ namespace rw { namespace math {
         Rotation3DVector () {}
     };
 
-    /**@}*/
+    /* @} */
 }}    // namespace rw::math
 
 #if !defined(SWIG)

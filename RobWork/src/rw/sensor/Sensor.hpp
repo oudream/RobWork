@@ -27,7 +27,7 @@
 #include <rw/core/PropertyMap.hpp>
 
 #include <string>
-#endif 
+#endif
 namespace rw { namespace sensor {
 
     /** @addtogroup sensor */
@@ -118,7 +118,7 @@ namespace rw { namespace sensor {
         rw::core::Ptr<rw::sensor::SensorModel> _sensormodel;
     };
 
-    /** @} */
+    /* @} */
 }}    // namespace rw::sensor
 
 #endif    // end include guard

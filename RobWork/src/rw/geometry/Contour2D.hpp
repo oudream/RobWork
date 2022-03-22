@@ -29,7 +29,7 @@
 
 namespace rw { namespace geometry {
     //! @addtogroup geometry
-    // @{
+    //! @{
 
     /**
      * @brief class representing a 2d contour

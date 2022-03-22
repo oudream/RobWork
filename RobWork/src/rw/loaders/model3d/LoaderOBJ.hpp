@@ -27,7 +27,7 @@
 namespace rw { namespace loaders {
 
     //! @addtogroup graphics
-    // @{
+    //! @{
 
     /**
      * @brief Class for loading in IVG files.

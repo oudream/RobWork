@@ -25,7 +25,7 @@
 
 namespace rw { namespace geometry {
     //! @addtogroup geometry
-    // @{
+    //! @{
     //! @file PlainTriMesh.hpp
 
     /**

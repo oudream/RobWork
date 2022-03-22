@@ -26,14 +26,14 @@
 #include <rw/kinematics/Stateless.hpp>
 #include <rw/models/ControllerModel.hpp>
 #include <rwlibs/control/Controller.hpp>
-#endif 
+#endif
 namespace rw { namespace kinematics {
     class State;
 }}    // namespace rw::kinematics
 
 namespace rwlibs { namespace simulation {
     //! @addtogroup simulation
-    // @{
+    //! @{
     /**
      * @brief interface of a simulated controller
      */

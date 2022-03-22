@@ -233,9 +233,9 @@ namespace rw { namespace trajectory {
          * @brief creates a clamped spline trajectory where the timed label is used
          * to determine the time between samples. A clamped spline controls
          * the velocity in the end points. The acceleration is 0 in the end points.
-         * @param tqpath [in] the path over which the spline should be generated.
-         * @param dqStart [in] the velocity in the first point
-         * @param dqEnd [in] the velocity in the last point.
+         * @param tpath [in] the path over which the spline should be generated.
+         * @param dStart [in] the velocity in the first point
+         * @param dEnd [in] the velocity in the last point.
          * @return a trajectory of CubicSplineInterpolators
          * @note the following template parameters are currently supported:
          * Transform3DVector, Vector3D, Quaternion
@@ -249,10 +249,10 @@ namespace rw { namespace trajectory {
          * @brief creates a clamped spline trajectory where the timed label is used
          * to determine the time between samples. A clamped spline controls
          * the velocity in the end points. The acceleration is 0 in the end points.
-         * @param qpath [in] the path over which the spline should be generated.
-         * @param times [in] the times associated to the configurations in \b qpath.
-         * @param dqStart [in] the velocity in the first point
-         * @param dqEnd [in] the velocity in the last point.
+         * @param path [in] the path over which the spline should be generated.
+         * @param times [in] the times associated to the configurations in \b path.
+         * @param dStart [in] the velocity in the first point
+         * @param dEnd [in] the velocity in the last point.
          * @return a trajectory of CubicSplineInterpolators
          * @note the following template parameters are currently supported:
          * Transform3DVector, Vector3D, Quaternion
@@ -310,7 +310,7 @@ namespace rw { namespace trajectory {
         virtual ~CubicSplineFactory ();
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::trajectory
 

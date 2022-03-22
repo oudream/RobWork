@@ -162,6 +162,11 @@ if(build)
         analytic/quadratics/QuadraticSurface.hpp
         analytic/quadratics/QuadraticUtil.hpp
     )
+    if(CMAKE_COMPILER_IS_GNUCXX)
+      set_source_files_properties(BSphere.cpp COMPILE_FLAGS -Wno-maybe-uninitialized)
+      set_source_files_properties(Covariance.cpp COMPILE_FLAGS -Wno-maybe-uninitialized)
+      set_source_files_properties(OBB.cpp COMPILE_FLAGS -Wno-maybe-uninitialized)
+    endif()
 
     if(RW_HAVE_PQP)
         set(FILES_CPP ${FILES_CPP} TriDistanceCalc.cpp TriTriToleranceIntersect.cpp)

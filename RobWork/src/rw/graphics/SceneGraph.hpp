@@ -124,8 +124,10 @@ namespace rw { namespace graphics {
          *
          * (0,0) is located in the upper left corner, with x-axis increasing to the right and y-axis
          * increasing to the bottom. The negative z-axis points into the scene-
+         * @param camera [in] the SceneCamera.
          * @param x [in] x coordinate [0;viewport.width]
          * @param y [in] y coordinate [0;viewport.height]
+         * @param z [in] z coordinate
          * @return the 2D point,
          */
         virtual rw::math::Vector3D<> project (SceneCamera::Ptr camera, double x, double y,

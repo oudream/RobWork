@@ -97,8 +97,7 @@ namespace rwlibs { namespace proximitystrategies {
          */
         bool addGeometry (rw::proximity::ProximityModel* model, const rw::geometry::Geometry& geom);
 
-        //! @copydoc rw::proximity::ProximityStrategy::addGeometry(ProximityModel* model,
-        //! rw::core::Ptr<rw::geometry::Geometry> geom, bool forceCopy=false)
+        //! @copydoc rw::proximity::ProximityStrategy::addGeometry(ProximityModel* model, rw::core::Ptr<rw::geometry::Geometry> geom, bool forceCopy=false)
         bool addGeometry (rw::proximity::ProximityModel* model,
                           rw::core::Ptr< rw::geometry::Geometry > geom, bool forceCopy = false);
 

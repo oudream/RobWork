@@ -224,7 +224,7 @@ namespace rw { namespace loaders {
         rw::core::Ptr< rw::models::WorkCell > _workcell;
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::loaders
 

@@ -84,7 +84,7 @@ namespace rw { namespace trajectory {
         virtual double tau2 () const = 0;
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::trajectory
 

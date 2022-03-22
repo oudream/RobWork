@@ -5,7 +5,14 @@ RobWork Plugins  {#page_rw_plugins}
 
 # Introduction # {#sec_rw_plugins_intro}
 
-RobWork is an extensible framework that allows addition of functionality through the use of plugins. Plugins can be dynamically loaded at runtime, and makes it possible to reduce the coupling and complexity. Furthermore, the framework provides the concept of lazily loaded plugins. Functionality in a lazy-loaded plugin will not be loaded before it is needed. To make the framework extensible, RobWork provides a bunch of \link rw::common::ExtensionPoint ExtensionPoints \endlink. Each extension point has a unique identifier, and by referring to the identifier, it is possible for \link rw::common::Extension Extension(s) \endlink to extend the extension point. A \link rw::common::Plugin Plugin \endlink can provide one or more extensions, and these do not need to be extensions for the same extension point. To keep track of all plugins and extensions, the \link rw::common::ExtensionRegistry ExtensionRegistry \endlink is used. On this page,  some of the existing extension points and extensions will be discussed to give a better understanding of how they can be used to produce better and more modular code. After that, there is more in-depth examples of how a user can write a plugin that provides one or more extensions, and how this plugin is actually loaded and used in a program.
+RobWork is an extensible framework that allows addition of functionality through the use of plugins. Plugins can be dynamically loaded at runtime, and makes it possible to reduce the coupling and complexity.
+Furthermore, the framework provides the concept of lazily loaded plugins. Functionality in a lazy-loaded plugin will not be loaded before it is needed.
+To make the framework extensible, RobWork provides a bunch of \link rw::core::ExtensionPoint ExtensionPoints \endlink.
+Each extension point has a unique identifier, and by referring to the identifier, it is possible for \link rw::core::Extension Extension(s) \endlink to extend the extension point.
+A \link rw::core::Plugin Plugin \endlink can provide one or more extensions, and these do not need to be extensions for the same extension point.
+To keep track of all plugins and extensions, the \link rw::core::ExtensionRegistry ExtensionRegistry \endlink is used.
+On this page, some of the existing extension points and extensions will be discussed to give a better understanding of how they can be used to produce better and more modular code.
+After that, there is more in-depth examples of how a user can write a plugin that provides one or more extensions, and how this plugin is actually loaded and used in a program.
 
 # Extension Points in the RobWork Framework # {#sec_rw_plugins_extensionpoints}
 We will here try to give an overview of extension points currently available in the RobWork framework. Notice that the \ref extensionpoints group should always contain a up-to-date comprehensive list of all the extension points.
@@ -250,7 +257,7 @@ RobWork will automatically search for plugins using the first of the following r
   - Windows: APPDATA/robwork/robwork-BUILD_TYPE-VERSION.cfg.xml
   - Mac: HOME/Library/Preferences/com.robwork-BUILD_TYPE-VERSION.cfg.xml
   - Linux: HOME/.config/robwork/robwork-BUILD_TYPE-VERSION.cfg.xml
--# Finally, the directory where RobWork was built is searched for libs folder for each of the projects RobWork, RobWorkStudio, RobWorkSim and RobWorkHardware.
+-# Finally, the directory where RobWork was built is searched for libs folder for each of the projects RobWork, RobWorkStudio and RobWorkSim.
 Notice that If additional directories are given with the --rwplugin program option, RobWork will also search in these directories.
 
 Additionally, a plugin can be loaded directly in code with:

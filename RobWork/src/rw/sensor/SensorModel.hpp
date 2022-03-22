@@ -26,7 +26,7 @@
 #include <rw/kinematics/Stateless.hpp>
 
 #include <string>
-#endif 
+#endif
 
 namespace rw { namespace kinematics {
     class Frame;
@@ -123,7 +123,7 @@ namespace rw { namespace sensor {
         rw::core::PropertyMap _propertyMap;
     };
 
-    /** @} */
+    /* @} */
 }}    // namespace rw::sensor
 
 #endif    // end include guard

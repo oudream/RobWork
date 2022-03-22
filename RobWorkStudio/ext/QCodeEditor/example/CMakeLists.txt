@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.6)
 project(QCodeEditorExample)
 
-set(CMAKE_CXX_STANDARD 17)
-
 set(CMAKE_AUTOMOC On)
 set(CMAKE_AUTORCC ON)
 

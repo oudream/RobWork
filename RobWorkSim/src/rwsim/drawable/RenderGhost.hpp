@@ -75,8 +75,7 @@ namespace rwsim { namespace drawable {
          */
         void setMaxBufferSize (size_t size);
 
-        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info,
-        //! DrawableNode::DrawType type, double alpha) const
+        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info, DrawableNode::DrawType type, double alpha) const
         void draw (const rw::graphics::DrawableNode::RenderInfo& info,
                    rw::graphics::DrawableNode::DrawType type, double alpha) const;
 

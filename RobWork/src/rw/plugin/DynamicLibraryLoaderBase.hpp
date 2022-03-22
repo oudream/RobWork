@@ -83,7 +83,7 @@ namespace rw { namespace plugin {
         bool getSymbol (void** v, const char* sym_name);
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::plugin
 

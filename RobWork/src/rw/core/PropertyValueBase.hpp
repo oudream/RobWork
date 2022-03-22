@@ -20,7 +20,7 @@
 
 /**
  * @file PropertyValueBase.hpp
- * @copydoc PropertyValueBase
+ * @copydoc rw::core::PropertyValueBase
  */
 
 #if !defined(SWIG)

@@ -33,7 +33,6 @@ In a virtual environment, we then want to run four simultaneous simulations of t
 First, we construct a rw::sensor::SensorModel to model the physical and virtual sensors with a general model of parameters and the
 data produced by a sensor modelled by this type of sensor. The data is to be stored in the State variable.
 The rw::sensor::Sensor interface is implemented to acquire data from the physical device, and we attach the SensorModel to the sensor to describe its parameters and output.
-RobWorkHardware provides some implementations for physical hardware.
 Then we construct a rwlibs::simulation::SimulatedSensor and four rwlibs::simulation::Simulator instances.
 Each simulator can now run with the same SimulatedSensor, as the state of the SimulatedSensor is stored in the running State of each simulator.
 It is possible to wrap the SimulatedSensor under the Sensor interface to hide the distinction between real and physical sensors.

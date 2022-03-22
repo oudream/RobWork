@@ -22,11 +22,11 @@ namespace rwlibs { namespace opengl {
         /**
          * @brief Constructs a RenderText
          * @param text [in] the text to be rendered
+         * @param frame [in] frame to render text in.
          */
         RenderText (std::string text, rw::core::Ptr< rw::kinematics::Frame > frame);
 
-        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info,
-        //! DrawableNode::DrawType type, double alpha) const
+        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info, DrawableNode::DrawType type, double alpha) const
         void draw (const rw::graphics::DrawableNode::RenderInfo& info,
                    rw::graphics::DrawableNode::DrawType type, double alpha) const;
 

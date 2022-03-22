@@ -587,7 +587,7 @@ namespace rw { namespace math {
     using Rotation3Dd = Rotation3D< double >;
     using Rotation3Df = Rotation3D< float >;
 
-    /**@}*/
+    /* @} */
 }}    // namespace rw::math
 
 namespace rw { namespace common {

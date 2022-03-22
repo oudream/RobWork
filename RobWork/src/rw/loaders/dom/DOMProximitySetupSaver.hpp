@@ -107,10 +107,10 @@ namespace rw { namespace loaders {
 
       private:
         static const Initializer initializer;
-        DOMProximitySetupSaver (){};
+        DOMProximitySetupSaver (){}
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::loaders
 

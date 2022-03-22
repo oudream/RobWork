@@ -398,7 +398,7 @@ namespace rw { namespace math {
     using Vector2Dd = Vector2D< double >;
     using Vector2Df = Vector2D< float >;
 
-    /**@}*/
+    /* @} */
 }}    // namespace rw::math
 
 namespace rw { namespace common {

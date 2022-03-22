@@ -111,7 +111,7 @@ namespace rwlibs { namespace task {
         int _actionType;
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rwlibs::task
 

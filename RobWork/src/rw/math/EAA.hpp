@@ -144,7 +144,7 @@ namespace rw { namespace math {
          * @param eaa [in] Values to initialize the EAA
          */
         explicit EAA (rw::math::Vector3D< T > eaa) : _eaa (eaa) {}
-        
+
         /**
          * @brief Copy Constructor
          * @param eaa [in] Values to initialize the EAA
@@ -152,10 +152,10 @@ namespace rw { namespace math {
         EAA (const rw::math::EAA< T >& eaa) : _eaa (eaa._eaa) {}
 
         /**
-         * @brief Constructs an initialized EAA vector
+         * @brief Constructs an initialized EAA vector from rotation matrix.
          *
          * The angle of the EAA are \f$\|eaa\|\f$ and the axis is \f$\frac{eaa}{\|eaa\|}\f$
-         * @param eaa [in] Values to initialize the EAA
+         * @param r [in] the rotation matrix to initialize EAA from.
          */
         template< class R > explicit EAA (const Eigen::MatrixBase< R >& r) : _eaa (r) {}
 
@@ -173,7 +173,7 @@ namespace rw { namespace math {
         // ###################################################
 #if !defined(SWIGJAVA)
         /**
-         * @copydoc Rotation3DVector::toRotation3D()
+         * @copydoc rw::math::Rotation3DVector::toRotation3D()
          *
          * @f$
          * \mathbf{R} = e^{[\mathbf{\hat{k}}],\theta}=\mathbf{I}^{3x3}+[\mathbf{\hat{k}}]
@@ -795,6 +795,7 @@ namespace rw { namespace math {
 
         /**
          * @brief Compare with \b rhs for equality.
+         * @param lhs [in] first vector.
          * @param rhs [in] other vector.
          * @return True if a equals b, false otherwise.
          */
@@ -806,7 +807,7 @@ namespace rw { namespace math {
 
         /**
          *  @brief Compare with \b rhs for inequality.
-         *  @param b [in] other vector.
+         *  @param rhs [in] other vector.
          *  @return True if a and b are different, false otherwise.
          */
         template< class R > bool operator!= (const Eigen::MatrixBase< R >& rhs) const
@@ -816,7 +817,8 @@ namespace rw { namespace math {
 
         /**
          *  @brief Compare with \b rhs for inequality.
-         *  @param b [in] other vector.
+         *  @param lhs [in] first vector.
+         *  @param rhs [in] other vector.
          *  @return True if a and b are different, false otherwise.
          */
         template< class R >

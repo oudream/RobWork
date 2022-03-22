@@ -233,7 +233,7 @@ namespace rw { namespace pathplanning {
         rw::kinematics::State _state;
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::pathplanning
 

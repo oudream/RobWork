@@ -134,7 +134,7 @@ namespace rwlibs { namespace task {
         RW_THROW ("Unable to convert target to specified type");
     }
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rwlibs::task
 

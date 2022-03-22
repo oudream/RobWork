@@ -269,8 +269,7 @@ namespace rw { namespace math {
         /**
          * @brief Calculates \f$ \robabx{a}{c}{\mathbf{R}} =
          * \robabx{a}{b}{\mathbf{R}} \robabx{b}{c}{\mathbf{R}} \f$
-         *
-         * @param aRb [in] \f$ \robabx{a}{b}{\mathbf{R}} \f$
+         * where this object is \f$ \robabx{a}{b}{\mathbf{R}} \f$.
          *
          * @param bRc [in] \f$ \robabx{b}{c}{\mathbf{R}} \f$
          *
@@ -287,9 +286,10 @@ namespace rw { namespace math {
         /**
          * @brief Calculates \f$ \robabx{a}{c}{\mathbf{v}} =
          * \robabx{a}{b}{\mathbf{R}} \robabx{b}{c}{\mathbf{v}} \f$
+         * where this object is \f$ \robabx{a}{b}{\mathbf{R}} \f$.
          *
-         * @param aRb [in] \f$ \robabx{a}{b}{\mathbf{R}} \f$
          * @param bVc [in] \f$ \robabx{b}{c}{\mathbf{v}} \f$
+         *
          * @return \f$ \robabx{a}{c}{\mathbf{v}} \f$
          */
         const rw::math::Vector2D< T > operator* (const rw::math::Vector2D< T >& bVc) const
@@ -377,7 +377,7 @@ namespace rw { namespace math {
     using Rotation2Dd = Rotation2D< double >;
     using Rotation2Df = Rotation2D< float >;
 
-    /**@}*/
+    /* @} */
 }}    // namespace rw::math
 
 namespace rw { namespace common {

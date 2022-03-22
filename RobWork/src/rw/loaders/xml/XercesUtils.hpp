@@ -343,7 +343,7 @@ namespace rw { namespace loaders {
                                    xercesc::XMLFormatTarget* formatTarget);
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::loaders
 

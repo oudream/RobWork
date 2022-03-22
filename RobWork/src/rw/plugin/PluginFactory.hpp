@@ -88,7 +88,7 @@ namespace rw { namespace plugin {
         };
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::plugin
 

@@ -15,9 +15,8 @@ RobWork is basically multiple projects:
 * RobWork : is the core part including math, kinematics, planning and so on.
 * RobWorkStudio : is the GUI which enable visualization and more userfriendly interfaces through gui plugins
 * RobWorkSim : is an extension to the RobWork core functionality which adds dynamic simulation of bodies, devices and several tactile sensors.
-* RobWorkHardware : is mostly drivers (with RobWork datatypes) for common hardware, or hardware on which RobWork platforms have been built eg. SDH, cameras, CAN-devices, the Universal robot arm, serial port...
 
-Note that RobWork is needed to run RobWorkStudio, RobWorkSim and RobWorkHardware. Therefore it is not possible to use these, without having RobWork installed on the machine. 
+Note that RobWork is needed to run RobWorkStudio and RobWorkSim. Therefore it is not possible to use these, without having RobWork installed on the machine. 
 
 Installing dependencies
 ====================================================
@@ -166,18 +165,6 @@ Modify the options to suit your needs. The shown options will make sure that Bul
 
 RobWork Physics Engine (RWPE) requires access to code that is not yet public. Request more information about this if you need it.
 
-RobWorkHardware Dependencies
-----------------------------
-
-RobWorkHardware compilation depends heavily on which hardware you need to use. Install the following package:
-
-.. code-block:: bash
-
-   sudo yum install libdc1394-22-dev
-
-
-It is not currently possible to give any general instructions for RobWorkHardware.
-
 Building RobWork
 ======================================
 
@@ -254,7 +241,7 @@ Now that the CMake files has been built, we are ready to compile the project. Us
 
 Note that you need at least 1 GB of memory per thread when building. Ie. building with 4 cores requires around 4 GB of RAM. 
 
-For RobWorkStudio, the same procedure is repeated in the RWS build folder, and similar for RobWorkSim and RobWorkHardware if needed.
+For RobWorkStudio, the same procedure is repeated in the RWS build folder, and similar for RobWorkSim if needed.
 
 Finally, we need to add the following paths to ~/.bashrc:
 
@@ -263,7 +250,6 @@ Finally, we need to add the following paths to ~/.bashrc:
    #ROBWORK#
    export RW_ROOT=~/RobWork/trunk/RobWork/
    export RWS_ROOT=~/RobWork/trunk/RobWorkStudio/
-   export RWHW_ROOT=~/RobWork/trunk/RobWorkHardware/
    export RWSIM_ROOT=~/RobWork/trunk/RobWorkSim/
 
-Remember to only add paths to the components you have actually installed. Ie. if you only installed RobWork and RobWorkStudio, the paths for RobWorkSim and RobWorkHardware should not be set. 
+Remember to only add paths to the components you have actually installed. Ie. if you only installed RobWork and RobWorkStudio, the paths for RobWorkSim should not be set. 

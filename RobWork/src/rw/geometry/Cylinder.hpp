@@ -22,11 +22,11 @@
 #include <rw/geometry/Primitive.hpp>
 
 #include <rw/math/Transform3D.hpp>
-#endif 
+#endif
 
 namespace rw { namespace geometry {
     //! @addtogroup geometry
-    // @{
+    //! @{
 
     /**
      * @brief a cylinder primitive. By default the radius is in the x-y plane and height is along

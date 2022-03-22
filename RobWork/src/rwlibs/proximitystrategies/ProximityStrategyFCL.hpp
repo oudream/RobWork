@@ -115,7 +115,7 @@ namespace rwlibs { namespace proximitystrategies {
         {
             /**
              * @brief Create new holder for internal collision geometry information.
-             * @param geoId [in] id of the geometry.
+             * @param geo [in] the geometry.
              * @param transform [in] transform of the geometry.
              * @param model [in] the internal model of the collision geometry.
              */
@@ -183,16 +183,14 @@ namespace rwlibs { namespace proximitystrategies {
         void destroyModel (rw::proximity::ProximityModel* model);
 
         /**
-         * @copydoc rw::proximity::ProximityStrategy::addGeometry(rw::proximity::ProximityModel*
-         * model, const rw::geometry::Geometry& geom)
+         * @copydoc rw::proximity::ProximityStrategy::addGeometry(rw::proximity::ProximityModel* model, const rw::geometry::Geometry& geom)
          *
          * @throws Exception when a bounding volume type has been chosen that is not supported.
          */
         bool addGeometry (rw::proximity::ProximityModel* model, const rw::geometry::Geometry& geom);
 
         /**
-         * @copydoc rw::proximity::ProximityStrategy::addGeometry(ProximityModel* model,
-         * rw::core::Ptr<rw::geometry::Geometry> geom, bool forceCopy=false)
+         * @copydoc rw::proximity::ProximityStrategy::addGeometry(ProximityModel* model, rw::core::Ptr<rw::geometry::Geometry> geom, bool forceCopy=false)
          *
          * @throws Exception when a bounding volume type has been chosen that is not supported.
          */
@@ -238,7 +236,7 @@ namespace rwlibs { namespace proximitystrategies {
                     class rw::proximity::ProximityStrategyData& data);
 
         //// Interface of DistanceMultiStrategy
-        //! @copydoc rw::proximity::DistanceMultiStrategy::doDistance
+        //! @copydoc rw::proximity::DistanceMultiStrategy::doDistances
         rw::proximity::DistanceMultiStrategy::Result&
         doDistances (rw::proximity::ProximityModel::Ptr a, const rw::math::Transform3D<>& wTa,
                      rw::proximity::ProximityModel::Ptr b, const rw::math::Transform3D<>& wTb,

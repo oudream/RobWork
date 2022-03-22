@@ -33,7 +33,7 @@ namespace rw { namespace geometry {
     class Triangulate
     {
       public:
-        /**
+        /*
          * @brief triangulates a polygon or contuor described by a list of points
          * @param points [in] points must be a valid polygon/contour
          * @return a triangle mesh of triangles

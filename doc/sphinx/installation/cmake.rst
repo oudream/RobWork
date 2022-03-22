@@ -24,10 +24,6 @@ The variables shown can been used when calling CMake by using the suffix "-D"
 
 Common Options
 --------------
-- WITH_RWHW=[True|False]
-    - Default: True
-    - Use this option to control if RobWorkHardware should be used (only when building all projects together).
-
 - WITH_RWS=[True|False]
     - Default: True
     - Use this option to control if RobWorkStudio should be used (only when building all projects together).

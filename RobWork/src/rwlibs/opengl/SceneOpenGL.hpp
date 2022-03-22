@@ -86,37 +86,30 @@ namespace rwlibs { namespace opengl {
         //! @copydoc rw::graphics::SceneGraph::makeDrawableFrameAxis
         rw::graphics::DrawableGeometryNode::Ptr makeDrawableFrameAxis (const std::string& name,
                                                                        double size, int dmask);
-        //! @copydoc rw::graphics::SceneGraph::makeDrawable(const
-        //! std::string&,rw::core::Ptr<rw::geometry::Geometry>,int)
+        //! @copydoc rw::graphics::SceneGraph::makeDrawable(const std::string&,rw::core::Ptr<rw::geometry::Geometry>,int)
         rw::graphics::DrawableGeometryNode::Ptr
         makeDrawable (const std::string& name, rw::core::Ptr< rw::geometry::Geometry > geom,
                       int dmask);
-        //! @copydoc rw::graphics::SceneGraph::makeDrawable(const std::string&,const
-        //! std::vector<rw::geometry::Line >&,int)
+        //! @copydoc rw::graphics::SceneGraph::makeDrawable(const std::string&,const std::vector<rw::geometry::Line >&,int)
         rw::graphics::DrawableGeometryNode::Ptr
         makeDrawable (const std::string& name, const std::vector< rw::geometry::Line >& lines,
                       int dmask);
 
-        //! @copydoc rw::graphics::SceneGraph::makeDrawable(const
-        //! std::string&,rw::core::Ptr<rw::graphics::Model3D>,int)
+        //! @copydoc rw::graphics::SceneGraph::makeDrawable(const std::string&,rw::core::Ptr<rw::graphics::Model3D>,int)
         rw::graphics::DrawableNode::Ptr makeDrawable (const std::string& name,
                                                       rw::core::Ptr< rw::geometry::Model3D > model,
                                                       int dmask);
-        //! @copydoc rw::graphics::SceneGraph::makeDrawable(const std::string&,const class
-        //! rw::sensor::Image&,int)
+        //! @copydoc rw::graphics::SceneGraph::makeDrawable(const std::string&,const class rw::sensor::Image&,int)
         rw::graphics::DrawableNode::Ptr
         makeDrawable (const std::string& name, const class rw::sensor::Image& img, int dmask);
-        //! @copydoc rw::graphics::SceneGraph::makeDrawable(const std::string&,const
-        //! rw::geometry::PointCloud&,int)
+        //! @copydoc rw::graphics::SceneGraph::makeDrawable(const std::string&,const rw::geometry::PointCloud&,int)
         rw::graphics::DrawableNode::Ptr
         makeDrawable (const std::string& name, const rw::geometry::PointCloud& scan, int dmask);
-        //! @copydoc rw::graphics::SceneGraph::makeDrawable(const std::string& const std::string&
-        //! int)
+        //! @copydoc rw::graphics::SceneGraph::makeDrawable(const std::string&, const std::string&, const rw::core::Ptr< rw::kinematics::Frame >, int)
         rw::graphics::DrawableNode::Ptr
         makeDrawable (const std::string& name, const std::string& text,
                       const rw::core::Ptr< rw::kinematics::Frame > labelFrame, int dmask);
-        //! @copydoc rw::graphics::SceneGraph::makeDrawable(const
-        //! std::string&,rw::core::Ptr<rw::graphics::Render>,int)
+        //! @copydoc rw::graphics::SceneGraph::makeDrawable(const std::string&,rw::core::Ptr<rw::graphics::Render>,int)
         rw::graphics::DrawableNode::Ptr makeDrawable (const std::string& name,
                                                       rw::core::Ptr< rw::graphics::Render > render,
                                                       int dmask);

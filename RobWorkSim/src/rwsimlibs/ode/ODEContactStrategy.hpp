@@ -58,11 +58,7 @@ namespace rwsim { namespace simulator {
         virtual bool match (rw::core::Ptr< const rw::geometry::GeometryData > geoA,
                             rw::core::Ptr< const rw::geometry::GeometryData > geoB);
 
-        //! @copydoc
-        //! rwsim::contacts::ContactStrategy::findContacts(rw::proximity::ProximityModel::Ptr,const
-        //! rw::math::Transform3D<>&,rw::proximity::ProximityModel::Ptr,const
-        //! rw::math::Transform3D<>&,ContactStrategyData&,ContactStrategyTracking&,rwsim::log::SimulatorLogScope*
-        //! log) const
+        //! @copydoc rwsim::contacts::ContactStrategy::findContacts(rw::proximity::ProximityModel::Ptr,const rw::math::Transform3D<>&,rw::proximity::ProximityModel::Ptr,const rw::math::Transform3D<>&,ContactStrategyData&,ContactStrategyTracking&,rwsim::log::SimulatorLogScope* log) const
         virtual std::vector< rwsim::contacts::Contact >
         findContacts (rw::proximity::ProximityModel::Ptr a, const rw::math::Transform3D<>& wTa,
                       rw::proximity::ProximityModel::Ptr b, const rw::math::Transform3D<>& wTb,
@@ -87,14 +83,11 @@ namespace rwsim { namespace simulator {
         //! @copydoc rwsim::contacts::ContactStrategy::destroyModel
         virtual void destroyModel (rw::proximity::ProximityModel* model);
 
-        //! @copydoc
-        //! rwsim::contacts::ContactStrategy::addGeometry(rw::proximity::ProximityModel*,const
-        //! rw::geometry::Geometry&)
+        //! @copydoc rwsim::contacts::ContactStrategy::addGeometry(rw::proximity::ProximityModel*,const rw::geometry::Geometry&)
         virtual bool addGeometry (rw::proximity::ProximityModel* model,
                                   const rw::geometry::Geometry& geom);
 
-        //! @copydoc
-        //! rwsim::contacts::ContactStrategy::addGeometry(rw::proximity::ProximityModel*,rw::core::Ptr<rw::geometry::Geometry>,bool)
+        //! @copydoc rwsim::contacts::ContactStrategy::addGeometry(rw::proximity::ProximityModel*,rw::core::Ptr<rw::geometry::Geometry>,bool)
         virtual bool addGeometry (rw::proximity::ProximityModel* model,
                                   rw::core::Ptr< rw::geometry::Geometry > geom,
                                   bool forceCopy = false);

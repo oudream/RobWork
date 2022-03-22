@@ -128,8 +128,8 @@ namespace rw { namespace core {
         void setValue (const T& value) { _value.setValue(value); }
 
         /**
-           @copydoc PropertyBase::clone
-        */
+         *  @copydoc rw::core::PropertyBase::clone
+         */
         Property< T >* clone () const
         {
             return new Property< T > (
@@ -160,9 +160,9 @@ namespace rw { namespace core {
     /*@}*/
 }}    // namespace rw::core
 
-/**
- * @brief Deprecated namespace since 16/4-2020 for this class
- * @deprecated use rw::core not rw::common
+/*
+ * Deprecated namespace since 16/4-2020 for this class
+ * use rw::core not rw::common
  */
 namespace rw { namespace common {
     using namespace rw::core;

@@ -117,7 +117,7 @@ namespace rwlibs { namespace task {
         static const Initializer initializer;
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rwlibs::task
 

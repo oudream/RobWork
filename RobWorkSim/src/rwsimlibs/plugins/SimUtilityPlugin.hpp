@@ -46,7 +46,8 @@ class SimUtilityPlugin : public rws::RobWorkStudioPlugin
     Q_OBJECT
     Q_INTERFACES (rws::RobWorkStudioPlugin)
     Q_PLUGIN_METADATA (IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE
-                           "SimUtilityPlugin.json")
+                           "SimUtilityPlugin.json");
+
   public:
     /**
      * @brief constructor

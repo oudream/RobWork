@@ -24,11 +24,11 @@
 #include <rw/geometry/Triangle.hpp>
 
 #include <rw/math/Vector3D.hpp>
-#endif 
+#endif
 
 namespace rw { namespace geometry {
     //! @addtogroup geometry
-    // @{
+    //! @{
 
     /**
      * @brief interface for convexhull calculators on 3d point sets

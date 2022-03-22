@@ -207,7 +207,7 @@ namespace rw { namespace models {
 
         /**
          * @brief set the Joint Acceleration limit
-         * @param acclimit [in] the acceleration limit as Q
+         * @param acclimits [in] the acceleration limit as Q
          */
         void setAccelerationLimits (const rw::math::Q& acclimits);
 

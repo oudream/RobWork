@@ -171,7 +171,7 @@ namespace rw { namespace loaders {
         readFramePatternAttributes (xercesc::DOMElement* element);
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::loaders
 

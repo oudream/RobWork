@@ -183,7 +183,7 @@ using multiple threads since these changes will influence all uses of the variab
 more indepth description of the StateStructure the reader is directed to the RobWork manual.
 
 Now the DynamicWorkCell can be constructed in c++ or as is done more often through the
-XML based DynamicWorkCell file format described in section \ref sec_rwsim_xml_fileformat.
+XML based DynamicWorkCell file format.
 A Simulator is created with an instance of the DynamicWorkCell and is then ready for use.
 A typical use is exemplified below:
 

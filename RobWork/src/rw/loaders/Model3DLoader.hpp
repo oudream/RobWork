@@ -27,7 +27,7 @@
 
 namespace rw { namespace loaders {
     /** @addtogroup loaders */
-    /*@{*/
+    //! @{
 
     /**
      * @brief interface for classes that are able to load 3d models

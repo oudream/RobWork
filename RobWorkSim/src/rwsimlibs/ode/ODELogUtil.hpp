@@ -53,8 +53,7 @@ namespace rwsim { namespace simulator {
         //! @brief Destructor.
         virtual ~ODELogUtil ();
 
-        //! @copydoc addPositions(const std::string&, const
-        //! std::map<std::string,rw::math::Transform3D<> >&, const char*, int)
+        //! @copydoc rwsim::log::SimulatorLogUtil::addPositions(const std::string&, const std::map<std::string,rw::math::Transform3D<> >&, const char*, int)
         void addPositions (const std::string& description,
                            const std::map< std::string, rw::math::Transform3D<> >& positions,
                            const char* file = "", int line = -1);
@@ -71,8 +70,7 @@ namespace rwsim { namespace simulator {
                            const rw::kinematics::State& state, const char* file = "",
                            int line = -1);
 
-        //! @copydoc addVelocities(const std::string&, const
-        //! std::map<std::string,rw::math::VelocityScrew6D<> >&, const char*, int)
+        //! @copydoc rwsim::log::SimulatorLogUtil::addVelocities(const std::string&, const std::map<std::string,rw::math::VelocityScrew6D<> >&, const char*, int)
         void addVelocities (const std::string& description,
                             const std::map< std::string, rw::math::VelocityScrew6D<> >& velocities,
                             const char* file = "", int line = -1);

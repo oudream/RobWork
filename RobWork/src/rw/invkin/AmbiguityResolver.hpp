@@ -85,7 +85,7 @@ namespace rw { namespace invkin {
         rw::math::Q _upper;
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::invkin
 

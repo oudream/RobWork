@@ -129,7 +129,7 @@ namespace rw { namespace loaders {
         virtual ~XMLPropertyLoader ();
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::loaders
 

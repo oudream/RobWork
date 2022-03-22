@@ -112,10 +112,10 @@ namespace rw { namespace loaders {
       private:
         static const Initializer initializer;
 
-        XMLPathFormat (){};
+        XMLPathFormat (){}
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::loaders
 

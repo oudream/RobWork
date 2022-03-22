@@ -2,7 +2,6 @@ Ubuntu installation by PPA
 *****************************
 
 Precompiled Debian packages exist for:
- * Ubuntu 16.04
  * Ubuntu 18.04
  * Ubuntu 20.04
  

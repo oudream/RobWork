@@ -84,7 +84,7 @@ namespace rw { namespace core {
         static const Initializer initializer;
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::core
 

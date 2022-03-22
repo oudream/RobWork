@@ -64,8 +64,8 @@ namespace rw { namespace geometry {
         //! @brief Destructor.
         virtual ~ParametricCurve () {}
 
-        //! @copydoc Curve::transform(const rw::math::Transform3D<>&) const
-        inline ParametricCurve::Ptr transform (const rw::math::Transform3D<>& T) const
+        //! @copydoc Curve::transform(const rw::math::Transform3D<double>&) const
+        inline ParametricCurve::Ptr transform (const rw::math::Transform3D<double>& T) const
         {
             return doTransformParametricCurve (T);
         }

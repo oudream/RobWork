@@ -350,7 +350,6 @@ namespace rwsimlibs { namespace test {
             static std::vector< rw::core::Extension >& internalExtensions ();
             Factory ();
         };
-        //! @}
 
       protected:
         //! @brief Type for a function initializing the state.

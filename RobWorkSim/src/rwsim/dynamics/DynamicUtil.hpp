@@ -37,7 +37,7 @@ namespace rwsim { namespace dynamics {
     class DynamicDevice;
     class DynamicWorkCell;
 
-    //! @addtogroup drawable
+    //! @addtogroup rwsim_dynamics
     //! @{
 
     /**

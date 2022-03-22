@@ -167,14 +167,11 @@ namespace rwsim { namespace contacts {
         //! @copydoc rw::proximity::ProximityStrategy::destroyModel
         virtual void destroyModel (rw::proximity::ProximityModel* model) = 0;
 
-        //! @copydoc
-        //! rw::proximity::ProximityStrategy::addGeometry(rw::proximity::ProximityModel*,const
-        //! rw::geometry::Geometry&)
+        //! @copydoc rw::proximity::ProximityStrategy::addGeometry(rw::proximity::ProximityModel*,const rw::geometry::Geometry&)
         virtual bool addGeometry (rw::proximity::ProximityModel* model,
                                   const rw::geometry::Geometry& geom) = 0;
 
-        //! @copydoc
-        //! rw::proximity::ProximityStrategy::addGeometry(rw::proximity::ProximityModel*,rw::core::Ptr<rw::geometry::Geometry>,bool)
+        //! @copydoc rw::proximity::ProximityStrategy::addGeometry(rw::proximity::ProximityModel*,rw::core::Ptr<rw::geometry::Geometry>,bool)
         virtual bool addGeometry (rw::proximity::ProximityModel* model,
                                   rw::core::Ptr< rw::geometry::Geometry > geom,
                                   bool forceCopy = false) = 0;

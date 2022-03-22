@@ -36,7 +36,7 @@ namespace rw { namespace kinematics {
 
 namespace rwlibs { namespace simulation {
     //! @addtogroup simulation
-    // @{
+    //! @{
 
     /**
      * @brief simulated sensor interface

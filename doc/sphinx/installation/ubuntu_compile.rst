@@ -2,7 +2,7 @@ Ubuntu compilation
 **********************
 
 RobWork can be built by the user.
-This guide shows the steps for doing this in Ubuntu 16.04, 18.04, 20.04 and 20.10.
+This guide shows the steps for doing this in Ubuntu 18.04, 20.04, 21.10 and 22.04.
 The compilation on these platforms are tested continuously.
 Current status of the pipeline for the RobWork master branch is:
 
@@ -11,7 +11,7 @@ Current status of the pipeline for the RobWork master branch is:
 
 If you have any suggestions or additions to the guide, please post it on the issue
 tracker https://gitlab.com/sdurobotics/RobWork/issues . This guide was
-last revised in November 2020.
+last revised in March 2022.
 
 .. note::
 
@@ -85,13 +85,11 @@ Xerces can be used some places in RobWork for opening XML files. It is
 no longer a strict requirement, as RobWork is now able to use a Boost
 parser instead. If you enable compilation of non-standard parts of
 RobWork, or need to compile old RobWork-dependent projects, it might be
-a good idea to compile Xerces:
+a good idea to install Xerces:
 
 .. code-block:: shell
 
     sudo apt-get install libxerces-c3.2 libxerces-c-dev
-
-For Ubuntu version 16.04, use libxerces-c3.1 instead.
 
 SWIG (optional) is a tool that makes it possible to generate a LUA
 script interface for RobWork. SWIG must be version 3 or newer (since we use C++11).
@@ -137,7 +135,15 @@ Freeglut (optional) this library is used to make graphics, in our opengl impleme
 RobWorkStudio Dependencies
 --------------------------
 
-RobWorkStudio requires Qt to be installed. Only Qt5 is supported:
+RobWorkStudio requires Qt to be installed. Qt5 and Qt6 is supported.
+
+In Ubuntu 22.04 and newer, prefer Qt 6:
+
+.. code-block:: shell
+
+    sudo apt-get install qt6-base-dev libqt6opengl6-dev
+
+Alternatively, use Qt5:
 
 .. code-block:: shell
 
@@ -156,8 +162,8 @@ Open Dynamics Engine (ODE) can be installed through the package manager:
 
     sudo apt-get install libode-dev
 
-Ubuntu 16.04 comes with ODE 0.13.1 (libode4), Ubuntu 18.04 with ODE 0.14 (libode6)
-and version 20.04 and newer with ODE 0.16 (libode8).
+Ubuntu 18.04 comes with ODE 0.14 (libode6) and version 20.04 and newer
+with ODE 0.16 (libode8).
 
 Notice that the version from the package manager can sometimes be a bit
 outdated. If you want the latest version, Open Dynamics Engine (ODE)
@@ -188,8 +194,7 @@ This will make sure that ODE is built with 4 threads with double
 precision as a shared library.
 
 Bullet Physics can also be installed through the package manager.
-Ubuntu 16.04 comes with 2.83.6, Ubuntu
-18.04 and 19.10 with 2.87, and Ubuntu 20.04 with 2.88. The bullet packages can be installed with the
+Ubuntu 18.04 comes with 2.87, Ubuntu 20.04 with 2.88, Ubuntu 22.04 with 3.06. The bullet packages can be installed with the
 following command:
 
 .. code-block:: shell

@@ -96,7 +96,7 @@ namespace rw { namespace trajectory {
         double _duration;
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::trajectory
 

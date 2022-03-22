@@ -59,8 +59,8 @@ namespace rw { namespace geometry {
         //! @brief Destructor.
         virtual ~ImplicitSurface () {}
 
-        //! @copydoc Surface::transform(const rw::math::Transform3D<>&) const
-        inline ImplicitSurface::Ptr transform (const rw::math::Transform3D<>& T) const
+        //! @copydoc Surface::transform(const rw::math::Transform3D<double>&) const
+        inline ImplicitSurface::Ptr transform (const rw::math::Transform3D<double>& T) const
         {
             return doTransformImplicitSurface (T);
         }

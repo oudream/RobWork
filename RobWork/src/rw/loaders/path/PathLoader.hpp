@@ -102,7 +102,7 @@ namespace rw { namespace loaders {
         static rw::trajectory::TimedStatePath
         loadTimedStatePath (const rw::models::WorkCell& workcell, const std::string& file);
 
-         //! @copydoc rw::loader::PathLoader::loadTimedStatePath
+         //! @copydoc rw::loaders::PathLoader::loadTimedStatePath
         static rw::trajectory::TimedStatePath
         loadTimedStatePath (rw::core::Ptr<rw::models::WorkCell> workcell, const std::string& file);
 
@@ -127,7 +127,7 @@ namespace rw { namespace loaders {
                                                         const std::string& file);
     };
 
-    /**@}*/
+    /* @} */
 }}    // namespace rw::loaders
 
 #endif    // end include guard

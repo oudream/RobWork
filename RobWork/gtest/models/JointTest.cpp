@@ -31,7 +31,7 @@ using namespace rw::math;
 using namespace rw::models;
 
 namespace {
-void testGenericJoint(Joint* const joint, const std::size_t dof) {
+void testGenericJoint(const Joint::Ptr joint, const std::size_t dof) {
 	EXPECT_EQ(dof,joint->getBounds().first.size());
 	EXPECT_EQ(dof,joint->getBounds().second.size());
 	joint->setBounds(std::make_pair(Q(dof,-0.6),Q(dof,0.2)));
@@ -52,7 +52,7 @@ void testGenericJoint(Joint* const joint, const std::size_t dof) {
 	joint->setActive(true);
 	EXPECT_TRUE(joint->isActive());
 }
-void compareJointWithReferenceJoints(Joint* const joint, const std::vector<Joint*>& refJoints, const Rotation3D<>& offset = Rotation3D<>::identity(), const std::size_t offsetIndex = 0) {
+void compareJointWithReferenceJoints(const Joint::Ptr& joint, const std::vector<Joint::Ptr>& refJoints, const Rotation3D<>& offset = Rotation3D<>::identity(), const std::size_t offsetIndex = 0) {
 	static const Transform3D<> T(Vector3D<>(1,2,3),RPY<>(45*Deg2Rad,45*Deg2Rad,45*Deg2Rad));
 
 	const int dof = joint->getDOF();
@@ -129,7 +129,7 @@ void compareJointWithReferenceJoints(Joint* const joint, const std::vector<Joint
 
 TEST(Joint, Prismatic) {
 	static const Transform3D<> T(Vector3D<>(1,2,3),RPY<>(10*Deg2Rad,20*Deg2Rad,30*Deg2Rad));
-	PrismaticJoint* const joint = new PrismaticJoint("TestJoint", Transform3D<>::identity());
+	const PrismaticJoint::Ptr joint = rw::core::ownedPtr(new PrismaticJoint("TestJoint", Transform3D<>::identity()));
 
 	EXPECT_EQ(1, joint->getDOF());
 	EXPECT_EQ(1, joint->size());
@@ -187,7 +187,7 @@ TEST(Joint, Prismatic) {
 
 TEST(Joint, Revolute) {
 	static const Transform3D<> T(Vector3D<>(1,2,3),RPY<>(10*Deg2Rad,20*Deg2Rad,30*Deg2Rad));
-	RevoluteJoint* const joint = new RevoluteJoint("TestJoint", Transform3D<>::identity());
+	const RevoluteJoint::Ptr joint = rw::core::ownedPtr(new RevoluteJoint("TestJoint", Transform3D<>::identity()));
 
 	EXPECT_EQ(1, joint->getDOF());
 	EXPECT_EQ(1, joint->size());
@@ -259,14 +259,14 @@ TEST(Joint, Revolute) {
 }
 
 TEST(Joint, Universal) {
-	Joint* const joint = new UniversalJoint("TestJoint", Transform3D<>::identity());
+	const Joint::Ptr joint = rw::core::ownedPtr(new UniversalJoint("TestJoint", Transform3D<>::identity()));
 
 	SCOPED_TRACE("Test of generic joint functions.");
 	testGenericJoint(joint,2);
 
-	std::vector<Joint*> refJoints(2);
-	refJoints[0] = new RevoluteJoint("RevAJoint", Transform3D<>(Vector3D<>::zero(),RPY<>(0,Pi/2,0)));
-	refJoints[1] = new RevoluteJoint("RevBJoint", Transform3D<>(Vector3D<>::zero(),RPY<>(0,0,-Pi/2)));
+	std::vector<Joint::Ptr> refJoints(2);
+	refJoints[0] = rw::core::ownedPtr(new RevoluteJoint("RevAJoint", Transform3D<>(Vector3D<>::zero(),RPY<>(0,Pi/2,0))));
+	refJoints[1] = rw::core::ownedPtr(new RevoluteJoint("RevBJoint", Transform3D<>(Vector3D<>::zero(),RPY<>(0,0,-Pi/2))));
 	static const Rotation3D<> revRend = RPY<>(-Pi/2,0,Pi/2).toRotation3D();
 
 	EXPECT_EQ(2, joint->getDOF());
@@ -275,16 +275,16 @@ TEST(Joint, Universal) {
 }
 
 TEST(Joint, PrismaticUniversal) {
-	Joint* const joint = new PrismaticUniversalJoint("TestJoint", Transform3D<>::identity());
+	const Joint::Ptr joint = rw::core::ownedPtr(new PrismaticUniversalJoint("TestJoint", Transform3D<>::identity()));
 
 	SCOPED_TRACE("Test of generic joint functions.");
 	testGenericJoint(joint,3);
 
-	std::vector<Joint*> refJoints(3);
-	refJoints[0] = new RevoluteJoint("RevAJoint", Transform3D<>(Vector3D<>::zero(),RPY<>(0,Pi/2,0)));
-	refJoints[1] = new RevoluteJoint("RevBJoint", Transform3D<>(Vector3D<>::zero(),RPY<>(0,0,-Pi/2)));
+	std::vector<Joint::Ptr> refJoints(3);
+	refJoints[0] = rw::core::ownedPtr(new RevoluteJoint("RevAJoint", Transform3D<>(Vector3D<>::zero(),RPY<>(0,Pi/2,0))));
+	refJoints[1] = rw::core::ownedPtr(new RevoluteJoint("RevBJoint", Transform3D<>(Vector3D<>::zero(),RPY<>(0,0,-Pi/2))));
 	static const Rotation3D<> revRend = RPY<>(-Pi/2,0,Pi/2).toRotation3D();
-	refJoints[2] = new PrismaticJoint("PrismaticJoint", Transform3D<>::identity());
+	refJoints[2] = rw::core::ownedPtr(new PrismaticJoint("PrismaticJoint", Transform3D<>::identity()));
 
 	EXPECT_EQ(3, joint->getDOF());
 	SCOPED_TRACE("Comparison with reference joint sequence.");
@@ -292,15 +292,15 @@ TEST(Joint, PrismaticUniversal) {
 }
 
 TEST(Joint, Spherical) {
-	Joint* const joint = new SphericalJoint("TestJoint", Transform3D<>::identity());
+	const Joint::Ptr joint = rw::core::ownedPtr(new SphericalJoint("TestJoint", Transform3D<>::identity()));
 
 	SCOPED_TRACE("Test of generic joint functions.");
 	testGenericJoint(joint,3);
 
-	std::vector<Joint*> refJoints(3);
-	refJoints[0] = new RevoluteJoint("RevAJoint", Transform3D<>(Vector3D<>::zero(),RPY<>(0,Pi/2,0)));
-	refJoints[1] = new RevoluteJoint("RevBJoint", Transform3D<>(Vector3D<>::zero(),RPY<>(0,0,-Pi/2)));
-	refJoints[2] = new RevoluteJoint("RevCJoint", Transform3D<>(Vector3D<>::zero(),RPY<>(-Pi/2,0,Pi/2)));
+	std::vector<Joint::Ptr> refJoints(3);
+	refJoints[0] = rw::core::ownedPtr(new RevoluteJoint("RevAJoint", Transform3D<>(Vector3D<>::zero(),RPY<>(0,Pi/2,0))));
+	refJoints[1] = rw::core::ownedPtr(new RevoluteJoint("RevBJoint", Transform3D<>(Vector3D<>::zero(),RPY<>(0,0,-Pi/2))));
+	refJoints[2] = rw::core::ownedPtr(new RevoluteJoint("RevCJoint", Transform3D<>(Vector3D<>::zero(),RPY<>(-Pi/2,0,Pi/2))));
 
 	EXPECT_EQ(3, joint->getDOF());
 	SCOPED_TRACE("Comparison with reference joint sequence.");
@@ -308,16 +308,16 @@ TEST(Joint, Spherical) {
 }
 
 TEST(Joint, PrismaticSpherical) {
-	Joint* const joint = new PrismaticSphericalJoint("TestJoint", Transform3D<>::identity());
+	const Joint::Ptr joint = rw::core::ownedPtr(new PrismaticSphericalJoint("TestJoint", Transform3D<>::identity()));
 
 	SCOPED_TRACE("Test of generic joint functions.");
 	testGenericJoint(joint,4);
 
-	std::vector<Joint*> refJoints(4);
-	refJoints[0] = new RevoluteJoint("RevAJoint", Transform3D<>(Vector3D<>::zero(),RPY<>(0,Pi/2,0)));
-	refJoints[1] = new RevoluteJoint("RevBJoint", Transform3D<>(Vector3D<>::zero(),RPY<>(0,0,-Pi/2)));
-	refJoints[2] = new RevoluteJoint("RevCJoint", Transform3D<>(Vector3D<>::zero(),RPY<>(-Pi/2,0,Pi/2)));
-	refJoints[3] = new PrismaticJoint("PrismaticJoint", Transform3D<>::identity());
+	std::vector<Joint::Ptr> refJoints(4);
+	refJoints[0] = rw::core::ownedPtr(new RevoluteJoint("RevAJoint", Transform3D<>(Vector3D<>::zero(),RPY<>(0,Pi/2,0))));
+	refJoints[1] = rw::core::ownedPtr(new RevoluteJoint("RevBJoint", Transform3D<>(Vector3D<>::zero(),RPY<>(0,0,-Pi/2))));
+	refJoints[2] = rw::core::ownedPtr(new RevoluteJoint("RevCJoint", Transform3D<>(Vector3D<>::zero(),RPY<>(-Pi/2,0,Pi/2))));
+	refJoints[3] = rw::core::ownedPtr(new PrismaticJoint("PrismaticJoint", Transform3D<>::identity()));
 
 	EXPECT_EQ(4, joint->getDOF());
 	SCOPED_TRACE("Comparison with reference joint sequence.");

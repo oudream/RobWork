@@ -748,7 +748,7 @@ namespace rwlibs { namespace algorithms {
         }
     }
 
-    /**@}*/
+    /* @} */
 
 }}    // namespace rwlibs::algorithms
 

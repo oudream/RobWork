@@ -1,18 +1,18 @@
 ######################## BUILD Doc ##########################################
 
-build:doc-2004:
+build:doc-2204:
   extends: .linux-doc
   dependencies:
-    - build-RW:ubuntu-2004
-    - build-RWS:ubuntu-2004
-    - build-RWSim:ubuntu-2004
+    - build-RW:ubuntu-2204
+    - build-RWS:ubuntu-2204
+    - build-RWSim:ubuntu-2204
   needs:
     [
-      "build-RW:ubuntu-2004",
-      "build-RWS:ubuntu-2004",
-      "build-RWSim:ubuntu-2004",
+      "build-RW:ubuntu-2204",
+      "build-RWS:ubuntu-2204",
+      "build-RWSim:ubuntu-2204",
     ]
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2004-doc
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2204-doc
 
 ######################## deploy Doc ##########################################
 
@@ -32,9 +32,9 @@ pages:
     #- "sshpass -e sftp robwork@www5.sdu.dk:htdocs <<< $'put -r ./*'"
     - echo "Deploying documentation."
   dependencies:
-    - build:doc-2004
-  needs: ["build:doc-2004"]
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2004-doc
+    - build:doc-2204
+  needs: ["build:doc-2204"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2204-doc
   artifacts:
     paths:
       - public

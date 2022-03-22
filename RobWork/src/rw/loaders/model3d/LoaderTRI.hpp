@@ -9,7 +9,7 @@
 
 namespace rw { namespace loaders {
     //! @addtogroup graphics
-    // @{
+    //! @{
 
     /**
      * @brief loader for a simple ASCI based triangle format. The format is NOT

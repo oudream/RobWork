@@ -579,7 +579,7 @@ namespace rw { namespace core {
         // static const UnitMap _Units;
     };
 
-    /** @} */
+    /* @} */
 
 }}        // namespace rw::core
 #endif    // end include guard

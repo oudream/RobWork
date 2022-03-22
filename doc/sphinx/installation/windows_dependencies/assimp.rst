@@ -3,7 +3,8 @@ Assimp
 
 Assimp can be compiled on windows by running the following script.
 
-.. code-block:: none
+.. code-block:: batch
+
     set Install_DIR=C:\Local
     git clone https://github.com/assimp/assimp.git
     cd assimp

@@ -140,7 +140,7 @@ namespace rw { namespace trajectory {
         virtual ~InterpolatorUtil ();
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::trajectory
 

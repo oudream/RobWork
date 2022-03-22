@@ -31,6 +31,7 @@
 #include <memory>
 //
 
+using rw::core::Ptr;
 using namespace rw::kinematics;
 using namespace rw::math;
 /*
@@ -81,6 +82,8 @@ public:
 
 class StateDataWithCache: public StateData {
 public:
+    typedef rw::core::Ptr<StateDataWithCache> Ptr;
+
     StateDataWithCache():StateData(2,"MyStateWithCache", rw::core::ownedPtr( new StateCacheObject() ) ){
     }
 
@@ -224,7 +227,7 @@ TEST(KinematicsTest, StateStructureTest )
 
     // this should test the influence on StateCache when state is copied/deep-copied
 
-    StateDataWithCache *o1 = new StateDataWithCache();
+    StateDataWithCache::Ptr o1 = rw::core::ownedPtr(new StateDataWithCache());
 
     tree->addData( o1 );
 

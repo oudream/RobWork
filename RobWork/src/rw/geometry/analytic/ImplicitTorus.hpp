@@ -124,8 +124,8 @@ namespace rw { namespace geometry {
         virtual ~ImplicitTorus ();
 
         // From ImplicitSurface
-        //! @copydoc ImplicitSurface::transform(const rw::math::Transform3D<>&) const
-        ImplicitTorus::Ptr transform (const rw::math::Transform3D<>& T) const;
+        //! @copydoc ImplicitSurface::transform(const rw::math::Transform3D<double>&) const
+        ImplicitTorus::Ptr transform (const rw::math::Transform3D<double>& T) const;
 
         //! @copydoc ImplicitSurface::transform(const rw::math::Vector3D<double>&) const
         ImplicitTorus::Ptr transform (const rw::math::Vector3D<double>& P) const;

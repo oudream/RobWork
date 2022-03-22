@@ -130,7 +130,7 @@ namespace rw { namespace loaders {
      * @deprecated Please use WorkCellLoader::Factory instead.
      */
     typedef WorkCellLoader::Factory WorkCellFactory;
-    /**@}*/
+    /* @} */
 }}    // namespace rw::loaders
 
 #endif    // end include guard

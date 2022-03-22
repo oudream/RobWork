@@ -25,7 +25,7 @@
 
 namespace rw { namespace geometry {
     //! @addtogroup geometry
-    // @{
+    //! @{
     /**
      * @brief cone primitive. Like a cylinder though where a radius can be
      * specified for both ends.

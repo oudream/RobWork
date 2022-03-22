@@ -647,7 +647,7 @@ namespace rwlibs { namespace task {
     extern template class Task< rw::math::Q >;
     extern template class Task< rw::math::Transform3D<> >;
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rwlibs::task
 

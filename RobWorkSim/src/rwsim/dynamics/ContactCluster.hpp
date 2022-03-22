@@ -21,7 +21,8 @@
 namespace rwsim { namespace dynamics {
     class ContactPoint;
 
-    //! @addtogroup @{
+    //! @addtogroup rwsim_dynamics
+    //! @{
 
     /**
      * @brief calculates contact clusters

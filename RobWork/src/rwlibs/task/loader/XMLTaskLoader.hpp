@@ -122,7 +122,7 @@ namespace rwlibs { namespace task {
         rwlibs::task::TaskBase::Ptr _task;
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rwlibs::task
 

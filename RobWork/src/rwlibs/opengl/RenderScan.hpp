@@ -31,7 +31,7 @@ namespace rw { namespace sensor {
 namespace rwlibs { namespace opengl {
 
     //! @addtogroup opengl
-    // @{
+    //! @{
 
     /**
      * @brief renders Image25D, Scan2D or a simple distance.
@@ -84,8 +84,7 @@ namespace rwlibs { namespace opengl {
          */
         void setMaxDepth (float depth) { _maxDepth = depth; };
 
-        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info,
-        //! DrawableNode::DrawType type, double alpha) const
+        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info, DrawableNode::DrawType type, double alpha) const
         void draw (const rw::graphics::DrawableNode::RenderInfo& info,
                    rw::graphics::DrawableNode::DrawType type, double alpha) const;
 

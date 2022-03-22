@@ -64,26 +64,26 @@ namespace rwsim { namespace log {
         //! @brief Destructor.
         virtual ~DistanceMultiResultWidget ();
 
-        //! @copydoc SimulatorLogEntryWidget::setDWC
+        //! @copydoc rwsimlibs::gui::SimulatorLogEntryWidget::setDWC
         virtual void setDWC (rw::common::Ptr< const rwsim::dynamics::DynamicWorkCell > dwc);
 
-        //! @copydoc SimulatorLogEntryWidget::setEntry
+        //! @copydoc rwsimlibs::gui::SimulatorLogEntryWidget::setEntry
         virtual void setEntry (rw::common::Ptr< const rwsim::log::SimulatorLog > entry);
 
-        //! @copydoc SimulatorLogEntryWidget::getEntry
+        //! @copydoc rwsimlibs::gui::SimulatorLogEntryWidget::getEntry
         virtual rw::common::Ptr< const rwsim::log::SimulatorLog > getEntry () const;
 
-        //! @copydoc SimulatorLogEntryWidget::updateEntryWidget
+        //! @copydoc rwsimlibs::gui::SimulatorLogEntryWidget::updateEntryWidget
         virtual void updateEntryWidget ();
 
-        //! @copydoc SimulatorLogEntryWidget::showGraphics
+        //! @copydoc rwsimlibs::gui::SimulatorLogEntryWidget::showGraphics
         virtual void showGraphics (rw::common::Ptr< rw::graphics::GroupNode > root,
                                    rw::common::Ptr< rw::graphics::SceneGraph > graph);
 
-        //! @copydoc SimulatorLogEntryWidget::getName
+        //! @copydoc rwsimlibs::gui::SimulatorLogEntryWidget::getName
         virtual std::string getName () const;
 
-        //! @copydoc SimulatorLogEntryWidget::Dispatcher
+        //! @copydoc rwsimlibs::gui::SimulatorLogEntryWidget::Dispatcher
         class Dispatcher : public SimulatorLogEntryWidget::Dispatcher
         {
           public:
@@ -93,12 +93,12 @@ namespace rwsim { namespace log {
             //! @brief Destructor.
             virtual ~Dispatcher ();
 
-            //! @copydoc SimulatorLogEntryWidget::Dispatcher::makeWidget
+            //! @copydoc rwsimlibs::gui::SimulatorLogEntryWidget::Dispatcher::makeWidget
             SimulatorLogEntryWidget*
             makeWidget (rw::common::Ptr< const rwsim::log::SimulatorLog > entry,
                         QWidget* parent = 0) const;
 
-            //! @copydoc SimulatorLogEntryWidget::Dispatcher::accepts
+            //! @copydoc rwsimlibs::gui::SimulatorLogEntryWidget::Dispatcher::accepts
             bool accepts (rw::common::Ptr< const rwsim::log::SimulatorLog > entry) const;
         };
 

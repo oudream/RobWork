@@ -229,7 +229,7 @@ namespace rw { namespace loaders {
         Type _type;
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::loaders
 

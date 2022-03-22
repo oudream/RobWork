@@ -122,7 +122,7 @@ namespace rw { namespace core {
         DOMCorePropertyMapSaver (){};
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::core
 

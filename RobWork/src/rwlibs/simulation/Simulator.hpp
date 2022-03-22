@@ -31,6 +31,7 @@ namespace rwlibs { namespace simulation {
     class SimulatedSensor;
 
     //! @addtogroup simulation
+    //! @{
     /**
      * @brief interface of a general simulator
      */

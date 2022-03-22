@@ -3,7 +3,8 @@ QHull
 
 QHull can be compiled an installed with the following script
 
-.. code-block:: none
+.. code-block:: batch
+
     set Install_DIR=C:\Local
     git clone https://github.com/qhull/qhull.git
     cd qhull

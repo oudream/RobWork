@@ -148,7 +148,7 @@ namespace rw { namespace loaders {
         DOMTrajectorySaver (){};
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::loaders
 

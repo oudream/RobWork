@@ -29,7 +29,7 @@ namespace rwlibs { namespace simulation {
     class FrameGrabber25D;
 
     //! @addtogroup simulation
-    // @{
+    //! @{
 
     /**
      * @brief a simulated range scanner for 2.5D images, that is basically

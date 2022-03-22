@@ -172,10 +172,10 @@ namespace rwlibs { namespace task {
       private:
         static const Initializer initializer;
 
-        XMLTaskFormat (){};
+        XMLTaskFormat (){}
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rwlibs::task
 

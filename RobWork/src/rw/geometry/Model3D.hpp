@@ -41,7 +41,7 @@ namespace rw { namespace geometry {
 namespace rw { namespace geometry {
 
     //! @addtogroup graphics
-    // @{
+    //! @{
 
     /**
      * @brief a 3d model that has geometry but also material and color.
@@ -169,7 +169,7 @@ namespace rw { namespace geometry {
         /**
          * @brief add a triangle mesh to this model3d
          * @param mat [in] the material properties to use for the mesh.
-         * @param mesh [in] the mesh geometry.
+         * @param geom [in] the mesh geometry.
          */
         void addTriMesh (const Material& mat, rw::core::Ptr< const rw::geometry::TriMesh > geom);
 

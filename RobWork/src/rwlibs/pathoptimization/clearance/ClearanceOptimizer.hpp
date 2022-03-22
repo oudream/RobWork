@@ -244,7 +244,7 @@ namespace rwlibs { namespace pathoptimization {
         rw::core::Ptr< const rw::pathplanning::QConstraint > _qConstraint = nullptr;
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rwlibs::pathoptimization
 

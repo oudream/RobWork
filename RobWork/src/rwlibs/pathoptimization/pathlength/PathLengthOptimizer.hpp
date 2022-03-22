@@ -187,7 +187,7 @@ namespace rwlibs { namespace pathoptimization {
                         const bool testQEnd) const;
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rwlibs::pathoptimization
 

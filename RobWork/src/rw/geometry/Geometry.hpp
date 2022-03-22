@@ -29,7 +29,7 @@ namespace rw { namespace kinematics {
 
 namespace rw { namespace geometry {
     //! @addtogroup geometry
-    // @{
+    //! @{
 
     /**
      * @brief a class for representing a geometry that is scaled
@@ -107,7 +107,7 @@ namespace rw { namespace geometry {
 
         /**
          * @brief set transformation
-         * @param t2d [in] the new transform
+         * @param t3d [in] the new transform
          */
         void setTransform (const rw::math::Transform3D<>& t3d) { _transform = t3d; }
 

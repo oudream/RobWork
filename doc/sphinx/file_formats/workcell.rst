@@ -702,7 +702,7 @@ Polytope
 .. code-block:: xml
 
    <Polytope file="c:/geometry/object.stl" />
-   <Polytope file="c:/geometry/object.stl scale="0.001" />
+   <Polytope file="c:/geometry/object.stl" scale="0.001" />
 
 Plane
 ^^^^^^^^

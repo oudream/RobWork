@@ -56,11 +56,12 @@ namespace rw { namespace math {
             if (N <= 0) {
                 RW_THROW ("Vector to small, N must be larger than 0");
             }
-            _vec = EigenVectorND (N);
+            _vec = EigenVectorND::Zero (N);
         }
 
         /**
          * @brief Construct a Vector from N arguments
+         * @param arg0 [in] first argument
          * @param args [in] a list of arguments
          */
         template< typename... ARGS > VectorND (T arg0, ARGS... args)
@@ -134,7 +135,6 @@ namespace rw { namespace math {
 
         /**
          * @brief element wise division.
-         * @param lhs [in] vector
          * @param rhs [in] vector
          * @return the resulting VectorND
          */
@@ -393,7 +393,7 @@ namespace rw { namespace math {
          * @brief Streaming operator.
          * @param out [in/out] the stream to continue
          * @param v [in] the vector to stream
-         * @param reference to \b out
+         * @return reference to \b out
          */
         friend std::ostream& operator<< (std::ostream& out, const VectorND< N, T >& v)
         {
@@ -506,8 +506,9 @@ namespace rw { namespace math {
 
         /**
          * @brief Compare with \b rhs for equality.
+         * @param lhs [in] first vector.
          * @param rhs [in] other vector.
-         * @return True if a equals b, false otherwise.
+         * @return True if lhs equals rhs, false otherwise.
          */
         template< class R >
         friend bool operator== (const Eigen::MatrixBase< R >& lhs, const VectorND< N, T >& rhs)
@@ -517,8 +518,8 @@ namespace rw { namespace math {
 
         /**
          *  @brief Compare with \b rhs for inequality.
-         *  @param ths [in] other vector.
-         *  @return True if a and b are different, false otherwise.
+         *  @param rhs [in] other vector.
+         *  @return True if this and rhs are different, false otherwise.
          */
         template< class R > bool operator!= (const Eigen::MatrixBase< R >& rhs) const
         {
@@ -527,8 +528,9 @@ namespace rw { namespace math {
 
         /**
          *  @brief Compare with \b rhs for inequality.
-         *  @param b [in] other vector.
-         *  @return True if a and b are different, false otherwise.
+         *  @param lhs [in] first vector.
+         *  @param rhs [in] other vector.
+         *  @return True if lhs and rhs are different, false otherwise.
          */
         template< class R >
         friend bool operator!= (const Eigen::MatrixBase< R >& lhs, const VectorND< N, T >& rhs)
@@ -539,14 +541,14 @@ namespace rw { namespace math {
         /**
          * @brief Compare with \b rhs for equality.
          * @param rhs [in] other vector.
-         * @return True if a equals b, false otherwise.
+         * @return True if this equals rhs, false otherwise.
          */
         bool operator== (const VectorND< N, T >& rhs) const { return this->_vec == rhs._vec; }
 
         /**
          *  @brief Compare with \b rhs for inequality.
          *  @param rhs [in] other vector.
-         *  @return True if a and b are different, false otherwise.
+         *  @return True if this and rhs are different, false otherwise.
          */
         bool operator!= (const VectorND< N, T >& rhs) const { return !(*this == rhs); }
 
@@ -773,7 +775,7 @@ namespace rw { namespace math {
 #undef VECTORND
 #endif
 
-    /**@}*/
+    /* @} */
 }}    // namespace rw::math
 
 #endif    // end include guard

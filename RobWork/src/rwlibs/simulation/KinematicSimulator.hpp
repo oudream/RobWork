@@ -29,7 +29,7 @@ namespace rwlibs { namespace simulation {
     class SimulatedController;
 
     //! @addtogroup simulation
-    // @{
+    //! @{
     /**
      * @brief interface of a kinematic simulator
      */
