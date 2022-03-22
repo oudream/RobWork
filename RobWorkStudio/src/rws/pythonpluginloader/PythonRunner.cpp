@@ -25,7 +25,57 @@
 
 using namespace rws::python;
 
-/*
+struct PyLockGIL
+{
+    PyLockGIL () : gstate (PyGILState_Ensure ()) {}
+
+    ~PyLockGIL () { PyGILState_Release (gstate); }
+
+    PyLockGIL (const PyLockGIL&) = delete;
+    PyLockGIL& operator= (const PyLockGIL&) = delete;
+
+    PyGILState_STATE gstate;
+};
+struct PyRelinquishGIL
+{
+    PyRelinquishGIL () : _thread_state (PyEval_SaveThread ()) {}
+    ~PyRelinquishGIL () { PyEval_RestoreThread (_thread_state); }
+
+    PyRelinquishGIL (const PyRelinquishGIL&) = delete;
+    PyRelinquishGIL& operator= (const PyRelinquishGIL&) = delete;
+
+    PyThreadState* _thread_state;
+};
+
+/**
+ * @brief a Python lock for making sure only one thread can talk with python at a time
+ */
+class PythonLock
+{
+  public:
+    PythonLock (PyThreadState* ts)
+    {
+        // swap interpretor
+        _threadState = PyThreadState_Swap (ts);
+
+        // Aquire Lock
+        _gstate = PyGILState_Ensure ();
+    }
+
+    ~PythonLock ()
+    {
+        // Release Lock
+        PyGILState_Release (_gstate);
+
+        // Switch back to main thread
+        PyThreadState_Swap (_threadState);
+    }
+
+  private:
+    PyThreadState* _threadState;
+    PyGILState_STATE _gstate;
+};
+
 std::ostream& operator<< (std::ostream& os, PyThreadState* ts)
 {
     os << "PyThreadState {" << std::endl;
@@ -39,52 +89,37 @@ std::ostream& operator<< (std::ostream& os, PyThreadState* ts)
     os << "}";
     return os;
 }
-*/
-PyThreadState* ENV_main_thread;
-// swap the current thread state with ts, restore when the object goes out of scope
-
-PythonLock::PythonLock (PyThreadState* ts)
-{
-    //swap interpretor
-    _threadState = PyThreadState_Swap (ts);
-
-    //Aquire Lock
-    PyGILState_Ensure ();
-}
-
-PythonLock::~PythonLock ()
-{
-    //Release Lock
-    PyGILState_Release (PyGILState_STATE::PyGILState_UNLOCKED);
-
-    //Switch back to main thread
-    PyThreadState_Swap (_threadState);
-}
 
 PythonRunner::PythonRunner () : _threadState (NULL)
 {
     initPython ();
-    PyGILState_Ensure ();
+
+    bool gilLocked = PyGILState_Check ();
+    PyThreadState* curThread = PyThreadState_Get ();
+    PyRelinquishGIL rel ();
     _threadState = Py_NewInterpreter ();
 
-    PyThreadState_Swap (ENV_main_thread);
-    PyGILState_Release (PyGILState_STATE::PyGILState_UNLOCKED);
+    PyThreadState_Swap (curThread);
+
+    if (gilLocked) {
+        PyGILState_Release (PyGILState_STATE::PyGILState_UNLOCKED);
+    }
 }
 
 PythonRunner::~PythonRunner ()
 {
     if (_threadState) {
-        PyThreadState* ts = PyThreadState_Swap (_threadState);;
+        PyThreadState* ts = PyThreadState_Swap (_threadState);
+        ;
         Py_EndInterpreter (_threadState);
 
-        PyThreadState_Swap(ts);
+        PyThreadState_Swap (ts);
     }
 }
 
 int PythonRunner::runCode (std::string code)
 {
     PythonLock swap (_threadState);
-
     int ret = PyRun_SimpleString (code.c_str ());
     return ret;
 }
@@ -106,7 +141,6 @@ void PythonRunner::initPython ()
         Py_InitializeEx (1);
 #if PYTHON_VERSION_MINOR < 9 && defined(RWS_USE_PYTHON3)
         PyEval_InitThreads ();
-#endif 
-        ENV_main_thread = PyThreadState_Get ();
+#endif
     }
 }
