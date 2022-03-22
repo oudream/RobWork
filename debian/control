@@ -17,13 +17,14 @@ Build-Depends:
   swig (>=3), 
   python3-dev,
   python3-numpy,
-  liblua5.3-dev, 
+  liblua5.4-dev | liblua5.3-dev,
   libgtest-dev, 
   libassimp-dev (>= 3.0), 
   libpthread-stubs0-dev (>=0.3),
   libglu1-mesa-dev (>= 9), 
   libomp-dev (>= 3.7), 
-  qtbase5-dev (>=5), 
+  qt6-base-dev (>=6) | qtbase5-dev (>=5),
+  libqt6opengl6-dev (>=6) | qtbase5-dev (>=5),
   libode-dev (>=2), 
   freeglut3-dev (>=2.8)
 Standards-Version: 4.1.2
@@ -195,7 +196,7 @@ Depends:
  libsdurw-sensor (=${binary:Version}),
  libsdurw-trajectory (=${binary:Version}),
  ${misc:Depends},
- liblua5.3-dev
+ liblua5.4-dev | liblua5.3-dev
 Replaces:
  libsdurw1.2
 Description: Metapackage of the Core librarys for simulation and control of robot systems.
@@ -1121,7 +1122,8 @@ Section: misc
 Architecture: amd64
 Multi-Arch: same
 Depends: 
- qtbase5-dev,
+ qt6-base-dev (>=6) | qtbase5-dev (>=5),
+ libqt6opengl6-dev (>=6) | qtbase5-dev (>=5),
  ${misc:Depends}
 Conflicts:
   sdurws-cmake1.2
@@ -1138,7 +1140,8 @@ Depends:
  libsdurws (= ${binary:Version}), 
  ${cmakedep:Depends},
  sdurws-cmake (=${binary:Version}),
- qtbase5-dev, 
+ qt6-base-dev (>=6) | qtbase5-dev (>=5),
+ libqt6opengl6-dev (>=6) | qtbase5-dev (>=5),
  python3-dev,
  ${misc:Depends}
 Conflicts:
@@ -1990,7 +1993,7 @@ Architecture: amd64
 Multi-Arch: same
 Depends: 
  libsdurw-core (>=${binary:Version}),
- lua5.3, 
+ lua5.4 | lua5.3,
  ${shlibs:Depends},
  ${misc:Depends}
 Conflicts:
