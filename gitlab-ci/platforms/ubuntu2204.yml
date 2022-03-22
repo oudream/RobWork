@@ -1,0 +1,83 @@
+########################## Ubuntu 2204 (MAIN) ################################
+
+build-RW:ubuntu-2204:
+  extends: .linux-build-RW
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2204
+
+build-RWS:ubuntu-2204:
+  extends: .linux-build-RWS
+  dependencies:
+    - build-RW:ubuntu-2204
+  needs: ["build-RW:ubuntu-2204"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2204
+
+build-RWSim:ubuntu-2204:
+  extends: .linux-build-RWSim
+  dependencies:
+    - build-RW:ubuntu-2204
+    - build-RWS:ubuntu-2204
+  needs: ["build-RW:ubuntu-2204", "build-RWS:ubuntu-2204"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2204
+
+examples:ubuntu-2204:
+  extends: .linux-examples
+  dependencies:
+    - build-RW:ubuntu-2204
+    - build-RWS:ubuntu-2204
+    - build-RWSim:ubuntu-2204
+  needs:
+    ["build-RW:ubuntu-2204", "build-RWS:ubuntu-2204", "build-RWSim:ubuntu-2204"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2204
+
+tests:ubuntu-2204:
+  extends: .linux-tests
+  dependencies:
+    - build-RW:ubuntu-2204
+    - build-RWS:ubuntu-2204
+    - build-RWSim:ubuntu-2204
+  needs:
+    ["build-RW:ubuntu-2204", "build-RWS:ubuntu-2204", "build-RWSim:ubuntu-2204"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2204
+
+python-tests:ubuntu-2204:
+  extends: .linux-python-tests
+  dependencies:
+    - build-RW:ubuntu-2204
+    - build-RWS:ubuntu-2204
+    - build-RWSim:ubuntu-2204
+  needs:
+    ["build-RW:ubuntu-2204", "build-RWS:ubuntu-2204", "build-RWSim:ubuntu-2204"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2204
+
+install-tests:ubuntu-2204:
+  extends: .linux-install-tests
+  dependencies:
+    - build-RW:ubuntu-2204
+    - build-RWS:ubuntu-2204
+    - build-RWSim:ubuntu-2204
+  needs:
+    ["build-RW:ubuntu-2204", "build-RWS:ubuntu-2204", "build-RWSim:ubuntu-2204"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2204
+
+build-debian:ubuntu-2204:
+  extends: .linux-build-debian
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2204-deb
+
+test-debian:ubuntu-2204:
+  extends: .linux-test-debian
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2204-deb-test
+  dependencies:
+    - "build-debian:ubuntu-2204"
+  needs: ["build-debian:ubuntu-2204"]
+
+#test-debian-upgrade:ubuntu-2204:
+#  extends: .linux-debian-upgrade-test
+#  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2204-deb-test
+#  dependencies:
+#    - build-debian:ubuntu-2204
+#  needs: ["build-debian:ubuntu-2204"]
+
+#ppa-test:ubuntu-2204:
+#  extends: .ppa-install-tests
+#  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2204-deb-test
+#  needs: []

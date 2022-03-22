@@ -18,13 +18,13 @@
 #ifndef RW_GEOMETRY_TUBE_HPP_
 #define RW_GEOMETRY_TUBE_HPP_
 
-#if !defined(SWIG) 
+#if !defined(SWIG)
 #include <rw/geometry/Primitive.hpp>
-#endif 
+#endif
 
 namespace rw { namespace geometry {
     //! @addtogroup geometry
-    // @{
+    //! @{
 
     /**
      * @brief a tube primitive. radius is in xy-plane and height is in z-axis

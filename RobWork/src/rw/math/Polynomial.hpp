@@ -87,7 +87,7 @@ namespace rw { namespace math {
          */
         virtual ~Polynomial () {}
 
-        //! @copydoc PolynomialND<T,T>::evaluate
+        //! @copydoc rw::math::PolynomialND<T,T>::evaluate
         T evaluate (const T& x) const { return PolynomialND< T, T >::evaluate (x); }
 
         /**
@@ -127,7 +127,7 @@ namespace rw { namespace math {
             return res;
         }
 
-        //! @copydoc PolynomialND<T,T>::evaluateDerivatives
+        //! @copydoc rw::math::PolynomialND<T,T>::evaluateDerivatives
         std::vector< T > evaluateDerivatives (const T& x, std::size_t n = 1) const
         {
             return PolynomialND< T, T >::evaluateDerivatives (x, n);
@@ -186,7 +186,7 @@ namespace rw { namespace math {
             return res;
         }
 
-        //! @copydoc PolynomialND<T,T>::deflate
+        //! @copydoc rw::math::PolynomialND<T,T>::deflate
         Polynomial< T > deflate (const T& x) const
         {
             // Horner Method
@@ -199,7 +199,7 @@ namespace rw { namespace math {
             return res;
         }
 
-        //! @copydoc PolynomialND<T,T>::derivative
+        //! @copydoc rw::math::PolynomialND<T,T>::derivative
         Polynomial< T > derivative (std::size_t n = 1) const
         {
             if (n == 0)
@@ -274,7 +274,6 @@ namespace rw { namespace math {
 
         /**
          * @brief Multiply polynomial with scalar coefficients with a 3D polynomial vector.
-         * @param p [in] polynomial with scalar coefficients.
          * @param polynomial [in] polynomial vector.
          * @return a 3D polynomial vector.
          */
@@ -285,7 +284,11 @@ namespace rw { namespace math {
                 polynomial);
         }
 
-        //! @copydoc operator*(const Polynomial<T>&, const PolynomialND<Eigen::Matrix<T,3,1>,T>&)
+        /**
+         * @brief Multiply polynomial with scalar coefficients with a 3D polynomial vector.
+         * @param polynomial [in] polynomial vector.
+         * @return a 3D polynomial vector.
+         */
         PolynomialND< Eigen::Matrix< T, 1, 3 >, T >
         operator* (const PolynomialND< Eigen::Matrix< T, 1, 3 >, T >& polynomial) const
         {
@@ -295,7 +298,6 @@ namespace rw { namespace math {
 
         /**
          * @brief Multiply polynomial with scalar coefficients with a 3D polynomial matrix.
-         * @param p [in] polynomial with scalar coefficients.
          * @param polynomial [in] polynomial matrix.
          * @return a 3D polynomial matrix.
          */
@@ -308,7 +310,6 @@ namespace rw { namespace math {
 
         /**
          * @brief Multiply polynomial with scalar coefficients with a vector.
-         * @param p [in] polynomial with scalar coefficients.
          * @param a [in] vector to multiply with.
          * @return a 3D polynomial vector.
          */
@@ -319,7 +320,11 @@ namespace rw { namespace math {
                 a);
         }
 
-        //! @copydoc operator*(const Polynomial<T>&, const Eigen::Matrix<T,3,1>&)
+        /**
+         * @brief Multiply polynomial with scalar coefficients with a vector.
+         * @param a [in] vector to multiply with.
+         * @return a 3D polynomial vector.
+         */
         PolynomialND< Eigen::Matrix< T, 1, 3 >, T >
         operator* (const Eigen::Matrix< T, 1, 3 >& a) const
         {
@@ -329,7 +334,6 @@ namespace rw { namespace math {
 
         /**
          * @brief Multiply polynomial with scalar coefficients with a matrix.
-         * @param p [in] polynomial with scalar coefficients.
          * @param A [in] matrix to multiply with.
          * @return a 3D polynomial matrix.
          */
@@ -627,9 +631,9 @@ namespace rw { namespace math {
                                                const Polynomial<>& p);
 
 # if !defined(SWIGJAVA)
-    //! @copydoc operator*(const PolynomialND<Eigen::Vector3d>&, const Polynomial<>&)
-    
-    #endif 
+    //! @copydoc rw::math::operator*(const PolynomialND<Eigen::Vector3d>&, const Polynomial<>&)
+
+    #endif
     PolynomialND< Eigen::Matrix< double, 1, 3 > >
     operator* (const PolynomialND< Eigen::Matrix< double, 1, 3 > >& polynomial,
                const Polynomial<>& p);
@@ -644,31 +648,30 @@ namespace rw { namespace math {
                                                const Polynomial<>& p);
 
 # if !defined(SWIGJAVA)
-    //! @copydoc operator*(const PolynomialND<Eigen::Matrix<double,1,3> >&, const
-    //! PolynomialND<Eigen::Matrix<double,3,1> >&)
+    //! @copydoc rw::math::operator*(const PolynomialND<Eigen::Matrix<double,1,3> >&, const PolynomialND<Eigen::Matrix<double,3,1> >&)
 
-    #endif 
+    #endif
     Polynomial< float > operator* (const PolynomialND< Eigen::Matrix< float, 1, 3 >, float >& a,
                                    const PolynomialND< Eigen::Matrix< float, 3, 1 >, float >& b);
 # if !defined(SWIGJAVA)
-    //! @copydoc operator*(const PolynomialND<Eigen::Vector3d>&, const Polynomial<>&)
+    //! @copydoc rw::math::operator*(const PolynomialND<Eigen::Vector3d>&, const Polynomial<>&)
 
-    #endif 
+    #endif
     PolynomialND< Eigen::Vector3f, float >
     operator* (const PolynomialND< Eigen::Vector3f, float >& polynomial,
                const Polynomial< float >& p);
 
 # if !defined(SWIGJAVA)
-    //! @copydoc operator*(const PolynomialND<Eigen::Matrix<double,1,3> >&, const Polynomial<>&)
+    //! @copydoc rw::math::operator*(const PolynomialND<Eigen::Matrix<double,1,3> >&, const Polynomial<>&)
 
-    #endif 
+    #endif
     PolynomialND< Eigen::Matrix< float, 1, 3 >, float >
     operator* (const PolynomialND< Eigen::Matrix< float, 1, 3 >, float >& polynomial,
                const Polynomial< float >& p);
 # if !defined(SWIGJAVA)
-    //! @copydoc operator*(const PolynomialND<Eigen::Matrix3d >&, const Polynomial<>&)
+    //! @copydoc rw::math::operator*(const PolynomialND<Eigen::Matrix3d >&, const Polynomial<>&)
 
-    #endif 
+    #endif
     PolynomialND< Eigen::Matrix3f, float >
     operator* (const PolynomialND< Eigen::Matrix3f, float >& polynomial,
                const Polynomial< float >& p);

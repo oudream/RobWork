@@ -56,6 +56,7 @@ namespace rwsimlibs { namespace bullet {
     class BtTactileSensor;
 
     //! @addtogroup rwsimlibs_bullet
+    //! @{
     /**
      * @brief A physics engine that uses Bullet Physics as the underlying engine.
      */

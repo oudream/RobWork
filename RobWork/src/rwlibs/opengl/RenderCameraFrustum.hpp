@@ -25,7 +25,7 @@
 
 namespace rwlibs { namespace opengl {
     /** @addtogroup opengl */
-    /*@{*/
+    //! @{
     /**
      * @brief Render drawing a collection of lines
      */
@@ -45,8 +45,7 @@ namespace rwlibs { namespace opengl {
          */
         virtual ~RenderCameraFrustum ();
 
-        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info,
-        //! DrawableNode::DrawType type, double alpha) const
+        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info, DrawableNode::DrawType type, double alpha) const
         void draw (const rw::graphics::DrawableNode::RenderInfo& info,
                    rw::graphics::DrawableNode::DrawType type, double alpha) const;
 

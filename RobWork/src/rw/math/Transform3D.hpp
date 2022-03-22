@@ -90,7 +90,7 @@ namespace rw { namespace math {
 
         /**
          * @brief Copy Constructor
-         * @param Transform3D [in] Values to initialize the transform
+         * @param t [in] Values to initialize the transform
          */
         Transform3D (const rw::math::Transform3D< T >& t) : _d (t._d), _R (t._R) {}
 
@@ -106,7 +106,7 @@ namespace rw { namespace math {
         Transform3D (const rw::math::Vector3D< T >& d, const rw::math::Rotation3DVector< T >& r) :
             _d (d), _R (r.toRotation3D ())
         {}
-        
+
 
         /**
          * @brief Creates a Transform3D from matrix_expression

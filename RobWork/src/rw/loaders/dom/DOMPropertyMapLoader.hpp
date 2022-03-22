@@ -132,7 +132,7 @@ namespace rw { namespace loaders {
         virtual ~DOMPropertyMapLoader ();
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::loaders
 

@@ -28,7 +28,7 @@
 #endif
 namespace rw { namespace geometry {
     //! @addtogroup geometry
-    // @{
+    //! @{
 
     /**
      * @brief A simple point cloud data structure. Points may be ordered or not. An ordered set is

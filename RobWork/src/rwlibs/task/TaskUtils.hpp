@@ -65,7 +65,7 @@ namespace rwlibs { namespace task {
         TaskUtils (){};
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rwlibs::task
 

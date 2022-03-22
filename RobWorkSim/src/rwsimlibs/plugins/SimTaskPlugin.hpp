@@ -45,7 +45,8 @@ class SimTaskPlugin : public rws::RobWorkStudioPlugin, private Ui::SimTaskPlugin
 {
     Q_OBJECT
     Q_INTERFACES (rws::RobWorkStudioPlugin)
-    Q_PLUGIN_METADATA (IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "SimTaskPlugin.json")
+    Q_PLUGIN_METADATA (IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "SimTaskPlugin.json");
+
   public:
     /**
      * @brief constructor

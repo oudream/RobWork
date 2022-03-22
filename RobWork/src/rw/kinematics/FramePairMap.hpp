@@ -40,7 +40,7 @@ namespace rw { namespace kinematics {
         //! @copydoc rw::common::PairMap::PairMap(const T2&)
         FramePairMap (const T& defaultVal) : rw::common::PairMap< rw::core::Ptr<const Frame>, T > (defaultVal) {}
     };
-    /**@}*/
+    /* @} */
 
 }}    // namespace rw::kinematics
 

@@ -90,7 +90,7 @@ namespace rw { namespace loaders {
         static const Initializer initializer;
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::loaders
 

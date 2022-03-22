@@ -8,7 +8,7 @@ Introduction
 
 This guide shows the steps for building the RobWork packages on a
 Windows platform. The guide is written based on a setup with Windows 10
-and Visual Studio 2017 and the guide is last revised in April 2020. If
+and Visual Studio 2017 and the guide is last revised in March 2022. If
 you have any suggestions or additions to the guide, please post them on
 the issue tracker at https://gitlab.com/sdurobotics/RobWork/issues .
 
@@ -17,10 +17,9 @@ RobWork is basically multiple projects:
 - RobWork : is the core part including math, kinematics, planning and so on.
 - RobWorkStudio : is the GUI which enable visualization and more user friendly interfaces through gui plugins
 - RobWorkSim : is an extension to the RobWork core functionality which adds dynamic simulation of bodies, devices and several tactile sensors.
-- RobWorkHardware : is mostly drivers (with RobWork datatypes) for common hardware, or hardware on which RobWork platforms have been built eg. SDH, cameras, CAN-devices, the Universal robot arm, serial port...
 
-Note that RobWork is needed to run RobWorkStudio, RobWorkSim and
-RobWorkHardware. Therefore it is not possible to use these, without
+Note that RobWork is needed to run RobWorkStudio and RobWorkSim.
+Therefore it is not possible to use these, without
 having RobWork installed on the machine.
 
 Requirements
@@ -28,7 +27,7 @@ Requirements
 
 It is expected that you have a system with:
 
--  Windows 7, 8 or 10
+-  Windows 10 or 11
 -  64 bits
 -  20GB available disk space (should be enough for build tools,
    dependencies and all the RobWork packages).
@@ -152,8 +151,8 @@ located in the directory where you want to install RobWork)
 
     git clone https://gitlab.com/sdurobotics/RobWork.git .
 
-There should now be RobWork, RobWorkStudio, RobWorkSim and
-RobWorkHardware folders inside the target directory.
+There should now be RobWork, RobWorkStudio and RobWorkSim
+folders inside the target directory.
 
 Compiling RobWork
 -----------------
@@ -233,7 +232,7 @@ layout:
 
 .. figure:: ../../gfx/installation/RW_layout.png
 
-    Directory layout of RobWork. Layout is similar for RobWorkStudio, RobWorkSim and RobWorkHardware. Notice the bin and libs folders have been created and populated after the build in Visual Studio.
+    Directory layout of RobWork. Layout is similar for RobWorkStudio and RobWorkSim. Notice the bin and libs folders have been created and populated after the build in Visual Studio.
 
 The bin folder will hold the compiled executables (for RobWork this will
 be unit test executables) and DLL's for shared libraries.

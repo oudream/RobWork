@@ -122,7 +122,7 @@ namespace rw { namespace models {
         rw::core::PropertyMap _propertyMap;
     };
 
-    /** @} */
+    /* @} */
 }}    // namespace rw::models
 
 #endif    // end include guard

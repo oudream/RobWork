@@ -127,7 +127,7 @@ namespace rw { namespace loaders {
         static void save (const rw::core::PropertyValueBase& value, rw::core::DOMElem::Ptr parent);
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::loaders
 

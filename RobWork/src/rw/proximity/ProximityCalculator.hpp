@@ -147,7 +147,7 @@ namespace rw { namespace proximity {
          * For DistanceMultiStrategy the tolerance is used which is the maximum distance allowed for
          * the result to be recorded. if not given the tolerance is set to the largest finite double
          *
-         * @param result [in/out] Defines parameters for the ProximityCalculation, stores the
+         * @param results [in/out] Defines parameters for the ProximityCalculation, stores the
          * results and also enables caching inbetween calls.
          * @return If no result is available an empty ProximityStrategyData is returned. else for
          * Collisions the first contact is returned and for distance the shortest distance is
@@ -267,7 +267,8 @@ namespace rw { namespace proximity {
 
         /**
          * @brief Get the geometry from its ID
-         * @param ID [in] the ID of the geometry
+         * @param frame [in] the frame of the geometry
+         * @param geometryId [in] the ID of the geometry
          * @return Pointer to the geometry
          */
         rw::core::Ptr< rw::geometry::Geometry >

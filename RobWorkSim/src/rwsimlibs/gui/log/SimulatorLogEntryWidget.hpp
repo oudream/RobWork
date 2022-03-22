@@ -138,7 +138,7 @@ namespace rwsimlibs { namespace gui {
             virtual bool accepts (rw::core::Ptr< const rwsim::log::SimulatorLog > entry) const = 0;
 
           protected:
-            Dispatcher (){};
+            Dispatcher (){}
         };
 
         /**

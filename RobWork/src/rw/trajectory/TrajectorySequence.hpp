@@ -292,7 +292,7 @@ namespace rw { namespace trajectory {
         }
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::trajectory
 

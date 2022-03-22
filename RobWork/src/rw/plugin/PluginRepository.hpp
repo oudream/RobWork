@@ -143,7 +143,7 @@ namespace rw { namespace plugin {
         std::vector< boost::function< void (void) > > _listeners;
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::plugin
 

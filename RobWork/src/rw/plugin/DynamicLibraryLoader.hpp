@@ -75,7 +75,7 @@ namespace rw { namespace plugin {
         const std::string _funcname;
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::plugin
 

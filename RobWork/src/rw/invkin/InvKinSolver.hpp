@@ -80,7 +80,7 @@ namespace rw { namespace invkin {
         virtual rw::core::Ptr< const rw::kinematics::Frame > getTCP () const = 0;
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::invkin
 

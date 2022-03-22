@@ -5,7 +5,6 @@ Dynamic WorkCell XML File Format  {#page_xml_dynamicworkcell_format}
 
 # Introduction # {#sec_rwsimxml_intro}
  The dynamic workcell (DWC) XML file format have suffix \c .dwc.xml and follow the rules of standard XML.
-See also the \ref sec_rwsim_xml_fileformat "section about dynamic workcells" in the manual.
 A dynamic workcell can be loaded with rwsim::loaders::DynamicWorkCellLoader::load() :
 
 	DynamicWorkCell::Ptr dwc = DynamicWorkCellLoader::load("DynamicWorkCellFile.dwc.xml");

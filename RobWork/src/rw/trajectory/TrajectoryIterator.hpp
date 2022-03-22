@@ -188,7 +188,7 @@ namespace rw { namespace trajectory {
         virtual T ddx () const = 0;
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::trajectory
 

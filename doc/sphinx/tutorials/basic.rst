@@ -18,8 +18,6 @@ Today the project is more mature and used by both researchers, Ph.D. students, m
 robotics students. RobWork is mainly devided into 2 different parts. The basic
 framework named RobWork consist of basic mathematics used for robots and algorithms — e.g.
 motion planning and inverse kinematics.
-The second part of the framework named RobWorkHardware contains drivers and code for
-communicating with robots, cameras, canbus and others.
 The major goal of the framework is to:
 
 - Provide a single framework for offline and online robot programming including modelling, simulation and (realtime)control of robotics

@@ -29,7 +29,7 @@
 namespace rw { namespace geometry {
 
     //! @addtogroup geometry
-    // @{
+    //! @{
 
     /**
      * @brief defines an interface for a geometric shape that is defined

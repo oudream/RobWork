@@ -78,7 +78,7 @@ namespace rwlibs { namespace pathoptimization {
         rw::core::Ptr< const rw::proximity::DistanceCalculator > _distancecalculator;
     };
 
-    /** @} */
+    /* @} */
 }}    // namespace rwlibs::pathoptimization
 
 #endif    //#ifndef RWLIBS_PATHOPTIMIZATION_MINIMUMCLEARANCECALCULATOR_HPP

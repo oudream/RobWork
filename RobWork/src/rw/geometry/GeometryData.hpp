@@ -22,12 +22,12 @@
 #include <rw/core/Ptr.hpp>
 
 #include <string>
-#endif 
+#endif
 //! @file GeometryData.hpp
 
 namespace rw { namespace geometry {
     //! @addtogroup geometry
-    // @{
+    //! @{
 
     class TriMesh;
 

@@ -20,8 +20,6 @@ external dependencies.
  - RobWork - the core package with only one mandatory dependencies: *Boost* 
  - RobWorkStudio - the visualization package which adds one additional dependency on *Qt*
  - RobWorkSim - the dynamic simulation package which only adds additional optional dependencies such as *ODE* and *Bullet* 
- - RobWorkHardware - the hardware interface package which only adds additional optional dependencies which are dictated
-   by the actual hardware requirements.
 
 The figure below shows a structural overview of RobWork and how
 it is to be applied in applications. The four layers do not
@@ -38,7 +36,6 @@ Example code are found in the the following directories:
 - *RobWork/example*
 - *RobWorkStudio/example*
 - *RobWorkSim/example*
-- *RobWorkHardware/example* 
 
 Each example should exist in both a C++, Python, Java and Lua version.
 

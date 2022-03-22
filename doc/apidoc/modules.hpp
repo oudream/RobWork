@@ -15,6 +15,10 @@
  */
 namespace rw {
 	/**
+	 * @brief Most basic types for RobWork.
+	 */
+	namespace core {}
+	/**
 	 * @brief Matrices, vectors, configurations, and more.
 	 */
 	namespace math {}
@@ -175,7 +179,15 @@ namespace rwlibs {
 /**
 @defgroup rw RobWork
 @{
-    @copydoc rw
+    * @brief RobWork library.
+    *
+    * All classes and interfaces in this group only have dependencies on boost, xerces and
+    * STL. It is considered the core of the RobWork project.
+
+    @defgroup core Core
+    @{
+        @copydoc rw::core
+    @}
 
     @defgroup common Common utils
     @{
@@ -256,7 +268,9 @@ namespace rwlibs {
 
 @defgroup rwlibs RobWork Extension Libraries
 @{
-    @copydoc rwlibs
+    * @brief Extension libraries for RobWork.
+    *
+    * Classes in this group can have specific dependencies on external libraries.
 
     @defgroup algorithms algorithms
     @{
@@ -271,6 +285,11 @@ namespace rwlibs {
     @defgroup rwlibs_geometry Geometry
     @{
         @copydoc rwlibs::geometry
+    @}
+
+    @defgroup mathematica Mathematica
+    @{
+        @copydoc rwlibs::mathematica
     @}
 
     @defgroup proximitystrategies proximitystrategies
@@ -412,6 +431,9 @@ namespace log {}
  */
 namespace simulator {}
 
+//! @brief Utilities.
+namespace util {}
+
 }
 
 
@@ -420,6 +442,9 @@ namespace rwsimlibs {
 
 //! @brief The Bullet engine implementation.
 namespace bullet {}
+
+//! @brief The Open Dynamics Engine implementation.
+namespace ode {}
 
 //! @brief GUI elements related to RobWorkSim.
 namespace gui {}
@@ -450,6 +475,9 @@ namespace rwpe {}
  * their own engine-specific tests. Users can also define specific tests that fits specific applications.
  */
 namespace test {}
+
+//! @brief Standalone tools related to simulation.
+namespace tools {}
 
 }
 
@@ -499,6 +527,11 @@ namespace test {}
         @copydoc rwsim::drawable
     @}
 
+    @defgroup rwsim_util Utilities
+    @{
+        @copydoc rwsim::util
+    @}
+
 @}
 
 @defgroup rwsimlibs RobWorkSim libraries
@@ -508,6 +541,11 @@ namespace test {}
     @defgroup rwsimlibs_bullet Bullet
     @{
         @copydoc rwsimlibs::bullet
+    @}
+
+    @defgroup rwsimlibs_ode Open Dynamics Engine
+    @{
+        @copydoc rwsimlibs::ode
     @}
 
     @defgroup rwsimlibs_gui RobWorkSim GUI
@@ -530,6 +568,11 @@ namespace test {}
         @copydoc rwsimlibs::test
     @}
 
+    @defgroup rwsimlibs_tools Tools related to dynamic simulation.
+    @{
+        @copydoc rwsimlibs::tools
+    @}
+
 @}
 
 @defgroup rwsiml RobWorkSim Extension Libraries
@@ -537,102 +580,6 @@ namespace test {}
     @brief This group should contain all extension points of RobWork.
 @}
 */
-
-//-------------------------------------------------------------------------------------------------------
-//											 ROBWORKHARDWARE
-//-------------------------------------------------------------------------------------------------------
-
-
-/**
- * @brief RobWorkHardware is a collection of extensions to RobWork which allow RobWork to
- * connect to real hardware.
- *
- * As such each extension may have several dependencies.
- */
-namespace rwhw {
-    /**
-     * @brief Camera drivers
-     */
-    namespace camera {}
-}
-
-/**
-
-@defgroup rwhw RobWorkHardware
-@{
-    @copydoc rwhw
-
-    @defgroup camera camera
-    @{
-        @brief Camera driver wrappers.
-    @}
-
-    @defgroup can can
-    @{
-        @brief CAN bus driver wrappers.
-    @}
-
-    @defgroup crsA465 crsA465
-    @{
-        @brief driver wrapper for the crsA465 robot.
-    @}
-
-    @defgroup Fanuc Fanuc
-    @{
-        @brief Interface for communicating with Fanuc controller through proprietary software
-        from Gibotech A/S.
-    @}
-
-    @defgroup katana katana
-    @{
-        @brief driver wrapper for katana robot.
-    @}
-
-    @defgroup MotomanIA20 MotomanIA20
-    @{
-        @brief Driver for motoman IA20
-    @}
-
-    @defgroup dockwelder dockwelder
-    @{
-        @brief Driver interface for the dockwelder robot based on ethernet.
-    @}
-
-    @defgroup PowerCube PowerCube
-    @{
-        @brief Driver interface through RS232 and CAN bus. Works for eqrlier versions of the
-        PowerCube interface.
-    @}
-
-    @defgroup sdh sdh
-    @{
-        @brief Wrapper for SDH the 3-finger dextrous hand from schunk.
-    @}
-
-    @defgroup serialport serialport
-    @{
-        @brief multi platform serial port interface. Rather simplistic but usefull for most stuff.
-    @}
-
-    @defgroup sick sick
-    @{
-        @brief driver interface for sick scanner
-    @}
-
-    @defgroup swissranger swissranger
-    @{
-        @brief Driver wrapper for SwissRanger (early version)
-    @}
-
-    @defgroup tactile tactile
-    @{
-        @brief Driver wrapper for Weiss tactile array sensors (early version only)
-    @}
-
-@}
-
-*/
-
 
 
 /**

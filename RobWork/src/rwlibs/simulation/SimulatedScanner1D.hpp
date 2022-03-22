@@ -29,7 +29,7 @@
 #endif
 namespace rwlibs { namespace simulation {
     //! @addtogroup simulation
-    // @{
+    //! @{
 
     /**
      * @brief A simulated line scanner.

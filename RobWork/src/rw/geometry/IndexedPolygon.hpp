@@ -156,9 +156,9 @@ namespace rw { namespace geometry {
         }
 
         /**
-         * @copydoc IndexedPolygon::size
+         * @copydoc rw::geometry::IndexedPolygon<T>::size
          */
-        size_t size () const { return _vertices.size (); };
+        size_t size () const { return _vertices.size (); }
     };
 
 #if defined(SWIG)

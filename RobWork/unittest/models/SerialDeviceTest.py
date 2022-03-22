@@ -114,8 +114,8 @@ class SerialDeciveTest(unittest.TestCase):
         simple.setQ(qs,state)
 
         self.assertEqual(simple.getQ(state)[0] , math.pi/2.0)
-       
-        self.assertEqual(np.linalg.norm( joint1.getTransform(state).P().asNumpy()), 0)
+        T = joint1.getTransform(state)
+        self.assertEqual(np.linalg.norm( T.P().asNumpy()), 0)
         self.assertLess( np.linalg.norm( sdurw_math.EAA(0.0, 0.0, math.pi/2.0).toRotation3D().asNumpy() - sdurw_math.EAA(0.0, 0.0, math.pi/2.0).toRotation3D().asNumpy() ), 1e-6)
 
         bTe_s = simple.baseTend(state)

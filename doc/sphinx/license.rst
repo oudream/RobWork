@@ -222,37 +222,6 @@ Copyright: 1995-2017 Jean-loup Gailly & Mark Adler
 
 `Zlib license (Zlib) <https://www.zlib.net/zlib_license.html>`_
 
-DCAM
-----
-
-Driver used for IEEE 1394 FireWire cameras.
-
-Distributed with RobWork under: `RobWorkHardware/ext/dcam/win/cmu1394 <https://gitlab.com/sdurobotics/RobWork/tree/master/RobWorkHardware/ext/dcam/win/cmu1394>`_
-
-Copyright by
-
-- 2006 Christopher Baker. `Robotics Institute, Carnegie Mellon University <https://www.ri.cmu.edu>`_ 
-- 2000 Iwan Ulrich. `Robotics Institute, Carnegie Mellon University <https://www.ri.cmu.edu>`_ 
-
-`License (LGPL-2.1) <https://gitlab.com/sdurobotics/RobWork/tree/master/RobWorkHardware/ext/dcam/win/cmu1394>`_
-
-SwissRanger
------------
-
-Driver used for CSEM's SwissRanger 2 camera.
-
-Distributed with RobWork under: `RobWorkHardware/ext/swissranger/linux <https://gitlab.com/sdurobotics/RobWork/tree/master/RobWorkHardware/ext/swissranger/linux>`_
-
-Copyright by
-
-- 2004 Gabriel Gruener, `CSEM <https://www.csem.ch>`_
-
-`SwissRanger license (CSEM Proprietary!) <https://gitlab.com/sdurobotics/RobWork/blob/master/RobWorkHardware/ext/swissranger/linux/swissranger.h>`_
-
-.. warning::
-
-   This is a proprietary license and this component is likely to be removed in the near future.
-
 QtPropertyBrowser
 -----------------
 

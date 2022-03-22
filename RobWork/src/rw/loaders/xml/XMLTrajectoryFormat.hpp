@@ -176,10 +176,10 @@ namespace rw { namespace loaders {
       private:
         static const Initializer initializer;
 
-        XMLTrajectoryFormat (){};
+        XMLTrajectoryFormat (){}
     };
 }}    // namespace rw::loaders
 
-/** @} */
+/* @} */
 
 #endif    // End include guard

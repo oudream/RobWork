@@ -16,7 +16,7 @@ to compile it:
 First, go to the unpacked Xerces folder and create two folders inside
 it, called build and xerces-install:
 
-.. figure:: ../../gfx/installation/Xerces_createbuildfolder.png
+.. figure:: ../../../gfx/installation/Xerces_createbuildfolder.png
 
     The Xerces source. Create empty folder build and xerces-install manually.
 
@@ -30,17 +30,17 @@ newly created build folder. Now run the following command:
 If CMake succeeds, go to the build folder, and open xerces-c.sln. Then
 chosse Release mode and 64 bit build as follows:
 
-.. figure:: ../../gfx/installation/xerces_install_1.png
+.. figure:: ../../../gfx/installation/xerces_install_1.png
 
     Choose the 'Release' configuration (alternatively choose 'Static Release' if you prefer static libraries).
 
-.. figure:: ../../gfx/installation/xerces_install_2.png
+.. figure:: ../../../gfx/installation/xerces_install_2.png
 
     Choose 64 bit build.
 
 Build the XercesLib target:
 
-.. figure:: ../../gfx/installation/xerces_install_3.png
+.. figure:: ../../../gfx/installation/xerces_install_3.png
 
     Right click XercesLib in the SolutionExplorer and click 'Build'.
 
@@ -63,7 +63,8 @@ Old installation procedure (Xerces 3.1.4 and earlier):
 Compile Xerces
 --------------
 
-.. code-block:: none
+.. code-block:: batch
+
     set Install_DIR=C:\Local
     svn checkout https://svn.apache.org/repos/asf/xerces/c/tags/Xerces-C_3_2_2/
     cd Xerces-C_3_2_2

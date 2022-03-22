@@ -597,7 +597,7 @@ namespace rw { namespace math {
 #endif
 
 
-    /**@}*/
+    /* @} */
 }}    // namespace rw::math
 
 #endif    // end include guard

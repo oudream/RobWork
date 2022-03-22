@@ -17,13 +17,9 @@ RobWork is basically multiple projects:
 - RobWorkSim :
   is an extension to the RobWork core functionality which adds dynamic simulation of bodies,
   devices and several tactile sensors.
-- RobWorkHardware :
-  is mostly drivers (with RobWork datatypes) for common hardware,
-  or hardware on which RobWork platforms have been built eg. SDH, cameras,
-  CAN-devices, the Universal robot arm, serial port...
 
-Note that RobWork is needed to run RobWorkStudio, RobWorkSim and
-RobWorkHardware. Therefore it is not possible to use these, without
+Note that RobWork is needed to run RobWorkStudio and RobWorkSim.
+Therefore it is not possible to use these, without
 having RobWork installed on the machine.
 
 Installing dependencies
@@ -231,14 +227,6 @@ For RobWorkSim:
     cmake -DCMAKE_BUILD_TYPE=Release ../../RobWorkSim
     make -j4
 
-For RobWorkHardware:
-
-.. code-block:: shell
-
-    cd ~/RobWork/Build/RWHardware
-    cmake -DCMAKE_BUILD_TYPE=Release ../../RobWorkHardware
-    make -j4
-
 Finally, we need to add the following paths to ~/.bash_profile:
 
 .. code:: shell
@@ -246,12 +234,11 @@ Finally, we need to add the following paths to ~/.bash_profile:
     #ROBWORK#
     export RW_ROOT=~/RobWork/RobWork/
     export RWS_ROOT=~/RobWork/RobWorkStudio/
-    export RWHW_ROOT=~/RobWork/RobWorkHardware/
     export RWSIM_ROOT=~/RobWork/RobWorkSim/
 
 Remember to only add paths to the components you have actually
 installed. Ie. if you only installed RobWork and RobWorkStudio, the
-paths for RobWorkSim and RobWorkHardware should not be set.
+paths for RobWorkSim should not be set.
 
 By setting these environment variables, it will be possible for other
 projects to find the RobWork projects.

@@ -79,7 +79,7 @@ namespace rw { namespace loaders {
         readFramePatternAttributes (rw::core::Ptr< rw::core::DOMElem > element);
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::loaders
 

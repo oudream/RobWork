@@ -403,7 +403,7 @@ namespace rw { namespace loaders {
         }
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::loaders
 

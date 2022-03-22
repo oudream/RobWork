@@ -67,7 +67,7 @@ struct RestingConfig
     RestingConfig (const rw::kinematics::State& state, const std::string& str) :
         _state (state), _desc (str)
     {}
-    RestingConfig (){};
+    RestingConfig (){}
     rw::kinematics::State _state;
     std::string _desc;
 };
@@ -82,7 +82,7 @@ class GraspTableGeneratorPlugin : public rws::RobWorkStudioPlugin
     Q_OBJECT
     Q_INTERFACES (rws::RobWorkStudioPlugin)
     Q_PLUGIN_METADATA (IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE
-                           "GraspTableGeneratorPlugin.json")
+                           "GraspTableGeneratorPlugin.json");
   public:
     typedef std::vector< Eigen::MatrixXf > TactileSensorData;
 

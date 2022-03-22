@@ -66,7 +66,7 @@ namespace rw { namespace plugin {
      */
     typedef rw::core::Ptr< PluginFactoryBase > PluginFactoryBasePtr;
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::plugin
 

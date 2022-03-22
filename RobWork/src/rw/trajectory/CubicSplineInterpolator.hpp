@@ -51,7 +51,7 @@ namespace rw { namespace trajectory {
         virtual ~CubicSplineInterpolator () {}
 
         /**
-         * @copydoc Interpolator::x
+         * @copydoc rw::trajectory::Interpolator::x
          *
          * @note The cubic polynomial is given by a 3-degree polynomial:
          * \f$ \bf{f}(t)= \bf{a} + \bf{b}\cdot t + \bf{c}\cdot t^2 \bf{d}\cdot t^3 \f$
@@ -65,7 +65,7 @@ namespace rw { namespace trajectory {
         }
 
         /**
-         * @copydoc Interpolator::dx
+         * @copydoc rw::trajectory::Interpolator::dx
          *
          * @note The derivative is a 2-degree polynomial:
          * \f$ \bf{df}(t)= \bf{b} + 2\cdot \bf{c}\cdot t + 3\cdot \bf{d}\cdot t^2 \f$
@@ -73,7 +73,7 @@ namespace rw { namespace trajectory {
         T dx (double t) const { return _b + _c * 2 * t + _d * 3 * t * t; }
 
         /**
-         * @copydoc Interpolator::ddx
+         * @copydoc rw::trajectory::Interpolator::ddx
          *
          * @note The second derivative is a 1-degree polynomial:
          * \f$ \bf{df}(t)= 2\cdot \bf{c} + 6\cdot \bf{d}\cdot t \f$
@@ -81,7 +81,7 @@ namespace rw { namespace trajectory {
         T ddx (double t) const { return _c * 2 + _d * t * 6; }
 
         /**
-         * @copydoc Interpolator::duration
+         * @copydoc rw::trajectory::Interpolator::duration
          */
         double duration () const { return _duration; }
 
@@ -247,7 +247,7 @@ namespace rw { namespace trajectory {
         double _duration;
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::trajectory
 

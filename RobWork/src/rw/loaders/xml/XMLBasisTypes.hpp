@@ -880,10 +880,10 @@ namespace rw { namespace loaders {
       private:
         static const Initializer initializer;
 
-        XMLBasisTypes (){};
+        XMLBasisTypes (){}
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::loaders
 

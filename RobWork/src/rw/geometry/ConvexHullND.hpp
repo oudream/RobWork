@@ -23,12 +23,12 @@
 #include <rw/math/VectorND.hpp>
 
 #include <vector>
-#endif 
+#endif
 //! @file ConvexHullND.hpp
 
 namespace rw { namespace geometry {
     //! @addtogroup geometry
-    // @{
+    //! @{
 
     /**
      * @brief interface for convexhull calculators on 3d point sets

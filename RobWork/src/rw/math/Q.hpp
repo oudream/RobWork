@@ -481,16 +481,16 @@ namespace rw { namespace math {
     template<> Q::Q (int n, const double* values);
 
     /**
-     * @brief Creates a Q of length \b n and initialize all values in \Q to \b value
+     * @brief Creates a Q of length \b n and initialize all values in Q to \b value
      * @param n [in] Length of q.
-     * @param value [in] Value to initialize
+     * @param values [in] Value to initialize
      */
     template<> Q::Q (int n, double values);
 
     /**
-     * @brief Creates a Q of length \b n and initialize all values in \Q to \b value
+     * @brief Creates a Q of length \b n and initialize all values in Q to \b value
      * @param n [in] Length of q.
-     * @param value [in] Value to initialize
+     * @param values [in] Value to initialize
      */
     template<> Q::Q (size_t n, double values);
 

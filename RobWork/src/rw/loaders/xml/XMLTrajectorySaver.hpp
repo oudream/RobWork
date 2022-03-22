@@ -145,10 +145,10 @@ namespace rw { namespace loaders {
       private:
         static const Initializer initializer;
 
-        XMLTrajectorySaver (){};
+        XMLTrajectorySaver (){}
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::loaders
 

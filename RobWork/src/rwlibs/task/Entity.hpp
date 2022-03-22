@@ -185,7 +185,7 @@ namespace rwlibs { namespace task {
         std::string _id;
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rwlibs::task
 

@@ -26,7 +26,7 @@
 #include <rw/trajectory/Timed.hpp>
 
 #include <string>
-#endif 
+#endif
 // Forward declarations
 namespace rw { namespace models {
     class WorkCell;
@@ -107,7 +107,7 @@ namespace rw { namespace loaders {
                                                         const std::string& file);
     };
 
-    /**@}*/
+    /* @} */
 }}    // namespace rw::loaders
 
 #endif    // end include guard

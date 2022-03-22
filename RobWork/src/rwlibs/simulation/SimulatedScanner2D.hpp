@@ -31,7 +31,7 @@ namespace rwlibs { namespace simulation {
     class Simulator;
     class FrameGrabber25D;
     //! @addtogroup simulation
-    // @{
+    //! @{
 
     /**
      * @brief Simulated scanner in 2D.

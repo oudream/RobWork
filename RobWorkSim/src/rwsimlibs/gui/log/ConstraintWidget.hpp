@@ -42,7 +42,7 @@ class ConstraintWidget;
 }
 
 namespace rwsimlibs { namespace gui {
-    //! @addtogroup rwsimlib_gui
+    //! @addtogroup rwsimlibs_gui
 
     //! @{
     /**

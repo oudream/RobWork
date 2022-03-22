@@ -5,8 +5,6 @@ RW XML File Format  {#page_xml_workcell_format}
 
 # Introduction # {#sec_rwxml_intro}
  The workcell XML file format have suffix \c .xml and follow the rules of standard XML.
-\ref sec_rw_manual_load_workcell "Tag workcell files are loaded"
-with rw::loaders::WorkCellLoader::load().
 
 The workcell file describes workcell elements such as frames, joints, DAFs, devices and the
 properties that relate to these elements such as name, parent name, joint limits,

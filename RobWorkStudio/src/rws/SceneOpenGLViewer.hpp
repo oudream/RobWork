@@ -166,8 +166,7 @@ class SceneOpenGLViewer : public QOpenGLWidget, public SceneViewerWidget
     //! @copydoc rw::graphics::SceneViewer::pickDrawable(int,int)
     rw::graphics::DrawableNode::Ptr pickDrawable (int x, int y);
 
-    //! @copydoc
-    //! rw::graphics::SceneViewer::pickDrawable(rw::graphics::SceneGraph::RenderInfo&,int,int)
+    //! @copydoc rw::graphics::SceneViewer::pickDrawable(rw::graphics::SceneGraph::RenderInfo&,int,int)
     rw::graphics::DrawableNode::Ptr pickDrawable (rw::graphics::SceneGraph::RenderInfo& info, int x,
                                                   int y);
 

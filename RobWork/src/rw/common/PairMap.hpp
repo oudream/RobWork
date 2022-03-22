@@ -174,10 +174,10 @@ namespace rw { namespace common {
         }
 
         /**
-                  @brief Erase a pair from the map
-                  @param f1 [in] the first frame in the pair for which to erase from the map.
-          @param f2 [in] the second frame in the pair for which to erase from the map.
-                 */
+          * @brief Erase a pair from the map
+          * @param f1 [in] the first frame in the pair for which to erase from the map.
+          * @param f2 [in] the second frame in the pair for which to erase from the map.
+          */
         void erase (T1 f1, T1 f2) { erase (Pair (f1, f2)); }
 
         /**
@@ -207,7 +207,7 @@ namespace rw { namespace common {
         T2 _defaultVal;
         std::map< Pair, T2 > _map;
     };
-    /**@}*/
+    /* @} */
 }}    // namespace rw::common
 
 #endif /* RW_COMMON_PAIRMAP_HPP_ */

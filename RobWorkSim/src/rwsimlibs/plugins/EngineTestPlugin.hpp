@@ -64,7 +64,7 @@ namespace rwsimlibs { namespace plugins {
         Q_OBJECT
         Q_INTERFACES (rws::RobWorkStudioPlugin)
         Q_PLUGIN_METADATA (IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE
-                               "EngineTestPlugin.json")
+                               "EngineTestPlugin.json");
       public:
         //! @brief Constructor.
         EngineTestPlugin ();

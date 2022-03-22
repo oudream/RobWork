@@ -28,6 +28,7 @@
 #endif
 
 namespace rw { namespace math {
+    /*@{*/
 
     /**
      * @brief Configuration vector

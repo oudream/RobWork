@@ -147,7 +147,7 @@ namespace rw { namespace loaders {
                 xercesc::DOMElement* parent, xercesc::DOMDocument* doc);
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::loaders
 

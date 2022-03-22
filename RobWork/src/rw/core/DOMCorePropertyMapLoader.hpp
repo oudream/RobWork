@@ -115,7 +115,7 @@ namespace rw { namespace core {
         virtual ~DOMCorePropertyMapLoader ();
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::core
 

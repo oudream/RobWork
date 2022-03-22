@@ -36,7 +36,6 @@ as for practical robot applications. Features of the library include:
 Besides the core part, RobWork has a number of add-ons including
 - RobWorkStudio which provides a graphical user interface
 - RobWorkSim which is a simulator.
-- RobWorkHardware which is a collection of hardware drivers that connect into RobWork
 
 Target audience of RobWork is:
 - Researchers who needs a common framework for experimental robotics
@@ -55,7 +54,6 @@ Other topics include
 - [Grasp Simulation](@ref page_rw_graspsimulation)
 - [Assembly Simulation](@ref page_rw_assemblysimulation)
 - [Plugins](@ref page_rw_plugins)
-- [Script Interface](@ref page_rw_scriptinterface)
 - [Softbody Simulation](@ref page_rw_softbodysimulation)
 
 # Download # {#sec_index_download}
@@ -68,7 +66,7 @@ RobWork license does not apply to these libraries.
 <!-- Adding a list of these libraries with links would be nice -->
 
 # References #
-<!-- Here we should add reference papers for RobWorkSim and RobWorkHardware - since these were not part of the initial release -->
+<!-- Here we should add reference papers for RobWorkSim - since these were not part of the initial release -->
 If you use RobWork in your research then please support us by referencing to one of the following papers:
 
     @ARTICLE{5756879,

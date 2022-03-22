@@ -146,7 +146,7 @@ namespace rwlibs { namespace task {
         TypeRepository ();
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rwlibs::task
 

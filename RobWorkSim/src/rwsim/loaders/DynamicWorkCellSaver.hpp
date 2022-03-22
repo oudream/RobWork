@@ -64,7 +64,7 @@ namespace rwsim { namespace loaders {
                           const rw::kinematics::State& state, std::ostream& ostream);
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::loaders
 

@@ -255,7 +255,8 @@ namespace rw { namespace proximity {
 
         /**
          * @brief Get the geometry from its ID
-         * @param ID [in] the ID of the geometry
+         * @param frame [in] the frame of the geometry
+         * @param geometryId [in] the ID of the geometry
          * @return Pointer to the geometry
          */
         rw::core::Ptr< rw::geometry::Geometry > getGeometry (rw::core::Ptr<rw::kinematics::Frame> frame,

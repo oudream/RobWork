@@ -66,7 +66,7 @@ if(TARGET sdurwsim_ode)
                            RW::sdurw_models RW::sdurw_kinematics RW::sdurw_math
     )
 
-    set(ODE_TEST_SRC ode/ODEControlTest.cpp ode/ODESimpleTest)
+    set(ODE_TEST_SRC ode/ODEControlTest.cpp ode/ODESimpleTest.cpp)
 
     add_executable(sdurwsim_ode-gtest ${ODE_TEST_SRC})
     target_link_libraries(sdurwsim_ode-gtest ${ODE_TEST_LIBRARIES})

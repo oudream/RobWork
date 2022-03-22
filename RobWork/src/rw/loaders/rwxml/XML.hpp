@@ -120,7 +120,7 @@ const Vector3D<> pos = XML::readVector3D(tree.get_child("Vector3D"));
         XML ();
     };
 
-    /**@}*/
+    /* @} */
 }}    // namespace rw::loaders
 
 #endif    // end include guard

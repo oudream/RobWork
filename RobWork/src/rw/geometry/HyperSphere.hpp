@@ -82,8 +82,7 @@ namespace rw { namespace geometry {
         /**
          * @brief Create a uniform distribution in spherical coordinates.
          *
-         * This implements the algorithm in [1], section 2.1, for dimensions \f$ 2 \leq K \leq 6\f$
-         * .
+         * This implements the algorithm in [1], section 2.1, for dimensions \f$ 2 \leq K \leq 6\f$.
          *
          * @param delta [in] the resolution.
          * @return list of vectors, \f$ [\theta_1 \theta_2 \dots \theta_{K-1}]^T\f$ , in spherical

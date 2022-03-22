@@ -1063,7 +1063,7 @@ namespace rw { namespace loaders {
         // static const UnitMap _Units;
     };
 
-    /** @} */
+    /* @} */
 
 }}        // namespace rw::loaders
 #endif    // end include guard

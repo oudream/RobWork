@@ -27,7 +27,7 @@
 namespace rwlibs { namespace opengl {
 
     //! @addtogroup opengl
-    // @{
+    //! @{
 
     /**
      * @brief RenderGeometry provide a class for visualizing Geometry objects.
@@ -81,8 +81,7 @@ namespace rwlibs { namespace opengl {
          */
         rw::geometry::Geometry::Ptr getGeometry () const { return _geometry; }
 
-        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info,
-        //! DrawableNode::DrawType type, double alpha) const
+        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info, DrawableNode::DrawType type, double alpha) const
         void draw (const rw::graphics::DrawableNode::RenderInfo& info,
                    rw::graphics::DrawableNode::DrawType type, double alpha) const;
 

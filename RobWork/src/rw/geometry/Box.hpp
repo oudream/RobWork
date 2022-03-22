@@ -26,7 +26,7 @@
 #endif
 namespace rw { namespace geometry {
     //! @addtogroup geometry
-    // @{
+    //! @{
     /**
      * @brief a box primitive, origin is in center of box
      */

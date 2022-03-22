@@ -74,7 +74,7 @@ namespace rw { namespace trajectory {
         virtual ~LloydHaywardBlend () {}
 
         /**
-         * @copydoc Blend::x
+         * @copydoc rw::trajectory::Blend<T>::x
          */
         virtual T x (double t) const
         {
@@ -96,7 +96,7 @@ namespace rw { namespace trajectory {
         }
 
         /**
-         * @copydoc Blend::dx
+         * @copydoc rw::trajectory::Blend::dx
          */
         virtual T dx (double t) const
         {
@@ -125,7 +125,7 @@ namespace rw { namespace trajectory {
         }
 
         /**
-         * @copydoc Blend::ddx
+         * @copydoc rw::trajectory::Blend::ddx
          */
         virtual T ddx (double t) const
         {
@@ -160,14 +160,14 @@ namespace rw { namespace trajectory {
         }
 
         /**
-         * @copydoc Blend::tau1()
+         * @copydoc rw::trajectory::Blend::tau1()
          *
          * @note For ParabolicBlend getTau1()==getTau2()
          */
         virtual double tau1 () const { return _tau; }
 
         /**
-         * @copydoc Blend::tau2()
+         * @copydoc rw::trajectory::Blend::tau2()
          *
          * @note For ParabolicBlend getTau1()==getTau2()
          */
@@ -367,7 +367,7 @@ namespace rw { namespace trajectory {
         LloydHaywardBlend< V > _blend;
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::trajectory
 

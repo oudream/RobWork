@@ -108,7 +108,7 @@ namespace rw { namespace trajectory {
         virtual ~InterpolatorTrajectory () {}
 
         /**
-         * @copydoc Trajectory::x
+         * @copydoc rw::trajectory::Trajectory::x
          */
         T x (double t) const
         {
@@ -496,7 +496,7 @@ namespace rw { namespace trajectory {
      */
     typedef InterpolatorTrajectory< rw::math::Q > QInterpolatorTrajectory;
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::trajectory
 

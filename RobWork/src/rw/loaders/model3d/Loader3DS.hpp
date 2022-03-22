@@ -29,7 +29,7 @@
 namespace rw { namespace loaders {
 
     //! @addtogroup graphics
-    // @{
+    //! @{
 
     /**
      * @brief This class loads 3DS geometry into a Model3D object.

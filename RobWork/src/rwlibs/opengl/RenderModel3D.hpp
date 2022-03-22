@@ -60,8 +60,7 @@ namespace rwlibs { namespace opengl {
         rw::graphics::Model3D::Ptr getModel () { return _model; };
 
         // Functions inherited from Render
-        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info,
-        //! DrawableNode::DrawType type, double alpha) const
+        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info, DrawableNode::DrawType type, double alpha) const
         void draw (const rw::graphics::DrawableNode::RenderInfo& info,
                    rw::graphics::DrawableNode::DrawType type, double alpha) const;
 
@@ -83,6 +82,7 @@ namespace rwlibs { namespace opengl {
          * @param info [in] state and rendering specific info
          * @param type [in] the drawtype which is being used
          * @param alpha [in] the alpha value to render with
+         * @param disableMaterials [in] true to disable materials, false otherwise.
          */
         void drawUsingSimple (const rw::graphics::DrawableNode::RenderInfo& info, DrawType type,
                               double alpha, bool disableMaterials = false) const;

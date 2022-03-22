@@ -186,7 +186,7 @@ namespace rw { namespace trajectory {
         double _tend;
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::trajectory
 

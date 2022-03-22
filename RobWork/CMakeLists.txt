@@ -27,7 +27,6 @@ endif()
 
 # The name of the project.
 project(RobWork)
-set(CMAKE_CXX_STANDARD 11)
 
 # set robwork root
 set(RW_ROOT ${CMAKE_CURRENT_SOURCE_DIR})

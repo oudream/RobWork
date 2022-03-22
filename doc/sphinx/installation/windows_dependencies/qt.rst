@@ -1,7 +1,7 @@
 Qt
 --
 
-RobWorkStudio requires to be installed. Only Qt5 is
+RobWorkStudio requires to be installed. Only Qt5 and Qt6 is
 supported. It is encouraged to use at least Qt 5.9. Download and install Qt from:
 
 https://www.qt.io
@@ -16,7 +16,7 @@ Run the Online installer for Windows, and select the components you
 want. Simply select your Visual Studio version under the version of Qt
 you want to use.
 
-.. figure:: ../../gfx/installation/Qt5_components.png
+.. figure:: ../../../gfx/installation/Qt5_components.png
 
     Choice of Qt components. It is enough to make a single selection with your Visual Studio version.
 
@@ -26,7 +26,7 @@ disk space.
 
 After installation you should have a folder with the following layout:
 
-.. figure:: ../../gfx/installation/Qt5_layout.png
+.. figure:: ../../../gfx/installation/Qt5_layout.png
 
     Qt5 directory layout.
 

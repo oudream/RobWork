@@ -26,7 +26,7 @@
 
 namespace rwlibs { namespace opengl {
     //! @addtogroup opengl
-    // @{
+    //! @{
 
     /**
      * @brief collection of utillities for rendering

@@ -1,4 +1,4 @@
-#include <rw/loaders/WorkCellFactory.hpp>
+#include <rw/loaders/WorkCellLoader.hpp>
 #include <rw/models/WorkCell.hpp>
 #include <rw/pathplanning/QConstraint.hpp>
 #include <rw/pathplanning/QIKSampler.hpp>

@@ -43,7 +43,7 @@ namespace rw { namespace geometry {
     class Geometry;
 
     /** @addtogroup geometry */
-    /*@{*/
+    //! @{
     /**
      * @brief Utility functions for calculating properties of geometry
      *

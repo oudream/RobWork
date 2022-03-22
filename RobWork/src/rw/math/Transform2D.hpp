@@ -124,8 +124,8 @@ namespace rw { namespace math {
         /**
            @brief Calculates @f$ \robabx{a}{c}{\mathbf{T}} =
            \robabx{a}{b}{\mathbf{T}} \robabx{b}{c}{\mathbf{T}} @f$
+           where this object is @f$ \robabx{a}{b}{\mathbf{T}} @f$.
 
-           @param aTb [in] @f$ \robabx{a}{b}{\mathbf{T}} @f$
            @param bTc [in] @f$ \robabx{b}{c}{\mathbf{T}} @f$
            @return @f$ \robabx{a}{c}{\mathbf{T}} @f$
 
@@ -148,9 +148,9 @@ namespace rw { namespace math {
         /**
            @brief Calculates @f$ \robax{a}{\mathbf{p}} =
            \robabx{a}{b}{\mathbf{T}} \robax{b}{\mathbf{p}} \f$ thus transforming
-           point @f$ \mathbf{p} @f$ from frame @f$ b @f$ to frame @f$ a @f$
+           point @f$ \mathbf{p} @f$ from frame @f$ b @f$ to frame @f$ a @f$.
+           This object is @f$ \robabx{a}{c}{\mathbf{T}} @f$.
 
-           @param aTb [in] @f$ \robabx{a}{c}{\mathbf{T}} @f$
            @param bP [in] @f$ \robax{b}{\mathbf{p}} @f$
            @return @f$ \robax{a}{\mathbf{p}} @f$
         */

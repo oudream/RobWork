@@ -432,7 +432,7 @@ namespace rwlibs { namespace task {
 
     extern template class CircularMotion< rw::math::Transform3D<> >;
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rwlibs::task
 

@@ -81,7 +81,7 @@ namespace rw { namespace trajectory {
         rw::math::Quaternion< T > _s1;
     };
 
-    /** @} */
+    /* @} */
 
 }}    // namespace rw::trajectory
 

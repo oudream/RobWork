@@ -33,7 +33,7 @@ namespace rw { namespace sensor {
 
 namespace rwlibs { namespace simulation {
     //! @addtogroup simulation
-    // @{
+    //! @{
 
     /**
      * @brief Simulates a Kinnect grabbing RGBD images.

@@ -35,12 +35,8 @@ namespace rwlibs { namespace pathplanners {
     /*@{*/
 
     /**
-       @brief SBL based planners.
-
-       @relates QToQPlanner
-       @relates QToTPlanner
-       @relates QToQSamplerPlanner
-    */
+      * @brief SBL based planners.
+      */
     class SBLPlanner
     {
       public:
