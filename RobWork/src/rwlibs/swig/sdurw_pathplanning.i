@@ -1,7 +1,8 @@
 %module sdurw_pathplanning
 
-%include <stl.i>
 %include <rwlibs/swig/swig_macros.i>
+%include <rwlibs/swig/ext_i/rw_vector.i>
+%include <exception.i>
 
 %import <rwlibs/swig/sdurw_core.i>
 %import <rwlibs/swig/sdurw_math.i>
@@ -80,7 +81,7 @@ import org.robwork.sdurw_trajectory.*;
 %}
 %include <rw/pathplanning/StopCriteria.hpp>
 NAMED_ABSTRACTPTR(StopCriteria,rw::pathplanning::StopCriteria);
-%template (VectorStopCriteriaPtr) std::vector<rw::core::Ptr<rw::pathplanning::StopCriteria> >;
+%std_vector(VectorStopCriteriaPtr,rw::core::Ptr<rw::pathplanning::StopCriteria> );
 
 
 %include <rwlibs/swig/typemaps/ConstQConstraintPtr.i>
@@ -89,14 +90,14 @@ NAMED_ABSTRACTPTR(StopCriteria,rw::pathplanning::StopCriteria);
 %}
 %include <rw/pathplanning/QConstraint.hpp>
 NAMED_OWNEDPTR(QConstraint,rw::pathplanning::QConstraint);
-%template (VectorQConstraintPtr) std::vector<rw::core::Ptr<rw::pathplanning::QConstraint> >;
+%std_vector(VectorQConstraintPtr,rw::core::Ptr<rw::pathplanning::QConstraint> );
 
 %{
 	#include <rw/pathplanning/QEdgeConstraint.hpp>
 %}
 %include <rw/pathplanning/QEdgeConstraint.hpp>
 NAMED_OWNEDPTR(QEdgeConstraint,rw::pathplanning::QEdgeConstraint);
-%template (VectorQEdgeConstraintPtr) std::vector<rw::core::Ptr<rw::pathplanning::QEdgeConstraint> >;
+%std_vector(VectorQEdgeConstraintPtr,rw::core::Ptr<rw::pathplanning::QEdgeConstraint> );
 
 %{
 	#include <rw/pathplanning/PlannerConstraint.hpp>
@@ -195,7 +196,7 @@ NAMED_ABSTRACTPTR(QIKSampler,rw::pathplanning::QIKSampler);
 %}
 %include <rw/pathplanning/StateConstraint.hpp>
 NAMED_ABSTRACTPTR(StateConstraint,rw::pathplanning::StateConstraint);
-%template (VectorStateConstraintPtr) std::vector<rw::core::Ptr<rw::pathplanning::StateConstraint> >;
+%std_vector(VectorStateConstraintPtr,rw::core::Ptr<rw::pathplanning::StateConstraint> );
 
 %{
 	#include <rw/pathplanning/PathAnalyzer.hpp>

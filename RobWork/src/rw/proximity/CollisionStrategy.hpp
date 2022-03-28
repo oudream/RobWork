@@ -23,13 +23,12 @@
  */
 
 #if !defined(SWIG)
-#include <rw/proximity/ProximityStrategy.hpp>
-
 #include <rw/core/ExtensionPoint.hpp>
 #include <rw/core/Ptr.hpp>
 #include <rw/kinematics/FrameMap.hpp>
 #include <rw/math/Transform3D.hpp>
-
+#include <rw/proximity/ProximityStrategy.hpp>
+#include <rw/proximity/CollisionResult.hpp>
 #include <string>
 #endif
 
@@ -54,74 +53,10 @@ namespace rw { namespace proximity {
         //! @brief smart pointer type to this class
         typedef rw::core::Ptr< CollisionStrategy > Ptr;
 
-#if !defined(SWIG)
         //! the type of query that is to be performed
-        typedef enum {FirstContact, AllContacts} QueryType;
-#else
-        typedef int QueryType;
-#endif
-        /**
-         * @brief result of a single collision pair
-         *
-         * A collision result is one or all colliding triangles between two objects which may have
-         * several geometries attached.
-         * The collision result does not have access to the actual triangle meshes of the geometries
-         * so to extract the actual contact location the user has to supply the triangles meshes of
-         * the geometries himself.
-         */
-        struct Result
-        {
-            //! @brief reference to the first model
-            ProximityModel::Ptr a;
+        typedef enum { FirstContact, AllContacts } QueryType;
 
-            //! @brief reference to the second model
-            ProximityModel::Ptr b;
-
-            //! @brief a collision pair of
-            struct CollisionPair
-            {
-                //! @brief geometry index
-                int geoIdxA, geoIdxB;
-                /**
-                 *  @brief indices into the geomPrimIds array, which means that inidicies
-                 * [_geomPrimIds[startIdx];_geomPrimIds[startIdx+size]] are the colliding primitives
-                 * between geometries geoIdxA and geoIdxB
-                 */
-                int startIdx, size;
-            };
-
-            //! @brief transformation from a to b
-            rw::math::Transform3D<double> _aTb;
-
-            //! @brief the collision pairs
-            std::vector< CollisionPair > _collisionPairs;
-
-            /**
-             * @brief indices of triangles/primitives in geometry a and b that are colliding
-             * all colliding triangle indices are in this array also those that are from different
-             * geometries
-             */
-            std::vector< std::pair< int, int > > _geomPrimIds;
-
-            int _nrBVTests, _nrPrimTests;
-
-            int getNrPrimTests () { return _nrPrimTests; }
-            int getNrBVTests () { return _nrBVTests; }
-
-            /**
-             * @brief clear all result values
-             */
-            void clear ()
-            {
-                a    = NULL;
-                b    = NULL;
-                _aTb = rw::math::Transform3D<double>::identity ();
-                _collisionPairs.clear ();
-                _geomPrimIds.clear ();
-                _nrBVTests   = 0;
-                _nrPrimTests = 0;
-            }
-        };
+        using Result = CollisionResult;
 
         /**
          * @brief Destroys object
@@ -139,9 +74,10 @@ namespace rw { namespace proximity {
          * @return true if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * colliding, false otherwise.
          */
-        bool inCollision (const rw::core::Ptr<kinematics::Frame> a, const math::Transform3D<double>& wTa,
-                          const rw::core::Ptr<kinematics::Frame> b, const math::Transform3D<double>& wTb,
-                          QueryType type = FirstContact);
+        bool inCollision (const rw::core::Ptr< kinematics::Frame > a,
+                          const math::Transform3D< double >& wTa,
+                          const rw::core::Ptr< kinematics::Frame > b,
+                          const math::Transform3D< double >& wTb, QueryType type = FirstContact);
 
         /**
          * @brief Checks to see if two given frames @f$ \mathcal{F}_a @f$ and
@@ -155,9 +91,11 @@ namespace rw { namespace proximity {
          * @return true if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * colliding, false otherwise.
          */
-        bool inCollision (const rw::core::Ptr<kinematics::Frame> a, const math::Transform3D<double>& wTa,
-                          const rw::core::Ptr<kinematics::Frame> b, const math::Transform3D<double>& wTb,
-                          class ProximityStrategyData& data, QueryType type = FirstContact);
+        bool inCollision (const rw::core::Ptr< kinematics::Frame > a,
+                          const math::Transform3D< double >& wTa,
+                          const rw::core::Ptr< kinematics::Frame > b,
+                          const math::Transform3D< double >& wTb, class ProximityStrategyData& data,
+                          QueryType type = FirstContact);
 
         /**
          * @brief Checks to see if two proximity models are in collision
@@ -169,8 +107,8 @@ namespace rw { namespace proximity {
          * @return true if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * colliding, false otherwise.
          */
-        bool inCollision (ProximityModel::Ptr a, const math::Transform3D<double>& wTa,
-                          ProximityModel::Ptr b, const math::Transform3D<double>& wTb,
+        bool inCollision (ProximityModel::Ptr a, const math::Transform3D< double >& wTa,
+                          ProximityModel::Ptr b, const math::Transform3D< double >& wTb,
                           ProximityStrategyData& data);
 
         /**
@@ -179,11 +117,11 @@ namespace rw { namespace proximity {
         struct Contact
         {
             // point described in object A frame
-            rw::math::Vector3D<double> point;
+            rw::math::Vector3D< double > point;
 
             // surface normal on object B described in object A coordinates
-            rw::math::Vector3D<double> normalA;
-            rw::math::Vector3D<double> normalB;
+            rw::math::Vector3D< double > normalA;
+            rw::math::Vector3D< double > normalB;
         };
 
         /**
@@ -279,8 +217,8 @@ namespace rw { namespace proximity {
          * @return true if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * colliding, false otherwise.
          */
-        virtual bool doInCollision (ProximityModel::Ptr a, const math::Transform3D<double>& wTa,
-                                    ProximityModel::Ptr b, const math::Transform3D<double>& wTb,
+        virtual bool doInCollision (ProximityModel::Ptr a, const math::Transform3D< double >& wTa,
+                                    ProximityModel::Ptr b, const math::Transform3D< double >& wTb,
                                     ProximityStrategyData& data) = 0;
 
       private:
@@ -293,7 +231,6 @@ namespace rw { namespace proximity {
          */
         CollisionStrategy ();
     };
-
     /*@}*/
 }}    // namespace rw::proximity
 

@@ -11,9 +11,8 @@ SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 %include <rwlibs/swig/ext_i/boost.i>
 %include <rwlibs/swig/ext_i/os.i>
 
-%include <stl.i>
-%include <std_vector.i>
 %include <typemaps.i>
+
 
 %rename(getDeref) rw::core::Ptr::operator->;
 %rename(deref) rw::core::Ptr::get;
@@ -97,11 +96,6 @@ SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
   #include <rw/core/os.hpp>
 %}
 
-#if !defined(WIN32)
-NAMED_OWNEDPTR(VectorFloat,std::vector<float>);
-NAMED_OWNEDPTR(VectorUL,std::vector<unsigned long>);
-#endif 
-
 #if defined(SWIGPYTHON)
 %ignore rw::core::AnyPtr::operator=;
 #endif
@@ -171,7 +165,7 @@ NAMED_OWNEDPTR(DOMParser, rw::core::DOMParser);
 %}
 %include <rw/core/Extension.hpp>
 NAMED_OWNEDPTR(Extension, rw::core::Extension);
-%template(VectorExtensionPtr) std::vector<rw::core::Ptr<rw::core::Extension>>;
+%std_vector(VectorExtensionPtr,rw::core::Ptr<rw::core::Extension>);
 
 %{
     #include <rw/core/ExtensionRegistry.hpp>
@@ -249,7 +243,7 @@ NAMED_OWNEDPTR(Plugin, rw::core::Plugin);
     #include <rw/core/PropertyValueBase.hpp>
 %}
 %include <rw/core/PropertyValueBase.hpp>
-%template(VectorPropertyValueBasePtr) std::vector<rw::core::Ptr<rw::core::PropertyValueBase> >;
+%std_vector(VectorPropertyValueBasePtr,rw::core::Ptr<rw::core::PropertyValueBase> );
 
 NAMED_OWNEDPTR(PropertyValueBase, rw::core::PropertyValueBase);
 

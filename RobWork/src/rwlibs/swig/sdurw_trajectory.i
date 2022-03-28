@@ -1,16 +1,13 @@
 %module sdurw_trajectory
 
 %include <rwlibs/swig/swig_macros.i>
-
-%include <std_vector.i>
-%include <stl.i>
+%include <rwlibs/swig/ext_i/rw_vector.i>
 %include <exception.i>
 
 %import <rwlibs/swig/sdurw_core.i>
 %import <rwlibs/swig/sdurw_math.i>
 %import <rwlibs/swig/sdurw_kinematics.i>
 %import <rwlibs/swig/sdurw_models.i>
-
 %import <rwlibs/swig/ext_i/std.i>
 
 %exception {
@@ -81,7 +78,7 @@
 	#include <rw/geometry/IndexedTriMesh.hpp>
 
 	#include <rw/trajectory/TrajectorySequence.hpp>		//Ken addon
-
+	#include <rw/trajectory.hpp>
 	#include <vector>
 %}
 
@@ -307,18 +304,18 @@ ADD_TRAJECTORY_STANDARD_TEMPLATE(Timed,rw::trajectory::Timed);
 %import(module=rwlibs/swig/sdurw_core) <rwlibs/swig/ext_i/std.i>
 
 #if !defined(SWIGJAVA)
-%template(SWIGTYPE_internal_Vector_d) std::vector<double>;
-%template(SWIGTYPE_internal_Vector2D) std::vector<rw::math::Vector2D<double>>;
-%template(SWIGTYPE_internal_Vector3D) std::vector<rw::math::Vector3D<double>>;
-%template(SWIGTYPE_internal_Rotation3D) std::vector<rw::math::Rotation3D<double>>;
-%template(SWIGTYPE_internal_Transform3D) std::vector<rw::math::Transform3D<double>>;
-%template(SWIGTYPE_internal_Q) std::vector<rw::math::Q>;
+/*%std_vector(SWIGTYPE_internal_Vector_d,double);
+%std_vector(SWIGTYPE_internal_Vector2D,rw::math::Vector2D<double>);
+%std_vector(SWIGTYPE_internal_Vector3D,rw::math::Vector3D<double>);
+%std_vector(SWIGTYPE_internal_Rotation3D,rw::math::Rotation3D<double>);
+%std_vector(SWIGTYPE_internal_Transform3D,rw::math::Transform3D<double>);
+%std_vector(SWIGTYPE_internal_Q,rw::math::Q);
 
-%template(SWIGTYPE_internal_Vector_f) std::vector<float>;
-%template(SWIGTYPE_internal_Vector2D_f) std::vector<rw::math::Vector2D<float>>;
-%template(SWIGTYPE_internal_Vector3D_f) std::vector<rw::math::Vector3D<float>>;
-%template(SWIGTYPE_internal_Rotation3D_f) std::vector<rw::math::Rotation3D<float>>;
-%template(SWIGTYPE_internal_Transform3D_f) std::vector<rw::math::Transform3D<float>>;
+%std_vector(SWIGTYPE_internal_Vector_f,float);
+%std_vector(SWIGTYPE_internal_Vector2D_f,rw::math::Vector2D<float>);
+%std_vector(SWIGTYPE_internal_Vector3D_f,rw::math::Vector3D<float>);
+%std_vector(SWIGTYPE_internal_Rotation3D_f,rw::math::Rotation3D<float>);
+%std_vector(SWIGTYPE_internal_Transform3D_f,rw::math::Transform3D<float>);*/
 #endif
 
 %{
@@ -326,42 +323,54 @@ ADD_TRAJECTORY_STANDARD_TEMPLATE(Timed,rw::trajectory::Timed);
 %}
 %include <rw/trajectory/Path.hpp>
 #if !defined(SWIGJAVA)
-ADD_TRAJECTORY_STANDARD_TEMPLATE(Path,rw::trajectory::Path);
+//ADD_TRAJECTORY_STANDARD_TEMPLATE(Path,rw::trajectory::Path);
+%std_vector_f (Path_d, double,rw::trajectory::Path,"generalToFromPy");
+%std_vector_f (Path_f, float,rw::trajectory::Path,"generalToFromPy");
+%std_vector_f (PathVector2D, rw::math::Vector2D<double>,rw::trajectory::Path,"generalToFromPy");
+%std_vector_f (PathVector2D_f, rw::math::Vector2D<float>,rw::trajectory::Path,"generalToFromPy");
+%std_vector_f (PathVector3D, rw::math::Vector3D<double>,rw::trajectory::Path,"generalToFromPy");
+%std_vector_f (PathVector3D_f, rw::math::Vector3D<float>,rw::trajectory::Path,"generalToFromPy");
+%std_vector_f (PathRotation3D, rw::math::Rotation3D<double>,rw::trajectory::Path,"generalToFromPy");
+%std_vector_f (PathRotation3D_f, rw::math::Rotation3D<float>,rw::trajectory::Path,"generalToFromPy");
+%std_vector_f (PathTransform3D, rw::math::Transform3D<double>,rw::trajectory::Path,"generalToFromPy");
+%std_vector_f (PathTransform3D_d, rw::math::Transform3D<float>,rw::trajectory::Path,"generalToFromPy");
+%std_vector_f (PathQ, rw::math::Q,rw::trajectory::Path,"generalToFromPy");
 #endif
+
+// Transform
+%std_vector(VectorTimedTransform3D, rw::trajectory::Timed<rw::math::Transform3D<double>>);
+%std_vector_f(PathTimedTransform3D, rw::trajectory::Timed<rw::math::Transform3D<double>>,rw::trajectory::Path,"generalToFromPy");
+
 //Quaternion
-%template (VectorQuaternion) std::vector<rw::math::Quaternion<double>>;
-%template (PathQuaternion) rw::trajectory::Path<rw::math::Quaternion<double>>;
+%std_vector (VectorQuaternion, rw::math::Quaternion<double>);
+%std_vector_f (PathQuaternion, rw::math::Quaternion<double>, rw::trajectory::Path, "generalToFromPy");
 
 //Transform3DVector
-%template (VectorTransform3dVector) std::vector<rw::math::Transform3DVector<double>>;
-%template (PathTransform3DVector) rw::trajectory::Path<rw::math::Transform3DVector<double>>;
+%std_vector (VectorTransform3dVector, rw::math::Transform3DVector<double>);
+%std_vector_f (PathTransform3DVector, rw::math::Transform3DVector<double>,rw::trajectory::Path, "generalToFromPy");
 
 
 //State
-%template (VectorState) std::vector<rw::kinematics::State>;
-%template (PathState) rw::trajectory::Path<rw::kinematics::State>;
-NAMED_OWNEDPTR(PathState, rw::trajectory::Path<rw::kinematics::State>);
+%std_vector   (VectorState,rw::kinematics::State);
+%std_vector   (TimedStateVector,rw::trajectory::Timed<rw::kinematics::State>);
+%std_vector_f (PathState, rw::kinematics::State, rw::trajectory::Path,"generalToFromPy");
+%std_vector_f (PathTimedState, rw::trajectory::Timed<rw::kinematics::State>,rw::trajectory::Path,"generalToFromPy");
+//NAMED_OWNEDPTR(PathState, rw::trajectory::Path<rw::kinematics::State>);
 
 //Q
-%template (VectorPathQ) std::vector< rw::trajectory::Path< rw::math::Q > >;
-%template (VectorTimedQ) std::vector<rw::trajectory::Timed< rw::math::Q > >;
-%template (PathTimedQ) rw::trajectory::Path<rw::trajectory::Timed< rw::math::Q > >;
-NAMED_OWNEDPTR(VectorTimedQ, std::vector<rw::trajectory::Timed< rw::math::Q > >);
-NAMED_OWNEDPTR(PathTimedQ,rw::trajectory::Path<rw::trajectory::Timed< rw::math::Q > >);
-ADD_DEFINITION(PathQ,QPath,sdurw_trajectory)
-ADD_DEFINITION(VectorPathQ,VectorQPath,sdurw_trajectory)
+%std_vector_explicit(VectorPathQ,rw::math::Q,std::vector< rw::trajectory::Path< rw::math::Q > >,"generalToFromPy");
+%std_vector (VectorTimedQ,rw::trajectory::Timed< rw::math::Q > );
+%std_vector_f (PathState,rw::trajectory::Timed< rw::math::Q >,rw::trajectory::Path,"generalToFromPy");
+//NAMED_OWNEDPTR(VectorTimedQ, std::vector<rw::trajectory::Timed< rw::math::Q > >);
+//NAMED_OWNEDPTR(PathTimedQ,rw::trajectory::Path<rw::trajectory::Timed< rw::math::Q > >);
 
 // State
-%template (TimedStateVector) std::vector<rw::trajectory::Timed<rw::kinematics::State> >;
-%template (PathTimedState) rw::trajectory::Path<rw::trajectory::Timed<rw::kinematics::State> >;
-NAMED_OWNEDPTR(TimedStateVector,std::vector<rw::trajectory::Timed<rw::kinematics::State>>);
-NAMED_OWNEDPTR(PathTimedState,rw::trajectory::Path<rw::trajectory::Timed<rw::kinematics::State> >);
 
-// Transform
-%template(VectorTimedTransform3Dd) std::vector<rw::trajectory::Timed<rw::math::Transform3D<double>>>;
-%template (PathTimedTransform3Dd) rw::trajectory::Path< rw::trajectory::Timed<rw::math::Transform3D<double>>>;
-ADD_DEFINITION(PathTransform3DPtr,PathSE3Ptr,sdurw_trajectory)
-ADD_DEFINITION(PathTransform3DCPtr,PathSE3CPtr,sdurw_trajectory)
+//NAMED_OWNEDPTR(TimedStateVector,std::vector<rw::trajectory::Timed<rw::kinematics::State>>);
+//NAMED_OWNEDPTR(PathTimedState,rw::trajectory::Path<rw::trajectory::Timed<rw::kinematics::State> >);
+
+//ADD_DEFINITION(PathTransform3DPtr,PathSE3Ptr,sdurw_trajectory)
+//ADD_DEFINITION(PathTransform3DCPtr,PathSE3CPtr,sdurw_trajectory)
 
 
 %extend rw::trajectory::Path< rw::math::Q > {
@@ -383,7 +392,6 @@ ADD_DEFINITION(PathTransform3DCPtr,PathSE3CPtr,sdurw_trajectory)
                 rw::trajectory::TimedUtil::makeTimedStatePath(*dev, *$self, state);
         return rw::core::ownedPtr( new rw::trajectory::Path<rw::trajectory::Timed<rw::kinematics::State>>(tpath) );
     }
-
 };
 
 %extend rw::trajectory::Path<rw::trajectory::Timed<rw::kinematics::State> > {
@@ -474,5 +482,5 @@ ADD_TRAJECTORY_STANDARD_TEMPLATE(TrajectoryIterator,rw::trajectory::TrajectoryIt
 %include <rw/trajectory/TrajectorySequence.hpp>
 ADD_TRAJECTORY_STANDARD_TEMPLATE(TrajectorySequence,rw::trajectory::TrajectorySequence);
 
-%template (VectorTrajectoryQPtr) std::vector< rw::core::Ptr  < rw::trajectory::Trajectory<  rw::math::Q  > > >;
+%std_vector (VectorTrajectoryQPtr,rw::core::Ptr  < rw::trajectory::Trajectory<  rw::math::Q  > > );
 

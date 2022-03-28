@@ -145,8 +145,61 @@ namespace rw { namespace kinematics {
                 RW_THROW ("StateData \"" << _name << "\" NOT initialized!");
             state.getQState ().setQ (*this, vals);
         }
-
 #endif
+
+        /**
+         * @brief Assign for \b state data the size() of values of the array \b
+         * vals.
+         *
+         * The array \b vals must be of length at least size().
+         *
+         * @param state [inout] The state to which \b vals are written.
+         *
+         * @param vals [in] The joint values to assign.
+         *
+         * setData() and getData() are related as follows:
+         * \code
+         * data.setData(state, q_in);
+         * const double* q_out = data.getData(state);
+         * for (int i = 0; i < data.getDOF(); i++)
+         *   q_in[i] == q_out[i];
+         * \endcode
+         */
+        inline void setData (rw::kinematics::State& state, const std::vector< double >& vals) const
+        {
+            if (_size == 0)
+                return;    // stop early if we know size is 0
+            if (_id < 0)
+                RW_THROW ("StateData \"" << _name << "\" NOT initialized!");
+            state.getQState ().setQ (*this, vals.data ());
+        }
+
+        /**
+         * @brief Assign for \b state data the size() of values of the array \b
+         * vals.
+         *
+         * The array \b vals must be of length at least size().
+         *
+         * @param state [inout] The state to which \b vals are written.
+         *
+         * @param vals [in] The joint value to assign.
+         *
+         * setData() and getData() are related as follows:
+         * \code
+         * data.setData(state, q_in);
+         * const double* q_out = data.getData(state);
+         * for (int i = 0; i < data.getDOF(); i++)
+         *   q_in[i] == q_out[i];
+         * \endcode
+         */
+        inline void setData (rw::kinematics::State& state, const double& val) const
+        {
+            if (_size == 0)
+                return;    // stop early if we know size is 0
+            if (_id < 0)
+                RW_THROW ("StateData \"" << _name << "\" NOT initialized!");
+            state.getQState ().setQ (*this, &val);
+        }
 
         /**
          * @brief Check is state data includes a cache.

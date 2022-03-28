@@ -18,7 +18,6 @@ using rwlibs::task::Task;
 %}
 
 %include <std_string.i>
-%include <std_vector.i>
 %include <exception.i>
 %include <rwlibs/swig/swig_macros.i>
 
@@ -159,7 +158,7 @@ public:
 };
 
 %template (AssemblyResultPtr) rw::core::Ptr<AssemblyResult>;
-%template (AssemblyResultPtrVector) std::vector<rw::core::Ptr<AssemblyResult> >;
+%std_vector(AssemblyResultPtrVector,rw::core::Ptr<AssemblyResult> );
 OWNEDPTR(AssemblyResult);
 
 class AssemblyState
@@ -185,7 +184,7 @@ public:
 
 %template (AssemblyStatePtr) rw::core::Ptr<AssemblyState>;
 %template (TimedAssemblyState) rw::trajectory::Timed<AssemblyState>;
-%template (TimedAssemblyStateVector) std::vector<rw::trajectory::Timed<AssemblyState> >;
+%std_vector(TimedAssemblyStateVector,rw::trajectory::Timed<AssemblyState> );
 %template (PathTimedAssemblyState) rw::trajectory::Path<rw::trajectory::Timed<AssemblyState> >;
 OWNEDPTR(AssemblyState);
 
@@ -227,5 +226,5 @@ public:
 };
 
 %template (AssemblyTaskPtr) rw::core::Ptr<AssemblyTask>;
-%template (AssemblyTaskPtrVector) std::vector<rw::core::Ptr<AssemblyTask> >;
+%std_vector(AssemblyTaskPtrVector,rw::core::Ptr<AssemblyTask> );
 OWNEDPTR(AssemblyTask);

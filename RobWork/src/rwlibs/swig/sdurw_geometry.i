@@ -1,9 +1,9 @@
 %module sdurw_geometry
 
-%include <stl.i>
-%include <std_vector.i>
 %include <rwlibs/swig/swig_macros.i>
 %include <rwlibs/swig/ext_i/os.i>
+%include <rwlibs/swig/ext_i/rw_vector.i>
+%include <exception.i>
 
 #if defined(SWIGPYTHON) && defined(RW_USE_NUMPY)
 %include <rwlibs/swig/ext_i/eigen.i>
@@ -20,6 +20,16 @@
 	#include <rw/math.hpp>
     #include <rw/kinematics.hpp>
     #include <rw/common/Traits.hpp>
+
+	#include <rw/models/Joint.hpp>
+    #include <rw/models/DependentJoint.hpp>
+    #include <rw/models/PrismaticJoint.hpp>
+    #include <rw/models/PrismaticSphericalJoint.hpp>
+    #include <rw/models/PrismaticUniversalJoint.hpp>
+    #include <rw/models/SphericalJoint.hpp>
+    #include <rw/models/RevoluteJoint.hpp>
+    #include <rw/models/UniversalJoint.hpp>
+    #include <rw/models/VirtualJoint.hpp>
 %}
 
 %pragma(java) jniclassimports=%{
@@ -162,7 +172,7 @@ NAMED_OWNEDPTR(DistanceUtil,rw::geometry::DistanceUtil);
 %}
 %include <rw/geometry/Geometry.hpp>
 NAMED_OWNEDPTR(Geometry,rw::geometry::Geometry);
-%template (VectorGeometryPtr) std::vector<rw::core::Ptr<rw::geometry::Geometry> >;
+%std_vector(VectorGeometryPtr,rw::core::Ptr<rw::geometry::Geometry> );
 
 %{
 	#include <rw/geometry/GeometryUtil.hpp>
@@ -210,7 +220,7 @@ NAMED_OWNEDPTR(TriMesh,rw::geometry::TriMesh);
 	#endif 
 %}
 %include <rw/geometry/IndexedPolygon.hpp>
-//%template(VectorIndexedPolygon) std::vector<rw::geometry::IndexedPolygon<uint16_t>>;
+//%std_vector(VectorIndexedPolygon,rw::geometry::IndexedPolygon<uint16_t>);
 NAMED_OWNEDPTR(IndexedPolygon,rw::geometry::IndexedPolygon<uint16_t>);
 NAMED_OWNEDPTR(IndexedPolygon_32,rw::geometry::IndexedPolygon<uint32_t>);
 
@@ -295,7 +305,7 @@ NAMED_OWNEDPTR(IndexedTriMeshN0_f,INDEXEDTRIMESHN0_TYPE(float));
 	#endif 
 %}
 %include <rw/geometry/IndexedTriangle.hpp>
-%template(VectorIndexedTriangle) std::vector<rw::geometry::IndexedTriangle<uint16_t>>;
+%std_vector(VectorIndexedTriangle,rw::geometry::IndexedTriangle<uint16_t>);
 NAMED_OWNEDPTR(IndexedTriangle,rw::geometry::IndexedTriangle<uint16_t>);
 NAMED_OWNEDPTR(IndexedTriangle_32,rw::geometry::IndexedTriangle<uint32_t>);
 NAMED_OWNEDPTR(IndexedTriangleN1,rw::geometry::IndexedTriangleN1<uint16_t>);
@@ -314,7 +324,7 @@ NAMED_OWNEDPTR(IndexedTriangleN3_32,rw::geometry::IndexedTriangleN3<uint32_t>);
 %include <rw/geometry/Line.hpp>
 NAMED_OWNEDPTR(Line,rw::geometry::Line);
 NAMED_OWNEDPTR(MetricLine,rw::math::Metric<rw::geometry::Line>);
-%template(VectorLine) std::vector<rw::geometry::Line>;
+%std_vector(VectorLine,rw::geometry::Line);
 
 %{
 	#include <rw/geometry/Object3D.hpp>
@@ -326,7 +336,7 @@ NAMED_OWNEDPTR(MetricLine,rw::math::Metric<rw::geometry::Line>);
 %}
 %include <rw/geometry/Model3D.hpp>
 NAMED_OWNEDPTR(Model3D,rw::geometry::Model3D);
-%template (Model3DPtrVector) std::vector<rw::core::Ptr<rw::geometry::Model3D> >;
+%std_vector(Model3DPtrVector,rw::core::Ptr<rw::geometry::Model3D> );
 
 %{
 	#include <rw/geometry/OBB.hpp>
@@ -402,12 +412,12 @@ NAMED_OWNEDPTR(OBBToleranceCollider,rw::geometry::OBBToleranceCollider<double>);
 	#endif 
 %}
 %include <rw/geometry/Triangle.hpp>
-%template(VectorTriangle) std::vector<rw::geometry::Triangle<double>>;
-%template(VectorTriangleN1) std::vector<rw::geometry::TriangleN1<double>>;
-%template(VectorTriangleN3) std::vector<rw::geometry::TriangleN3<double>>;
-%template(VectorTriangle_f) std::vector<rw::geometry::Triangle<float>>;
-%template(VectorTriangleN1_f) std::vector<rw::geometry::TriangleN1<float>>;
-%template(VectorTriangleN3_f) std::vector<rw::geometry::TriangleN3<float>>;
+%std_vector(VectorTriangle,rw::geometry::Triangle<double>);
+%std_vector(VectorTriangleN1,rw::geometry::TriangleN1<double>);
+%std_vector(VectorTriangleN3,rw::geometry::TriangleN3<double>);
+%std_vector(VectorTriangle_f,rw::geometry::Triangle<float>);
+%std_vector(VectorTriangleN1_f,rw::geometry::TriangleN1<float>);
+%std_vector(VectorTriangleN3_f,rw::geometry::TriangleN3<float>);
 NAMED_OWNEDPTR(Triangle,rw::geometry::Triangle<double>);
 NAMED_OWNEDPTR(TriangleN1,rw::geometry::TriangleN1<double>);
 NAMED_OWNEDPTR(TriangleN3,rw::geometry::TriangleN3<double>);
@@ -485,12 +495,12 @@ NAMED_OWNEDPTR(QHull3D,rw::geometry::QHull3D);
 %}
 %include <rw/geometry/QHullND.hpp>
 //NAMED_OWNEDPTR(QHullND,rw::geometry::QHullND);
-
+/*
 %{
 	#include <rw/geometry/Ray.hpp>
 %}
 %include <rw/geometry/Ray.hpp>
-NAMED_OWNEDPTR(Ray,rw::geometry::Ray);
+NAMED_OWNEDPTR(Ray,rw::geometry::Ray);*/
 
 %{
 	#include <rw/geometry/Sphere.hpp>
@@ -686,7 +696,7 @@ NAMED_OWNEDPTR(QuadraticBREP,rw::geometry::QuadraticBREP);
 	#include <rw/geometry/analytic/quadratics/QuadraticCurve.hpp>
 %}
 %include <rw/geometry/analytic/quadratics/QuadraticCurve.hpp>
-%template(VectorQuadraticCurve) std::vector<rw::geometry::QuadraticCurve>;
+%std_vector(VectorQuadraticCurve,rw::geometry::QuadraticCurve);
 NAMED_OWNEDPTR(QuadraticCurve,rw::geometry::QuadraticCurve);
 
 %{

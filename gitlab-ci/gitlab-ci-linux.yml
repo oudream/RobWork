@@ -211,7 +211,8 @@
     - python3 -m unittest discover ./core -p '*.py'
     - python3 -m unittest discover ./kinematics -p '*.py'
     - python3 -m unittest discover ./math -p '*.py'
-    - - "for file in ./models/*.py; do python3 $file || exit 1 ; done"
+    - "for file in ./models/*.py; do python3 $file || exit 1 ; done"
+    
 
 .linux-install-tests:
   extends: .CI-common-linux

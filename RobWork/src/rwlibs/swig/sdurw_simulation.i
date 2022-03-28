@@ -26,7 +26,6 @@ using namespace rwlibs::control;
 using namespace rw::graphics;
 %}
 
-%include <std_vector.i>
 %include <exception.i>
 %include <rwlibs/swig/swig_macros.i>
 
@@ -73,7 +72,7 @@ import org.robwork.sdurw_models.*;
 %include <rwlibs/simulation/SimulatedSensor.hpp>
 
 %template (SimulatedSensorPtr) rw::core::Ptr<rwlibs::simulation::SimulatedSensor>;
-%template (SimulatedSensorPtrVector) std::vector<rw::core::Ptr<SimulatedSensor> >;
+%std_vector(SimulatedSensorPtrVector,rw::core::Ptr<SimulatedSensor> );
 
 %nodefaultctor rwlibs::simulation::SimulatedController;
 %{
@@ -82,7 +81,7 @@ import org.robwork.sdurw_models.*;
 %include <rwlibs/simulation/SimulatedController.hpp>
 
 %template (SimulatedControllerPtr) rw::core::Ptr<rwlibs::simulation::SimulatedController>;
-%template (SimulatedControllerPtrVector) std::vector<rw::core::Ptr<SimulatedController> >;
+%std_vector(SimulatedControllerPtrVector,rw::core::Ptr<SimulatedController> );
 
 %nodefaultctor Simulator;
 %{

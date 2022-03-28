@@ -212,12 +212,12 @@ class SerialDeciveTest(unittest.TestCase):
         base = sdurw_kinematics.FixedFrame("Base",sdurw_math.Transform3D(sdurw_math.Vector3D(2.0, 0.0, 1.0) , sdurw_math.RPY(math.pi, 0.0, math.pi)) )
 
         # And then all the joints
-        joint1 = sdurw_models.RevoluteJoint("Joint1",sdurw_math.Transform3D.craigDH( 0, 0, 0, 0) )
-        joint2 = sdurw_models.RevoluteJoint("Joint2",sdurw_math.Transform3D.craigDH( math.pi/2.0, 0.26, 0, 0) )
-        joint3 = sdurw_models.RevoluteJoint("Joint3",sdurw_math.Transform3D.craigDH( 0, 0.68, 0, 0) )
-        joint4 = sdurw_models.RevoluteJoint("Joint4",sdurw_math.Transform3D.craigDH( math.pi/2.0, -0.035, -0.67, 0) )
-        joint5 = sdurw_models.RevoluteJoint("Joint5",sdurw_math.Transform3D.craigDH(-math.pi/2.0, 0, 0, 0) )
-        joint6 = sdurw_models.RevoluteJoint("Joint6",sdurw_math.Transform3D.craigDH( math.pi/2.0, 0, 0, 0) )
+        joint1 = sdurw_models.ownedPtr(sdurw_models.RevoluteJoint("Joint1",sdurw_math.Transform3D.craigDH( 0, 0, 0, 0) ))
+        joint2 = sdurw_models.ownedPtr(sdurw_models.RevoluteJoint("Joint2",sdurw_math.Transform3D.craigDH( math.pi/2.0, 0.26, 0, 0) ))
+        joint3 = sdurw_models.ownedPtr(sdurw_models.RevoluteJoint("Joint3",sdurw_math.Transform3D.craigDH( 0, 0.68, 0, 0) ))
+        joint4 = sdurw_models.ownedPtr(sdurw_models.RevoluteJoint("Joint4",sdurw_math.Transform3D.craigDH( math.pi/2.0, -0.035, -0.67, 0) ))
+        joint5 = sdurw_models.ownedPtr(sdurw_models.RevoluteJoint("Joint5",sdurw_math.Transform3D.craigDH(-math.pi/2.0, 0, 0, 0) ))
+        joint6 = sdurw_models.ownedPtr(sdurw_models.RevoluteJoint("Joint6",sdurw_math.Transform3D.craigDH( math.pi/2.0, 0, 0, 0) ))
 
         # And last define the Kuka-kr16 end-effector frame, but don't add it to the serial chain yet
         tool = sdurw_kinematics.FixedFrame("Tool",sdurw_math.Transform3D(sdurw_math.Vector3D(  -0.141,          0.0,           -0.299), 
@@ -272,10 +272,23 @@ class SerialDeciveTest(unittest.TestCase):
 # TO DO Der er formodentligt et internt pointer problem her.
         # Set the configuration of the robot
         kr16t.setQ(qwp,state)
-
+        for f in kr16t.frames():
+                print(f.getName(),f.fTf(kr16t.getBase(),state).P())
+#c++ result
+#base: Vector3D(0, 0, 0)
+#Joint1: Vector3D(-0, -0, -0)
+#Joint2: Vector3D(-0.13, -0.225167, -0)
+#Joint3: Vector3D(-0.840677, -0.00785081, 6.16298e-33)
+#Joint4: Vector3D(-0.805677, -4.80724e-19, 0.677851)
+#Joint5: Vector3D(-0.805677, -0.677851, 4.10257e-17)
+#Joint6: Vector3D(-0.805677, -4.80724e-19, 0.677851)
+#Tool: Vector3D(4.80724e-19, 1.16074, -0.22074)        
+                
+                
         # Compare the DH based forward kinematics with the analytical solution
         print("\n MANGLER        AssertionError: 1.16074 not less than 1e-05            DET VIRKER IKKE")
-        print(kr16t.baseTend(state).P() )
+        print("End:",kr16t.baseTend(state).P() )
+        print("Q:  ",kr16t.getQ(state))
 #        self.assertLess( np.linalg.norm( (kr16t.baseTend(state).P() - sdurw_math.Vector3D(1.16074, 0.0, 0.22074)).asNumpy(),np.inf ), 1e-5)
 #        k = kr16t.baseTend(state).P()
 #        v = sdurw_math.Vector3D(1.16074, 0.0, 0.22074)

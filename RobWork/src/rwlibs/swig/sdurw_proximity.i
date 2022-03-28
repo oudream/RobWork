@@ -1,8 +1,10 @@
 %module sdurw_proximity
 
-%include <stl.i>
-%include <std_vector.i>
+
 %include <rwlibs/swig/swig_macros.i>
+%include <rwlibs/swig/ext_i/rw_vector.i>
+%include <exception.i>
+%include <typemaps.i>
 
 %import <rwlibs/swig/sdurw_core.i>
 %import <rwlibs/swig/sdurw_common.i>
@@ -18,6 +20,7 @@
     #include <rw/kinematics/FixedFrame.hpp>
     #include <rw/geometry/IndexedTriMesh.hpp>
     #include <rw/models.hpp>
+    #include <rw/proximity.hpp>
 %}
 
 %pragma(java) jniclassimports=%{
@@ -68,17 +71,47 @@ NAMED_OWNEDPTR(ProximityFilterStrategy,rw::proximity::ProximityFilterStrategy)
 %include <rw/proximity/ProximityCalculator.hpp>
 NAMED_OWNEDPTR(ProximityCalculatorDistanceMulti,rw::proximity::ProximityCalculator<rw::proximity::DistanceMultiStrategy>);
 
-%nodefaultctor CollisionDetectorQueryType;
-%inline %{
-    //! @brief types of collision query
-    struct CollisionDetectorQueryType {
-        static const int AllContactsFullInfo = 0;
-        static const int AllContactsNoInfo = 1;
-        static const int FirstContactFullInfo = 2;
-        static const int FirstContactNoInfo = 3;
-    };
-%}
 
+// ####################################
+// #        Collision Detector        #
+// ####################################
+#ifdef SWIGPYTHON
+%typecheck(SWIG_TYPECHECK_SWIGOBJECT) rw::proximity::CollisionStrategy::QueryType
+{
+    $1 = SWIG_AsVal_int($input,NULL);
+}
+%typemap(in) rw::proximity::CollisionStrategy::QueryType (int temp)
+{
+    temp=0;
+    SWIG_AsVal_int($input,&temp);
+    $1 = rw::proximity::CollisionStrategy::QueryType(temp);
+}
+%typemap(out, fragment="SWIG_From_int") rw::proximity::CollisionStrategy::QueryType
+{
+    $result=SWIG_From_int(int($1));
+}
+%typemap(out,fragment="SWIG_From_int") rw::proximity::CollisionStrategy::QueryType*
+{
+    $result=SWIG_From_int(int($1));
+}
+
+%typecheck(SWIG_TYPECHECK_SWIGOBJECT,fragment="SWIG_AsVal_int") rw::proximity::CollisionDetector::QueryType
+{
+    $1 = SWIG_AsVal_int($input,NULL);
+}
+%typemap(in,fragment="SWIG_AsVal_int") rw::proximity::CollisionDetector::QueryType (int temp)
+{
+    temp=0;
+    SWIG_AsVal_int($input,&temp);
+    $1 = rw::proximity::CollisionDetector::QueryType(temp);
+}
+%typemap(out) rw::proximity::CollisionDetector::QueryType
+{
+    $result=SWIG_From_int(int($1));
+}
+#else
+%rename(CollisionDetectorQueryType) rw::proximity::CollisionDetector::QueryType;
+#endif
 %rename(CollisionDetectorQueryResult) rw::proximity::CollisionDetector::QueryResult;
 %nodefaultctor CollisionDetector;
 %{
@@ -98,7 +131,12 @@ NAMED_OWNEDPTR(ProximityCalculatorCollision,rw::proximity::ProximityCalculator<r
         return rw::core::ownedPtr(new rw::proximity::ProximityStrategyData($self->_fullInfo[i]));
     }
 
+    size_t getFullInfo(){
+        return $self->_fullInfo.size();
+    }
 }
+
+%std_vector(VectorProximityStrategyData, rw::proximity::ProximityStrategyData)
 
 %ignore rw::proximity::CollisionSetup::merge(rw::proximity::CollisionSetup const &,rw::proximity::CollisionSetup const &);
 %{
@@ -115,15 +153,30 @@ NAMED_OWNEDPTR(ProximityCalculatorCollision,rw::proximity::ProximityCalculator<r
 %include <rw/proximity/ProximityStrategy.hpp>
 NAMED_OWNEDPTR(ProximityStrategy,rw::proximity::ProximityStrategy);
 
-%rename (CollisionStrategyFactory) rw::proximity::CollisionStrategy::Factory;
-%rename(CollisionStrategyResult) rw::proximity::CollisionStrategy::Result;
-%inline %{
-    //! @brief types of collision query
-    struct CollisionStrategyQueryType {
-        static const int FirstContact = 0; 
-        static const int AllContacts = 0;
-    };
+%nodefaultctor ProximityStrategyData;
+%{
+    #include <rw/proximity/ProximityStrategyData.hpp>
 %}
+%include <rw/proximity/ProximityStrategyData.hpp>
+NAMED_OWNEDPTR(ProximityStrategyData,rw::proximity::ProximityStrategyData);
+%std_vector(VectorProximityStrategyData,rw::proximity::ProximityStrategyData);
+%std_vector(VectorProximityStrategyDataPtr,rw::core::Ptr<rw::proximity::ProximityStrategyData> );
+
+%std_vector(CollisionPairVector,rw::proximity::CollisionResult::CollisionPair);
+%{
+    #include <rw/proximity/CollisionResult.hpp>
+%}
+%include <rw/proximity/CollisionResult.hpp>
+
+
+// ####################################
+// #        Collision Strategy        #
+// ####################################
+
+%rename (CollisionStrategyFactory) rw::proximity::CollisionStrategy::Factory;
+%rename(CollisionStrategyResult) rw::proximity::CollisionStrategy::QueryResult;
+//%rename(CollisionResult) rw::proximity::CollisionStrategy::Result;
+
 %nodefaultctor CollisionStrategy;
 %{
     #include <rw/proximity/CollisionStrategy.hpp>
@@ -131,7 +184,10 @@ NAMED_OWNEDPTR(ProximityStrategy,rw::proximity::ProximityStrategy);
 %template (ExtensionPointCollisionStrategy) rw::core::ExtensionPoint<rw::proximity::CollisionStrategy>;
 %include <rw/proximity/CollisionStrategy.hpp>
 NAMED_OWNEDPTR(CollisionStrategy,rw::proximity::CollisionStrategy);
-%template(CollisionStrategyCollisionPairVector) std::vector<rw::proximity::CollisionStrategy::Result::CollisionPair>;
+
+// ####################################
+// #   Collision Tolerance Strategy   #
+// ####################################
 
 
 %rename (CollisionToleranceStrategyFactory) rw::proximity::CollisionToleranceStrategy::Factory;
@@ -159,7 +215,7 @@ NAMED_OWNEDPTR(DistanceCalculator,rw::proximity::DistanceCalculator);
 %template (ExtensionPointDistanceMultiStrategy) rw::core::ExtensionPoint<rw::proximity::DistanceMultiStrategy>;
 %include <rw/proximity/DistanceMultiStrategy.hpp>
 NAMED_OWNEDPTR(DistanceMultiStrategy,rw::proximity::DistanceMultiStrategy);
-%template(DistanceMultiStrategyResultVector) std::vector<rw::proximity::DistanceMultiStrategy::Result>;
+%std_vector(DistanceMultiStrategyResultVector,rw::proximity::DistanceMultiStrategy::Result);
 
 
 %rename (DistanceStrategyFactory) rw::proximity::DistanceStrategy::Factory;
@@ -171,7 +227,7 @@ NAMED_OWNEDPTR(DistanceMultiStrategy,rw::proximity::DistanceMultiStrategy);
 %template (ExtensionPointDistanceStrategy) rw::core::ExtensionPoint<rw::proximity::DistanceStrategy>;
 %include <rw/proximity/DistanceStrategy.hpp>
 NAMED_OWNEDPTR(DistanceStrategy,rw::proximity::DistanceStrategy);
-%template(DistanceStrategyResultVector) std::vector<rw::proximity::DistanceStrategy::Result>;
+%std_vector(DistanceStrategyResultVector,rw::proximity::DistanceStrategy::Result);
 
 
 %typemap(in) (void *value) {
@@ -211,17 +267,7 @@ NAMED_OWNEDPTR(ProximityModel,rw::proximity::ProximityModel);
     #include <rw/proximity/ProximitySetupRule.hpp>
 %}
 %include <rw/proximity/ProximitySetupRule.hpp>
-%template(ProximitySetupRuleVector) std::vector<rw::proximity::ProximitySetupRule>;
-
-%nodefaultctor ProximityStrategyData;
-%{
-    #include <rw/proximity/ProximityStrategyData.hpp>
-%}
-%include <rw/proximity/ProximityStrategyData.hpp>
-NAMED_OWNEDPTR(ProximityStrategyData,rw::proximity::ProximityStrategyData);
-%template (VectorProximityStrategyData) std::vector<rw::proximity::ProximityStrategyData>;
-%template (VectorProximityStrategyDataPtr) std::vector<rw::core::Ptr<rw::proximity::ProximityStrategyData> >;
-
+%std_vector(ProximitySetupRuleVector,rw::proximity::ProximitySetupRule);
 
 %rename(RaycasterQueryResult) rw::proximity::Raycaster::QueryResult;
 %{
@@ -229,6 +275,7 @@ NAMED_OWNEDPTR(ProximityStrategyData,rw::proximity::ProximityStrategyData);
 %}
 %include <rw/proximity/Raycaster.hpp>
 
+/*
 #if !defined(WIN32)
 %{
     #include <rw/proximity/rwstrategy/BVTree.hpp>
@@ -286,3 +333,4 @@ NAMED_OWNEDPTR(ProximityStrategyData,rw::proximity::ProximityStrategyData);
 %include <rw/proximity/rwstrategy/ProximityStrategyRW.hpp>
 
 #endif 
+*/

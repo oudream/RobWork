@@ -1,9 +1,7 @@
 %module sdurw_invkin
 
 %include <rwlibs/swig/swig_macros.i>
-
-%include <stl.i>
-%include <std_vector.i>
+%include <exception.i>
 
 %import <rwlibs/swig/sdurw_core.i>
 %import <rwlibs/swig/sdurw_math.i>
@@ -32,6 +30,9 @@
 	#include <rw/kinematics/MovableFrame.hpp>
 
 	#include <rw/models/DHParameterSet.hpp>
+	
+	#include <rw/geometry/Ray.hpp>
+	#include <rw/geometry/Line.hpp>
 
 %}
 

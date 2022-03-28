@@ -1,11 +1,8 @@
 %module sdurw_graspplanning
 
+%include <exception.i>
 %include <rwlibs/swig/swig_macros.i>
-
-%include <stl.i>
-%include <std_vector.i>
-
-
+%include <rwlibs/swig/ext_i/rw_vector.i>
 
 %import <rwlibs/swig/sdurw_core.i>
 %import <rwlibs/swig/sdurw_common.i>
@@ -18,6 +15,8 @@
     #include <rw/kinematics/MovableFrame.hpp>
     #include <rw/kinematics/FixedFrame.hpp>
     #include <rw/geometry/Object3D.hpp>
+    #include <rw/geometry/Ray.hpp>
+    #include <rw/geometry/Line.hpp>
 %}
 
 %pragma(java) jniclassimports=%{

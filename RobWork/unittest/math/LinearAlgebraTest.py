@@ -18,7 +18,7 @@
 
 import unittest                                     # now we can use python unittest framework
 import math, sys
-import sdurw, sdurw_math
+import sdurw_math
 import numpy as np
 
 

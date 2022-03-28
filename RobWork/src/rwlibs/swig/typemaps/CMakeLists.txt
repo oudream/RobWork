@@ -1,4 +1,4 @@
-include (TypeMapMacros.cmake)
+include(TypeMapMacros.cmake)
 
 generate_typemap_check(
     "rw::core::Ptr<rw::kinematics::Frame const>"
@@ -14,6 +14,42 @@ generate_typemap_check(
     "rw::core::Ptr<rw::kinematics::FixedFrame const>"
     "rw::core::Ptr<rw::kinematics::MovableFrame>"
     "rw::core::Ptr<rw::kinematics::MovableFrame const>"
+    "rw::core::Ptr<rw::models::Joint>"
+    "rw::models::Joint"
+    "rw::models::DependentJoint"
+    "rw::models::PrismaticJoint"
+    "rw::models::PrismaticSphericalJoint"
+    "rw::models::PrismaticUniversalJoint"
+    "rw::models::RevoluteJoint"
+    "rw::models::SphericalJoint"
+    "rw::models::UniversalJoint"
+    "rw::models::VirtualJoint"
+    "rw::core::Ptr<rw::models::DependentJoint>"
+    "rw::core::Ptr<rw::models::RevoluteJoint>"
+    "rw::core::Ptr<rw::models::PrismaticJoint>"
+    "rw::core::Ptr<rw::models::PrismaticSphericalJoint>"
+    "rw::core::Ptr<rw::models::PrismaticUniversalJoint>"
+    "rw::core::Ptr<rw::models::SphericalJoint>"
+    "rw::core::Ptr<rw::models::UniversalJoint>"
+    "rw::core::Ptr<rw::models::VirtualJoint>"
+    "rw::core::Ptr<rw::models::Joint>"
+    "const rw::models::Joint"
+    "const rw::models::DependentJoint"
+    "const rw::models::PrismaticJoint"
+    "const rw::models::PrismaticSphericalJoint"
+    "const rw::models::PrismaticUniversalJoint"
+    "const rw::models::RevoluteJoint"
+    "const rw::models::SphericalJoint"
+    "const rw::models::UniversalJoint"
+    "const rw::models::VirtualJoint"
+    "rw::core::Ptr<rw::models::DependentJoint const >"
+    "rw::core::Ptr<rw::models::RevoluteJoint const>"
+    "rw::core::Ptr<rw::models::PrismaticJoint const >"
+    "rw::core::Ptr<rw::models::PrismaticSphericalJoint const >"
+    "rw::core::Ptr<rw::models::PrismaticUniversalJoint const >"
+    "rw::core::Ptr<rw::models::SphericalJoint const >"
+    "rw::core::Ptr<rw::models::UniversalJoint const>"
+    "rw::core::Ptr<rw::models::VirtualJoint const>"
     "int"
     FILE
     "./framecptr.i"
@@ -31,6 +67,24 @@ generate_typemap_check(
     "rw::kinematics::MovableFrame"
     "rw::core::Ptr<rw::kinematics::FixedFrame>"
     "rw::core::Ptr<rw::kinematics::MovableFrame>"
+    "rw::core::Ptr<rw::models::Joint>"
+    "rw::models::Joint"
+    "rw::models::DependentJoint"
+    "rw::models::PrismaticJoint"
+    "rw::models::PrismaticSphericalJoint"
+    "rw::models::PrismaticUniversalJoint"
+    "rw::models::RevoluteJoint"
+    "rw::models::SphericalJoint"
+    "rw::models::UniversalJoint"
+    "rw::models::VirtualJoint"
+    "rw::core::Ptr<rw::models::DependentJoint>"
+    "rw::core::Ptr<rw::models::RevoluteJoint>"
+    "rw::core::Ptr<rw::models::PrismaticJoint>"
+    "rw::core::Ptr<rw::models::PrismaticSphericalJoint>"
+    "rw::core::Ptr<rw::models::PrismaticUniversalJoint>"
+    "rw::core::Ptr<rw::models::SphericalJoint>"
+    "rw::core::Ptr<rw::models::UniversalJoint>"
+    "rw::core::Ptr<rw::models::VirtualJoint>"
     "int"
     FILE
     "./frameptr.i"
@@ -46,6 +100,15 @@ generate_typemap_check(
     "rw::core::Ptr<rw::kinematics::Frame>"
     "rw::core::Ptr<rw::kinematics::FixedFrame>"
     "rw::core::Ptr<rw::kinematics::MovableFrame>"
+    "rw::core::Ptr<rw::models::Joint>"
+    "rw::core::Ptr<rw::models::DependentJoint>"
+    "rw::core::Ptr<rw::models::RevoluteJoint>"
+    "rw::core::Ptr<rw::models::PrismaticJoint>"
+    "rw::core::Ptr<rw::models::PrismaticSphericalJoint>"
+    "rw::core::Ptr<rw::models::PrismaticUniversalJoint>"
+    "rw::core::Ptr<rw::models::SphericalJoint>"
+    "rw::core::Ptr<rw::models::UniversalJoint>"
+    "rw::core::Ptr<rw::models::VirtualJoint>"
     FILE
     "./frame_pointer.i"
     CONVERTER
@@ -72,6 +135,41 @@ generate_typemap_check(
     "rw::core::Ptr<rw::kinematics::MovableFrame const>"
     "rw::core::Ptr<rw::kinematics::Frame>"
     "rw::core::Ptr<rw::kinematics::Frame const>"
+    "rw::models::Joint"
+    "rw::models::DependentJoint"
+    "rw::models::PrismaticJoint"
+    "rw::models::PrismaticSphericalJoint"
+    "rw::models::PrismaticUniversalJoint"
+    "rw::models::RevoluteJoint"
+    "rw::models::SphericalJoint"
+    "rw::models::UniversalJoint"
+    "rw::models::VirtualJoint"
+    "rw::core::Ptr<rw::models::DependentJoint>"
+    "rw::core::Ptr<rw::models::RevoluteJoint>"
+    "rw::core::Ptr<rw::models::PrismaticJoint>"
+    "rw::core::Ptr<rw::models::PrismaticSphericalJoint>"
+    "rw::core::Ptr<rw::models::PrismaticUniversalJoint>"
+    "rw::core::Ptr<rw::models::SphericalJoint>"
+    "rw::core::Ptr<rw::models::UniversalJoint>"
+    "rw::core::Ptr<rw::models::VirtualJoint>"
+    "rw::core::Ptr<rw::models::Joint>"
+    "const rw::models::Joint"
+    "const rw::models::DependentJoint"
+    "const rw::models::PrismaticJoint"
+    "const rw::models::PrismaticSphericalJoint"
+    "const rw::models::PrismaticUniversalJoint"
+    "const rw::models::RevoluteJoint"
+    "const rw::models::SphericalJoint"
+    "const rw::models::UniversalJoint"
+    "const rw::models::VirtualJoint"
+    "rw::core::Ptr<rw::models::DependentJoint const >"
+    "rw::core::Ptr<rw::models::RevoluteJoint const>"
+    "rw::core::Ptr<rw::models::PrismaticJoint const >"
+    "rw::core::Ptr<rw::models::PrismaticSphericalJoint const >"
+    "rw::core::Ptr<rw::models::PrismaticUniversalJoint const >"
+    "rw::core::Ptr<rw::models::SphericalJoint const >"
+    "rw::core::Ptr<rw::models::UniversalJoint const>"
+    "rw::core::Ptr<rw::models::VirtualJoint const>"
     "int"
     FILE
     "./statedatacptr.i"
@@ -91,6 +189,24 @@ generate_typemap_check(
     "rw::core::Ptr<rw::kinematics::Frame>"
     "rw::core::Ptr<rw::kinematics::FixedFrame>"
     "rw::core::Ptr<rw::kinematics::MovableFrame>"
+    "rw::models::Joint"
+    "rw::models::DependentJoint"
+    "rw::models::PrismaticJoint"
+    "rw::models::PrismaticSphericalJoint"
+    "rw::models::PrismaticUniversalJoint"
+    "rw::models::RevoluteJoint"
+    "rw::models::SphericalJoint"
+    "rw::models::UniversalJoint"
+    "rw::models::VirtualJoint"
+    "rw::core::Ptr<rw::models::DependentJoint>"
+    "rw::core::Ptr<rw::models::RevoluteJoint>"
+    "rw::core::Ptr<rw::models::PrismaticJoint>"
+    "rw::core::Ptr<rw::models::PrismaticSphericalJoint>"
+    "rw::core::Ptr<rw::models::PrismaticUniversalJoint>"
+    "rw::core::Ptr<rw::models::SphericalJoint>"
+    "rw::core::Ptr<rw::models::UniversalJoint>"
+    "rw::core::Ptr<rw::models::VirtualJoint>"
+    "rw::core::Ptr<rw::models::Joint>"
     "int"
     FILE
     "./statedataptr.i"
@@ -164,15 +280,63 @@ generate_typemap_check(
 )
 
 generate_typemap_check(
-    "rw::core::Ptr< rw::trajectory::Interpolator< rw::math::Vector2D<double>>>"
+    "rw::core::Ptr<rw::models::Joint>"
     TYPES
-    "rw::core::Ptr< rw::trajectory::Interpolator< rw::math::Vector2D<double>>>"
-    "rw::core::Ptr< rw::trajectory::LinearInterpolator< rw::math::Vector2D<double>>>"
+    "rw::core::Ptr<rw::models::Joint>"
+    "rw::models::Joint"
+    "rw::models::DependentJoint"
+    "rw::models::PrismaticJoint"
+    "rw::models::PrismaticSphericalJoint"
+    "rw::models::PrismaticUniversalJoint"
+    "rw::models::RevoluteJoint"
+    "rw::models::SphericalJoint"
+    "rw::models::UniversalJoint"
+    "rw::models::VirtualJoint"
+    "rw::core::Ptr<rw::models::DependentJoint>"
+    "rw::core::Ptr<rw::models::RevoluteJoint>"
+    "rw::core::Ptr<rw::models::PrismaticJoint>"
+    "rw::core::Ptr<rw::models::PrismaticSphericalJoint>"
+    "rw::core::Ptr<rw::models::PrismaticUniversalJoint>"
+    "rw::core::Ptr<rw::models::SphericalJoint>"
+    "rw::core::Ptr<rw::models::UniversalJoint>"
+    "rw::core::Ptr<rw::models::VirtualJoint>"
     "int"
     FILE
-    "./interpolatorPtr.i"
+    "./jointptr.i"
     CONVERTER
-    "toInterpolatorPtr"
+    "toJointPtr"
+    ADD_RWPTR_FRAGMENT
+)
+
+generate_typemap_check(
+    "rw::models::Joint*"
+    TYPES
+    "rw::models::Joint"
+    "rw::core::Ptr<rw::models::Joint>"
+    "rw::core::Ptr<rw::models::DependentJoint>"
+    "rw::core::Ptr<rw::models::RevoluteJoint>"
+    "rw::core::Ptr<rw::models::PrismaticJoint>"
+    "rw::core::Ptr<rw::models::PrismaticSphericalJoint>"
+    "rw::core::Ptr<rw::models::PrismaticUniversalJoint>"
+    "rw::core::Ptr<rw::models::SphericalJoint>"
+    "rw::core::Ptr<rw::models::UniversalJoint>"
+    "rw::core::Ptr<rw::models::VirtualJoint>"
+    FILE
+    "./joint_pointer.i"
+    CONVERTER
+    "toJointPointer"
+    ADD_POINTER_FRAGMENT
+)
+
+generate_typemap_check(
+    "rw::core::Ptr<rw::trajectory::Trajectory<rw::math::Q>>"
+    TYPES
+    "rw::core::Ptr<rw::trajectory::Trajectory<rw::math::Q>>"
+    "rw::core::Ptr<rw::trajectory::InterpolatorTrajectory<rw::math::Q>>"
+    FILE
+    "./TrajectoryPtr.i"
+    CONVERTER
+    "toTrajectoryPtr"
     ADD_RWPTR_FRAGMENT
 )
 
@@ -192,14 +356,15 @@ generate_typemap_check(
 )
 
 generate_typemap_check(
-    "rw::core::Ptr<rw::trajectory::Trajectory<rw::math::Q>>"
-    TYPES 
-    "rw::core::Ptr<rw::trajectory::Trajectory<rw::math::Q>>"
-    "rw::core::Ptr<rw::trajectory::InterpolatorTrajectory<rw::math::Q>>"
-    FILE 
-    "./TrajectoryPtr.i"
-    CONVERTER 
-    "toTrajectoryPtr"
+    "rw::core::Ptr< rw::trajectory::Interpolator< rw::math::Vector2D<double>>>"
+    TYPES
+    "rw::core::Ptr< rw::trajectory::Interpolator< rw::math::Vector2D<double>>>"
+    "rw::core::Ptr< rw::trajectory::LinearInterpolator< rw::math::Vector2D<double>>>"
+    "int"
+    FILE
+    "./interpolatorPtr.i"
+    CONVERTER
+    "toInterpolatorPtr"
     ADD_RWPTR_FRAGMENT
 )
 

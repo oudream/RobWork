@@ -45,6 +45,6 @@ if __name__ == '__main__':
     if collisionDetector.inCollision(state, pdata):
         raise Exception("Final configuration in collision!")
 
-    result = PathQ()
+    result = []
     if planner.query(beg, end, result):
-        print("Planned path with " + str(result.size()) + " configurations")
+        print("Planned path with " + str(len(result)) + " configurations")

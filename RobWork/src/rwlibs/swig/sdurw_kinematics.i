@@ -1,18 +1,33 @@
 %module sdurw_kinematics
 
+%include <exception.i>
 %include <rwlibs/swig/swig_macros.i>
+%include <rwlibs/swig/ext_i/rw_vector.i>
+%include <std_pair.i>
 
-%include <stl.i>
-%include <std_vector.i>
 
 %import <rwlibs/swig/sdurw_core.i>
 %import <rwlibs/swig/sdurw_common.i>
 %import <rwlibs/swig/sdurw_math.i>
 
 %import <rwlibs/swig/ext_i/std.i>
+
 %{
     #include <rw/common/BINArchive.hpp>
     #include <rw/common/INIArchive.hpp>
+    #include <rw/kinematics.hpp>
+    #include <rw/models.hpp>
+
+    #include <rw/models/Joint.hpp>
+    #include <rw/models/DependentJoint.hpp>
+    #include <rw/models/PrismaticJoint.hpp>
+    #include <rw/models/PrismaticSphericalJoint.hpp>
+    #include <rw/models/PrismaticUniversalJoint.hpp>
+    #include <rw/models/SphericalJoint.hpp>
+    #include <rw/models/RevoluteJoint.hpp>
+    #include <rw/models/UniversalJoint.hpp>
+    #include <rw/models/VirtualJoint.hpp>
+    
 %}
 
 
@@ -77,33 +92,12 @@ namespace rw{ namespace core {
         double* data = $self->getData(state);
         std::vector<double> ret($self->size());
         for(int i = 0; i < $self->size(); i++){
-            ret.push_back(data[i]);
+            ret[i] = data[i];
         }
         return ret;
     }
-    /**
-     * @brief Assign for \b state data the size() of values of the array \b
-     * vals.
-     *
-     * The array \b vals must be of length at least size().
-     *
-     * @param state [inout] The state to which \b vals are written.
-     *
-     * @param vals [in] The joint values to assign.
-     *
-     * setData() and getData() are related as follows:
-     * \code
-     * data.setData(state, q_in);
-     * const double* q_out = data.getData(state);
-     * for (int i = 0; i < data.getDOF(); i++)
-     *   q_in[i] == q_out[i];
-     * \endcode
-     */
-    void setData(rw::kinematics::State& state, const std::vector<double> vals){
-        $self->setData(state,vals.data());
-    }
 }
-%template(VectorStateDataPtr) std::vector<rw::core::Ptr<rw::kinematics::StateData>>;
+%std_vector(VectorStateDataPtr,rw::core::Ptr<rw::kinematics::StateData>);
 NAMED_OWNEDPTR(StateData, rw::kinematics::StateData);
 
 
@@ -115,13 +109,16 @@ NAMED_OWNEDPTR(StateData, rw::kinematics::StateData);
 %ignore rw::kinematics::Frame::getChildren() const;
 %ignore rw::kinematics::Frame::getParent() const;
 
+
 %include <rwlibs/swig/typemaps/framecptr.i>
 %include <rwlibs/swig/typemaps/frameptr.i>
 %include <rwlibs/swig/typemaps/frame_pointer.i>
 
+#if defined(SWIGPYTHON)
 %warnfilter(508) rw::core::Ptr<rw::kinematics::Frame>::operator==;
 %warnfilter(508) rw::kinematics::Frame::operator==;
 #pragma SWIG nowarn=508
+#endif
 
 %{
     #include <rw/kinematics/Frame.hpp>
@@ -129,18 +126,20 @@ NAMED_OWNEDPTR(StateData, rw::kinematics::StateData);
 %include <rw/kinematics/Frame.hpp>
 NAMED_OWNEDPTR(Frame, rw::kinematics::Frame);
 
+%std_vector_f (FrameVector, rw::kinematics::Frame*,std::vector,"toFramePointerPy");
+%std_vector_explicit (FramePairVector, rw::kinematics::Frame *,SWIG_CORE_DEFINE(std::vector<std::pair< rw::kinematics::Frame *, rw::kinematics::Frame * >> ),"generalToFromPy");
+%std_vector_explicit (VectorVectorFrame,rw::kinematics::Frame*,std::vector<std::vector<rw::kinematics::Frame*>>,"generalToFromPy");
+%std_vector_f (VectorFramePtr, rw::core::Ptr<rw::kinematics::Frame>,std::vector,"toFramePtrPy");
+
 %template (ownedPtr) rw::core::ownedPtr<rw::core::Ptr<rw::kinematics::Frame>,rw::core::Ptr<rw::kinematics::Frame>>;
-%template (FrameVector) std::vector<rw::kinematics::Frame*>;
-%template (FramePair) std::pair< rw::kinematics::Frame *, rw::kinematics::Frame * >;
-%template (FramePairVector) std::vector< std::pair< rw::kinematics::Frame *, rw::kinematics::Frame * > >;
-%template (VectorVectorFrame) std::vector<std::vector<rw::kinematics::Frame*>>;
 %template (MapStringFrame) std::map<std::string,rw::kinematics::Frame*>;
+%template (FramePair) std::pair< rw::kinematics::Frame *, rw::kinematics::Frame * >;
 
 %{
     #include <rw/kinematics/FixedFrame.hpp>
 %}
 %include <rw/kinematics/FixedFrame.hpp>
-%template(VectorFixedFrame) std::vector<rw::kinematics::FixedFrame*>;
+%std_vector(VectorFixedFrame, rw::kinematics::FixedFrame*);
 %template (ownedPtr) rw::core::ownedPtr<rw::core::Ptr<rw::kinematics::FixedFrame>,rw::core::Ptr<rw::kinematics::FixedFrame>>;
 NAMED_OWNEDPTR(FixedFrame, rw::kinematics::FixedFrame);
 
@@ -164,7 +163,7 @@ class FixedFrame(FixedFrameClass):
     #include <rw/kinematics/MovableFrame.hpp>
 %}
 %include <rw/kinematics/MovableFrame.hpp>
-%template (MovableFrameVector) std::vector<rw::kinematics::MovableFrame *> ;
+%std_vector (MovableFrameVector, rw::kinematics::MovableFrame *) ;
 %template (ownedPtr) rw::core::ownedPtr<rw::core::Ptr<rw::kinematics::MovableFrame>,rw::core::Ptr<rw::kinematics::MovableFrame>>;
 NAMED_OWNEDPTR(MovableFrame, rw::kinematics::MovableFrame);
 
@@ -275,7 +274,7 @@ NAMED_OWNEDPTR(QState,rw::kinematics::QState);
     #include <rw/kinematics/State.hpp>
 %}
 %include <rw/kinematics/State.hpp>
-//%template (VectorState) std::vector<rw::kinematics::State>;
+%std_vector (VectorState,rw::kinematics::State);
 
 %{
     #include <rw/kinematics/StateCache.hpp>

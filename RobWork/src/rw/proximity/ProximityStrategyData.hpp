@@ -24,6 +24,7 @@
 
 #if !defined(SWIG)
 #include <rw/proximity/CollisionStrategy.hpp>
+#include <rw/proximity/CollisionResult.hpp>
 #include <rw/proximity/DistanceMultiStrategy.hpp>
 #include <rw/proximity/DistanceStrategy.hpp>
 #include <rw/proximity/ProximityCache.hpp>
@@ -39,11 +40,12 @@
 namespace rw { namespace proximity {
     //! @addtogroup proximity
     // @{
+    
 
     // for backward compatability
-    typedef rw::proximity::CollisionStrategy::Result CollisionResult;
+    //typedef rw::proximity::CollisionStrategy::Result CollisionResult;
     typedef rw::proximity::DistanceStrategy::Result DistanceResult;
-    typedef DistanceMultiStrategy::Result MultiDistanceResult;
+    typedef rw::proximity::DistanceMultiStrategy::Result MultiDistanceResult;
 
     /***
      * @brief A generic object for containing data that is essential in
@@ -95,13 +97,13 @@ namespace rw { namespace proximity {
          * @brief get the result from the collision check
          * @return Result of Collision strategy if available
          */
-        rw::proximity::CollisionStrategy::Result& getCollisionData () { return _collisionData; }
+        rw::proximity::CollisionResult& getCollisionData () { return _collisionData; }
 
         /**
          * @brief get the result from the collision check
          * @return Result of Collision strategy if available
          */
-        const rw::proximity::CollisionStrategy::Result& getCollisionData () const { return _collisionData; }
+        const rw::proximity::CollisionResult& getCollisionData () const { return _collisionData; }
 
         /**
          * @brief get the the colliding frames
@@ -157,13 +159,13 @@ namespace rw { namespace proximity {
          * @brief get The result of a multi distance query
          * @return result of a distance query
          */
-        DistanceMultiStrategy::Result& getMultiDistanceData () { return _multiDistanceData; }
+        rw::proximity::DistanceMultiStrategy::Result& getMultiDistanceData () { return _multiDistanceData; }
 
         /**
          * @brief get The result of a multi distance query
          * @return result of a distance query
          */
-        const DistanceMultiStrategy::Result& getMultiDistanceData () const
+        const rw::proximity::DistanceMultiStrategy::Result& getMultiDistanceData () const
         {
             return _multiDistanceData;
         }

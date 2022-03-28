@@ -65,7 +65,8 @@ namespace rw { namespace proximity {
      @note The collision detector is not thread safe and as such should not be used by multiple
      threads at a time.
      */
-    class CollisionDetector : public rw::proximity::ProximityCalculator< rw::proximity::CollisionStrategy >
+    class CollisionDetector
+        : public rw::proximity::ProximityCalculator< rw::proximity::CollisionStrategy >
     {
       public:
         //! @brief smart pointer type to this class
@@ -73,21 +74,18 @@ namespace rw { namespace proximity {
         //! @brief smart pointer type to this const class
         typedef rw::core::Ptr< const CollisionDetector > CPtr;
 
-#if !defined(SWIG)
         //! @brief types of collision query
         typedef enum {
-            AllContactsFullInfo,     //! find all collisions and return full collision information
-                                     //! eg. CollisionStrategy::AllContact
-            AllContactsNoInfo,       //! find all collisions but without collision information eg.
-                                     //! CollisionStrategy::FirstContact
-            FirstContactFullInfo,    //! return on first contact and include full collision
-                                     //! information eg. CollisionStrategy::AllContact
-            FirstContactNoInfo       //! return on first collision but without collision information
-                                     //! eg. CollisionStrategy::FirstContact
+            AllContactsFullInfo,     //!< find all collisions and return full collision information
+                                     //!< eg. CollisionStrategy::AllContact
+            AllContactsNoInfo,       //!< find all collisions but without collision information eg.
+                                     //!< CollisionStrategy::FirstContact
+            FirstContactFullInfo,    //!< return on first contact and include full collision
+                                     //!< information eg. CollisionStrategy::AllContact
+            FirstContactNoInfo       //!< return on first collision but without collision information
+                                     //!< eg. CollisionStrategy::FirstContact
         } QueryType;
-        #else 
-        typedef int QueryType;
-#endif
+
         /**
          * @brief result of a collision query
          */
@@ -103,11 +101,12 @@ namespace rw { namespace proximity {
                 return std::vector< std::pair< rw::kinematics::Frame*, rw::kinematics::Frame* > > (
                     this->collidingFrames.begin (), this->collidingFrames.end ());
             }
+
             //! the frames that are colliding
             rw::kinematics::FramePairSet collidingFrames;
 
             //! for keeping track of all collision data: AllContactsFullInfo, FirstContactNoInfo
-            std::vector< ProximityStrategyData > _fullInfo;
+            std::vector< rw::proximity::ProximityStrategyData > _fullInfo;
         };
 
         /**
@@ -137,7 +136,7 @@ namespace rw { namespace proximity {
          * models added to it.
          */
         CollisionDetector (rw::core::Ptr< rw::models::WorkCell > workcell,
-                           rw::core::Ptr<rw::proximity::CollisionStrategy> strategy);
+                           rw::core::Ptr< rw::proximity::CollisionStrategy > strategy);
 
         /**
          * @brief Collision detector for a workcell.
@@ -150,7 +149,7 @@ namespace rw { namespace proximity {
          * not colliding
          */
         CollisionDetector (rw::core::Ptr< rw::models::WorkCell > workcell,
-                           rw::core::Ptr<rw::proximity::CollisionStrategy> strategy,
+                           rw::core::Ptr< rw::proximity::CollisionStrategy > strategy,
                            rw::core::Ptr< ProximityFilterStrategy > filter);
 
         /**
@@ -206,7 +205,10 @@ namespace rw { namespace proximity {
          * @brief Get the narrow-phase collision strategy.
          * @return the strategy if set, otherwise NULL.
          */
-        rw::core::Ptr<rw::proximity::CollisionStrategy> getCollisionStrategy () const { return getStrategy (); }
+        rw::core::Ptr< rw::proximity::CollisionStrategy > getCollisionStrategy () const
+        {
+            return getStrategy ();
+        }
 
         /**
          * @brief Add Geometry associated to \b frame
@@ -217,7 +219,7 @@ namespace rw { namespace proximity {
          * @param frame [in] Frame to associate geometry to
          * @param geometry [in] Geometry to add
          */
-        bool addGeometry (rw::core::Ptr<rw::kinematics::Frame> frame,
+        bool addGeometry (rw::core::Ptr< rw::kinematics::Frame > frame,
                           const rw::core::Ptr< rw::geometry::Geometry > geometry);
 
         /**
@@ -228,7 +230,7 @@ namespace rw { namespace proximity {
          * @param frame [in] The frame which has the geometry associated
          * @param geometry [in] Geometry with the id to be removed
          */
-        void removeGeometry (rw::core::Ptr<rw::kinematics::Frame> frame,
+        void removeGeometry (rw::core::Ptr< rw::kinematics::Frame > frame,
                              const rw::core::Ptr< rw::geometry::Geometry > geometry);
 
         /**
@@ -239,19 +241,21 @@ namespace rw { namespace proximity {
          * @param frame [in] The frame which has the geometry associated
          * @param geometryId [in] Id of geometry to be removed
          */
-        void removeGeometry (rw::core::Ptr<rw::kinematics::Frame> frame, const std::string geometryId);
+        void removeGeometry (rw::core::Ptr< rw::kinematics::Frame > frame,
+                             const std::string geometryId);
 
         /**
          * @brief return the ids of all the geometries of this frames.
          */
-        std::vector< std::string > getGeometryIDs (rw::core::Ptr<rw::kinematics::Frame> frame);
+        std::vector< std::string > getGeometryIDs (rw::core::Ptr< rw::kinematics::Frame > frame);
 
         /**
          * @brief Returns whether frame has an associated geometry with \b geometryId.
          * @param frame [in] Frame in question
          * @param geometryId [in] Id of the geometry
          */
-        bool hasGeometry (rw::core::Ptr<rw::kinematics::Frame> frame, const std::string& geometryId);
+        bool hasGeometry (rw::core::Ptr< rw::kinematics::Frame > frame,
+                          const std::string& geometryId);
 
         /**
          * @brief Get the geometry from its ID
@@ -259,8 +263,8 @@ namespace rw { namespace proximity {
          * @param geometryId [in] the ID of the geometry
          * @return Pointer to the geometry
          */
-        rw::core::Ptr< rw::geometry::Geometry > getGeometry (rw::core::Ptr<rw::kinematics::Frame> frame,
-                                                             const std::string& geometryId);
+        rw::core::Ptr< rw::geometry::Geometry >
+        getGeometry (rw::core::Ptr< rw::kinematics::Frame > frame, const std::string& geometryId);
 
         static rw::core::Ptr< rw::proximity::CollisionDetector >
         make (rw::core::Ptr< rw::models::WorkCell > workcell,
