@@ -180,6 +180,16 @@ if(build)
         endif()
     endforeach()
 
+    if (DEFINED python_NAME_sdurw_kinematics AND TARGET sdurw_models AND TARGET ${python_NAME_sdurw_kinematics})
+    target_link_libraries(
+        ${python_NAME_sdurw_kinematics} PUBLIC sdurw_models
+    )
+    target_link_libraries(
+        ${python_NAME_sdurw_geometry} PUBLIC sdurw_models
+    )
+    endif()
+
+
     install(TARGETS ${SUBSYS_NAME} EXPORT ${PROJECT_PREFIX}pythonTargets)
     rw_swig_compile_target(python ${python_targets})
 

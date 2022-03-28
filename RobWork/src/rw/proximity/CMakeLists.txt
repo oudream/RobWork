@@ -50,6 +50,7 @@ if(build)
         CollisionDetector.hpp
         CollisionSetup.hpp
         CollisionStrategy.hpp
+        CollisionResult.hpp
         CollisionToleranceStrategy.hpp
         DistanceCalculator.hpp
         DistanceMultiStrategy.hpp

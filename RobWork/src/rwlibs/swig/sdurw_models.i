@@ -1,9 +1,7 @@
 %module sdurw_models
 
-%include <stl.i>
-%include <std_vector.i>
-%include <exception.i>
 %include <rwlibs/swig/swig_macros.i>
+%include <rwlibs/swig/ext_i/rw_vector.i>
 %include <exception.i>
 
 %import <rwlibs/swig/sdurw_core.i>
@@ -25,6 +23,7 @@
 	#include <rw/sensor/Scanner2DModel.hpp>
 	#include <rw/sensor/RGBDCameraModel.hpp>
 	#include <rw/sensor/StereoCameraModel.hpp>
+	#include <rw/models.hpp>
 %}
 
 %pragma(java) jniclassimports=%{
@@ -74,18 +73,6 @@ import org.robwork.sdurw_sensor.*;
 	}
 %}
 
-%exception {
-    try {
-        //printf("Entering function : $name\n"); // uncomment to get a print out of all function calls
-        $action
-    }catch(rw::core::Exception& e ){
-        SWIG_exception(SWIG_RuntimeError,e.what());
-    }catch(...){
-        SWIG_exception(SWIG_RuntimeError,"unknown error");
-    }
-}
-
-
 %{
 	#include <rw/proximity/CollisionSetup.hpp>
 	#include <rw/proximity/CollisionSetup.cpp>
@@ -104,7 +91,7 @@ import org.robwork.sdurw_sensor.*;
 %}
 %include <rw/models/Object.hpp>
 NAMED_OWNEDPTR(Object,rw::models::Object);
-%template (ObjectPtrVector) std::vector< rw::core::Ptr< rw::models::Object > >;
+%std_vector (ObjectPtrVector, rw::core::Ptr< rw::models::Object > );
 
 #if defined(SWIGJAVA)
 	%ignore rw::models::Device::getBase() const;
@@ -118,36 +105,34 @@ NAMED_OWNEDPTR(Object,rw::models::Object);
 %}
 %include <rw/models/Device.hpp>
 NAMED_OWNEDPTR(Device,rw::models::Device);
-%template (DevicePtrVector) std::vector<rw::core::Ptr<rw::models::Device> >;
-
+%std_vector_f (DevicePtrVector, rw::core::Ptr<rw::models::Device>,std::vector, "toDevicePtrPy");
 
 %{
 	std::vector< double,std::allocator< double > > rw_kinematics_StateData_getData(rw::kinematics::StateData *self,rw::kinematics::State &state){
         double* data = self->getData(state);
         std::vector<double> ret(self->size());
         for(int i = 0; i < self->size(); i++){
-            ret.push_back(data[i]);
+            ret[i] = data[i];
         }
         return ret;
     }
-	void rw_kinematics_StateData_setData(rw::kinematics::StateData *self,rw::kinematics::State &state,std::vector< double,std::allocator< double > > const vals){
-        self->setData(state,vals.data());
-    }
 %}
+%include <rwlibs/swig/typemaps/jointptr.i>
+%include <rwlibs/swig/typemaps/joint_pointer.i>
 
 %{
 	#include<rw/models/Joint.hpp>
 %}
 %include <rw/models/Joint.hpp>
 NAMED_OWNEDPTR(Joint,rw::models::Joint);
-%template(VectorJoint_p) std::vector<rw::models::Joint*>;
+%std_vector_f(VectorJoint_p,rw::models::Joint*, std::vector, "toJointPointerPy");
 
 %{
 	#include<rw/models/JointDevice.hpp>
 %}
 %include <rw/models/JointDevice.hpp>
 NAMED_OWNEDPTR(JointDevice,rw::models::JointDevice);
-%template (JointDevicePtrVector) std::vector< rw::core::Ptr< rw::models::JointDevice>>;
+%std_vector (JointDevicePtrVector,rw::core::Ptr< rw::models::JointDevice>);
 
 
 %nodefaultctor JacobianCalculator;
@@ -192,7 +177,7 @@ NAMED_OWNEDPTR(CompositeJointDevice,rw::models::CompositeJointDevice);
 %}
 %include <rw/models/ControllerModel.hpp>
 NAMED_OWNEDPTR(ControllerModel,rw::models::ControllerModel);
-%template(ControllerModelPtrVector) std::vector<rw::core::Ptr<rw::models::ControllerModel> >;
+%std_vector(ControllerModelPtrVector,rw::core::Ptr<rw::models::ControllerModel>);
 
 %ignore rw::models::DeformableObject::getNode(int,rw::kinematics::State const &) const;
 %{
@@ -200,7 +185,7 @@ NAMED_OWNEDPTR(ControllerModel,rw::models::ControllerModel);
 %}
 %include <rw/models/DeformableObject.hpp>
 NAMED_OWNEDPTR(DeformableObject,rw::models::DeformableObject);
-%template (DeformableObjectPtrVector) std::vector<rw::core::Ptr<rw::models::DeformableObject>>;
+%std_vector (DeformableObjectPtrVector,rw::core::Ptr<rw::models::DeformableObject>);
 
 %{
 	#include<rw/models/DependentJoint.hpp>
@@ -232,7 +217,7 @@ NAMED_OWNEDPTR(DeviceJacobianCalculator,rw::models::DeviceJacobianCalculator);
 %}
 %include <rw/models/DHParameterSet.hpp>
 NAMED_OWNEDPTR(DHParameterSet,rw::models::DHParameterSet);
-%template (DHParameterSetVector) std::vector<rw::models::DHParameterSet>;
+%std_vector (DHParameterSetVector,rw::models::DHParameterSet);
 
 %{
 	#include<rw/models/JacobianUtil.hpp>
@@ -260,24 +245,21 @@ NAMED_OWNEDPTR(MobileDevice,rw::models::MobileDevice);
 NAMED_OWNEDPTR(Models,rw::models::Models);
 
 %{
-	#include<rw/models/ParallelDevice.hpp>
-%}
-%include <rw/models/ParallelDevice.hpp>
-NAMED_OWNEDPTR(ParallelDevice,rw::models::ParallelDevice);
-%template (VectorParallelDevicePtr) std::vector<rw::core::Ptr<rw::models::ParallelDevice>>;
-
-%{
 	#include<rw/models/ParallelLeg.hpp>
 %}
 %include <rw/models/ParallelLeg.hpp>
 NAMED_OWNEDPTR(ParallelLeg,rw::models::ParallelLeg);
 
-%template(VectorParallelLegPtr) std::vector<rw::core::Ptr<rw::models::ParallelLeg>>;
-%template(VectorParallelLeg_p) std::vector<rw::models::ParallelLeg*>;
-%template(VectorVectorParallelLeg_p) std::vector<std::vector<rw::models::ParallelLeg*>>;
+%std_vector(VectorParallelLegPtr, rw::core::Ptr<rw::models::ParallelLeg>);
+%std_vector(VectorParallelLeg_p, rw::models::ParallelLeg*);
+%std_vector_explicit(VectorParallelDeviceLeg, rw::models::ParallelLeg*, std::vector<std::vector<rw::models::ParallelLeg*>>,"generalToFromPy");
 
-ADD_DEFINITION(VectorParallelLeg_p,ParallelLegs,sdurw_model)
-
+%{
+	#include<rw/models/ParallelDevice.hpp>
+%}
+%include <rw/models/ParallelDevice.hpp>
+NAMED_OWNEDPTR(ParallelDevice,rw::models::ParallelDevice);
+%std_vector (VectorParallelDevicePtr,rw::core::Ptr<rw::models::ParallelDevice>);
 
 %{
 	#include<rw/models/PrismaticJoint.hpp>
@@ -303,6 +285,15 @@ NAMED_OWNEDPTR(PrismaticUniversalJoint,rw::models::PrismaticUniversalJoint);
 %include <rw/models/RevoluteJoint.hpp>
 NAMED_OWNEDPTR(RevoluteJoint,rw::models::RevoluteJoint);
 
+#if defined(SWIGPYTHON)
+%pythoncode {
+RevoluteJointClass = RevoluteJoint
+class RevoluteJoint(RevoluteJointClass):
+    def __new__(clc,name,transform):
+        return ownedPtr(RevoluteJointClass(name,transform))
+}
+#endif
+
 %{
 	#include<rw/models/RigidBodyInfo.hpp>
 %}
@@ -314,7 +305,7 @@ NAMED_OWNEDPTR(RigidBodyInfo,rw::models::RigidBodyInfo);
 %}
 %include <rw/models/RigidObject.hpp>
 NAMED_OWNEDPTR(RigidObject,rw::models::RigidObject);
-%template (VectorRigidObjectPtr) std::vector<rw::core::Ptr < rw::models::RigidObject > >;
+%std_vector (VectorRigidObjectPtr,rw::core::Ptr < rw::models::RigidObject > );
 
 %{
 	#include<rw/models/SE3Device.hpp>
@@ -327,7 +318,7 @@ NAMED_OWNEDPTR(SE3Device,rw::models::SE3Device);
 %}
 %include <rw/models/SerialDevice.hpp>
 NAMED_OWNEDPTR(SerialDevice,rw::models::SerialDevice);
-%template (VectorSerialDevicePtr) std::vector<rw::core::Ptr<rw::models::SerialDevice>>;
+%std_vector (VectorSerialDevicePtr,rw::core::Ptr<rw::models::SerialDevice>);
 
 %{
 	#include<rw/models/SphericalJoint.hpp>
@@ -340,7 +331,7 @@ NAMED_OWNEDPTR(SphericalJoint,rw::models::SphericalJoint);
 %}
 %include <rw/models/TreeDevice.hpp>
 NAMED_OWNEDPTR(TreeDevice,rw::models::TreeDevice);
-%template (VectorTreeDevicePtr) std::vector<rw::core::Ptr<rw::models::TreeDevice>>;
+%std_vector(VectorTreeDevicePtr,rw::core::Ptr<rw::models::TreeDevice>);
 
 %{
 	#include<rw/models/UniversalJoint.hpp>

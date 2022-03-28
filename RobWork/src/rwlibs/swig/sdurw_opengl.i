@@ -7,13 +7,14 @@
 #include <rw/kinematics/FixedFrame.hpp>
 #include <rw/core/Ptr.hpp>
 #include <rw/geometry/IndexedTriMesh.hpp>
+#include <rw/geometry/Ray.hpp>
+#include <rw/geometry/Line.hpp>
 #include <rw/models.hpp>
 
 using namespace rwlibs::swig;
 
 %}
 %include <exception.i>
-%include <std_vector.i>
 %include <rwlibs/swig/swig_macros.i>
 
 %import <rwlibs/swig/sdurw_core.i>

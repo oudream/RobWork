@@ -36,8 +36,9 @@ struct PyLockGIL
 
     PyGILState_STATE gstate;
 };
-struct PyRelinquishGIL
+class PyRelinquishGIL
 {
+  public:
     PyRelinquishGIL () : _thread_state (PyEval_SaveThread ()) {}
     ~PyRelinquishGIL () { PyEval_RestoreThread (_thread_state); }
 
@@ -76,6 +77,8 @@ class PythonLock
     PyGILState_STATE _gstate;
 };
 
+PyThreadState* initial_thread = NULL;
+
 std::ostream& operator<< (std::ostream& os, PyThreadState* ts)
 {
     os << "PyThreadState {" << std::endl;
@@ -94,31 +97,38 @@ PythonRunner::PythonRunner () : _threadState (NULL)
 {
     initPython ();
 
-    bool gilLocked = PyGILState_Check ();
-    PyThreadState* curThread = PyThreadState_Get ();
-    PyRelinquishGIL rel ();
+    //Store Current Thread and go to this thread
+    PyRelinquishGIL rel;
+
+    //Acuire GIl Lock
+    PyGILState_STATE gstate = PyGILState_Ensure ();
+
+    //Store Current PythonThread
+    PyThreadState* curThread = PyGILState_GetThisThreadState();
+
+    // Create new Py interpretor
     _threadState = Py_NewInterpreter ();
 
+    //Switch back to old PythonThread
     PyThreadState_Swap (curThread);
 
-    if (gilLocked) {
-        PyGILState_Release (PyGILState_STATE::PyGILState_UNLOCKED);
-    }
+    //Release Gil Lock
+    PyGILState_Release (gstate);
+
 }
 
 PythonRunner::~PythonRunner ()
 {
     if (_threadState) {
         PyThreadState* ts = PyThreadState_Swap (_threadState);
-        ;
         Py_EndInterpreter (_threadState);
-
         PyThreadState_Swap (ts);
     }
 }
 
 int PythonRunner::runCode (std::string code)
 {
+    PyRelinquishGIL rel;
     PythonLock swap (_threadState);
     int ret = PyRun_SimpleString (code.c_str ());
     return ret;
@@ -142,5 +152,6 @@ void PythonRunner::initPython ()
 #if PYTHON_VERSION_MINOR < 9 && defined(RWS_USE_PYTHON3)
         PyEval_InitThreads ();
 #endif
+        initial_thread = PyThreadState_Get ();
     }
 }

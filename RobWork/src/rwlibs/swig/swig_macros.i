@@ -1,12 +1,12 @@
 
 //%include <rwlibs/swig/ext_i/macros.i>
 
-#if !defined(SWIGJAVA)
+/*#if !defined(SWIGJAVA)
 %include "carrays.i"
 %array_class(double, doubleArray);
 #else
 %include "arrays_java.i";
-#endif
+#endif*/
 
 #if defined(SWIGJAVA)
 	%rename(multiply) operator*;

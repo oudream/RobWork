@@ -283,9 +283,9 @@ TEST(Joint, PrismaticUniversal) {
 	std::vector<Joint::Ptr> refJoints(3);
 	refJoints[0] = rw::core::ownedPtr(new RevoluteJoint("RevAJoint", Transform3D<>(Vector3D<>::zero(),RPY<>(0,Pi/2,0))));
 	refJoints[1] = rw::core::ownedPtr(new RevoluteJoint("RevBJoint", Transform3D<>(Vector3D<>::zero(),RPY<>(0,0,-Pi/2))));
-	static const Rotation3D<> revRend = RPY<>(-Pi/2,0,Pi/2).toRotation3D();
 	refJoints[2] = rw::core::ownedPtr(new PrismaticJoint("PrismaticJoint", Transform3D<>::identity()));
 
+	static const Rotation3D<> revRend = RPY<>(-Pi/2,0,Pi/2).toRotation3D();
 	EXPECT_EQ(3, joint->getDOF());
 	SCOPED_TRACE("Comparison with reference joint sequence.");
 	compareJointWithReferenceJoints(joint,refJoints,revRend,1);

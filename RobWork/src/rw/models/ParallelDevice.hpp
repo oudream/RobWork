@@ -132,7 +132,7 @@ namespace rw { namespace models {
          * @brief Get the junctions of the device.
          * @return a vector of junctions. Each junction is given by a two or more legs.
          */
-        virtual std::vector< Legs > getJunctions () const { return _junctions; }
+        virtual std::vector< std::vector< rw::models::ParallelLeg*> > getJunctions () const { return _junctions; }
 
         /**
          * @brief The active joints of the parallel device.

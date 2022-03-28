@@ -19,7 +19,7 @@
 #from sdurw import *
 import unittest                                     # now we can use python unittest framework
 import math, sys
-import sdurw, sdurw_math
+import sdurw_math
 
 
 class UtilTest(unittest.TestCase):

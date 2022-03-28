@@ -21,6 +21,7 @@ using rw::pathplanning::PathPlanner;
 
 %}
 
+%include <rwlibs/swig/ext_i/rw_vector.i>
 %include <exception.i>
 
 %import <rwlibs/swig/sdurw_core.i>

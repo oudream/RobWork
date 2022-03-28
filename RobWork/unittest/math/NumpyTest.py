@@ -17,12 +17,9 @@
 
 
 #from sdurw import *
-import unittest                                     # now we can use python unittest framework
-import math, sys
-import sdurw, sdurw_math
+import unittest      
+import sdurw_math
 import numpy as np
-from sdurw_math.sdurw_math import Vector3D
-
 
 class UtilTest(unittest.TestCase):
 

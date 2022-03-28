@@ -7,19 +7,17 @@ import time
 CDQueryType = ["AllContactsFullInfo","AllContanctsNoInfo","FirstContactFullInfo","FirstContactNoInfo"]
 CSQueryType = ["FirstContact","AllContacts"]
 
-def printPSD(data:"ProximityStrategyData"):
+def printPSD(data:ProximityStrategyData):
     print("    ProximityStrategyData")
     print("        Abs error  : ",data.abs_err)
     print("        Rel error  : ",data.rel_err)
-
-    try:
-        print("        QueryType  : ",CSQueryType[data.getCollisionQueryType()])
+    try:    
+        print("        QueryType  : ",CSQueryType[int(data.getCollisionQueryType())])
     except IndexError:
         print("        QueryType  : ",data.getCollisionQueryType(), "index out of range")
 
     print("        inCollision: ",data.inCollision())
     CSResult = data.getCollisionData()
-
     try:
         print("\n        First Model Geometries: ")
         for geo in CSResult.a.getGeometryIDs():
@@ -38,7 +36,7 @@ def printPSD(data:"ProximityStrategyData"):
     for ids in CSResult._geomPrimIds:
         print("            Vertex: ",ids[0], " and ", ids[1], " colliding")
 
-    print("        CollisionPairs : ")    
+    print("        CollisionPairs : ")  
     for ids in CSResult._collisionPairs:
         print("            ColSize: ",ids.size)
         print("            StartID: ",ids.startIdx)
@@ -64,7 +62,7 @@ def printColInfo(name,detector:"CollisionDetector",wc:"WorkCellPtr",state:"State
     start = time.time()
     detector.resetComputationTimeAndCount()
     res2 = ProximityData()
-    res2.setCollisionQueryType(CollisionDetectorQueryType.AllContactsFullInfo) 
+    res2.setCollisionQueryType(CollisionDetector.AllContactsFullInfo) 
     ret2 = detector.inCollision(state,res2)
     time2 = detector.getComputationTime()
     end = time.time()
@@ -77,11 +75,12 @@ def printColInfo(name,detector:"CollisionDetector",wc:"WorkCellPtr",state:"State
     time3 = detector.getComputationTime()
     end = time.time()
     time3t =(end-start)*pow(10,3)
-
+    
     start = time.time()
     detector.resetComputationTimeAndCount()
-    res4 = FramePairVector()
+    res4 = []
     ret4 = detector.inCollision(state,res4)
+    print(res4)
     time4 = detector.getComputationTime()
     end = time.time()
     time4t =(end-start)*pow(10,3)
@@ -108,7 +107,6 @@ def printColInfo(name,detector:"CollisionDetector",wc:"WorkCellPtr",state:"State
 
     print("\nColliding Frames (ProximityData std)")
     for frameP in res1CD.getFramePairVector():
-        print(frameP)
         print("    ", frameP[0].getName(), " and ", frameP[1].getName())
     print("\nColliding Frames (ProximityData full)")
     for frameP in res2CD.getFramePairVector():
@@ -123,16 +121,16 @@ def printColInfo(name,detector:"CollisionDetector",wc:"WorkCellPtr",state:"State
     print("\nNo more data in (FramePairVector)")
 
     print("\nProximityStrategyData (ProximityData std)")
-    for i in range(res1CD._fullInfo.size()): #loop with indexes else you might get segfault
-        printPSD(res1CD._fullInfo[i])
+    for i in range(res1CD.getFullInfo()): #loop with indexes else you might get segfault
+        printPSD(res1CD.getFullInfo(i))
     
     print("\nProximityStrategyData (ProximityDataFULL)")
-    for i in range(res2CD._fullInfo.size()): #loop with indexes else you might get segfault
-        printPSD(res2CD._fullInfo[i])
+    for i in range(res2CD.getFullInfo()): #loop with indexes else you might get segfault
+        printPSD(res2CD.getFullInfo(i))
     
     print("\nProximityStrategyData (QueryType)")
-    for i in range(res3._fullInfo.size()): #loop with indexes else you might get segfault
-        printPSD(res3._fullInfo[i])
+    for i in range(res3.getFullInfo()): #loop with indexes else you might get segfault
+        printPSD(res3.getFullInfo(i))
 
 if __name__ == '__main__':
     wc = WorkCellLoaderFactory.load("../ModelData/XMLScenes/RobotOnTable/Scene.xml")

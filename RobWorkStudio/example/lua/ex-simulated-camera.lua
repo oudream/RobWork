@@ -81,4 +81,8 @@ img:saveAsPPM("Image2.ppm");
 simcam:stop();
 sleep(20);
 rwstudio:postExit();
-sleep(1);
+
+while(isRunning()) do
+    sleep(1);
+end
+sleep(10);

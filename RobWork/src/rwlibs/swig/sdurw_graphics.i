@@ -1,9 +1,7 @@
 %module sdurw_graphics
 
+%include <exception.i>
 %include <rwlibs/swig/swig_macros.i>
-
-%include <stl.i>
-%include <std_vector.i>
 
 %import <rwlibs/swig/sdurw_core.i>
 %import <rwlibs/swig/sdurw_common.i>

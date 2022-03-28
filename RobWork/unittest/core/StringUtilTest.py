@@ -18,7 +18,7 @@
 
 import unittest                          # now we can use python unittest framework
 import sys, os
-import sdurw, sdurw_core                 # now we can use robwork python bindings
+import sdurw_core                 # now we can use robwork python bindings
 
 
 class TestStringUtil(unittest.TestCase):

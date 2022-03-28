@@ -1,16 +1,16 @@
 %module sdurw_math
 
+%include <exception.i>
 %include <rwlibs/swig/swig_macros.i>
+%include <rwlibs/swig/ext_i/rw_vector.i>
 
-
-%include <stl.i>
-%include <std_vector.i>
 
 
 %import <rwlibs/swig/sdurw_core.i>
 %import <rwlibs/swig/sdurw_common.i>
+%import <rwlibs/swig/ext_i/std.i>
 
-%include <rwlibs/swig/ext_i/rw_eigen.i>
+
 
 %pragma(java) jniclassimports=%{
 import org.robwork.sdurw_core.*;
@@ -24,6 +24,8 @@ import org.robwork.sdurw_common.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
 %}
+
+%include <rwlibs/swig/ext_i/rw_eigen.i>
 
 %{
     #include <rw/math/Vector3D.hpp>
@@ -368,7 +370,15 @@ ADD_DEFINITION(Transform3DAngleMetric_d, Transform3DAngleMetric,sdurw_math);
 %include <rw/math/Q.hpp>
 %template(PairQ) std::pair<rw::math::Q,rw::math::Q>;
 %template(PairConstQ) std::pair<const rw::math::Q, const rw::math::Q>;
-%template(VectorQ) std::vector<rw::math::Q>;
+%std_vector(VectorQ, rw::math::Q);
+#if defined(SWIGPYTHON)
+%extend rw::math::Q{
+    size_t __len__(){
+        return $self->size();
+    }
+}
+#endif
+
 
 %rename(copy) rw::math::Quaternion::operator=;
 %ignore rw::math::Quaternion::e() const;
@@ -406,8 +416,8 @@ FRIEND_OPERATOR(rw::math::Rotation3D<float>, rw::math::Wrench6D<float>, *);
     #include <rw/math/Rotation3D.hpp>
 %}
 %include <rw/math/Rotation3D.hpp>
-%template(VectorRotation3D) std::vector<rw::math::Rotation3D<double>>;
-%template(VectorRotation3D_f) std::vector<rw::math::Rotation3D<float>>;
+%std_vector(VectorRotation3D, std::vector<rw::math::Rotation3D<double>>);
+%std_vector(VectorRotation3D_f, std::vector<rw::math::Rotation3D<float>>);
 
 %{
     #include <rw/math/RPY.hpp>
@@ -427,8 +437,8 @@ FRIEND_OPERATOR(rw::math::Rotation3D<float>, rw::math::Wrench6D<float>, *);
 %include <rw/math/Transform3D.hpp>
 %template(inverse) rw::math::inverse<double>;
 %template(inverse) rw::math::inverse<float>;
-%template(VectorTransform3D) std::vector<rw::math::Transform3D<double>>;
-%template(VectorTransform3D_f) std::vector<rw::math::Transform3D<float>>;
+%std_vector(VectorTransform3D, std::vector<rw::math::Transform3D<double>>);
+%std_vector(VectorTransform3D_f, std::vector<rw::math::Transform3D<float>>);
 
 %{
     #include <rw/math/Transform3DVector.hpp>
@@ -446,8 +456,8 @@ FRIEND_OPERATOR(rw::math::Rotation3D<float>, rw::math::Wrench6D<float>, *);
     #include <rw/math/Vector2D.hpp>
 %}
 %include <rw/math/Vector2D.hpp>
-%template(VectorVector2D) std::vector<rw::math::Vector2D<double>>;
-%template(VectorVector2D_f) std::vector<rw::math::Vector2D<float>>;
+%std_vector(VectorVector2D, std::vector<rw::math::Vector2D<double>>);
+%std_vector(VectorVector2D_f, std::vector<rw::math::Vector2D<float>>);
 
 %ignore rw::math::Vector3D::e() const;
 #if defined(SWIGPYTHON)
@@ -459,10 +469,10 @@ FRIEND_OPERATOR(rw::math::Rotation3D<float>, rw::math::Wrench6D<float>, *);
     #include <rw/math/Vector3D.hpp>
 %}
 %include <rw/math/Vector3D.hpp>
-%template(VectorVector3D) std::vector<rw::math::Vector3D<double>>;
-%template(VectorVector3D_f) std::vector<rw::math::Vector3D<float>>;
-NAMED_OWNEDPTR(VectorVector3D,std::vector<rw::math::Vector3D<double>>);
-NAMED_OWNEDPTR(VectorVector3D_f,std::vector<rw::math::Vector3D<float>>);
+%std_vector(VectorVector3D, std::vector<rw::math::Vector3D<double>>);
+%std_vector(VectorVector3D_f, std::vector<rw::math::Vector3D<float>>);
+//NAMED_OWNEDPTR(VectorVector3D,std::vector<rw::math::Vector3D<double>>);
+//NAMED_OWNEDPTR(VectorVector3D_f,std::vector<rw::math::Vector3D<float>>);
 
 
 %rename(copy) rw::math::VectorND::operator=;

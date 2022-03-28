@@ -1,7 +1,6 @@
 %module sdurw_sensor
 
-%include <stl.i>
-%include <std_vector.i>
+%include <exception.i>
 %include <rwlibs/swig/swig_macros.i>
 
 %import <rwlibs/swig/sdurw_core.i>
@@ -16,6 +15,15 @@
     #include <rw/geometry/IndexedTriMesh.hpp>
     #include <rw/kinematics/FixedFrame.hpp>
     #include <rw/kinematics/MovableFrame.hpp>
+    #include <rw/models/Joint.hpp>
+    #include <rw/models/DependentJoint.hpp>
+    #include <rw/models/PrismaticJoint.hpp>
+    #include <rw/models/PrismaticSphericalJoint.hpp>
+    #include <rw/models/PrismaticUniversalJoint.hpp>
+    #include <rw/models/SphericalJoint.hpp>
+    #include <rw/models/RevoluteJoint.hpp>
+    #include <rw/models/UniversalJoint.hpp>
+    #include <rw/models/VirtualJoint.hpp>
     #include <boost/mpl/equal_to.hpp>
     #include <boost/mpl/int.hpp>
 %}
@@ -48,7 +56,7 @@ import org.robwork.sdurw_geometry.*;
 %}
 %include <rw/sensor/SensorModel.hpp>
 NAMED_OWNEDPTR(SensorModel,rw::sensor::SensorModel);
-%template (VectorSensorModelPtr) std::vector<rw::core::Ptr<rw::sensor::SensorModel>>;
+%std_vector(VectorSensorModelPtr,rw::core::Ptr<rw::sensor::SensorModel>);
 
 %ignore rw::sensor::Sensor::getPropertyMap() const;
 %{
@@ -101,7 +109,7 @@ NAMED_OWNEDPTR(Contact2D,rw::sensor::Contact2D);
 %}
 %include <rw/sensor/Contact3D.hpp>
 NAMED_OWNEDPTR(Contact3D,rw::sensor::Contact3D);
-%template(VectorContact3D) std::vector<rw::sensor::Contact3D>;
+%std_vector(VectorContact3D,rw::sensor::Contact3D);
 
 %{
 	#include<rw/sensor/FTSensor.hpp>

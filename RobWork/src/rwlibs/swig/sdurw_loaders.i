@@ -1,10 +1,8 @@
 %module sdurw_loaders
 
-%include <stl.i>
-%include <std_vector.i>
 %include <exception.i>
 %include <rwlibs/swig/swig_macros.i>
-%include <exception.i>
+%include <rwlibs/swig/ext_i/rw_vector.i>
 
 %import <rwlibs/swig/sdurw_core.i>
 %import <rwlibs/swig/sdurw_common.i>
@@ -23,6 +21,8 @@
 #include <rw/math/Vector2D.hpp>
 #include <rw/kinematics/MovableFrame.hpp>
 #include <rw/kinematics/FixedFrame.hpp>
+#include <rw/geometry/Ray.hpp>
+#include <rw/geometry/Line.hpp>
 
 #include <rw/geometry/IndexedTriMesh.hpp>
 #include <rw/trajectory/Trajectory.hpp>

@@ -83,8 +83,8 @@ void java_ThreadSimulatorStepCallback(ThreadSimulator* sim, rw::kinematics::Stat
 
 #include <RobWorkSimConfig.hpp>
 
+%include <rwlibs/swig/ext_i/rw_vector.i>
 %include <std_string.i>
-%include <std_vector.i>
 %include <shared_ptr.i>
 %include <exception.i>
 
@@ -318,7 +318,7 @@ public:
 	//tostring
 };
 
-%template (ContactVector) std::vector<Contact>;
+%std_vector(ContactVector,Contact);
 
 
 /********************************************
@@ -361,7 +361,7 @@ struct PDParam {
 	double D;
 };
 
-%template (PDParamVector) std::vector<PDParam>;
+%std_vector(PDParamVector,PDParam);
 %{
 	#include <rwlibs/control/Controller.hpp>
 %}
@@ -600,7 +600,7 @@ public:
 };
 
 %template (BodyPtr) rw::core::Ptr<Body>;
-%template (BodyPtrVector) std::vector<rw::core::Ptr<Body> >;
+%std_vector(BodyPtrVector,rw::core::Ptr<Body> );
 OWNEDPTR(Body);
 
 
@@ -609,7 +609,7 @@ class FixedBody: public Body
 };
 
 %template (FixedBodyPtr) rw::core::Ptr<FixedBody>;
-%template (FixedBodyPtrVector) std::vector<rw::core::Ptr<FixedBody> >;
+%std_vector(FixedBodyPtrVector,rw::core::Ptr<FixedBody> );
 OWNEDPTR(FixedBody);
 
 class KinematicBody: public Body
@@ -617,7 +617,7 @@ class KinematicBody: public Body
 };
 
 %template (KinematicBodyPtr) rw::core::Ptr<KinematicBody>;
-%template (KinematicBodyPtrVector) std::vector<rw::core::Ptr<KinematicBody> >;
+%std_vector(KinematicBodyPtrVector,rw::core::Ptr<KinematicBody> );
 OWNEDPTR(KinematicBody);
 
 class RigidBody : public Body
@@ -668,7 +668,7 @@ public:
 };
 
 %template (RigidBodyPtr) rw::core::Ptr<RigidBody>;
-%template (RigidBodyPtrVector) std::vector<rw::core::Ptr<RigidBody> >;
+%std_vector(RigidBodyPtrVector,rw::core::Ptr<RigidBody> );
 OWNEDPTR(RigidBody);
 
 %nodefaultctor Constraint;
@@ -710,7 +710,7 @@ public:
 };
 
 %template (ConstraintPtr) rw::core::Ptr<Constraint>;
-%template (ConstraintPtrVector) std::vector<rw::core::Ptr<Constraint> >;
+%std_vector(ConstraintPtrVector,rw::core::Ptr<Constraint> );
 OWNEDPTR(Constraint);
 %nodefaultctor DynamicDevice;
 class DynamicDevice {
@@ -730,7 +730,7 @@ public:
 };
 
 %template (DynamicDevicePtr) rw::core::Ptr<DynamicDevice>;
-%template (DynamicDevicePtrVector) std::vector<rw::core::Ptr<DynamicDevice> >;
+%std_vector(DynamicDevicePtrVector,rw::core::Ptr<DynamicDevice> );
 OWNEDPTR(DynamicDevice);
 
 %nodefaultctor RigidDevice;
@@ -773,7 +773,7 @@ class RigidDevice : public DynamicDevice {
     };
 
 %template (RigidDevicePtr) rw::core::Ptr<RigidDevice>;
-%template (RigidDevicePtrVector) std::vector<rw::core::Ptr<RigidDevice> >;
+%std_vector(RigidDevicePtrVector,rw::core::Ptr<RigidDevice> );
 OWNEDPTR(RigidDevice);
 
 %nodefaultctor SuctionCup;
@@ -1147,7 +1147,7 @@ class ThreadSimulator {
 	};
 
 %template (ThreadSimulatorPtr) rw::core::Ptr<ThreadSimulator>;
-%template (ThreadSimulatorPtrVector) std::vector<rw::core::Ptr<ThreadSimulator> >;
+%std_vector(ThreadSimulatorPtrVector,rw::core::Ptr<ThreadSimulator> );
 OWNEDPTR(ThreadSimulator);
 
 %nodefaultctor GraspTaskSimulator;

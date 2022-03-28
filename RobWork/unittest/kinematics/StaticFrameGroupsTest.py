@@ -65,16 +65,18 @@ class Kinematics(unittest.TestCase):
 
         addTestFrames(world)
 
+        
         frameInGroup = []
         for i in range(13):
             frameInGroup.append(False)
 
         root = world.getWorldFrame()
-
+        
         staticGroups = sdurw_kinematics.Kinematics.getStaticFrameGroups (root, world.getDefaultState ())
         self.assertEqual(10, len(staticGroups))
-        for list in staticGroups:
-            for frame in list:
+         
+        for group in staticGroups:
+            for frame in group:
                 if (frame.getName() == "WORLD"):
                     self.assertFalse(frameInGroup[0])
                     frameInGroup[0] = True

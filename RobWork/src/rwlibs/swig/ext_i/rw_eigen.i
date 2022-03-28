@@ -1,5 +1,5 @@
+%import <rwlibs/swig/ext_i/std.i>
 
-%import(module=rwlibs/swig/sdurw_core) <rwlibs/swig/ext_i/std.i>
 %{
     #include <Eigen/Core>
 %}
@@ -150,17 +150,19 @@ namespace Eigen{
 %template(EigenMatrix3id) Eigen::Matrix<std::complex<double>,3,3>;
 #endif
 
+%include <rwlibs/swig/ext_i/rw_vector.i>
+
 #if ! SWIG_VERSION <= 0x030008
 %template(EigenQuaterniond) Eigen::Quaternion<double>;
 %template(EigenQuaternionf) Eigen::Quaternion<float>; 
 
-%template(VectorEigenRowVector3f) std::vector<Eigen::Matrix<float,1,3>>;
-%template(VectorEigenRowVector3d) std::vector<Eigen::Matrix<double,1,3>>;
-%template(VectorEigenVector3f) std::vector<Eigen::Matrix<float,3,1>>;
-%template(VectorEigenVector3d) std::vector<Eigen::Matrix<double,3,1>>;
-%template(VectorEigenMatrix3f) std::vector<Eigen::Matrix<float,3,3>>;
-%template(VectorEigenMatrix3d) std::vector<Eigen::Matrix<double,3,3>>;
+%std_vector_explicit(VectorEigenRowVector3f, SWIG_CORE_DEFINE(Eigen::Matrix<float,1,3>),SWIG_CORE_DEFINE(std::vector<Eigen::Matrix<float,1,3>>),"generalToFromPy");
+%std_vector_explicit(VectorEigenRowVector3d,SWIG_CORE_DEFINE(Eigen::Matrix<double,1,3>),SWIG_CORE_DEFINE(std::vector<Eigen::Matrix<double,1,3>>),"generalToFromPy");
+%std_vector_explicit(VectorEigenVector3f,SWIG_CORE_DEFINE(Eigen::Matrix<float,3,1>),SWIG_CORE_DEFINE(std::vector<Eigen::Matrix<float,3,1>>),"generalToFromPy");
+%std_vector_explicit(VectorEigenVector3d,SWIG_CORE_DEFINE(Eigen::Matrix<double,3,1>),SWIG_CORE_DEFINE(std::vector<Eigen::Matrix<double,3,1>>),"generalToFromPy");
+%std_vector_explicit(VectorEigenMatrix3f,SWIG_CORE_DEFINE(Eigen::Matrix<float,3,3>),SWIG_CORE_DEFINE(std::vector<Eigen::Matrix<float,3,3>>),"generalToFromPy");
+%std_vector_explicit(VectorEigenMatrix3d,SWIG_CORE_DEFINE(Eigen::Matrix<double,3,3>),SWIG_CORE_DEFINE(std::vector<Eigen::Matrix<double,3,3>>),"generalToFromPy");
 
-%template(VectorEigenVector3id) std::vector<Eigen::Matrix<std::complex<double>,3,1>>;
-%template(VectorEigenMatrix3id) std::vector<Eigen::Matrix<std::complex<double>,3,3>>;
+%std_vector_explicit(VectorEigenVector3id,SWIG_CORE_DEFINE(Eigen::Matrix<std::complex<double>,3,1>),SWIG_CORE_DEFINE(std::vector<Eigen::Matrix<std::complex<double>,3,1>>),"generalToFromPy");
+%std_vector_explicit(VectorEigenMatrix3id,SWIG_CORE_DEFINE(Eigen::Matrix<std::complex<double>,3,3>),SWIG_CORE_DEFINE(std::vector<Eigen::Matrix<std::complex<double>,3,3>>),"generalToFromPy");
 #endif
