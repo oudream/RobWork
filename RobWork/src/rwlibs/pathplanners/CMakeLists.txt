@@ -50,6 +50,11 @@ if(build)
         PUBLIC
         $<BUILD_INTERFACE:${RW_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
     )
+
+    if(CMAKE_COMPILER_IS_GNUCXX)
+        set_source_files_properties(./prm/PRMPlanner.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+    endif()
+
     set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 
 endif()

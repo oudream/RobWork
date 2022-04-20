@@ -133,4 +133,13 @@ if(build)
     target_link_libraries(bt_plugin.rwplugin PRIVATE sdurwsim_bullet)
     install(TARGETS bt_plugin.rwplugin LIBRARY DESTINATION ${RW_PLUGIN_INSTALL_DIR})
 
+    if(CMAKE_COMPILER_IS_GNUCXX)
+        set_source_files_properties(BtBody.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+        set_source_files_properties(BtConstraint.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+        set_source_files_properties(BtContactStrategy.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+        set_source_files_properties(BtPlugin.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+        set_source_files_properties(BtSimulator.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+        set_source_files_properties(BtTactileSensor.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+    endif()
+
 endif()

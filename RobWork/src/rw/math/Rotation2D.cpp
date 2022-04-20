@@ -25,6 +25,9 @@
 using namespace rw::common;
 using namespace rw::math;
 
+const Rotation2D<double> rw::math::Rotation2DDoubleIdentity(1, 0, 0, 1);
+const Rotation2D<float> rw::math::Rotation2DFloatIdentity(1, 0, 0, 1);
+
 // Explicit template specifications.
 template class rw::math::Rotation2D< double >;
 template class rw::math::Rotation2D< float >;

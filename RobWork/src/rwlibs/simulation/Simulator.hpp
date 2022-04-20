@@ -47,9 +47,9 @@ namespace rwlibs { namespace simulation {
         struct UpdateInfo
         {
             //! constructor
-            UpdateInfo () : dt (0.0), time (0.0), rollback (false) {}
+            UpdateInfo () : dt (0.0), dt_prev (0.0), time (0.0), rollback (false) {}
             //! constructor
-            UpdateInfo (double dt_step) : dt (dt_step), time (0.0), rollback (false) {}
+            UpdateInfo (double dt_step) : dt (dt_step), dt_prev (0.0), time (0.0), rollback (false) {}
             /**
              * @brief the timestep which is about to take place
              */
@@ -76,7 +76,7 @@ namespace rwlibs { namespace simulation {
         /**
          * @brief
          */
-        virtual ~Simulator (){};
+        virtual ~Simulator (){}
 
         /**
          * @brief take a step forward in time with timestep \b dt.
@@ -121,12 +121,12 @@ namespace rwlibs { namespace simulation {
         virtual rw::core::PropertyMap& getPropertyMap () = 0;
 
         //! get sensor with specific name
-        virtual rw::sensor::Sensor::Ptr getSensor (const std::string& name) { return NULL; }
+        virtual rw::sensor::Sensor::Ptr getSensor (const std::string& name) { return nullptr; }
 
         //! get controller with specific name
         virtual rwlibs::control::Controller::Ptr getController (const std::string& name)
         {
-            return NULL;
+            return nullptr;
         };
 
         /**

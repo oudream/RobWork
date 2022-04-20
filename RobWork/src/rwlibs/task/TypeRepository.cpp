@@ -28,3 +28,10 @@ TypeRepository::TypeRepository ()
     _typeMap[typeid (rw::math::Transform3D<>).name ()] = Type::Transform3D;
     _next                                              = Type::User;
 }
+
+
+TypeRepository& TypeRepository::instance ()
+{
+    static TypeRepository repository;
+    return repository;
+}

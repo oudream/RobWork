@@ -40,7 +40,7 @@ namespace rw { namespace kinematics {
          */
         StatelessData (int dN = 1) : _N (dN)
         {
-            _sdata = rw::core::Ptr< StateData > (
+            _sdata = rw::core::ownedPtr(
                 new StateData ((sizeof (DATA) * dN) / sizeof (double) + 1,
                                rw::core::StringUtil::ranName ("sdata")));
         }
@@ -51,7 +51,7 @@ namespace rw { namespace kinematics {
          */
         StatelessData (int dN, rw::core::Ptr< StateCache > cache) : _N (dN)
         {
-            _sdata = rw::core::Ptr< StateData > (
+            _sdata = rw::core::ownedPtr(
                 new StateData ((sizeof (DATA) * dN) / sizeof (double) + 1,
                                rw::core::StringUtil::ranName ("sdata"),
                                cache));

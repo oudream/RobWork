@@ -48,6 +48,10 @@ namespace rw { namespace math {
      * @f$
      *
      */
+
+    template<class T>
+    struct Transform2DIdentity;
+
     template< class T = double > class Transform2D
     {
       public:
@@ -85,8 +89,7 @@ namespace rw { namespace math {
          */
         static const Transform2D& identity ()
         {
-            static const Transform2D id (Vector2D< T > (0, 0), Rotation2D< T >::identity ());
-            return id;
+            return Transform2DIdentity<T>::identity();
         }
 
         /**
@@ -197,6 +200,31 @@ namespace rw { namespace math {
       private:
         Vector2D< T > _d;
         Rotation2D< T > _R;
+    };
+
+    extern const Transform2D<double> Transform2DDoubleIdentity;
+    extern const Transform2D<float> Transform2DFloatIdentity;
+
+    template<class T>
+    struct Transform2DIdentity {
+        static const Transform2D<T>& identity() {
+            static const Transform2D<> id (Vector2D< T > (0, 0), Rotation2D< T >::identity ());
+            return id;
+        }
+    };
+
+    template<>
+    struct Transform2DIdentity<double> {
+        static const Transform2D<double>& identity() {
+            return Transform2DDoubleIdentity;
+        }
+    };
+
+    template<>
+    struct Transform2DIdentity<float> {
+        static const Transform2D<float>& identity() {
+            return Transform2DFloatIdentity;
+        }
     };
 
     /**

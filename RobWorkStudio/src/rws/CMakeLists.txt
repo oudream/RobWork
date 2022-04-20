@@ -135,6 +135,10 @@ if(build)
         PRIVATE ${GLUT_glut_LIBRARY} ${PYTHON_LIBRARIES}
     )
 
+    if(CMAKE_COMPILER_IS_GNUCXX)
+        target_compile_options(${SUBSYS_NAME} PRIVATE "-fno-gnu-unique")  # covers automoc
+    endif()
+
     set_target_properties(sdurws PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 
     rw_add_includes(sdurws "rws" ${SRC_FILES_HPP})

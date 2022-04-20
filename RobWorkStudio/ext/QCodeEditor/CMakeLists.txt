@@ -104,6 +104,7 @@ if(CMAKE_COMPILER_IS_GNUCXX)
 		-Winit-self
 		-Wunreachable-code
 	)
+    target_compile_options(QCodeEditor PRIVATE "-fno-gnu-unique")  # covers automoc
 endif(CMAKE_COMPILER_IS_GNUCXX)
 
 if(DEFINED USE_QT6)

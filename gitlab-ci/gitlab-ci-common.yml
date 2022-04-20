@@ -9,7 +9,7 @@
       when: never
     # PPA Cancel other runs
     - if: '$PPATest =~ /^.+/'
-      when: never 
+      when: never
 
     # Merge Pipeline
     - if: '$CI_JOB_NAME =~ /^.*(build[:-](RW.?.?|doc)|tests|examples).*-2204/                                   && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'

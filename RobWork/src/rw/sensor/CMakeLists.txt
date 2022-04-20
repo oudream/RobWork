@@ -67,6 +67,10 @@ if(build)
     rw_add_includes(${SUBSYS_NAME} "rw/sensor" ${FILES_HPP})
     rw_add_includes(${SUBSYS_NAME} "rw" ${CMAKE_CURRENT_SOURCE_DIR}/../sensor.hpp)
 
+    if(CMAKE_COMPILER_IS_GNUCXX)
+        set_source_files_properties(TactileArrayModel.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+    endif()
+
     target_link_libraries(${SUBSYS_NAME} PUBLIC ${Boost_LIBRARIES} ${SUBSYS_DEPS})
 
     target_include_directories(

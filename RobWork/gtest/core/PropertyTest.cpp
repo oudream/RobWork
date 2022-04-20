@@ -60,6 +60,7 @@ TEST(Property, double) {
         EXPECT_EQ("Desc", clone->getDescription());
         EXPECT_EQ(0.1, clone->getValue());
         EXPECT_EQ(0.1, clone->getPropertyValue().getValue());
+        delete clone;
     }
     // Test constructor with explicit type
     {

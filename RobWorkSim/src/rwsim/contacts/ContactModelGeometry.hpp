@@ -72,10 +72,10 @@ namespace rwsim { namespace contacts {
         ContactModelGeometry (ContactStrategy* owner) : ContactModel (owner) {}
 
         //! @brief Destructor
-        virtual ~ContactModelGeometry (){};
+        virtual ~ContactModelGeometry (){}
 
         //! @copydoc rwsim::contacts::ContactModel::getName
-        virtual std::string getName () const { return "ContactModelGeometry"; };
+        virtual std::string getName () const { return "ContactModelGeometry"; }
 
       public:
         //! @brief List of geometry models belonging to this model.

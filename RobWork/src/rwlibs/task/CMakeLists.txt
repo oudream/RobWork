@@ -75,6 +75,10 @@ if(build)
     rw_add_include_dirs(${SUBSYS_NAME} "rwlibs/task" loader)
     target_link_libraries(${SUBSYS_NAME} ${SUBSYS_DEPS})
 
+    if(CMAKE_COMPILER_IS_GNUCXX)
+        set_source_files_properties(./GraspTask.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+    endif()
+
     target_include_directories(${SUBSYS_NAME}
         PUBLIC
         ${XERCESC_INCLUDE_DIR}

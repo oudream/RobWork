@@ -39,6 +39,10 @@ if(build)
 
     # to avoid windows compile bug
     target_include_directories(${SUBSYS_NAME} PRIVATE ${PYTHON_INCLUDE_DIRS})
+
+    if(CMAKE_COMPILER_IS_GNUCXX)
+        target_compile_options(${SUBSYS_NAME} PRIVATE "-fno-gnu-unique")  # covers automoc
+    endif()
 endif()
 
 # ##################################################################################################
@@ -93,6 +97,10 @@ if(build)
 
     # to avoid windows compile bug
     target_include_directories(${SUBSYS_NAME} PRIVATE ${PYTHON_INCLUDE_DIRS})
+
+    if(CMAKE_COMPILER_IS_GNUCXX)
+        target_compile_options(${SUBSYS_NAME} PRIVATE "-fno-gnu-unique")  # covers automoc
+    endif()
 endif()
 
 # ##################################################################################################
@@ -136,6 +144,10 @@ if(build)
 
     if(MSVC) # to avoid multiple access to resource file
         add_dependencies(${SUBSYS_NAME} SimUtilityPlugin)
+    endif()
+
+    if(CMAKE_COMPILER_IS_GNUCXX)
+        target_compile_options(${SUBSYS_NAME} PRIVATE "-fno-gnu-unique")  # covers automoc
     endif()
 endif()
 
@@ -197,6 +209,10 @@ if(build)
     if(MSVC) # to avoid multiple access to resource file
         add_dependencies(${SUBSYS_NAME} GraspTableGeneratorPlugin)
     endif()
+
+    if(CMAKE_COMPILER_IS_GNUCXX)
+        target_compile_options(${SUBSYS_NAME} PRIVATE "-fno-gnu-unique")  # covers automoc
+    endif()
 endif()
 
 # ##################################################################################################
@@ -242,6 +258,10 @@ if(build)
 
     if(MSVC) # to avoid multiple access to resource file
         add_dependencies(${SUBSYS_NAME} RWSimPlugin)
+    endif()
+
+    if(CMAKE_COMPILER_IS_GNUCXX)
+        target_compile_options(${SUBSYS_NAME} PRIVATE "-fno-gnu-unique")  # covers automoc
     endif()
 endif()
 
@@ -292,5 +312,9 @@ if(build)
 
     if(MSVC) # to avoid multiple access to resource file
         add_dependencies(${SUBSYS_NAME} SimTaskPlugin)
+    endif()
+
+    if(CMAKE_COMPILER_IS_GNUCXX)
+        target_compile_options(${SUBSYS_NAME} PRIVATE "-fno-gnu-unique")  # covers automoc
     endif()
 endif()

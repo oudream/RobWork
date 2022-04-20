@@ -27,16 +27,13 @@
 using namespace rw::common;
 using namespace rw::math;
 
+const Rotation3D<double> rw::math::Rotation3DDoubleIdentity(1, 0, 0, 0, 1, 0, 0, 0, 1);
+const Rotation3D<float> rw::math::Rotation3DFloatIdentity(1, 0, 0, 0, 1, 0, 0, 0, 1);
+
 template< class T >
 Rotation3D< T >::Rotation3D (const Rotation3DVector< T >& rotVec) :
     Rotation3D (rotVec.toRotation3D ())
 {}
-
-template< class T > const Rotation3D< T >& Rotation3D< T >::identity ()
-{
-    static Rotation3D id (1, 0, 0, 0, 1, 0, 0, 0, 1);
-    return id;
-}
 
 template< class T > bool Rotation3D< T >::isProperRotation () const
 {

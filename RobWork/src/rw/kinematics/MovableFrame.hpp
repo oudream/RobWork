@@ -44,6 +44,8 @@ namespace rw { namespace kinematics {
       public:
         //! @brief smart pointer type to this class
         typedef rw::core::Ptr< MovableFrame > Ptr;
+        //! @brief Smart pointer type for a constant MovableFrame object
+        typedef rw::core::Ptr< const MovableFrame > CPtr;
 
         /**
          * @brief Construct a MovableFrame with Identiy as the initial
@@ -54,7 +56,7 @@ namespace rw { namespace kinematics {
         explicit MovableFrame (const std::string& name);
 
         //! destructor
-        virtual ~MovableFrame (){};
+        virtual ~MovableFrame (){}
 
         /**
          * @brief Sets the transform in the state. The transform is relative to the
@@ -63,7 +65,7 @@ namespace rw { namespace kinematics {
          * frame
          * @param state [out] state into which to set the transform
          */
-        void setTransform (const math::Transform3D<>& transform, rw::kinematics::State& state);
+        void setTransform (const math::Transform3D<>& transform, rw::kinematics::State& state) const;
 
         /**
          * @brief Changes the transform in the state, such that the movable frame is located in the

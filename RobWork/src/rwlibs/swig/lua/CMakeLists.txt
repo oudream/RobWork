@@ -91,6 +91,12 @@ if(build)
             else()
                 set_target_properties(${TARGET_NAME} PROPERTIES PREFIX "" OUTPUT_NAME ${RW_MODULE})
             endif()
+            
+            if(CMAKE_COMPILER_IS_GNUCXX)
+                set_target_properties(
+                    ${TARGET_NAME} PROPERTIES COMPILE_FLAGS -fno-gnu-unique
+                )
+            endif()
 
             set(lua_targets ${lua_targets} ${TARGET_NAME})
 
@@ -117,6 +123,12 @@ if(build)
                 set_target_properties(${TARGET_NAME} PROPERTIES COMPILE_FLAGS "/DSTATIC_LINKED")
             else()
                 set_target_properties(${TARGET_NAME}_s PROPERTIES COMPILE_FLAGS "-DSTATIC_LINKED")
+            endif()
+            
+            if(CMAKE_COMPILER_IS_GNUCXX)
+                set_target_properties(
+                    ${TARGET_NAME}_s PROPERTIES COMPILE_FLAGS -fno-gnu-unique
+                )
             endif()
 
             # ############### Add rwplugin #####################

@@ -29,6 +29,16 @@ examples:ubuntu-2004:
     ["build-RW:ubuntu-2004", "build-RWS:ubuntu-2004", "build-RWSim:ubuntu-2004"]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2004
 
+unique-symbols-tests:ubuntu-2004:
+  extends: .linux-unique-symbols-tests
+  dependencies:
+    - build-RW:ubuntu-2004
+    - build-RWS:ubuntu-2004
+    - build-RWSim:ubuntu-2004
+  needs:
+    ["build-RW:ubuntu-2004", "build-RWS:ubuntu-2004", "build-RWSim:ubuntu-2004"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2004
+
 tests:ubuntu-2004:
   extends: .linux-tests
   dependencies:

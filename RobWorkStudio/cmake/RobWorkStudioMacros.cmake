@@ -31,6 +31,9 @@ macro(RWS_ADD_PLUGIN _name _lib_type)
             ${_name} PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/plugins
         )
     endif()
+    if(CMAKE_COMPILER_IS_GNUCXX)
+        target_compile_options(${_name} PRIVATE "-fno-gnu-unique")  # covers automoc
+    endif()
 
     # Set the VERSION and SOVERSION of the library to the RobWorkStudio major and minor versions On
     # MAC OS we can not do this if we are building a Module (where it does not make much sense

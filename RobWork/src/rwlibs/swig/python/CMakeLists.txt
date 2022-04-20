@@ -99,6 +99,10 @@ if(build)
             set(SOURCE)
             if("${RW_MODULE}" STREQUAL "sdurw")
                 set(SOURCE ../ScriptTypes.cpp)
+
+                if(CMAKE_COMPILER_IS_GNUCXX)
+                    set_source_files_properties(../ScriptTypes.cpp COMPILE_FLAGS -fno-gnu-unique)
+                endif()
             endif()
             set(TARGET_NAME ${RW_MODULE}${LIB_SUFIX})
             rw_add_swig(

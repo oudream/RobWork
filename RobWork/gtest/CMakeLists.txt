@@ -30,7 +30,7 @@ endmacro()
 # RobWork main function for initialization (link with this if needed).
 # ##################################################################################################
 
-set(RWMAIN_TEST_LIBRARIES ${GTEST_BOTH_LIBRARIES} sdurw_core)
+set(RWMAIN_TEST_LIBRARIES PUBLIC ${GTEST_LIBRARY} PRIVATE sdurw_core Boost::filesystem)
 
 set(RWMAIN_TEST_SRC TestEnvironment.cpp test-main.cpp)
 add_library(sdurw-gtest-main STATIC ${RWMAIN_TEST_SRC})
@@ -41,7 +41,7 @@ target_link_libraries(sdurw-gtest-main ${RWMAIN_TEST_LIBRARIES})
 # ##################################################################################################
 
 if(TARGET sdurw_algorithms)
-    set(ALGORITHMS_TEST_LIBRARIES sdurw-gtest-main ${GTEST_BOTH_LIBRARIES} sdurw_algorithms)
+    set(ALGORITHMS_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARY} sdurw_algorithms)
 
     set(ALGORITHMS_TEST_SRC algorithms/RANSACTest.cpp)
     add_executable(sdurw_algorithms-gtest ${ALGORITHMS_TEST_SRC})
@@ -54,7 +54,7 @@ endif()
 # ##################################################################################################
 
 if(TARGET sdurw_calibration)
-    set(CALIBRATION_TEST_LIBRARIES sdurw-gtest-main ${GTEST_BOTH_LIBRARIES} sdurw_calibration)
+    set(CALIBRATION_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARY} sdurw_calibration)
 
     set(CALIBRATION_TEST_SRC calibration/CalibrationTest.cpp)
     add_executable(sdurw_calibration-gtest ${CALIBRATION_TEST_SRC})
@@ -67,7 +67,7 @@ endif()
 # ##################################################################################################
 
 if(TARGET sdurw_core)
-    set(CORE_TEST_LIBRARIES sdurw-gtest-main ${GTEST_BOTH_LIBRARIES} sdurw_core)
+    set(CORE_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARY} sdurw_core)
 
     set(CORE_TEST_SRC
         core/AnyPtrTest.cpp
@@ -83,7 +83,7 @@ if(TARGET sdurw_core)
     )
 
     add_executable(sdurw_core-gtest ${CORE_TEST_SRC})
-    target_link_libraries(sdurw_core-gtest ${CORE_TEST_LIBRARIES})
+    target_link_libraries(sdurw_core-gtest ${CORE_TEST_LIBRARIES} ${CMAKE_DL_LIBS})
     add_rw_gtest(sdurw_core-gtest)
 
     # Create dummy plugins for testing
@@ -129,7 +129,7 @@ endif()
 # ##################################################################################################
 
 if(TARGET sdurw_geometry AND TARGET sdurw_kinematics AND TARGET sdurw_loaders)
-    set(GEOMETRY_TEST_LIBRARIES sdurw-gtest-main ${GTEST_BOTH_LIBRARIES}
+    set(GEOMETRY_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARY}
         sdurw_geometry sdurw_kinematics sdurw_loaders
     )
 
@@ -159,7 +159,7 @@ endif()
 # ##################################################################################################
 
 if(TARGET sdurw_graphics AND TARGET sdurw_models AND TARGET sdurw_loaders)
-    set(GRAPHICS_TEST_LIBRARIES sdurw-gtest-main ${GTEST_BOTH_LIBRARIES}
+    set(GRAPHICS_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARY}
         sdurw_graphics sdurw_models sdurw_loaders
     )
 
@@ -176,7 +176,7 @@ endif()
 # ##################################################################################################
 
 if(TARGET sdurw_invkin AND TARGET sdurw_models AND TARGET sdurw_loaders)
-    set(INVKIN_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARIES}
+    set(INVKIN_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARY}
         sdurw_invkin sdurw_models sdurw_loaders)
 
     set(INVKIN_TEST_SRC
@@ -206,7 +206,7 @@ endif()
 # ##################################################################################################
 
 if(TARGET sdurw_loaders AND TARGET sdurw_models)
-    set(LOADERS_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARIES}
+    set(LOADERS_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARY}
         sdurw_proximitystrategies sdurw_loaders sdurw_models
     )
 
@@ -257,7 +257,7 @@ endif()
 # ##################################################################################################
 
 if(TARGET sdurw_mathematica)
-    set(MATHEMATICA_TEST_LIBRARIES sdurw-gtest-main ${GTEST_BOTH_LIBRARIES} sdurw_mathematica)
+    set(MATHEMATICA_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARY} sdurw_mathematica)
 
     set(MATHEMATICA_TEST_SRC mathematica/MathematicaTest.cpp)
     add_executable(sdurw_mathematica-gtest ${MATHEMATICA_TEST_SRC})
@@ -270,7 +270,7 @@ endif()
 # ##################################################################################################
 
 if(TARGET sdurw_models AND TARGET sdurw_loaders)
-    set(MODELS_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARIES} sdurw_models sdurw_loaders)
+    set(MODELS_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARY} sdurw_models sdurw_loaders)
 
     set(MODELS_TEST_SRC
         models/JointTest.cpp models/ParallelDeviceTest.cpp models/ParallelLegTest.cpp
@@ -286,7 +286,7 @@ endif()
 # ##################################################################################################
 
 if(TARGET sdurw_opengl)
-    set(OPENGL_TEST_LIBRARIES sdurw-gtest-main ${GTEST_BOTH_LIBRARIES} sdurw_opengl)
+    set(OPENGL_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARY} sdurw_opengl)
 
     set(OPENGL_TEST_SRC opengl/DrawableTest.cpp)
     add_executable(sdurw_opengl-gtest ${OPENGL_TEST_SRC})
@@ -314,7 +314,7 @@ endif()
 # ##################################################################################################
 
 if(TARGET sdurw_pathplanners AND TARGET sdurw_loaders)
-    set(PATHPLANNING_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARIES} sdurw_pathplanners
+    set(PATHPLANNING_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARY} sdurw_pathplanners
                                     sdurw_math sdurw_proximitystrategies sdurw_loaders
     )
 
@@ -330,7 +330,7 @@ endif()
 
 if(TARGET sdurw_proximitystrategies AND TARGET sdurw_models AND TARGET sdurw_loaders
     AND TARGET sdurw_pathplanning)
-    set(PROXIMITY_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARIES}
+    set(PROXIMITY_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARY}
         sdurw_proximitystrategies sdurw_models sdurw_loaders sdurw_pathplanning
     )
 
@@ -371,7 +371,7 @@ endif()
 # ##################################################################################################
 
 if(TARGET sdurw_task)
-    set(TASK_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARIES} sdurw_task)
+    set(TASK_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARY} sdurw_task)
 
     set(TASK_TEST_SRC task/TaskLoaderTest.cpp task/TaskSaverTest.cpp task/GraspTaskTest.cpp)
     add_executable(sdurw_task-gtest ${TASK_TEST_SRC})
@@ -384,7 +384,7 @@ endif()
 # ##################################################################################################
 
 if(TARGET sdurw_trajectory AND TARGET sdurw_loaders AND TARGET sdurw_control)
-    set(TRAJECTORY_TEST_LIBRARIES sdurw-gtest-main ${GTEST_BOTH_LIBRARIES} sdurw_trajectory sdurw_loaders sdurw_control)
+    set(TRAJECTORY_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARY} sdurw_trajectory sdurw_loaders sdurw_control)
     set(TRAJECTORY_TEST_SRC
         trajectory/PathTest.cpp
         trajectory/ParabolicBlendTest.cpp

@@ -51,6 +51,12 @@ if(build)
             OUTPUT_NAME ${RWS_MODULE}
         )
     endif()
+            
+    if(CMAKE_COMPILER_IS_GNUCXX)
+        set_target_properties(
+            ${TARGET_NAME} PROPERTIES COMPILE_FLAGS -fno-gnu-unique
+        )
+    endif()
 
     target_link_libraries(${TARGET_NAME} ${RWS_PLUGIN_LIBRARIES} sdurws sdurws_robworkstudioapp
                         RW::sdurw ${RW_BUILD_WITH_LIBRARIES_LUA}
@@ -85,6 +91,12 @@ if(build)
         set_target_properties(${TARGET_NAME}_s PROPERTIES COMPILE_FLAGS "/DSTATIC_LINKED")
     else()
         set_target_properties(${TARGET_NAME}_s PROPERTIES COMPILE_FLAGS "-DSTATIC_LINKED")
+    endif()
+            
+    if(CMAKE_COMPILER_IS_GNUCXX)
+        set_target_properties(
+            ${TARGET_NAME}_s PROPERTIES COMPILE_FLAGS -fno-gnu-unique
+        )
     endif()
 
     add_library(sdurwslua_plugin.rwplugin MODULE LuaPlugin.cpp LuaPlugin.hpp)

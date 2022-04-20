@@ -46,4 +46,13 @@ if(build)
         INTERFACE
         $<BUILD_INTERFACE:${RWSIM_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
     )
+
+    if(CMAKE_COMPILER_IS_GNUCXX)
+        set_source_files_properties(DynamicWorkCellBuilder.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+        set_source_files_properties(EngineTest.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+        set_source_files_properties(IntegratorGravityTest.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+        set_source_files_properties(IntegratorRotationTest.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+        set_source_files_properties(IntegratorSpringTest.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+        set_source_files_properties(IntegratorTest.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+    endif()
 endif()

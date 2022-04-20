@@ -53,6 +53,11 @@ if(build)
         SWIG_FLAGS "-package" "org.robwork.sdurwsim"
     )
 
+    if(CMAKE_COMPILER_IS_GNUCXX)
+        set_source_files_properties(ThreadSimulatorStepCallbackEnv.cpp COMPILE_FLAGS -fno-gnu-unique)
+        set_source_files_properties(../ScriptTypes.cpp COMPILE_FLAGS -fno-gnu-unique)
+    endif()
+
     target_link_libraries(sdurwsim_jni ${RWSIM_ODE_LIBRARY} sdurwsim)
 
     # Force removal of previous Java compilation and source when interface file changes This is

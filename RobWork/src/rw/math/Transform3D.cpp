@@ -27,6 +27,9 @@
 using namespace rw::common;
 using namespace rw::math;
 
+const Transform3D<double> rw::math::Transform3DDoubleIdentity(Vector3D<double> (0, 0, 0), Rotation3D<double>::identity ());
+const Transform3D<float> rw::math::Transform3DFloatIdentity(Vector3D<float> (0, 0, 0), Rotation3D<float>::identity ());
+
 template< class T > const Transform3D< T > Transform3D< T >::DH (T alpha, T a, T d, T theta)
 {
     return Transform3D (Vector3D< T > (a * cos (theta), a * sin (theta), d),
@@ -67,12 +70,6 @@ template< class T > const Transform3D< T > Transform3D< T >::craigDH (T alpha, T
                                          sin (theta) * sin (alpha),
                                          cos (theta) * sin (alpha),
                                          cos (alpha)));
-}
-
-template< class T > const Transform3D< T >& Transform3D< T >::identity ()
-{
-    static const Transform3D id (Vector3D< T > (0, 0, 0), Rotation3D< T >::identity ());
-    return id;
 }
 
 template< class T > typename Transform3D< T >::EigenMatrix4x4 Transform3D< T >::e () const

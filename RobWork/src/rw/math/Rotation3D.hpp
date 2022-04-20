@@ -57,8 +57,11 @@ namespace rw { namespace math {
      *  \right]
      * @f$
      */
-
 #endif
+
+    template<class T>
+    struct Rotation3DIdentity;
+
     template< class T = double > class Rotation3D
     {
       public:
@@ -179,7 +182,10 @@ namespace rw { namespace math {
          */
 
 #endif
-        static const Rotation3D& identity ();
+        static const Rotation3D& identity ()
+        {
+            return Rotation3DIdentity<T>::identity();
+        }
 
         /**
          * @brief Normalizes the rotation matrix to satisfy SO(3).
@@ -499,6 +505,31 @@ namespace rw { namespace math {
 
       private:
         EigenMatrix3x3 _m;
+    };
+
+    extern const Rotation3D<double> Rotation3DDoubleIdentity;
+    extern const Rotation3D<float> Rotation3DFloatIdentity;
+
+    template<class T>
+    struct Rotation3DIdentity {
+        static const Rotation3D<T>& identity() {
+            static Rotation3D<T> id (1, 0, 0, 0, 1, 0, 0, 0, 1);
+            return id;
+        }
+    };
+
+    template<>
+    struct Rotation3DIdentity<double> {
+        static const Rotation3D<double>& identity() {
+            return Rotation3DDoubleIdentity;
+        }
+    };
+
+    template<>
+    struct Rotation3DIdentity<float> {
+        static const Rotation3D<float>& identity() {
+            return Rotation3DFloatIdentity;
+        }
     };
 
     /**

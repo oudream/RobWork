@@ -79,7 +79,7 @@ namespace rwlibs { namespace task {
     class TypeRepository
     {
       public:
-        virtual ~TypeRepository (){};
+        virtual ~TypeRepository (){}
 
         /**
          * @brief Adds a new Type to the repository for the template type T
@@ -131,11 +131,7 @@ namespace rwlibs { namespace task {
          * @brief Returns the global instance of the TypeRepository
          * @return Reference to the global TypeRepository
          */
-        static TypeRepository& instance ()
-        {
-            static TypeRepository repository;
-            return repository;
-        }
+        static TypeRepository& instance ();
 
       private:
         // typedef std::tr1::unordered_map<std::string, Type> TypeMap;

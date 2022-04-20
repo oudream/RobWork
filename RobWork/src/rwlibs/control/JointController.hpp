@@ -50,7 +50,7 @@ namespace rwlibs { namespace control {
         /**
          * @brief destructor
          */
-        virtual ~JointController (){};
+        virtual ~JointController (){}
 
         /**
          * @brief gets the control mode mask. Defines which types of control the JointController

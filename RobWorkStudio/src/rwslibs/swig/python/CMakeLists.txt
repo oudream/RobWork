@@ -59,6 +59,10 @@ if(build)
         SWIG_FLAGS ${SWIG_FLAGS}
     )
 
+    if(CMAKE_COMPILER_IS_GNUCXX)
+        set_source_files_properties(../ScriptTypes.cpp COMPILE_FLAGS -fno-gnu-unique)
+    endif()
+
     if(NOT POLICY CMP0078)
         set(TARGET_NAME ${SWIG_MODULE_sdurws${LIB_SUFIX}_REAL_NAME})
     endif()

@@ -63,10 +63,10 @@ namespace rwsim { namespace contacts {
         typedef rw::core::Ptr< ContactStrategy > Ptr;
 
         //! @brief Create new contact strategy.
-        ContactStrategy (){};
+        ContactStrategy (){}
 
         //! @brief Destruct contact strategy.
-        virtual ~ContactStrategy (){};
+        virtual ~ContactStrategy (){}
 
         /**
          * @brief Test is this strategy can be used for the given geometries.

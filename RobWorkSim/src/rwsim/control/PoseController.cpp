@@ -68,7 +68,7 @@ void PoseController::update (const rwlibs::simulation::Simulator::UpdateInfo& in
     Transform3D<> Tcurrent = _device->baseTframe (tcpFrame, state);
     Transform3D<> Tdiff    = inverse (Tcurrent) * _target;
     Q q                    = _device->getQ (state);
-    Q dq                   = _ddev->getVelocity (state);
+    Q dq                   = _ddev->getJointVelocities (state);
 
     VelocityScrew6D<> vs (Tdiff);
 

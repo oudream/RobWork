@@ -92,6 +92,14 @@ if(build)
                               $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
     )
 
-    
+    if(CMAKE_COMPILER_IS_GNUCXX)
+        set_source_files_properties(BoostXMLParser.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+        set_source_files_properties(IOUtil.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+        set_source_files_properties(Message.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+        set_source_files_properties(os.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+        set_source_files_properties(Plugin.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+        set_source_files_properties(RobWork.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+        set_source_files_properties(StringUtil.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+    endif()
 
 endif()

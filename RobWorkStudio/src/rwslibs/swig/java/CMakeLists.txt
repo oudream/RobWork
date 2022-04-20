@@ -47,6 +47,10 @@ if(build)
         SWIG_FLAGS "-package" "org.robwork.sdurws"
     )
 
+    if(CMAKE_COMPILER_IS_GNUCXX)
+        set_source_files_properties(../ScriptTypes.cpp COMPILE_FLAGS -fno-gnu-unique)
+    endif()
+
     target_link_libraries(
         sdurws_jni
         sdurws

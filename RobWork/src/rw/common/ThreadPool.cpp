@@ -21,14 +21,23 @@
 
 #include <rw/core/macros.hpp>
 
+#include <boost/asio/io_service.hpp>
 #include <boost/bind/bind.hpp>
 #include <boost/function.hpp>
 #include <boost/thread/thread.hpp>
 
 using namespace rw::common;
 
+struct ThreadPool::Internals {
+    Internals(): _work (new boost::asio::io_service::work (_service))
+    {
+    }
+    boost::asio::io_service _service;
+    boost::asio::io_service::work* _work;
+};
+
 ThreadPool::ThreadPool (int threads) :
-    _work (new boost::asio::io_service::work (_service)),
+    _internals (new Internals()),
     _threadsNumber (threads < 0 ? boost::thread::hardware_concurrency () : threads),
     _postStop (new ThreadSafeVariable< bool > (false)),
     _queueSize (new ThreadSafeVariable< unsigned int > (0))
@@ -37,7 +46,7 @@ ThreadPool::ThreadPool (int threads) :
         boost::function< std::size_t () > fct =
             boost::bind (static_cast< std::size_t (boost::asio::io_service::*) () > (
                              &boost::asio::io_service::run),
-                         &_service);
+                         &_internals->_service);
         _threads.create_thread (fct);
     }
 }
@@ -47,6 +56,7 @@ ThreadPool::~ThreadPool ()
     stop ();
     delete _postStop;
     delete _queueSize;
+    delete _internals;
 }
 
 unsigned int ThreadPool::getNumberOfThreads () const
@@ -57,9 +67,9 @@ unsigned int ThreadPool::getNumberOfThreads () const
 void ThreadPool::stop ()
 {
     _postStop->setVariable (true);
-    _service.stop ();
-    delete _work;
-    _work = NULL;
+    _internals->_service.stop ();
+    delete _internals->_work;
+    _internals->_work = nullptr;
     _threads.interrupt_all ();
     _threads.join_all ();
     _queueSize->setVariable (0);
@@ -80,7 +90,7 @@ void ThreadPool::addWork (WorkFunction work)
         runWrap (work);
     }
     else {
-        _service.post (boost::bind (&ThreadPool::runWrap, this, work));
+        _internals->_service.post (boost::bind (&ThreadPool::runWrap, this, work));
     }
 }
 

@@ -57,7 +57,7 @@ namespace rwsim { namespace contacts {
         /**
          * @brief Destructor
          */
-        virtual ~ContactStrategyGeometry (){};
+        virtual ~ContactStrategyGeometry (){}
 
         /**
          * @copydoc rwsim::contacts::ContactStrategy::createModel

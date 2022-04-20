@@ -51,6 +51,11 @@ if(build)
 
     target_link_libraries(${SUBSYS_NAME} PUBLIC ${Boost_LIBRARIES} ${SUBSYS_DEPS})
 
+    if(CMAKE_COMPILER_IS_GNUCXX)
+        set_source_files_properties(JacobianIKSolver.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+        set_source_files_properties(JacobianIKSolverM.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+    endif()
+
     target_include_directories(
         ${SUBSYS_NAME} PUBLIC ${Boost_INCLUDE_DIR} $<BUILD_INTERFACE:${RW_ROOT}/src>
                               $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
