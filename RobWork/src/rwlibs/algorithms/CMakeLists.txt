@@ -72,5 +72,14 @@ if(build)
         $<BUILD_INTERFACE:${RW_ROOT}/src> $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
     )
 
+    if(CMAKE_COMPILER_IS_GNUCXX)
+        set_source_files_properties(BFGS.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+        set_source_files_properties(PointPairsRegistration.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+        set_source_files_properties(./gpm/BasicGPM.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+        set_source_files_properties(./qpcontroller/QPController.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+        set_source_files_properties(./xqpcontroller/NullSpaceProjection.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+        set_source_files_properties(./xqpcontroller/XQPController.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+    endif()
+
     set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 endif()

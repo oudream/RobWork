@@ -77,7 +77,7 @@ namespace rwsim { namespace simulator {
         /**
          * @brief destructor
          */
-        virtual ~PhysicsEngine (){};
+        virtual ~PhysicsEngine (){}
 
         /**
          * @brief adds dynamic workcell
@@ -232,10 +232,10 @@ namespace rwsim { namespace simulator {
         {
           public:
             //! @brief Constructor.
-            Dispatcher (){};
+            Dispatcher (){}
 
             //! @brief Destructor.
-            virtual ~Dispatcher (){};
+            virtual ~Dispatcher (){}
 
             /**
              * @brief Create a physics engine.

@@ -91,7 +91,7 @@ void ODEKinematicDevice::update (const rwlibs::simulation::Simulator::UpdateInfo
     double dt = info.dt;
     // Update velocity of the ode kinematic bodies
     std::cout << "get velocity!" << std::endl;
-    Q velQ = _kdev->getVelocity (state);
+    Q velQ = _kdev->getJointVelocities (state);
     std::cout << "= " << velQ << std::endl;
     std::cout << _kdev->getLinks ().size () << "==" << velQ.size () << std::endl;
     std::cout << _kdev->getLinks ().size () << "==" << _kbodies.size () << std::endl;

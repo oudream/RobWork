@@ -98,6 +98,11 @@ if(build)
     rw_add_includes(${SUBSYS_NAME} "rw/math" ${FILES_HPP})
     target_link_libraries(${SUBSYS_NAME} PUBLIC ${SUBSYS_DEPS})
 
+    if(CMAKE_COMPILER_IS_GNUCXX)
+        set_source_files_properties(LinearAlgebra.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+        set_source_files_properties(Random.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+    endif()
+
     rw_include_eigen(${SUBSYS_NAME})
 
     target_include_directories(

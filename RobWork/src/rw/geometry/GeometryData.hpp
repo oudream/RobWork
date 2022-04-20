@@ -39,6 +39,8 @@ namespace rw { namespace geometry {
       public:
         //! @brief smart pointer type to this class
         typedef rw::core::Ptr< GeometryData > Ptr;
+        //! @brief const smart pointer type to this class
+        typedef rw::core::Ptr< const GeometryData > CPtr;
 
         //! @brief geometry data types
         typedef enum {

@@ -163,9 +163,10 @@ if(build)
         analytic/quadratics/QuadraticUtil.hpp
     )
     if(CMAKE_COMPILER_IS_GNUCXX)
-      set_source_files_properties(BSphere.cpp COMPILE_FLAGS -Wno-maybe-uninitialized)
-      set_source_files_properties(Covariance.cpp COMPILE_FLAGS -Wno-maybe-uninitialized)
-      set_source_files_properties(OBB.cpp COMPILE_FLAGS -Wno-maybe-uninitialized)
+        set_source_files_properties(BSphere.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+        set_source_files_properties(Covariance.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+        set_source_files_properties(OBB.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+        set_source_files_properties(analytic/quadratics/QuadraticUtil.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
     endif()
 
     if(RW_HAVE_PQP)

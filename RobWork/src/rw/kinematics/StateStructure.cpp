@@ -32,7 +32,7 @@ using namespace rw::kinematics;
 
 StateStructure::StateStructure () : _version (0), _root (NULL), _stateSetupUniqueId (0)
 {
-    _root = new FixedFrame ("WORLD", Transform3D<>::identity ());
+    _root = rw::core::ownedPtr (new FixedFrame ("WORLD", Transform3D<>::identity ()));
     // now add the state data of the frame
     //_frames.push_back(_root);
     addDataInternal (_root);
@@ -332,7 +332,7 @@ void StateStructure::cleanup (int ID)
 void StateStructure::updateDefaultState ()
 {
     // first create a StateSetup
-    rw::core::Ptr< StateSetup > setup (new StateSetup (_version, *this, _currDatas));
+    rw::core::Ptr< StateSetup > setup = rw::core::ownedPtr (new StateSetup (_version, *this, _currDatas));
     _setups.push_back (setup);
     // construct qstate and tree state and then a new State
     QState qstate (setup);

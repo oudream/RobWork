@@ -189,6 +189,7 @@ TEST(KinematicsTest, StateStructureTest )
     EXPECT_EQ(world, dafParent);
     // now add a new l1 frame. Remember the tree took ownership of the old
     // l1 frame so we are not allowed to use that again
+    delete l1;
     l1 = new FixedFrame("l1b", Transform3D<>(Vector3D<>(1,2,3)));
     tree->addFrame(l1,world);
     state = tree->upgradeState(state);
@@ -227,7 +228,7 @@ TEST(KinematicsTest, StateStructureTest )
 
     // this should test the influence on StateCache when state is copied/deep-copied
 
-    StateDataWithCache::Ptr o1 = rw::core::ownedPtr(new StateDataWithCache());
+    const StateDataWithCache::Ptr o1 = rw::core::ownedPtr(new StateDataWithCache());
 
     tree->addData( o1 );
 
@@ -257,6 +258,11 @@ TEST(KinematicsTest, StateStructureTest )
 
 
     std::vector<Frame*> frames = Kinematics::findAllFrames(world,state);
+    tree = nullptr;
+    delete l1;
+    delete m1;
+    delete m2;
+    delete daf;
 }
 
 TEST(KinematicsTest, removeFramesTest )

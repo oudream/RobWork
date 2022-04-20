@@ -86,6 +86,10 @@ if(build)
         endif()
     endif()
 
+    if(CMAKE_COMPILER_IS_GNUCXX)
+        set_source_files_properties(RobWorkStudioApp.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+    endif()
+
     set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 
 endif()

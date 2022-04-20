@@ -175,6 +175,26 @@
     - make -j$(THREADS)
     - cd ..
 
+.linux-unique-symbols-tests:
+  extends: .CI-common-linux
+  stage: test
+  tags:
+    - linux
+  script:
+    - cd Build
+    # RobWork
+    - cd RW
+    - ../../gitlab-ci/scripts/find-unique-symbols.sh
+    - cd ..
+    # RobWorkStudio
+    - cd RWS
+    - ../../gitlab-ci/scripts/find-unique-symbols.sh
+    - cd ..
+    # RobWorkSim
+    - cd RWSim
+    - ../../gitlab-ci/scripts/find-unique-symbols.sh
+    - cd ..
+
 .linux-tests:
   extends: .CI-common-linux
   stage: test

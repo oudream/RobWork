@@ -91,6 +91,10 @@ if(build)
     rw_add_includes(${SUBSYS_NAME} "rw/models" ${FILES_HPP})
     target_link_libraries(${SUBSYS_NAME} PUBLIC ${Boost_LIBRARIES} ${SUBSYS_DEPS})
 
+    if(CMAKE_COMPILER_IS_GNUCXX)
+        set_source_files_properties(WorkCell.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+    endif()
+
     target_include_directories(
         ${SUBSYS_NAME} PUBLIC ${Boost_INCLUDE_DIR} $<BUILD_INTERFACE:${RW_ROOT}/src>
                               $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>

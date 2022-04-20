@@ -29,6 +29,16 @@ examples:ubuntu-2204:
     ["build-RW:ubuntu-2204", "build-RWS:ubuntu-2204", "build-RWSim:ubuntu-2204"]
   image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2204
 
+unique-symbols-tests:ubuntu-2204:
+  extends: .linux-unique-symbols-tests
+  dependencies:
+    - build-RW:ubuntu-2204
+    - build-RWS:ubuntu-2204
+    - build-RWSim:ubuntu-2204
+  needs:
+    ["build-RW:ubuntu-2204", "build-RWS:ubuntu-2204", "build-RWSim:ubuntu-2204"]
+  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-2204
+
 tests:ubuntu-2204:
   extends: .linux-tests
   dependencies:

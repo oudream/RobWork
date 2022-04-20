@@ -35,7 +35,7 @@ namespace rwlibs { namespace control {
         typedef rw::core::Ptr< Controller > Ptr;
 
         //! @brief destructor
-        virtual ~Controller (){};
+        virtual ~Controller (){}
 
         /**
          * @brief get the unique name of this controller
@@ -57,7 +57,7 @@ namespace rwlibs { namespace control {
         Controller (const std::string& name) : _name (name) {}
 
       private:
-        Controller (){};
+        Controller (){}
         std::string _name;
     };
 

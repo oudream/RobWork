@@ -28,13 +28,17 @@ if(build)
     set(MocSrcFiles ${SRC_FILES_HPP})
     set(RccSrcFiles resources.qrc)
 
-    add_executable(SimulatorLogViewer ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles} ${UIS_FILES})
+    add_executable(${SUBSYS_NAME} ${SrcFiles} ${MocSrcFiles} ${RccSrcFiles} ${UIS_FILES})
     target_link_libraries(
-        SimulatorLogViewer
+        ${SUBSYS_NAME}
         ${SUBSYS_DEPS}
         PUBLIC ${QT_LIBRARIES}
     )
     # Need to add the current binary dir to the include directory because the generated source files are placed here
-    target_include_directories(SimulatorLogViewer PUBLIC $<BUILD_INTERFACE:${RWSIM_ROOT}/src> PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+    target_include_directories(${SUBSYS_NAME} PUBLIC $<BUILD_INTERFACE:${RWSIM_ROOT}/src> PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+
+    if(CMAKE_COMPILER_IS_GNUCXX)
+        target_compile_options(${SUBSYS_NAME} PRIVATE "-fno-gnu-unique")  # covers automoc
+    endif()
 
 endif()

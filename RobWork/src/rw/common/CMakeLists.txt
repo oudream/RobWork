@@ -95,6 +95,17 @@ if(build)
     rw_add_includes(${SUBSYS_NAME} "rw/common" ${FILES_HPP})
     target_link_libraries(${SUBSYS_NAME} PUBLIC ${Boost_LIBRARIES} sdurw_core)
 
+    if(CMAKE_COMPILER_IS_GNUCXX)
+        set_source_files_properties(BINArchive.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+        set_source_files_properties(INIArchive.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+        set_source_files_properties(ProgramOptions.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+        set_source_files_properties(ThreadPool.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+        set_source_files_properties(ThreadSafeQueue.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+        set_source_files_properties(ThreadSafeStack.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+        set_source_files_properties(ThreadSafeVariable.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+        set_source_files_properties(ThreadTask.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+    endif()
+
     rw_include_eigen(${SUBSYS_NAME})
 
     target_include_directories(

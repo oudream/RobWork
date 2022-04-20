@@ -25,6 +25,9 @@
 using namespace rw::common;
 using namespace rw::math;
 
+const Transform2D<double> rw::math::Transform2DDoubleIdentity(Vector2D<double> (0, 0), Rotation2D<double>::identity ());
+const Transform2D<float> rw::math::Transform2DFloatIdentity(Vector2D<float> (0, 0), Rotation2D<float>::identity ());
+
 // Explicit template instantiations.
 template class rw::math::Transform2D< double >;
 template class rw::math::Transform2D< float >;

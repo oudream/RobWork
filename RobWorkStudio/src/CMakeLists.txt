@@ -30,6 +30,10 @@ if(build)
         add_executable(${SUBSYS_NAME} main.cpp)
     endif()
 
+    if(CMAKE_COMPILER_IS_GNUCXX)
+        set_source_files_properties(main.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+    endif(CMAKE_COMPILER_IS_GNUCXX)
+
     set(LIBS_TMP ${RWS_PLUGIN_LIBRARIES} sdurws ${RWS_COMPONENT_LIBRARIES})
 
     target_link_libraries(${SUBSYS_NAME} ${LIBS_TMP})

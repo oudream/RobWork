@@ -89,6 +89,12 @@ if(build)
     rw_add_includes(${SUBSYS_NAME} "rw/proximity/rwstrategy" ${FILES_HPP_rwstrategy})
     rw_add_includes(${SUBSYS_NAME} "rw" ${CMAKE_CURRENT_SOURCE_DIR}/../proximity.hpp)
 
+    if(CMAKE_COMPILER_IS_GNUCXX)
+        set_source_files_properties(BasicFilterStrategy.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+        set_source_files_properties(ProximityCalculator.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+        set_source_files_properties(ProximitySetupRule.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+    endif()
+
     target_link_libraries(${SUBSYS_NAME} PUBLIC ${Boost_LIBRARIES} ${SUBSYS_DEPS})
 
     target_include_directories(

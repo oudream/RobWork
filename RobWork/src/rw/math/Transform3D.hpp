@@ -51,8 +51,11 @@ namespace rw { namespace math {
      * @f$
      *
      */
+#endif
 
-     #endif 
+    template<class T>
+    struct Transform3DIdentity;
+
     template< class T = double > class Transform3D
     {
       public:
@@ -228,7 +231,10 @@ namespace rw { namespace math {
          */
 
          #endif 
-        static const Transform3D& identity ();
+        static const Transform3D& identity ()
+        {
+            return Transform3DIdentity<T>::identity();
+        }
 
 #if !defined(SWIG)
         /**
@@ -522,6 +528,31 @@ namespace rw { namespace math {
       private:
         rw::math::Vector3D< T > _d;
         rw::math::Rotation3D< T > _R;
+    };
+
+    extern const Transform3D<double> Transform3DDoubleIdentity;
+    extern const Transform3D<float> Transform3DFloatIdentity;
+
+    template<class T>
+    struct Transform3DIdentity {
+        static const Transform3D<T>& identity() {
+            static const Transform3D<> id (Vector3D< T > (0, 0), Rotation3D< T >::identity ());
+            return id;
+        }
+    };
+
+    template<>
+    struct Transform3DIdentity<double> {
+        static const Transform3D<double>& identity() {
+            return Transform3DDoubleIdentity;
+        }
+    };
+
+    template<>
+    struct Transform3DIdentity<float> {
+        static const Transform3D<float>& identity() {
+            return Transform3DFloatIdentity;
+        }
     };
 
 // Explicit template specifications.

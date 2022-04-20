@@ -41,6 +41,7 @@ TEST(PropertyValue, float) {
         pval.setValue(0.1f);
         EXPECT_EQ(0.1f, pval.getValue());
         EXPECT_EQ(0.4f, clone->getValue());
+        delete clone;
     }
     // Test constructor with explicit type
     {
@@ -53,6 +54,7 @@ TEST(PropertyValue, float) {
         pval.setValue(0.1f);
         EXPECT_EQ(0.1f, pval.getValue());
         EXPECT_EQ(0.4f, clone->getValue());
+        delete clone;
     }
     // Test changedEvent()
     {

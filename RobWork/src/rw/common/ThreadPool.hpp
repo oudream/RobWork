@@ -24,7 +24,6 @@
  * \copydoc rw::common::ThreadPool
  */
 #if !defined(SWIG)
-#include <boost/asio/io_service.hpp>
 #include <boost/function/function_fwd.hpp>
 #include <boost/thread/mutex.hpp>
 #include <boost/thread/thread.hpp>
@@ -116,8 +115,8 @@ namespace rw { namespace common {
       private:
         void runWrap (WorkFunction work);
 
-        boost::asio::io_service _service;
-        boost::asio::io_service::work* _work;
+        struct Internals;
+        Internals* _internals;
         boost::thread_group _threads;
         const unsigned int _threadsNumber;
         ThreadSafeVariable< bool >* _postStop;

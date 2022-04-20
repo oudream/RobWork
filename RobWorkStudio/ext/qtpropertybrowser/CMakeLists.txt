@@ -57,6 +57,10 @@ target_link_libraries(${TargetName} PUBLIC ${QT_LIBRARIES})
 set_target_properties(${TargetName} PROPERTIES LINK_FLAGS -Wl,--as-needed,--no-undefined)
 set_target_properties(${TargetName} PROPERTIES VERSION 1 SOVERSION 1.0)
 
+if(CMAKE_COMPILER_IS_GNUCXX)
+    target_compile_options(${TargetName} PRIVATE "-fno-gnu-unique")  # covers automoc
+endif()
+
 # Install stuff
 install(
     TARGETS ${TargetName}

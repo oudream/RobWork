@@ -51,6 +51,12 @@ if(build)
                 OUTPUT_NAME ${RWSIM_MODULE}
         )
     endif()
+            
+    if(CMAKE_COMPILER_IS_GNUCXX)
+        set_target_properties(
+            ${TARGET_NAME} PROPERTIES COMPILE_FLAGS -fno-gnu-unique
+        )
+    endif()
 
     target_link_libraries(${TARGET_NAME} ${RWSIM_ODE_LIBRARY} ${RWSIM_MODULE} ${RW_BUILD_WITH_LIBRARIES_LUA})
     target_include_directories(${TARGET_NAME} PUBLIC ${RW_BUILD_WITH_LUA_INCLUDE_DIR})
@@ -75,6 +81,12 @@ if(build)
         set_target_properties(${TARGET_NAME}_s PROPERTIES COMPILE_FLAGS "/DSTATIC_LINKED")
     else()
         set_target_properties(${TARGET_NAME}_s PROPERTIES COMPILE_FLAGS "-DSTATIC_LINKED")
+    endif()
+            
+    if(CMAKE_COMPILER_IS_GNUCXX)
+        set_target_properties(
+            ${TARGET_NAME}_s PROPERTIES COMPILE_FLAGS -fno-gnu-unique
+        )
     endif()
     
     if(SWIG_DEFAULT_COMPILE OR CMAKE_VERSION VERSION_GREATER 3.16.0)
