@@ -18,6 +18,7 @@
 #ifndef RWLIBS_PATHOPTIMIZATION_CLEARANCEOPTIMIZATION_HPP
 #define RWLIBS_PATHOPTIMIZATION_CLEARANCEOPTIMIZATION_HPP
 
+#if !defined(SWIG)
 #include <RobWorkConfig.hpp>
 #include <rw/core/PropertyMap.hpp>
 #include <rw/core/Ptr.hpp>
@@ -29,6 +30,7 @@
 #include <list>
 #else
 #include <vector>
+#endif
 #endif
 
 namespace rw { namespace kinematics {

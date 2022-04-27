@@ -98,8 +98,10 @@ NAMED_OWNEDPTR(Object,rw::models::Object);
 	%ignore rw::models::Device::getEnd() const;
 	%ignore rw::models::Device::getPropertyMap() const;
 #endif 
+
 %include <rwlibs/swig/typemaps/constDevicePtr.i>
 %include <rwlibs/swig/typemaps/devicePtr.i>
+
 %{
 	#include<rw/models/Device.hpp>
 %}

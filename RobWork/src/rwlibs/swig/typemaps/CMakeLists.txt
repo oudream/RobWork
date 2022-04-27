@@ -381,3 +381,37 @@ generate_typemap_check(
     "toConstQConstraintPtr"
     ADD_RWPTR_FRAGMENT
 )
+
+
+
+generate_typemap_check(
+    "rw::core::Ptr<rwlibs::pathoptimization::ClearanceCalculator const>"
+    TYPES 
+    "rwlibs::pathoptimization::ClearanceCalculator"
+    "const rwlibs::pathoptimization::ClearanceCalculator"
+    "rwlibs::pathoptimization::MinimumClearanceCalculator"
+    "const rwlibs::pathoptimization::MinimumClearanceCalculator"
+    "rw::core::Ptr<rwlibs::pathoptimization::ClearanceCalculator>"
+    "rw::core::Ptr<rwlibs::pathoptimization::ClearanceCalculator const>"
+    "rw::core::Ptr<rwlibs::pathoptimization::MinimumClearanceCalculator>"
+    "rw::core::Ptr<rwlibs::pathoptimization::MinimumClearanceCalculator const>"
+    FILE 
+    "./ConstClearanceCalculatorPtr.i"
+    CONVERTER 
+    "toConstClearanceCalculatorPtr"
+    ADD_RWPTR_FRAGMENT
+)
+
+generate_typemap_check(
+    "rw::core::Ptr<rwlibs::pathoptimization::ClearanceCalculator>"
+    TYPES 
+    "rwlibs::pathoptimization::ClearanceCalculator"
+    "rwlibs::pathoptimization::MinimumClearanceCalculator"
+    "rw::core::Ptr<rwlibs::pathoptimization::ClearanceCalculator>"
+    "rw::core::Ptr<rwlibs::pathoptimization::MinimumClearanceCalculator>"
+    FILE 
+    "./ClearanceCalculatorPtr.i"
+    CONVERTER 
+    "toClearanceCalculatorPtr"
+    ADD_RWPTR_FRAGMENT
+)
