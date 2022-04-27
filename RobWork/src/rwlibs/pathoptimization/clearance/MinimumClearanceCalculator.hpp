@@ -18,8 +18,9 @@
 #ifndef RWLIBS_PATHOPTIMIZATION_MINIMUMCLEARANCECALCULATOR_HPP
 #define RWLIBS_PATHOPTIMIZATION_MINIMUMCLEARANCECALCULATOR_HPP
 
+#if !defined(SWIG)
 #include <rwlibs/pathoptimization/clearance/ClearanceCalculator.hpp>
-
+#endif 
 namespace rw { namespace models {
     class WorkCell;
 }}    // namespace rw::models

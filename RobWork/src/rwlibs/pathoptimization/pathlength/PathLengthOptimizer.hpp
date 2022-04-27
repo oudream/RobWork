@@ -17,7 +17,7 @@
 
 #ifndef RWLIBS_PATHOPTIMIZATION_PATHLENGTHOPTIMIZER_HPP
 #define RWLIBS_PATHOPTIMIZATION_PATHLENGTHOPTIMIZER_HPP
-
+#if !defined(SWIG)
 #include <rw/core/PropertyMap.hpp>
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Metric.hpp>
@@ -25,7 +25,7 @@
 #include <rw/trajectory/Path.hpp>
 
 #include <list>
-
+#endif 
 namespace rwlibs { namespace pathoptimization {
 
     /** @addtogroup pathoptimization */

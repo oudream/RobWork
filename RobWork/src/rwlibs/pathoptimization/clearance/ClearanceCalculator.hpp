@@ -17,8 +17,9 @@
 
 #ifndef RWLIBS_PATHOPTIMIZATION_CLEARANCECALCULATOR_HPP
 #define RWLIBS_PATHOPTIMIZATION_CLEARANCECALCULATOR_HPP
-
+#if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
+#endif 
 
 namespace rw { namespace kinematics {
     class State;

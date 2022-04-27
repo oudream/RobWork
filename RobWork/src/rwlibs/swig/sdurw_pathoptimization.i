@@ -1,15 +1,21 @@
 %module sdurw_pathoptimization
 
 %{
-#include <rwlibs/swig/ScriptTypes.hpp>
 #include <rw/core/Ptr.hpp>
 #include <rw/models.hpp>
+#include <rw/trajectory.hpp>
 #include <rw/kinematics/MovableFrame.hpp>
 #include <rw/kinematics/FixedFrame.hpp>
 
 #include <rw/geometry/IndexedTriMesh.hpp>
+#include <rw/math/MetricFactory.hpp>
 
-using namespace rwlibs::swig;
+
+#include <rwlibs/pathoptimization/clearance/ClearanceCalculator.hpp>
+#include <rwlibs/pathoptimization/clearance/ClearanceOptimizer.hpp>
+#include <rwlibs/pathoptimization/clearance/MinimumClearanceCalculator.hpp>
+#include <rwlibs/pathoptimization/pathlength/PathLengthOptimizer.hpp>
+
 using rw::math::Metric;
 using rw::trajectory::Path;
 %}
@@ -53,10 +59,22 @@ import org.robwork.sdurw_proximity.*;
 import org.robwork.sdurw_pathplanning.*;
 %}
 
-%{
-    #include <rw/math/MetricFactory.hpp>
-%}
+%include <rwlibs/swig/typemaps/ClearanceCalculatorPtr.i>
+%include <rwlibs/swig/typemaps/ConstClearanceCalculatorPtr.i>
 
+%include <rwlibs/pathoptimization/clearance/ClearanceCalculator.hpp>
+NAMED_ABSTRACTPTR(ClearanceCalculator,rwlibs::pathoptimization::ClearanceCalculator)
+
+%include <rwlibs/pathoptimization/clearance/ClearanceOptimizer.hpp>
+NAMED_OWNEDPTR(ClearanceOptimizer,rwlibs::pathoptimization::ClearanceOptimizer)
+
+%include <rwlibs/pathoptimization/clearance/MinimumClearanceCalculator.hpp>
+NAMED_OWNEDPTR(MinimumClearanceCalculator,rwlibs::pathoptimization::MinimumClearanceCalculator)
+
+%include  <rwlibs/pathoptimization/pathlength/PathLengthOptimizer.hpp>
+NAMED_OWNEDPTR(PathLengthOptimizer,rwlibs::pathoptimization::PathLengthOptimizer)
+
+/*
 class PathLengthOptimizer
 {
 public:
@@ -97,7 +115,7 @@ public:
                                        size_t cnt,
                                        double time,
                                        double subDivideLength);
-*/
+
         rw::core::Ptr<rw::trajectory::Path< rw::math::Q > > shortCut(rw::core::Ptr<rw::trajectory::Path< rw::math::Q > > path){
             rw::trajectory::Path< rw::math::Q > res = $self->rwlibs::pathoptimization::PathLengthOptimizer::shortCut(*path);
             return rw::core::ownedPtr( new rw::trajectory::Path< rw::math::Q >(res) );
@@ -112,8 +130,8 @@ public:
                                               size_t cnt,
                                               double time,
                                               double subDivideLength);
-                                              */
+                                              
     }
     rw::core::PropertyMap& getPropertyMap();
 
-};
+};*/

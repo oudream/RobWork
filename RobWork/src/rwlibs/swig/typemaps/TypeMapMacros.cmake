@@ -87,40 +87,47 @@ endmacro()
 
 macro(GENERATE_TYPECHECK _type)
     set(options APPEND) # Used to marke flags
-    set(oneValueArgs RESULT FILE) # used to marke values with a single value
+    set(oneValueArgs CONVERTER RESULT FILE) # used to marke values with a single value
     set(multiValueArgs TYPES)
 
     cmake_parse_arguments(TC "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
-    set(typecheck "#if !defined(SWIGJAVA)\n")
-    set(typecheck "${typecheck}%typecheck(SWIG_TYPECHECK_SWIGOBJECT) ${_type} {\n")
-    set(typecheck "${typecheck}    void* ptr;\n")
-    set(typecheck "${typecheck}    $1 = 0;\n")
-    set(typecheck
-        "${typecheck}    if (SWIG_IsOK(SWIG_ConvertPtr(SWIGPtr_pre $input, (void **) &ptr, $descriptor( ${_type} *),SWIG_POINTER_NO_NULL | 0))) {$1 = 1;}\n"
+    set(body)
+    set(body "${body}    ${_type} res;\n")
+    set(body "${body}    $1 = fromSWIG(SWIGPtr_pre $input,res,true);\n")
+    set(body "${body}    if ( ! $1 ) {\n")
+    set(body "${body}    std::cout << \"Failed to verify ${_type} \" << std::endl;\n")
+    set(body "${body}#if defined(SWIGPYTHON)\n")
+    set(body
+        "${body}     std::cout << \"Python reports type as: \" << $input->ob_type->tp_name << std::endl;\n"
     )
-    foreach(type ${TC_TYPES})
-        if(${type} STREQUAL "int")
-            set(typecheck "${typecheck}#if defined(SWIGPYTHON)\n")
-            set(typecheck "${typecheck}    else if(PyLong_Check($input)){  $1 = 1; } \n")
-            set(typecheck "${typecheck}#elif defined(SWIGLUA)\n")
-            set(typecheck "${typecheck}    else if(lua_isnumber(L,$input)){ $1 = 1; } \n")
-            set(typecheck "${typecheck}#endif\n")
-        else()
-            set(typecheck
-                "${typecheck}    else if(SWIG_IsOK(SWIG_ConvertPtr(SWIGPtr_pre $input, (void **) &ptr, $descriptor( ${type} *),SWIG_POINTER_NO_NULL | 0))) {$1 = 1;} \n"
-            )
-        endif()
-    endforeach()
+    set(body "${body}#endif\n")
+    set(body "${body}    }\n")
 
-    set(typecheck "${typecheck}    if ( ! $1 ) {\n")
-    set(typecheck "${typecheck}    std::cout << \"Failed to verify ${_type} \" << std::endl;\n")
-    set(typecheck "${typecheck}#if defined(SWIGPYTHON)\n")
+    set(typecheck "#if !defined(SWIGJAVA)\n")
+    ##################################
+    # Normal TYPECHECK
+    ##################################
     set(typecheck
-        "${typecheck}     std::cout << \"Python reports type as: \" << $input->ob_type->tp_name << std::endl;\n"
+        "${typecheck}%typemap(typecheck, precedence=SWIG_TYPECHECK_SWIGOBJECT, fragment=\"${TC_CONVERTER}FromSwig\") ${_type} {\n"
     )
-    set(typecheck "${typecheck}#endif\n")
-    set(typecheck "${typecheck}    }\n")
+    set(typecheck "${typecheck}${body}")
+    set(typecheck "${typecheck}}\n")
+    ##################################
+    # & TYPECHECK
+    ##################################
+    set(typecheck
+        "${typecheck}%typemap(typecheck, precedence=SWIG_TYPECHECK_SWIGOBJECT, fragment=\"${TC_CONVERTER}FromSwig\") ${_type}& {\n"
+    )
+    set(typecheck "${typecheck}${body}")
+    set(typecheck "${typecheck}}\n")
+    ##################################
+    # const & TYPECHECK
+    ##################################
+    set(typecheck
+        "${typecheck}%typemap(typecheck, precedence=SWIG_TYPECHECK_SWIGOBJECT, fragment=\"${TC_CONVERTER}FromSwig\") const ${_type}& {\n"
+    )
+    set(typecheck "${typecheck}${body}")
     set(typecheck "${typecheck}}\n")
     set(typecheck "${typecheck}#endif\n")
 
@@ -138,21 +145,32 @@ macro(GENERATE_TYPEMAP _type)
 
     cmake_parse_arguments(TM "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
+    set(tm_end)
+    set(tm_end "${tm_end}    if(!res) {\n")
+    set(tm_end "${tm_end}#if defined(SWIGPYTHON)\n")
+    set(tm_end
+        "${tm_end}        SWIG_exception_fail(SWIG_ArgError(-1),(std::string(\"Could not convert to type ${_type}\") +\". Python reports type as: \" + std::string($input->ob_type->tp_name)).c_str() );\n"
+    )
+    set(tm_end "${tm_end}#else \n")
+    set(tm_end "${tm_end}        lua_pushstring(L, \"could not convert to type ${_type}\");\n")
+    set(tm_end "${tm_end}        SWIG_fail;\n")
+    set(tm_end "${tm_end}#endif \n")
+    set(tm_end "${tm_end}    }\n")
+    set(tm_end "${tm_end}}\n")
+
     set(typemap)
     set(typemap "${typemap}#if !defined(SWIGJAVA)\n")
     set(typemap "${typemap}%typemap(in, fragment=\"${TM_CONVERTER}FromSwig\") ${_type} {\n")
     set(typemap "${typemap}    bool res = fromSWIG(SWIGPtr_pre $input,$1,false);\n")
-    set(typemap "${typemap}    if(!res) {\n")
-    set(typemap "${typemap}#if defined(SWIGPYTHON)\n")
-    set(typemap
-        "${typemap}        SWIG_exception_fail(SWIG_ArgError(-1),(std::string(\"Could not convert to type ${_type}\") +\". Python reports type as: \" + std::string($input->ob_type->tp_name)).c_str() );\n"
-    )
-    set(typemap "${typemap}#else \n")
-    set(typemap "${typemap}        lua_pushstring(L, \"could not convert to type ${_type}\");\n")
-    set(typemap "${typemap}        SWIG_fail;\n")
-    set(typemap "${typemap}#endif \n")
-    set(typemap "${typemap}    }\n")
-    set(typemap "${typemap}}\n")
+    set(typemap "${typemap}${tm_end}")
+    set(typemap "${typemap}%typemap(in, fragment=\"${TM_CONVERTER}FromSwig\") ${_type}&  (${_type} temp) {\n")
+    set(typemap "${typemap}    bool res = fromSWIG(SWIGPtr_pre $input,temp,false);\n")
+    set(typemap "${typemap}    $1 = &temp;\n")
+    set(typemap "${typemap}${tm_end}")
+    set(typemap "${typemap}%typemap(in, fragment=\"${TM_CONVERTER}FromSwig\") const ${_type}& (${_type} temp) {\n")
+    set(typemap "${typemap}    bool res = fromSWIG(SWIGPtr_pre $input,temp,false);\n")
+    set(typemap "${typemap}    $1 = &temp;\n")
+    set(typemap "${typemap}${tm_end}")
     set(typemap "${typemap}#endif\n")
 
     if(NOT ${TM_RESULT} STREQUAL "")
@@ -418,19 +436,16 @@ macro(GENERATE_TYPEMAP_CHECK _type)
 
     cmake_parse_arguments(TMC "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
-    generate_includes(
-        TYPES
-        ${TMC_TYPES}
-        CONVERTER
-        "${TMC_CONVERTER}"
-        FILE
-        ${TMC_FILE}
-    )
+    generate_includes(TYPES ${TMC_TYPES} CONVERTER "${TMC_CONVERTER}" FILE ${TMC_FILE})
 
     if(TMC_ADD_RWPTR_FRAGMENT)
-        generate_standard_ptr_fragment("${_type}" CONVERTER "${TMC_CONVERTER}" FILE ${TMC_FILE} APPEND)
+        generate_standard_ptr_fragment(
+            "${_type}" CONVERTER "${TMC_CONVERTER}" FILE ${TMC_FILE} APPEND
+        )
     elseif(TMC_ADD_POINTER_FRAGMENT)
-        generate_standard_pointer_fragment("${_type}" CONVERTER "${TMC_CONVERTER}" FILE ${TMC_FILE} APPEND)
+        generate_standard_pointer_fragment(
+            "${_type}" CONVERTER "${TMC_CONVERTER}" FILE ${TMC_FILE} APPEND
+        )
     endif()
 
     generate_from_swig_fragment(
@@ -455,7 +470,16 @@ macro(GENERATE_TYPEMAP_CHECK _type)
         APPEND
     )
 
-    generate_typecheck("${_type}" TYPES ${TMC_TYPES} FILE ${TMC_FILE} APPEND)
+    generate_typecheck(
+        "${_type}"
+        CONVERTER
+        "${TMC_CONVERTER}"
+        TYPES
+        ${TMC_TYPES}
+        FILE
+        ${TMC_FILE}
+        APPEND
+    )
 
     generate_typemap(
         "${_type}"
