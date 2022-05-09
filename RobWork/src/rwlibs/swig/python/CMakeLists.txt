@@ -124,23 +124,6 @@ if(build)
             add_dependencies(${SUBSYS_NAME} ${TARGET_NAME})
             set(python_targets ${python_targets} ${TARGET_NAME})
 
-            #if(NOT ${SWIG_VERSION} VERSION_LESS 4.0.0)
-            #    find_program(pydoc pydoc3)
-            #    if(NOT pydoc)
-            #        find_program(pydoc pydoc)
-            #    endif()
-            #    if(pydoc)
-            #        add_custom_command(
-            #            TARGET ${TARGET_NAME}
-            #            POST_BUILD
-            #            COMMAND ${pydoc} -w
-            #                    ${RW_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RW_MODULE}/${RW_MODULE}.py
-            #            WORKING_DIRECTORY ${SWIG_OUT_ORIG}
-            #            COMMENT "Creating pydoc..."
-            #        )
-            #    endif()
-            #endif()
-
             if(SWIG_DEFAULT_COMPILE OR CMAKE_VERSION VERSION_GREATER 3.16.0)
                 target_link_libraries(${SUBSYS_NAME} INTERFACE ${TARGET_NAME})
             endif()

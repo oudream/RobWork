@@ -1,5 +1,5 @@
 /********************************************************************************
- * Copyright 2013 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
  * Faculty of Engineering, University of Southern Denmark
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,45 +15,53 @@
  * limitations under the License.
  ********************************************************************************/
 
-#ifndef RW_LOADERS_LOADERASSIMP_HPP_
-#define RW_LOADERS_LOADERASSIMP_HPP_
+#ifndef RW_LOADERS_LOADERSTEP_HPP_
+#define RW_LOADERS_LOADERSTEP_HPP_
 
-/**
- * @file LoaderAssimp.hpp
- *
- * \copydoc rw::loaders::LoaderAssimp
- */
+//! @file LoaderSTEP.hpp
 
-#include <rw/loaders/Model3DLoader.hpp>
+#include <RobWorkConfig.hpp>
+#include "../Model3DLoader.hpp"
+
+#include <string>
 
 namespace rw { namespace loaders {
-    //! @addtogroup loaders
 
-    //! @{
+    //! @addtogroup graphics
+    // @{
+
     /**
-     * @brief Load 3D models using the Open Asset Import Library (Assimp).
-     *
-     * For further information on Assimp and supported formats, see http://assimp.sourceforge.net
-     *
-     * So far the loader has been tested for .dae files (Collada).
-     *
-     * Note that the RobWork loader for Assimp is still work in progress.
+     * @brief Class for loading in IVG files.
+     * TODO: add documentation on IVG format
      */
-    class LoaderAssimp : public rw::loaders::Model3DLoader
+    class LoaderSTEP : public Model3DLoader
     {
       public:
-        //! @brief Constructor
-        LoaderAssimp ();
+        /**
+         * @brief constructor
+         */
+        LoaderSTEP (){};
 
-        //! @brief Destructor
-        virtual ~LoaderAssimp ();
+        /**
+         * @brief destructor
+         */
+        virtual ~LoaderSTEP (){};
 
         //! @copydoc Model3DLoader::load
         rw::graphics::Model3D::Ptr load (const std::string& filename);
-
+        
+#if RW_HAVE_OCC
         //! @copydoc Model3DLoader::getModelFormats
-        std::vector< std::string > getModelFormats () {return {".OBJ",".DAE",".STP","STEP"};}
+        std::vector< std::string > getModelFormats () { return {".STP", ".STEP", ".IGS", ".BREP"}; }
+#else 
+        //! @copydoc Model3DLoader::getModelFormats
+        std::vector< std::string > getModelFormats () { return {}; }
+#endif 
+    
     };
+
     //! @}
-}}     // namespace rw::loaders
-#endif /* RW_LOADERS_LOADERASSIMP_HPP_ */
+
+}}    // namespace rw::loaders
+
+#endif    // end include guard

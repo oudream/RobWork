@@ -4,6 +4,7 @@ from sdurw_loaders import *
 
 from sdurw_loaders import *
 import sys
+import threading
 
 if __name__ == '__main__':
 
@@ -15,9 +16,7 @@ if __name__ == '__main__':
     print("starting rws")
     rwstudio = getRobWorkStudioInstance()
     rwstudio.setWorkCell(WorkCellLoaderFactory.load(WC_FILE))
-    print("RWS STARTED going into while loop, argv",sys.argv)
 
     while isRunning():
         if len(sys.argv) == 3 and sys.argv[2] == "-t":
             closeRobWorkStudio()
-            exit(0)

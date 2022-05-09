@@ -1478,6 +1478,9 @@ void getWorkCellOptionally (const PTree& tree, ParserState& state)
     else {
         std::string directory = StringUtil::getDirectoryName (state.dwcfile);
         state.wc              = WorkCellLoader::Factory::load (directory + workcell_name);
+        if (state.wc.isNull()){
+            RW_THROW("Error while loading WorkCell");
+        }
     }
 }
 

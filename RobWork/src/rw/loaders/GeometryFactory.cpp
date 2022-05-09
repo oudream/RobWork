@@ -32,6 +32,7 @@
 #include <rw/geometry/Sphere.hpp>
 #include <rw/geometry/Tube.hpp>
 
+#include <boost/filesystem.hpp>
 #include <string>
 #include <sys/stat.h>
 
@@ -45,13 +46,6 @@ using namespace rw::math;
 using namespace std;
 
 namespace {
-const std::string extensionsArray[] = {
-    ".STL", ".STLA", ".STLB", ".PCD", ".TRI", ".DAE", ".AC", ".AC3D", ".3DS", ".OBJ"};
-
-const int extensionCount = sizeof (extensionsArray) / sizeof (extensionsArray[0]);
-
-const std::vector< std::string > extensions (extensionsArray, extensionsArray + extensionCount);
-
 std::string getLastModifiedStr (const std::string& file)
 {
     struct stat status;
@@ -199,9 +193,20 @@ Geometry::Ptr GeometryFactory::load (const std::string& raw_filename, bool useCa
     return getGeometry (raw_filename, useCache);
 }
 
+namespace {
+std::vector< std::string >& operator+= (std::vector< std::string >& lhs,
+                                        const std::vector< std::string >& rhs)
+{
+    lhs.insert (lhs.end (), rhs.begin (), rhs.end ());
+    return lhs;
+}
+}    // namespace
+
 Geometry::Ptr GeometryFactory::getGeometry (const std::string& raw_filename, bool useCache)
 {
     if (raw_filename[0] != '#') {
+        std::vector< std::string > extensions = Model3DLoader::Factory::getSupportedFormats ();
+
         std::string filename;
         try {
             filename = IOUtil::resolveFileName (raw_filename, extensions);
@@ -223,7 +228,7 @@ Geometry::Ptr GeometryFactory::getGeometry (const std::string& raw_filename, boo
         if (useCache && getCache ().isInCache (filename, moddate))
             return ownedPtr (new Geometry (getCache ().get (filename)));
 
-        if (filetype == ".STL" || filetype == ".STLA" || filetype == ".STLB") {
+        if (STLFile ().isSupported (filetype)) {
             GeometryData::Ptr data = STLFile::load (filename);
             if (data == NULL)
                 RW_THROW ("Reading of geometry failed!");

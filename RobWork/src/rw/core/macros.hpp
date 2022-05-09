@@ -225,6 +225,8 @@ RW_DEBUG("The value of x is " << x << ". x should be less than zero.");
  */
 #define RW_MSG(ostreamExpression) (Message (__FILE__, __LINE__) << ostreamExpression)
 
+#define PRINT_HERE std::cout << __FILE__ << ":" << __LINE__ << std::endl << std::flush;
+
 /**
  * @brief a way to mark code for deprecation
  * @param text the message to print

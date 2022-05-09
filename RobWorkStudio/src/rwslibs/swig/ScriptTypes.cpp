@@ -1,11 +1,11 @@
 
-
+#define RWS_USE_PTR
 #include "ScriptTypes.hpp"
 
 #include <rw/kinematics/FixedFrame.hpp>
 #include <rw/kinematics/Kinematics.hpp>
-#include <rwslibs/rwstudioapp/RobWorkStudioApp.hpp>
 #include <rw/models.hpp>
+#include <rwslibs/rwstudioapp/RobWorkStudioApp.hpp>
 
 #include <QApplication>
 
@@ -14,7 +14,7 @@ using namespace rwlibs::swig;
 
 rw::core::Ptr< rws::swig::RobWorkStudio > rwstudio_internal = NULL;
 
-rws::swig::RobWorkStudio* rws::swig::getRobWorkStudio ()
+rw::core::Ptr<rws::swig::RobWorkStudio>& rws::swig::getRobWorkStudio ()
 {
     if (rwstudio_internal.isNull ()) {
         rwstudio_internal = getRobWorkStudioFromQt ();
@@ -22,9 +22,9 @@ rws::swig::RobWorkStudio* rws::swig::getRobWorkStudio ()
             getRobWorkStudioInstance ();
         }
     }
-    return rwstudio_internal.get ();
+    return rwstudio_internal;
 }
-rws::swig::RobWorkStudio* rws::swig::getRobWorkStudioFromQt ()
+rw::core::Ptr<rws::swig::RobWorkStudio> rws::swig::getRobWorkStudioFromQt ()
 {
     QWidget* rws_w    = NULL;
     QWidgetList all_w = QApplication::allWidgets ();
@@ -113,17 +113,19 @@ void rws::swig::moveTo (const std::string& fname, const std::string& mname,
     moveTo (fframe, mframe, wTframe);
 }
 
-static rws::RobWorkStudioApp* robApp = NULL;
+static rw::core::Ptr< rws::RobWorkStudioApp > robApp = NULL;
 
-rw::core::Ptr< RobWorkStudio > rws::swig::getRobWorkStudioInstance (const std::string& args)
+rw::core::Ptr< RobWorkStudio >& rws::swig::getRobWorkStudioInstance (const std::string& args)
 {
     // create a thread that start QApplication and
     if (robApp == NULL || !robApp->isRunning ()) {
-        robApp = new RobWorkStudioApp (args);
+        robApp = rw::core::ownedPtr (new RobWorkStudioApp (args));
         robApp->start ();
         while (robApp->getRobWorkStudio () == NULL) {
-            if (!robApp->isRunning ())
-                return NULL;
+            if (!robApp->isRunning ()){
+                rwstudio_internal = NULL;
+                return rwstudio_internal;
+            }
             rw::common::TimerUtil::sleepMs (100);
         }
         rwstudio_internal = robApp->getRobWorkStudio ();

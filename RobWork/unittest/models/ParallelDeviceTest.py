@@ -483,14 +483,16 @@ class ParallelDevice(unittest.TestCase):
             legs[i].setQ(qh, state)
 
         hexapod = sdurw_models.ParallelDevice(legs,"Hexapod",state)
-
         q = hexapod.getQ(state)
 
         hexapod.setQ(q,state)
-        self.assertAlmostEqual(0,hexapod.baseTend(state).P()[0],delta = 5e-12)
-        self.assertAlmostEqual(0,hexapod.baseTend(state).P()[1],delta = 5e-12)
-        self.assertAlmostEqual(78.5,hexapod.baseTend(state).P()[2],delta = 1e-4)
-        self.assertTrue(hexapod.baseTend(state).R().equal(sdurw_math.Rotation3D.identity(),1e-13))
+
+
+        bTe =hexapod.baseTend(state)
+        self.assertAlmostEqual(0,bTe.P()[0],delta = 5e-12)
+        self.assertAlmostEqual(0,bTe.P()[1],delta = 5e-12)
+        self.assertAlmostEqual(78.5,bTe.P()[2],delta = 1e-4)
+        self.assertTrue(bTe.R().equal(sdurw_math.Rotation3D.identity(),1e-13))
 
         for i in range (0,len(legs)):
             self.assertTrue(legs[i].baseTend(state).R().equal(hexapod.baseTend(state).R(),1e-12))

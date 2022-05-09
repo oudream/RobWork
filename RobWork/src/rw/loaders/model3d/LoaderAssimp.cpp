@@ -83,7 +83,7 @@ Model3D::Ptr LoaderAssimp::load (const std::string& filename)
         // UR5 uses this:
         // if (scene->HasLights())
         //	RW_THROW("LoaderAssimp could not load file " << filename << " : can not yet handle
-        //lights.");
+        // lights.");
         // std::cout << "Loading using assimp:  " << filename << std::endl;
         // std::cout << "scene->HasTextures(): " << scene->HasTextures() << std::endl;
         // std::cout << "scene->HasMaterials(): " << scene->HasMaterials() << std::endl;
@@ -151,19 +151,24 @@ Model3D::Ptr LoaderAssimp::load (const std::string& filename)
         while (stack.size () > 0) {
             aiNode* node = stack.top ();
             stack.pop ();
-            nodes.push_back (node);
+            if (node != NULL) {
+                nodes.push_back (node);
 
-            // Assume 16-bit initially
-            Model3D::Object3D< uint16_t >::Ptr rwobj =
-                ownedPtr (new Model3D::Object3D< uint16_t > (node->mName.C_Str ()));
-            aiMatrix4x4 matrix = node->mTransformation;
-            rwobj->_transform  = toRWTransform (matrix);
-            objects.push_back (rwobj);
+                // Assume 16-bit initially
+                Model3D::Object3D< uint16_t >::Ptr rwobj =
+                    ownedPtr (new Model3D::Object3D< uint16_t > (node->mName.C_Str ()));
+                aiMatrix4x4 matrix = node->mTransformation;
+                rwobj->_transform  = toRWTransform (matrix);
+                objects.push_back (rwobj);
 
-            for (std::size_t i = 0; i < node->mNumChildren; i++) {
-                aiNode* child = node->mChildren[i];
-                stack.push (child);
+                for (std::size_t i = 0; i < node->mNumChildren; i++) {
+                    aiNode* child = node->mChildren[i];
+                    stack.push (child);
+                }
             }
+        }
+        if (nodes.size() == 0){
+            RW_THROW("No nodes found while loading");
         }
 
         // Set parents

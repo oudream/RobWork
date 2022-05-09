@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ********************************************************************************/
-
+#define RWS_USE_PTR
 #include <rw/core/PropertyMap.hpp>
 #include <rws/RobWorkStudio.hpp>
 #include <rws/RobWorkStudioPlugin.hpp>
@@ -48,7 +48,7 @@ TEST (RobWorkStudio, PluginLoadTest)
 {
     rws::RobWorkStudioApp rwsApp ("");
     rwsApp.start ();
-    rws::RobWorkStudio* rwstudio = rwsApp.getRobWorkStudio ();
+    rw::core::Ptr<rws::RobWorkStudio> rwstudio = rwsApp.getRobWorkStudio ();
     TimerUtil::sleepMs (1000);
     std::vector< rws::RobWorkStudioPlugin* > pl = rwstudio->getPlugins ();
 
