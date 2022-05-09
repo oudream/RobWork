@@ -26,11 +26,14 @@ if(build)
         WorkCellLoader.cpp
         WorkCellFactory.cpp
         # model3d
+        model3d/LoaderPCD.cpp 
+        model3d/LoaderSTL.cpp
         model3d/LoaderAC3D.cpp
         model3d/Loader3DS.cpp
         model3d/Model3DS.cpp
         model3d/LoaderOBJ.cpp
         model3d/LoaderTRI.cpp
+        model3d/LoaderSTEP.cpp
         model3d/STLFile.cpp
         Model3DFactory.cpp
         Model3DLoader.cpp
@@ -74,6 +77,7 @@ if(build)
     )
     set(FILES_HPP_model3d model3d/LoaderAC3D.hpp model3d/Loader3DS.hpp model3d/Model3DS.hpp
                           model3d/LoaderOBJ.hpp model3d/LoaderTRI.hpp model3d/STLFile.hpp
+                          model3d/LoaderSTEP.hpp
     )
     set(FILES_HPP_path path/PathLoader.hpp path/PathLoaderCSV.hpp)
     set(FILES_HPP_rwxml
@@ -177,6 +181,10 @@ if(build)
     endif()
     if(RW_HAVE_ASSIMP)
         target_link_libraries(${SUBSYS_NAME} PRIVATE ${ASSIMP_LIBRARIES})
+    endif()
+    if(RW_HAVE_OCC)
+        target_link_libraries(${SUBSYS_NAME} PRIVATE ${OpenCASCADE_LIBRARIES})
+        target_include_directories(${SUBSYS_NAME} PRIVATE ${OpenCASCADE_INCLUDE_DIR})
     endif()
 
     if(CMAKE_COMPILER_IS_GNUCXX)

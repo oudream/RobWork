@@ -24,6 +24,7 @@ rw_build(ex-eaa)
 
 rw_build(ex-invkin)
 rw_build(ex-load-workcell)
+rw_build(ex-load-model)
 rw_build(ex-motionplanning)
 rw_build(ex-quaternion)
 rw_build(ex-rotation3d)

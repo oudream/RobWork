@@ -131,6 +131,17 @@ Freeglut (optional) this library is used to make graphics, in our opengl impleme
 
     sudo apt-get install libfreeglut-dev
 
+OpenCascade (optional) these libraries enables robwork to load STEP files as geometries
+
+.. code-block:: shell
+
+    sudo apt-get install libocct-foundation-dev \
+                         libocct-modeling-algorithms-dev \
+                         libocct-modeling-data-dev \  
+                         libocct-data-exchange-dev \
+                         libocct-visualization-dev \
+                         libocct-ocaf-dev \
+                         occt-misc 
 
 RobWorkStudio Dependencies
 --------------------------

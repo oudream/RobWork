@@ -57,8 +57,8 @@ namespace rws { namespace swig {
     typedef rws::RWStudioView3D RWStudioView3D;
 
     // for now we add all static functions here
-    RobWorkStudio* getRobWorkStudio ();
-    RobWorkStudio* getRobWorkStudioFromQt ();
+    rw::core::Ptr<RobWorkStudio>& getRobWorkStudio ();
+    rw::core::Ptr<RobWorkStudio> getRobWorkStudioFromQt ();
 
     /**
      * @brief set current RobWorkStudio instance
@@ -68,9 +68,9 @@ namespace rws { namespace swig {
     /// These functions all work on the current RobWorkStudio state
 
     #if defined(SWIGPYTHON)
-        rw::core::Ptr< RobWorkStudio > getRobWorkStudioInstance (const std::string& args = "RobWorkStudio --exclude-plugins libsdurws_pythoneditor.so");
+        rw::core::Ptr< RobWorkStudio >& getRobWorkStudioInstance (const std::string& args = "RobWorkStudio --exclude-plugins libsdurws_pythoneditor.so");
     #else
-        rw::core::Ptr< RobWorkStudio > getRobWorkStudioInstance (const std::string& args = "RobWorkStudio");
+        rw::core::Ptr< RobWorkStudio >& getRobWorkStudioInstance (const std::string& args = "RobWorkStudio");
     #endif
     void closeRobWorkStudio ();
 

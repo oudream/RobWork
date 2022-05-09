@@ -1,6 +1,7 @@
 %module sdurws
 
 %{
+#define RWS_USE_PTR
 #include <rwlibs/swig/ScriptTypes.hpp>
 #include <rw/kinematics.hpp>
 #include <rwslibs/swig/ScriptTypes.hpp>
@@ -70,6 +71,7 @@ import org.robwork.sdurw_proximity.*;
 import org.robwork.sdurw_trajectory.*;
 %}
 
+#define RWS_USE_PTR
 /********************************************
  * General utility functions
  ********************************************/
@@ -78,14 +80,14 @@ import org.robwork.sdurw_trajectory.*;
  * @brief Launch an instance of RobWorkStudio
  * @return pointer to robworkstudio
  */ 
-rw::core::Ptr<RobWorkStudio> getRobWorkStudioInstance();
+rw::core::Ptr<RobWorkStudio>& getRobWorkStudioInstance();
 
 /**
  * @brief Launch an instance of RobWorkStudio
  * @param args [in] string literal of input arguments for robworkstudio
  * @return pointer to robworkstudio
  */
-rw::core::Ptr<RobWorkStudio> getRobWorkStudioInstance(const std::string& args);
+rw::core::Ptr<RobWorkStudio>& getRobWorkStudioInstance(const std::string& args);
 
 /**
  * @brief incase RobWorkStudio has been launched by other means then getRobWorkStudioInstance()
@@ -98,7 +100,7 @@ void setRobWorkStudio (RobWorkStudio* rwstudio);
  * @brief get a pointer to the current associated robworkstudio instance
  * @return a pointer to the current robworkStudio Instance
  */
-RobWorkStudio* getRobWorkStudio();
+rw::core::Ptr<RobWorkStudio>& getRobWorkStudio();
 
 /**
  * @brief Find out if robworkstudio is running. NOTICE only if robworkstudio started with getRobWorkStudioInstance
@@ -111,7 +113,7 @@ bool isRunning();
  * Notice. The main purpose for this function is to allow rws python plugins to find robworkstudio
  * @return The running robworkstudio instance
  */
-RobWorkStudio* getRobWorkStudioFromQt ();
+rw::core::Ptr<RobWorkStudio> getRobWorkStudioFromQt ();
 
 
 /**
@@ -346,57 +348,10 @@ public:
 /********************************************
  * RWSLIBS RWSTUDIOAPP
  ********************************************/
-namespace rws{
-
-    /**
-     * @brief a RobWorkStudio main application which may be instantiated in its own thread.
-     */
-    class RobWorkStudioApp
-     {
-     public:
-        /**
-         * constructor
-         * @param args [in] command line arguments for RobWorkStudio
-         */
-        RobWorkStudioApp(const std::string& args);
-
-        //! destructor
-        ~RobWorkStudioApp();
-
-        /**
-         * @brief start RobWorkStudio in its own thread
-         */
-        void start();
-        
-        /**
-         * @brief start RobWorkStudio in this thread. Notice this method call will
-         * block until RobWorkStudio is exited.
-         * @return zero if exited normally.
-         */
-        int run();
-
-        /**
-         * @brief check if RobwWrkStudio is running
-         * @return true if running false otherwise
-         */
-        bool isRunning();
-
-        /**
-         * @brief Close RobWorkStudio. Blocking until rws is closed. This might take awaile.
-         */
-        void close ();
-
-        /**
-         * @brief get handle to the running RobWorkStudio instance.
-         * @note do not directly change Qt visualization objects, this will
-         * produce segfaults. Instead use Qt events and the post* handles on
-         * RobWorkStudio interface.
-         * @return handle to RobWorkStudio
-         */
-		RobWorkStudio * getRobWorkStudio();
-	
-     };
-}
+%{
+    #include <rwslibs/rwstudioapp/RobWorkStudioApp.hpp>
+%}
+%include <rwslibs/rwstudioapp/RobWorkStudioApp.hpp>
 
 /********************************************
  * RWSLIBS SENSORS

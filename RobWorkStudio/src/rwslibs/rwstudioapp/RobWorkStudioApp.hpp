@@ -17,10 +17,13 @@
 
 #ifndef RWS_ROBWORKSTUDIOAPP_HPP_
 #define RWS_ROBWORKSTUDIOAPP_HPP_
+#if !defined(SWIG)
 #include "RobWorkStudio.hpp"
 
-#include <boost/thread.hpp>
+#include <rw/core/macros.hpp>
+
 #include <thread>
+#endif
 
 #define RWS_START(rwsapp)                                \
     rws::RobWorkStudioApp& rws_macro_interface = rwsapp; \
@@ -37,8 +40,9 @@ namespace rws {
  * The app can be started with either a call to the run() function or the start() function depending
  * on weather you want to run it from current thread or start it up in another tread.
  *
- * For convinienve when running the app from the main tread the macros 
- * RWS_START(RobWorkStudioApp app) and RWS_END() can be used to capsulate code to run in a new thread
+ * For convinienve when running the app from the main tread the macros
+ * RWS_START(RobWorkStudioApp app) and RWS_END() can be used to capsulate code to run in a new
+ * thread
  */
 class RobWorkStudioApp
 {
@@ -83,12 +87,17 @@ class RobWorkStudioApp
      * RobWorkStudio interface.
      * @return handle to RobWorkStudio
      */
-    RobWorkStudio* getRobWorkStudio () { return _rwstudio; };
+#ifdef RWS_USE_PTR 
+    rw::core::Ptr< RobWorkStudio >& getRobWorkStudio () { return _rwstudio; };
+#else
+    DEPRECATED ("In the feuture this will return RobWorkStudio::Ptr instead of RobWorkStudio*. use #define RWS_USE_PTR before including this file to enable the new behavior");
+    RobWorkStudio* getRobWorkStudio () { return _rwstudio.get (); };
+#endif 
 
   private:
-    RobWorkStudio* _rwstudio;
+    rw::core::Ptr< RobWorkStudio > _rwstudio;
     std::string _args;
-    boost::thread* _thread;
+    std::thread* _thread;
     bool _isRunning;
 };
 }    // namespace rws

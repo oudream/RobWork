@@ -241,10 +241,57 @@ else()
 endif()
 
 #
+# If the user wants to use opencascade then search for it or use the default
+#
+option(USE_OCC "Set to ON to include OpenCascade support." ON)
+if(USE_OCC)
+    unset(CONFIG_FILES)
+    # OCC can't be found quietly the normal way so we will find opencascade DIR
+    find_package(OpenCASCADE QUIET COMPONENTS Fail)
+
+    # Check that the needed files exists before requesting them through find package
+    if(NOT "${CONFIG_FILES}" STREQUAL "")
+        get_filename_component(OpenCASCADE_CMAKE_FOLDER "${CONFIG_FILES}" PATH)
+
+        set(OpenCASCADE_FOUND_CMAKEFILES TRUE)
+        foreach(module FoundationClasses ModelingData ModelingAlgorithms Visualization ApplicationFramework DataExchange)
+            if(NOT EXISTS "${OpenCASCADE_CMAKE_FOLDER}/OpenCASCADE${module}Targets.cmake")
+                set(OpenCASCADE_FOUND_CMAKEFILES FALSE)
+            endif()
+        endforeach()
+    else()
+        # Fail save
+        set(OpenCASCADE_FOUND_CMAKEFILES TRUE)
+    endif()
+
+    if(${OpenCASCADE_FOUND_CMAKEFILES})
+        find_package(OpenCASCADE QUIET COMPONENTS FoundationClasses ModelingData ModelingAlgorithms
+                                                  Visualization ApplicationFramework DataExchange
+        )
+    endif()
+    if(OpenCASCADE_FOUND)
+        set(RW_HAVE_OCC True)
+        set(OpenCASCADE_LIBRARIES)
+
+        foreach(module FoundationClasses ModelingData ModelingAlgorithms Visualization ApplicationFramework DataExchange)
+            set(OpenCASCADE_LIBRARIES ${OpenCASCADE_LIBRARIES} ${OpenCASCADE_${module}_LIBRARIES})
+        endforeach()
+        
+        message(STATUS "USE_OCC ${USE_OCC} : OpenCascade Found")
+    else()
+        set(OpenCASCADE_LIBRARIES)
+        message(STATUS "USE_OCC OFF : OpenCascade Not Found")
+    endif()
+else()
+    set(OpenCASCADE_LIBRARIES)
+    message(STATUS "USE_OCC OFF : Disabled Manually")
+endif()
+
+#
 # If the user wants to use FCL then search for it, OPTIONAL
 #
 set(RW_HAVE_FCL False)
-option(USE_FCL "Set to ON to include FCL support." ON )
+option(USE_FCL "Set to ON to include FCL support." ON)
 if(USE_FCL)
     find_package(FCL QUIET)
     if(FCL_FOUND)
@@ -257,7 +304,6 @@ if(USE_FCL)
 else()
     message(STATUS "USE_FCL ${USE_FCL} : Disabled Manually")
 endif()
-
 
 # CSGJS
 option(USE_CSGJS "Set to ON to use ext CSGJS." ON)
@@ -539,7 +585,6 @@ if(USE_gtest)
     find_package(GTest QUIET)
     if(GTEST_FOUND)
         set(GTEST_SHARED_LIBS ${BUILD_SHARED_LIBS})
-        message(STATUS "RobWork: Google Test installation FOUND!")
         set(RW_HAVE_GTEST TRUE)
         if(TARGET ${GTEST_LIBRARY} AND TARGET ${GTEST_MAIN_LIBRARY})
             add_library(RW::${GTEST_LIBRARY} ALIAS ${GTEST_LIBRARY})

@@ -76,6 +76,7 @@
 #include <boost/filesystem.hpp>
 #include <boost/program_options/parsers.hpp>
 #include <functional>
+#include <thread>
 
 USE_ROBWORK_NAMESPACE
 using namespace robwork;
@@ -118,15 +119,13 @@ RobWorkStudioApp::RobWorkStudioApp (const std::string& args) :
 
 RobWorkStudioApp::~RobWorkStudioApp ()
 {
-    if (_isRunning) {
-        QCloseEvent e = QCloseEvent ();
-        _rwstudio->event (&e);
-    }
+    close ();
 }
 
 void RobWorkStudioApp::start ()
 {
-    _thread = new boost::thread (boost::bind (&RobWorkStudioApp::run, this));
+    close();
+    _thread = new std::thread (std::bind (&RobWorkStudioApp::run, this));
     while (!this->isRunning ()) {
         rw::common::TimerUtil::sleepMs (1);
     }
@@ -148,6 +147,11 @@ void RobWorkStudioApp::close ()
             all_w = QApplication::allWidgets ();
         }
         rw::common::TimerUtil::sleepMs (1000);    // Final timing to let the rest of QT close down
+    }
+    if (_thread) {
+        _thread->join ();
+        delete _thread;
+        _thread = NULL;
     }
 }
 
@@ -282,7 +286,7 @@ int RobWorkStudioApp::run ()
         glutInit (&argc, argv);
 #endif
 
-        std::function<void(void)> AppRunner = [&]() {
+        std::function< void (void) > AppRunner = [&] () {
             QSplashScreen* splash = NULL;
             if (showSplash) {
                 QPixmap pixmap (":/images/splash.jpg");
@@ -303,7 +307,7 @@ int RobWorkStudioApp::run ()
             {
                 Timer t;
 
-                rws::RobWorkStudio rwstudio (map);
+                rws::RobWorkStudio rwstudio(map);
 
 #ifdef RWS_USE_STATIC_LINK_PLUGINS
 #ifdef RWS_HAVE_PLUGIN_LOG

@@ -19,6 +19,7 @@
 #define RW_GEOMETRY_STLFILE_HPP_
 
 #include <rw/geometry/PlainTriMesh.hpp>
+#include <rw/loaders/Model3DLoader.hpp>
 
 namespace rw { namespace geometry {
     class TriMesh;
@@ -42,6 +43,14 @@ namespace rw { namespace loaders {
          * @param filename [in] the name of the file for which to write to.
          */
         static void save (const rw::geometry::TriMesh& mesh, const std::string& filename);
+        /**
+         * @brief creates a new ASCII STL file with path+name given by \b filename.
+         * The face data is taken from a TriMesh interface.
+         * @param mesh [in] the mesh that should be written to the STL file.
+         * @param filename [in] the name of the file for which to write to.
+         */
+        static void save (const rw::core::Ptr< rw::geometry::TriMesh >& mesh,
+                          const std::string& filename);
 
         /**
          * @brief reads a STL file with name \b filename into a plain
@@ -52,9 +61,15 @@ namespace rw { namespace loaders {
         static rw::geometry::PlainTriMeshN1F::Ptr load (const std::string& filename);
 
         //! @copydoc Model3DLoader::getModelFormats
-        std::vector< std::string > getModelFormats ();
-    };
+        std::vector< std::string > getModelFormats () { return {".STL", ".STLA", ".STLB"}; }
 
+        /**
+         * @brief Check if the loader support a specific format
+         * @param format [in] the extension to check if is supported
+         * @return true if format is supported
+         */
+        bool isSupported (std::string format);
+    };
     // @}
 }}    // namespace rw::loaders
 

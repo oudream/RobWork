@@ -110,37 +110,62 @@ Robwork Options
     - Use this to disable/enable RW_ASSERT from generating output messages with regards to errors.
       Only works for non-debug builds.
 
-- RW_USE_ASSIMP=[ON|OFF]
-    - Default: NOT RW_DISABLE_ASSIMP
-    - Use this or the disable argument (see default) to prevent RobWork from using Assimp.
 
-- RW_USE_CSGJS=[ON|OFF]
+- USE_FCL=[ON|OFF]
+    - Default: ON if fcl can be found
+    - Set to OFF to disable looking for the FCL libraries
+
+- USE_OCC=[ON|OFF]
+    - Default: ON if OpenCascade can be found
+    - Set to OFF to disable looking for the OpenCascade libraries
+
+- USE_CSGJS=[ON|OFF]
     - Default: ON
     - Use this to prevent RobWork from using CsgJs (always compiled from RobWork/ext folder).
 
-- RW_USE_FCL=[ON|OFF]
-    - Default: NOT RW_DISABLE_FCL
-    - Use this or the disable argument (see default) to prevent RobWork from using FCL.
+- USE_SWIG=[ON|OFF]
+    - Default: ON if SWIG can be found
+    - Set to OFF to disable looking for the SWIG libraries
+
+- USE_LUA=[ON|OFF]
+    - Default: ON if LUA can be found
+    - Use this to prevent RobWork from looking for lua.
+
+- USE_ASSIMP=[ON|OFF]
+    - Default: ON if assimp can be found
+    - Use this to prevent RobWork from looking for Assimp.
+
+- USE_Python=[ON|OFF]
+    - Default: ON if Python can be found
+    - Use this to prevent RobWork from looking for Python.
+
+- USE_numpy=[ON|OFF]
+    - Default: ON if numpy can be found
+    - Use this to prevent RobWork from looking for numpy.
+
+- USE_gtest=[ON|OFF]
+    - Default: OFF
+    - Use this to prevent/allow RobWork to look for GTest libraries.
+
+- USE_Mathematica=[ON|OFF]
+    - Default: OFF
+    - Use this to prevent/allow RobWork to look for Mathematica libraries.
+
+- USE_RW_ASSERT=[ON|OFF]
+    - Default: ON 
+    - Enable/disable the assert code in RobWork. Can be used to speed up the code, by removing the assert error checks
+
+- USE_OpenMP=[ON|OFF]
+    - Default: ON 
+    - Enable/Disable looking for OpenMP Libraries
 
 - RW_USE_YAOBI=[ON|OFF]
     - Default: NOT RW_DISABLE_YAOBI
-    - Use this or the disable argument (see default) to prevent RobWork from using Yaobi.
+    - Use this to prevent RobWork from using Yaobi.
 
 - RW_USE_PQP=[ON|OFF]
     - Default: NOT RW_DISABLE_PQP
     - Use this or the disable argument (see default) to prevent RobWork from using PQP.
-
-- RW_USE_LUA=[ON|OFF]
-    - Default: NOT RW_DISABLE_LUA
-    - Use this or the disable argument (see default) to prevent RobWork from using lua.
-
-- RW_USE_GTEST=[ON|OFF]
-    - Default: NOT RW_DISABLE_GTEST
-    - Use this or the disable argument (see default) to prevent RobWork from using GTest.
-
-- RW_USE_MATHEMATICA=[ON|OFF]
-    - Default: RW_ENABLE_MATHEMATICA
-    - Use this or the enable argument (see default) to prevent RobWork from using assimp.
 
 - RW_IS_EXAMPLES_ENABLED=[ON|OFF]
     - Default: RW_BUILD_EXAMPLES

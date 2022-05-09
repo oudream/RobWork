@@ -176,7 +176,7 @@ if(GTEST_SOURCE STREQUAL GTEST_SOURCE-NOTFOUND)
         _gtest_find_library(GTEST_MAIN_LIBRARY_DEBUG gtest_maind)
     endif()
 else()
-    message(STATUS "Found GTest sources: ${GTEST_SOURCE}")
+    set(GOOGLETEST_VERSION 0.0.0)
     option(BUILD_GMOCK "Builds the googlemock subproject" OFF)
     option(
         INSTALL_GTEST

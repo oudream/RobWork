@@ -357,6 +357,13 @@ void writeFaceSTL (const rw::math::Vector3D< T >& v1, const rw::math::Vector3D< 
 
 }    // namespace
 
+bool STLFile::isSupported (std::string format)
+{
+    std::vector< std::string > support = getModelFormats ();
+    format                             = StringUtil::toUpper (format);
+    return std::find (support.begin (), support.end (), format) != support.end ();
+}
+
 PlainTriMeshN1F::Ptr STLFile::load (const std::string& filename)
 {
     std::ifstream streamIn (filename.c_str (), std::ios::binary);
@@ -372,6 +379,11 @@ PlainTriMeshN1F::Ptr STLFile::load (const std::string& filename)
     TriangleUtil::recalcNormals (*trimesh);
     streamIn.close ();
     return trimesh;
+}
+
+void STLFile::save (const rw::core::Ptr< rw::geometry::TriMesh >& mesh, const std::string& filename)
+{
+    STLFile::save (*mesh, filename);
 }
 
 void STLFile::save (const TriMesh& mesh, const std::string& filename)
