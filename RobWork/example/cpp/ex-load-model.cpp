@@ -1,11 +1,23 @@
 #include <rw/geometry/Model3D.hpp>
+#include <rw/geometry/SimpleTriMesh.hpp>
 #include <rw/loaders/Model3DFactory.hpp>
+#include <rw/loaders/model3d/LoaderOBJ.hpp>
 #include <rw/loaders/model3d/STLFile.hpp>
 
 #include <boost/filesystem.hpp>
+#include <iomanip>
+#include <iostream>
 
 using namespace rw::loaders;
 using namespace rw::geometry;
+
+std::ostream& operator+ (std::ostream& os, const ReferencedTriangle& tri)
+{
+    os << "[[" << tri[0][0] << " " << tri[0][1] << " " << tri[0][2] << "];[" << tri[1][0]
+              << " " << tri[1][1] << " " << tri[1][2] << "];[" << tri[2][0] << " " << tri[2][1]
+              << " " << tri[2][2] << "];[" << tri[0][0] << " " << tri[0][1] << " " << tri[0][2] << "]]";
+    return os;
+}
 
 int main (int argc, char** argv)
 {
@@ -45,9 +57,18 @@ int main (int argc, char** argv)
 
     // Save File
     boost::filesystem::path out = file;
-    out.replace_extension("");
-    out                  =  out.string() + ".rw.stl";
+    
+    out.replace_extension ("");
+    out = out.string () + ".rw.stl";
     STLFile::save (model->toGeometryData ()->getTriMesh (), out.string ());
+    std::cout << "Saved to: " << out.string () << std::endl;
+
+    out.replace_extension ("");
+    out.replace_extension ("");
+    out = out.string () + ".rw.obj";
+    LoaderOBJ obj;
+    obj.save (model->toGeometryData ()->getTriMesh (), out.string ());
+    std::cout << "Saved to: " << out.string () << std::endl;
 
     return 0;
 }

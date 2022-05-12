@@ -394,6 +394,9 @@ void STLFile::save (const TriMesh& mesh, const std::string& filename)
     using namespace rw::geometry;
     std::ofstream ostr;
     ostr.open (filename.c_str ());
+    ostr.precision(16);
+    ostr << std::scientific;
+    
     if (!ostr.is_open ()) {
         RW_THROW ("Failed to open file \"" << filename << "\" with state " << ostr.rdstate ());
     }

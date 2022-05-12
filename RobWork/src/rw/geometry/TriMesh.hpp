@@ -71,7 +71,7 @@ namespace rw { namespace geometry {
         /**
          * @brief gets the number of triangles in the triangle array.
          */
-        virtual size_t getSize () const = 0;
+        virtual size_t getSize () const {return size();};
 
         /**
          * @brief gets the number of triangles in the triangle array.

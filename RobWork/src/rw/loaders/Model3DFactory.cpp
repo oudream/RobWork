@@ -139,7 +139,7 @@ Model3D::Ptr Model3DFactory::loadModel (const std::string& raw_filename, const s
             try {
                 Model3D::Ptr model = loader->load (filename);
                 getCache ().add (filename, model, moddate);
-                return getCache ().get (filename);
+                return ownedPtr(new Model3D(*(getCache ().get (filename))));
             }
             catch (const Exception& e) {
                 gotThrow  = true;
