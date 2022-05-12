@@ -47,6 +47,7 @@ if(build)
         QHull3D.cpp
         QHullND.cpp
         Ray.cpp
+        SimpleTriMesh.cpp
         Sphere.cpp
         SphereDistanceCalc.cpp
         TriMesh.cpp
@@ -126,6 +127,7 @@ if(build)
         QHull3D.hpp
         QHullND.hpp
         Ray.hpp
+        SimpleTriMesh.hpp
         Sphere.hpp
         SphereDistanceCalc.hpp
         TriMesh.hpp

@@ -20,6 +20,7 @@
 #include <rw/core/IOUtil.hpp>
 #include <rw/core/StringUtil.hpp>
 #include <rw/geometry/IndexedPolygon.hpp>
+#include <rw/geometry/SimpleTriMesh.hpp>
 #include <rw/geometry/Triangulate.hpp>
 #include <rw/loaders/ImageLoader.hpp>
 #include <rw/math/EAA.hpp>
@@ -750,8 +751,8 @@ Model3D::Ptr LoaderOBJ::load (const std::string& name)
     setlocale (LC_ALL, locale.c_str ());
 
     Model3D::Ptr model (ownedPtr (new Model3D (name)));
-    model->getTextures<Model3DTextureType>() = reader._textures;
-    model->_materials = reader._materials;
+    model->getTextures< Model3DTextureType > () = reader._textures;
+    model->_materials                           = reader._materials;
 
     Model3D::Object3DGeneric::Ptr obj;
     Model3D::Object3D< uint8_t >::Ptr obj8;
@@ -872,4 +873,70 @@ Model3D::Ptr LoaderOBJ::load (const std::string& name)
         model->_objects[i]  = obj;
     }
     return model;
+}
+
+
+namespace {
+size_t indexOf (std::vector< Vector3D< double > >& vec, Vector3D< double > elem)
+{
+    std::vector< Vector3D< double > >::iterator it;
+
+    it = std::find (vec.begin (), vec.end (), elem);
+    if (it != vec.end ()) {
+        return it - vec.begin ();
+    }
+    else {
+        vec.push_back (elem);
+        return vec.size () - 1;
+    }
+}
+}    // namespace
+
+void LoaderOBJ::save (const rw::core::Ptr< rw::geometry::TriMesh >& mesh,
+                      const std::string& filename)
+{
+    SimpleTriMesh _mesh (mesh);
+
+    // Start by storing the current locale. This is retrieved by passing NULL to setlocale
+    std::string locale = setlocale (LC_ALL, NULL);
+    setlocale (LC_ALL, "C");
+    std::ofstream ostr;
+    ostr.open (filename.c_str ());
+    if (!ostr.is_open ()) {
+        RW_THROW ("Failed to open file \"" << filename << "\" with state " << ostr.rdstate ());
+    }
+
+    ostr << "#\n#Object File\n#Created by RobWork\n#\n";
+
+    std::vector< Vector3D< double > > normals;
+    std::vector<  uint32_t > nidx;
+    size_t maxIdx = 0;
+
+    for (size_t i = 0; i < _mesh.vertices (); i++) {
+        ostr << "v " << _mesh.vertice (i)[0] << " " << _mesh.vertice (i)[1] << " "
+             << _mesh.vertice (i)[2] << std::endl;
+    }
+    
+    for (size_t i = 0; i < _mesh.triangles (); i++) {
+        Triangle< double > t = _mesh.triangle (i);
+        Vector3D<double> n = t.calcFaceNormal();
+
+        size_t idx = indexOf(normals,n);
+        nidx.push_back(idx);
+        if(idx>maxIdx || i == 0){
+            maxIdx = idx;
+            ostr << "vn " << n[0] << " " << n[1] << " "
+             << n[2] << std::endl;
+        }
+    }
+
+    for (size_t i = 0; i < _mesh.triangles (); i++) {
+        ostr << "f ";
+        ostr << _mesh.triangle (i).idx(0) +1<< "//" << nidx[i] +1 << " ";
+        ostr << _mesh.triangle (i).idx(1) +1<< "//" << nidx[i] +1 << " ";
+        ostr << _mesh.triangle (i).idx(2) +1<< "//" << nidx[i] +1 << std::endl;
+    }
+    ostr.flush ();
+    ostr.close ();
+    setlocale (LC_ALL, locale.c_str ());
 }

@@ -50,7 +50,14 @@ namespace rw { namespace loaders {
         rw::graphics::Model3D::Ptr load (const std::string& filename);
 
         //! @copydoc Model3DLoader::getModelFormats
-        std::vector< std::string > getModelFormats () {return {".OBJ"};}
+        std::vector< std::string > getModelFormats () { return {".OBJ"}; }
+
+        /**
+         * @brief Create a Obj file from the givn TriMesh
+         * @param mesh the mesh to save
+         * @param filename the path + filename + .obj
+         */
+        void save (const rw::core::Ptr< rw::geometry::TriMesh >& mesh, const std::string& filename);
     };
 
     //! @}

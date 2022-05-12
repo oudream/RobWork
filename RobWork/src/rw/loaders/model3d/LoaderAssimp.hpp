@@ -52,7 +52,7 @@ namespace rw { namespace loaders {
         rw::graphics::Model3D::Ptr load (const std::string& filename);
 
         //! @copydoc Model3DLoader::getModelFormats
-        std::vector< std::string > getModelFormats () {return {".OBJ",".DAE",".STP","STEP"};}
+        std::vector< std::string > getModelFormats () {return {".OBJ",".DAE",".STP",".STEP"};}
     };
     //! @}
 }}     // namespace rw::loaders

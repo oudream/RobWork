@@ -243,8 +243,15 @@
     - *remove-rw-install
     - THREADS=$(nproc --all)
     - cd ./Build/RW
+
+    - make -j${THREADS}
+    - make -j${THREADS} python
+    - make -j${THREADS} lua
     - make -j${THREADS} install
     - cd ../RWS
+    - make -j${THREADS}
+    - make -j${THREADS} python
+    - make -j${THREADS} lua
     - make -j${THREADS} install
     - cd ../RWSim
     - make -j${THREADS} install
