@@ -69,6 +69,9 @@ Model3D::Model3D (const Model3D& model) :
     for(Object3DGeneric::Ptr obj: model._objects){
         this->_objects.push_back(obj->copy());
     }
+    for(rw::core::Ptr<Texture> tex: model._textures){
+        this->_textures.push_back(tex->clone());
+    }
 }
 
 Model3D::~Model3D ()

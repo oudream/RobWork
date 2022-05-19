@@ -19,6 +19,7 @@
 #define RW_GRAPHICS_TEXTUREDATA_HPP_
 
 #if !defined(SWIG)
+#include <rw/geometry/Model3D.hpp>
 #include <rw/math/Vector3D.hpp>
 #include <rw/sensor/Image.hpp>
 #endif
@@ -27,7 +28,7 @@ namespace rw { namespace graphics {
     /**
      * @brief container for storing texture data.
      */
-    class TextureData
+    class TextureData : public rw::geometry::Model3D::Texture
     {
       public:
 #if !defined(SWIG)
@@ -71,7 +72,7 @@ namespace rw { namespace graphics {
          * @brief get image data
          * @return
          */
-        rw::sensor::Image::Ptr getImageData () const { return _imageData; }
+        rw::core::Ptr<rw::sensor::Image> getImageData () const { return _imageData; }
 
         /**
          * @brief get RGB data
@@ -87,6 +88,21 @@ namespace rw { namespace graphics {
          * @return
          */
         const std::string& getName () const { return _name; }
+
+        /**
+         * @brief Clone the current texture.
+         * The image data will be shared with the clone
+         * @return rw::core::Ptr<Texture>
+         */
+        rw::core::Ptr< rw::geometry::Model3D::Texture > clone () const
+        {
+            rw::core::Ptr< TextureData > tex =
+                rw::core::ownedPtr (new TextureData (_name, _imageData));
+            tex->_rgb[0] = _rgb[0];
+            tex->_rgb[1] = _rgb[1];
+            tex->_rgb[2] = _rgb[2];
+            return tex;
+        };
 
       private:
         std::string _name;

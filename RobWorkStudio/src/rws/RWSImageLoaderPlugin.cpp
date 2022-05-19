@@ -27,7 +27,7 @@ class QImageLoader : public rw::loaders::ImageLoader
         Log::debugLog () << "Image Formats: \n";
         QList< QByteArray > formats = QImageReader::supportedImageFormats ();
         std::vector< std::string > subformats;
-        for (QByteArray& format : formats) {   
+        for (QByteArray& format : formats) {
             std::string str = format.toUpper ().data ();
             Log::debugLog () << "  " << str << "\n";
             subformats.push_back (str);
@@ -44,11 +44,9 @@ class QImageLoader : public rw::loaders::ImageLoader
             RW_WARN ("Cannot load image: " << filename);
             return NULL;
         }
-        // std::cout << "image size: " <<  img.width() << " " << img.height() << std::endl;
-        // std::cout << "filename: " << filename << std::endl;
+
         // convert to robwork Image
         Image::Ptr rwImg = ImageUtil::toRwImage (img);
-        // rwImg->saveAsPPM(filename + ".ppm");
         return rwImg;
     }
 };
@@ -66,22 +64,11 @@ std::vector< Extension::Descriptor > RWSImageLoaderPlugin::getExtensionDescripto
 {
     std::vector< Extension::Descriptor > exts;
     exts.push_back (Extension::Descriptor ("QImageLoader", "rw.loaders.ImageLoader"));
-    // QList<QByteArray> formats = QImageReader::supportedImageFormats();
-    std::string formats[] = {"BMP",
-                             "GIF",
-                             "JPG",
-                             "JPEG",
-                             "PNG",
-                             "PBM",
-                             "PGM",
-                             "PPM",
-                             "XBM",
-                             "XPM",
-                             "SVG"};
-    
-    // for(QByteArray& format: formats){
+
+    std::string formats[] = {
+        "BMP", "GIF", "JPG", "JPEG", "PNG", "PBM", "PGM", "PPM", "XBM", "XPM", "SVG"};
+
     for (std::string& format : formats) {
-        // std::cout << "setting format: " << format.toUpper().data() << std::endl;
         exts.back ().getProperties ().set (format, true);
     }
     return exts;
@@ -90,11 +77,12 @@ std::vector< Extension::Descriptor > RWSImageLoaderPlugin::getExtensionDescripto
 rw::core::Ptr< Extension > RWSImageLoaderPlugin::makeExtension (const std::string& str)
 {
     if (str == "QImageLoader") {
-        Extension::Ptr extension    = rw::core::ownedPtr (new Extension (
-            "QImageLoader", "rw.loaders.ImageLoader", this, ownedPtr (new QImageLoader ())));
+        rw::loaders::ImageLoader::Ptr iload = ownedPtr (new QImageLoader ());
+        Extension::Ptr extension            = rw::core::ownedPtr (
+            new Extension ("QImageLoader", "rw.loaders.ImageLoader", this, iload));
         QList< QByteArray > formats = QImageReader::supportedImageFormats ();
         for (QByteArray& format : formats) {
-            extension->getProperties ().set (format.toUpper ().data (), true);
+            extension->getProperties ().set (format.toUpper ().toStdString (), true);
         }
         return extension;
     }

@@ -42,6 +42,7 @@
 %}
 %{
     #include <rw/geometry/Geometry.hpp>
+    #include <rw/geometry/Model3D.hpp>
     #include <rw/geometry/IndexedTriMesh.hpp>
     #include <rw/kinematics/MovableFrame.hpp>
     #include <rw/kinematics/FixedFrame.hpp>

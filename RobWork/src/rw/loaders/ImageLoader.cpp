@@ -60,8 +60,9 @@ rw::core::Ptr< ImageLoader > ImageLoader::Factory::getImageLoader (const std::st
     ImageLoader::Factory ep;
     std::vector< Extension::Ptr > exts = ep.getExtensions ();
     for (Extension::Ptr ext : exts) {
-        if (!ext->getProperties ().has (format))
+        if (!ext->getProperties ().has (format)) {
             continue;
+        }
         // else try casting to ImageLoader
         ImageLoader::Ptr loader = ext->getObject ().cast< ImageLoader > ();
         return loader;
@@ -85,8 +86,9 @@ bool ImageLoader::Factory::hasImageLoader (const std::string& format)
     ImageLoader::Factory ep;
     std::vector< Extension::Descriptor > exts = ep.getExtensionDescriptors ();
     for (Extension::Descriptor& ext : exts) {
-        if (!ext.getProperties ().has (format))
+        if (!ext.getProperties ().has (format)) {
             continue;
+        }
         return true;
     }
     return false;
