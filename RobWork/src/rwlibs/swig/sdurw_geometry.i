@@ -331,11 +331,13 @@ NAMED_OWNEDPTR(MetricLine,rw::math::Metric<rw::geometry::Line>);
 %}
 %include <rw/geometry/Object3D.hpp>
 
+
 %{
 	#include <rw/geometry/Model3D.hpp>
 %}
 %include <rw/geometry/Model3D.hpp>
 NAMED_OWNEDPTR(Model3D,rw::geometry::Model3D);
+NAMED_ABSTRACTPTR(Texture,rw::geometry::Model3D::Texture);
 %std_vector(Model3DPtrVector,rw::core::Ptr<rw::geometry::Model3D> );
 
 %{

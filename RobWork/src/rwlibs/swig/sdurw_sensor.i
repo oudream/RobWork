@@ -5,6 +5,7 @@
 
 %import <rwlibs/swig/sdurw_core.i>
 %import <rwlibs/swig/sdurw_common.i>
+%import <rwlibs/swig/sdurw_geometry.i>
 %import <rwlibs/swig/sdurw_math.i>
 %import <rwlibs/swig/sdurw_kinematics.i>
 %import <rwlibs/swig/sdurw_geometry.i>
@@ -32,6 +33,7 @@
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
 import org.robwork.sdurw_math.*;
+import org.robwork.sdurw_geometry.*;
 import org.robwork.sdurw_kinematics.*;
 import org.robwork.sdurw_geometry.*;
 %}
@@ -39,6 +41,7 @@ import org.robwork.sdurw_geometry.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
 import org.robwork.sdurw_math.*;
+import org.robwork.sdurw_geometry.*;
 import org.robwork.sdurw_kinematics.*;
 import org.robwork.sdurw_geometry.*;
 %}
@@ -46,6 +49,7 @@ import org.robwork.sdurw_geometry.*;
 import org.robwork.sdurw_core.*;
 import org.robwork.sdurw_common.*;
 import org.robwork.sdurw_math.*;
+import org.robwork.sdurw_geometry.*;
 import org.robwork.sdurw_kinematics.*;
 import org.robwork.sdurw_geometry.*;
 %}

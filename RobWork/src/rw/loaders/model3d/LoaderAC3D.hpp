@@ -21,7 +21,6 @@
 //! @file LoaderAC3D.hpp
 
 #include <rw/loaders/Model3DLoader.hpp>
-
 #include <rw/math/Rotation3D.hpp>
 #include <rw/math/Vector3D.hpp>
 
@@ -59,7 +58,7 @@ namespace rw { namespace loaders {
         // void save(Model3DPtr model, const std::string& filename);
 
         //! @copydoc Model3DLoader::getModelFormats
-        std::vector< std::string > getModelFormats () {return {".AC",".AC3D"};}
+        std::vector< std::string > getModelFormats () { return {".AC", ".AC3D"}; }
 
       private:
         void initialize (std::istream& in, float alpha);
@@ -270,8 +269,8 @@ namespace rw { namespace loaders {
             {
                 //	delete _object;
             }
-            std::vector< rw::graphics::TextureData > _textures;
-            std::map< int, rw::graphics::TextureData* > _textureMap;
+            rw::geometry::Model3D::TextureList _textures;
+            std::map< int, rw::core::Ptr< rw::geometry::Model3D::Texture > > _textureMap;
             // AC3DObject* _object;
             std::vector< AC3DMaterial > _materials;
             std::string _currentDir;

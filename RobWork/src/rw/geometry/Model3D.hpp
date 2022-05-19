@@ -24,8 +24,8 @@
 #include <rw/geometry/GeometryData.hpp>
 #include <rw/geometry/IndexedPolygon.hpp>
 #include <rw/geometry/IndexedTriangle.hpp>
-#include <rw/geometry/TriMesh.hpp>
 #include <rw/geometry/Object3D.hpp>
+#include <rw/geometry/TriMesh.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/Vector2D.hpp>
 
@@ -37,6 +37,10 @@ namespace rw { namespace geometry {
 namespace rw { namespace geometry {
     class TriMesh;
 }}    // namespace rw::geometry
+
+namespace rw { namespace sensor {
+    class Image;
+}}    // namespace rw::sensor
 
 namespace rw { namespace geometry {
 
@@ -55,6 +59,10 @@ namespace rw { namespace geometry {
         //! @brief smart pointer type to this class
         typedef rw::core::Ptr< Model3D > Ptr;
 
+        class Texture;
+        //! @brief The data type for the texture list
+        using TextureList = std::vector<rw::core::Ptr<Texture>>;
+
         /**
          * Constructor.
          * @param name [in] name of the model.
@@ -63,10 +71,10 @@ namespace rw { namespace geometry {
 
         /**
          * @brief Copy constructor, make a copy of the 3D object
-         * 
-         * @param model 
+         *
+         * @param model
          */
-        Model3D(const Model3D& model);
+        Model3D (const Model3D& model);
 
         //! @brief destructor
         virtual ~Model3D ();
@@ -119,10 +127,9 @@ namespace rw { namespace geometry {
             float transparency;
         };
 
-        using MaterialPolys = rw::geometry::Object3DGeneric::MaterialPolys;
+        using MaterialPolys   = rw::geometry::Object3DGeneric::MaterialPolys;
         using Object3DGeneric = rw::geometry::Object3DGeneric;
-        template< class T = uint16_t> 
-        using Object3D = rw::geometry::Object3D< T >;
+        template< class T = uint16_t > using Object3D = rw::geometry::Object3D< T >;
 
         //! @brief Method to do smoothing.
         typedef enum {
@@ -135,6 +142,44 @@ namespace rw { namespace geometry {
             WEIGHTED_NORMALS
         } SmoothMethod;
 
+        class Texture
+        {
+          public:
+
+            //! @brief default destructure
+            virtual ~Texture() {}
+            
+            /**
+             * @brief check if this texture has image data
+             * @return true if it has image data, false otherwise
+             */
+            virtual bool hasImageData () const = 0;
+#ifndef SWIGJAVA
+            /**
+             * @brief get image data
+             * @return
+             */
+            virtual rw::core::Ptr<rw::sensor::Image> getImageData () const = 0;
+#endif
+            /**
+             * @brief get RGB data
+             * @return
+             */
+            virtual rw::math::Vector3D< float > getRGBData () const = 0;
+
+            /**
+             * @brief get id of texture
+             * @return
+             */
+            virtual const std::string& getName () const = 0;
+
+            /**
+             * @brief Clone the current texture
+             * @return rw::core::Ptr<Texture>
+             */
+            virtual rw::core::Ptr< Texture > clone () const = 0;
+        };
+
         /**
          * @brief optimize vertices and vertice normals
          *
@@ -143,7 +188,8 @@ namespace rw { namespace geometry {
          * @param smooth_angle
          * @param method
          */
-        void optimize (double smooth_angle, SmoothMethod method = WEIGHTED_NORMALS);
+        void
+        optimize (double smooth_angle, SmoothMethod method = WEIGHTED_NORMALS);
 
         /**
          * @brief add an Object to this Model3D
@@ -240,18 +286,11 @@ namespace rw { namespace geometry {
         //! set to true if data in the model are expected to change
         void setDynamic (bool dynamic) { _isDynamic = dynamic; }
 
-        template< class S > std::vector< S >& getTextures ()
-        {
-            std::vector< S >* ptr = NULL;
-            if (_textures.isNull ()) {
-                _textures = rw::core::AnyPtr (rw::core::ownedPtr (new std::vector< S > ()));
-            }
-            ptr = _textures.get< std::vector< S > > ();
-            if (ptr == NULL) {
-                RW_THROW ("Incompatible texture types");
-            }
-            return *ptr;
-        }
+        /**
+         * @brief Get/set the object Textures
+         * @return std::vector< rw::core::Ptr< Texture > >&
+         */
+        std::vector< rw::core::Ptr< Texture > >& getTextures () { return _textures; }
 
         //! @brief The array of materials.
         std::vector< Material > _materials;
@@ -271,7 +310,7 @@ namespace rw { namespace geometry {
         bool _isDynamic;
 
       private:
-        rw::core::AnyPtr _textures;
+        std::vector< rw::core::Ptr< Texture > > _textures;
     };
     //! @}
 }}    // namespace rw::geometry

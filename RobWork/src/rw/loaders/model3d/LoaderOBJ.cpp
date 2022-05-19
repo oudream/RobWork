@@ -76,7 +76,7 @@ namespace rw { namespace loaders {
 
         typedef std::pair< Vector2D< float >, float > imgCord;
         std::vector< Model3D::Material > _materials;    // The array of materials
-        std::vector< TextureData > _textures;           // The array of Textures
+        std::vector< rw::core::Ptr<Model3D::Texture> > _textures;           // The array of Textures
         std::vector< Object > _objects;                 // The array of objects in the model
         std::vector< Vector3D< float > > _vertexes;     // The array of vertices
         std::vector< Vector3D< float > > _normals;      // The array of the normals for the vertices
@@ -476,7 +476,7 @@ void OBJReader::parse_mtl_map_Kd (char** next_token)
         }
         else {
             _textures.push_back (
-                TextureData (token, ImageLoader::Factory::load (_dirName + token)));
+                TextureData (token, ImageLoader::Factory::load (_dirName + token)).clone());
             _materials.back ().texId = short (_textures.size () - 1);
         }
     }
@@ -751,8 +751,9 @@ Model3D::Ptr LoaderOBJ::load (const std::string& name)
     setlocale (LC_ALL, locale.c_str ());
 
     Model3D::Ptr model (ownedPtr (new Model3D (name)));
-    model->getTextures< Model3DTextureType > () = reader._textures;
-    model->_materials                           = reader._materials;
+    model->getTextures () = reader._textures;
+    model->_materials = reader._materials;
+
 
     Model3D::Object3DGeneric::Ptr obj;
     Model3D::Object3D< uint8_t >::Ptr obj8;
@@ -872,6 +873,7 @@ Model3D::Ptr LoaderOBJ::load (const std::string& name)
         obj->_mappedToFaces = false;
         model->_objects[i]  = obj;
     }
+    
     return model;
 }
 

@@ -15,7 +15,7 @@
  * limitations under the License.
  ********************************************************************************/
 
-#include "Image.hpp"
+#include <rw/sensor/Image.hpp>
 
 #include <rw/core/macros.hpp>
 

@@ -13,7 +13,7 @@ using namespace rw::graphics;
 RenderModel3D::RenderModel3D (Model3D::Ptr model) : _model (model)
 {
     // create list of textures
-    for (std::size_t i = 0; i < _model->getTextures<Model3DTextureType>().size (); i++) {
+    for (std::size_t i = 0; i < _model->getTextures().size (); i++) {
         _textures.push_back (rw::core::ownedPtr (new RWGLTexture ()));
     }
 }
@@ -531,7 +531,7 @@ void RenderModel3D::useMaterial (const Model3D::Material& mat, DrawType type, do
 {
     if (mat.hasTexture ()) {
         const RWGLTexture::Ptr tex = _textures[mat.getTextureID ()];
-        const TextureData& tdata   = _model->getTextures<Model3DTextureType>()[mat.getTextureID ()];
+        const Model3D::Texture& tdata   = *(_model->getTextures()[mat.getTextureID ()]);
         if (tdata.hasImageData ()) {
             tex->init (*tdata.getImageData ());
         }

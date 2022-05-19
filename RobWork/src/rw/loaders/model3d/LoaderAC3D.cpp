@@ -108,7 +108,7 @@ Model3D::Ptr LoaderAC3D::load (const std::string& filename)
         }
 
         // next we copy all textures
-        rwmodel->getTextures<Model3DTextureType>() = model->_textures;
+        rwmodel->getTextures() = model->_textures;
 
         // next we
         std::vector< Model3D::Object3DGeneric::Ptr >& objects = rwmodel->getObjects ();
@@ -652,7 +652,7 @@ int LoaderAC3D::loadTexture (const std::string& filename, ModelAC3D* model)
 {
     // first tjek if the texture has allready been loaded
     for (size_t i = 0; i < model->_textures.size (); i++) {
-        if (model->_textures[i].getName () == filename) {
+        if (model->_textures[i]->getName () == filename) {
             return (int) i;
         }
     }
@@ -668,8 +668,8 @@ int LoaderAC3D::loadTexture (const std::string& filename, ModelAC3D* model)
     if (image == NULL)
         return -1;
 
-    model->_textures.push_back (TextureData (filename, image));
-    model->_textureMap[(int) model->_textures.size () - 1] = &model->_textures.back ();
+    model->_textures.push_back (ownedPtr(new TextureData (filename, image)));
+    model->_textureMap[(int) model->_textures.size () - 1] = model->_textures.back ();
 
     return (int) model->_textures.size () - 1;
 }

@@ -66,7 +66,7 @@ Model3D::Ptr Loader3DS::load (const std::string& name)
 
     Model3D::Ptr model (ownedPtr (new Model3D (objname)));
 
-    std::vector< TextureData >& textures = model->getTextures<Model3DTextureType>();
+    Model3D::TextureList& textures = model->getTextures();
 
     model->_materials.resize (m3ds.Materials.size ());
     std::vector< Model3D::Material >& materials = model->_materials;
@@ -81,7 +81,7 @@ Model3D::Ptr Loader3DS::load (const std::string& name)
             mat_dst.rgb[j] = ((unsigned char*) &mat_src.color.r)[j] / 256.0f;
 
         if (mat_src.textured) {
-            textures.push_back (mat_src.tex);
+            textures.push_back (mat_src.tex.clone());
             mat_dst.texId = (int) textures.size () - 1;
         }
     }
