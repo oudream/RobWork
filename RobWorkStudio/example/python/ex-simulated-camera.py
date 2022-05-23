@@ -56,6 +56,8 @@ if __name__ == '__main__':
     print("Image: " + str(img.getWidth()) + "x" + str(img.getHeight()) + " bits " + str(img.getBitsPerPixel()) + " channels " + str(img.getNrOfChannels()));
     img.saveAsPPM("Image2.ppm");
 
-    simcam.stop();
-    rwstudio.postExit();
-    sleep(1);
+    simcam.stop()
+    closeRobWorkStudio()
+    sleep(10)
+
+    print("Example-Done")

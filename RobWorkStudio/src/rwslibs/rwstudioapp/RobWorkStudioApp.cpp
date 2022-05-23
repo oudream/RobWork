@@ -28,6 +28,7 @@
 #include <rw/core/RobWork.hpp>
 
 #include <QApplication>
+#include <QCoreApplication>
 #include <QCloseEvent>
 #include <QMessageBox>
 #include <QSplashScreen>
@@ -89,6 +90,10 @@ class MyQApplication : public QApplication
   public:
     MyQApplication (int& argc, char** argv) : QApplication (argc, argv), devMode (false) {}
 
+    virtual ~MyQApplication() {
+        closeAllWindows();
+    }
+
     bool notify (QObject* rec, QEvent* ev)
     {
         if (!devMode) {
@@ -119,7 +124,7 @@ RobWorkStudioApp::RobWorkStudioApp (const std::string& args) :
 
 RobWorkStudioApp::~RobWorkStudioApp ()
 {
-    close ();
+    close();
 }
 
 void RobWorkStudioApp::start ()
@@ -148,11 +153,13 @@ void RobWorkStudioApp::close ()
         }
         rw::common::TimerUtil::sleepMs (1000);    // Final timing to let the rest of QT close down
     }
+
     if (_thread) {
         _thread->join ();
         delete _thread;
         _thread = NULL;
     }
+    _rwstudio = NULL;
 }
 
 void initReasource ()
@@ -418,7 +425,6 @@ int RobWorkStudioApp::run ()
                 _isRunning = true;
 
                 app.exec ();
-                _isRunning = false;
                 _rwstudio  = NULL;
             }
         };
