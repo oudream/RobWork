@@ -164,6 +164,7 @@ class ArcBallController : public CameraController
 
     double _zoomScale;
     bool _advancedZoomEnabled;
+    long long _delayRotation;
     rw::math::Vector3D< double > _zoomTarget;
 
     bool _advancedPanEnabled;

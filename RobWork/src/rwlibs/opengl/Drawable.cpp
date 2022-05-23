@@ -56,10 +56,12 @@ void RWDrawable::draw (const DrawableNode::RenderInfo& info) const
 
     glPushMatrix ();
 
-    if (_scale != 1.0)
-        glScalef (_scale, _scale, _scale);
+    
 
     glMultMatrixf (gltrans);
+
+    if (_scale != 1.0)
+        glScalef (_scale, _scale, _scale);
 
     if (highlight) {
         glDisable (GL_LIGHT0);
