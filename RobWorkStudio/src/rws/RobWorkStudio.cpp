@@ -816,7 +816,6 @@ std::string RobWorkStudio::loadSettingsWorkcell (const std::string& file)
             // Nothing to report here.
             break;
     }
-    Log::debugLog () << "workcellFound: " << workcellPath << "\n";
     return workcellPath;
 }
 
@@ -1164,20 +1163,13 @@ class RobWorkStudioEvent : public QEvent
 
     virtual ~RobWorkStudioEvent ()
     {
-        Log::debugLog () << "RobWorkStudioEvent: destruct" << std::endl;
         done ();
     }
 
     void done ()
     {
         if (_hs != NULL) {
-            Log::debugLog () << "Done: " << std::endl;
-            Log::debugLog () << "set hs " << std::endl;
             *_hs = true;
-            Log::debugLog () << "hs " << *_hs << std::endl;
-        }
-        else {
-            Log::debugLog () << "Done: hs==NULL" << std::endl;
         }
     }
 };

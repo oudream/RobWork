@@ -30,8 +30,7 @@ using namespace rws;
 //----------------------------------------------------------------------
 // Virtual methods
 
-RobWorkStudioPlugin::~RobWorkStudioPlugin ()
-{}
+RobWorkStudioPlugin::~RobWorkStudioPlugin (){}
 
 void RobWorkStudioPlugin::close ()
 {}

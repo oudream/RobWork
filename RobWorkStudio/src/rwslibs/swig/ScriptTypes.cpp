@@ -136,6 +136,7 @@ rw::core::Ptr< RobWorkStudio >& rws::swig::getRobWorkStudioInstance (const std::
 void rws::swig::closeRobWorkStudio ()
 {
     robApp->close ();
+    rwstudio_internal = NULL;
 }
 
 bool rws::swig::isRunning ()

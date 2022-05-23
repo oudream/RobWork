@@ -15,6 +15,9 @@
 *tmp
 *__pycache__
 .qt_for_python
+*assimp_log.txt
+
+
 
 # /
 /cmake_install.cmake

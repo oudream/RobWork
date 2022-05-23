@@ -149,18 +149,18 @@ TaskSetupDialog::TaskSetupDialog (QWidget* parent, rw::core::Ptr< const WorkCell
             _ui->female->addItem (QString::fromStdString (objects[i]->getName ()));
         }
         connect (_ui->female,
-                 SIGNAL (currentIndexChanged (const QString&)),
+                 SIGNAL (currentTextChanged (const QString&)),
                  this,
                  SLOT (setFemaleObject (const QString&)));
         connect (_ui->male,
-                 SIGNAL (currentIndexChanged (const QString&)),
+                 SIGNAL (currentTextChanged (const QString&)),
                  this,
                  SLOT (setMaleObject (const QString&)));
     }
     connect (
-        _ui->maleTCP, SIGNAL (currentIndexChanged (const QString&)), this, SLOT (updateViews ()));
+        _ui->maleTCP, SIGNAL (currentTextChanged (const QString&)), this, SLOT (updateViews ()));
     connect (
-        _ui->femaleTCP, SIGNAL (currentIndexChanged (const QString&)), this, SLOT (updateViews ()));
+        _ui->femaleTCP, SIGNAL (currentTextChanged (const QString&)), this, SLOT (updateViews ()));
     connect (_ui->x, SIGNAL (valueChanged (double)), this, SLOT (updatePositions ()));
     connect (_ui->y, SIGNAL (valueChanged (double)), this, SLOT (updatePositions ()));
     connect (_ui->z, SIGNAL (valueChanged (double)), this, SLOT (updatePositions ()));
@@ -192,7 +192,7 @@ void TaskSetupDialog::setFemaleObject (const QString& text)
 {
     // Rebuild the male list with the chosen female object removed
     disconnect (_ui->male,
-                SIGNAL (currentIndexChanged (const QString&)),
+                SIGNAL (currentTextChanged (const QString&)),
                 this,
                 SLOT (setMaleObject (const QString&)));
     const QString cur = _ui->male->currentText ();
@@ -211,7 +211,7 @@ void TaskSetupDialog::setFemaleObject (const QString& text)
         }
     }
     connect (_ui->male,
-             SIGNAL (currentIndexChanged (const QString&)),
+             SIGNAL (currentTextChanged (const QString&)),
              this,
              SLOT (setMaleObject (const QString&)));
     // Build TCP list
@@ -234,7 +234,7 @@ void TaskSetupDialog::setMaleObject (const QString& text)
 {
     // Rebuild the female list with the chosen male object removed
     disconnect (_ui->female,
-                SIGNAL (currentIndexChanged (const QString&)),
+                SIGNAL (currentTextChanged (const QString&)),
                 this,
                 SLOT (setFemaleObject (const QString&)));
     const QString cur = _ui->female->currentText ();
@@ -253,7 +253,7 @@ void TaskSetupDialog::setMaleObject (const QString& text)
         }
     }
     connect (_ui->female,
-             SIGNAL (currentIndexChanged (const QString&)),
+             SIGNAL (currentTextChanged (const QString&)),
              this,
              SLOT (setFemaleObject (const QString&)));
     // Build TCP list

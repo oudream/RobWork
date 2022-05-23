@@ -48,6 +48,8 @@
     #include <rw/kinematics/FixedFrame.hpp>
     #include <rw/geometry/Line.hpp>
     #include <rw/models.hpp>
+
+    //using rw::geometry::Model3D::Texture;
 %}
 
 %nodefaultctor rw::graphics::DrawableNode;

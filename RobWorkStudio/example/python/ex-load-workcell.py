@@ -1,3 +1,5 @@
+#! /usr/bin/python3
+
 from sdurws import *
 from sdurw import *
 from sdurw_loaders import *
@@ -20,3 +22,7 @@ if __name__ == '__main__':
     while isRunning():
         if len(sys.argv) == 3 and sys.argv[2] == "-t":
             closeRobWorkStudio()
+
+    
+    sleep(3)
+    print("Example-Done")

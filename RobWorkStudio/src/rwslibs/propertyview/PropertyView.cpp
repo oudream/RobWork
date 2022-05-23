@@ -41,7 +41,7 @@ PropertyView::PropertyView () :
     _cmbFrames = new QComboBox ();
     _cmbFrames->setMinimumHeight (10);
     connect (_cmbFrames,
-             SIGNAL (currentIndexChanged (const QString&)),
+             SIGNAL (currentTextChanged (const QString&)),
              this,
              SLOT (frameChanged (const QString&)));
     pLayout->addWidget (_cmbFrames, row++, 0);
