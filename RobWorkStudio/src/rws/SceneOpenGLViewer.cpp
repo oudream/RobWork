@@ -706,11 +706,9 @@ void SceneOpenGLViewer::wheelEvent (QWheelEvent* event)
     makeCurrent ();
     Vector3D<> pos = _scene->unproject (_mainCam, winx, winy);
     doneCurrent ();
-    if (_pmap->getValue ().has ("ZoomScale") && _cameraCtrl.cast< ArcBallController > ()) {
+    if (_pmap->getValue ().has ("ZoomScale") && _cameraCtrl.cast< ArcBallController > () ) { 
         _cameraCtrl.cast< ArcBallController > ()->zoomScale (
             _pmap->getValue ().get< double > ("ZoomScale"));
-        std::cout << "ZoomScale set to: " << _pmap->getValue ().get< double > ("ZoomScale")
-                  << std::endl;
     }
     _cameraCtrl->setZoomTarget (pos);
     _cameraCtrl->handleEvent (event);

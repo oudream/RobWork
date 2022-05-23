@@ -85,11 +85,11 @@ void RenderGeometry::draw (const DrawableNode::RenderInfo& info, DrawableNode::D
 
     glPushMatrix ();
 
+    DrawableUtil::multGLTransform (_geometry->getTransform ());
+
     float scale = (float) _geometry->getScale ();
     if (scale != 1.0)
         glScalef (scale, scale, scale);
-
-    DrawableUtil::multGLTransform (_geometry->getTransform ());
 
     glColor4f (_r, _g, _b, (float) alpha);
     switch (type) {

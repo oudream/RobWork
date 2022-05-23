@@ -1073,11 +1073,12 @@ void RobWorkStudio::setWorkcell (rw::models::WorkCell::Ptr workcell)
         double scale = this->calculateWorkCellSize ().diagonal ().norm2 ();
         // set maximum zoom scale at 2m and minimum at 20cm
         scale = std::min (std::min (0.1, scale / 2.0), 1.0);
-        if (_propMap.has ("ZoomScale")) {
-            _propMap.set ("ZoomScale", scale);
+        PropertyMap& sceneProp = _view->getSceneViewer()->getPropertyMap();
+        if (sceneProp.has ("ZoomScale")) {
+            sceneProp.set ("ZoomScale", scale);
         }
         else {
-            _propMap.add ("ZoomScale","value [0-1] scaling the zoom factor of the cameracontroller", scale);
+            sceneProp.add ("ZoomScale","value [0-1] scaling the zoom factor of the cameracontroller", scale);
         }
     }
 }

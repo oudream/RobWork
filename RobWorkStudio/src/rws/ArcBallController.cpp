@@ -17,6 +17,7 @@
 
 #include "ArcBallController.hpp"    // ArcBallController header
 
+#include <rw/common/TimerUtil.hpp>
 #include <rw/kinematics/Frame.hpp>
 #include <rw/math/Math.hpp>
 #include <rw/models/WorkCell.hpp>
@@ -30,6 +31,7 @@
 
 using namespace rw::kinematics;
 using namespace rw::math;
+using namespace rw::common;
 using namespace rws;
 
 rw::math::Vector3D<> ArcBallController::mapToSphere (double x, double y) const
@@ -40,9 +42,6 @@ rw::math::Vector3D<> ArcBallController::mapToSphere (double x, double y) const
         adjust = _adjustHeight;
     float xTmp = -((_centerPt[0] - x) * adjust);
     float yTmp = (_centerPt[1] - y) * adjust;
-
-    // std::cout << x << ";" << _centerPt[0] << ";" << _adjustWidth << ";" << xTmp << std::endl;
-    // std::cout << y << ";" << _centerPt[1] << ";" << _adjustHeight << ";" << yTmp << std::endl;
 
     // Compute the square of the length of the vector to the point from the center
     float length = xTmp * xTmp + yTmp * yTmp;
@@ -68,7 +67,7 @@ ArcBallController::ArcBallController (double NewWidth, double NewHeight,
                                       rw::graphics::SceneCamera::Ptr cam) :
     _centerPt (NewWidth / 2.0, NewHeight / 2.0),
     _stVec (0.0f, 0.0f, 0.0f), _enVec (0.0f, 0.0f, 0.0f), _adjustWidth (0), _adjustHeight (0),
-    _height (0), _width (0), _zoomScale (1), _advancedZoomEnabled (false), _cam (cam)
+    _height (0), _width (0), _zoomScale (1), _advancedZoomEnabled (false),_delayRotation(0), _cam (cam)
 {
     _viewTransform =
         Transform3D<>::makeLookAt (Vector3D<> (5, 5, 5), Vector3D<>::zero (), Vector3D<>::z ());
@@ -79,14 +78,12 @@ ArcBallController::ArcBallController (double NewWidth, double NewHeight,
 
 void ArcBallController::setBounds (double NewWidth, double NewHeight)
 {
-    // std::cout << "setBounds" << std::endl;
     _width  = NewWidth;
     _height = NewHeight;
 
     // Set adjustment factor for width/height
     _adjustWidth  = 1.0f / ((NewWidth - 1.0f));
     _adjustHeight = 1.0f / ((NewHeight - 1.0f));
-    // std::cout << "setBounds" << std::endl;
 }
 
 void ArcBallController::click (float x, float y)
@@ -135,7 +132,6 @@ rw::math::Quaternion< double > ArcBallController::drag (float x, float y)
 
         return tmpQuat;
     }
-    // std::cout << "Quaternion<>(0.0f,0.0f,0.0f,0.0f)" << std::endl;
 
     // if its zero
     // The begin and end vectors coincide, so return an identity transform
@@ -144,13 +140,11 @@ rw::math::Quaternion< double > ArcBallController::drag (float x, float y)
 
 void ArcBallController::handleEvent (QEvent* e)
 {
-    // std::cout << "T: " << _viewTransform << "\n" ;
     if (e->type () == QEvent::MouseButtonPress) {
         QMouseEvent* event = static_cast< QMouseEvent* > (e);
 
         _lastPos (0) = event->pos ().x ();
         _lastPos (1) = event->pos ().y ();
-
         click (event->pos ().x (), event->pos ().y ());
     }
     else if (e->type () == QEvent::MouseMove) {
@@ -162,7 +156,8 @@ void ArcBallController::handleEvent (QEvent* e)
                     0, 0, -(event->pos ().y () - _lastPos (1)) / _height * 10);
                 _viewTransform.P () -= _viewTransform.R () * translateVector;
             }
-            else {    // The mouse is being dragged
+            else if ((_delayRotation + 500) <
+                     TimerUtil::currentTimeMs ()) {    // The mouse is being dragged
 
                 double rx = (event->pos ().x ());
                 double ry = (event->pos ().y ());
@@ -192,7 +187,7 @@ void ArcBallController::handleEvent (QEvent* e)
     }
     else if (e->type () == QEvent::Wheel) {
         QWheelEvent* event = static_cast< QWheelEvent* > (e);
-        zoom (event->angleDelta ().y () / (240.0 * _zoomScale));
+        zoom (event->angleDelta ().y () / (240.0));
     }
     setPivotScale ();
 }
@@ -203,6 +198,7 @@ void ArcBallController::setCenter (const rw::math::Vector3D<>& center,
     _pivotPoint = center;
     _centerPt   = screenCenter;
     setPivotScale ();
+    _delayRotation = TimerUtil::currentTimeMs ();
 }
 
 rw::math::Transform3D<> ArcBallController::getTransform () const
@@ -218,18 +214,25 @@ void ArcBallController::setTransform (const rw::math::Transform3D<>& t3d)
 
 void ArcBallController::zoom (double amount)
 {
+    double orig_amount = amount;
+    amount *= _zoomScale;
     if (_advancedZoomEnabled) {
         Vector3D<> dist = _zoomTarget - _viewTransform.P ();
-        if (dist.norm2 () > (_pivotPoint - _viewTransform.P ()).norm2 ()) {
-            dist = dist / dist.norm2 () * (_pivotPoint - _viewTransform.P ()).norm2 ();
+
+        double newAmount = dist.norm2 () * ZOOM_PERCENTAGE / 100 * orig_amount;
+
+        if (dist.norm2 () > 29.9) {
+            newAmount = amount;
         }
-        double newAmount     = dist.norm2 () * ZOOM_PERCENTAGE / 100 * amount;
+        else {
+            amount *= 4;
+        }
         _advancedZoomEnabled = false;
         if ((newAmount > 0 && (newAmount > amount)) || (newAmount < 0 && (amount > newAmount)) ||
             newAmount == 0) {
             newAmount = amount;
         }
-        Vector3D<> translateVector = (dist / dist[2]) * newAmount;
+        Vector3D<> translateVector = -(dist / dist.norm2 ()) * newAmount;
         _viewTransform.P ()        = _viewTransform.P () - translateVector;
     }
     else {
@@ -330,7 +333,7 @@ void ArcBallController::pan (int x, int y)
     else {
         Vector3D<> translateVector (
             (x - _lastPos (0)) / _width * 10, -((y - _lastPos (1)) / _height * 10), 0);
-        _viewTransform.P () -= _viewTransform.R () * translateVector;
+        _viewTransform.P () -= _viewTransform.R () * translateVector * _zoomScale;
     }
 
     _centerPt[0] += x - _lastPos (0);
