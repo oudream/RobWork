@@ -129,7 +129,7 @@ Freeglut (optional) this library is used to make graphics, in our opengl impleme
 
 .. code-block:: shell
 
-    sudo apt-get install libfreeglut-dev
+    sudo apt-get install freeglut3-dev
 
 OpenCascade (optional) these libraries enables robwork to load STEP files as geometries
 
