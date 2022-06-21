@@ -72,7 +72,7 @@
     - cd Build
     # Build RobWork
     - cd RW
-    - cmake -DCMAKE_BUILD_TYPE=Release -DUSE_gtest=ON ../../RobWork
+    - cmake -DCMAKE_BUILD_TYPE=Release -DUSE_GTest=ON ../../RobWork
     - make -j${THREADS}
     - make -j${THREADS} python
     - make -j${THREADS} lua || make -j${THREADS} lua

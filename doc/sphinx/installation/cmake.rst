@@ -143,7 +143,7 @@ Robwork Options
     - Default: ON if numpy can be found
     - Use this to prevent RobWork from looking for numpy.
 
-- USE_gtest=[ON|OFF]
+- USE_GTest=[ON|OFF]
     - Default: OFF
     - Use this to prevent/allow RobWork to look for GTest libraries.
 

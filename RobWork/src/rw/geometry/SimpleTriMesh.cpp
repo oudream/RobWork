@@ -1,8 +1,6 @@
 #include <rw/core/Ptr.hpp>
 #include <rw/geometry/BSphere.hpp>
 #include <rw/geometry/SimpleTriMesh.hpp>
-#include <rw/geometry/TriTriIntersectDeviller.hpp>
-#include <rw/geometry/TriTriIntersectMoller.hpp>
 
 #include <thread>
 #include <vector>
@@ -10,7 +8,7 @@ using namespace rw::math;
 using namespace rw::geometry;
 using namespace rw::core;
 
-ReferencedVertice::ReferencedVertice (SimpleTriMeshData::Ptr ref, uint32_t vertice) :
+ReferencedVertice::ReferencedVertice (TriMeshData::Ptr ref, uint32_t vertice) :
     _mesh (ref), _verIndex (vertice)
 {
     RW_ASSERT (_mesh != NULL);
@@ -35,6 +33,12 @@ ReferencedVertice& ReferencedVertice::operator= (rw::math::Vector3D< float > rhs
     return *this;
 }
 
+ReferencedVertice& ReferencedVertice::operator*= (rw::math::Transform3D< double > rhs)
+{
+    Vector3D< double > v = *this;
+    return *this         = (rhs * v);
+}
+
 ReferencedVertice::operator rw::math::Vector3D< double > () const
 {
     return rw::math::Vector3D< double > (_mesh->_vertecies (_verIndex, 0),
@@ -48,7 +52,7 @@ ReferencedVertice::operator rw::math::Vector3D< float > () const
                                         _mesh->_vertecies (_verIndex, 2));
 }
 
-ReferencedTriangle::ReferencedTriangle (SimpleTriMeshData::Ptr ref, uint32_t triangle) :
+ReferencedTriangle::ReferencedTriangle (TriMeshData::Ptr ref, uint32_t triangle) :
     _mesh (ref), _triIndex (triangle)
 {
     RW_ASSERT (_mesh != NULL);
@@ -105,13 +109,13 @@ namespace rw { namespace geometry {
             return os;
         }
     }
-
 }}    // namespace rw::geometry
 
-SimpleTriMesh::SimpleTriMesh (SimpleTriMeshData::Ptr data)
+SimpleTriMesh::SimpleTriMesh (TriMeshData::Ptr data) :
+    _engine (CSGEngine::Factory::getDefaultEngine ())
 {
     if (data.isNull ()) {
-        _data = rw::core::ownedPtr (new SimpleTriMeshData ());
+        _data = rw::core::ownedPtr (new TriMeshData ());
     }
     else {
         _data = data;
@@ -126,20 +130,21 @@ SimpleTriMesh::~SimpleTriMesh ()
 }
 
 SimpleTriMesh::SimpleTriMesh (const SimpleTriMesh& copy) :
-    _data (rw::core::ownedPtr (new SimpleTriMeshData ()))
+    _data (rw::core::ownedPtr (new TriMeshData ())),
+    _engine (CSGEngine::Factory::getDefaultEngine ())
 {
     _data->_triangles = copy._data->_triangles;
     _data->_vertecies = copy._data->_vertecies;
 }
 
 SimpleTriMesh::SimpleTriMesh (const rw::geometry::TriMesh& copy) :
-    _data (rw::core::ownedPtr (new SimpleTriMeshData ()))
+    _data (rw::core::ownedPtr (new TriMeshData ())),
+    _engine (CSGEngine::Factory::getDefaultEngine ())
 {
     fromTriMesh (copy);
 }
 
-SimpleTriMesh::SimpleTriMesh (rw::geometry::GeometryData& copy) :
-    SimpleTriMesh (copy.getTriMesh ())
+SimpleTriMesh::SimpleTriMesh (rw::geometry::GeometryData& copy) : SimpleTriMesh (copy.getTriMesh ())
 {}
 
 SimpleTriMesh::SimpleTriMesh (const rw::core::Ptr< rw::geometry::GeometryData >& copy) :
@@ -264,4 +269,89 @@ void SimpleTriMesh::fromTriMesh (const rw::geometry::TriMesh& copy)
             _data->_triangles (i, j) = triangles[i][j];
         }
     }
+}
+
+SimpleTriMesh& SimpleTriMesh::operator*= (const rw::math::Transform3D< double >& trans)
+{
+    for (size_t i = 0; i < vertices (); i++) {
+        vertice (i) *= trans;
+    }
+    return *this;
+}
+
+SimpleTriMesh SimpleTriMesh::operator* (const rw::math::Transform3D< double >& trans) const
+{
+    SimpleTriMesh t (*this);
+    for (size_t i = 0; i < t.vertices (); i++) {
+        t.vertice (i) *= trans;
+    }
+    return t;
+}
+
+SimpleTriMesh SimpleTriMesh::operator+ (const SimpleTriMesh& rhs) const
+{
+    if (_engine.isNull ()) {
+        RW_THROW ("NO CSGEngine Found");
+    }
+    return SimpleTriMesh (_engine->Union (this->_data, rhs._data));
+}
+
+SimpleTriMesh& SimpleTriMesh::operator+= (const SimpleTriMesh& rhs)
+{
+    if (_engine.isNull ()) {
+        RW_THROW ("NO CSGEngine Found");
+    }
+    this->_data = _engine->Union (this->_data, rhs._data);
+    return *this;
+}
+
+SimpleTriMesh SimpleTriMesh::operator- (const SimpleTriMesh& rhs) const
+{
+    if (_engine.isNull ()) {
+        RW_THROW ("NO CSGEngine Found");
+    }
+    return SimpleTriMesh (_engine->Difference (this->_data, rhs._data));
+}
+
+SimpleTriMesh& SimpleTriMesh::operator-= (const SimpleTriMesh& rhs)
+{
+    if (_engine.isNull ()) {
+        RW_THROW ("NO CSGEngine Found");
+    }
+    this->_data = _engine->Difference (this->_data, rhs._data);
+    return *this;
+}
+
+SimpleTriMesh SimpleTriMesh::operator& (const SimpleTriMesh& rhs) const
+{
+    if (_engine.isNull ()) {
+        RW_THROW ("NO CSGEngine Found");
+    }
+    return SimpleTriMesh (_engine->Intersection (this->_data, rhs._data));
+}
+
+SimpleTriMesh& SimpleTriMesh::operator&= (const SimpleTriMesh& rhs)
+{
+    if (_engine.isNull ()) {
+        RW_THROW ("NO CSGEngine Found");
+    }
+    this->_data = _engine->Intersection (this->_data, rhs._data);
+    return *this;
+}
+
+SimpleTriMesh SimpleTriMesh::operator^ (const SimpleTriMesh& rhs) const
+{
+    if (_engine.isNull ()) {
+        RW_THROW ("NO CSGEngine Found");
+    }
+    return SimpleTriMesh (_engine->SymmetricDifference (this->_data, rhs._data));
+}
+
+SimpleTriMesh& SimpleTriMesh::operator^= (const SimpleTriMesh& rhs)
+{
+    if (_engine.isNull ()) {
+        RW_THROW ("NO CSGEngine Found");
+    }
+    this->_data = _engine->SymmetricDifference (this->_data, rhs._data);
+    return *this;
 }

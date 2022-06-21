@@ -20,6 +20,7 @@ if(build)
         ConvexHullND.cpp
         Covariance.cpp
         Cylinder.cpp
+        CSGEngine.cpp
         Delaunay.cpp
         DistanceUtil.cpp
         Geometry.cpp
@@ -95,6 +96,7 @@ if(build)
         ConvexHull3D.hpp
         ConvexHullND.hpp
         Covariance.hpp
+        CSGEngine.hpp
         Cylinder.hpp
         Delaunay.hpp
         DistanceUtil.hpp

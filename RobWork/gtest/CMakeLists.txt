@@ -148,6 +148,7 @@ if(TARGET sdurw_geometry AND TARGET sdurw_kinematics AND TARGET sdurw_loaders)
         geometry/GeometryTest.cpp
         geometry/GeometryUtilTest.cpp
         geometry/TriangleUtilTest.cpp
+        geometry/SimpleTriMeshTest.cpp
     )
     add_executable(sdurw_geometry-gtest ${GEOMETRY_TEST_SRC})
     target_link_libraries(sdurw_geometry-gtest ${GEOMETRY_TEST_LIBRARIES})

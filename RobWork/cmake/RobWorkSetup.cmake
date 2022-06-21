@@ -86,12 +86,14 @@ endif()
 # Packages needed: Filesystem system thread program_options Package depends: date_time Package
 # removed: serialization
 
+disable_hunter()
 find_package(
     Boost QUIET
     COMPONENTS filesystem system thread program_options date_time
     CONFIG
     PATHS "C:/local"
 )
+
 if(NOT Boost_FOUND)
     find_package(Boost REQUIRED COMPONENTS filesystem system thread program_options date_time)
 endif()
@@ -108,7 +110,7 @@ message(
     STATUS
         "RobWork: Boost version ${Boost_MAJOR_VERSION}.${Boost_MINOR_VERSION}.${Boost_SUBMINOR_VERSION} found!"
 )
-
+enable_hunter()
 enable_language(CXX)
 
 # ##################################################################################################
@@ -181,7 +183,6 @@ if(RW_USE_YAOBI)
         set(RW_HAVE_YAOBI True)
         set(ROBWORK_LIBRARIES_EXTERNAL ${ROBWORK_LIBRARIES_EXTERNAL} ${YAOBI_LIBRARIES})
     else()
-
         set(RW_ENABLE_INTERNAL_YAOBI_TARGET ON)
         message(STATUS "RobWork: Yaobi ENABLED! NOT FOUND! Using RobWork native Yaobi.")
         set(YAOBI_INCLUDE_DIR "${RW_ROOT}/ext/rwyaobi/include")
@@ -571,15 +572,15 @@ endif()
 #
 # Make option for user to disable Google Test
 option(
-    USE_gtest
+    USE_GTest
     "Set to ON to include Google Test support. Set GTEST_ROOT or GTEST_SOURCE to specify your own Google Test installation."
     OFF
 )
 set(RW_HAVE_GTEST FALSE)
 set(RW_GTEST_FROM_HUNTER FALSE)
 
-if(USE_gtest)
-    message(STATUS "USE_gtest  ${USE_gtest} : Enabled Manualy")
+if(USE_GTest)
+    message(STATUS "USE_GTest  ${USE_GTest} : Enabled Manualy")
     # Now try to find Google Test
     set(gtest_force_shared_crt ON CACHE BOOL "Use /MD on Windows systems.")
     find_package(GTest QUIET)
@@ -598,7 +599,7 @@ if(USE_gtest)
         set(RW_GTEST_FROM_HUNTER TRUE)
     endif()
 else()
-    message(STATUS "USE_gtest  ${USE_gtest} : Disabled by default")
+    message(STATUS "USE_GTest  ${USE_GTest} : Disabled by default")
 endif()
 
 # Mathematica

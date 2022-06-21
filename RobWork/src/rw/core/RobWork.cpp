@@ -209,6 +209,8 @@ void RobWork::initialize (const std::vector< std::string >& plugins)
                 break;
             }
         }
+        plugins.add("location-5", "Generic Plugin Folder" , std::string(std::getenv ("HOME")) + SLASH + std::string(".RobWork") + SLASH);
+
         _settings.add ("plugins", "List of plugins or plugin locations", plugins);
     }
 
@@ -276,7 +278,7 @@ void RobWork::initialize (const std::vector< std::string >& plugins)
             // find all files in the directory *.rwplugin.xml *.rwplugin.(dll,so)
             std::vector< std::string > pl_files =
                 IOUtil::getFilesInFolder (file.string (), false, true, "*.rwplugin.*");
-            for (std::string pl_file : pl_files) {
+            for (std::string pl_file : pl_files) { 
                 const std::string ext = StringUtil::getFileExtension (pl_file);
                 if (ext == ".xml" || ext == ".dll" || ext == ".so"){
                 #ifdef RW_WIN32

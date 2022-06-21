@@ -22,7 +22,7 @@
     - cd Build
     # Build RobWork
     - cd RW
-    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 -DBoost_INCLUDE_DIR=%Boost_INCLUDE_DIR% -DBUILD_sdurw_java=ON -DBUILD_sdurw_python=ON -DBUILD_sdurw_lua=ON -DSWIG_EXECUTABLE=%SWIG_ROOT%\swig.exe -DUSE_gtest=ON ../../RobWork
+    - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 -DBoost_INCLUDE_DIR=%Boost_INCLUDE_DIR% -DBUILD_sdurw_java=ON -DBUILD_sdurw_python=ON -DBUILD_sdurw_lua=ON -DSWIG_EXECUTABLE=%SWIG_ROOT%\swig.exe -DUSE_GTest=ON ../../RobWork
     - msbuild RobWork.sln -m /property:Configuration=Release
     - msbuild src\\rwlibs\\swig\\python\\python.vcxproj -m /property:Configuration=Release
     - msbuild src\\rwlibs\\swig\\java\\java.vcxproj -m /property:Configuration=Release

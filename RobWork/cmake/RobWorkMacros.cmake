@@ -1199,17 +1199,17 @@ macro(RW_ADD_DOC _subsys)
 endmacro()
 
 macro(RW_INCLUDE_EIGEN _name)
-    target_include_directories(${_name} PUBLIC $<BUILD_INTERFACE:${EIGEN3_INCLUDE_DIR}>)
+    target_include_directories(${_name} SYSTEM PUBLIC $<BUILD_INTERFACE:${EIGEN3_INCLUDE_DIR}>)
 
     if(RW_EIGEN_FROM_GIT)
         target_include_directories(
-            ${_name} INTERFACE $<INSTALL_INTERFACE:${RW_EXT_INSTALL_DIR}/eigen3>
+            ${_name} SYSTEM INTERFACE $<INSTALL_INTERFACE:${RW_EXT_INSTALL_DIR}/eigen3>
         )
         if(TARGET eigen_build)
             add_dependencies(${_name} eigen_build)
         endif()
     else()
-        target_include_directories(${_name} INTERFACE $<INSTALL_INTERFACE:${EIGEN3_INCLUDE_DIR}>)
+        target_include_directories(${_name} SYSTEM INTERFACE $<INSTALL_INTERFACE:${EIGEN3_INCLUDE_DIR}>)
     endif()
 endmacro()
 # ##################################################################################################
@@ -1425,4 +1425,23 @@ macro(getBoostLibraryList output list)
             endforeach()
         endif()
     endforeach()
+endmacro()
+
+macro(disable_hunter)
+set(new_path)
+foreach(path ${CMAKE_MODULE_PATH})
+    if(${path} MATCHES ".*/Hunter/.*")
+        set(HUNTER_PATHS ${HUNTER_PATHS} ${path} CACHE INTERNAL "Internal list of hunter module paths" FORCE)
+    else() 
+        set(new_path ${new_path} ${path})
+    endif ()
+endforeach()
+set(CMAKE_MODULE_PATH ${new_path})
+endmacro()
+
+macro(enable_hunter)
+
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${HUNTER_PATHS})
+set(HUNTER_PATHS "" CACHE INTERNAL "Internal list of hunter module paths" FORCE)
+
 endmacro()

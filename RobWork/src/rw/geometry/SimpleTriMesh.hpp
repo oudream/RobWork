@@ -18,23 +18,14 @@
 #ifndef RW_GEOMETRY_SIMPLETRIMESH_HPP_
 #define RW_GEOMETRY_SIMPLETRIMESH_HPP_
 
+#include <RobWorkConfig.hpp>
 #include <rw/core/Ptr.hpp>
+#include <rw/geometry/CSGEngine.hpp>
 #include <rw/geometry/TriMesh.hpp>
 
 #include <Eigen/Core>
 
 namespace rw { namespace geometry {
-
-    /**
-     * @brief a simple data structure for keeping the information on vertices and triangles
-     */
-    struct SimpleTriMeshData
-    {
-        using Ptr = rw::core::Ptr< SimpleTriMeshData >;
-
-        Eigen::Matrix< uint32_t, Eigen::Infinity, 3 > _triangles;
-        Eigen::Matrix< double, Eigen::Infinity, 3 > _vertecies;
-    };
 
     /**
      * @brief The ReferencedVertice contains a reference to the mesh it has been created from.
@@ -48,7 +39,7 @@ namespace rw { namespace geometry {
          * @param ref pointer to the referenced mesh
          * @param vertice  index of the referenced vertice
          */
-        ReferencedVertice (SimpleTriMeshData::Ptr ref, uint32_t vertice);
+        ReferencedVertice (TriMeshData::Ptr ref, uint32_t vertice);
 
         /**
          * @brief acces the vertice data
@@ -72,12 +63,19 @@ namespace rw { namespace geometry {
         ReferencedVertice& operator= (rw::math::Vector3D< float > rhs);
 
         /**
+         * @brief apply a transform to this vertice.
+         * @param rhs the transform to apply
+         * @return this Vertice
+         */
+        ReferencedVertice& operator*= (rw::math::Transform3D< double > rhs);
+
+        /**
          * @brief Serilization operator for converting to string
          * @param os [in/out] the output stream
          * @param v [in] the vertice
-         * @return std::ostream& 
+         * @return std::ostream&
          */
-        friend std::ostream& operator << (std::ostream& os , const ReferencedVertice& v);
+        friend std::ostream& operator<< (std::ostream& os, const ReferencedVertice& v);
 
         //! @brief implicit convertion to Vector3D
         operator rw::math::Vector3D< double > () const;
@@ -87,7 +85,7 @@ namespace rw { namespace geometry {
 
       private:
         ReferencedVertice ();
-        SimpleTriMeshData::Ptr _mesh;
+        TriMeshData::Ptr _mesh;
         uint32_t _verIndex;
     };
 
@@ -98,7 +96,7 @@ namespace rw { namespace geometry {
     class ReferencedTriangle
     {
       public:
-        ReferencedTriangle (SimpleTriMeshData::Ptr ref, uint32_t triangle);
+        ReferencedTriangle (TriMeshData::Ptr ref, uint32_t triangle);
 
         ReferencedVertice operator[] (size_t i) const;
         uint32_t& idx (size_t i) const;
@@ -110,28 +108,37 @@ namespace rw { namespace geometry {
          * @brief Serilization operator for converting to string
          * @param os [in/out] the output stream
          * @param t [in] the triangle
-         * @return std::ostream& 
+         * @return std::ostream&
          */
-        friend std::ostream& operator << (std::ostream& os , const ReferencedTriangle& t);
+        friend std::ostream& operator<< (std::ostream& os, const ReferencedTriangle& t);
 
         operator rw::geometry::Triangle< double > () const;
         operator rw::geometry::Triangle< float > () const;
 
       private:
         ReferencedTriangle ();
-        SimpleTriMeshData::Ptr _mesh;
+        TriMeshData::Ptr _mesh;
         uint32_t _triIndex;
     };
 
+    /**
+     * @brief A TriMesh with better interactions with the underlying data, and more capabilities
+     *
+     */
     class SimpleTriMesh : public TriMesh
     {
       public:
         /**
          * @brief Construct an empty TriMesh if \b data is null else take ownership of \b data
-         *
+         * @param data [in] the data to take ownership of. If now shared pointer, then the
+         * destructor cleans it up
          */
-        SimpleTriMesh (SimpleTriMeshData::Ptr data = NULL);
+        SimpleTriMesh (TriMeshData::Ptr data = NULL);
 
+        /**
+         * @brief if the internal data object is not a shared pointer the data is deleted, when the
+         * destructor is called
+         */
         virtual ~SimpleTriMesh ();
 
         /**
@@ -265,12 +272,111 @@ namespace rw { namespace geometry {
          */
         void resize (size_t triangles, size_t vertices);
 
+        /**
+         * @brief get direct access to the data container
+         */
+
+        TriMeshData::Ptr getData () { return _data; }
+
+        /**
+         * @brief get the current CSGEngine
+         * @return Null if none is found else a pointer to the engine
+         */
+        CSGEngine::Ptr getCSGEngine () const { return _engine; }
+
+        /**
+         * @brief set CSG engine
+         * @param engine [in] pointer to the new engine
+         */
+        void setCSGEngine (CSGEngine::Ptr engine) { _engine = engine; }
+
+        //###########################################
+        //#               Operators                 #
+        //###########################################
+
+        /**
+         * @brief Move this TriMesh.
+         * @param trans [in] apply this transform to all vertices.
+         * @return a reference to this TriMesh.
+         */
+        SimpleTriMesh& operator*= (const rw::math::Transform3D< double >& trans);
+
+        /**
+         * @brief Create a copy of the TriMesh and move it.
+         * @param trans [in] apply this transform to all vertices.
+         * @return a new TriMesh
+         */
+        SimpleTriMesh operator* (const rw::math::Transform3D< double >& trans) const;
+
+        /**
+         * @brief Compute the Union of two TriMeshes, into a new TriMesh.
+         * @param rhs [in] the TriMesh to create a union with
+         * @throw rw::core::Exception if no CSGEngine can be found
+         * @return a new TriMesh of the union
+         */
+        SimpleTriMesh operator+ (const SimpleTriMesh& rhs) const;
+
+        /**
+         * @brief Compute the Union of two TriMeshes, into this TriMesh.
+         * @param rhs [in] the TriMesh to create a union with
+         * @throw rw::core::Exception if no CSGEngine can be found
+         * @return a reference to the result
+         */
+        SimpleTriMesh& operator+= (const SimpleTriMesh& rhs);
+
+        /**
+         * @brief Compute the Difference of two TriMeshes, into a new TriMesh.
+         * @param rhs [in] the TriMesh to create a difference with
+         * @throw rw::core::Exception if no CSGEngine can be found
+         * @return a new TriMesh of the difference
+         */
+        SimpleTriMesh operator- (const SimpleTriMesh& rhs) const;
+
+        /**
+         * @brief Compute the Difference of two TriMeshes, into this TriMesh.
+         * @param rhs [in] the TriMesh to create a Difference with
+         * @throw rw::core::Exception if no CSGEngine can be found
+         * @return a reference to the result
+         */
+        SimpleTriMesh& operator-= (const SimpleTriMesh& rhs);
+
+        /**
+         * @brief Compute the Intersection of two TriMeshes, into a new TriMesh.
+         * @param rhs [in] the TriMesh to create a Intersection with
+         * @throw rw::core::Exception if no CSGEngine can be found
+         * @return a new TriMesh of the Intersection
+         */
+        SimpleTriMesh operator& (const SimpleTriMesh& rhs) const;
+
+        /**
+         * @brief Compute the Intersection of two TriMeshes, into this TriMesh.
+         * @param rhs [in] the TriMesh to create a Intersection with
+         * @throw rw::core::Exception if no CSGEngine can be found
+         * @return a reference to the result
+         */
+        SimpleTriMesh& operator&= (const SimpleTriMesh& rhs);
+        /**
+         * @brief Compute the Symetric Difference of two TriMeshes, into a new TriMesh.
+         * @param rhs [in] the TriMesh to create a Symetric Difference with
+         * @throw rw::core::Exception if no CSGEngine can be found
+         * @return a new TriMesh of the Symetric Difference
+         */
+        SimpleTriMesh operator^ (const SimpleTriMesh& rhs) const;
+
+        /**
+         * @brief Compute the Symetric Difference of two TriMeshes, into this TriMesh.
+         * @param rhs [in] the TriMesh to create a Symetric Difference with
+         * @throw rw::core::Exception if no CSGEngine can be found
+         * @return a reference to the result
+         */
+        SimpleTriMesh& operator^= (const SimpleTriMesh& rhs);
+
       private:
         void fromTriMesh (const rw::geometry::TriMesh& copy);
 
-        SimpleTriMesh(std::vector<ReferencedTriangle> triangles);
-
-        rw::core::Ptr< SimpleTriMeshData > _data;
+        SimpleTriMesh (std::vector< ReferencedTriangle > triangles);
+        rw::core::Ptr< TriMeshData > _data;
+        CSGEngine::Ptr _engine;
     };
 
 }}    // namespace rw::geometry

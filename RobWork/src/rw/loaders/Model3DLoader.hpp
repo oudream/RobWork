@@ -113,57 +113,6 @@ namespace rw { namespace loaders {
              */
             static std::vector< std::string > getSupportedFormats ();
 
-            ///// FOR BACKWARDS COMPATIBILITY WITH Model3DFactory
-
-            /**
-             * @brief Factory method for constructing a Drawable based on
-             * a string.
-             *
-             * The method probes the string to see if it describes a geometric
-             * primitive or a file name. In case of a geometric primitive it
-             * forwards to call to constructFromGeometry.
-             * Otherwise it calls loadModel
-             * otherwise
-             */
-            // static rw::graphics::Model3D::Ptr getModel(const std::string& str, const std::string&
-            // name);
-
-            /**
-             * @brief Factory method constructing a Drawable from a file.
-             * @param filename [in] path and name of file to load
-             * @param name [in] the id/name of the drawable
-             * @return drawable
-             *
-             * The factory determines which type of Drawable to used
-             * based on the filename extension. In case no extension
-             * exists if test whether a file with the same name or a .stl, .stla, .stlb,
-             * .3ds, .ac or .ac3d exists.
-             *
-             * An exception is thrown if the file can't be loaded.
-             */
-            // static rw::graphics::Model3D::Ptr loadModel(const std::string &filename, const
-            // std::string& name);
-
-            /**
-             * @brief Factory method constructing a Drawable based on
-             * a Geometry ID string.
-             *
-             * The method constructs a Drawable representing the geometry
-             * described in the string
-             *
-             * An exception is thrown if the string cannot be parsed correctly.
-             *
-             * @param str [in] Geometry ID string
-             * @param name [in] the id/name of the drawable
-             * @param useCache [in] True to use caching. Default false
-             * @return Point to drawable object
-             */
-            // static rw::graphics::Model3D::Ptr constructFromGeometry(const std::string& str, const
-            // std::string& name, bool useCache=false);
-
-          private:
-            // typedef rw::common::FileCache<std::string, rw::graphics::Model3D, std::string>
-            // FactoryCache; static FactoryCache& getCache();
         };
    
    
