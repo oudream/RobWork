@@ -33,10 +33,10 @@
 
 #ifdef RW_BUILD_WITH_PQP
 #include <rwlibs/proximitystrategies/ProximityStrategyPQP.hpp>
-#endif 
+#endif
 #ifdef RW_BUILD_WITH_FCL
 #include <rwlibs/proximitystrategies/ProximityStrategyFCL.hpp>
-#endif 
+#endif
 
 using namespace rw::common;
 using namespace rw::core;
@@ -48,30 +48,31 @@ using namespace rwsim::contacts;
 using namespace rwsim::dynamics;
 using namespace rwsim::log;
 
-namespace
+namespace {
+#ifdef RW_BUILD_WITH_PQP
+std::string getName (rwlibs::proximitystrategies::ProximityStrategyPQP*)
 {
-    #ifdef RW_BUILD_WITH_PQP
-    std::string getName(rwlibs::proximitystrategies::ProximityStrategyPQP*){return "PQP";}
-    #endif 
-    #ifdef RW_BUILD_WITH_FCL
-    std::string getName(rwlibs::proximitystrategies::ProximityStrategyFCL*){return "FCL";}
-    #endif
-} // namespace name
+    return "PQP";
+}
+#endif
+#ifdef RW_BUILD_WITH_FCL
+std::string getName (rwlibs::proximitystrategies::ProximityStrategyFCL*)
+{
+    return "FCL";
+}
+#endif
+}    // namespace
 
-
-
-template<class T>
-struct ContactStrategyDMS<T>::Model
+template< class T > struct ContactStrategyDMS< T >::Model
 {
     std::string geoId;
     rw::geometry::TriMesh::Ptr mesh;
     rw::math::Transform3D<> transform;
-    rw::core::Ptr<const rw::kinematics::Frame> frame;
+    rw::core::Ptr< const rw::kinematics::Frame > frame;
     rw::proximity::ProximityModel::Ptr pmodel;
 };
 
-template<class T>
-class ContactStrategyDMS<T>::TriMeshModel : public ContactModel
+template< class T > class ContactStrategyDMS< T >::TriMeshModel : public ContactModel
 {
   public:
     typedef rw::core::Ptr< TriMeshModel > Ptr;
@@ -79,16 +80,17 @@ class ContactStrategyDMS<T>::TriMeshModel : public ContactModel
     ~TriMeshModel ()
     {
         if (models.size () > 0) {
-            RW_WARN ("Please use destroyModel on ContactStrategyDMS<T> to deallocate internal caching "
-                     "before deleting the ProximityModel.");
+            RW_WARN (
+                "Please use destroyModel on ContactStrategyDMS<T> to deallocate internal caching "
+                "before deleting the ProximityModel.");
         }
     }
     virtual std::string getName () const { return "TriMeshModel"; }
     std::vector< Model > models;
 };
 
-template<class T>
-class ContactStrategyDMS<T>::DMSData : public ContactStrategyData::SpecificData
+template< class T >
+class ContactStrategyDMS< T >::DMSData : public ContactStrategyData::SpecificData
 {
   public:
     DMSData () { data.setCollisionQueryType (CollisionStrategy::AllContacts); }
@@ -123,8 +125,8 @@ class DMSTracking : public ContactStrategyTracking::StrategyData
     {
         RW_ASSERT (index < info.size ());
         typename std::vector< TrackInfo >::iterator it = info.begin () + index;
-        const std::size_t total               = it->total;
-        const std::size_t id                  = it->id;
+        const std::size_t total                        = it->total;
+        const std::size_t id                           = it->id;
         RW_ASSERT (id < total);
         RW_ASSERT (total <= info.size ());
         it = info.erase (it);
@@ -172,20 +174,19 @@ class DMSTracking : public ContactStrategyTracking::StrategyData
     std::vector< TrackInfo > info;
 };
 
-template<class T>
-ContactStrategyDMS<T>::ContactStrategyDMS () :
+template< class T >
+ContactStrategyDMS< T >::ContactStrategyDMS () :
     _matchAll (true), _narrowStrategy (new T ()), _filtering (MANIFOLD)
 {}
 
-template<class T>
-ContactStrategyDMS<T>::~ContactStrategyDMS ()
+template< class T > ContactStrategyDMS< T >::~ContactStrategyDMS ()
 {
     delete _narrowStrategy;
 }
 
-template<class T>
-bool ContactStrategyDMS<T>::match (rw::core::Ptr< const GeometryData > geoA,
-                                rw::core::Ptr< const GeometryData > geoB)
+template< class T >
+bool ContactStrategyDMS< T >::match (rw::core::Ptr< const GeometryData > geoA,
+                                     rw::core::Ptr< const GeometryData > geoB)
 {
     if (_matchAll)
         return true;
@@ -206,10 +207,11 @@ bool ContactStrategyDMS<T>::match (rw::core::Ptr< const GeometryData > geoA,
     return false;
 }
 
-template<class T>
-void ContactStrategyDMS<T>::findContact (std::vector< Contact >& contacts, const Model& a,
-                                      const Transform3D<>& wTa, const Model& b,
-                                      const Transform3D<>& wTb, DMSData* data, bool distCheck) const
+template< class T >
+void ContactStrategyDMS< T >::findContact (std::vector< Contact >& contacts, const Model& a,
+                                           const Transform3D<>& wTa, const Model& b,
+                                           const Transform3D<>& wTb, DMSData* data,
+                                           bool distCheck) const
 {
     double threshold;
 
@@ -257,12 +259,12 @@ void ContactStrategyDMS<T>::findContact (std::vector< Contact >& contacts, const
     res->clear ();
 }
 
-template<class T>
+template< class T >
 std::vector< Contact >
-ContactStrategyDMS<T>::findContacts (ProximityModel::Ptr a, const Transform3D<>& wTa,
-                                  ProximityModel::Ptr b, const Transform3D<>& wTb,
-                                  ContactStrategyData& data, ContactStrategyTracking& tracking,
-                                  SimulatorLogScope* log) const
+ContactStrategyDMS< T >::findContacts (ProximityModel::Ptr a, const Transform3D<>& wTa,
+                                       ProximityModel::Ptr b, const Transform3D<>& wTb,
+                                       ContactStrategyData& data, ContactStrategyTracking& tracking,
+                                       SimulatorLogScope* log) const
 {
     SimulatorLogScope::Ptr stratLog = NULL;
     if (log != NULL) {
@@ -303,12 +305,16 @@ ContactStrategyDMS<T>::findContacts (ProximityModel::Ptr a, const Transform3D<>&
         msg->setFilename (__FILE__);
         msg->setLine (__LINE__);
         msg->setDescription ("Thresholds");
-        out << "ContactStrategy" << ::getName(this->_narrowStrategy) << "Threshold: " << getThreshold () << std::endl;
-        out << "ContactStrategy" << ::getName(this->_narrowStrategy) << "UpdateThresholdAbsolute: " << absoluteThreshold << std::endl;
-        out << "ContactStrategy" << ::getName(this->_narrowStrategy) << "UpdateThresholdLinear: " << getUpdateThresholdLinear () << "*"
+        out << "ContactStrategy" << ::getName (this->_narrowStrategy)
+            << "Threshold: " << getThreshold () << std::endl;
+        out << "ContactStrategy" << ::getName (this->_narrowStrategy)
+            << "UpdateThresholdAbsolute: " << absoluteThreshold << std::endl;
+        out << "ContactStrategy" << ::getName (this->_narrowStrategy)
+            << "UpdateThresholdLinear: " << getUpdateThresholdLinear () << "*"
             << (pqpTracking->aTb.P () - aTb.P ()).norm2 () << "=" << linThreshold << std::endl;
-        out << "ContactStrategy" << ::getName(this->_narrowStrategy) << "UpdateThresholdAngular: " << getUpdateThresholdAngular () << "*"
-            << dif.angle () << "=" << angThreshold << std::endl;
+        out << "ContactStrategy" << ::getName (this->_narrowStrategy)
+            << "UpdateThresholdAngular: " << getUpdateThresholdAngular () << "*" << dif.angle ()
+            << "=" << angThreshold << std::endl;
         out << "Combined update threshold: " << threshold << std::endl;
     }
 
@@ -426,12 +432,11 @@ ContactStrategyDMS<T>::findContacts (ProximityModel::Ptr a, const Transform3D<>&
     return contacts;
 }
 
-template<class T>
-std::vector< Contact >
-ContactStrategyDMS<T>::updateContacts (ProximityModel::Ptr a, const Transform3D<>& wTa,
-                                    ProximityModel::Ptr b, const Transform3D<>& wTb,
-                                    ContactStrategyData& data, ContactStrategyTracking& tracking,
-                                    SimulatorLogScope* log) const
+template< class T >
+std::vector< Contact > ContactStrategyDMS< T >::updateContacts (
+    ProximityModel::Ptr a, const Transform3D<>& wTa, ProximityModel::Ptr b,
+    const Transform3D<>& wTb, ContactStrategyData& data, ContactStrategyTracking& tracking,
+    SimulatorLogScope* log) const
 {
     std::vector< Contact > contacts;
     const typename TriMeshModel::Ptr mA = a.cast< TriMeshModel > ();
@@ -526,21 +531,18 @@ ContactStrategyDMS<T>::updateContacts (ProximityModel::Ptr a, const Transform3D<
     return contacts;
 }
 
-template<class T>
-std::string ContactStrategyDMS<T>::getName ()
+template< class T > std::string ContactStrategyDMS< T >::getName ()
 {
-    return "ContactStrategy"+ ::getName(this->_narrowStrategy);
+    return "ContactStrategy" + ::getName (this->_narrowStrategy);
 }
 
-template<class T>
-ProximityModel::Ptr ContactStrategyDMS<T>::createModel ()
+template< class T > ProximityModel::Ptr ContactStrategyDMS< T >::createModel ()
 {
     TriMeshModel* model = new TriMeshModel (this);
     return ownedPtr (model);
 }
 
-template<class T>
-void ContactStrategyDMS<T>::destroyModel (ProximityModel* model)
+template< class T > void ContactStrategyDMS< T >::destroyModel (ProximityModel* model)
 {
     TriMeshModel* bmodel = dynamic_cast< TriMeshModel* > (model);
     RW_ASSERT (bmodel);
@@ -550,8 +552,8 @@ void ContactStrategyDMS<T>::destroyModel (ProximityModel* model)
     bmodel->models.clear ();
 }
 
-template<class T>
-bool ContactStrategyDMS<T>::addGeometry (ProximityModel* model, const Geometry& geom)
+template< class T >
+bool ContactStrategyDMS< T >::addGeometry (ProximityModel* model, const Geometry& geom)
 {
     TriMeshModel* bmodel = dynamic_cast< TriMeshModel* > (model);
     RW_ASSERT (bmodel);
@@ -577,18 +579,20 @@ bool ContactStrategyDMS<T>::addGeometry (ProximityModel* model, const Geometry& 
     return true;
 }
 
-template<class T>
-bool ContactStrategyDMS<T>::addGeometry (ProximityModel* model, Geometry::Ptr geom, bool forceCopy)
+template< class T >
+bool ContactStrategyDMS< T >::addGeometry (ProximityModel* model, Geometry::Ptr geom,
+                                           bool forceCopy)
 {
     return addGeometry (model, *geom);
 }
 
-template<class T>
-bool ContactStrategyDMS<T>::removeGeometry (ProximityModel* model, const std::string& geomId)
+template< class T >
+bool ContactStrategyDMS< T >::removeGeometry (ProximityModel* model, const std::string& geomId)
 {
     TriMeshModel* bmodel = dynamic_cast< TriMeshModel* > (model);
     RW_ASSERT (bmodel);
-    for (typename std::vector< Model >::iterator it = bmodel->models.begin (); it < bmodel->models.end ();
+    for (typename std::vector< Model >::iterator it = bmodel->models.begin ();
+         it < bmodel->models.end ();
          it++) {
         if ((*it).geoId == geomId) {
             _narrowStrategy->removeGeometry ((*it).pmodel.get (), geomId);
@@ -599,38 +603,54 @@ bool ContactStrategyDMS<T>::removeGeometry (ProximityModel* model, const std::st
     return false;
 }
 
-template<class T>
-std::vector< std::string > ContactStrategyDMS<T>::getGeometryIDs (ProximityModel* model)
+template< class T >
+std::vector< std::string > ContactStrategyDMS< T >::getGeometryIDs (ProximityModel* model)
 {
     TriMeshModel* bmodel = dynamic_cast< TriMeshModel* > (model);
     RW_ASSERT (bmodel);
     std::vector< std::string > res;
-    for (typename std::vector< Model >::iterator it = bmodel->models.begin (); it < bmodel->models.end ();
+    for (typename std::vector< Model >::iterator it = bmodel->models.begin ();
+         it < bmodel->models.end ();
          it++)
         res.push_back ((*it).geoId);
     return res;
 }
 
-template<class T>
-void ContactStrategyDMS<T>::clear ()
+template< class T >
+std::vector< rw::core::Ptr< rw::geometry::Geometry > >
+ContactStrategyDMS< T >::getGeometries (rw::proximity::ProximityModel* model)
+{
+    TriMeshModel* bmodel = dynamic_cast< TriMeshModel* > (model);
+    RW_ASSERT (bmodel);
+    std::vector< rw::core::Ptr< rw::geometry::Geometry > > res;
+    for (typename std::vector< Model >::iterator it = bmodel->models.begin ();
+         it < bmodel->models.end ();
+         it++) {
+        std::vector< rw::core::Ptr< rw::geometry::Geometry > > tmp =
+            (*it).pmodel->getGeometries ();
+        res.insert (res.end (), tmp.begin (), tmp.end ());
+    }
+    return res;
+}
+
+template< class T > void ContactStrategyDMS< T >::clear ()
 {
     // Nothing to clear
 }
 
-template<class T>
-void ContactStrategyDMS<T>::setMatchAll (bool matchAll)
+template< class T > void ContactStrategyDMS< T >::setMatchAll (bool matchAll)
 {
     _matchAll = matchAll;
 }
 
-template<class T>
-void ContactStrategyDMS<T>::setContactFilter (ContactFilter filter)
+template< class T > void ContactStrategyDMS< T >::setContactFilter (ContactFilter filter)
 {
     _filtering = filter;
 }
 
-template<class T>
-std::vector< Contact > ContactStrategyDMS<T>::manifoldFilter (const std::vector< Contact >& contacts)
+template< class T >
+std::vector< Contact >
+ContactStrategyDMS< T >::manifoldFilter (const std::vector< Contact >& contacts)
 {
     std::vector< Contact > res;
 
@@ -716,8 +736,7 @@ std::vector< Contact > ContactStrategyDMS<T>::manifoldFilter (const std::vector<
     return res;
 }
 
-template<class T>
-double ContactStrategyDMS<T>::getThreshold () const
+template< class T > double ContactStrategyDMS< T >::getThreshold () const
 {
     double threshold = _propertyMap.get< double > ("ContactStrategyDMSThreshold", -0.1);
     if (threshold == -0.1)
@@ -725,28 +744,27 @@ double ContactStrategyDMS<T>::getThreshold () const
     return threshold;
 }
 
-template<class T>
-double ContactStrategyDMS<T>::getUpdateThresholdAbsolute () const
+template< class T > double ContactStrategyDMS< T >::getUpdateThresholdAbsolute () const
 {
     return _propertyMap.get< double > ("ContactStrategyDMSUpdateThresholdAbsolute", 0.001);
 }
 
-template<class T>
-double ContactStrategyDMS<T>::getUpdateThresholdLinear () const
+template< class T > double ContactStrategyDMS< T >::getUpdateThresholdLinear () const
 {
     return _propertyMap.get< double > ("ContactStrategyDMSUpdateThresholdLinear", 2.);
 }
 
-template<class T>
-double ContactStrategyDMS<T>::getUpdateThresholdAngular () const
+template< class T > double ContactStrategyDMS< T >::getUpdateThresholdAngular () const
 {
     return _propertyMap.get< double > ("ContactStrategyDMSUpdateThresholdAngular", 0.25);
 }
 
 // some explicit template specifications
 #ifdef RW_BUILD_WITH_PQP
-template class rwsim::contacts::ContactStrategyDMS< rwlibs::proximitystrategies::ProximityStrategyPQP >;
-#endif 
+template class rwsim::contacts::ContactStrategyDMS<
+    rwlibs::proximitystrategies::ProximityStrategyPQP >;
+#endif
 #ifdef RW_BUILD_WITH_FCL
-template class rwsim::contacts::ContactStrategyDMS< rwlibs::proximitystrategies::ProximityStrategyFCL >;
-#endif 
+template class rwsim::contacts::ContactStrategyDMS<
+    rwlibs::proximitystrategies::ProximityStrategyFCL >;
+#endif

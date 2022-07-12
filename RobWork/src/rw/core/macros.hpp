@@ -228,21 +228,34 @@ RW_DEBUG("The value of x is " << x << ". x should be less than zero.");
 #define PRINT_HERE std::cout << __FILE__ << ":" << __LINE__ << std::endl << std::flush;
 
 /**
+ * @brief Used to indicate that the fall through of a switch cas to another is intentional and not
+ * because you forgot to add break
+ *
+ */
+#if __cplusplus >= 201703L
+#define FALLTHROUGH [[fallthrough]]
+#elif defined(__GNUC__)
+#define FALLTHROUGH __attribute__ ((fallthrough))
+#else
+#define FALLTHROUGH
+#endif
+
+/**
  * @brief a way to mark code for deprecation
  * @param text the message to print
  */
 #ifndef RW_IGNORE_DEPRECATED
 #if defined(__GNUC__) || defined(__clang__)
-#define DEPRECATED(warning) __attribute__((deprecated(warning)))
+#define DEPRECATED(warning) __attribute__ ((deprecated (warning)))
 #elif defined(_MSC_VER)
-#define DEPRECATED(warning) __declspec(deprecated(warning))
+#define DEPRECATED(warning) __declspec(deprecated (warning))
 #else
 #pragma message("WARNING: You need to implement DEPRECATED for this compiler")
 #define DEPRECATED(text)
 #endif
-#else 
+#else
 #define DEPRECATED(text)
-#endif 
+#endif
 
 /**
  * @brief enables the use of a \b robwork namespace

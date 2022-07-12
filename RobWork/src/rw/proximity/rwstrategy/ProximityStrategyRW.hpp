@@ -22,17 +22,16 @@
  * @file ProximityStrategyRW.hpp
  */
 #if !defined(SWIG)
-#include <rw/proximity/rwstrategy/BVTreeCollider.hpp>
-#include <rw/proximity/rwstrategy/BinaryBVTree.hpp>
-
 #include <rw/common/Cache.hpp>
 #include <rw/core/Ptr.hpp>
 #include <rw/geometry/OBBToleranceCollider.hpp>
 #include <rw/proximity/CollisionStrategy.hpp>
 #include <rw/proximity/ProximityCache.hpp>
+#include <rw/proximity/rwstrategy/BVTreeCollider.hpp>
+#include <rw/proximity/rwstrategy/BinaryBVTree.hpp>
 
 #include <vector>
-#endif 
+#endif
 namespace rw { namespace proximity {
     /** @addtogroup proximity */
     /*@{*/
@@ -69,8 +68,6 @@ namespace rw { namespace proximity {
                 tolcollider;
             rw::geometry::OBBToleranceCollider<>* tolCollider;
         };
-
-
 
         //! @brief
 
@@ -139,10 +136,10 @@ namespace rw { namespace proximity {
         std::vector< std::string > getGeometryIDs (rw::proximity::ProximityModel* model);
 
         /**
-         * @copydoc rw::proximity::ProximityStrategy::getGeometrys
+         * @copydoc rw::proximity::ProximityStrategy::getGeometries
          */
         std::vector< rw::core::Ptr< rw::geometry::Geometry > >
-        getGeometrys (rw::proximity::ProximityModel* model);
+        getGeometries (rw::proximity::ProximityModel* model);
 
         /**
          * @copydoc rw::proximity::CollisionStrategy::doInCollision
@@ -152,6 +149,8 @@ namespace rw { namespace proximity {
                             rw::proximity::ProximityModel::Ptr b,
                             const rw::math::Transform3D<>& wTb,
                             rw::proximity::ProximityStrategyData& data);
+
+
 
         /**
          *  @copydoc rw::proximity::ProximityStrategy::clear
@@ -179,8 +178,9 @@ namespace rw { namespace proximity {
             _numTriTests = 0;
         }
 
-        void getCollisionContacts (std::vector< rw::proximity::CollisionStrategy::Contact >& contacts,
-                                   ProximityStrategyData& data);
+        void
+        getCollisionContacts (std::vector< rw::proximity::CollisionStrategy::Contact >& contacts,
+                              ProximityStrategyData& data);
 
       private:
         struct QueryData

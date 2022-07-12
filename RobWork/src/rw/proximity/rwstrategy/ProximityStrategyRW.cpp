@@ -162,7 +162,7 @@ ProximityStrategyRW::getGeometryIDs (rw::proximity::ProximityModel* model)
 }
 
 std::vector< rw::core::Ptr< rw::geometry::Geometry > >
-ProximityStrategyRW::getGeometrys (rw::proximity::ProximityModel* model)
+ProximityStrategyRW::getGeometries (rw::proximity::ProximityModel* model)
 {
     std::vector< rw::core::Ptr< rw::geometry::Geometry > > res;
     RWProximityModel* pmodel = (RWProximityModel*) model;

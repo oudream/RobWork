@@ -51,12 +51,8 @@ namespace rw { namespace geometry {
          * @param p3 [in] vertice 3
          */
         Triangle (const rw::math::Vector3D< T >& p1, const rw::math::Vector3D< T >& p2,
-                  const rw::math::Vector3D< T >& p3)
-        {
-            _vertices[0] = p1;
-            _vertices[1] = p2;
-            _vertices[2] = p3;
-        };
+                  const rw::math::Vector3D< T >& p3) :
+            _vertices{p1, p2, p3} {};
 
         /**
          * @brief copy constructor
@@ -88,12 +84,18 @@ namespace rw { namespace geometry {
         /**
          * @brief get vertex at index i
          */
-        const rw::math::Vector3D< T >& operator[] (size_t i) const { return getVertex (i); };
+        const rw::math::Vector3D< T >& operator[] (size_t i) const
+        {
+            return getVertex (i);
+        };
 
         /**
          * @brief get vertex at index i
          */
-        rw::math::Vector3D< T >& operator[] (size_t i) { return getVertex (i); };
+        rw::math::Vector3D< T >& operator[] (size_t i)
+        {
+            return getVertex (i);
+        };
 #else
         ARRAYOPERATOR (rw::math::Vector3D< T >);
 #endif
@@ -164,8 +166,15 @@ namespace rw { namespace geometry {
             return Triangle< T > (t3d * _vertices[0], t3d * _vertices[1], t3d * _vertices[2]);
         }
 
-        inline const Triangle< T >& getTriangle () const { return *this; }
-        inline Triangle< T >& getTriangle () { return *this; }
+        inline const Triangle< T >& getTriangle () const
+        {
+            return *this;
+        }
+        
+        inline Triangle< T >& getTriangle ()
+        {
+            return *this;
+        }
 #if !defined(SWIG)
         /**
          * @brief Outputs transform to stream
@@ -270,19 +279,28 @@ namespace rw { namespace geometry {
         /**
          * @brief get vertex at index i
          */
-        const rw::math::Vector3D< T >& operator[] (size_t i) const { return getVertex (i); };
+        const rw::math::Vector3D< T >& operator[] (size_t i) const
+        {
+            return getVertex (i);
+        };
 
         /**
          * @brief get vertex at index i
          */
-        rw::math::Vector3D< T >& operator[] (size_t i) { return getVertex (i); };
+        rw::math::Vector3D< T >& operator[] (size_t i)
+        {
+            return getVertex (i);
+        };
 #else
         ARRAYOPERATOR (rw::math::Vector3D< T >);
 #endif
         /**
          * @brief tests wheather the point x is inside the triangle
          */
-        bool isInside (const rw::math::Vector3D< T >& x) { return _triN0.isInside (x); }
+        bool isInside (const rw::math::Vector3D< T >& x)
+        {
+            return _triN0.isInside (x);
+        }
 
         //! @copydoc Triangle::applyTransform
         void applyTransform (const rw::math::Transform3D< T >& t3d)
@@ -297,8 +315,14 @@ namespace rw { namespace geometry {
             return TriangleN1< T > (_triN0.transform (t3d), t3d.R () * _faceNormal);
         }
 
-        inline const Triangle< T >& getTriangle () const { return _triN0; }
-        inline Triangle< T >& getTriangle () { return _triN0; }
+        inline const Triangle< T >& getTriangle () const
+        {
+            return _triN0;
+        }
+        inline Triangle< T >& getTriangle ()
+        {
+            return _triN0;
+        }
     };
 
     /**
@@ -369,16 +393,25 @@ namespace rw { namespace geometry {
 
 #if !defined(SWIG)
         //! @copydoc Triangle::operator[]
-        rw::math::Vector3D< T >& operator[] (size_t i) { return _triN0.getVertex (i); };
+        rw::math::Vector3D< T >& operator[] (size_t i)
+        {
+            return _triN0.getVertex (i);
+        };
 
         //! @copydoc Triangle::operator[]
-        const rw::math::Vector3D< T >& operator[] (size_t i) const { return _triN0.getVertex (i); };
+        const rw::math::Vector3D< T >& operator[] (size_t i) const
+        {
+            return _triN0.getVertex (i);
+        };
 #else
         ARRAYOPERATOR (rw::math::Vector3D< T >);
 #endif
 
         //! @copydoc Triangle::calcFaceNormal
-        rw::math::Vector3D< T > calcFaceNormal () const { return _triN0.calcFaceNormal (); };
+        rw::math::Vector3D< T > calcFaceNormal () const
+        {
+            return _triN0.calcFaceNormal ();
+        };
 
         /**
          * @brief Returns TriangleN2 transformed by t3d.
@@ -391,8 +424,14 @@ namespace rw { namespace geometry {
                                     t3d.R () * _vertexNormals[2]);
         }
 
-        inline const Triangle< T >& getTriangle () const { return _triN0; }
-        inline Triangle< T >& getTriangle () { return _triN0; }
+        inline const Triangle< T >& getTriangle () const
+        {
+            return _triN0;
+        }
+        inline Triangle< T >& getTriangle ()
+        {
+            return _triN0;
+        }
     };
 
 #if !defined(SWIG)
@@ -409,9 +448,9 @@ namespace rw { namespace geometry {
     SWIG_DECLARE_TEMPLATE (Triangle_d, rw::geometry::Triangle< double >);
     SWIG_DECLARE_TEMPLATE (TriangleN1_d, rw::geometry::TriangleN1< double >);
     SWIG_DECLARE_TEMPLATE (TriangleN3_d, rw::geometry::TriangleN3< double >);
-    ADD_DEFINITION (Triangle_d, Triangle,sdurw_geometry)
-    ADD_DEFINITION (TriangleN1_d, TriangleN1,sdurw_geometry)
-    ADD_DEFINITION (TriangleN3_d, TriangleN3,sdurw_geometry)
+    ADD_DEFINITION (Triangle_d, Triangle, sdurw_geometry)
+    ADD_DEFINITION (TriangleN1_d, TriangleN1, sdurw_geometry)
+    ADD_DEFINITION (TriangleN3_d, TriangleN3, sdurw_geometry)
 #else
     SWIG_DECLARE_TEMPLATE (Triangle, rw::geometry::Triangle< double >);
     SWIG_DECLARE_TEMPLATE (TriangleN1, rw::geometry::TriangleN1< double >);

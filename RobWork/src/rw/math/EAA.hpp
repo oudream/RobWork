@@ -126,7 +126,7 @@ namespace rw { namespace math {
          * @param thetakz [in] @f$ \theta k_z @f$
          */
         EAA (T thetakx, T thetaky, T thetakz) :
-            _eaa (rw::math::Vector3D< T > (thetakx, thetaky, thetakz))
+            Rotation3DVector< T > (), _eaa (rw::math::Vector3D< T > (thetakx, thetaky, thetakz))
         {}
 
         /**
@@ -143,13 +143,13 @@ namespace rw { namespace math {
          * The angle of the EAA are \f$\|eaa\|\f$ and the axis is \f$\frac{eaa}{\|eaa\|}\f$
          * @param eaa [in] Values to initialize the EAA
          */
-        explicit EAA (rw::math::Vector3D< T > eaa) : _eaa (eaa) {}
+        explicit EAA (rw::math::Vector3D< T > eaa) : Rotation3DVector< T > (), _eaa (eaa) {}
 
         /**
          * @brief Copy Constructor
          * @param eaa [in] Values to initialize the EAA
          */
-        EAA (const rw::math::EAA< T >& eaa) : _eaa (eaa._eaa) {}
+        EAA (const rw::math::EAA< T >& eaa) : Rotation3DVector< T > (), _eaa (eaa._eaa) {}
 
         /**
          * @brief Constructs an initialized EAA vector from rotation matrix.
@@ -191,14 +191,17 @@ namespace rw { namespace math {
          * - @f$ v\theta = 1-cos \theta @f$
          */
 
-#endif 
+#endif
         virtual const rw::math::Rotation3D< T > toRotation3D () const;
 
         /**
          * @brief Extracts the angle of rotation @f$ \theta @f$
          * @return @f$ \theta @f$
          */
-        T angle () const { return _eaa.norm2 (); }
+        T angle () const
+        {
+            return _eaa.norm2 ();
+        }
 
         /**
          * @brief change the angle of the EAA
@@ -228,25 +231,37 @@ namespace rw { namespace math {
          * @brief get the underling Vector
          * @return the vector
          */
-        rw::math::Vector3D< T >& toVector3D () { return this->_eaa; }
+        rw::math::Vector3D< T >& toVector3D ()
+        {
+            return this->_eaa;
+        }
 
         /**
          * @brief get the underling Vector
          * @return the vector
          */
-        rw::math::Vector3D< T > toVector3D () const { return this->_eaa; }
+        rw::math::Vector3D< T > toVector3D () const
+        {
+            return this->_eaa;
+        }
 
         /**
          * @brief get as eigen vector
          * @return Eigenvector
          */
-        Eigen::Matrix< T, 3, 1 >& e () { return this->_eaa.e (); }
+        Eigen::Matrix< T, 3, 1 >& e ()
+        {
+            return this->_eaa.e ();
+        }
 
         /**
          * @brief get as eigen vector
          * @return Eigenvector
          */
-        Eigen::Matrix< T, 3, 1 > e () const { return this->_eaa.e (); }
+        Eigen::Matrix< T, 3, 1 > e () const
+        {
+            return this->_eaa.e ();
+        }
 
 #if !defined(SWIG)
         /**
@@ -369,14 +384,20 @@ namespace rw { namespace math {
          * @brief Unary minus.
          * @brief negative version
          */
-        EAA< T > operator- () const { return EAA< T > (-_eaa); }
+        EAA< T > operator- () const
+        {
+            return EAA< T > (-_eaa);
+        }
 
         /**
          * @brief element wise addition
          * @param rhs [in] the EAA to be added
          * @return the sum of the two EAA's
          */
-        EAA< T > elemAdd (const EAA< T >& rhs) const { return EAA< T > (this->_eaa + rhs._eaa); }
+        EAA< T > elemAdd (const EAA< T >& rhs) const
+        {
+            return EAA< T > (this->_eaa + rhs._eaa);
+        }
 
         /**
          * @brief element wise subtraction
@@ -452,24 +473,36 @@ namespace rw { namespace math {
          * @param rhs [in] the scalar to multiply with
          * @return the product
          */
-        EAA< T > elemMultiply (const T& rhs) const { return EAA< T > (this->_eaa * rhs); }
+        EAA< T > elemMultiply (const T& rhs) const
+        {
+            return EAA< T > (this->_eaa * rhs);
+        }
 
         /**
          * @brief scalar devision
          * @param rhs [in] the scalar to devide with
          * @return the resulting EAA
          */
-        EAA< T > elemDivide (const T& rhs) const { return EAA< T > (this->_eaa / rhs); }
+        EAA< T > elemDivide (const T& rhs) const
+        {
+            return EAA< T > (this->_eaa / rhs);
+        }
 
         /**
          * @brief Scalar subtraction.
          */
-        EAA< T > elemSubtract (const T rhs) const { return EAA< T > (_eaa.elemSubtract (rhs)); }
+        EAA< T > elemSubtract (const T rhs) const
+        {
+            return EAA< T > (_eaa.elemSubtract (rhs));
+        }
 
         /**
          * @brief Scalar addition.
          */
-        EAA< T > elemAdd (const T rhs) const { return EAA< T > (_eaa.elemAdd (rhs)); }
+        EAA< T > elemAdd (const T rhs) const
+        {
+            return EAA< T > (_eaa.elemAdd (rhs));
+        }
 
         /**
          * @brief scale the angle, keeping the axis the same
@@ -591,32 +624,47 @@ namespace rw { namespace math {
          * @param v [in] a Vector3D
          * @return the resulting scalar
          */
-        T dot (const rw::math::Vector3D< T >& v) { return rw::math::dot (this->_eaa, v); }
+        T dot (const rw::math::Vector3D< T >& v)
+        {
+            return rw::math::dot (this->_eaa, v);
+        }
 
         /**
          * @brief Calculates the cross product and returns the result
          * @param eaa [in] a EAA
          * @return the resulting 3D vector
          */
-        T dot (const EAA< T >& eaa) { return rw::math::dot (this->_eaa, eaa._eaa); }
+        T dot (const EAA< T >& eaa)
+        {
+            return rw::math::dot (this->_eaa, eaa._eaa);
+        }
 
         /**
          * @brief Returns the Euclidean norm (2-norm) of the vector
          * @return the norm
          */
-        T norm2 () const { return _eaa.norm2 (); }
+        T norm2 () const
+        {
+            return _eaa.norm2 ();
+        }
 
         /**
          * @brief Returns the Manhatten norm (1-norm) of the vector
          * @return the norm
          */
-        T norm1 () const { return _eaa.norm1 (); }
+        T norm1 () const
+        {
+            return _eaa.norm1 ();
+        }
 
         /**
          * @brief Returns the infinte norm (\f$\inf\f$-norm) of the vector
          * @return the norm
          */
-        T normInf () const { return _eaa.normInf (); }
+        T normInf () const
+        {
+            return _eaa.normInf ();
+        }
 
         // ###################################################
         // #             assignement Operators               #
@@ -669,12 +717,18 @@ namespace rw { namespace math {
         /**
          * @brief Implicit converter to Vector3D
          */
-        operator rw::math::Vector3D< T > () const { return _eaa; }
+        operator rw::math::Vector3D< T > () const
+        {
+            return _eaa;
+        }
 
         /**
          * @brief Implicit converter to Vector3D
          */
-        operator rw::math::Vector3D< T > & () { return _eaa; }
+        operator rw::math::Vector3D< T >& ()
+        {
+            return _eaa;
+        }
 #endif
         /**
          * @brief copy a vector from eigen type
@@ -707,12 +761,18 @@ namespace rw { namespace math {
         /**
          * @brief implicit conversion to EigenVector
          */
-        operator Eigen::Matrix< T, 3, 1 > () const { return this->e (); }
+        operator Eigen::Matrix< T, 3, 1 > () const
+        {
+            return this->e ();
+        }
 
         /**
          * @brief implicit conversion to EigenVector
          */
-        operator Eigen::Matrix< T, 3, 1 > & () { return this->e (); }
+        operator Eigen::Matrix< T, 3, 1 >& ()
+        {
+            return this->e ();
+        }
 #endif
 
         /**
@@ -734,7 +794,10 @@ namespace rw { namespace math {
          * @param rhs [in] other vector.
          * @return True if a equals b, false otherwise.
          */
-        bool operator== (const rw::math::Vector3D< T >& rhs) const { return _eaa == rhs; }
+        bool operator== (const rw::math::Vector3D< T >& rhs) const
+        {
+            return _eaa == rhs;
+        }
 
 #if !defined(SWIG)
         /**
@@ -754,7 +817,10 @@ namespace rw { namespace math {
          *  @param rhs [in] other vector.
          *  @return True if a and b are different, false otherwise.
          */
-        bool operator!= (const rw::math::Vector3D< T >& rhs) const { return _eaa != rhs; }
+        bool operator!= (const rw::math::Vector3D< T >& rhs) const
+        {
+            return _eaa != rhs;
+        }
 
 #if !defined(SWIG)
         /**
@@ -774,14 +840,20 @@ namespace rw { namespace math {
          * @param rhs [in] other vector.
          * @return True if a equals b, false otherwise.
          */
-        bool operator== (const EAA< T >& rhs) const { return _eaa == rhs._eaa; }
+        bool operator== (const EAA< T >& rhs) const
+        {
+            return _eaa == rhs._eaa;
+        }
 
         /**
          *  @brief Compare with \b rhs for inequality.
          *  @param rhs [in] other vector.
          *  @return True if a and b are different, false otherwise.
          */
-        bool operator!= (const EAA< T >& rhs) const { return _eaa != rhs._eaa; }
+        bool operator!= (const EAA< T >& rhs) const
+        {
+            return _eaa != rhs._eaa;
+        }
 
         /**
          * @brief Compare with \b rhs for equality.
@@ -861,10 +933,10 @@ extern template class rw::math::EAA< float >;
 #else
 
 #if SWIG_VERSION < 0x040000
-    SWIG_DECLARE_TEMPLATE (EAAd, rw::math::EAA< double >);
-    ADD_DEFINITION (EAAd, EAA,sdurw_math)
+SWIG_DECLARE_TEMPLATE (EAAd, rw::math::EAA< double >);
+ADD_DEFINITION (EAAd, EAA, sdurw_math)
 #else
-    SWIG_DECLARE_TEMPLATE (EAA, rw::math::EAA< double >);
+SWIG_DECLARE_TEMPLATE (EAA, rw::math::EAA< double >);
 #endif
 SWIG_DECLARE_TEMPLATE (EAAf, rw::math::EAA< float >);
 

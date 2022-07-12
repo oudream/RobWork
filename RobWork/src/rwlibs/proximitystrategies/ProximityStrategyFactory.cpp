@@ -188,9 +188,7 @@ std::vector< std::string > ProximityStrategyFactory::getDistanceMultiStrategyIDs
 
 #ifdef RW_HAVE_FCL
     IDs.push_back (FCLStr);
-    std::cout << "FCL strategy" << std::endl;
 #endif
-    std::cout << "ID's fetched" << std::endl;
     return IDs;
 }
 

@@ -214,6 +214,15 @@ class RobWorkStudio : public QMainWindow
      */
     void postTimedStatePath (const rw::trajectory::TimedStatePath& path);
 
+    /**
+     * @copydoc setTimedStatePath
+     *
+     * Use this version if request comes from non-GUI thread.
+     */
+    void postTimedStatePath (const rw::trajectory::TimedStatePath::Ptr& path);
+
+
+
     //! @brief Request program termination.
     void postExit ();
 

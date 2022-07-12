@@ -19,6 +19,7 @@
 
 #include <rwlibs/opengl/rwgl.hpp>
 #include <rwsim/util/PlaneModel.hpp>
+#include <rw/core/macros.hpp>
 
 using namespace rw::graphics;
 using namespace rw::math;
@@ -58,6 +59,7 @@ void RenderPlanes::draw (const DrawableNode::RenderInfo& info, DrawType type, do
         case DrawableNode::SOLID: glPolygonMode (GL_FRONT, GL_FILL); break;
         case DrawableNode::OUTLINE:    // Draw nice frame
             glPolygonMode (GL_FRONT, GL_FILL);
+            FALLTHROUGH;
         case DrawableNode::WIRE: glPolygonMode (GL_FRONT_AND_BACK, GL_LINE); break;
     }
 

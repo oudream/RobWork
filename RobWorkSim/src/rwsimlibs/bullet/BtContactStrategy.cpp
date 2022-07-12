@@ -414,6 +414,13 @@ std::vector< std::string > BtContactStrategy::getGeometryIDs (ProximityModel* mo
     return res;
 }
 
+std::vector< rw::core::Ptr< rw::geometry::Geometry > >
+BtContactStrategy::getGeometries (rw::proximity::ProximityModel* model)
+{
+    RW_THROW ("Can't get the Geometries as they are not actually stored in the model");
+    return std::vector< rw::core::Ptr< rw::geometry::Geometry > > ();
+}
+
 void BtContactStrategy::clear ()
 {
     // Nothing to clear

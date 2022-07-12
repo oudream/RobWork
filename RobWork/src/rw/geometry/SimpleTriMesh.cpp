@@ -137,6 +137,17 @@ SimpleTriMesh::SimpleTriMesh (const SimpleTriMesh& copy) :
     _data->_vertecies = copy._data->_vertecies;
 }
 
+SimpleTriMesh::SimpleTriMesh (const SimpleTriMesh&& copy) :
+    _data (copy._data), _engine (copy._engine)
+{}
+
+SimpleTriMesh::SimpleTriMesh (const rw::core::Ptr< SimpleTriMesh >& copy) :
+    _data (rw::core::ownedPtr (new TriMeshData ())),
+    _engine (CSGEngine::Factory::getDefaultEngine ())
+{
+    _data->_triangles = copy->_data->_triangles;
+    _data->_vertecies = copy->_data->_vertecies;
+}
 SimpleTriMesh::SimpleTriMesh (const rw::geometry::TriMesh& copy) :
     _data (rw::core::ownedPtr (new TriMeshData ())),
     _engine (CSGEngine::Factory::getDefaultEngine ())
@@ -145,6 +156,10 @@ SimpleTriMesh::SimpleTriMesh (const rw::geometry::TriMesh& copy) :
 }
 
 SimpleTriMesh::SimpleTriMesh (rw::geometry::GeometryData& copy) : SimpleTriMesh (copy.getTriMesh ())
+{}
+
+SimpleTriMesh::SimpleTriMesh (rw::geometry::GeometryData&& copy) :
+    SimpleTriMesh (copy.getTriMesh ())
 {}
 
 SimpleTriMesh::SimpleTriMesh (const rw::core::Ptr< rw::geometry::GeometryData >& copy) :
@@ -195,6 +210,14 @@ void SimpleTriMesh::scale (double scale)
     for (Eigen::Index i = 0; i < _data->_vertecies.rows (); i++) {
         for (Eigen::Index j = 0; j < 3; j++) {
             _data->_vertecies (i, j) *= scale;
+        }
+    }
+}
+void SimpleTriMesh::scale (const rw::math::Vector3D< double >& scale)
+{
+    for (Eigen::Index i = 0; i < _data->_vertecies.rows (); i++) {
+        for (Eigen::Index j = 0; j < 3; j++) {
+            _data->_vertecies (i, j) *= scale[j];
         }
     }
 }

@@ -106,7 +106,7 @@ namespace rw { namespace graphics {
          * @brief updates the state of the scenegraph to that of \b state
          * @param state
          */
-        void updateSceneGraph (rw::kinematics::State& state);
+        void updateSceneGraph (const rw::kinematics::State& state);
 
         /**
          * @brief any cached drawables or scene nodes are deleted

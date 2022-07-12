@@ -588,7 +588,7 @@ ProximityStrategyPQP::getGeometryIDs (rw::proximity::ProximityModel* model)
 }
 
 std::vector< rw::core::Ptr< rw::geometry::Geometry > >
-ProximityStrategyPQP::getGeometrys (rw::proximity::ProximityModel* model)
+ProximityStrategyPQP::getGeometries (rw::proximity::ProximityModel* model)
 {
     std::vector< rw::core::Ptr< rw::geometry::Geometry > > res;
     PQPProximityModel* pmodel = (PQPProximityModel*) model;

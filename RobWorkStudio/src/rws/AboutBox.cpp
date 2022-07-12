@@ -1,7 +1,7 @@
 #include "AboutBox.hpp"
 
 #include <RobWorkConfig.hpp>
-//#include <RobWorkStudioConfig.hpp>
+#include <rw/core/macros.hpp>
 
 #include "ui_AboutBox.h"
 

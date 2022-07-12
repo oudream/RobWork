@@ -357,7 +357,7 @@ ProximityStrategyFCL::getGeometryIDs (rw::proximity::ProximityModel* model)
 }
 
 std::vector< rw::core::Ptr< rw::geometry::Geometry > >
-ProximityStrategyFCL::getGeometrys (rw::proximity::ProximityModel* model)
+ProximityStrategyFCL::getGeometries (rw::proximity::ProximityModel* model)
 {
     RW_ASSERT (model != 0);
     FCLProximityModel* pmodel = dynamic_cast< FCLProximityModel* > (model);

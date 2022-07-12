@@ -94,12 +94,12 @@ template< class T > Vector3D< T > angleAxis (const Rotation3D< T >& R)
 }
 }    // namespace
 
-template< class T > EAA< T >::EAA (const Rotation3D< T >& R) : _eaa (angleAxis (R))
+template< class T > EAA< T >::EAA (const Rotation3D< T >& R) : Rotation3DVector<T>(), _eaa (angleAxis (R))
 {}
 
 template< class T >
-EAA< T >::EAA (const rw::math::Vector3D< T >& v1, const rw::math::Vector3D< T >& v2) :
-    _eaa (0, 0, 0)
+EAA< T >::EAA (const rw::math::Vector3D< T >& v1, const rw::math::Vector3D< T >& v2) : Rotation3DVector<T>()
+    ,_eaa (0, 0, 0)
 {
     const T epsilon = (T) 1e-15;
     T dval          = rw::math::dot (v1, v2);

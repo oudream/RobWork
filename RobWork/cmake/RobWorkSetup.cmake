@@ -674,7 +674,7 @@ if("${RW_CXX_FLAGS}" STREQUAL "")
        OR (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
     )
         # Turn off annoying GCC warnings
-        set(RW_CXX_FLAGS_TMP "-Wall -Wno-strict-aliasing -Wno-unused-function")
+        set(RW_CXX_FLAGS_TMP "-Wall -Wextra -Wno-strict-aliasing -Wno-unused-function -Wno-unused-parameter -Wno-deprecated-copy")
         if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang"))
             set(RW_CXX_FLAGS_TMP "-Wall -Wno-strict-aliasing -Wno-unused-function")
         endif()

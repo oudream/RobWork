@@ -186,8 +186,6 @@ namespace rw { namespace models {
       private:
         rw::core::Ptr< rw::kinematics::Frame > _base;
         std::vector< rw::kinematics::Frame* > _frames;
-        std::vector< rw::geometry::Geometry::Ptr > _geometry;
-        std::vector< rw::geometry::Model3D::Ptr > _models;
     };
 
     /*@}*/

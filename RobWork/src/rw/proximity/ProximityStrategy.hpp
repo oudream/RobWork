@@ -23,13 +23,13 @@
  */
 
 #if !defined(SWIG)
+#include <rw/core/ExtensionPoint.hpp>
+#include <rw/core/macros.hpp>
+#include <rw/kinematics/FrameMap.hpp>
 #include <rw/proximity/ProximityModel.hpp>
 
-#include <rw/core/ExtensionPoint.hpp>
-#include <rw/kinematics/FrameMap.hpp>
-
 #include <string>
-#endif 
+#endif
 namespace rw { namespace geometry {
     class Geometry;
 }}    // namespace rw::geometry
@@ -87,7 +87,7 @@ namespace rw { namespace proximity {
          * @return true if a Proximity model was succesfully created and linked
          * with the frame; false otherwise.
          */
-        virtual bool addModel (const rw::core::Ptr<rw::kinematics::Frame> frame,
+        virtual bool addModel (const rw::core::Ptr< rw::kinematics::Frame > frame,
                                const rw::geometry::Geometry& faces);
 
         /**
@@ -102,7 +102,7 @@ namespace rw { namespace proximity {
          * @return true if a Proximity model was succesfully created and linked
          * with the frame; false otherwise.
          */
-        virtual bool addModel (const rw::core::Ptr<rw::kinematics::Frame> frame,
+        virtual bool addModel (const rw::core::Ptr< rw::kinematics::Frame > frame,
                                rw::core::Ptr< rw::geometry::Geometry > faces,
                                bool forceCopy = false);
 
@@ -115,12 +115,12 @@ namespace rw { namespace proximity {
          * @param frame [in] the frame to check for1.0/
          * @return true if a model exists or can be created
          */
-        virtual bool hasModel (const rw::core::Ptr<rw::kinematics::Frame> frame);
+        virtual bool hasModel (const rw::core::Ptr< rw::kinematics::Frame > frame);
 
         /**
            @brief Clear (remove all) model information for frame \b frame.
          */
-        virtual void clearFrame (const rw::core::Ptr<rw::kinematics::Frame> frame);
+        virtual void clearFrame (const rw::core::Ptr< rw::kinematics::Frame > frame);
 
         /**
            @brief Clear (remove all) model information for all frames.
@@ -134,7 +134,7 @@ namespace rw { namespace proximity {
          * has been associated to frame then NULL is returned.
          * @param frame [in] frame for which an proximitymodel is associated
          */
-        ProximityModel::Ptr getModel (const rw::core::Ptr<rw::kinematics::Frame> frame);
+        ProximityModel::Ptr getModel (const rw::core::Ptr< rw::kinematics::Frame > frame);
 
         //// this is the new interface based on CollisionModelInfo
         /**
@@ -188,7 +188,15 @@ namespace rw { namespace proximity {
          * @return all geometry associated to the proximity model
          */
         virtual std::vector< rw::core::Ptr< rw::geometry::Geometry > >
-        getGeometrys (rw::proximity::ProximityModel* model);
+        getGeometries (rw::proximity::ProximityModel* model) = 0;
+
+        DEPRECATED ("This function is deprecated due to a spelling mistake, use the correct "
+                    "spelling \"getGeometries\" instead")
+        std::vector< rw::core::Ptr< rw::geometry::Geometry > >
+        getGeometrys (rw::proximity::ProximityModel* model)
+        {
+            return getGeometries (model);
+        }
 
         /**
          * @brief Clears any stored model information
@@ -198,9 +206,10 @@ namespace rw { namespace proximity {
         /**
          * @brief setNumber of threads the strategy may use
          * @param threads [in] number of threads. if Threads <= 0 then maximum threads available
-         * @note this does not enforce the use of threads in the algorithms but mearly allows for the use.
+         * @note this does not enforce the use of threads in the algorithms but mearly allows for
+         * the use.
          */
-        void useThreads(int threads);
+        void useThreads (int threads);
 
         /**
          * @addtogroup extensionpoints
