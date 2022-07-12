@@ -100,6 +100,12 @@ namespace rwsim { namespace contacts {
         //! @copydoc rwsim::contacts::ContactStrategy::getGeometryIDs
         virtual std::vector< std::string > getGeometryIDs (rw::proximity::ProximityModel* model);
 
+
+        //! @copydoc rwsim::contacts::ContactStrategy::getGeometries
+        virtual std::vector< rw::core::Ptr< rw::geometry::Geometry > >
+        getGeometries (rw::proximity::ProximityModel* model);
+
+
         //! @copydoc rwsim::contacts::ContactStrategy::clear
         virtual void clear ();
 

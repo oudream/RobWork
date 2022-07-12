@@ -1140,16 +1140,17 @@ namespace {
 class RobWorkStudioEvent : public QEvent
 {
   public:
-    static const QEvent::Type SetStateEvent          = (QEvent::Type) 1200;
-    static const QEvent::Type SetTimedStatePathEvent = (QEvent::Type) 1201;
-    static const QEvent::Type UpdateAndRepaintEvent  = (QEvent::Type) 1202;
-    static const QEvent::Type SaveViewGLEvent        = (QEvent::Type) 1203;
-    static const QEvent::Type ExitEvent              = (QEvent::Type) 1204;
-    static const QEvent::Type SetWorkCell            = (QEvent::Type) 1205;
-    static const QEvent::Type OpenWorkCell           = (QEvent::Type) 1206;
-    static const QEvent::Type CloseWorkCell          = (QEvent::Type) 1207;
-    static const QEvent::Type GenericEvent           = (QEvent::Type) 1208;
-    static const QEvent::Type GenericAnyEvent        = (QEvent::Type) 1209;
+    static const QEvent::Type SetStateEvent             = (QEvent::Type) 1200;
+    static const QEvent::Type SetTimedStatePathEvent    = (QEvent::Type) 1201;
+    static const QEvent::Type UpdateAndRepaintEvent     = (QEvent::Type) 1202;
+    static const QEvent::Type SaveViewGLEvent           = (QEvent::Type) 1203;
+    static const QEvent::Type ExitEvent                 = (QEvent::Type) 1204;
+    static const QEvent::Type SetWorkCell               = (QEvent::Type) 1205;
+    static const QEvent::Type OpenWorkCell              = (QEvent::Type) 1206;
+    static const QEvent::Type CloseWorkCell             = (QEvent::Type) 1207;
+    static const QEvent::Type GenericEvent              = (QEvent::Type) 1208;
+    static const QEvent::Type GenericAnyEvent           = (QEvent::Type) 1209;
+    static const QEvent::Type SetTimedStatePathPtrEvent = (QEvent::Type) 1210;
 
     boost::any _anyData;
     rw::core::Ptr< bool > _hs;
@@ -1229,6 +1230,14 @@ void RobWorkStudio::postTimedStatePath (const rw::trajectory::TimedStatePath& pa
 {
     RobWorkStudioEventHS* event =
         new RobWorkStudioEventHS (RobWorkStudioEvent::SetTimedStatePathEvent, path);
+    QApplication::postEvent (this, event->event);
+    event->wait ();
+}
+
+void RobWorkStudio::postTimedStatePath (const rw::trajectory::TimedStatePath::Ptr& path)
+{
+    RobWorkStudioEventHS* event =
+        new RobWorkStudioEventHS (RobWorkStudioEvent::SetTimedStatePathPtrEvent, path);
     QApplication::postEvent (this, event->event);
     event->wait ();
 }
@@ -1315,6 +1324,12 @@ bool RobWorkStudio::event (QEvent* event)
     }
     else if (event->type () == RobWorkStudioEvent::SetTimedStatePathEvent) {
         TimedStatePath tstate = boost::any_cast< TimedStatePath > (rwse->_anyData);
+        setTimedStatePath (tstate);
+        rwse->done ();
+        return true;
+    }
+    else if (event->type () == RobWorkStudioEvent::SetTimedStatePathPtrEvent) {
+        TimedStatePath::Ptr tstate = boost::any_cast< TimedStatePath::Ptr > (rwse->_anyData);
         setTimedStatePath (tstate);
         rwse->done ();
         return true;

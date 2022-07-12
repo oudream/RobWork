@@ -128,6 +128,7 @@ namespace rw { namespace geometry {
     class SimpleTriMesh : public TriMesh
     {
       public:
+        using Ptr = rw::core::Ptr< SimpleTriMesh >;
         /**
          * @brief Construct an empty TriMesh if \b data is null else take ownership of \b data
          * @param data [in] the data to take ownership of. If now shared pointer, then the
@@ -150,6 +151,18 @@ namespace rw { namespace geometry {
         /**
          * @brief Copy the data from an existing trimesh
          * @param copy the object to be copied
+         */
+        SimpleTriMesh (const SimpleTriMesh&& copy);
+
+        /**
+         * @brief Copy the data from an existing trimesh
+         * @param copy the object to be copied
+         */
+        SimpleTriMesh (const rw::core::Ptr< SimpleTriMesh >& copy);
+
+        /**
+         * @brief Copy the data from an existing trimesh
+         * @param copy the object to be copied
          * @param prox [in] the distance between to vertexes to be counted as the same
          */
         SimpleTriMesh (const rw::geometry::TriMesh& copy);
@@ -160,6 +173,13 @@ namespace rw { namespace geometry {
          * @param prox [in] the distance between to vertexes to be counted as the same
          */
         SimpleTriMesh (rw::geometry::GeometryData& copy);
+
+        /**
+         * @brief Copy the data from an existing trimesh
+         * @param copy the object to be copied
+         * @param prox [in] the distance between to vertexes to be counted as the same
+         */
+        SimpleTriMesh (rw::geometry::GeometryData&& copy);
 
         /**
          * @brief Copy the data from an existing trimesh
@@ -215,6 +235,12 @@ namespace rw { namespace geometry {
          * @brief Scale all vertices in the mesh.
          */
         virtual void scale (double scale);
+
+        /**
+         * @brief Scale all vertices in the mesh.
+         * @param scale [in] how each axis should be scaled.
+         */
+        virtual void scale (const rw::math::Vector3D<double>& scale);
 
         /**
          * @brief the type of this primitive

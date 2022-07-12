@@ -284,7 +284,7 @@ GroupNode::Ptr WorkCellScene::getWorldNode ()
     return _worldNode;
 }
 
-void WorkCellScene::updateSceneGraph (State& state)
+void WorkCellScene::updateSceneGraph (const State& state)
 {
     // here we find all drawables that belong to frames and order them according to translucency
     _fk.reset (state);

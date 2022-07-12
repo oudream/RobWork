@@ -46,8 +46,6 @@ class WCCodeEditor : public QPlainTextEdit
 
     void setLineState (size_t linenr, LineState state)
     {
-        if (linenr < 0)
-            return;
         if (_executedLines.size () <= linenr)
             _executedLines.resize (linenr + 100);
         _executedLines[linenr] = state;

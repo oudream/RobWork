@@ -136,7 +136,7 @@ class SimpleCameraGroup : public CameraGroup
         }
 
         GLuint maxGLuintSize = (GLuint) -1;
-        if ((_offscreenRender == false && _fbId >= 0)) {
+        if ((_offscreenRender == false)) {
             // offsreenrendering has been disabled so release all allocated storage
             // deallocate the framebuffer
             if (_fbId != maxGLuintSize)
@@ -168,20 +168,20 @@ class SimpleCameraGroup : public CameraGroup
             }
 
             RWGLFrameBuffer::initialize ();
-            if (_fbId >= 0) {
-                // the parameters of the frame buffer should be changed so we create a new
-                if (_fbId != maxGLuintSize)
-                    RWGLFrameBuffer::glDeleteFramebuffersEXT (1, &_fbId);
-                if (_renderId != maxGLuintSize)
-                    RWGLFrameBuffer::glDeleteRenderbuffersEXT (1, &_renderId);
-                if (_renderDepthId != maxGLuintSize)
-                    RWGLFrameBuffer::glDeleteRenderbuffersEXT (1, &_renderDepthId);
-                if (useMultisample) {
-                    // TODO: we might need to do something here
-                    RWGLFrameBuffer::glDeleteRenderbuffersEXT (1, &_fbTmpId);
-                    RWGLFrameBuffer::glDeleteRenderbuffersEXT (1, &_renderColorTmpId);
-                }
+
+            // the parameters of the frame buffer should be changed so we create a new
+            if (_fbId != maxGLuintSize)
+                RWGLFrameBuffer::glDeleteFramebuffersEXT (1, &_fbId);
+            if (_renderId != maxGLuintSize)
+                RWGLFrameBuffer::glDeleteRenderbuffersEXT (1, &_renderId);
+            if (_renderDepthId != maxGLuintSize)
+                RWGLFrameBuffer::glDeleteRenderbuffersEXT (1, &_renderDepthId);
+            if (useMultisample) {
+                // TODO: we might need to do something here
+                RWGLFrameBuffer::glDeleteRenderbuffersEXT (1, &_fbTmpId);
+                RWGLFrameBuffer::glDeleteRenderbuffersEXT (1, &_renderColorTmpId);
             }
+
             _fbId     = 0;
             _renderId = 0;
 
@@ -385,8 +385,8 @@ struct TransparentVisitor
     double distToCamera;
     Transform3D<> drawFrame;
     DrawableNode* node;
-    bool operator< (const TransparentVisitor& other) { return other.distToCamera > distToCamera; }
-    bool operator< (const TransparentVisitor& other) const
+    bool operator<(const TransparentVisitor& other) { return other.distToCamera > distToCamera; }
+    bool operator<(const TransparentVisitor& other) const
     {
         return other.distToCamera > distToCamera;
     }
@@ -759,7 +759,7 @@ struct objects
 {
     GLuint depth;
     GLuint pointer;
-    bool operator< (const objects& rhs) const { return depth > rhs.depth; }
+    bool operator<(const objects& rhs) const { return depth > rhs.depth; }
 };
 }    // namespace
 

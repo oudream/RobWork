@@ -48,6 +48,6 @@ std::vector< std::string > ProximityModel::getGeometryIDs ()
 
 std::vector< rw::core::Ptr< rw::geometry::Geometry > > ProximityModel::getGeometries ()
 {
-    return owner->getGeometrys (this);
+    return owner->getGeometries (this);
     ;
 }

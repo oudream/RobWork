@@ -181,13 +181,13 @@ ProximityStrategy::Ptr ProximityStrategy::Factory::makeStrategy (const std::stri
     }
     return NULL;
 }
-
+/*
 std::vector< rw::core::Ptr< rw::geometry::Geometry > >
-ProximityStrategy::getGeometrys (rw::proximity::ProximityModel* model)
+ProximityStrategy::getGeometries (rw::proximity::ProximityModel* model)
 {
     RW_THROW ("This Is a Virtual Function and needs to be replaced when Inherited");
     return std::vector< rw::core::Ptr< rw::geometry::Geometry > > ();
-}
+}*/
 
 void ProximityStrategy::useThreads (int threads)
 {

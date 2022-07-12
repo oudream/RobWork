@@ -18,16 +18,13 @@
 #include "ContactDetector.hpp"
 
 #include "BallBallStrategy.hpp"
-#include "ContactStrategy.hpp"
-
-#include <RobWorkConfig.hpp>
-
-#include "ContactStrategyDMS.hpp"
-
 #include "ContactDetectorData.hpp"
 #include "ContactDetectorTracking.hpp"
 #include "ContactModel.hpp"
+#include "ContactStrategy.hpp"
+#include "ContactStrategyDMS.hpp"
 
+#include <RobWorkConfig.hpp>
 #include <rw/common/TimerUtil.hpp>
 #include <rw/kinematics/FKTable.hpp>
 #include <rw/models/Object.hpp>
@@ -133,6 +130,16 @@ void ContactDetector::initializeModels (StrategyTableRow& strategy)
                 for (Geometry::Ptr geoB : oB->getGeometry (state)) {
                     if (strategy.strategy->match (geoA->getGeometryData (),
                                                   geoB->getGeometryData ())) {
+                                                      
+                        if (!strategy.models.has (*(geoA->getFrame ()))) {
+                            strategy.models.insert (*(geoA->getFrame ()),
+                                                    std::map< std::string, ContactModel::Ptr > ());
+                        }
+                        if (!strategy.models.has (*(geoB->getFrame ()))) {
+                            strategy.models.insert (*(geoB->getFrame ()),
+                                                    std::map< std::string, ContactModel::Ptr > ());
+                        }
+
                         std::map< std::string, ContactModel::Ptr >& mapA =
                             strategy.models[*(geoA->getFrame ())];
                         std::map< std::string, ContactModel::Ptr >& mapB =
@@ -322,7 +329,7 @@ void ContactDetector::setDefaultStrategies (const PropertyMap& map)
     ContactStrategy* strat = new ContactStrategyFCL ();
     strat->setPropertyMap (map);
     addContactStrategy (rw::core::ownedPtr (strat), pri);
-#elif  defined(RW_HAVE_PQP)
+#elif defined(RW_HAVE_PQP)
     ContactStrategy* strat = new ContactStrategyPQP ();
     strat->setPropertyMap (map);
     addContactStrategy (rw::core::ownedPtr (strat), pri);
@@ -557,8 +564,8 @@ std::vector< Contact > ContactDetector::updateContacts (const State& state,
         ContactDetectorTracking::ContactInfo& info = *it;
         if (info.id > 0)
             continue;
-        Frame::CPtr  frameA       = info.frames.first;
-        Frame::CPtr frameB       = info.frames.second;
+        Frame::CPtr frameA              = info.frames.first;
+        Frame::CPtr frameB              = info.frames.second;
         SimulatorLogScope::Ptr stratLog = NULL;
         if (log != NULL) {
             stratLog = rw::core::ownedPtr (new SimulatorLogScope (log));

@@ -8,7 +8,7 @@ CSGEngine::Ptr CSGEngine::Factory::getDefaultEngine ()
     CSGEngine::Factory ep;
     std::vector< Extension::Ptr > exts = ep.getExtensions ();
     if (exts.size () > 0)
-        return exts[0]->getObject ().cast< CSGEngine > ();
+        return exts.back()->getObject ().cast< CSGEngine > ();
     return NULL;
 }
 

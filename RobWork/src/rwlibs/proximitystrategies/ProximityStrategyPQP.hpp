@@ -167,10 +167,10 @@ namespace rwlibs { namespace proximitystrategies {
         std::vector< std::string > getGeometryIDs (rw::proximity::ProximityModel* model);
 
         /**
-         * @copydoc rw::proximity::ProximityStrategy::getGeometrys
+         * @copydoc rw::proximity::ProximityStrategy::getGeometries
          */
         std::vector< rw::core::Ptr< rw::geometry::Geometry > >
-        getGeometrys (rw::proximity::ProximityModel* model);
+        getGeometries (rw::proximity::ProximityModel* model);
 
         /**
          * @brief not implemented yet in rw::proximity::CollisionStrategy::setFirstContact

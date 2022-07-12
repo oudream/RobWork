@@ -75,9 +75,9 @@ class ToleranceWrapper : public rw::proximity::CollisionStrategy
     }
 
     virtual std::vector< rw::core::Ptr< rw::geometry::Geometry > >
-    getGeometrys (rw::proximity::ProximityModel* model)
+    getGeometries (rw::proximity::ProximityModel* model)
     {
-        return _strategy->getGeometrys (model);
+        return _strategy->getGeometries (model);
     }
 
     void getCollisionContacts (std::vector< CollisionStrategy::Contact >& contacts,

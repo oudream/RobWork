@@ -34,7 +34,7 @@ struct BallBallStrategy::Model
     std::string geoId;
     double radius;
     rw::math::Vector3D<> center;
-    rw::core::Ptr<const rw::kinematics::Frame> frame;
+    rw::core::Ptr< const rw::kinematics::Frame > frame;
 };
 
 class BallBallStrategy::BallModel : public ContactModel
@@ -273,6 +273,12 @@ std::vector< std::string > BallBallStrategy::getGeometryIDs (ProximityModel* mod
          it++)
         res.push_back ((*it).geoId);
     return res;
+}
+std::vector< rw::core::Ptr< rw::geometry::Geometry > >
+BallBallStrategy::getGeometries (rw::proximity::ProximityModel* model)
+{
+    RW_THROW ("Can't get the Geometries as they are not actually stored in the model");
+    return std::vector< rw::core::Ptr< rw::geometry::Geometry > > ();
 }
 
 void BallBallStrategy::clear ()

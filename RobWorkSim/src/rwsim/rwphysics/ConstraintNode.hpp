@@ -91,7 +91,7 @@ namespace rwsim { namespace simulator {
         /**
          * @brief return the type of this node
          */
-        const NodeType getNodeType () const { return _type; }
+        NodeType getNodeType () const { return _type; }
 
         ConstraintNode* getParentNode () { return _parentNode; }
 

@@ -51,14 +51,10 @@ std::pair< double, Vector3D<> > getWeightAverage (size_t i, size_t j,
                                                   const TactileArraySensor::VertexMatrix& vMatrix)
 {
     size_t i_low = i - 1, i_upp = i + 1;
-    if (i_low < 0)
-        i_low = 0;
     if (i_upp >= (size_t) tMatrix.rows ())
         i_upp = tMatrix.rows () - 1;
 
     size_t j_low = j - 1, j_upp = j + 1;
-    if (j_low < 0)
-        j_low = 0;
     if (j_upp >= (size_t) tMatrix.cols ())
         j_upp = tMatrix.cols () - 1;
 

@@ -1,8 +1,9 @@
 #include "RWSSpinBox.hpp"
 
+#include <rw/core/macros.hpp>
+
 #include <QLocale>
 #include <QString>
-
 using namespace rws;
 RWSSpinBox::RWSSpinBox (double low, double high)
 {
@@ -35,7 +36,7 @@ void RWSSpinBox::fixup (QString& input) const
             gotNum = true;
         }
         else if ((input[i] == '.' || input[i] == ',') && !dot) {
-            out += locale().decimalPoint();
+            out += locale ().decimalPoint ();
             dot = true;
         }
     }
@@ -44,8 +45,7 @@ void RWSSpinBox::fixup (QString& input) const
 
 QValidator::State RWSSpinBox::validate (QString& text, int& pos) const
 {
-    
-    bool ok = false;
+    bool ok   = false;
     QString t = text;
     fixup (t);
     locale ().toDouble (t, &ok);
@@ -57,7 +57,7 @@ double RWSSpinBox::valueFromText (const QString& text) const
     bool ok   = false;
     QString t = text;
     fixup (t);
-    
+
     double value = locale ().toDouble (t, &ok);
     return ok ? value : QDoubleSpinBox::value ();
 }

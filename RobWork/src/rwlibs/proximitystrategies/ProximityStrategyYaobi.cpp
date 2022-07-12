@@ -274,7 +274,7 @@ ProximityStrategyYaobi::getGeometryIDs (rw::proximity::ProximityModel* model)
     return res;
 }
 std::vector< rw::core::Ptr< rw::geometry::Geometry > >
-ProximityStrategyYaobi::getGeometrys (rw::proximity::ProximityModel* model)
+ProximityStrategyYaobi::getGeometries (rw::proximity::ProximityModel* model)
 {
     std::vector< rw::core::Ptr< rw::geometry::Geometry > > res;
     YaobiProximityModel* pmodel = (YaobiProximityModel*) model;
