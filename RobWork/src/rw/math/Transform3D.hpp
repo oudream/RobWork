@@ -53,9 +53,6 @@ namespace rw { namespace math {
      */
 #endif
 
-    template<class T>
-    struct Transform3DIdentity;
-
     template< class T = double > class Transform3D
     {
       public:
@@ -77,7 +74,9 @@ namespace rw { namespace math {
          * @param d [in] @f$ \mathbf{d} @f$ A 3x1 translation vector
          * @param R [in] @f$ \mathbf{R} @f$ A 3x3 rotation matrix
          */
-        Transform3D (const rw::math::Vector3D< T >& d, const rw::math::Rotation3D< T >& R) : _d (d), _R (R) {}
+        Transform3D (const rw::math::Vector3D< T >& d, const rw::math::Rotation3D< T >& R) :
+            _d (d), _R (R)
+        {}
 
         /**
            @brief A homogeneous transform with a rotation of \b R and a
@@ -89,7 +88,9 @@ namespace rw { namespace math {
            @brief A homogeneous transform with a rotation of zero and a
            translation of \b d.
         */
-        explicit Transform3D (const rw::math::Vector3D< T >& d) : _d (d), _R (rw::math::Rotation3D< T >::identity ()) {}
+        explicit Transform3D (const rw::math::Vector3D< T >& d) :
+            _d (d), _R (rw::math::Rotation3D< T >::identity ())
+        {}
 
         /**
          * @brief Copy Constructor
@@ -110,17 +111,16 @@ namespace rw { namespace math {
             _d (d), _R (r.toRotation3D ())
         {}
 
-
         /**
          * @brief Creates a Transform3D from matrix_expression
          * @param r [in] an Eigen Vector
          */
         template< class R > explicit Transform3D (const Eigen::MatrixBase< R >& r)
         {
-            _d[0] = T(r.row (0) (3));
-            _d[1] = T(r.row (1) (3));
-            _d[2] = T(r.row (2) (3));
-            _R = Rotation3D<T>(r.block(0,0,3,3));
+            _d[0] = T (r.row (0) (3));
+            _d[1] = T (r.row (1) (3));
+            _d[2] = T (r.row (2) (3));
+            _R    = Rotation3D< T > (r.block (0, 0, 3, 3));
         }
 #if !defined(SWIGJAVA)
         /**
@@ -146,7 +146,7 @@ namespace rw { namespace math {
          * @f$
          */
 
-         #endif
+#endif
         static const Transform3D DH (T alpha, T a, T d, T theta);
 
 #if !defined(SWIGJAVA)
@@ -177,7 +177,7 @@ namespace rw { namespace math {
          *
          */
 
-         #endif
+#endif
         static const Transform3D craigDH (T alpha, T a, T d, T theta);
 
 #if !defined(SWIGJAVA)
@@ -209,7 +209,7 @@ namespace rw { namespace math {
          * @f$
          */
 
-         #endif 
+#endif
         static const Transform3D DHHGP (T alpha, T a, T beta, T b);
 
 #if !defined(SWIGJAVA)
@@ -230,11 +230,8 @@ namespace rw { namespace math {
          * @f$
          */
 
-         #endif 
-        static const Transform3D& identity ()
-        {
-            return Transform3DIdentity<T>::identity();
-        }
+#endif
+        static const Transform3D< T > identity ();
 
 #if !defined(SWIG)
         /**
@@ -295,7 +292,10 @@ namespace rw { namespace math {
          * @param rhs [in] Transform to compare with
          * @return True if not equal.
          */
-        bool operator!= (const Transform3D< T >& rhs) const { return !(*this == rhs); }
+        bool operator!= (const Transform3D< T >& rhs) const
+        {
+            return !(*this == rhs);
+        }
 
         /**
          * @brief Compares the transformations with a given precision
@@ -335,7 +335,7 @@ namespace rw { namespace math {
          * @f$
          */
 
-         #endif 
+#endif
         const Transform3D operator* (const Transform3D& bTc) const
         {
             return Transform3D (_d + _R * bTc._d, _R * bTc._R);
@@ -348,31 +348,46 @@ namespace rw { namespace math {
          * @param bP [in] @f$ \robax{b}{\mathbf{p}} @f$
          * @return @f$ \robax{a}{\mathbf{p}} @f$
          */
-        const rw::math::Vector3D< T > operator* (const rw::math::Vector3D< T >& bP) const { return _R * bP + _d; }
+        const rw::math::Vector3D< T > operator* (const rw::math::Vector3D< T >& bP) const
+        {
+            return _R * bP + _d;
+        }
 
         /**
          * @brief Gets the rotation part @f$ \mathbf{R} @f$ from @f$ \mathbf{T} @f$
          * @return @f$ \mathbf{R} @f$
          */
-        rw::math::Rotation3D< T >& R () { return _R; }
+        rw::math::Rotation3D< T >& R ()
+        {
+            return _R;
+        }
 
         /**
          * @brief Gets the rotation part @f$ \mathbf{R} @f$ from @f$ \mathbf{T} @f$
          * @return @f$ \mathbf{R} @f$
          */
-        const rw::math::Rotation3D< T >& R () const { return _R; }
+        const rw::math::Rotation3D< T >& R () const
+        {
+            return _R;
+        }
 
         /**
          * \brief Gets the position part @f$ \mathbf{d} @f$ from @f$ \mathbf{T} @f$
          * \return @f$ \mathbf{d} @f$
          */
-        rw::math::Vector3D< T >& P () { return _d; }
+        rw::math::Vector3D< T >& P ()
+        {
+            return _d;
+        }
 
         /**
          * @brief Gets the position part @f$ \mathbf{d} @f$ from @f$ \mathbf{T} @f$
          * @return @f$ \mathbf{d} @f$
          */
-        const rw::math::Vector3D< T >& P () const { return _d; }
+        const rw::math::Vector3D< T >& P () const
+        {
+            return _d;
+        }
 
 #if !defined(SWIG)
         /**
@@ -502,7 +517,8 @@ namespace rw { namespace math {
          * @param up [in] the upward direction (the
          * @return Transformation
          */
-        static Transform3D< T > makeLookAt (const rw::math::Vector3D< T >& eye, const rw::math::Vector3D< T >& center,
+        static Transform3D< T > makeLookAt (const rw::math::Vector3D< T >& eye,
+                                            const rw::math::Vector3D< T >& center,
                                             const rw::math::Vector3D< T >& up)
         {
             rw::math::Vector3D< T > f (center - eye);
@@ -523,36 +539,11 @@ namespace rw { namespace math {
          *
          * @return @f$ \mathbf{M}\in SE(3) @f$
          */
-        Eigen::Matrix<T,4,4> e () const;
+        Eigen::Matrix< T, 4, 4 > e () const;
 
       private:
         rw::math::Vector3D< T > _d;
         rw::math::Rotation3D< T > _R;
-    };
-
-    extern const Transform3D<double> Transform3DDoubleIdentity;
-    extern const Transform3D<float> Transform3DFloatIdentity;
-
-    template<class T>
-    struct Transform3DIdentity {
-        static const Transform3D<T>& identity() {
-            static const Transform3D<> id (Vector3D< T > (0, 0), Rotation3D< T >::identity ());
-            return id;
-        }
-    };
-
-    template<>
-    struct Transform3DIdentity<double> {
-        static const Transform3D<double>& identity() {
-            return Transform3DDoubleIdentity;
-        }
-    };
-
-    template<>
-    struct Transform3DIdentity<float> {
-        static const Transform3D<float>& identity() {
-            return Transform3DFloatIdentity;
-        }
     };
 
 // Explicit template specifications.
@@ -560,10 +551,10 @@ namespace rw { namespace math {
     extern template class rw::math::Transform3D< double >;
     extern template class rw::math::Transform3D< float >;
 #else
- 
+
 #if SWIG_VERSION < 0x040000
     SWIG_DECLARE_TEMPLATE (Transform3Dd, rw::math::Transform3D< double >);
-    ADD_DEFINITION (Transform3Dd, Transform3D,sdurw_math)
+    ADD_DEFINITION (Transform3Dd, Transform3D, sdurw_math)
 #else
     SWIG_DECLARE_TEMPLATE (Transform3D, rw::math::Transform3D< double >);
 #endif
@@ -596,7 +587,7 @@ namespace rw { namespace math {
      * @f$
      */
 
-     #endif 
+#endif
     template< class T > const Transform3D< T > inverse (const Transform3D< T >& aTb)
     {
         return Transform3D< T > (-(inverse (aTb.R ()) * aTb.P ()), inverse (aTb.R ()));

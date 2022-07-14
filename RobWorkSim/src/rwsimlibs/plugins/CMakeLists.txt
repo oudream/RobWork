@@ -13,6 +13,7 @@ set(SUBSYS_DEPS
             RW::sdurw_trajectory
             RW::sdurw_math
             RW::sdurw_core
+            RW::sdurw_models
     PRIVATE sdurwsim
             RW::sdurw_simulation
             RW::sdurw_opengl

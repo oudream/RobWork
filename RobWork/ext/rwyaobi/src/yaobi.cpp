@@ -969,8 +969,6 @@ CollideResult::Reserve(unsigned int n)
 
 
 //============================================================================
-
-
 int
 Collide(CollideResult& res,
         const Real ta[][4], const CollModel& a,
@@ -998,6 +996,7 @@ Collide(CollideResult& res,
   
   TINV_MUL_T(b_rel_a, ta, tb);
   TRANSFORM_INV(a_rel_b, b_rel_a);
+  
   assert(is_rot_matrix(b_rel_a));
   assert(is_rot_matrix(a_rel_b));
   

@@ -23,11 +23,12 @@
 #include "StateSetup.hpp"
 #include "TreeState.hpp"
 
-#include <rw/math/Transform3D.hpp>
 #include <rw/math/Rotation3D.hpp>
+#include <rw/math/Transform3D.hpp>
 
-using rw::math::Transform3D;
+using rw::math::Vector3D;
 using rw::math::Rotation3D;
+using rw::math::Transform3D;
 using namespace rw::kinematics;
 
 StateStructure::StateStructure () : _version (0), _root (NULL), _stateSetupUniqueId (0)
@@ -59,7 +60,7 @@ StateStructure::~StateStructure ()
     }
 }
 
-bool StateStructure::has (rw::core::Ptr<const StateData> const data)
+bool StateStructure::has (rw::core::Ptr< const StateData > const data)
 {
     const int id = data->getID ();
     return (id >= 0 && id < getMaxID () && _allDatas[id] != NULL);
@@ -132,6 +133,7 @@ void StateStructure::addFrame (Frame::Ptr frame, Frame::Ptr parent)
     if (parent == NULL) {
         parent = getRoot ();
     }
+
     RW_ASSERT (frame && parent);
 
     // and parent must exist in the tree, but not the frame
@@ -178,21 +180,8 @@ void StateStructure::addFrame (Frame::Ptr frame, Frame::Ptr parent)
 
     Transform3D<> t = frame->getTransform (getDefaultState ());
     if (t.R () == Rotation3D< double > (0, 0, 0, 0, 0, 0, 0, 0, 0)) {
-        double q[12];
-        q[0] = 0;
-        q[1] = 0;
-        q[2] = 0;
-
-        q[3]    = 1;
-        q[4]    = 0;
-        q[5]    = 0;
-        q[6]    = 0;
-        q[7]    = 1;
-        q[8]    = 0;
-        q[9]    = 0;
-        q[10]   = 0;
-        q[11]   = 1;
-        State s = getDefaultState ();
+        double q[12] = {0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1};
+        State s      = getDefaultState ();
         frame->setData (s, q);
         setDefaultState (s);
     }
@@ -233,7 +222,7 @@ void StateStructure::addDAF (Frame::Ptr frame, Frame::Ptr parent)
     _stateDataAddedEvent.fire (frame.get ());
 }
 
-void StateStructure::remove (rw::core::Ptr<StateData> data)
+void StateStructure::remove (rw::core::Ptr< StateData > data)
 {
     RW_ASSERT (data);
     RW_ASSERT (data->getID () > 0);
@@ -260,7 +249,7 @@ void StateStructure::remove (rw::core::Ptr<StateData> data)
     updateDefaultState ();
     // perform cleanup
     cleanup (id);
-    _stateDataRemovedEvent.fire (data.get());
+    _stateDataRemovedEvent.fire (data.get ());
 }
 
 State StateStructure::upgradeState (const State& oldState)
@@ -332,7 +321,8 @@ void StateStructure::cleanup (int ID)
 void StateStructure::updateDefaultState ()
 {
     // first create a StateSetup
-    rw::core::Ptr< StateSetup > setup = rw::core::ownedPtr (new StateSetup (_version, *this, _currDatas));
+    rw::core::Ptr< StateSetup > setup =
+        rw::core::ownedPtr (new StateSetup (_version, *this, _currDatas));
     _setups.push_back (setup);
     // construct qstate and tree state and then a new State
     QState qstate (setup);

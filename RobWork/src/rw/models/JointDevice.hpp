@@ -68,6 +68,8 @@ namespace rw { namespace models {
         JointDevice (const std::string& name, rw::core::Ptr<rw::kinematics::Frame> base, rw::core::Ptr<rw::kinematics::Frame> end,
                      const std::vector< rw::models::Joint* >& joints, const rw::kinematics::State& state);
 
+        //! @brief destructor
+        virtual ~JointDevice() {}
         /**
          * @brief Get all joints of this device
          * @return all joints

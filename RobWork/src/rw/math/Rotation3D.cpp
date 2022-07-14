@@ -27,8 +27,16 @@
 using namespace rw::common;
 using namespace rw::math;
 
-const Rotation3D<double> rw::math::Rotation3DDoubleIdentity(1, 0, 0, 0, 1, 0, 0, 0, 1);
-const Rotation3D<float> rw::math::Rotation3DFloatIdentity(1, 0, 0, 0, 1, 0, 0, 0, 1);
+namespace rw { namespace math {
+    template<> const Rotation3D< float > Rotation3DIdentity ()
+    {
+        return Rotation3D< float > (1, 0, 0, 0, 1, 0, 0, 0, 1);
+    }
+    template<> const Rotation3D< double > Rotation3DIdentity ()
+    {
+        return Rotation3D< double > (1, 0, 0, 0, 1, 0, 0, 0, 1);
+    }
+}};    // namespace rw::math
 
 template< class T >
 Rotation3D< T >::Rotation3D (const Rotation3DVector< T >& rotVec) :
@@ -250,7 +258,7 @@ template< class T > Rotation3D< T > Rotation3D< T >::inverse (bool copy)
     return *this;
 }
 
-template< class T > Rotation3D< T > Rotation3D< T >::inverse (bool copy) const
+template< class T > const Rotation3D< T > Rotation3D< T >::inverse (bool copy) const
 {
     if (!copy) {
         RW_THROW ("You can't modefy a constant object");

@@ -1,4 +1,0 @@
-usr/lib/*/lua/[0-9].[0-9]/sdurw_pathplanners.so
-usr/lib/*/RobWork/rwplugins/libsdurw_pathplanners_lua_plugin.rwplugin.so
-usr/lib/*/RobWork/static/libsdurw_pathplanners_lua_s.a
-usr/share/robwork-*/cmake/targets/sdurw_pathplanners_lua*.cmake

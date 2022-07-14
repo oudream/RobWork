@@ -33,8 +33,13 @@
 namespace rw { namespace math {
 
     template< class T > class Rotation3DVector;
+    template< class T > class Rotation3D;
+    template< class T > const Rotation3D<T> Rotation3DIdentity();
+
     /** @addtogroup math */
     /* @{*/
+
+
 
 #if !defined(SWIGJAVA)
     /**
@@ -58,9 +63,6 @@ namespace rw { namespace math {
      * @f$
      */
 #endif
-
-    template<class T>
-    struct Rotation3DIdentity;
 
     template< class T = double > class Rotation3D
     {
@@ -182,9 +184,9 @@ namespace rw { namespace math {
          */
 
 #endif
-        static const Rotation3D& identity ()
+        static const Rotation3D< T > identity ()
         {
-            return Rotation3DIdentity<T>::identity();
+            return Rotation3DIdentity<T>();
         }
 
         /**
@@ -201,7 +203,10 @@ namespace rw { namespace math {
          * @param column [in] column
          * @return reference to the element
          */
-        inline T& operator() (size_t row, size_t column) { return _m (row, column); }
+        inline T& operator() (size_t row, size_t column)
+        {
+            return _m (row, column);
+        }
 
         /**
          * @brief Returns reference to matrix element
@@ -209,7 +214,10 @@ namespace rw { namespace math {
          * @param column [in] column
          * @return reference to the element
          */
-        inline const T& operator() (size_t row, size_t column) const { return _m (row, column); }
+        inline const T& operator() (size_t row, size_t column) const
+        {
+            return _m (row, column);
+        }
 #else
         MATRIXOPERATOR (T);
 #endif
@@ -260,7 +268,10 @@ namespace rw { namespace math {
          * @param rhs [in] Rotation to compare with
          * @return True if not equal.
          */
-        bool operator!= (const Rotation3D< T >& rhs) const { return !(*this == rhs); }
+        bool operator!= (const Rotation3D< T >& rhs) const
+        {
+            return !(*this == rhs);
+        }
 
         /**
          * @brief Compares rotations with a given precision
@@ -302,7 +313,10 @@ namespace rw { namespace math {
          *
          * @return @f$ \mathbf{M}\in SO(3) @f$
          */
-        const EigenMatrix3x3& e () const { return _m; };
+        const EigenMatrix3x3& e () const
+        {
+            return _m;
+        };
 
         /**
          * @brief Returns a Eigen 3x3 matrix @f$ \mathbf{M}\in SO(3)
@@ -310,7 +324,10 @@ namespace rw { namespace math {
          *
          * @return @f$ \mathbf{M}\in SO(3) @f$
          */
-        EigenMatrix3x3& e () { return _m; };
+        EigenMatrix3x3& e ()
+        {
+            return _m;
+        };
 
         /**
          * @brief Calculates \f$ \robabx{a}{c}{\mathbf{R}} =
@@ -495,9 +512,12 @@ namespace rw { namespace math {
          * @param copy [in] always true
          * @return the inverse rotation.
          */
-        Rotation3D< T > inverse (bool copy) const;
+        const Rotation3D< T > inverse (bool copy) const;
 
-        T tr () const { return (*this) (0, 0) + (*this) (1, 1) + (*this) (2, 2); }
+        T tr () const
+        {
+            return (*this) (0, 0) + (*this) (1, 1) + (*this) (2, 2);
+        }
 
 #if defined(SWIG)
         TOSTRING (rw::math::Rotation3D< T >);
@@ -507,45 +527,20 @@ namespace rw { namespace math {
         EigenMatrix3x3 _m;
     };
 
-    extern const Rotation3D<double> Rotation3DDoubleIdentity;
-    extern const Rotation3D<float> Rotation3DFloatIdentity;
-
-    template<class T>
-    struct Rotation3DIdentity {
-        static const Rotation3D<T>& identity() {
-            static Rotation3D<T> id (1, 0, 0, 0, 1, 0, 0, 0, 1);
-            return id;
-        }
-    };
-
-    template<>
-    struct Rotation3DIdentity<double> {
-        static const Rotation3D<double>& identity() {
-            return Rotation3DDoubleIdentity;
-        }
-    };
-
-    template<>
-    struct Rotation3DIdentity<float> {
-        static const Rotation3D<float>& identity() {
-            return Rotation3DFloatIdentity;
-        }
-    };
-
     /**
-     * @brief Casts Rotation3D<T> to Rotation3D<Q>
+     * @brief Casts Rotation3D<T> to Rotation3D<S>
      *
      * @relates Rotation3D
      *
      * @param rot [in] Rotation3D with type T
-     * @return Rotation3D with type Q
+     * @return Rotation3D with type S
      */
-    template< class Q, class T > const Rotation3D< Q > cast (const Rotation3D< T >& rot)
+    template< class S, class T > const Rotation3D< S > cast (const Rotation3D< T >& rot)
     {
-        Rotation3D< Q > res;
+        Rotation3D< S > res;
         for (size_t i = 0; i < 3; i++)
             for (size_t j = 0; j < 3; j++)
-                res (i, j) = static_cast< Q > (rot (i, j));
+                res (i, j) = static_cast< S > (rot (i, j));
         return res;
     }
 

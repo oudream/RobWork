@@ -11,25 +11,20 @@ Copyright: Evan Wallace
            Tomasz Dabrowski
 License: Expat
 
-Files: RobWork/ext/eigen3/*
 Copyright: Eigen
 License: MPL
 
-Files: RobWork/ext/fcl/fcl/*
 Copyright: 2008-2014, Willow Garage, Inc.
            2014-2016, Open Source Robotics Foundation
 License: BSD-3-clause
 
-Files: RobWork/ext/fcl/libccd/*
 Copyright: 2010-2012 Daniel Fiser <danfis@danfis.cz>
            Intelligent and Mobile Robotics Group, Department of Cybernetics, Faculty of Electrical Engineering, Czech Technical University in Prague.
 License: BSD-3-clause
 
-Files: RobWork/ext/lua/*
 Copyright: 1994-2007 Lua.org, PUC-Rio.
 License: Expat
 
-Files: RobWork/ext/qhull/*
 Copyright: 1993-2015 C.B. Barber. Arlington, MA 
            The National Science and Technology Research Center for Computation and Visualization of Geometric Structures (The Geometry Center) University of Minnesota
 License: QHull
@@ -41,20 +36,6 @@ License: PQP
 Files: RobWork/ext/rwyaobi/*
 Copyright: 2006 Morten Strandberg
 License: Yaobi
-
-Files: RobWork/ext/unzip/*
-Copyright: 1998-2010 Gilles Vollant
-           Mathias Svensson
-License: Zlib
-
-Files: RobWork/ext/unzip/*
-Copyright: 1995-2017 Jean-loup Gailly and Mark Adler
-License: Zlib
-
-Files: RobWorkHardware/ext/dcam*
-Copyright: 2006 Christopher Baker. Robotics Institute, Carnegie Mellon University
-           2000 Iwan Ulrich. Robotics Institute, Carnegie Mellon University
-License: LGPL-2.1
 
 Files: RobWorkStudio/ext/qtpropertybrowser*
 Copyright: 1991, 1999 Free Software Foundation, Inc.

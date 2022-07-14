@@ -155,6 +155,11 @@ configure_file(${RW_ROOT}/cmake/RobWorkConfigMacros.cmake.in
                "${RWS_ROOT}/cmake/RobWorkStudioConfigMacros.cmake" @ONLY
 )
 
+if(NOT WIN32)
+    file(MAKE_DIRECTORY $ENV{HOME}/.cmake/packages/RobWorkStudio)
+    file(WRITE "$ENV{HOME}/.cmake/packages/RobWorkStudio/${ROBWORKSTUDIO_VERSION}-${ROBWORKSTUDIO_BRANCH}" "${RWS_ROOT}/cmake")
+endif()
+
 # ##################################################################################################
 # Installation stuff
 #
