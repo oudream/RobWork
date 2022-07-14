@@ -243,7 +243,7 @@
     - *remove-rw-install
     - THREADS=$(nproc --all)
     - cd ./Build/RW
-
+    - NO_LUA=false
     - make -j${THREADS}
     - make -j${THREADS} python
     - make -j${THREADS} lua
@@ -281,8 +281,9 @@
     - "python3 ./ex-load-workcell.py ../ModelData/XMLScenes/RobotWithHand/Workcell.xml"
     # TEST RW LUA FILES
     - cd $DIR/RobWork/example/lua
+    - $NO_LUA && EXERW=""
     - "for file in $EXERW ; do [[ ! -e ${file}.lua ]] && continue ; echo -e '\n EXECUTING: '$file && lua ${file}.lua ${robworkdata} || exit 1 ; done"
-    - "lua ./ex-load-workcell.lua ../ModelData/XMLScenes/RobotWithHand/Workcell.xml"
+    - "$NO_LUA || lua ./ex-load-workcell.lua ../ModelData/XMLScenes/RobotWithHand/Workcell.xml"
     # Test RWS CPP FILES
     - cd $DIR/RobWorkStudio/example/cpp
     - mkdir build && cd build
@@ -293,6 +294,7 @@
     - cd $DIR/RobWorkStudio/example/python
     - "for file in $EXERWS ; do echo -e '\n EXECUTING: '$file && gdb -batch -ex r -ex bt --args python3 ${file}.py ${robworkdata} -t 2>&1 1> ./output || echo GDB-END ; cat ./output ; cat ./output | grep ^Example-Done$ || exit 1 ; done"
     # Test RWS LUA FILES
+    - $NO_LUA && EXERWS=""
     - cd $DIR/RobWorkStudio/example/lua
     - "for file in $EXERWS ; do echo -e '\n EXECUTING: '$file && gdb -batch -ex r -ex bt --args lua ${file}.lua ${robworkdata} -t  2>&1 1> ./output || echo GDB-END ; cat ./output ; cat ./output | grep ^Example-Done$ || exit 1 ; done"
     # Test RWSIM CPP files
@@ -305,6 +307,7 @@
     - cd $DIR/RobWorkSim/example/python
     - "for file in $EXERWSIM ; do echo -e '\n EXECUTING: '$file && python3 ${file}.py ${robworkdata} || exit 1 ; done"
     # Test RWSIM LUA FILES
+    - $NO_LUA && EXERWSIM=""
     - cd $DIR/RobWorkSim/example/lua
     - "for file in $EXERWSIM ; do echo -e '\n EXECUTING: '$file && lua ${file}.lua ${robworkdata} || exit 1 ; done"
 
@@ -347,7 +350,7 @@
     - cd ./DEBPKG
     - if [[ $(cat /etc/apt/sources.list | grep -c $(pwd)) == 0 ]] ; then echo "deb [trusted=yes] file:$(pwd) ./" >> /etc/apt/sources.list ; fi
     - apt update
-    - apt -y install libsdurw-all-dev libsdurws-all-dev libsdurwsim-all-dev python3-robwork lua-robwork
+    - apt -y install libsdurw-all-dev libsdurws-all-dev libsdurwsim-all-dev python3-robwork
     - robworkdata=/home/robworkdata
     - export DISPLAY=:0
     - Xvfb $DISPLAY -screen 0 640x480x24 &
@@ -355,6 +358,7 @@
     - rm -r ./RobWork/src
     - rm -r ./RobWorkStudio/src
     - rm -r ./RobWorkSim/src
+    - NO_LUA=true
 
 .linux-debian-upgrade-test:
   extends: .CI-common-linux

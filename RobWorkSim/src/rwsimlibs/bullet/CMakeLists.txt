@@ -6,6 +6,7 @@ set(SUBSYS_DEPS
             RW::sdurw_simulation
             RW::sdurw_math
             RW::sdurw_core
+            RW::sdurw_models
 )
 
 set(build FALSE)

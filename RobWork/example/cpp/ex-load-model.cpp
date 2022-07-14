@@ -37,7 +37,7 @@ int main (int argc, char** argv)
                 file = n_file;
             }
             else {
-                std::cout << "The specified file is a directory: " << file << std::endl;
+                std::cout << "The specified file is a directory: " << n_file << std::endl;
                 return 1;
             }
         }

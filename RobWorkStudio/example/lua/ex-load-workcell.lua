@@ -19,7 +19,8 @@ print(WC_FILE)
 
 local wc = WorkCellLoaderFactory.load(WC_FILE)
 local rwstudio = getRobWorkStudioInstance();
-rwstudio:setWorkCell(wc)
+rwstudio:postWorkCell(wc)
+
 
 while(isRunning()) do
     if #arg == 2 and arg[2] == "-t" then

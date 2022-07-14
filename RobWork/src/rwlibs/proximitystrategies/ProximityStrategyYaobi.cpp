@@ -209,6 +209,7 @@ bool ProximityStrategyYaobi::doInCollision (ProximityModel::Ptr aModel, const Tr
     for (const RWYaobiModel& ma : a->models) {
         for (const RWYaobiModel& mb : b->models) {
             //! Search for all contacting triangles
+
             collide (*ma.yaobimodel, wTa * ma.t3d, *mb.yaobimodel, wTb * mb.t3d, result, qtype);
 
             cres._nrBVTests += result.num_bv_tests;

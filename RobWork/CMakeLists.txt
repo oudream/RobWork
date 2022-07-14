@@ -154,6 +154,11 @@ if(RW_HAVE_GTEST)
     endif()
 endif()
 
+if(NOT WIN32)
+file(MAKE_DIRECTORY $ENV{HOME}/.cmake/packages/RobWork)
+file(WRITE "$ENV{HOME}/.cmake/packages/RobWork/${ROBWORK_VERSION}-${ROBWORK_BRANCH}" "${RW_ROOT}/cmake")
+endif()
+
 # ##################################################################################################
 # Installation stuff
 #

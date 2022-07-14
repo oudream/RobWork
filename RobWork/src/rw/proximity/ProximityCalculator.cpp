@@ -155,7 +155,6 @@ namespace rw { namespace proximity {
         }
         // first we update the broadphase filter with the current state
         ProximityFilter::Ptr filter = _proxFilterStrat->update (state);
-        FKTable fk (state);
         ProximityStrategyData data;
         if (!settings.isNull ()) {
             data = *settings;
@@ -175,8 +174,9 @@ namespace rw { namespace proximity {
             if (a == NULL || b == NULL)
                 continue;
 
-            const Transform3D<> aT = fk.get (*pair.first);
-            const Transform3D<> bT = fk.get (*pair.second);
+            const Transform3D<> aT = pair.first->wTf(state);
+            const Transform3D<> bT = pair.second->wTf(state);
+
             bool res               = _strategy.isNull ();
             if (!res) {
                 res = _strategy->inCollision (a, aT, b, bT, data);

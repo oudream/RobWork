@@ -224,6 +224,23 @@ if(build)
 
     endforeach()
 
+    if (TARGET sdurw_kinematics_lua AND TARGET sdurw_models)
+        target_link_libraries(
+            sdurw_kinematics_lua PUBLIC sdurw_models
+        )
+        target_link_libraries(
+            sdurw_kinematics_lua_s PUBLIC sdurw_models
+        )
+    endif()
+    if (TARGET sdurw_geometry_lua AND TARGET sdurw_models)
+        target_link_libraries(
+            sdurw_geometry_lua PUBLIC sdurw_models
+        )
+        target_link_libraries(
+            sdurw_geometry_lua_s PUBLIC sdurw_models
+        )
+    endif()
+
     install(TARGETS ${SUBSYS_NAME}_all EXPORT ${PROJECT_PREFIX}luaTargets)
 
     rw_swig_compile_target(lua ${lua_targets})

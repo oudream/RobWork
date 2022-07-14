@@ -34,7 +34,11 @@ macro(TYPEMAP_ISPOINTER _type _res)
     set(${_res} FALSE)
     string(FIND ${_type} "*" PPOS REVERSE)
     string(LENGTH ${_type} TYPE_LENGTH)
-    math(EXPR TYPE_LENGTH "${TYPE_LENGTH}-2" OUTPUT_FORMAT DECIMAL)
+    if((CMAKE_VERSION VERSION_GREATER 3.13.5) OR (CMAKE_VERSION VERSION_EQUAL 3.13.5))
+        math(EXPR TYPE_LENGTH "${TYPE_LENGTH}-2" OUTPUT_FORMAT DECIMAL)
+    else()
+        math(EXPR TYPE_LENGTH "${TYPE_LENGTH}-2")
+    endif()
     if(${PPOS} GREATER ${TYPE_LENGTH})
         set(${_res} TRUE)
     endif()
@@ -105,25 +109,25 @@ macro(GENERATE_TYPECHECK _type)
     set(body "${body}    }\n")
 
     set(typecheck "#if !defined(SWIGJAVA)\n")
-    ##################################
+    # ##############################################################################################
     # Normal TYPECHECK
-    ##################################
+    # ##############################################################################################
     set(typecheck
         "${typecheck}%typemap(typecheck, precedence=SWIG_TYPECHECK_SWIGOBJECT, fragment=\"${TC_CONVERTER}FromSwig\") ${_type} {\n"
     )
     set(typecheck "${typecheck}${body}")
     set(typecheck "${typecheck}}\n")
-    ##################################
+    # ##############################################################################################
     # & TYPECHECK
-    ##################################
+    # ##############################################################################################
     set(typecheck
         "${typecheck}%typemap(typecheck, precedence=SWIG_TYPECHECK_SWIGOBJECT, fragment=\"${TC_CONVERTER}FromSwig\") ${_type}& {\n"
     )
     set(typecheck "${typecheck}${body}")
     set(typecheck "${typecheck}}\n")
-    ##################################
+    # ##############################################################################################
     # const & TYPECHECK
-    ##################################
+    # ##############################################################################################
     set(typecheck
         "${typecheck}%typemap(typecheck, precedence=SWIG_TYPECHECK_SWIGOBJECT, fragment=\"${TC_CONVERTER}FromSwig\") const ${_type}& {\n"
     )
@@ -163,11 +167,15 @@ macro(GENERATE_TYPEMAP _type)
     set(typemap "${typemap}%typemap(in, fragment=\"${TM_CONVERTER}FromSwig\") ${_type} {\n")
     set(typemap "${typemap}    bool res = fromSWIG(SWIGPtr_pre $input,$1,false);\n")
     set(typemap "${typemap}${tm_end}")
-    set(typemap "${typemap}%typemap(in, fragment=\"${TM_CONVERTER}FromSwig\") ${_type}&  (${_type} temp) {\n")
+    set(typemap
+        "${typemap}%typemap(in, fragment=\"${TM_CONVERTER}FromSwig\") ${_type}&  (${_type} temp) {\n"
+    )
     set(typemap "${typemap}    bool res = fromSWIG(SWIGPtr_pre $input,temp,false);\n")
     set(typemap "${typemap}    $1 = &temp;\n")
     set(typemap "${typemap}${tm_end}")
-    set(typemap "${typemap}%typemap(in, fragment=\"${TM_CONVERTER}FromSwig\") const ${_type}& (${_type} temp) {\n")
+    set(typemap
+        "${typemap}%typemap(in, fragment=\"${TM_CONVERTER}FromSwig\") const ${_type}& (${_type} temp) {\n"
+    )
     set(typemap "${typemap}    bool res = fromSWIG(SWIGPtr_pre $input,temp,false);\n")
     set(typemap "${typemap}    $1 = &temp;\n")
     set(typemap "${typemap}${tm_end}")

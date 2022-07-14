@@ -31,8 +31,7 @@
 
 #include <Eigen/Core>
 #endif
-namespace rw {
-namespace math {
+namespace rw { namespace math {
 
     /** @addtogroup math */
     /*@{*/
@@ -71,16 +70,6 @@ namespace math {
         Jacobian () {}
 
         /**
-           @brief The number of rows.
-         */
-        size_t size1 () const { return _jac.rows (); }
-
-        /**
-           @brief The number of columns.
-         */
-        size_t size2 () const { return _jac.cols (); }
-
-        /**
          * @brief Creates an empty @f$ 6\times n @f$ (uninitialized) Jacobian matrix
          *
          * @param n [in] number of columns
@@ -93,55 +82,6 @@ namespace math {
          * @param r [in] an Eigen Matrix
          */
         template< class R > explicit Jacobian (const Eigen::MatrixBase< R >& r) : _jac (r) {}
-
-        /**
-         * @brief Construct zero initialized Jacobian.
-         * @param size1 [in] number of rows.
-         * @param size2 [in] number of columns.
-         * @return zero-initialized jacobian.
-         */
-        static Jacobian zero (size_t size1, size_t size2)
-        {
-            return Jacobian (
-                Eigen::Matrix< double, Eigen::Dynamic, Eigen::Dynamic >::Zero (size1, size2));
-        }
-
-        /**
-         * @brief Accessor for the internal Eigen matrix state.
-         */
-        Eigen::Matrix< double, Eigen::Dynamic, Eigen::Dynamic >& e () { return _jac; }
-
-        /**
-         * @brief Accessor for the internal Eigen matrix state.
-         */
-        const Eigen::Matrix< double, Eigen::Dynamic, Eigen::Dynamic >& e () const { return _jac; }
-
-#if !defined(SWIG)
-        /**
-         * @brief Returns reference to matrix element
-         * @param row [in] row
-         * @param column [in] column
-         * @return reference to the element
-         */
-        double& operator() (size_t row, size_t column) { return _jac (row, column); }
-
-        /**
-         * @brief Returns reference to matrix element
-         * @param row [in] row
-         * @param column [in] column
-         * @return reference to the element
-         */
-        const double& operator() (size_t row, size_t column) const { return _jac (row, column); }
-#else
-        MATRIXOPERATOR (double);
-#endif
-        /**
-         * @brief Get an element of the jacobian.
-         * @param row [in] the row.
-         * @param col [in] the column.
-         * @return reference to the element.
-         */
-        double& elem (size_t row, size_t col) { return _jac (row, col); }
 
 #if !defined(SWIGJAVA)
 
@@ -171,8 +111,8 @@ namespace math {
          * @f$
          */
 
-#endif 
-        explicit Jacobian (const rw::math::Transform3D<double>& aTb);
+#endif
+        explicit Jacobian (const rw::math::Transform3D< double >& aTb);
 
 #if !defined(SWIGJAVA)
         /**
@@ -201,8 +141,8 @@ namespace math {
          *
          */
 
-#endif 
-        explicit Jacobian (const rw::math::Rotation3D<>& aRb);
+#endif
+        explicit Jacobian (const rw::math::Rotation3D< double >& aRb);
 
 #if !defined(SWIGJAVA)
 
@@ -233,7 +173,87 @@ namespace math {
          */
 
 #endif
-        explicit Jacobian (const rw::math::Vector3D<>& aPb);
+        explicit Jacobian (const rw::math::Vector3D< double >& aPb);
+
+        /**
+           @brief The number of rows.
+         */
+        size_t size1 () const
+        {
+            return _jac.rows ();
+        }
+
+        /**
+           @brief The number of columns.
+         */
+        size_t size2 () const
+        {
+            return _jac.cols ();
+        }
+
+        /**
+         * @brief Construct zero initialized Jacobian.
+         * @param size1 [in] number of rows.
+         * @param size2 [in] number of columns.
+         * @return zero-initialized jacobian.
+         */
+        static Jacobian zero (size_t size1, size_t size2)
+        {
+            return Jacobian (
+                Eigen::Matrix< double, Eigen::Dynamic, Eigen::Dynamic >::Zero (size1, size2));
+        }
+
+        /**
+         * @brief Accessor for the internal Eigen matrix state.
+         */
+        Eigen::Matrix< double, Eigen::Dynamic, Eigen::Dynamic >& e ()
+        {
+            return _jac;
+        }
+
+        /**
+         * @brief Accessor for the internal Eigen matrix state.
+         */
+        const Eigen::Matrix< double, Eigen::Dynamic, Eigen::Dynamic >& e () const
+        {
+            return _jac;
+        }
+
+#if !defined(SWIG)
+        /**
+         * @brief Returns reference to matrix element
+         * @param row [in] row
+         * @param column [in] column
+         * @return reference to the element
+         */
+        double& operator() (size_t row, size_t column)
+        {
+            return _jac (row, column);
+        }
+
+        /**
+         * @brief Returns reference to matrix element
+         * @param row [in] row
+         * @param column [in] column
+         * @return reference to the element
+         */
+        const double& operator() (size_t row, size_t column) const
+        {
+            return _jac (row, column);
+        }
+#else
+        MATRIXOPERATOR (double);
+#endif
+        /**
+         * @brief Get an element of the jacobian.
+         * @param row [in] the row.
+         * @param col [in] the column.
+         * @return reference to the element.
+         */
+        double& elem (size_t row, size_t col)
+        {
+            return _jac (row, col);
+        }
 
         /**
          * @brief add rotation jacobian to a specific row and column in this jacobian
@@ -250,14 +270,17 @@ namespace math {
          * @param col
          */
         void addPosition (const rw::math::Vector3D<>& part, size_t row, size_t col);
-        
+
 #if !defined(SWIG)
         /**
-       * @brief Streaming operator.
-    */
-    friend inline std::ostream& operator<< (std::ostream& out, const Jacobian& v) { return out << v.e (); }
+         * @brief Streaming operator.
+         */
+        friend inline std::ostream& operator<< (std::ostream& out, const Jacobian& v)
+        {
+            return out << v.e ();
+        }
 #else
-        TOSTRING(rw::math::Jacobian);
+        TOSTRING (rw::math::Jacobian);
 #endif
       private:
         Base _jac;
@@ -320,8 +343,7 @@ namespace math {
     const Jacobian operator* (const rw::math::Rotation3D<>& r, const Jacobian& v);
 
     /*@}*/
-}
-}    // namespace rw::math
+}}    // namespace rw::math
 
 namespace rw { namespace common {
     class OutputArchive;

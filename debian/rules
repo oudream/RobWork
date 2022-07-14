@@ -17,13 +17,14 @@ override_dh_auto_configure:
 	-DRWS_SHARED_LIBS=ON \
 	-DRWS_USE_STATIC_LINK_PLUGINS=OFF \
 	-DRWSIM_SHARED_LIBS=ON \
-	-DRW_IS_TESTS_ENABLED=FALSE \
-	-DRW_DISABLE_GTEST=ON \
+	-DUSE_gtest=OFF \
+	-DUSE_LUA=OFF \
 	-DBUILD_sdurw_java=OFF \
-	-DBUILD_sdurw_lua=ON \
-	-DBUILD_sdurw_python=ON \
 	-DBUILD_sdurws_java=OFF \
 	-DBUILD_sdurwsim_java=OFF \
+	-DBUILD_sdurw_lua=OFF \
+	-DBUILD_sdurws_lua=OFF \
+	-DBUILD_sdurwsim_lua=OFF \
 	-DSWIG_DEFAULT_COMPILE=TRUE \
 	$(shell ./debian/scripts/getVersion.sh "./debian/scripts" -n) 
 

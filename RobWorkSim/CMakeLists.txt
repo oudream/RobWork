@@ -111,6 +111,11 @@ configure_file(${RWSIM_ROOT}/src/rwsimlibs/gui/RWSimGuiConfig.hpp.in
 # process sub directories add_subdirectory(ext)
 add_subdirectory(src)
 
+if(NOT WIN32)
+    file(MAKE_DIRECTORY $ENV{HOME}/.cmake/packages/RobWorkSim)
+    file(WRITE "$ENV{HOME}/.cmake/packages/RobWorkSim/${ROBWORKSIM_VERSION}-${ROBWORKSIM_BRANCH}" "${RWSIM_ROOT}/cmake")
+endif()
+
 # ##################################################################################################
 # Installation stuff
 #
