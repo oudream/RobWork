@@ -32,8 +32,10 @@ using namespace rw::kinematics;
 using namespace rw::invkin;
 using namespace rw::trajectory;
 
-JacobianIKSolver::JacobianIKSolver (Device::CPtr device, rw::core::Ptr<const Frame> foi, const State& state) :
-    _device (device), _interpolationStep (0.21), _fkrange (device->getBase (), foi, state),
+JacobianIKSolver::JacobianIKSolver (Device::CPtr device, rw::core::Ptr< const Frame > foi,
+                                    const State& state) :
+    _device (device),
+    _interpolationStep (0.21), _fkrange (device->getBase (), foi, state),
     _devJac (device->baseJCframe (foi, state)), _useJointClamping (false),
     _useInterpolation (false), _checkJointLimits (false), _solverType (SVD),
     _w (Eigen::VectorXd::Ones (_device->getDOF ())), _checkJointLimitsTolerance (0.0)
@@ -173,6 +175,17 @@ void JacobianIKSolver::setWeightVector (Eigen::VectorXd weights)
         RW_THROW ("Weight vector must have same length as device DOF!");
 
     _w = weights.asDiagonal ();
+}
+
+void JacobianIKSolver::setWeightVector (std::vector< double > weights)
+{
+    Eigen::VectorXd we;
+    we.resize (weights.size (), 1);
+    int i = 0;
+    for (double w : weights) {
+        we[i++] = w;
+    }
+    setWeightVector (we);
 }
 
 void JacobianIKSolver::setJointLimitTolerance (double tolerance)

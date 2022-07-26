@@ -27,11 +27,16 @@ using namespace rw::models;
 using namespace rw::kinematics;
 using namespace rw::invkin;
 
+
 ClosedFormIKSolverUR::ClosedFormIKSolverUR (const rw::core::Ptr< const SerialDevice > device,
                                             const State& state) :
     _device (device),
     _checkJointLimits (true)
 {
+    if (_device.isNull ()) {
+        RW_THROW ("The device is null");
+    }
+
     _frames.push_back (_device->getBase ());
     for (const Joint* const joint : _device->getJoints ()) {
         _frames.push_back (joint);

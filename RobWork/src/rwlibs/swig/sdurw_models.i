@@ -256,6 +256,10 @@ NAMED_OWNEDPTR(ParallelLeg,rw::models::ParallelLeg);
 %std_vector(VectorParallelLeg_p, rw::models::ParallelLeg*);
 %std_vector_explicit(VectorParallelDeviceLeg, rw::models::ParallelLeg*, std::vector<std::vector<rw::models::ParallelLeg*>>,"generalToFromPy");
 
+
+%include <rwlibs/swig/typemaps/ParallelDevicePointer.i>
+%include <rwlibs/swig/typemaps/constParallelDevicePtr.i>
+%include <rwlibs/swig/typemaps/ParallelDevicePtr.i>
 %{
 	#include<rw/models/ParallelDevice.hpp>
 %}

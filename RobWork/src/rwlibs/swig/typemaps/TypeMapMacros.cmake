@@ -59,6 +59,10 @@ macro(TYPEMAP_AS_NONE_PTR _type _res)
 
 endmacro()
 
+macro(TYPEMAP_AS_NONE_POINTER _type _res)
+    string(REPLACE "*" "" ${_res} ${_type})
+endmacro()
+
 macro(GENERATE_INCLUDES)
     set(options APPEND) # Used to marke flags
     set(oneValueArgs CONVERTER FILE) # used to marke values with a single value
@@ -231,6 +235,7 @@ macro(GENERATE_STANDARD_POINTER_FRAGMENT _type)
     set(fragment
         "${fragment}%fragment(\"${STD_POINTER_F_CONVERTER}\", \"header\",fragment=\"${STD_POINTER_F_CONVERTER}Include\"){\n"
     )
+    TYPEMAP_AS_NONE_POINTER(${_type} type_nonptr)
     set(fragment "${fragment}    template<class T>\n")
     set(fragment "${fragment}    ${_type} ${STD_POINTER_F_CONVERTER}(rw::core::Ptr<T>* in){\n")
     set(fragment "${fragment}        return in->get();\n")

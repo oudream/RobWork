@@ -481,6 +481,9 @@ FRIEND_OPERATOR(rw::math::Rotation3D<float>, rw::math::Wrench6D<float>, *);
     #include <rw/math/VectorND.hpp>
 %}
 %include <rw/math/VectorND.hpp>
+// Dette skal enables igen
+//%template(Vector6D_b) rw::math::VectorND<6,bool>;
+
 
 %{
     #include <rw/math/VelocityScrew6D.hpp>

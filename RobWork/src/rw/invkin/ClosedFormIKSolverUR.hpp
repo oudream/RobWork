@@ -49,11 +49,12 @@ namespace rw { namespace invkin {
         ClosedFormIKSolverUR (const rw::core::Ptr< const rw::models::SerialDevice > device,
                               const rw::kinematics::State& state);
 
+
         //! @brief Destructor.
         virtual ~ClosedFormIKSolverUR ();
 
         //! @copydoc InvKinSolver::solve
-        std::vector< rw::math::Q > solve (const rw::math::Transform3D<double>& baseTend,
+        std::vector< rw::math::Q > solve (const rw::math::Transform3D< double >& baseTend,
                                           const rw::kinematics::State& state) const;
 
         //! @copydoc InvKinSolver::setCheckJointLimits
@@ -67,18 +68,19 @@ namespace rw { namespace invkin {
       private:
         rw::math::Q adjustJoints (const rw::math::Q& q) const;
 
-        void addBaseAngleSolutions (const rw::math::Transform3D<double>& baseTend,
-                                    const rw::math::Vector3D<double>& baseTdh5,
+        void addBaseAngleSolutions (const rw::math::Transform3D< double >& baseTend,
+                                    const rw::math::Vector3D< double >& baseTdh5,
                                     rw::kinematics::State& state, double angle,
                                     std::vector< rw::math::Q >& res) const;
 
-        void addElbowSolutions (const rw::math::Transform3D<double>& baseTend,
-                                const rw::math::Vector3D<double>& baseTdh5, rw::kinematics::State& state,
-                                double baseAngle, std::pair< double, double > elbow,
+        void addElbowSolutions (const rw::math::Transform3D< double >& baseTend,
+                                const rw::math::Vector3D< double >& baseTdh5,
+                                rw::kinematics::State& state, double baseAngle,
+                                std::pair< double, double > elbow,
                                 std::vector< rw::math::Q >& res) const;
 
         // UR specific geometric functions
-        std::pair< rw::math::Vector3D<double>, rw::math::Vector3D<double> >
+        std::pair< rw::math::Vector3D< double >, rw::math::Vector3D< double > >
         getJoint4Positions (const rw::math::Vector3D<>& baseTdh5, const rw::math::Vector3D<>& tcpZ,
                             const rw::kinematics::State& state) const;
         std::pair< std::pair< double, double >, std::pair< double, double > >

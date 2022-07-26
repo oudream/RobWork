@@ -30,7 +30,7 @@
 	#include <rw/kinematics/MovableFrame.hpp>
 
 	#include <rw/models/DHParameterSet.hpp>
-	
+	#include <rw/models.hpp>
 	#include <rw/geometry/Ray.hpp>
 	#include <rw/geometry/Line.hpp>
 
@@ -91,6 +91,25 @@ NAMED_OWNEDPTR(ClosedFormIK, rw::invkin::ClosedFormIK);
 %}
 %include <rw/invkin/CCDSolver.hpp>
 
+%extend rw::invkin::CCDSolver{
+		/**
+         * @brief Construct new closed form solver for a Universal Robot.
+         * @note The dimensions will be automatically extracted from the device, using an arbitrary
+         * state.
+         * @param device [in] the device.
+         * @param state [in] the state to use to extract dimensions.
+         * @exception rw::core::Exception if device is not castable to SerialDevice
+         */
+        CCDSolver (const rw::core::Ptr< const rw::models::Device > device,
+                              const rw::kinematics::State& state){
+			rw::core::Ptr<const rw::models::SerialDevice> dev = device.cast<const rw::models::SerialDevice>();
+			if(dev.isNull()){
+				RW_THROW("Device is not a Serial Device");
+			}
+			return new rw::invkin::CCDSolver(dev,state);				
+		}
+}
+
 
 %{
 	#include<rw/invkin/ParallelIKSolver.hpp>
@@ -128,6 +147,25 @@ NAMED_OWNEDPTR(JacobianIKSolver, rw::invkin::JacobianIKSolver);
 %}
 %include <rw/invkin/ClosedFormIKSolverUR.hpp>
 NAMED_OWNEDPTR(ClosedFormIKSolverUR, rw::invkin::ClosedFormIKSolverUR);
+
+%extend rw::invkin::ClosedFormIKSolverUR{
+		/**
+         * @brief Construct new closed form solver for a Universal Robot.
+         * @note The dimensions will be automatically extracted from the device, using an arbitrary
+         * state.
+         * @param device [in] the device.
+         * @param state [in] the state to use to extract dimensions.
+         * @exception rw::core::Exception if device is not castable to SerialDevice
+         */
+        ClosedFormIKSolverUR (const rw::core::Ptr< const rw::models::Device > device,
+                              const rw::kinematics::State& state){
+			rw::core::Ptr<const rw::models::SerialDevice> dev = device.cast<const rw::models::SerialDevice>();
+			if(dev.isNull()){
+				RW_THROW("Device is not a Serial Device");
+			}
+			return new rw::invkin::ClosedFormIKSolverUR(dev,state);				
+		}
+}
 
 
 %{
