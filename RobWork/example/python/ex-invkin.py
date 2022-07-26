@@ -1,5 +1,10 @@
+# To get the serial devices you must copy RobWorkData from gitlab.com like this:
+# git clone https://gitlab.com/sdurobotics/robworkdata.git
+#
+
 from sdurw import *
 import sys
+
 
 WC_FILE = "/devices/serialdev/UR10e_2018/UR10e.xml"
 

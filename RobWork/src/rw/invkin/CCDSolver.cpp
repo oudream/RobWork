@@ -196,6 +196,16 @@ CCDSolver::CCDSolver (const SerialDevice* device, const State& state) :
     setMaxError (1e-5);
 }
 
+CCDSolver::CCDSolver (const rw::core::Ptr< const rw::models::SerialDevice > device,
+                      const rw::kinematics::State& state) :
+    _maxQuatStep (0.4),
+    _device (device), _fkrange (device->getBase (), device->getEnd (), state),
+    _devJac (device->baseJCend (state))
+{
+    setMaxIterations (40);
+    setMaxError (1e-5);
+}
+
 void CCDSolver::setMaxLocalStep (double quatlength)
 {
     _maxQuatStep = quatlength;

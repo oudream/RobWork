@@ -98,7 +98,7 @@ if(build)
         WINDOW_TITLE "RobWorkSim Java API Documentation"
                      LOADER_SOURCE_FILE "${CMAKE_CURRENT_SOURCE_DIR}/LoaderRWSim.java"
                      LOADER_DST_FILE "java_src_sdurwsim/org/robwork/LoaderRWSim.java" BUILD_DOC
-                     ${build_doc}
+                     FALSE
         EXTRA_COPY
             COMMAND
                 ${CMAKE_COMMAND} -E copy_if_different

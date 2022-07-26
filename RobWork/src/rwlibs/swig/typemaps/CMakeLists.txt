@@ -280,6 +280,46 @@ generate_typemap_check(
 )
 
 generate_typemap_check(
+    "rw::models::ParallelDevice*"
+    TYPES
+    "rw::models::ParallelDevice"
+    "rw::core::Ptr<rw::models::ParallelDevice>"
+    FILE
+    "./ParallelDevicePointer.i"
+    CONVERTER
+    "toParallelDevicePointer"
+    ADD_POINTER_FRAGMENT
+)
+
+generate_typemap_check(
+    "rw::core::Ptr<rw::models::ParallelDevice const>"
+    TYPES
+    "rw::models::ParallelDevice"
+    "rw::core::Ptr<rw::models::ParallelDevice const>"
+    "rw::core::Ptr<rw::models::ParallelDevice>"
+    FILE
+    "./constParallelDevicePtr.i"
+    CONVERTER
+    "toConstParallelDevicePtr"
+    ADD_RWPTR_FRAGMENT
+)
+
+
+generate_typemap_check(
+    "rw::core::Ptr<rw::models::ParallelDevice>"
+    TYPES
+    "rw::models::ParallelDevice"
+    "rw::core::Ptr<rw::models::ParallelDevice>"
+    FILE
+    "./ParallelDevicePtr.i"
+    CONVERTER
+    "toParallelDevicePtr"
+    ADD_RWPTR_FRAGMENT
+)
+
+
+
+generate_typemap_check(
     "rw::core::Ptr<rw::models::Joint>"
     TYPES
     "rw::core::Ptr<rw::models::Joint>"

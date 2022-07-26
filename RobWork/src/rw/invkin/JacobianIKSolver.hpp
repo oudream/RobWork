@@ -188,6 +188,12 @@ namespace rw { namespace invkin {
         void setWeightVector (Eigen::VectorXd weights);
 
         /**
+         * @brief setWeightVector sets the weight vector used for solver type "Weighted"
+         * @param weights a vector of weights for each degree of freedom, ie weights.size() == DOF
+         */
+        void setWeightVector (std::vector<double> weights);
+
+        /**
          * @brief setJointLimitTolerance set the tolerance used for bound-checking the solution
          * @param tolerance for joint bounds checking
          */

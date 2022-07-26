@@ -293,8 +293,7 @@ int testClosedFormWithQ(const Q& q, std::vector<DHParameterSet>& dhparams) {
     std::vector<Q> solutions = solver.solve(baseTend, state);
 
     //    BOOST_CHECK(solutions.size() == 8);
-    for (std::vector<Q>::iterator it = solutions.begin(); it != solutions.end(); ++it) {
-        Q qres = *it;
+    for (Q qres : solutions) {
         T06 = Transform3D<>::identity();
         for (size_t i = 0; i<dhparams.size(); i++) {
             T06 = T06*Transform3D<>::craigDH(
