@@ -2,8 +2,11 @@
 #include <rw/geometry/BSphere.hpp>
 #include <rw/geometry/SimpleTriMesh.hpp>
 
+#include <Eigen/Core>
+#include <deque>
 #include <thread>
 #include <vector>
+
 using namespace rw::math;
 using namespace rw::geometry;
 using namespace rw::core;
@@ -93,6 +96,11 @@ ReferencedTriangle::operator rw::geometry::Triangle< float > () const
     return rw::geometry::Triangle< float > ((*this)[0], (*this)[1], (*this)[2]);
 }
 
+ReferencedTriangle::operator int () const
+{
+    return _triIndex;
+}
+
 namespace rw { namespace geometry {
     std::ostream& operator<< (std::ostream& os, const ReferencedVertice& v)
     {
@@ -117,8 +125,14 @@ SimpleTriMesh::SimpleTriMesh (TriMeshData::Ptr data) :
     if (data.isNull ()) {
         _data = rw::core::ownedPtr (new TriMeshData ());
     }
-    else {
+    else if (data.isShared ()) {
         _data = data;
+    }
+    else {
+        _data = rw::core::ownedPtr (new TriMeshData ());
+
+        _data->_triangles = data->_triangles;
+        _data->_vertecies = data->_vertecies;
     }
 }
 
@@ -139,7 +153,16 @@ SimpleTriMesh::SimpleTriMesh (const SimpleTriMesh& copy) :
 
 SimpleTriMesh::SimpleTriMesh (const SimpleTriMesh&& copy) :
     _data (copy._data), _engine (copy._engine)
-{}
+{
+    if (_data.isNull ()) {
+        _data = rw::core::ownedPtr (new TriMeshData ());
+    }
+    else if (!_data.isShared ()) {
+        _data             = rw::core::ownedPtr (new TriMeshData ());
+        _data->_triangles = copy._data->_triangles;
+        _data->_vertecies = copy._data->_vertecies;
+    }
+}
 
 SimpleTriMesh::SimpleTriMesh (const rw::core::Ptr< SimpleTriMesh >& copy) :
     _data (rw::core::ownedPtr (new TriMeshData ())),
@@ -169,6 +192,35 @@ SimpleTriMesh::SimpleTriMesh (const rw::core::Ptr< rw::geometry::GeometryData >&
 SimpleTriMesh::SimpleTriMesh (const rw::core::Ptr< rw::geometry::TriMesh >& copy) :
     SimpleTriMesh (*copy)
 {}
+
+SimpleTriMesh::SimpleTriMesh (std::vector< ReferencedTriangle > triangles,
+                              rw::core::Ptr< TriMeshData > data) :
+    _data (rw::core::ownedPtr (new TriMeshData ())),
+    _engine (CSGEngine::Factory::getDefaultEngine ())
+{
+    _data->_triangles.resize (triangles.size (), 3);
+    std::map< int, int > idx2idx;
+
+    uint32_t idx  = 0;
+    uint32_t loop = 0;
+    for (const ReferencedTriangle& t : triangles) {
+        for (size_t i = 0; i < 3; i++) {
+            int index = t.idx (i);
+            if (idx2idx.find (index) == idx2idx.end ()) {
+                idx2idx[index] = idx++;
+            }
+            triangle (loop).idx (i) = idx2idx[index];
+        }
+        loop++;
+    }
+    _data->_vertecies.resize (idx, 3);
+
+    for (std::pair< int, int > i2i : idx2idx) {
+        ReferencedVertice old (data, i2i.first);
+        ReferencedVertice nEw (_data, i2i.second);
+        nEw = (Vector3D< double >) old;
+    }
+}
 
 rw::geometry::Triangle< double > SimpleTriMesh::getTriangle (size_t idx) const
 {
@@ -213,6 +265,7 @@ void SimpleTriMesh::scale (double scale)
         }
     }
 }
+
 void SimpleTriMesh::scale (const rw::math::Vector3D< double >& scale)
 {
     for (Eigen::Index i = 0; i < _data->_vertecies.rows (); i++) {
@@ -246,6 +299,91 @@ void SimpleTriMesh::resize (size_t triangles, size_t vertices)
 {
     _data->_triangles.resize (triangles, 3);
     _data->_vertecies.resize (vertices, 3);
+}
+
+struct Edge
+{
+    Edge (uint32_t i, uint32_t k) : i (i), k (k) {}
+    Edge (const ReferencedTriangle& tri, int index)
+    {
+        index = index % 3;
+        i     = tri.idx (index);
+        k     = tri.idx ((index + 1) % 3);
+
+        if(i > k){
+            uint32_t tmp = i;
+            i = k;
+            k = tmp;
+        }
+    }
+    uint32_t i;
+    uint32_t k;
+
+    bool operator<(const Edge& rhs) const { return i < rhs.i || (i == rhs.i && k < rhs.k); }
+    bool operator== (const Edge& rhs) const { return i == rhs.i && k == rhs.k; }
+    bool operator> (const Edge& rhs) const { return !(*this == rhs || *this < rhs); }
+};
+
+std::vector< SimpleTriMesh > SimpleTriMesh::separateMeshes () const
+{
+    std::map< Edge, std::vector< ReferencedTriangle > > conn;
+
+    for (size_t i = 0; i < this->triangles (); i++) {
+        ReferencedTriangle t = this->triangle (i);
+        conn[Edge (t, 0)].push_back (t);
+        conn[Edge (t, 1)].push_back (t);
+        conn[Edge (t, 2)].push_back (t);
+    }
+
+    std::vector< int > visited (this->triangles (), false);
+    std::vector< SimpleTriMesh > res;
+
+    for (size_t i = 0; i < this->triangles (); i++) {
+        if (!visited[i]) {
+            std::vector< ReferencedTriangle > newMesh;
+            std::deque< ReferencedTriangle > toDo;
+
+            toDo.push_back (this->triangle (i));
+            while (!toDo.empty ()) {
+                ReferencedTriangle t = toDo.front ();
+
+                toDo.pop_front ();
+                if (!visited[t]) {
+                    newMesh.push_back (t);
+                    visited[t] = true;
+
+                    for (size_t j = 0; j < 3; j++) {
+                        for (const ReferencedTriangle& t_new : conn[Edge (t, j)]) {
+                            toDo.push_back (t_new);
+                        }
+                    }
+                }
+            }
+            res.push_back (SimpleTriMesh (newMesh, _data));
+        }
+    }
+    return res;
+}
+
+SimpleTriMesh SimpleTriMesh::combine (const SimpleTriMesh& mesh) const
+{
+    TriMeshData::Ptr data                            = ownedPtr (new TriMeshData);
+    Eigen::Matrix< uint32_t, Eigen::Infinity, 3 >& t = data->_triangles;
+    Eigen::Matrix< double, Eigen::Infinity, 3 >& v   = data->_vertecies;
+
+    t.resize (triangles () + mesh.triangles (), 3);
+    t << _data->_triangles, mesh._data->_triangles;
+
+    v.resize (vertices () + mesh.vertices (), 3);
+    v << _data->_vertecies, mesh._data->_vertecies;
+
+    for (long int i = _data->_triangles.rows (); i < t.rows (); i++) {
+        t (i, 0) += vertices ();
+        t (i, 1) += vertices ();
+        t (i, 2) += vertices ();
+    }
+
+    return SimpleTriMesh (data);
 }
 
 namespace {
@@ -377,4 +515,59 @@ SimpleTriMesh& SimpleTriMesh::operator^= (const SimpleTriMesh& rhs)
     }
     this->_data = _engine->SymmetricDifference (this->_data, rhs._data);
     return *this;
+}
+
+SimpleTriMesh& SimpleTriMesh::operator= (TriMeshData::Ptr data)
+{
+    _data = data;
+    if (!_data.isNull () && _data.isShared ()) {
+        return *this;
+    }
+
+    _data = rw::core::ownedPtr (new TriMeshData ());
+    if (!data.isNull ()) {
+        _data->_triangles = data->_triangles;
+        _data->_vertecies = data->_vertecies;
+    }
+    return *this;
+}
+
+SimpleTriMesh& SimpleTriMesh::operator= (const SimpleTriMesh& copy)
+{
+    return *this = SimpleTriMesh (copy).getData ();
+}
+
+SimpleTriMesh& SimpleTriMesh::operator= (const SimpleTriMesh&& tmp)
+{
+    return *this = SimpleTriMesh (tmp);
+}
+
+SimpleTriMesh& SimpleTriMesh::operator= (const rw::core::Ptr< SimpleTriMesh >& copy)
+{
+    return *this = SimpleTriMesh (copy);
+}
+
+SimpleTriMesh& SimpleTriMesh::operator= (const rw::geometry::TriMesh& copy)
+{
+    return *this = SimpleTriMesh (copy);
+}
+
+SimpleTriMesh& SimpleTriMesh::operator= (rw::geometry::GeometryData& copy)
+{
+    return *this = SimpleTriMesh (copy);
+}
+
+SimpleTriMesh& SimpleTriMesh::operator= (rw::geometry::GeometryData&& copy)
+{
+    return *this = SimpleTriMesh (copy);
+}
+
+SimpleTriMesh& SimpleTriMesh::operator= (const rw::core::Ptr< rw::geometry::GeometryData >& copy)
+{
+    return *this = SimpleTriMesh (copy);
+}
+
+SimpleTriMesh& SimpleTriMesh::operator= (const rw::core::Ptr< rw::geometry::TriMesh >& copy)
+{
+    return *this = SimpleTriMesh (copy);
 }

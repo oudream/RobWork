@@ -107,3 +107,26 @@ TEST (SimpleTriMesh, SYMETRICDIFFERENCE)
 
     EXPECT_NEAR (GeometryUtil::estimateVolume (s3), 2, 10e-6);
 }
+
+TEST (SimpleTriMesh, CombineAndSeperate)
+{
+    Box b1 (0.1, 0.1, 0.1);
+    Box b2 (0.1, 0.1, 0.1);
+    SimpleTriMesh s1 (b1);
+    SimpleTriMesh s2 (b2);
+    s2 *= Transform3D<> (Vector3D< double > (0, 0.2, 0));
+
+    SimpleTriMesh s3 = s1.combine (s2);
+
+    EXPECT_EQ (s3.vertices (), s1.vertices () + s2.vertices ());
+    EXPECT_EQ (s3.triangles (), s1.triangles () + s2.triangles ());
+
+    std::vector< SimpleTriMesh > sep = s3.separateMeshes ();
+
+    EXPECT_EQ (sep.size (), 2u);
+
+    EXPECT_EQ (s1.vertices (), sep[0].vertices ());
+    EXPECT_EQ (s1.triangles (), sep[0].triangles ());
+    EXPECT_EQ (s2.vertices (), sep[1].vertices ());
+    EXPECT_EQ (s2.triangles (), sep[1].triangles ());
+}

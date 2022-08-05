@@ -96,12 +96,42 @@ namespace rw { namespace geometry {
     class ReferencedTriangle
     {
       public:
+        /**
+         * @brief Construct a new Referenced Triangle a mesh and the index of the triangle in the
+         * mesh
+         * @param ref [in] the TriMesh the triangle is a part of
+         * @param triangle [in] the index of the triangle in the mesh
+         */
         ReferencedTriangle (TriMeshData::Ptr ref, uint32_t triangle);
 
+        /**
+         * @brief Acces the vertices of the triangle
+         * @param i [in] which of the 3 vertices to access
+         * @return ReferencedVertice. Any changes to the vertice will modify the mesh
+         */
         ReferencedVertice operator[] (size_t i) const;
+
+        /**
+         * @brief get the indexes of the vertices that constetutes this triangle
+         * @param i [in] which of the 3 vertices to access
+         * @return reference to the trangle index. Changing this value will modefiy the mesh
+         */
         uint32_t& idx (size_t i) const;
 
+        /**
+         * @brief assign new values to the vertices of this triangle, by copying them.
+         * OBS this will modify the mesh.
+         * @param rhs
+         * @return ReferencedTriangle&
+         */
         ReferencedTriangle& operator= (rw::geometry::Triangle< double > rhs);
+
+        /**
+         * @brief assign new values to the vertices of this triangle, by copying them.
+         * OBS this will modify the mesh.
+         * @param rhs
+         * @return ReferencedTriangle&
+         */
         ReferencedTriangle& operator= (rw::geometry::Triangle< float > rhs);
 
         /**
@@ -112,8 +142,14 @@ namespace rw { namespace geometry {
          */
         friend std::ostream& operator<< (std::ostream& os, const ReferencedTriangle& t);
 
+        //! @brief Implicit converter to other triangle type
         operator rw::geometry::Triangle< double > () const;
+
+        //! @brief Implicit converter to other triangle type
         operator rw::geometry::Triangle< float > () const;
+
+        //! @brief implicit acces the triangle index
+        operator int () const;
 
       private:
         ReferencedTriangle ();
@@ -123,7 +159,6 @@ namespace rw { namespace geometry {
 
     /**
      * @brief A TriMesh with better interactions with the underlying data, and more capabilities
-     *
      */
     class SimpleTriMesh : public TriMesh
     {
@@ -149,10 +184,11 @@ namespace rw { namespace geometry {
         SimpleTriMesh (const SimpleTriMesh& copy);
 
         /**
-         * @brief Copy the data from an existing trimesh
-         * @param copy the object to be copied
+         * @brief Transfere the data from a temporary TriMesh. This will simply copy the shared
+         * pointer to the data object
+         * @param tmp the object to take the data from
          */
-        SimpleTriMesh (const SimpleTriMesh&& copy);
+        SimpleTriMesh (const SimpleTriMesh&& tmp);
 
         /**
          * @brief Copy the data from an existing trimesh
@@ -163,35 +199,30 @@ namespace rw { namespace geometry {
         /**
          * @brief Copy the data from an existing trimesh
          * @param copy the object to be copied
-         * @param prox [in] the distance between to vertexes to be counted as the same
          */
         SimpleTriMesh (const rw::geometry::TriMesh& copy);
 
         /**
          * @brief Copy the data from an existing trimesh
          * @param copy the object to be copied
-         * @param prox [in] the distance between to vertexes to be counted as the same
          */
         SimpleTriMesh (rw::geometry::GeometryData& copy);
 
         /**
          * @brief Copy the data from an existing trimesh
          * @param copy the object to be copied
-         * @param prox [in] the distance between to vertexes to be counted as the same
          */
         SimpleTriMesh (rw::geometry::GeometryData&& copy);
 
         /**
          * @brief Copy the data from an existing trimesh
          * @param copy the object to be copied
-         * @param prox [in] the distance between to vertexes to be counted as the same
          */
         SimpleTriMesh (const rw::core::Ptr< rw::geometry::GeometryData >& copy);
 
         /**
          * @brief Copy the data from an existing trimesh
          * @param copy the object to be copied
-         * @param prox [in] the distance between to vertexes to be counted as the same
          */
         SimpleTriMesh (const rw::core::Ptr< rw::geometry::TriMesh >& copy);
 
@@ -240,7 +271,7 @@ namespace rw { namespace geometry {
          * @brief Scale all vertices in the mesh.
          * @param scale [in] how each axis should be scaled.
          */
-        virtual void scale (const rw::math::Vector3D<double>& scale);
+        virtual void scale (const rw::math::Vector3D< double >& scale);
 
         /**
          * @brief the type of this primitive
@@ -315,6 +346,26 @@ namespace rw { namespace geometry {
          * @param engine [in] pointer to the new engine
          */
         void setCSGEngine (CSGEngine::Ptr engine) { _engine = engine; }
+
+        //###########################################
+        //#      Mesh Operations & analysis         #
+        //###########################################
+
+        /**
+         * @brief Check if there are non-connected meshes inside this mesh. If ther are then
+         * seperate and return them. non-connected means that you have meshes that does not share a triangluar edge
+         * @return if no seperate meshes return this mesh. Else seperate the Meshes and return them.
+         */
+        std::vector< SimpleTriMesh > separateMeshes () const;
+
+        /**
+         * @brief combine two meshes. OBS! this is not a union operation has all vertices and
+         * triangles are just directly copied over
+         *
+         * @param mesh [in] the mesh, that his mesh should be combined with
+         * @return the resulting trimesh
+         */
+        SimpleTriMesh combine (const SimpleTriMesh& mesh) const;
 
         //###########################################
         //#               Operators                 #
@@ -397,10 +448,70 @@ namespace rw { namespace geometry {
          */
         SimpleTriMesh& operator^= (const SimpleTriMesh& rhs);
 
+        //###########################################
+        //#         Assignment Operators            #
+        //###########################################
+
+        /**
+         * @brief set the current data pointer equal to the new one
+         * @param data [in] the data to take ownership of. If not shared pointer, then the
+         * destructor cleans it up
+         */
+        SimpleTriMesh& operator= (TriMeshData::Ptr data);
+
+        /**
+         * @brief Copy the data from an existing trimesh
+         * @param copy the object to be copied
+         */
+        SimpleTriMesh& operator= (const SimpleTriMesh& copy);
+
+        /**
+         * @brief Transfere the data from a temporary TriMesh. This will simply copy the shared
+         * pointer to the data object
+         * @param tmp the object to take the data from
+         */
+        SimpleTriMesh& operator= (const SimpleTriMesh&& tmp);
+
+        /**
+         * @brief Copy the data from an existing trimesh
+         * @param copy the object to be copied
+         */
+        SimpleTriMesh& operator= (const rw::core::Ptr< SimpleTriMesh >& copy);
+
+        /**
+         * @brief Copy the data from an existing trimesh
+         * @param copy the object to be copied
+         */
+        SimpleTriMesh& operator= (const rw::geometry::TriMesh& copy);
+
+        /**
+         * @brief Copy the data from an existing trimesh
+         * @param copy the object to be copied
+         */
+        SimpleTriMesh& operator= (rw::geometry::GeometryData& copy);
+
+        /**
+         * @brief Copy the data from an existing trimesh
+         * @param copy the object to be copied
+         */
+        SimpleTriMesh& operator= (rw::geometry::GeometryData&& copy);
+
+        /**
+         * @brief Copy the data from an existing trimesh
+         * @param copy the object to be copied
+         */
+        SimpleTriMesh& operator= (const rw::core::Ptr< rw::geometry::GeometryData >& copy);
+
+        /**
+         * @brief Copy the data from an existing trimesh
+         * @param copy the object to be copied
+         */
+        SimpleTriMesh& operator= (const rw::core::Ptr< rw::geometry::TriMesh >& copy);
+
       private:
         void fromTriMesh (const rw::geometry::TriMesh& copy);
 
-        SimpleTriMesh (std::vector< ReferencedTriangle > triangles);
+        SimpleTriMesh (std::vector< ReferencedTriangle > triangles, rw::core::Ptr< TriMeshData > data);
         rw::core::Ptr< TriMeshData > _data;
         CSGEngine::Ptr _engine;
     };
