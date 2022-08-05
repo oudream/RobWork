@@ -13,7 +13,9 @@ installed, please check that it is recent enough to support your setup:
 | CMake           | | Maximum Visual Studio | | Maximum Boost     |
 | Version         | | Version Supported     | | Version Supported |
 +=================+=========================+=====================+
-| 3.22.2-3.22.3\* | Visual Studio 17 2022   | 1.78.0              |
+| 3.23.2-3.23.3\* | Visual Studio 17 2022   | 1.79.0              |
++-----------------+-------------------------+---------------------+
+| 3.22.2-3.23.1   | Visual Studio 17 2022   | 1.78.0              |
 +-----------------+-------------------------+---------------------+
 | 3.21.3-3.22.1   | Visual Studio 17 2022   | 1.77.0              |
 +-----------------+-------------------------+---------------------+

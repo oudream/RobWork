@@ -2,29 +2,31 @@ Source: robwork
 Priority: optional
 Maintainer: Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>
 Build-Depends: 
-  debhelper (>= 10), 
-  cmake(>= 3.5), 
-  libfcl-dev(>= 0.3), 
-  libboost-program-options-dev (>= 1.54), 
+  debhelper (>= 10),
+  cmake(>= 3.5),
+  libfcl-dev(>= 0.3),
+  libboost-program-options-dev (>= 1.54),
   libboost-filesystem-dev (>= 1.54),
-  libboost-serialization-dev (>= 1.54), 
-  libboost-system-dev (>= 1.54), 
-  libboost-thread-dev (>= 1.54), 
-  libxerces-c-dev (>= 3.1), 
-  libeigen3-dev (>= 3), 
-  libqhull-dev (>= 2012.1), 
-  libbullet-dev (>= 2.81), 
-  swig (>=3), 
+  libboost-serialization-dev (>= 1.54),
+  libboost-system-dev (>= 1.54),
+  libboost-thread-dev (>= 1.54),
+  libxerces-c-dev (>= 3.1),
+  libeigen3-dev (>= 3),
+  libqhull-dev (>= 2012.1),
+  libbullet-dev (>= 2.81),
+  libmgl-dev,
+  swig (>=3),
   python3-dev,
   python3-numpy,
-  libgtest-dev, 
-  libassimp-dev (>= 3.0), 
+  libgtest-dev,
+  libassimp-dev (>= 3.0),
   libpthread-stubs0-dev (>=0.3),
-  libglu1-mesa-dev (>= 9), 
-  libomp-dev (>= 3.7), 
+  libglu1-mesa-dev (>= 9),
+  libomp-dev (>= 3.7),
   qt6-base-dev (>=6) | qtbase5-dev (>=5),
   libqt6opengl6-dev (>=6) | qtbase5-dev (>=5),
-  libode-dev (>=2), 
+  libqt6charts6-dev (>=6) | libqt5charts5-dev (>=5),
+  libode-dev (>=2),
   freeglut3-dev (>=2.8)
 Standards-Version: 4.1.2
 Section: libs
@@ -320,6 +322,23 @@ Description: Pathplanning with ARW, PRM, RRT, SBL and Z3.
   - SBL: Single-query Bi-directional Lazy planner
   - Z3: Z3-method
 
+Package: libsdurw-plots
+Architecture: amd64
+Section: misc
+Multi-Arch: same
+Depends:
+ libsdurw-plots-mathgl (=${binary:Version}),
+ ${misc:Depends}
+Description: Metapackage for all implementations of the plot interface.
+ Metapackage for all implementations of the plot interface.
+
+Package: libsdurw-plots-mathgl
+Architecture: amd64
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Rendering of plots based on MathGL.
+ Rendering of plots based on MathGL.
+
 Package: libsdurw-task
 Architecture: amd64
 Multi-Arch: same
@@ -459,6 +478,23 @@ Replaces:
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: RobWorkStudio plugin for visualization of grasp tasks.
  The RobWorkStudio plugin for visualization of grasp tasks.
+
+Package: libsdurws-charts
+Architecture: amd64
+Section: misc
+Multi-Arch: same
+Depends:
+ libsdurws-charts-qt (=${binary:Version}),
+ ${misc:Depends}
+Description: Metapackage for all implementations of the plot view interface.
+ Metapackage for all implementations of the plot view interface.
+
+Package: libsdurws-charts-qt
+Architecture: amd64
+Multi-Arch: same
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: Rendering of charts based on Qt Charts library.
+ Rendering of charts based on Qt Charts library.
 
 Package: libsdurws-jog
 Architecture: amd64
@@ -1002,6 +1038,28 @@ Replaces:
 Description: Development library for RobWork pathplanning algorithms.
  The Development library for RobWork pathplanning algorithms.
 
+Package: libsdurw-plots-dev
+Architecture: amd64
+Section: misc
+Multi-Arch: same
+Depends:
+ libsdurw-plots-mathgl-dev (=${binary:Version}),
+ ${misc:Depends}
+Description: Metapackage for all development packages implementing the plot interface.
+ Metapackage for all development packages implementing the plot interface.
+
+Package: libsdurw-plots-mathgl-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends:
+ libsdurw-plots-mathgl (=${binary:Version}),
+ ${cmakedep:Depends},
+ libmgl-dev,
+ ${misc:Depends}
+Description: Development library for RobWork plots based on MathGL.
+ The Development library for RobWork plots based on MathGL.
+
 Package: libsdurw-task-dev
 Section: libdevel
 Architecture: amd64
@@ -1163,6 +1221,28 @@ Replaces:
   libsdurws-gtask1.2-dev
 Description: Development library for RobWorkStudio grasp plugin.
  The Development library for RobWorkStudio grasp plugin.
+
+Package: libsdurws-charts-dev
+Architecture: amd64
+Section: misc
+Multi-Arch: same
+Depends:
+ libsdurws-charts-qt-dev (=${binary:Version}),
+ ${misc:Depends}
+Description: Metapackage for all development packages implementing the plot view interface.
+ Metapackage for all development packages implementing the plot view interface.
+
+Package: libsdurws-charts-qt-dev
+Section: libdevel
+Architecture: amd64
+Multi-Arch: same
+Depends:
+ libsdurws-charts-qt (=${binary:Version}),
+ ${cmakedep:Depends},
+ libqt6charts6-dev (>=6) | libqt5charts5-dev (>=5),
+ ${misc:Depends}
+Description: Development library for RobWorkStudio charts based on Qt charts.
+ The Development library for RobWorkStudio charts based on Qt charts.
 
 Package: libsdurws-jog-dev
 Section: libdevel
@@ -1965,6 +2045,7 @@ Depends:
  libsdurw-proximitystrategies (=${binary:Version}), 
  libsdurw-pathoptimization (=${binary:Version}), 
  libsdurw-pathplanners (=${binary:Version}), 
+ libsdurw-plots (=${binary:Version}),
  libsdurw-task (=${binary:Version}), 
  libsdurw-simulation (=${binary:Version}), 
  libsdurw-assembly (=${binary:Version}), 
@@ -1990,6 +2071,7 @@ Depends:
  libsdurws-robworkstudioapp (=${binary:Version}), 
  libsdurws-atask (=${binary:Version}), 
  libsdurws-gtask (=${binary:Version}), 
+ libsdurws-charts (=${binary:Version}),
  libsdurws-jog (=${binary:Version}), 
  libsdurws-log (=${binary:Version}), 
  libsdurws-planning (=${binary:Version}), 
@@ -2053,6 +2135,7 @@ Depends:
  libsdurw-proximitystrategies-dev (=${binary:Version}), 
  libsdurw-pathoptimization-dev (=${binary:Version}), 
  libsdurw-pathplanners-dev (=${binary:Version}), 
+ libsdurw-plots-dev (=${binary:Version}),
  libsdurw-task-dev (=${binary:Version}), 
  libsdurw-simulation-dev (=${binary:Version}), 
  libsdurw-assembly-dev (=${binary:Version}), 
@@ -2078,6 +2161,7 @@ Depends:
  libsdurws-robworkstudioapp-dev (=${binary:Version}), 
  libsdurws-atask-dev (=${binary:Version}), 
  libsdurws-gtask-dev (=${binary:Version}), 
+ libsdurws-charts-dev (=${binary:Version}),
  libsdurws-jog-dev (=${binary:Version}), 
  libsdurws-log-dev (=${binary:Version}), 
  libsdurws-planning-dev (=${binary:Version}), 

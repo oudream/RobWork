@@ -2,7 +2,7 @@ Ubuntu compilation
 **********************
 
 RobWork can be built by the user.
-This guide shows the steps for doing this in Ubuntu 18.04, 20.04, 21.10 and 22.04.
+This guide shows the steps for doing this in Ubuntu 18.04, 20.04 and 22.04.
 The compilation on these platforms are tested continuously.
 Current status of the pipeline for the RobWork master branch is:
 
@@ -11,7 +11,7 @@ Current status of the pipeline for the RobWork master branch is:
 
 If you have any suggestions or additions to the guide, please post it on the issue
 tracker https://gitlab.com/sdurobotics/RobWork/issues . This guide was
-last revised in March 2022.
+last revised in August 2022.
 
 .. note::
 
@@ -143,6 +143,12 @@ OpenCascade (optional) these libraries enables robwork to load STEP files as geo
                          libocct-ocaf-dev \
                          occt-misc 
 
+MathGL (optional) can be used for basic rendering of plots
+
+.. code-block:: shell
+
+    sudo apt-get install libmgl-dev
+
 RobWorkStudio Dependencies
 --------------------------
 
@@ -159,6 +165,13 @@ Alternatively, use Qt5:
 .. code-block:: shell
 
     sudo apt-get install qtbase5-dev
+
+Optionally, it is possible to use Qt Charts for better visualization of plots. Use one of these depending on Qt version:
+
+.. code-block:: shell
+
+    sudo apt-get install libqt5charts5
+    sudo apt-get install libqt6charts6
 
 RobWorkSim Dependencies
 -----------------------

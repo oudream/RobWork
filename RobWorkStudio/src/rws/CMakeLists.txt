@@ -49,6 +49,8 @@ if(build)
         HelpAssistant.cpp
         RWSSpinBox.cpp
         ImageView.cpp
+        PlotView.cpp
+        PlotSimpleView.cpp
         propertyview/PropertyViewEditor.cpp
         propertyview/PropertyViewDialog.cpp
     )
@@ -66,6 +68,8 @@ if(build)
         AboutBox.hpp
         HelpAssistant.hpp
         ImageView.hpp
+        PlotView.hpp
+        PlotSimpleView.hpp
     )
     set(SRC_FILES_HPP_propertyview propertyview/PropertyViewEditor.hpp
                                    propertyview/PropertyViewDialog.hpp

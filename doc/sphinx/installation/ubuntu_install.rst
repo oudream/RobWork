@@ -54,27 +54,29 @@ For the development packages including the newest version of robwork and the inc
 
     sudo apt-get install lib<package>-dev
 
-+---------------------------------+-----------------------------------+------------------------------------+-----------------------+
-| RobWork                         | RobWorkStudio                     | RobWorkHardWare                    | RobWorkSim            |
-+---------------------------------+-----------------------------------+------------------------------------+-----------------------+
-|  - libsdurw                     |  - libsdurws                      |  - libsdurwhw-camera               |  - libsdurwsim        |
-|  - libsdurw-algorithms          |  - libsdurws-atask                |  - libsdurwhw-can                  |  - libsdurwsim-bullet |
-|  - libsdurw-geometry            |  - libsdurws-gtask                |  - libsdurwhw-dockwelder           |  - libsdurws-gui      |
-|  - libsdurw-assembly            |  - libsdurws-jog                  |  - libsdurwhw-netft                |  - libsdurwsim-ode    |
-|  - libsdurw-calibration         |  - libsdurws-log                  |  - libsdurwhw-pcube                |                       |
-|  - libsdurw-control             |  - libsdurws-planning             |  - libsdurwhw-robolabft            |                       |
-|  - libsdurw-csg                 |  - libsdurws-playback             |  - libsdurwhw-robotiq              |                       |
-|  - libsdurw-opengl              |  - libsdurws-propertyview         |  - libsdurwhw-schunkpg70           |                       |
-|  - libsdurw-pathoptimization    |  - libsdurws-robworkstudioapp     |  - libsdurwhw-serialport           |                       |
-|  - libsdurw-pathplanners        |  - libsdurws-sensors              |  - libsdurwhw-tactile              |                       |
-|  - libsdurw-proximitystrategies |  - libsdurws-treeview             |  - libsdurwhw-universalrobots      |                       |
-|  - libsdurw-simulation          |  - libsdurws-workcelleditor       |  - libsdurwhw-universalrobots-rtde |                       |
-|  - libsdurw-task                |  - libsdurws-workcelleditorplugin |                                    |                       |
-|  - libsdurw-core                |                                   |                                    |                       |
-|  - libsdurw-common              |                                   |                                    |                       |
-|  - libsdurw-math                |                                   |                                    |                       |
-|  - libsdurw-geometry-expanded   |                                   |                                    |                       |
-+---------------------------------+-----------------------------------+------------------------------------+-----------------------+
++---------------------------------+-----------------------------------+-----------------------+
+| RobWork                         | RobWorkStudio                     | RobWorkSim            |
++---------------------------------+-----------------------------------+-----------------------+
+|  - libsdurw                     |  - libsdurws                      |  - libsdurwsim        |
+|  - libsdurw-algorithms          |  - libsdurws-atask                |  - libsdurwsim-bullet |
+|  - libsdurw-geometry            |  - libsdurws-gtask                |  - libsdurws-gui      |
+|  - libsdurw-assembly            |  - libsdurws-jog                  |  - libsdurwsim-ode    |
+|  - libsdurw-calibration         |  - libsdurws-log                  |                       |
+|  - libsdurw-control             |  - libsdurws-planning             |                       |
+|  - libsdurw-csg                 |  - libsdurws-playback             |                       |
+|  - libsdurw-opengl              |  - libsdurws-propertyview         |                       |
+|  - libsdurw-pathoptimization    |  - libsdurws-robworkstudioapp     |                       |
+|  - libsdurw-pathplanners        |  - libsdurws-sensors              |                       |
+|  - libsdurw-proximitystrategies |  - libsdurws-treeview             |                       |
+|  - libsdurw-simulation          |  - libsdurws-workcelleditor       |                       |
+|  - libsdurw-task                |  - libsdurws-workcelleditorplugin |                       |
+|  - libsdurw-core                |  - libsdurws-charts               |                       |
+|  - libsdurw-common              |  - libsdurws-charts-qt            |                       |
+|  - libsdurw-math                |                                   |                       |
+|  - libsdurw-geometry-expanded   |                                   |                       |
+|  - libsdurw-plots               |                                   |                       |
+|  - libsdurw-plots-mathgl        |                                   |                       |
++---------------------------------+-----------------------------------+-----------------------+
 
 Python and Lua packages
 ########################

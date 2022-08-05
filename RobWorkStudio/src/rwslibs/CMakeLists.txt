@@ -15,6 +15,7 @@ endif()
 
 # The plugins:
 add_subdirectory(atask)
+add_subdirectory(charts)
 add_subdirectory(gtask)
 add_subdirectory(jog)
 # add_subdirectory(pointer)
