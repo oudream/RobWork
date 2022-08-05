@@ -16,6 +16,7 @@
  ********************************************************************************/
 
 #include "ImageView.hpp"
+#include "ImageUtil.hpp"
 
 #include <rw/sensor/Image.hpp>
 
@@ -23,6 +24,7 @@
 #include <QPixmap>
 
 using namespace rw::sensor;
+using rws::ImageUtil;
 
 ImageView::ImageView (QWidget* parent) : QLabel (parent)
 {}
@@ -30,38 +32,10 @@ ImageView::ImageView (QWidget* parent) : QLabel (parent)
 ImageView::~ImageView ()
 {}
 
-void ImageView::display (const rw::sensor::Image& image)
+void ImageView::display (const Image& image)
 {
-    QImage qimage (image.getWidth (), image.getHeight (), QImage::Format_RGB32);
-    if (image.getColorEncoding () == Image::GRAY) {
-        for (size_t i = 0; i < image.getWidth (); i++) {
-            for (size_t j = 0; j < image.getHeight (); j++) {
-                float val = image.getPixelValue (i, j, 0);
-                // std::cout << val << " -- " << (((int)(255.0*val))&0xFF) << "\n";
-                int value = 0;
-                value += 0xff000000;
-                value += (((int) (255 * val)) & 0xFF) << 16;
-                value += (((int) (255 * val)) & 0xFF) << 8;
-                value += (((int) (255.0 * val)) & 0xFF);
-
-                qimage.setPixel ((int) i, (int) j, value);
-            }
-        }
-    }
-    else {
-        for (size_t i = 0; i < image.getWidth (); i++) {
-            for (size_t j = 0; j < image.getHeight (); j++) {
-                Pixel4f pixel = image.getPixel (i, j);
-                int value     = 0;
-                value += 0xff000000;
-                value += (((int) (255.0 * pixel.ch[0])) & 0xFF) << 16;
-                value += (((int) (255.0 * pixel.ch[1])) & 0xFF) << 8;
-                value += ((int) (255.0 * pixel.ch[2]) & 0xFF);
-
-                qimage.setPixel ((int) i, (int) j, value);
-            }
-        }
-    }
-    QPixmap pixmap = QPixmap::fromImage (qimage);
+    const QImage* const qimage = ImageUtil::toQtImage(image);
+    QPixmap pixmap = QPixmap::fromImage (*qimage);
+    delete qimage;
     this->setPixmap (pixmap);
 }

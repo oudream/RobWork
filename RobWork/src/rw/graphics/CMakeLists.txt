@@ -28,6 +28,8 @@ if(build)
         Render.cpp
         SceneDescriptor.cpp
         TextureData.cpp
+        Plot.cpp
+        PlotGenerator.cpp
     )
 
     set(FILES_HPP
@@ -43,6 +45,8 @@ if(build)
         Render.hpp
         DrawableNodeClone.hpp
         TextureData.hpp
+        Plot.hpp
+        PlotGenerator.hpp
     )
 
     rw_add_library(${SUBSYS_NAME} ${FILES_CPP} ${FILES_HPP})

@@ -40,6 +40,9 @@ pkg=sdurw_proximitystrategies libname=pqp   dir=/ext/rwpqp     type=add
 pkg=sdurw_proximitystrategies libname=yaobi dir=/ext/rwyaobi   type=add
 pkg=sdurw_proximitystrategies libname=sdurw_proximitystrategies.rwplugin gotsoname=false nodev=true type=add libdir=/RobWork/rwplugins
 
+pkg=sdurw_plots-mathgl libname=sdurw_plots_mathgl dir=/rwlibs/plots type=new
+pkg=sdurw_plots-mathgl libname=sdurw_plots_mathgl.rwplugin gotsoname=false nodev=true type=add libdir=/RobWork/rwplugins
+
 pkg=sdurw_algorithms
 pkg=sdurw_calibration
 pkg=sdurw_control
@@ -64,6 +67,9 @@ pkg=sdurws libname=QCodeEditor libdir=/RobWork/static nodev=true type=add static
 pkg=sdurws libname=qtpropertybrowser dir=/ext/qtpropertybrowser type=add nodev=false lintian=dev-pkg-without-shlib-symlink
 pkg=sdurws type=add nolib=true dir=none inclfile=RobWorkStudioConfig.hpp inclfile=RobWorkStudioPlugin.hpp inclfile=RobWorkStudio.hpp
 pkg=sdurws libname=sdurws_plugin.rwplugin gotsoname=false nodev=true type=add libdir=/RobWork/rwplugins
+
+pkg=sdurws_charts-qt libname=sdurws_charts_qt dir=/rwslibs/charts type=new
+pkg=sdurws_charts-qt libname=sdurws_charts_qt.rwplugin gotsoname=false nodev=true type=add libdir=/RobWork/rwplugins
 
 pkg=sdurws_atask                libdir=/RobWork/rwsplugins gotsoname=false 
 pkg=sdurws_gtask                libdir=/RobWork/rwsplugins gotsoname=false

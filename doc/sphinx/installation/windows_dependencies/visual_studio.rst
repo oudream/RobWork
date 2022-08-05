@@ -58,6 +58,8 @@ table gives an overview of the version numbers for future reference:
 | Visual Studio      | Visual Studio     | | Visual C++       | | Visual C/C++     |
 | Name               | Version           | | Compiler Toolset | | Compiler Version |
 +====================+===================+====================+====================+
+| Visual Studio 2022 | 17.2              | 14.32              | 19.32              |
++--------------------+-------------------+--------------------+--------------------+
 | Visual Studio 2022 | 17.1              | 14.31              | 19.31              |
 +--------------------+-------------------+--------------------+--------------------+
 | Visual Studio 2022 | 17.0              | 14.30              | 19.30              |

@@ -325,6 +325,21 @@ if(TARGET sdurw_pathplanners AND TARGET sdurw_loaders)
     target_link_libraries(sdurw_pathplanning-gtest ${PATHPLANNING_TEST_LIBRARIES})
     add_rw_gtest(sdurw_pathplanning-gtest)
 endif()
+
+# ##################################################################################################
+# Plots
+# ##################################################################################################
+
+if(TARGET sdurw_plots_mathgl)
+    set(PLOTS_TEST_LIBRARIES sdurw-gtest-main ${GTEST_LIBRARY} sdurw_plots_mathgl)
+
+    set(PLOTS_TEST_SRC plots/MathGLPlotTest.cpp)
+
+    add_executable(sdurw_plots-gtest ${PLOTS_TEST_SRC})
+    target_link_libraries(sdurw_plots-gtest ${PLOTS_TEST_LIBRARIES})
+    add_rw_gtest(sdurw_plots-gtest)
+endif()
+
 # ##################################################################################################
 # Proximity
 # ##################################################################################################

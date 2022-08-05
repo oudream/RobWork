@@ -19,6 +19,8 @@ endif()
 find_package(Java)	
 if(NOT JAVA_FOUND)
   message(FATAL_ERROR "Java not found!")
+else()
+  message(STATUS "Java version ${Java_VERSION} found.")
 endif()
 
 find_package(RobWork REQUIRED)
