@@ -51,6 +51,8 @@ namespace rw { namespace invkin {
          * @brief Constructor
          */
         CCDSolver (const rw::models::SerialDevice* device, const rw::kinematics::State& state);
+        
+#if !defined(SWIGJAVA)
 
         /**
          * @brief Construct new CCSSolver
@@ -60,6 +62,7 @@ namespace rw { namespace invkin {
          * @param state [in] the state to use to extract dimensions.
          * @exception rw::core::Exception if device is not castable to SerialDevice
          */
+#endif
         CCDSolver (const rw::core::Ptr< const rw::models::SerialDevice > device,
                    const rw::kinematics::State& state);
 
@@ -103,7 +106,7 @@ namespace rw { namespace invkin {
       private:
         double _maxQuatStep;
 
-        const rw::core::Ptr<const models::SerialDevice> _device;
+        const rw::core::Ptr< const models::SerialDevice > _device;
 
         core::PropertyMap _properties;
 

@@ -8,6 +8,12 @@
 %include "arrays_java.i";
 #endif*/
 
+%{
+#ifndef SWIG_POINTER_NO_NULL
+#define SWIG_POINTER_NO_NULL 0
+#endif
+%}
+
 #if defined(SWIGJAVA)
 	%rename(multiply) operator*;
 	%rename(divide) operator/;

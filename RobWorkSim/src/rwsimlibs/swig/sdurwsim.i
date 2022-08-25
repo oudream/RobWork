@@ -25,8 +25,8 @@ using namespace rwsim::swig;
 	#pragma GCC diagnostic push
 	#pragma GCC diagnostic ignored "-Wunused-but-set-variable"
 #endif
-#if defined(SWIGJAVA)
 
+#if defined(SWIGJAVA)
 #include <assert.h>
 struct callback_data {
   JNIEnv *env;
@@ -80,6 +80,14 @@ void java_ThreadSimulatorStepCallback(ThreadSimulator* sim, rw::kinematics::Stat
 }
 #endif
 %}
+
+%{
+#ifndef SWIG_POINTER_NO_NULL
+#define SWIG_POINTER_NO_NULL 0
+#endif
+%}
+
+
 
 #include <RobWorkSimConfig.hpp>
 

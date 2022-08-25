@@ -79,6 +79,8 @@ class PythonLock
 
 PyThreadState* initial_thread = NULL;
 
+//#define RWS_PY_DEBUG
+#ifdef RWS_PY_DEBUG
 std::ostream& operator<< (std::ostream& os, PyThreadState* ts)
 {
     os << "PyThreadState {" << std::endl;
@@ -92,6 +94,7 @@ std::ostream& operator<< (std::ostream& os, PyThreadState* ts)
     os << "}";
     return os;
 }
+#endif 
 
 PythonRunner::PythonRunner () : _threadState (NULL)
 {

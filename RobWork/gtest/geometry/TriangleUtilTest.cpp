@@ -31,8 +31,8 @@ TEST(TriangleUtilTest, DivideTriMeshBox ){
 	Plane plane(Vector3D<>(0,0,1), 0.1);
 	std::pair<TriMesh::Ptr, TriMesh::Ptr> frontAndBack = TriangleUtil::divide<Triangle<> >(trimesh, &plane);
 	//With the current algorithm for dividing we expect there to be 14 triangles in front and behind (after they have been cut)
-	EXPECT_EQ(frontAndBack.first->getSize() , 14);
-	EXPECT_EQ(frontAndBack.second->getSize() , 14);
+	EXPECT_EQ(frontAndBack.first->getSize() , 14u);
+	EXPECT_EQ(frontAndBack.second->getSize() , 14u);
 
 	//Check that all vertices are in front and behind, respectively
 	double EPS = 1e-15;
@@ -63,11 +63,11 @@ TEST(TriangleUtilTest, DivideTriMeshNormalTest){
 	std::pair<TriMesh::Ptr, TriMesh::Ptr> frontAndBack2 = TriangleUtil::divide<Triangle<> >(&trimesh, &plane2);
 
 	//With the current algorithm for dividing we expect there to be 14 triangles in front and behind (after they have been cut)
-	EXPECT_EQ(frontAndBack1.first->getSize() , 2);
-	EXPECT_EQ(frontAndBack1.second->getSize() , 1);
+	EXPECT_EQ(frontAndBack1.first->getSize() , 2u);
+	EXPECT_EQ(frontAndBack1.second->getSize() , 1u);
 
-	EXPECT_EQ(frontAndBack2.first->getSize() , 1);
-	EXPECT_EQ(frontAndBack2.second->getSize() , 2);
+	EXPECT_EQ(frontAndBack2.first->getSize() , 1u);
+	EXPECT_EQ(frontAndBack2.second->getSize() , 2u);
 	
 	
 	//Check that all vertices are in front and behind, respectively

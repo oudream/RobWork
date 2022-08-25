@@ -229,8 +229,8 @@ TEST (QHullND, QuadraticObjectA)
 
     // CHECK storage
 
-    EXPECT_GE(qhull.getHullVertices().size(),96);
-    EXPECT_GE(qhull.getFaceIndices().size(),564);
-    EXPECT_GE(qhull.getFaceNormals().size(),188);
-    EXPECT_GE(qhull.getFaceOffsets().size(),188);
+    EXPECT_GE(qhull.getHullVertices().size(),96u);
+    EXPECT_GE(qhull.getFaceIndices().size(),564u);
+    EXPECT_GE(qhull.getFaceNormals().size(),188u);
+    EXPECT_GE(qhull.getFaceOffsets().size(),188u);
 }

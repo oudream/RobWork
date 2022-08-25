@@ -118,7 +118,7 @@ TEST (RANSACTest, RANSACStructuredLineTest)
     ifstream inFile (filePath.c_str ());
     vector< Transform3D<> > data = readData (inFile);
     inFile.close ();
-    EXPECT_EQ (data.size () , 15);
+    EXPECT_EQ (data.size () , 15u);
 
     // extract positions
     vector< Vector3D<> > pos;
@@ -138,7 +138,7 @@ TEST (RANSACTest, RANSACStructuredLineTest)
         StructuredLineModel bestModel = StructuredLineModel::bestModel (models);
 
         // check if any model found
-        EXPECT_GT (models.size () , 0);
+        EXPECT_GT (models.size () , 0u);
 
         // check if the model is acceptably close to ground truth
         rw::geometry::Line referenceLine (Vector3D<> (-0.00421171, 0.0240888, 0.023985),

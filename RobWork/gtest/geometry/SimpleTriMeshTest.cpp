@@ -33,11 +33,11 @@ TEST (SimpleTriMesh, ConstructionAndOverloads)
     SimpleTriMesh s2 (box.createMesh (100));
 
     EXPECT_EQ (s1.vertices (), 8u);
-    EXPECT_EQ (s1.triangles (), 12);
+    EXPECT_EQ (s1.triangles (), 12u);
     EXPECT_EQ (s1.triangles (), s1.size ());
 
     EXPECT_EQ (s2.vertices (), 8u);
-    EXPECT_EQ (s2.triangles (), 12);
+    EXPECT_EQ (s2.triangles (), 12u);
 
     EXPECT_NEAR (GeometryUtil::estimateVolume (s1), 1 * 2 * 3.0, 10e-6);
     s2.scale (2);

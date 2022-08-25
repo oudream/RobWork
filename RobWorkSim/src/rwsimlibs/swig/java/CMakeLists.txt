@@ -54,7 +54,9 @@ if(build)
     )
 
     if(CMAKE_COMPILER_IS_GNUCXX)
-        set_source_files_properties(ThreadSimulatorStepCallbackEnv.cpp COMPILE_FLAGS -fno-gnu-unique)
+        set_source_files_properties(
+            ThreadSimulatorStepCallbackEnv.cpp COMPILE_FLAGS -fno-gnu-unique
+        )
         set_source_files_properties(../ScriptTypes.cpp COMPILE_FLAGS -fno-gnu-unique)
     endif()
 
@@ -98,7 +100,7 @@ if(build)
         WINDOW_TITLE "RobWorkSim Java API Documentation"
                      LOADER_SOURCE_FILE "${CMAKE_CURRENT_SOURCE_DIR}/LoaderRWSim.java"
                      LOADER_DST_FILE "java_src_sdurwsim/org/robwork/LoaderRWSim.java" BUILD_DOC
-                     FALSE
+                     ${build_doc}
         EXTRA_COPY
             COMMAND
                 ${CMAKE_COMMAND} -E copy_if_different

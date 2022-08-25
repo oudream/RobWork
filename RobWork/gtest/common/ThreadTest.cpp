@@ -63,7 +63,7 @@ void workFunctionStop(ThreadPool* pool, unsigned int id) {
 		Timer::sleepMs(50);
 		{
 			boost::mutex::scoped_lock lock(testMutex);
-			EXPECT_GT(pool->getQueueSize() , 0);
+			EXPECT_GT(pool->getQueueSize() , 0u);
 		}
 		if (id >= STOPJOB) {
 			requestStop = true;
@@ -103,13 +103,13 @@ int runPool(bool stop) {
 		pool->stop();
 		boost::mutex::scoped_lock lock(testMutex);
 		EXPECT_EQ(pool->isStopping() , true);
-		EXPECT_EQ(pool->getQueueSize() , 0);
+		EXPECT_EQ(pool->getQueueSize() , 0u);
 	}
 
 	pool->waitForEmptyQueue();
 
 	boost::mutex::scoped_lock lock(testMutex);
-	EXPECT_EQ(pool->getQueueSize() , 0);
+	EXPECT_EQ(pool->getQueueSize() , 0u);
 
     if (stop) {
     	// We can only test the first and last jobs (and hope that we are lucky)
@@ -386,12 +386,12 @@ int runTask() {
 					EXPECT_FALSE(taskSubTask[event.taskID][event.subTaskID]);
 					EXPECT_TRUE(subTaskDone[event.taskID][event.subTaskID]);
 					if (!taskSubTaskNewAdded[event.taskID]) {
-						EXPECT_LT(event.subTaskID , 2);
+						EXPECT_LT(event.subTaskID , 2u);
 						if (event.subTaskID == 1)
 							taskSubTaskNewAdded[event.taskID] = true;
 					} else {
 						if (!taskIdleFirst[event.taskID]) {
-							EXPECT_LT(event.subTaskID , 3);
+							EXPECT_LT(event.subTaskID , 3u);
 						}
 					}
 					taskSubTask[event.taskID][event.subTaskID] = true;

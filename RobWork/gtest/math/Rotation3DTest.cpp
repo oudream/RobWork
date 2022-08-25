@@ -221,7 +221,7 @@ TEST(Rotation3DTest, QTest)
 		EXPECT_NE(sstr.str() , "");
 		Q q2;
 		sstr >> q2;
-		EXPECT_EQ(q2.size() , 3);
+		EXPECT_EQ(q2.size() , 3u);
 		EXPECT_NEAR(q1(1),q2(1),0.00001);
 
 		Q q3(4,0.1,0.2,0.3,0.4);

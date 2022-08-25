@@ -33,6 +33,7 @@ if(build)
     add_library(${SUBSYS_NAME} INTERFACE)
 
     include_directories(${RW_ROOT}/src)
+    include_directories(${RWS_ROOT}/src)
     include_directories(${JAVA_INCLUDE_DIRS} ${JNI_INCLUDE_DIRS})
 
     # Put java files in different directory suitable for JAR generation later on
