@@ -31,7 +31,7 @@ using namespace rw::kinematics;
 using rw::graphics::WorkCellScene;
 
 namespace {
-
+Transform3D<double> identety = Transform3D<>::identity();
 class DummyDrawable: public DrawableNode {
 public:
 	DummyDrawable(const std::string& name): DrawableNode(name) {}
@@ -46,7 +46,7 @@ public:
 	float getScale() const { return 1; }
 	void setVisible(bool enable) {}
 	bool isVisible() { return true; }
-	const Transform3D<>& getTransform() const { return Transform3D<>::identity(); }
+	const Transform3D<>& getTransform() const { return identety; }
 	void setTransform(const rw::math::Transform3D<>& t3d) {}
 	void setMask(unsigned int mask) {}
 	unsigned int getMask() const { return DrawableNode::Physical; }
@@ -68,7 +68,7 @@ public:
 	float getScale() const { return 1; }
 	void setVisible(bool enable) {}
 	bool isVisible() { return true; }
-	const Transform3D<>& getTransform() const { return Transform3D<>::identity(); }
+	const Transform3D<>& getTransform() const { return identety; }
 	void setTransform(const rw::math::Transform3D<>& t3d) {}
 	void setMask(unsigned int mask) {}
 	unsigned int getMask() const { return DrawableNode::Physical; }

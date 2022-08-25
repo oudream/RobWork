@@ -71,7 +71,7 @@ macro(GENERATE_INCLUDES)
     cmake_parse_arguments(INC "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
     set(_include)
-    foreach(arg ${ARGN})
+    foreach(arg ${INC_TYPES})
         string(REPLACE "rw::core::Ptr<" "" arg ${arg})
         string(REPLACE ">" "" arg ${arg})
         string(REPLACE " " "" arg ${arg})
@@ -80,12 +80,27 @@ macro(GENERATE_INCLUDES)
 
         string(REPLACE "const" "" arg ${arg})
         foreach(subarg ${arg})
+
             if(EXISTS ${RW_ROOT}/src/${subarg}.hpp)
                 list(APPEND _include "#include <${subarg}.hpp>")
+            else()
+                string(REGEX MATCH "[A-Za-z0-9_]*$" subarg "${subarg}")
+                file(
+                    GLOB_RECURSE dir
+                    RELATIVE "${RW_ROOT}/src"
+                    "${RW_ROOT}/src/*/${subarg}.hpp"
+                )
+                if(EXISTS ${RW_ROOT}/src/${dir} AND NOT "${dir}" STREQUAL "" )
+                    list(APPEND _include "#include <${dir}>")
+                endif()
             endif()
         endforeach()
     endforeach()
-    list(REMOVE_DUPLICATES _include)
+    if("${_include}" STREQUAL "")
+        message(STATUS "Could not find includes for: ${INC_TYPES}")
+    else()
+        list(REMOVE_DUPLICATES _include)
+    endif()
     string(REPLACE ";" "\n" _include "${_include}")
 
     set(_include "\n\n%fragment(\"${INC_CONVERTER}Include\", \"header\")%{\n${_include}\n%}\n\n")
@@ -235,7 +250,7 @@ macro(GENERATE_STANDARD_POINTER_FRAGMENT _type)
     set(fragment
         "${fragment}%fragment(\"${STD_POINTER_F_CONVERTER}\", \"header\",fragment=\"${STD_POINTER_F_CONVERTER}Include\"){\n"
     )
-    TYPEMAP_AS_NONE_POINTER(${_type} type_nonptr)
+    typemap_as_none_pointer(${_type} type_nonptr)
     set(fragment "${fragment}    template<class T>\n")
     set(fragment "${fragment}    ${_type} ${STD_POINTER_F_CONVERTER}(rw::core::Ptr<T>* in){\n")
     set(fragment "${fragment}        return in->get();\n")

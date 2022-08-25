@@ -91,6 +91,7 @@ NAMED_OWNEDPTR(ClosedFormIK, rw::invkin::ClosedFormIK);
 %}
 %include <rw/invkin/CCDSolver.hpp>
 
+#if ! defined(SWIGJAVA)
 %extend rw::invkin::CCDSolver{
 		/**
          * @brief Construct new closed form solver for a Universal Robot.
@@ -109,6 +110,7 @@ NAMED_OWNEDPTR(ClosedFormIK, rw::invkin::ClosedFormIK);
 			return new rw::invkin::CCDSolver(dev,state);				
 		}
 }
+#endif 
 
 
 %{
@@ -147,7 +149,7 @@ NAMED_OWNEDPTR(JacobianIKSolver, rw::invkin::JacobianIKSolver);
 %}
 %include <rw/invkin/ClosedFormIKSolverUR.hpp>
 NAMED_OWNEDPTR(ClosedFormIKSolverUR, rw::invkin::ClosedFormIKSolverUR);
-
+#if ! defined(SWIGJAVA)
 %extend rw::invkin::ClosedFormIKSolverUR{
 		/**
          * @brief Construct new closed form solver for a Universal Robot.
@@ -166,7 +168,7 @@ NAMED_OWNEDPTR(ClosedFormIKSolverUR, rw::invkin::ClosedFormIKSolverUR);
 			return new rw::invkin::ClosedFormIKSolverUR(dev,state);				
 		}
 }
-
+#endif 
 
 %{
 	#include<rw/invkin/ClosedFormIKSolverKukaIIWA.hpp>

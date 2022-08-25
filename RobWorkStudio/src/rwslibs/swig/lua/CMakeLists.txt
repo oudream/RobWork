@@ -32,6 +32,7 @@ if(build)
     include(UseSWIG)
 
     include_directories(${RW_ROOT}/src)
+    include_directories(${RWS_ROOT}/src)
 
     set(RWS_MODULE sdurws)
     set(TARGET_NAME sdurws_lua)

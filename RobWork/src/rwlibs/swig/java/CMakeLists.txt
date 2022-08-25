@@ -154,7 +154,7 @@ if(build)
                 CLASSPATH ${class_path_depend}
                 JAVADOC_LINK ${link_path_depend}
                 WINDOW_TITLE "RobWork Java API Documentation"
-                BUILD_DOC FALSE
+                BUILD_DOC ${build_doc}
             )
 
             if(SWIG_DEFAULT_COMPILE OR CMAKE_VERSION VERSION_GREATER 3.16.0)

@@ -31,8 +31,9 @@ if(build)
     add_library(${PROJECT_PREFIX}::${SUBSYS_NAME} ALIAS ${SUBSYS_NAME})
 
     include_directories(${RW_ROOT}/src)
+    include_directories(${RWS_ROOT}/src)
 
-    set(RWS_MODULE sdurws)
+
     configure_file(RobWorkStudio.egg-info.in
                    ${CMAKE_CURRENT_SOURCE_DIR}/RobWorkStudio-${ROBWORKSTUDIO_VERSION}.egg-info
     )
@@ -46,6 +47,8 @@ if(build)
     else()
         set(LIB_SUFIX)
     endif()
+
+    set(RWS_MODULE sdurws)
 
     # ############ SWIG COMPILE #################
     set(TARGET_NAME ${RWS_MODULE}${LIB_SUFIX})

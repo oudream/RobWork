@@ -26,6 +26,7 @@ using namespace rw::math;
 
 namespace {
 
+Transform3D<double> identety = Transform3D<>::identity();
 class DummyDrawable: public DrawableNode {
 public:
 	DummyDrawable(const std::string& name): DrawableNode(name) {}
@@ -40,7 +41,7 @@ public:
     float getScale() const { return 1; }
     void setVisible(bool) {}
     bool isVisible() { return true; }
-    const Transform3D<>& getTransform() const { return Transform3D<>::identity(); }
+    const Transform3D<>& getTransform() const { return identety; }
     void setTransform(const rw::math::Transform3D<>&) {}
     void setMask(unsigned int) {}
     unsigned int getMask() const { return DrawableNode::Physical; }
@@ -62,7 +63,7 @@ public:
     float getScale() const { return 1; }
     void setVisible(bool) {}
     bool isVisible() { return true; }
-    const Transform3D<>& getTransform() const { return Transform3D<>::identity(); }
+    const Transform3D<>& getTransform() const { return identety; }
     void setTransform(const rw::math::Transform3D<>&) {}
     void setMask(unsigned int) {}
     unsigned int getMask() const { return DrawableNode::Physical; }
@@ -77,6 +78,7 @@ public:
     void addLine(const Vector3D<>&, const Vector3D<>&) {}
     void addGeometry(rw::core::Ptr<class rw::geometry::Geometry>) {}
     void addFrameAxis(double) {}
+    private: 
 };
 
 class DummySceneGraph: public SceneGraph {

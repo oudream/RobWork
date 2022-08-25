@@ -175,7 +175,7 @@ TEST(SerialDeviceTest, forwardKinematicsTest)
 
         SerialDevice simple(base, tool, "simple1", state);
 
-        EXPECT_EQ(simple.frames().size() , 3);
+        EXPECT_EQ(simple.frames().size() , 3u);
         EXPECT_EQ(simple.getBase() , base);
 
         Q qs(1);

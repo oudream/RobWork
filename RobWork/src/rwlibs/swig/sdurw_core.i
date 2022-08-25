@@ -13,7 +13,6 @@ SWIG_JAVABODY_TYPEWRAPPER(public, public, public, SWIGTYPE)
 
 %include <typemaps.i>
 
-
 %rename(getDeref) rw::core::Ptr::operator->;
 %rename(deref) rw::core::Ptr::get;
 

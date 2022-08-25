@@ -1,3 +1,4 @@
+#include <RobWorkConfig.hpp>
 #include <rw/geometry/Model3D.hpp>
 #include <rw/geometry/SimpleTriMesh.hpp>
 #include <rw/loaders/Model3DFactory.hpp>
@@ -13,9 +14,9 @@ using namespace rw::geometry;
 
 std::ostream& operator+ (std::ostream& os, const ReferencedTriangle& tri)
 {
-    os << "[[" << tri[0][0] << " " << tri[0][1] << " " << tri[0][2] << "];[" << tri[1][0]
-              << " " << tri[1][1] << " " << tri[1][2] << "];[" << tri[2][0] << " " << tri[2][1]
-              << " " << tri[2][2] << "];[" << tri[0][0] << " " << tri[0][1] << " " << tri[0][2] << "]]";
+    os << "[[" << tri[0][0] << " " << tri[0][1] << " " << tri[0][2] << "];[" << tri[1][0] << " "
+       << tri[1][1] << " " << tri[1][2] << "];[" << tri[2][0] << " " << tri[2][1] << " "
+       << tri[2][2] << "];[" << tri[0][0] << " " << tri[0][1] << " " << tri[0][2] << "]]";
     return os;
 }
 
@@ -32,6 +33,7 @@ int main (int argc, char** argv)
     if (boost::filesystem::exists (file)) {
         // Auto load for testing
         if (boost::filesystem::is_directory (file)) {
+#ifdef RW_HAVE_OCC
             std::string n_file = file + "/objects/EngineeringTable.STEP";
             if (boost::filesystem::exists (n_file)) {
                 file = n_file;
@@ -40,6 +42,9 @@ int main (int argc, char** argv)
                 std::cout << "The specified file is a directory: " << n_file << std::endl;
                 return 1;
             }
+#else
+            return 0;
+#endif
         }
     }
     else {
@@ -57,7 +62,7 @@ int main (int argc, char** argv)
 
     // Save File
     boost::filesystem::path out = file;
-    
+
     out.replace_extension ("");
     out = out.string () + ".rw.stl";
     STLFile::save (model->toGeometryData ()->getTriMesh (), out.string ());

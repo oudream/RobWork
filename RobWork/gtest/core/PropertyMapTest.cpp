@@ -180,8 +180,8 @@ TEST(PropertyMapCore, swap) {
     EXPECT_EQ(1, cntOtherB);
 
     mapA.swap(mapB);
-    EXPECT_EQ(2, mapA.size());
-    EXPECT_EQ(2, mapB.size());
+    EXPECT_EQ(2u, mapA.size());
+    EXPECT_EQ(2u, mapB.size());
     EXPECT_TRUE(mapA.has("IdB1"));
     EXPECT_TRUE(mapA.has("IdB2"));
     EXPECT_TRUE(mapB.has("IdA1"));

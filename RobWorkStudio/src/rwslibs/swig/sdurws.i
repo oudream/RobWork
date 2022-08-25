@@ -71,6 +71,13 @@ import org.robwork.sdurw_proximity.*;
 import org.robwork.sdurw_trajectory.*;
 %}
 
+
+%{
+#ifndef SWIG_POINTER_NO_NULL
+#define SWIG_POINTER_NO_NULL 0
+#endif
+%}
+
 #define RWS_USE_PTR
 /********************************************
  * General utility functions
