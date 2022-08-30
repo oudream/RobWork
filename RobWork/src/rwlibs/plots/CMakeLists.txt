@@ -6,7 +6,7 @@ set(SUBSYS_DEPS
 
 find_package(MathGL QUIET)
 
-if(DEFINED MATHGL_FOUND)
+if(MATHGL_FOUND)
     message(STATUS "Found MathGL ${MATHGL_VERSION_STRING}")
     set(DEFAULT TRUE)
 else()
