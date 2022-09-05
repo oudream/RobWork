@@ -311,8 +311,8 @@ ODEVelocityDevice::ODEVelocityDevice (ODEBody* base, RigidDevice* rdev,
                  dJointAttach(baseJoint, baseBodyID, baseParentBodyID);
                  dJointSetFixed(baseJoint);
                  std::string name =
-       _rwFrameToODEBody[baseParent]->getRwBody()->getBodyFrame()->getName(); RW_DEBUGS("BASE:
-       connecting base to body: "<<name); } else  { RW_DEBUGS("BASE: connecting base to world");
+       _rwFrameToODEBody[baseParent]->getRwBody()->getBodyFrame()->getName(); RW_DEBUG("BASE:
+       connecting base to body: "<<name); } else  { RW_DEBUG("BASE: connecting base to world");
 
              }
          }
@@ -459,7 +459,7 @@ void ODEVelocityDevice::init (RigidDevice* rdev, const rw::kinematics::State& st
         i++;
     }
 
-    // RW_DEBUGS("BASE:" << base->getName() << "<--" << base->getParent()->getName() );
+    // RW_DEBUG("BASE:" << base->getName() << "<--" << base->getParent()->getName() );
 
     // build a parent-child relation map between joints and links
     /*

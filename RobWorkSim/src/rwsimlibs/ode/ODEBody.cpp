@@ -493,7 +493,7 @@ ODEBody* ODEBody::makeKinematicBody (Body::Ptr kbody, dSpaceID spaceid, ODESimul
     }
 
     // for(Frame* frame : kbody->getFrames()) {
-    //    RW_DEBUGS( "(KB) --> Adding frame: " << frame->getName() );
+    //    RW_DEBUG( "(KB) --> Adding frame: " << frame->getName() );
     //    _rwFrameToODEBody[frame] = odeBody;
     //}
     sim->addODEBody (odeBody);

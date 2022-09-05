@@ -49,6 +49,7 @@
 
 #include <rw/common/TimerUtil.hpp>
 #include <rw/core/Log.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/proximity/BasicFilterStrategy.hpp>
 #include <rwlibs/proximitystrategies/ProximityStrategyPQP.hpp>
 #include <rwsim/contacts/ContactDetector.hpp>
@@ -82,10 +83,6 @@ using namespace rwlibs::simulation;
 using namespace rwlibs::proximitystrategies;
 
 #define INITIAL_MAX_CONTACTS 1000
-
-#define RW_DEBUGS(str) rw::core::Log::debugLog () << str << std::endl;
-//#define RW_DEBUGS( str )
-
 /*
 #define TIMING( str, func ) \
     { long start = rw::common::TimerUtil::currentTimeMs(); \
@@ -97,7 +94,6 @@ using namespace rwlibs::proximitystrategies;
     {                     \
         func;             \
     }
-
 namespace {
 
 std::string printArray (const dReal* arr, int n)
@@ -438,19 +434,19 @@ void ODESimulator::step (double dt, rw::kinematics::State& state)
     // std::cout << "-------------------------- STEP --------------------------------" << std::endl;
     // double dt = 0.001;
     _maxPenetration = 0;
-    RW_DEBUGS ("-------------------------- STEP --------------------------------");
+    RW_DEBUG ("-------------------------- STEP --------------------------------");
     double lastDt = _time - _oldTime;
     if (lastDt <= 0)
         lastDt = 0;
 
-    RW_DEBUGS ("------------- Collisions at " << _time << " :");
+    RW_DEBUG ("------------- Collisions at " << _time << " :");
     // Detect collision
     _allcontacts.clear ();
     if (_useRobWorkContactGeneration) {
         if (doLog)
             _log->log ("Contact Detection Type", __FILE__, __LINE__)
                 << (_detector.isNull () ? "RW" : "ContactDetector");
-        if (_detector.isNull()) {
+        if (_detector.isNull ()) {
             TIMING ("Collision: ", detectCollisionsRW (state, false));
         }
         else {
@@ -477,7 +473,8 @@ void ODESimulator::step (double dt, rw::kinematics::State& state)
     }
 
     // we roll back to this point if there is any penetrations in the scene
-    RW_DEBUGS ("------------- Save state:");
+
+    RW_DEBUG ("------------- Save state:");
     saveODEState ();
     State tmpState = state;
     double dttmp   = dt;
@@ -505,7 +502,7 @@ void ODESimulator::step (double dt, rw::kinematics::State& state)
             RW_THROW ("Collision error");
         }
 
-        RW_DEBUGS ("------------- Controller update :");
+        RW_DEBUG ("------------- Controller update :");
         Simulator::UpdateInfo conStepInfo;
         conStepInfo.dt       = dttmp;
         conStepInfo.dt_prev  = lastDt;
@@ -515,23 +512,23 @@ void ODESimulator::step (double dt, rw::kinematics::State& state)
             controller->update (conStepInfo, tmpState);
         }
 
-        RW_DEBUGS ("------------- Device pre-update:");
+        RW_DEBUG ("------------- Device pre-update:");
         for (ODEDevice* dev : _odeDevices) {
             dev->update (conStepInfo, tmpState);
         }
 
-        RW_DEBUGS ("------------- Constraints pre-update:");
+        RW_DEBUG ("------------- Constraints pre-update:");
         for (ODEConstraint* constraint : _odeConstraints) {
             constraint->update (conStepInfo, tmpState);
         }
 
-        RW_DEBUGS ("------------- Body pre-update:");
+        RW_DEBUG ("------------- Body pre-update:");
         for (ODEBody* body : _odeBodies) {
             body->update (conStepInfo, tmpState);
         }
 
         // Step world
-        RW_DEBUGS ("------------- Step dt=" << dttmp << " at " << _time << " :");
+        RW_DEBUG ("------------- Step dt=" << dttmp << " at " << _time << " :");
 
         // TIMING("Step: ", dWorldStep(_worldId, dttmp));
         /*
@@ -700,20 +697,19 @@ void ODESimulator::step (double dt, rw::kinematics::State& state)
     // if(badLCPSolution)
     //    RW_WARN("Possibly bad LCP Solution.");
     // std::cout << "dt:" << dttmp << " dt_p:" << lastDt << " time:"<< _time << std::endl;
-
     Simulator::UpdateInfo conStepInfo;
     conStepInfo.dt       = dttmp;
     conStepInfo.dt_prev  = lastDt;
     conStepInfo.time     = _time;
     conStepInfo.rollback = false;
 
-    RW_DEBUGS ("------------- Device post update:");
+    RW_DEBUG ("------------- Device post update:");
     // std::cout << "Device post update:" << std::endl;
     for (ODEDevice* dev : _odeDevices) {
         dev->postUpdate (state);
     }
 
-    RW_DEBUGS ("------------- Update robwork bodies:");
+    RW_DEBUG ("------------- Update robwork bodies:");
     // std::cout << "Update robwork bodies:" << std::endl;
     // now copy all state info into state/bodies (transform,vel,force)
     for (size_t i = 0; i < _odeBodies.size (); i++) {
@@ -725,19 +721,19 @@ void ODESimulator::step (double dt, rw::kinematics::State& state)
         _log->addVelocities ("New Velocities", _odeBodies, state, __FILE__, __LINE__);
     }
 
-    RW_DEBUGS ("------------- Sensor update :");
+    RW_DEBUG ("------------- Sensor update :");
     // std::cout << "Sensor update :" << std::endl;
     // update all sensors with the values of the joints
     for (ODETactileSensor* odesensor : _odeSensors) {
         odesensor->update (conStepInfo, state);
     }
-    RW_DEBUGS ("- removing joint group");
+    RW_DEBUG ("- removing joint group");
     // Remove all temporary collision joints now that the world has been stepped
     dJointGroupEmpty (_contactGroupId);
     // and the joint feedbacks that where used is also destroyed
     _nextFeedbackIdx = 0;
 
-    RW_DEBUGS ("------------- Update trimesh prediction:");
+    RW_DEBUG ("------------- Update trimesh prediction:");
     for (ODEUtil::TriGeomData* data : _triGeomDatas) {
         if (!data->isGeomTriMesh)
             continue;
@@ -779,7 +775,7 @@ void ODESimulator::step (double dt, rw::kinematics::State& state)
     if (doLog)
         _log->endStep (_time, __LINE__);
     // std::cout << "e";
-    RW_DEBUGS ("----------------------- END STEP --------------------------------");
+    RW_DEBUG ("----------------------- END STEP --------------------------------");
     // std::cout << "-------------------------- END STEP --------------------------------" <<
     // std::endl;
 }
@@ -936,7 +932,7 @@ void ODESimulator::initPhysics (rw::kinematics::State& state)
     // std::vector<Object::Ptr> objects = _dwc->getWorkcell()->getObjects();
     for (Body::Ptr body : _dwc->getBodies ()) {
         Object::Ptr obj = body->getObject ();
-        bool res = _narrowStrategy->addModel (obj);
+        bool res        = _narrowStrategy->addModel (obj);
         if (!res) {
             RW_WARN ("Failed to add Object: " << obj->getName () << " to strategy");
         }
@@ -1007,7 +1003,7 @@ void ODESimulator::initPhysics (rw::kinematics::State& state)
 
     // dCreatePlane(_spaceId,0,0,1,0);
 
-    RW_DEBUGS ("- ADDING BODIES ");
+    RW_DEBUG ("- ADDING BODIES ");
     for (Body::Ptr body : _dwc->getBodies ()) {
         // check if a body is part
         if (!_dwc->inDevice (body))
@@ -1017,7 +1013,7 @@ void ODESimulator::initPhysics (rw::kinematics::State& state)
     Frame* wframe        = _dwc->getWorkcell ()->getWorldFrame ();
     _rwODEBodyToFrame[0] = wframe;
 
-    RW_DEBUGS ("- ADDING DEVICES ");
+    RW_DEBUG ("- ADDING DEVICES ");
     // this needs to be done in the correct order, which means if any device is attached to another
     // then the bottom one should  be added first.
     /*for(DynamicDevice* device : _dwc->getDynamicDevices() ) {
@@ -1031,26 +1027,26 @@ void ODESimulator::initPhysics (rw::kinematics::State& state)
         addDevice (device, initState);
     }
 
-    RW_DEBUGS ("- ADDING CONSTRAINTS ");
+    RW_DEBUG ("- ADDING CONSTRAINTS ");
     for (Constraint::Ptr constraint : _dwc->getConstraints ()) {
         addConstraint (constraint);
     }
 
-    RW_DEBUGS ("- ADDING SENSORS ");
+    RW_DEBUG ("- ADDING SENSORS ");
     for (rwlibs::simulation::SimulatedSensor::Ptr sensor : _dwc->getSensors ()) {
         addSensor (sensor, state);
     }
 
-    RW_DEBUGS ("- ADDING CONTROLLERS ");
+    RW_DEBUG ("- ADDING CONTROLLERS ");
     for (rwlibs::simulation::SimulatedController::Ptr controller : _dwc->getControllers ()) {
         addController (controller);
     }
 
-    RW_DEBUGS ("- CREATING MATERIAL MAP ");
+    RW_DEBUG ("- CREATING MATERIAL MAP ");
     _odeMaterialMap = new ODEMaterialMap (_materialMap, _contactMap, _odeBodies);
 
     state.upgrade ();
-    RW_DEBUGS ("- RESETTING SCENE ");
+    RW_DEBUG ("- RESETTING SCENE ");
     resetScene (state);
 
     ODEThreading::initThreading (_worldId);
@@ -1094,13 +1090,13 @@ void ODESimulator::addODEJoint (dJointID joint)
 
 void ODESimulator::addODEBody (dBodyID body)
 {
-    RW_DEBUGS ("addODEBody: ");
+    RW_DEBUG ("addODEBody: ");
     _allbodies.push_back (body);
 }
 
 void ODESimulator::addODEBody (ODEBody* odebody)
 {
-    RW_DEBUGS ("Add ode body: " << odebody->getFrame ()->getName ());
+    RW_DEBUG ("Add ode body: " << odebody->getFrame ()->getName ());
     if (_rwFrameToODEBody.find (odebody->getFrame ()) != _rwFrameToODEBody.end ())
         RW_THROW ("Body with name \"" << odebody->getFrame ()->getName ()
                                       << "\" allready exists in the simulator! ");
@@ -1123,7 +1119,7 @@ void ODESimulator::addODEBody (ODEBody* odebody)
 
 void ODESimulator::addBody (rwsim::dynamics::Body::Ptr body, rw::kinematics::State& state)
 {
-    RW_DEBUGS ("Add body: " << body->getName ());
+    RW_DEBUG ("Add body: " << body->getName ());
 
     if (_rwFrameToODEBody.find (body->getBodyFrame ()) != _rwFrameToODEBody.end ())
         RW_THROW ("Body with name \"" << body->getName ()
@@ -1194,7 +1190,7 @@ void ODESimulator::addDevice (rwsim::dynamics::DynamicDevice::Ptr dev,
 
     ODEBody* base = NULL;
     if (_rwFrameToODEBody.find (dev->getBase ()->getBodyFrame ()) == _rwFrameToODEBody.end ()) {
-        RW_DEBUGS ("Creating base of device " << device->getKinematicModel ()->getName ());
+        RW_DEBUG ("Creating base of device " << device->getKinematicModel ()->getName ());
         // the base has not yet been created, do it here
         Body::Ptr rwbase = device->getBase ();
         addBody (rwbase, state);
@@ -1212,12 +1208,12 @@ void ODESimulator::addDevice (rwsim::dynamics::DynamicDevice::Ptr dev,
     }
 
     if (RigidDevice* rdev = dynamic_cast< RigidDevice* > (device)) {
-        RW_DEBUGS ("RigidDevice");
+        RW_DEBUG ("RigidDevice");
         ODEVelocityDevice* vdev = new ODEVelocityDevice (base, rdev, state, this);
         _odeDevices.push_back (vdev);
     }
     else if (KinematicDevice* kdev = dynamic_cast< KinematicDevice* > (device)) {
-        RW_DEBUGS ("KinematicDevice");
+        RW_DEBUG ("KinematicDevice");
         ODEKinematicDevice* odekdev = new ODEKinematicDevice (kdev, state, this);
         _odeDevices.push_back (odekdev);
     }
@@ -1572,20 +1568,19 @@ bool ODESimulator::detectCollisionsRW (rw::kinematics::State& state, bool onlyTe
     }
 
     std::vector< MultiDistanceResult > logDistances;
-
     // next we query the BP filter for framepairs that are possibly in collision
     while (!filter->isEmpty ()) {
         const FramePair& pair = filter->frontAndPop ();
-        RW_DEBUGS (pair.first->getName () << " -- " << pair.second->getName ());
-        //std::cout << pair.first->getName () << " -- " << pair.second->getName () << std::endl;
+        RW_DEBUG (pair.first->getName () << " -- " << pair.second->getName ());
+        // std::cout << pair.first->getName () << " -- " << pair.second->getName () << std::endl;
 
         // and lastly we use the dispatcher to find the strategy the
         // is required to compute the narrowphase collision
         const ProximityModel::Ptr& a = _frameToModels[*pair.first];
         const ProximityModel::Ptr& b = _frameToModels[*pair.second];
         if (a == NULL || b == NULL) {
-            //std::cout << "No rwmodels:" << pair.first->getName () << " -- "
-            //          << pair.second->getName () << std::endl;
+            // std::cout << "No rwmodels:" << pair.first->getName () << " -- "
+            //           << pair.second->getName () << std::endl;
             continue;
         }
 
@@ -1593,8 +1588,8 @@ bool ODESimulator::detectCollisionsRW (rw::kinematics::State& state, bool onlyTe
         ODEBody* a_data = _rwFrameToODEBody[pair.first];
         ODEBody* b_data = _rwFrameToODEBody[pair.second];
         if (a_data == NULL || b_data == NULL) {
-            //std::cout << "No ode bodies:" << pair.first->getName () << " -- "
-            //          << pair.second->getName () << std::endl;
+            // std::cout << "No ode bodies:" << pair.first->getName () << " -- "
+            //           << pair.second->getName () << std::endl;
             continue;
         }
 
@@ -1604,20 +1599,21 @@ bool ODESimulator::detectCollisionsRW (rw::kinematics::State& state, bool onlyTe
         dGeomID a_geom = _frameToOdeGeoms[a_data->getFrame ()];
         dGeomID b_geom = _frameToOdeGeoms[b_data->getFrame ()];
         if (a_geom == NULL || b_geom == NULL) {
-            //std::cout << "No ode geoms:" << pair.first->getName () << " -- "
-            //          << pair.second->getName () << std::endl;
+            // std::cout << "No ode geoms:" << pair.first->getName () << " -- "
+            //           << pair.second->getName () << std::endl;
             continue;
         }
 
         if (a_geom == b_geom) {
-            //std::cout << "Same geoms:" << pair.first->getName () << " -- "
-            //          << pair.second->getName () << std::endl;
+            // std::cout << "Same geoms:" << pair.first->getName () << " -- "
+            //           << pair.second->getName () << std::endl;
             continue;
         }
 
         if (a_data == b_data) {
-            //std::cout << "Same data:" << pair.first->getName () << " -- " << pair.second->getName ()
-            //          << std::endl;
+            // std::cout << "Same data:" << pair.first->getName () << " -- " << pair.second->getName
+            // ()
+            //           << std::endl;
             continue;
         }
 
@@ -1660,7 +1656,7 @@ bool ODESimulator::detectCollisionsRW (rw::kinematics::State& state, bool onlyTe
 
         // first make standard collision detection, if in collision then compute all contacts from
         // dist query
-        RW_DEBUGS (pair.first->getName () << " <--> " << pair.second->getName ());
+        RW_DEBUG (pair.first->getName () << " <--> " << pair.second->getName ());
 
         if (onlyTestPenetration) {
             // std::cout << "ONLY TEST COL" << std::endl;
@@ -1684,7 +1680,6 @@ bool ODESimulator::detectCollisionsRW (rw::kinematics::State& state, bool onlyTe
             // change MAX_SEP_DISTANCE
             softlayer = 0.001;
         }
-
         data.setCollisionQueryType (CollisionStrategy::AllContacts);
         res = &_narrowStrategy->distances (a, aT, b, bT, _maxSepDistance + softlayer, data);
 
@@ -1698,13 +1693,12 @@ bool ODESimulator::detectCollisionsRW (rw::kinematics::State& state, bool onlyTe
         }
         int ni = 0;
         for (size_t i = 0; i < numc; i++) {
-            dContact& con = _contacts[ni];
-            Vector3D<> p1 = res->p1s[i];
-            Vector3D<> p2 = res->p2s[i];
+            dContact& con        = _contacts[ni];
+            const Vector3D<>& p1 = res->p1s[i];
+            const Vector3D<>& p2 = res->p2s[i];
             Vector3D<> n, p;
 
             if (res->distances[i] < 0.00000001) {
-                // std::cout << " penetrating " << std::endl;
                 // the contact is penetrating and we therefore need compute the
                 // contact normal differently
                 std::pair< Vector3D<>, Vector3D<> > normals =
@@ -1728,33 +1722,23 @@ bool ODESimulator::detectCollisionsRW (rw::kinematics::State& state, bool onlyTe
 
             if (softcontact) {
                 // scale the distances to fit into MAX_SEP_DISTANCE
-                // std::cout << res->distances[i] << ";" <<
-                // res->distances[i]*_maxSepDistance/(_maxSepDistance+softlayer) << std::endl;
                 res->distances[i] *= _maxSepDistance / (_maxSepDistance + softlayer);
-                // res->distances[i] *= _maxSepDistance/_maxSepDistance;
             }
-            // double penDepth =
-            // MAX_SEP_DISTANCE-(res->distances[i]+(MAX_SEP_DISTANCE-MAX_PENETRATION));
-            double penDepth = _maxAllowedPenetration - res->distances[i];
-            con.geom.depth  = penDepth;
-            con.geom.g1     = a_geom;
-            con.geom.g2     = b_geom;
-            // std::cout << "Collision: " << p << n << penDepth << " " << res->distances[i]<<
-            // std::endl;
 
-            ContactPoint& point = _rwcontacts[ni];
+            con.geom.depth = _maxAllowedPenetration - res->distances[i];
+            con.geom.g1    = a_geom;
+            con.geom.g2    = b_geom;
+
+            /*ContactPoint& point = _rwcontacts[ni];
             point.n             = normalize (ODEUtil::toVector3D (con.geom.normal));
             point.p             = ODEUtil::toVector3D (con.geom.pos);
             point.penetration   = con.geom.depth;
-            point.userdata      = (void*) &(_contacts[ni]);
+            point.userdata      = (void*) &(_contacts[ni]);*/
 
             if (_logContactingBodies) {
                 // std::cout << "adding contact" << std::endl;
                 _contactingBodiesTmp[std::make_pair (pair.first->getName (),
-                                                     pair.second->getName ())] =
-                    true;    //.push_back(point);
-                             //_contactPointsTmp.push_back(boost::make_tuple(pair.first->getName(),
-                // pair.second->getName(), 	point));
+                                                     pair.second->getName ())] = true;
             }
 
             // friction direction between the bodies ...
@@ -1767,7 +1751,6 @@ bool ODESimulator::detectCollisionsRW (rw::kinematics::State& state, bool onlyTe
         addContacts ((int) numc, a_data, b_data, pair.first, pair.second);
         //}
         res->clear ();
-        // update the contact normal using the manifolds
     }
 
     if (_log->doLog ())
@@ -1846,13 +1829,13 @@ void ODESimulator::setSimulatorLog (SimulatorLogScope::Ptr log)
 
 void ODESimulator::handleCollisionBetween (dGeomID o1, dGeomID o2)
 {
-    RW_DEBUGS ("********************handleCollisionBetween ************************** ")
+    RW_DEBUG ("********************handleCollisionBetween ************************** ")
     // Create an array of dContact objects to hold the contact joints
     dBodyID b1 = dGeomGetBody (o1);
     dBodyID b2 = dGeomGetBody (o2);
     // std::cout << "Collision: " << b1 << " " << b2 << std::endl;
     if (b1 && b2 && dAreConnectedExcluding (b1, b2, dJointTypeContact)) {
-        RW_DEBUGS (b1 << "&&" << b2 << "&&" << dAreConnectedExcluding (b1, b2, dJointTypeContact));
+        RW_DEBUG (b1 << "&&" << b2 << "&&" << dAreConnectedExcluding (b1, b2, dJointTypeContact));
         return;
     }
 
@@ -1863,7 +1846,7 @@ void ODESimulator::handleCollisionBetween (dGeomID o1, dGeomID o2)
     else {
         dataB1 = (ODEBody*) dBodyGetData (b1);
     }
-    // RW_DEBUGS("- get data2")
+    // RW_DEBUG("- get data2")
     ODEBody* dataB2;
     if (b2 == NULL) {
         dataB2 = (ODEBody*) dGeomGetData (o2);
@@ -1880,17 +1863,17 @@ void ODESimulator::handleCollisionBetween (dGeomID o1, dGeomID o2)
         return;
     }
 
-    RW_DEBUGS ("- get data3 " << dataB1 << " " << dataB2)
+    RW_DEBUG ("- get data3 " << dataB1 << " " << dataB2)
     Frame* frameB1 = dataB1->getFrame ();
     Frame* frameB2 = dataB2->getFrame ();
 
     if (frameB1 == frameB2)
         return;
-    RW_DEBUGS ("- check enabled Map")
+    RW_DEBUG ("- check enabled Map")
     // if any of the bodies are disabled then discard them
     if (_enabledMap[*frameB1] == 0 || _enabledMap[*frameB2] == 0)
         return;
-    RW_DEBUGS ("- check exclude Map")
+    RW_DEBUG ("- check exclude Map")
     // check if the frames are in the exclude list, if they are then return
     rw::kinematics::FramePair pair (frameB1, frameB2);
     if (_excludeMap.has (pair))
@@ -1901,7 +1884,7 @@ void ODESimulator::handleCollisionBetween (dGeomID o1, dGeomID o2)
     // for(ContactManifold &manifold : manifolds) {
     // manifold.update(); // TODO: use transform between objects to update manifold
     //}
-    RW_DEBUGS ("- do collide")
+    RW_DEBUG ("- do collide")
     int numc;
     // do the actual collision check
 
@@ -1918,43 +1901,27 @@ void ODESimulator::handleCollisionBetween (dGeomID o1, dGeomID o2)
 rw::math::Vector3D<> ODESimulator::addContacts (int numc, ODEBody* dataB1, ODEBody* dataB2,
                                                 Frame* f1, Frame* f2)
 {
-    RW_DEBUGS ("Add Contacts");
+    RW_DEBUG ("Add Contacts");
     if (numc == 0) {
-        RW_DEBUGS ("No collisions detected!");
+        RW_DEBUG ("No collisions detected!");
         return Vector3D<> (0, 0, 0);
     }
-
-    // RW_DEBUGS("- detected: " << frameB1->getName() << " " << frameB2->getName());
-
     // check if any of the bodies are actually sensors
     std::vector< ODETactileSensor* >& odeSensorb1 = _odeBodyToSensor[dataB1->getBodyID ()];
     std::vector< ODETactileSensor* >& odeSensorb2 = _odeBodyToSensor[dataB2->getBodyID ()];
 
     // perform contact clustering
-    // double threshold = std::min(dataB1->getCRThres(), dataB2->getCRThres());
-    // std::cout << "Numc: " << numc << std::endl;
-
-    int j = 0;
     for (int i = 0; i < numc; i++) {
-        ContactPoint& point = _rwcontacts[j];
+        ContactPoint& point = _rwcontacts[i];
         const dContact& con = _contacts[i];
-
-        // if(con.geom.depth>0.01)
-        //    continue;
-
-        point.n           = normalize (ODEUtil::toVector3D (con.geom.normal));
-        point.p           = ODEUtil::toVector3D (con.geom.pos);
-        point.penetration = con.geom.depth;
-        point.userdata    = (void*) &(_contacts[i]);
-        RW_DEBUGS ("-- Depth/Pos  : " << con.geom.depth << " " << printArray (con.geom.normal, 3));
-        RW_DEBUGS ("-- Depth/Pos p: " << point.penetration << " p:" << point.p << " n:" << point.n);
-
-        //_allcontacts.push_back(point);
-        j++;
-        // std::cout << "n: " << point.n << " p:" << point.p << " dist: "
-        //		  << MetricUtil::dist2(point.p,_rwcontacts[std::max(0,i-1)].p) << std::endl;
+        point.n             = normalize (ODEUtil::toVector3D (con.geom.normal));
+        point.p             = ODEUtil::toVector3D (con.geom.pos);
+        point.penetration   = con.geom.depth;
+        point.userdata      = (void*) &(_contacts[i]);
+        RW_DEBUG ("-- Depth/Pos  : " << con.geom.depth << " " << printArray (con.geom.normal, 3));
+        RW_DEBUG ("-- Depth/Pos p: " << point.penetration << " p:" << point.p << " n:" << point.n);
     }
-    numc = j;
+
     if ((int) _srcIdx.size () < numc)
         _srcIdx.resize (numc);
     if ((int) _dstIdx.size () < numc)
@@ -1963,33 +1930,15 @@ rw::math::Vector3D<> ODESimulator::addContacts (int numc, ODEBody* dataB1, ODEBo
     int fnumc = ContactCluster::normalThresClustering (
         &_rwcontacts[0], numc, &_srcIdx[0], &_dstIdx[0], &_rwClusteredContacts[0], 10 * Deg2Rad);
 
-    // std::cout << "Threshold: " << threshold << " numc:" << numc << " fnumc:" << fnumc <<
-    // std::endl;
-    RW_DEBUGS (" numc:" << numc << " fnumc:" << fnumc);
-    // RW_DEBUGS("Nr of average contact points in cluster: " << numc/((double)fnumc));
+    RW_DEBUG (" numc:" << numc << " fnumc:" << fnumc);
 
     // we create a manyfold per cluster, and only use the most significant points
 
     std::vector< ContactPoint >& src = _rwcontacts;
     std::vector< ContactPoint >& dst = _rwClusteredContacts;
 
-    // std::cout << "Number of contact clusters: " << fnumc << std::endl;
-    /*
-    for(int i=0;i<fnumc;i++)
-        std::cout << "i:" << i << " -> " << dst[i].penetration << " " << dst[i].p<< " " << dst[i].n
-    << std::endl;
-
-    std::cout << "Dst idx array: " << std::endl;
-    for(int i=0;i<_dstIdx.size();i++)
-        std::cout << "i:" << i << " -> " << _dstIdx[i] << " " << src[_dstIdx[i] ].p<< " " <<
-    src[_dstIdx[i] ].n << std::endl;
-
-    std::cout << "Src idx array: " << std::endl;
-    for(int i=0;i<_srcIdx.size();i++)
-        std::cout << "i:" << i << " -> " << _srcIdx[i] << std::endl;
-    */
     // test manifold functionality
-    std::vector< OBRManifold > manifolds;
+    std::vector< OBRManifold > manifolds (fnumc);
     // for each cluster we fit a manifold
     for (int i = 0; i < fnumc; i++) {
         int idxFrom     = _srcIdx[i];
@@ -2012,7 +1961,8 @@ rw::math::Vector3D<> ODESimulator::addContacts (int numc, ODEBody* dataB1, ODEBo
         }
         manifolds.push_back (manifold);
     }
-    RW_DEBUGS ("Fibnd Contacts from manifolds");
+
+    RW_DEBUG ("Fibnd Contacts from manifolds");
     // run through all manifolds and get the contact points that will be used.
     int contactIdx = 0;
     rw::math::Vector3D<> contactNormalAvg (0, 0, 0);
@@ -2038,7 +1988,8 @@ rw::math::Vector3D<> ODESimulator::addContacts (int numc, ODEBody* dataB1, ODEBo
             }
         }
     }
-    RW_DEBUGS ("Add material map");
+
+    RW_DEBUG ("Add material map");
     // get the friction data and contact settings
     dContact conSettings;
     RW_ASSERT (_odeMaterialMap);
@@ -2047,7 +1998,7 @@ rw::math::Vector3D<> ODESimulator::addContacts (int numc, ODEBody* dataB1, ODEBo
     // TODO: collisionMargin should also be specified per object
     // double collisionMargin = _dwc->getCollisionMargin();
 
-    RW_DEBUGS ("- Filtered contacts: " << numc << " --> " << fnumc);
+    RW_DEBUG ("- Filtered contacts: " << numc << " --> " << fnumc);
 
     // std::cout << "- Filtered contacts: " << numc << " --> " << fnumc << std::endl;
     // Frame *world = _dwc->getWorkcell()->getWorldFrame();
@@ -2107,7 +2058,7 @@ rw::math::Vector3D<> ODESimulator::addContacts (int numc, ODEBody* dataB1, ODEBo
         dir1               = wTf2.R () * dir1;
         hasConv            = true;
     }
-
+    
     for (int i = 0; i < num; i++) {
         ContactPoint* point = &contactPointList[i];
         point->n            = normalize (point->n);
@@ -2140,14 +2091,14 @@ rw::math::Vector3D<> ODESimulator::addContacts (int numc, ODEBody* dataB1, ODEBo
         //    continue;
         //}
 
-        RW_DEBUGS ("-- Depth/Pos  : " << con.geom.depth << " " << printArray (con.geom.pos, 3));
-        // RW_DEBUGS("-- Depth/Pos p: " << point.penetration << " " << point.p );
+        RW_DEBUG ("-- Depth/Pos  : " << con.geom.depth << " " << printArray (con.geom.pos, 3));
+        // RW_DEBUG("-- Depth/Pos p: " << point.penetration << " " << point.p );
 
         // currently we use the best possible ode approximation to Coloumb friction
         con.surface = conSettings.surface;
 
         if (hasConv) {
-            RW_DEBUGS ("IS Conveour dir: " << dir1);
+            RW_DEBUG ("IS Conveour dir: " << dir1);
 
             // change friction direction to point in direction of dir1
             con.surface.mode |= dContactFDir1;
@@ -2164,11 +2115,11 @@ rw::math::Vector3D<> ODESimulator::addContacts (int numc, ODEBody* dataB1, ODEBo
         }
         // con.surface.motion1 =
 
-        RW_DEBUGS ("-- create contact ");
+        RW_DEBUG ("-- create contact ");
         dJointID c = dJointCreateContact (_worldId, _contactGroupId, &con);
-        RW_DEBUGS ("-- attach bodies");
+        RW_DEBUG ("-- attach bodies");
         dJointAttach (c, dataB1->getBodyID (), dataB2->getBodyID ());
-        RW_DEBUGS ("--enable feedback");
+        RW_DEBUG ("--enable feedback");
         // We can only have one Joint feedback per joint so the sensors will have to share
         if (enableFeedback) {
             RW_ASSERT (((size_t) _nextFeedbackIdx) < _sensorFeedbacks.size ());
@@ -2179,6 +2130,7 @@ rw::math::Vector3D<> ODESimulator::addContacts (int numc, ODEBody* dataB1, ODEBo
             dJointSetFeedback (c, feedback);
         }
     }
+
     // std::cout << "_maxPenetration: " << _maxPenetration << " meter" << std::endl;
     if (enableFeedback && odeSensorb1.size () > 0) {
         // std::cout << "----------- ADD FEEDBACK\n";
@@ -2241,7 +2193,7 @@ void ODESimulator::addContacts (std::vector< dContact >& contacts, size_t nr_con
 {
     RW_ASSERT (nr_con <= contacts.size ());
     if (dataB1 == NULL || dataB2 == NULL) {
-        RW_DEBUGS ("Bodies are NULL");
+        RW_DEBUG ("Bodies are NULL");
         RW_THROW ("Bodies are NULL");
     }
 
@@ -2270,11 +2222,11 @@ void ODESimulator::addContacts (std::vector< dContact >& contacts, size_t nr_con
         point.penetration = con.geom.depth;
         _allcontacts.push_back (point);
 
-        RW_DEBUGS ("-- create contact ");
+        RW_DEBUG ("-- create contact ");
         dJointID c = dJointCreateContact (_worldId, _contactGroupId, &con);
-        RW_DEBUGS ("-- attach bodies");
+        RW_DEBUG ("-- attach bodies");
         dJointAttach (c, dataB1->getBodyID (), dataB2->getBodyID ());
-        RW_DEBUGS ("--enable feedback");
+        RW_DEBUG ("--enable feedback");
         // We can only have one Joint feedback per joint so the sensors will have to share
         if (enableFeedback) {
             RW_ASSERT (((size_t) _nextFeedbackIdx) < _sensorFeedbacks.size ());
@@ -2315,7 +2267,7 @@ void ODESimulator::resetScene (rw::kinematics::State& state)
     _time           = 0.0;
 
     // first run through all rigid bodies and set the velocity and force to zero
-    RW_DEBUGS ("- Resetting bodies: " << _allbodies.size ());
+    RW_DEBUG ("- Resetting bodies: " << _allbodies.size ());
     for (dBodyID body : _allbodies) {
         dBodySetLinearVel (body, 0, 0, 0);
         dBodySetAngularVel (body, 0, 0, 0);
@@ -2329,17 +2281,17 @@ void ODESimulator::resetScene (rw::kinematics::State& state)
 
     // next the position need be reset to what is in state
     // run through all rw bodies and set the body position accordingly
-    RW_DEBUGS ("- Resetting sensors: " << _odeSensors.size ());
+    RW_DEBUG ("- Resetting sensors: " << _odeSensors.size ());
     for (ODETactileSensor* sensor : _odeSensors) {
         sensor->clear ();
     }
 
-    RW_DEBUGS ("- Resetting devices: " << _odeDevices.size ());
+    RW_DEBUG ("- Resetting devices: " << _odeDevices.size ());
     // run through all devices and set the rigid bodies accoringly
     for (ODEDevice* device : _odeDevices) {
         device->reset (state);
     }
-    RW_DEBUGS ("Finished reset!!");
+    RW_DEBUG ("Finished reset!!");
 }
 
 void ODESimulator::disableCollision (rwsim::dynamics::Body::Ptr b1, rwsim::dynamics::Body::Ptr b2)

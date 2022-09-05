@@ -36,8 +36,6 @@ using namespace rw::proximity;
 using namespace rw::loaders;
 using namespace rw::trajectory;
 
-#define RW_DEBUGS(str)    // std::cout << str  << std::endl;
-
 namespace {
 
 }
@@ -76,7 +74,7 @@ void RestingPoseDialog::initializeStart ()
     State state = _defstate;
     int threads = _ui->_nrOfThreadsSpin->value ();
     _simStartTimes.resize (threads, 0);
-    RW_DEBUGS ("threads: " << threads);
+    RW_DEBUG ("threads: " << threads);
 
     _bodies = _dwc->findBodies< RigidBody > ();
     for (RigidBody::Ptr rbody : _bodies) {
@@ -91,20 +89,20 @@ void RestingPoseDialog::initializeStart ()
 
     for (int i = 0; i < threads; i++) {
         // create simulator
-        RW_DEBUGS ("sim " << i);
+        RW_DEBUG ("sim " << i);
         PhysicsEngine::Ptr pengine = PhysicsEngine::Factory::makePhysicsEngine (engineId, _dwc);
         DynamicSimulator::Ptr sim  = ownedPtr (new DynamicSimulator (_dwc, pengine));
-        RW_DEBUGS ("Initialize simulator " << i);
+        RW_DEBUG ("Initialize simulator " << i);
         sim->init (state);
         _simulators.push_back (ownedPtr (new ThreadSimulator (sim, state)));
-        RW_DEBUGS ("Calc random cfg " << i);
+        RW_DEBUG ("Calc random cfg " << i);
         calcRandomCfg (state);
         _initStates.push_back (state);
     }
 
     _startTime = rw::common::TimerUtil::currentTimeMs ();
     _lastTime  = _startTime;
-    RW_DEBUGS ("init finished");
+    RW_DEBUG ("init finished");
 }
 
 void RestingPoseDialog::btnPressed ()
@@ -282,7 +280,7 @@ void RestingPoseDialog::updateStatus ()
         bool allBelowThres = true;
         Vector3D<> avgLVel, avgAVel;
         for (RigidBody::Ptr rbody : _bodies) {
-            // RW_DEBUGS("rbody: " << rbody->getMovableFrame().getName() );
+            // RW_DEBUG("rbody: " << rbody->getMovableFrame().getName() );
             // get velocity of rbody
             // if above threshold then break and continue
             Vector3D<> avel = rbody->getAngVel (state);
@@ -325,10 +323,10 @@ void RestingPoseDialog::updateStatus ()
             sim->reset (state);
             _simStartTimes[i] = time;
 
-            RW_DEBUGS (_nrOfTests << ">=" << _ui->_nrOfTestsSpin->value ());
+            RW_DEBUG (_nrOfTests << ">=" << _ui->_nrOfTestsSpin->value ());
             if (_nrOfTests >= _ui->_nrOfTestsSpin->value ())
                 continue;
-            RW_DEBUGS ("Start sim again");
+            RW_DEBUG ("Start sim again");
             sim->start ();
         }
         else if (time > _ui->_maxRunningTimeSpin->value ()) {

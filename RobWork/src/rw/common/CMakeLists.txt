@@ -17,6 +17,7 @@ if(build)
         Archive.cpp
         BINArchive.cpp
         Cache.cpp
+        CodeTimer.cpp
         ConcatVectorIterator.cpp
         FileCache.cpp
         INIArchive.cpp
@@ -45,6 +46,7 @@ if(build)
         BINArchive.hpp
         BoostXMLParser.hpp
         Cache.hpp
+        CodeTimer.cpp
         ConcatVectorIterator.hpp
         DOMElem.hpp
         DOMParser.hpp
@@ -104,6 +106,7 @@ if(build)
         set_source_files_properties(ThreadSafeStack.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
         set_source_files_properties(ThreadSafeVariable.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
         set_source_files_properties(ThreadTask.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+        set_source_files_properties(CodeTimer.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
     endif()
 
     rw_include_eigen(${SUBSYS_NAME})

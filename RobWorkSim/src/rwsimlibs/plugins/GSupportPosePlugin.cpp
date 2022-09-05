@@ -50,8 +50,6 @@ using namespace rw::trajectory;
 using namespace rwlibs::drawable;
 using namespace rw::sensor;
 
-#define RW_DEBUGS(str) std::cout << str << std::endl;
-
 namespace {
 
 std::string openFile (std::string& previousOpenDirectory, QWidget* parent)

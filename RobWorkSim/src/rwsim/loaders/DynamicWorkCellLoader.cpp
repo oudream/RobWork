@@ -95,9 +95,6 @@ using namespace rwlibs::simulation;
 
 using namespace boost::property_tree;
 
-#define RW_DEBUGS(str) rw::core::Log::debugLog () << str << std::endl
-//#define RW_DEBUGS(str)
-
 namespace {
 struct FrictionDataTmp
 {
@@ -193,7 +190,7 @@ std::pair< bool, double > toDouble (const std::string& str)
 
 std::vector< double > readArray (const PTree& tree)
 {
-    RW_DEBUGS ("ReadArray: " << tree.get_value< string > ());
+    RW_DEBUG ("ReadArray: " << tree.get_value< string > ());
     istringstream buf (tree.get_value< string > ());
     std::vector< double > values;
 
@@ -595,18 +592,18 @@ KinematicBody::Ptr readKinematicBody (const PTree& tree, const std::string& fram
     Log::debugLog () << "ReadKinematicBody" << std::endl;
     Frame* frame = getFrameFromAttr (tree, state, frameAttr, prefix);
 
-    RW_DEBUGS ("Trying to find object: \"" << frame->getName () << "\"");
+    RW_DEBUG ("Trying to find object: \"" << frame->getName () << "\"");
     RigidObject::Ptr obj = state.wc->findObject (frame->getName ()).cast< RigidObject > ();
     if (obj == NULL) {
         // TODO: unfortunately the robwork kinematic loader does not fully support the
         // Object loading yet. So we need to create an object for this particular frame
-        RW_DEBUGS ("Adding new object to state!");
+        RW_DEBUG ("Adding new object to state!");
         obj = ownedPtr (new RigidObject (frame));
         state.wc->add (obj);
     }
 
     // Object::Ptr obj = getObjectFromAttr(tree, state, frameAttr, prefix);
-    RW_DEBUGS ("Reading movable frame!");
+    RW_DEBUG ("Reading movable frame!");
     MovableFrame* refframe = dynamic_cast< MovableFrame* > (obj->getBase ());
     if (refframe == NULL)
         RW_THROW ("The body frame of a Kinematic body must be a movable frame type!");
@@ -614,13 +611,13 @@ KinematicBody::Ptr readKinematicBody (const PTree& tree, const std::string& fram
     BodyInfo info;
     info.material   = tree.get< string > ("MaterialID", state.defaultMaterial);
     info.objectType = tree.get< string > ("ObjectID", state.defaultObjectType);
-    RW_DEBUGS ("Creating kinematic body!");
+    RW_DEBUG ("Creating kinematic body!");
 
     KinematicBody::Ptr body = ownedPtr (new KinematicBody (info, obj));
-    RW_DEBUGS ("Adding kinematic body!");
+    RW_DEBUG ("Adding kinematic body!");
     state.dwc->addBody (body);
 
-    RW_DEBUGS ("Added kinematic body!");
+    RW_DEBUG ("Added kinematic body!");
     // info.print();
     return body;
 }
@@ -1002,10 +999,10 @@ RigidDevice::Ptr readRigidDevice (const PTree& tree, ParserState& state)
     rigiddev->setMotorForceLimits (Q (maxForce));
     std::vector< Body::Ptr > links = rigiddev->getLinks ();
     for (Body::Ptr l : links) {
-        RW_DEBUGS ("Adding body to dwc: " << l->getName ());
+        RW_DEBUG ("Adding body to dwc: " << l->getName ());
         state.dwc->addBody (l);
     }
-    RW_DEBUGS ("Adding device to dwc: " << rigiddev->getName ());
+    RW_DEBUG ("Adding device to dwc: " << rigiddev->getName ());
     state.dwc->addDevice (rigiddev);
     return rigiddev;
 }

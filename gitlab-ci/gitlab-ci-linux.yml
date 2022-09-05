@@ -296,7 +296,7 @@
     # Test RWS LUA FILES
     - $NO_LUA && EXERWS=""
     - cd $DIR/RobWorkStudio/example/lua
-    - "for file in $EXERWS ; do echo -e '\n EXECUTING: '$file && gdb -batch -ex r -ex bt --args lua ${file}.lua ${robworkdata} -t  2>&1 1> ./output || echo GDB-END ; cat ./output ; cat ./output | grep ^Example-Done$ || exit 1 ; done"
+    - "for file in $EXERWS ; do echo -e '\n EXECUTING: '$file ; gdb -batch -ex r -ex bt --args lua ${file}.lua ${robworkdata} -t  2>&1 1> ./output || echo GDB-END ; cat ./output ; cat ./output | grep ^Example-Done$ || gdb -batch -ex r -ex bt --args lua ${file}.lua ${robworkdata} -t  2>&1 1> ./output || echo GDB-END ; cat ./output ; cat ./output | grep ^Example-Done$ || exit 1 ; done"
     # Test RWSIM CPP files
     - cd $DIR/RobWorkSim/example/cpp
     - mkdir build && cd build

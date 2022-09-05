@@ -36,8 +36,6 @@ using namespace rw::loaders;
 using namespace rw::trajectory;
 using namespace rwlibs::simulation;
 
-#define RW_DEBUGS(str) std::cout << str << std::endl;
-
 namespace {
 
 }
@@ -129,18 +127,18 @@ GraspRestingPoseDialog::GraspRestingPoseDialog (const rw::kinematics::State& sta
     RW_ASSERT (_dwc);
     setupUi (this);
 
-    RW_DEBUGS ("- Setting devices ");
+    RW_DEBUG ("- Setting devices ");
     std::vector< DynamicDevice* > devices = _dwc->getDynamicDevices ();
     for (DynamicDevice* device : devices) {
         if (dynamic_cast< RigidDevice* > (device)) {
             rw::models::Device* dev = &device->getModel ();
             RW_ASSERT (dev);
-            RW_DEBUGS ("-- Dev name: " << dev->getName ());
+            RW_DEBUG ("-- Dev name: " << dev->getName ());
             _deviceBox->addItem (dev->getName ().c_str ());
         }
     }
 
-    RW_DEBUGS ("- Setting objects ");
+    RW_DEBUG ("- Setting objects ");
     for (Body* body : _dwc->getBodies ()) {
         Frame* obj = &body->getBodyFrame ();
         if (obj == NULL)
@@ -155,7 +153,7 @@ GraspRestingPoseDialog::GraspRestingPoseDialog (const rw::kinematics::State& sta
 
     _graspPolicyBox->addItem ("SimpleClose");
 
-    RW_DEBUGS ("- Setting connections ");
+    RW_DEBUG ("- Setting connections ");
     connect (_saveBtn1, SIGNAL (pressed ()), this, SLOT (btnPressed ()));
     connect (_startBtn, SIGNAL (pressed ()), this, SLOT (btnPressed ()));
     connect (_resetBtn, SIGNAL (pressed ()), this, SLOT (btnPressed ()));
@@ -165,7 +163,7 @@ GraspRestingPoseDialog::GraspRestingPoseDialog (const rw::kinematics::State& sta
 
     connect (_updateRateSpin, SIGNAL (valueChanged (int)), this, SLOT (changedEvent ()));
 
-    RW_DEBUGS ("- Setting timer ");
+    RW_DEBUG ("- Setting timer ");
     _timer = new QTimer (NULL);
     _timer->setInterval (_updateRateSpin->value ());
     connect (_timer, SIGNAL (timeout ()), this, SLOT (changedEvent ()));
@@ -185,9 +183,9 @@ void GraspRestingPoseDialog::initializeStart ()
     State state = _defstate;
     int threads = _nrOfThreadsSpin->value ();
     _simStartTimes.resize (threads, 0);
-    RW_DEBUGS ("threads: " << threads);
+    RW_DEBUG ("threads: " << threads);
 
-    RW_DEBUGS ("- Getting object!");
+    RW_DEBUG ("- Getting object!");
     std::string objName = _objectBox->currentText ().toStdString ();
     for (Body* body : _dwc->getBodies ()) {
         if (RigidBody* rbody = dynamic_cast< RigidBody* > (body)) {
@@ -204,7 +202,7 @@ void GraspRestingPoseDialog::initializeStart ()
         RW_THROW ("You must choose a valid object to grasp!");
     }
 
-    RW_DEBUGS ("- Getting device!");
+    RW_DEBUG ("- Getting device!");
     std::string devName = _deviceBox->currentText ().toStdString ();
     DynamicDevice* dev  = _dwc->findDevice (devName);
     _hand               = dynamic_cast< RigidDevice* > (dev);
@@ -220,7 +218,7 @@ void GraspRestingPoseDialog::initializeStart ()
     }
     RW_ASSERT (parent);
 
-    RW_DEBUGS ("- Getting preshapes!")
+    RW_DEBUG ("- Getting preshapes!")
     // TODO: for now we only have one preshape
     Q preQ = _hand->getModel ().getQ (state);
     Q tQ   = preQ;
@@ -268,14 +266,14 @@ void GraspRestingPoseDialog::initializeStart ()
     _preshapes.push_back (preQ);
     _targetQ.push_back (tQ);
 
-    RW_DEBUGS ("- Creating simulators: ");
+    RW_DEBUG ("- Creating simulators: ");
     for (int i = 0; i < threads; i++) {
         state = _defstate;
         // create simulator
-        RW_DEBUGS ("-- sim nr " << i);
+        RW_DEBUG ("-- sim nr " << i);
         Simulator* sim = PhysicsEngineFactory::newPhysicsEngine ("ODE", _dwc);
 
-        RW_DEBUGS ("-- Initialize simulator " << i);
+        RW_DEBUG ("-- Initialize simulator " << i);
         sim->initPhysics (state);
 
         // create a controller
@@ -289,14 +287,14 @@ void GraspRestingPoseDialog::initializeStart ()
         sim->addSensor (_bodySensor);
 
         _simulators.push_back (ownedPtr (new ThreadSimulator (sim, state)));
-        RW_DEBUGS ("-- Calc random cfg " << i);
+        RW_DEBUG ("-- Calc random cfg " << i);
         calcRandomCfg (state);
         _initStates.push_back (state);
     }
 
     _startTime = rw::common::TimerUtil::currentTimeMs ();
     _lastTime  = _startTime;
-    RW_DEBUGS ("init finished");
+    RW_DEBUG ("init finished");
 }
 
 void GraspRestingPoseDialog::startAuto ()
@@ -580,12 +578,12 @@ void GraspRestingPoseDialog::updateStatus ()
             sim->setState (state);
             _simStartTimes[i] = time;
 
-            RW_DEBUGS (_nrOfTests << ">=" << _nrOfTestsSpin->value ());
+            RW_DEBUG (_nrOfTests << ">=" << _nrOfTestsSpin->value ());
             if (_nrOfTests >= _nrOfTestsSpin->value ())
                 continue;
-            RW_DEBUGS ("Start sim again");
+            RW_DEBUG ("Start sim again");
             sim->start ();
-            RW_DEBUGS ("sim started");
+            RW_DEBUG ("sim started");
         }
         else if (time > _maxRunningTimeSpin->value ()) {
             sim->stop ();
