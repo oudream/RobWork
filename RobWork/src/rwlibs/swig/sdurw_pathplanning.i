@@ -46,6 +46,8 @@
     #include <rw/trajectory/LloydHaywardBlend.hpp>
     #include <rw/trajectory/ParabolicBlend.hpp>
 
+    #include <rw/trajectory.hpp>
+
 %}
 %pragma(java) jniclassimports=%{
 import org.robwork.sdurw_core.*;
@@ -84,7 +86,7 @@ NAMED_ABSTRACTPTR(StopCriteria,rw::pathplanning::StopCriteria);
 %std_vector(VectorStopCriteriaPtr,rw::core::Ptr<rw::pathplanning::StopCriteria> );
 
 
-%include <rwlibs/swig/typemaps/ConstQConstraintPtr.i>
+%include <rwlibs/swig/typemaps/toQConstraint.i>
 %{
 	#include <rw/pathplanning/QConstraint.hpp>
 %}

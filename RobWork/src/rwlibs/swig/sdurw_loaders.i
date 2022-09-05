@@ -31,6 +31,11 @@
 #include <rw/trajectory/LloydHaywardBlend.hpp>
 #include <rw/trajectory/ParabolicBlend.hpp>
 #include <rw/models.hpp>
+
+
+#include <rw/trajectory/CubicSplineInterpolator.hpp>
+#include <rw/trajectory/RampInterpolator.hpp>
+#include <rw/loaders.hpp>
 %}
 
 %pragma(java) jniclassimports=%{

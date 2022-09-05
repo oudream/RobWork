@@ -39,8 +39,6 @@ def addTestFrames(world):
     frame11 = sdurw_kinematics.MovableFrame("Frame11")
     frame12 = sdurw_kinematics.FixedFrame("Frame12",sdurw_math.Transform3D(Vector3D()))
 
-
-
     world.addFrame(frame1)
     world.addFrame(frame3, frame1)
     world.addFrame(frame4, frame1)

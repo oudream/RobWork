@@ -59,8 +59,7 @@ import org.robwork.sdurw_proximity.*;
 import org.robwork.sdurw_pathplanning.*;
 %}
 
-%include <rwlibs/swig/typemaps/ClearanceCalculatorPtr.i>
-%include <rwlibs/swig/typemaps/ConstClearanceCalculatorPtr.i>
+%include <rwlibs/swig/typemaps/toClearanceCalculator.i>
 
 %include <rwlibs/pathoptimization/clearance/ClearanceCalculator.hpp>
 NAMED_ABSTRACTPTR(ClearanceCalculator,rwlibs::pathoptimization::ClearanceCalculator)

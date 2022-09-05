@@ -66,8 +66,7 @@ namespace rw{ namespace core {
 /*************************************
  *  START of SWIG
  *************************************/
-%include <rwlibs/swig/typemaps/statedatacptr.i>
-%include <rwlibs/swig/typemaps/statedataptr.i>
+%include <rwlibs/swig/typemaps/toStateData.i>
 
 %warnfilter(508) rw::core::Ptr<rw::kinematics::StateData>::operator==;
 %warnfilter(508) rw::kinematics::StateData::operator==;
@@ -109,10 +108,7 @@ NAMED_OWNEDPTR(StateData, rw::kinematics::StateData);
 %ignore rw::kinematics::Frame::getChildren() const;
 %ignore rw::kinematics::Frame::getParent() const;
 
-
-%include <rwlibs/swig/typemaps/framecptr.i>
-%include <rwlibs/swig/typemaps/frameptr.i>
-%include <rwlibs/swig/typemaps/frame_pointer.i>
+%include <rwlibs/swig/typemaps/toFrame.i>
 
 #if defined(SWIGPYTHON)
 %warnfilter(508) rw::core::Ptr<rw::kinematics::Frame>::operator==;

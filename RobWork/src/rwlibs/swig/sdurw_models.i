@@ -99,9 +99,7 @@ NAMED_OWNEDPTR(Object,rw::models::Object);
 	%ignore rw::models::Device::getPropertyMap() const;
 #endif 
 
-%include <rwlibs/swig/typemaps/constDevicePtr.i>
-%include <rwlibs/swig/typemaps/devicePtr.i>
-
+%include <rwlibs/swig/typemaps/toDevice.i>
 %{
 	#include<rw/models/Device.hpp>
 %}
@@ -119,8 +117,7 @@ NAMED_OWNEDPTR(Device,rw::models::Device);
         return ret;
     }
 %}
-%include <rwlibs/swig/typemaps/jointptr.i>
-%include <rwlibs/swig/typemaps/joint_pointer.i>
+%include <rwlibs/swig/typemaps/toJoint.i>
 
 %{
 	#include<rw/models/Joint.hpp>
@@ -257,9 +254,7 @@ NAMED_OWNEDPTR(ParallelLeg,rw::models::ParallelLeg);
 %std_vector_explicit(VectorParallelDeviceLeg, rw::models::ParallelLeg*, std::vector<std::vector<rw::models::ParallelLeg*>>,"generalToFromPy");
 
 
-%include <rwlibs/swig/typemaps/ParallelDevicePointer.i>
-%include <rwlibs/swig/typemaps/constParallelDevicePtr.i>
-%include <rwlibs/swig/typemaps/ParallelDevicePtr.i>
+%include <rwlibs/swig/typemaps/toParallelDevice.i>
 %{
 	#include<rw/models/ParallelDevice.hpp>
 %}
