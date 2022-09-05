@@ -11,6 +11,7 @@ if(MATHGL_FOUND)
     set(DEFAULT TRUE)
 else()
     set(DEFAULT FALSE)
+    set(MATHGL_INCLUDE_DIRS)
 endif()
 rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ${DEFAULT} DEPENDS ${SUBSYS_DEPS} ADD_DOC)
 

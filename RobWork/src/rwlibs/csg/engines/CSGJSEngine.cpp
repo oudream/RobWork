@@ -137,7 +137,7 @@ rw::core::Ptr< rw::core::Extension > CSGEJSEnginePlugin::makeExtension (const st
     const Extension::Ptr extension = ownedPtr (
         new Extension ("CSGJSEngine", "rw.geometry.CSGEngine", this, engine.cast< CSGEngine > ()));
 
-    extension->getProperties ().set< std::string > ("strategyID", engine->getID ());
+    extension->getProperties ().set< std::string > ("EngineID", engine->getID ());
     return extension;
 }
 

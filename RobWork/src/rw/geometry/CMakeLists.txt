@@ -1,6 +1,9 @@
 set(SUBSYS_NAME sdurw_geometry)
 set(SUBSYS_DESC "The core RobWork library!")
-set(SUBSYS_DEPS PUBLIC sdurw_core sdurw_common sdurw_math PRIVATE sdurw_kinematics)
+set(SUBSYS_DEPS
+    PUBLIC sdurw_core sdurw_common sdurw_math
+    PRIVATE sdurw_kinematics
+)
 
 set(build TRUE)
 rw_subsys_option(build ${SUBSYS_NAME} ${SUBSYS_DESC} ON DEPENDS ${SUBSYS_DEPS})
@@ -48,6 +51,9 @@ if(build)
         QHull3D.cpp
         QHullND.cpp
         Ray.cpp
+        ReferencedEdge.cpp
+        ReferencedVertice.cpp
+        ReferencedTriangle.cpp
         SimpleTriMesh.cpp
         Sphere.cpp
         SphereDistanceCalc.cpp
@@ -129,6 +135,9 @@ if(build)
         QHull3D.hpp
         QHullND.hpp
         Ray.hpp
+        ReferencedEdge.hpp
+        ReferencedVertice.hpp
+        ReferencedTriangle.hpp
         SimpleTriMesh.hpp
         Sphere.hpp
         SphereDistanceCalc.hpp
@@ -170,7 +179,9 @@ if(build)
         set_source_files_properties(BSphere.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
         set_source_files_properties(Covariance.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
         set_source_files_properties(OBB.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
-        set_source_files_properties(analytic/quadratics/QuadraticUtil.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+        set_source_files_properties(
+            analytic/quadratics/QuadraticUtil.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique
+        )
     endif()
 
     if(RW_HAVE_PQP)
@@ -178,10 +189,14 @@ if(build)
         set(FILES_HPP ${FILES_HPP} TriDistanceCalc.hpp TriTriToleranceIntersect.hpp)
     endif()
 
-    rw_add_library(${SUBSYS_NAME} ${FILES_CPP} ${FILES_HPP} ${FILES_HPP_analytic} ${FILES_HPP_analytic_quadratic})
+    rw_add_library(${SUBSYS_NAME} ${FILES_CPP} ${FILES_HPP} ${FILES_HPP_analytic}
+                   ${FILES_HPP_analytic_quadratic}
+    )
     rw_add_includes(${SUBSYS_NAME} "rw/geometry" ${FILES_HPP})
     rw_add_includes(${SUBSYS_NAME} "rw/geometry/analytic" ${FILES_HPP_analytic})
-    rw_add_includes(${SUBSYS_NAME} "rw/geometry/analytic/quadratics" ${FILES_HPP_analytic_quadratic})
+    rw_add_includes(${SUBSYS_NAME} "rw/geometry/analytic/quadratics"
+                    ${FILES_HPP_analytic_quadratic}
+    )
     rw_add_includes(${SUBSYS_NAME} "rw" ../geometry.hpp)
 
     if(TARGET qhull_build)
