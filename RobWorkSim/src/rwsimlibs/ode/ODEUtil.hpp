@@ -63,9 +63,9 @@ namespace rwsim { namespace simulator {
             dst[2] = v (2);
         }
 
-        static rw::math::Vector3D<> toVector3D (const dReal* v)
+        static inline rw::math::Vector3D<double> toVector3D (const dReal* v)
         {
-            return rw::math::Vector3D<> (v[0], v[1], v[2]);
+            return rw::math::Vector3D<double> (v[0], v[1], v[2]);
         }
 
         static void toODERotation (const rw::math::Rotation3D<>& rwR, dMatrix3 R);

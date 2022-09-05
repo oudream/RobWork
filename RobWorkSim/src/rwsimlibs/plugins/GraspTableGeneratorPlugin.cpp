@@ -40,12 +40,6 @@ using namespace rw::geometry;
 using namespace rw::graspplanning;
 using namespace rwlibs::simulation;
 
-#define RW_DEBUGS(str) std::cout << str << std::endl;
-
-namespace {
-
-}
-
 namespace {
 
 class TimeLabel
@@ -109,7 +103,7 @@ GraspTableGeneratorPlugin::GraspTableGeneratorPlugin () :
     _ui->_qAvailMetricsBox->addItem ("CM-CCP");
     _ui->_qMetricsBox->addItem ("Force closure (LEB)");
 
-    RW_DEBUGS ("- Setting connections ");
+    RW_DEBUG ("- Setting connections ");
     connect (_ui->_saveBtn1, SIGNAL (pressed ()), this, SLOT (btnPressed ()));
     connect (_ui->_genTableBtn, SIGNAL (pressed ()), this, SLOT (btnPressed ()));
     connect (_ui->_resetBtn, SIGNAL (pressed ()), this, SLOT (btnPressed ()));
@@ -128,7 +122,7 @@ GraspTableGeneratorPlugin::GraspTableGeneratorPlugin () :
     // connect(_updateRateSpin,SIGNAL(valueChanged(int)), this, SLOT(changedEvent()) );
     // connect(_fixedGroupBox, SIGNAL(stateChanged(int)), this, SLOT(changedEvent()) );
 
-    RW_DEBUGS ("- Setting timer ");
+    RW_DEBUG ("- Setting timer ");
     _timer = new QTimer (NULL);
     _timer->setInterval (_ui->_updateRateSpin->value ());
     connect (_timer, SIGNAL (timeout ()), this, SLOT (changedEvent ()));
@@ -155,18 +149,18 @@ void GraspTableGeneratorPlugin::open (rw::models::WorkCell* workcell)
         return;
     }
 
-    RW_DEBUGS ("- Setting devices ");
+    RW_DEBUG ("- Setting devices ");
     std::vector< DynamicDevice::Ptr > devices = _dwc->getDynamicDevices ();
     for (DynamicDevice::Ptr device : devices) {
         if (dynamic_cast< RigidDevice* > (device.get ())) {
             rw::models::Device* dev = &device->getModel ();
             RW_ASSERT (dev);
-            RW_DEBUGS ("-- Dev name: " << dev->getName ());
+            RW_DEBUG ("-- Dev name: " << dev->getName ());
             _ui->_deviceBox->addItem (dev->getName ().c_str ());
         }
     }
 
-    RW_DEBUGS ("- Setting objects ");
+    RW_DEBUG ("- Setting objects ");
     for (Body::Ptr body : _dwc->getBodies ()) {
         Frame* obj = body->getBodyFrame ();
         if (obj == NULL)
@@ -755,10 +749,6 @@ void GraspTableGeneratorPlugin::stepCallBack(int i, const rw::kinematics::State&
         _initStates[i] = nstate;
         tsim->setState(nstate);
     }
-    //RW_DEBUGS(_nrOfTests<<">="<<_nrOfTestsSpin->value());
-    //if( _nrOfTests>=_nrOfTestsSpin->value() )
-    //    sim->stop();
-
 }
 
 void GraspTableGeneratorPlugin::btnPressed(){

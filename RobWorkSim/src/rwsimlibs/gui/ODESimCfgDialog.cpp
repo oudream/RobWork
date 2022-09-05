@@ -12,8 +12,6 @@ using namespace rw::kinematics;
 using namespace rw::core;
 using namespace rw::proximity;
 
-#define RW_DEBUGS(str) std::cout << str << std::endl;
-
 ODESimCfgDialog::ODESimCfgDialog (rw::core::Ptr< rwsim::simulator::DynamicSimulator > sim,
                                   QWidget* parent) :
     QDialog (parent),

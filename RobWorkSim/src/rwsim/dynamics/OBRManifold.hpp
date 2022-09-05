@@ -40,7 +40,8 @@ namespace rwsim { namespace dynamics {
 
         /**
          * @brief adds and updates the manifold with a new point
-         * @param p
+         * @param p the new point to add
+         * @return True if point is a part of the manifold, else false
          */
         bool addPoint (ContactPoint& p);
 
@@ -186,7 +187,7 @@ namespace rwsim { namespace dynamics {
         bool _onBorderMap[4];
         // Frame *_objA,*_objB;
         double _threshold, _cosThreshold, _sepThreshold;
-        int _deepestIdx, _nrOfContacts;
+        int _deepestIdx, _nrOfContacts, _leastDeapIdx;
     };
 
 }}    // namespace rwsim::dynamics

@@ -72,8 +72,6 @@ using namespace rw::proximity;
 using namespace rw::geometry;
 using namespace rw;
 
-#define RW_DEBUGS(str)
-
 namespace {
 
 struct InitialAction
@@ -172,7 +170,7 @@ void addToStateStructure (rw::core::Ptr< Frame > parent, DummySetup& setup)
     std::vector< Frame* > children = setup.toChildMap[parent->getName ()];
     for (Frame* child : children) {
         DummyFrame* dframe = setup.dummyFrameMap[child->getName ()];
-        RW_DEBUGS ("Adding: " << parent->getName () << "<--" << dframe->getName ());
+        RW_DEBUG ("Adding: " << parent->getName () << "<--" << dframe->getName ());
         if (dframe->_isDaf)
             setup.tree->addDAF (child, parent);
         else
@@ -185,7 +183,7 @@ void addToStateStructure (rw::core::Ptr< Frame > parent, DummySetup& setup)
 void addToStateStructure (const std::string& name, DummySetup& setup)
 {
     DummyFrame* dframe = setup.dummyFrameMap[name];
-    RW_DEBUGS ("RefFrame : " << dframe->getRefFrame ());
+    RW_DEBUG ("RefFrame : " << dframe->getRefFrame ());
     rw::core::Ptr< Frame > parent = setup.frameMap[dframe->getRefFrame ()];
     if (parent == NULL)
         RW_THROW ("PARENT IS NULL");
@@ -261,7 +259,7 @@ Frame* addModelToFrame (DummyModel& model, rw::core::Ptr< Frame > parent, StateS
         }
 
         // try {
-        RW_DEBUGS ("Loading Model....");
+        RW_DEBUG ("Loading Model....");
         if (model._colmodel && model._isDrawable) {
             // the geom is to be used as both collision geometry and visualization model
             // TODO: this could be optimized, share data and such.
@@ -595,7 +593,7 @@ Frame* createFrame (DummyFrame& dframe, DummySetup& setup)
     setup.dummyFrameMap[dframe.getName ()] = &dframe;
     setup.frameMap[frame->getName ()]      = frame.get ();
     setup.toChildMap[dframe.getRefFrame ()].push_back (frame.get ());
-    RW_DEBUGS ("Frame created: " << frame->getName () << " --> " << dframe.getRefFrame ());
+    RW_DEBUG ("Frame created: " << frame->getName () << " --> " << dframe.getRefFrame ());
     return frame.get ();
 }
 
@@ -834,7 +832,7 @@ Device::Ptr createDevice (DummyDevice& dev, DummySetup& setup)
         addToStateStructure (base->getName (), setup);
         for (DummyFrame& dframe : dev._frames) {
             // Add properties defined in device context
-            RW_DEBUGS ("Add props to : " << dframe.getName ());
+            RW_DEBUG ("Add props to : " << dframe.getName ());
             addFrameProps (dframe, setup);
             addDevicePropsToFrame (dev, dframe.getName (), setup);
         }
@@ -996,7 +994,7 @@ rw::models::WorkCell::Ptr XMLRWLoader::loadWorkCell (const std::string& fname)
     try {
         std::string filename = IOUtil::getAbsoluteFileName (fname);
 
-        RW_DEBUGS (" ******* Loading workcell from \"" << filename << "\" ");
+        RW_DEBUG (" ******* Loading workcell from \"" << filename << "\" ");
 
         // container for actions to execute when all frames and devices has been loaded
         DummySetup setup;

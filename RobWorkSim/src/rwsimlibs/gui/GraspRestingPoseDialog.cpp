@@ -45,13 +45,6 @@ using namespace rw::graspplanning;
 
 namespace bfs = boost::filesystem;
 
-//#define RW_DEBUGS( str ) std::cout << str  << std::endl;
-#define RW_DEBUGS(str)
-
-namespace {
-
-}
-
 namespace {
 
 class TimeLabel : public QLabel
@@ -259,18 +252,18 @@ GraspRestingPoseDialog::GraspRestingPoseDialog (const rw::kinematics::State& sta
 
     Math::seed (TimerUtil::currentTimeMs ());
 
-    RW_DEBUGS ("- Setting devices ");
+    RW_DEBUG ("- Setting devices ");
     std::vector< DynamicDevice::Ptr > devices = _dwc->getDynamicDevices ();
     for (DynamicDevice::Ptr device : devices) {
         if (device.cast< RigidDevice > ()) {
             rw::models::Device* dev = &device->getModel ();
             RW_ASSERT (dev);
-            RW_DEBUGS ("-- Dev name: " << dev->getName ());
+            RW_DEBUG ("-- Dev name: " << dev->getName ());
             _ui->_deviceBox->addItem (dev->getName ().c_str ());
         }
     }
 
-    RW_DEBUGS ("- Setting objects ");
+    RW_DEBUG ("- Setting objects ");
     for (Body::Ptr body : _dwc->getBodies ()) {
         Frame* obj = body->getBodyFrame ();
         if (obj == NULL)
@@ -287,7 +280,7 @@ GraspRestingPoseDialog::GraspRestingPoseDialog (const rw::kinematics::State& sta
 
     _ui->_graspPolicyBox->addItem ("SimpleClose");
 
-    RW_DEBUGS ("- Setting connections ");
+    RW_DEBUG ("- Setting connections ");
     connect (_ui->_saveBtn1, SIGNAL (pressed ()), this, SLOT (btnPressed ()));
     connect (_ui->_startBtn, SIGNAL (pressed ()), this, SLOT (btnPressed ()));
     connect (_ui->_resetBtn, SIGNAL (pressed ()), this, SLOT (btnPressed ()));
@@ -325,7 +318,7 @@ GraspRestingPoseDialog::GraspRestingPoseDialog (const rw::kinematics::State& sta
     _ui->_ySpinBox->setValue (map.get< int > ("y_delta", 3) / 100.0);
     _ui->_zSpinBox->setValue (map.get< int > ("z_delta", 3) / 100.0);
 
-    RW_DEBUGS ("- Setting timer ");
+    RW_DEBUG ("- Setting timer ");
     _timer = new QTimer (NULL);
     _timer->setInterval (_ui->_updateRateSpin->value ());
     connect (_timer, SIGNAL (timeout ()), this, SLOT (changedEvent ()));
@@ -395,10 +388,10 @@ void GraspRestingPoseDialog::initializeStart ()
     State state = _defstate;
     int threads = _ui->_nrOfThreadsSpin->value ();
     _simStartTimes.resize (threads, 0);
-    RW_DEBUGS ("threads: " << threads);
+    RW_DEBUG ("threads: " << threads);
     file << "Nr of threads used: " << threads << std::endl;
 
-    RW_DEBUGS ("- Getting object!");
+    RW_DEBUG ("- Getting object!");
     std::string objName = _ui->_objectBox->currentText ().toStdString ();
     for (Body::Ptr body : _dwc->getBodies ()) {
         if (RigidBody::Ptr rbody = body.cast< RigidBody > ()) {
@@ -416,7 +409,7 @@ void GraspRestingPoseDialog::initializeStart ()
         RW_THROW ("You must choose a valid object to grasp!");
     }
 
-    RW_DEBUGS ("- Getting device!");
+    RW_DEBUG ("- Getting device!");
     std::string devName    = _ui->_deviceBox->currentText ().toStdString ();
     DynamicDevice::Ptr dev = _dwc->findDevice (devName);
     _hand                  = dev.cast< RigidDevice > ();
@@ -434,7 +427,7 @@ void GraspRestingPoseDialog::initializeStart ()
     }
     RW_ASSERT (parent);
 
-    RW_DEBUGS ("- Getting preshapes!")
+    RW_DEBUG ("- Getting preshapes!")
     // TODO: for now we only have one preshape
     Q preQ = _hand->getModel ().getQ (state);
     Q tQ   = preQ;
@@ -535,14 +528,14 @@ void GraspRestingPoseDialog::initializeStart ()
     _gtable =
         GraspTable (_hand->getModel ().getName (), _bodies[0]->getMovableFrame ()->getName ());
 
-    RW_DEBUGS ("- Creating simulators: ");
+    RW_DEBUG ("- Creating simulators: ");
     for (int i = 0; i < threads; i++) {
         state = _defstate;
         // create simulator
-        RW_DEBUGS ("-- sim nr " << i);
+        RW_DEBUG ("-- sim nr " << i);
         PhysicsEngine::Ptr pengine = PhysicsEngine::Factory::makePhysicsEngine ("ODE", _dwc);
         DynamicSimulator::Ptr sim  = ownedPtr (new DynamicSimulator (_dwc, pengine));
-        RW_DEBUGS ("-- Initialize simulator " << i);
+        RW_DEBUG ("-- Initialize simulator " << i);
         sim->init (state);
 
         // create a controller
@@ -566,7 +559,7 @@ void GraspRestingPoseDialog::initializeStart ()
         _simulators.push_back (ownedPtr (tsim));
         tsim->setRealTimeScale (0);
         tsim->setTimeStep (0.001);
-        RW_DEBUGS ("-- Calc random cfg " << i);
+        RW_DEBUG ("-- Calc random cfg " << i);
 
         state = _defstate;
 
@@ -592,7 +585,7 @@ void GraspRestingPoseDialog::initializeStart ()
 
     _startTime = rw::common::TimerUtil::currentTimeMs ();
     _lastTime  = _startTime;
-    RW_DEBUGS ("init finished");
+    RW_DEBUG ("init finished");
     file.close ();
 }
 
@@ -620,7 +613,7 @@ std::vector< Eigen::MatrixXf > getTactileData (const std::vector< SimulatedSenso
 void GraspRestingPoseDialog::stepCallBack (int i, const rw::kinematics::State& state)
 {
     try {
-        RW_DEBUGS ("StepCallBack " << i);
+        RW_DEBUG ("StepCallBack " << i);
         ThreadSimulator::Ptr tsim = _simulators[i];
 
         DynamicSimulator::Ptr sim =
@@ -633,7 +626,7 @@ void GraspRestingPoseDialog::stepCallBack (int i, const rw::kinematics::State& s
                  << "grasptablefile.txt";
 
             _gtable.save (sstr.str ());
-            RW_DEBUGS ("StepCallBack - done (save)");
+            RW_DEBUG ("StepCallBack - done (save)");
             return;
         }
 
@@ -669,7 +662,7 @@ void GraspRestingPoseDialog::stepCallBack (int i, const rw::kinematics::State& s
         // we only want to check up on the simulation once every fixed timestep
         // (not necesarily the timestep of the simulator
         if (time < _nextTimeUpdate[i]) {
-            RW_DEBUGS ("StepCallBack - done (next time)");
+            RW_DEBUG ("StepCallBack - done (next time)");
             return;
         }
         _nextTimeUpdate[i] += _ui->_logIntervalSpin->value () / 1000.0;
@@ -748,21 +741,21 @@ void GraspRestingPoseDialog::stepCallBack (int i, const rw::kinematics::State& s
                 Grasp3D g3d (_bodySensor->getContacts (state));
 
                 // Transform3D<> wTf = Kinematics::worldTframe(_handBase, state);
-                RW_DEBUGS ("***** NR OF CONTACTS IN GRASP: " << g3d.contacts.size ());
+                RW_DEBUG ("***** NR OF CONTACTS IN GRASP: " << g3d.contacts.size ());
                 std::cout << "***** NR OF CONTACTS IN GRASP: " << g3d.contacts.size () << std::endl;
 
                 Vector3D<> cm = _body->getInfo ().masscenter;
                 // std::cout << cm << std::endl;
 
                 if (g3d.contacts.size () > 1) {
-                    RW_DEBUGS ("Wrench calc");
+                    RW_DEBUG ("Wrench calc");
                     try {
                         WrenchMeasure3D wmeasure (8);
                         wmeasure.setLambda (0.3);
                         wmeasure.setObjectCenter (cm);
                         wmeasure.quality (g3d);
 
-                        RW_DEBUGS ("Wrench calc done!");
+                        RW_DEBUG ("Wrench calc done!");
 
                         qualities (0) = wmeasure.getMinWrench ();
                         qualities (1) = 0;
@@ -905,7 +898,7 @@ void GraspRestingPoseDialog::stepCallBack (int i, const rw::kinematics::State& s
                         if ((_nrOfGraspsInGroup - 1) & 0x1)
                             devi = -devi;
 
-                        RW_DEBUGS ((int) floor (_nrOfGraspsInGroup / 2.0 - 0.1));
+                        RW_DEBUG ((int) floor (_nrOfGraspsInGroup / 2.0 - 0.1));
                         qtmp ((int) floor (_nrOfGraspsInGroup / 2.0 - 0.1)) = devi;
                     }
                     else {
@@ -997,10 +990,10 @@ void GraspRestingPoseDialog::stepCallBack (int i, const rw::kinematics::State& s
             _initStates[i]       = nstate;
             tsim->setState (nstate);
         }
-        // RW_DEBUGS(_nrOfTests<<">="<<_nrOfTestsSpin->value());
+        // RW_DEBUG(_nrOfTests<<">="<<_nrOfTestsSpin->value());
         // if( _nrOfTests>=_nrOfTestsSpin->value() )
         //    sim->stop();
-        // RW_DEBUGS("StepCallBack - done");
+        // RW_DEBUG("StepCallBack - done");
     }
     catch (...) {
         std::cout << "EXCEPTION CAUGHT AT LAST!" << std::endl;
@@ -1189,16 +1182,16 @@ bool GraspRestingPoseDialog::saveRestingState (int simidx, DynamicSimulator::Ptr
 
     std::string desc = sstr.str ();
 
-    RW_DEBUGS ("***** NR OF CONTACTS IN GRASP: " << g3d.contacts.size ());
+    RW_DEBUG ("***** NR OF CONTACTS IN GRASP: " << g3d.contacts.size ());
     Vector3D<> cm = _body->getInfo ().masscenter;
-    RW_DEBUGS (cm);
-    RW_DEBUGS ("Wrench calc");
+    RW_DEBUG (cm);
+    RW_DEBUG ("Wrench calc");
     try {
         GWSMeasure3D wmeasure (8);
         wmeasure.setLambda (0.3);
         wmeasure.setObjectCenter (cm);
         wmeasure.quality (g3d);
-        RW_DEBUGS ("Wrench calc done!");
+        RW_DEBUG ("Wrench calc done!");
 
         qualities (0) = wmeasure.getMinWrench ();
         qualities (1) = 0;
@@ -1259,9 +1252,9 @@ bool GraspRestingPoseDialog::saveRestingState (int simidx, DynamicSimulator::Ptr
                  << _nrOfTests << ".txt";
     }
 
-    RW_DEBUGS ("Push restcfg");
+    RW_DEBUG ("Push restcfg");
     _restingConfigs.push (RestingConfig (state, filename.str ().c_str ()));
-    RW_DEBUGS ("save stuff");
+    RW_DEBUG ("save stuff");
     if (_ui->_continuesLogging->isChecked ()) {
         // saveRestingPoseSimple(desc, _tactiledatas[simidx], qualities, isStable, preshapeId, preq,
         // _handconfigs[simidx], approach, _file, squal.str());
@@ -1292,24 +1285,24 @@ bool GraspRestingPoseDialog::saveRestingState (int simidx, DynamicSimulator::Ptr
     }
     _tactiledatas[simidx].clear ();
     _handconfigs[simidx].clear ();
-    RW_DEBUGS ("done!");
+    RW_DEBUG ("done!");
     return true;
 }
 
 void GraspRestingPoseDialog::updateStatus ()
 {
-    RW_DEBUGS ("updateStatus!");
+    RW_DEBUG ("updateStatus!");
     if (_simulators.size () < 1)
         return;
 
     RestingConfig restcfg;
     if (_restingConfigs.try_pop (&restcfg)) {
-        // RW_DEBUGS("CALLL RESTING POSE EVENT!!!!!");
+        // RW_DEBUG("CALLL RESTING POSE EVENT!!!!!");
         restingPoseEvent (restcfg);
         // std::cout << "MYMY IS FINISH" << std::endl;
     }
-    // RW_DEBUGS("---------------- NR TEST: " << _nrOfTestsOld);
-    // RW_DEBUGS("---------------- NR TEST: " << _nrOfTests);
+    // RW_DEBUG("---------------- NR TEST: " << _nrOfTestsOld);
+    // RW_DEBUG("---------------- NR TEST: " << _nrOfTests);
     int nrOfTestsOld         = _nrOfTestsOld;
     double avgTestTime       = 0;
     double avgSimTimePerTest = 0;
@@ -1375,10 +1368,10 @@ void GraspRestingPoseDialog::updateStatus ()
             exit (0);
 
         _ui->_stopBtn->click ();
-        // RW_DEBUGS("updateStatus! done (exit btn)");
+        // RW_DEBUG("updateStatus! done (exit btn)");
         return;
     }
-    // RW_DEBUGS("updateStatus! done");
+    // RW_DEBUG("updateStatus! done");
 }
 
 void GraspRestingPoseDialog::calcColFreeRandomCfg (rw::kinematics::State& state)
