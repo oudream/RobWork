@@ -133,7 +133,7 @@
 	ADD_DEFINITION(NAME_T3D(name),NAME_SE3(name),sdurw_trejectory);
 %enddef
 
-%include <rwlibs/swig/typemaps/blendPtr.i>
+%include <rwlibs/swig/typemaps/toBlendVector2D.i>
 %{
 	#include <rw/trajectory/Blend.hpp>
 %}
@@ -141,7 +141,7 @@
 ADD_TRAJECTORY_STANDARD_TEMPLATE(Blend,rw::trajectory::Blend);
 
 
-%include <rwlibs/swig/typemaps/interpolatorPtr.i>
+%include <rwlibs/swig/typemaps/toInterpolatorVector2D.i>
 %{
 	#include <rw/trajectory/Interpolator.hpp>
 %}
@@ -324,6 +324,15 @@ ADD_TRAJECTORY_STANDARD_TEMPLATE(Timed,rw::trajectory::Timed);
 %include <rw/trajectory/Path.hpp>
 #if !defined(SWIGJAVA)
 //ADD_TRAJECTORY_STANDARD_TEMPLATE(Path,rw::trajectory::Path);
+
+%std_vector (VectorVector2D, rw::math::Vector2D<double>);
+%std_vector (VectorVector2D_f, rw::math::Vector2D<float>);
+%std_vector (VectorVector3D, rw::math::Vector2D<double>);
+%std_vector (VectorVector3D_f, rw::math::Vector3D<float>);
+%std_vector (VectorRotation3D, rw::math::Rotation3D<double>);
+%std_vector (VectorRotation3D_f, rw::math::Rotation3D<float>);
+%std_vector (VectorTransform3D, rw::math::Transform3D<double>);
+%std_vector (VectorTransform3D_f, rw::math::Transform3D<float>);
 %std_vector_f (Path_d, double,rw::trajectory::Path,"generalToFromPy");
 %std_vector_f (Path_f, float,rw::trajectory::Path,"generalToFromPy");
 %std_vector_f (PathVector2D, rw::math::Vector2D<double>,rw::trajectory::Path,"generalToFromPy");
@@ -351,7 +360,7 @@ ADD_TRAJECTORY_STANDARD_TEMPLATE(Timed,rw::trajectory::Timed);
 
 
 //State
-%std_vector   (VectorState,rw::kinematics::State);
+//VectorState defined in sdurw_kinematics.i 
 %std_vector   (TimedStateVector,rw::trajectory::Timed<rw::kinematics::State>);
 %std_vector_f (PathState, rw::kinematics::State, rw::trajectory::Path,"generalToFromPy");
 %std_vector_f (PathTimedState, rw::trajectory::Timed<rw::kinematics::State>,rw::trajectory::Path,"generalToFromPy");
@@ -360,7 +369,7 @@ ADD_TRAJECTORY_STANDARD_TEMPLATE(Timed,rw::trajectory::Timed);
 //Q
 %std_vector_explicit(VectorPathQ,rw::math::Q,std::vector< rw::trajectory::Path< rw::math::Q > >,"generalToFromPy");
 %std_vector (VectorTimedQ,rw::trajectory::Timed< rw::math::Q > );
-%std_vector_f (PathState,rw::trajectory::Timed< rw::math::Q >,rw::trajectory::Path,"generalToFromPy");
+%std_vector_f (PathTimedQ,rw::trajectory::Timed< rw::math::Q >,rw::trajectory::Path,"generalToFromPy");
 //NAMED_OWNEDPTR(VectorTimedQ, std::vector<rw::trajectory::Timed< rw::math::Q > >);
 //NAMED_OWNEDPTR(PathTimedQ,rw::trajectory::Path<rw::trajectory::Timed< rw::math::Q > >);
 

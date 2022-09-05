@@ -159,7 +159,6 @@ NAMED_OWNEDPTR(ProximityStrategy,rw::proximity::ProximityStrategy);
 %}
 %include <rw/proximity/ProximityStrategyData.hpp>
 NAMED_OWNEDPTR(ProximityStrategyData,rw::proximity::ProximityStrategyData);
-%std_vector(VectorProximityStrategyData,rw::proximity::ProximityStrategyData);
 %std_vector(VectorProximityStrategyDataPtr,rw::core::Ptr<rw::proximity::ProximityStrategyData> );
 
 %std_vector(CollisionPairVector,rw::proximity::CollisionResult::CollisionPair);

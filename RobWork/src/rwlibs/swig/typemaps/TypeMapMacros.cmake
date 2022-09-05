@@ -235,7 +235,7 @@ macro(GENERATE_STANDARD_PTR_FRAGMENT _type)
     )
     set(fragment "${fragment}        }\n")
     set(fragment "${fragment}    }\n")
-    set(fragment "${fragment}}\n")
+    set(fragment "${fragment}}\n\n")
 
     typemap_tofile(${STD_PTR_F_FILE} ${STD_PTR_F_APPEND} ${fragment})
 endmacro()
@@ -259,7 +259,11 @@ macro(GENERATE_STANDARD_POINTER_FRAGMENT _type)
     set(fragment "${fragment}    ${_type} ${STD_POINTER_F_CONVERTER}(T* in){\n")
     set(fragment "${fragment}        return in;\n")
     set(fragment "${fragment}    }\n")
-    set(fragment "${fragment}}\n")
+    set(fragment "${fragment}    template<class T>\n")
+    set(fragment "${fragment}    ${_type} ${STD_POINTER_F_CONVERTER}(T in){\n")
+    set(fragment "${fragment}        return NULL;\n")
+    set(fragment "${fragment}    }\n")
+    set(fragment "${fragment}}\n\n")
 
     typemap_tofile(${STD_POINTER_F_FILE} ${STD_POINTER_F_APPEND} ${fragment})
 endmacro()
@@ -393,7 +397,9 @@ macro(GENERATE_PYTHON_FRAGMENT _type)
     # ##############################################################################################
     foreach(type ${PYF_TYPES})
         typemap_isptr(${type} ptr)
-        if(${IS_POINTER})
+        if(${type} STREQUAL "int")
+
+        elseif(${IS_POINTER})
             # Convert type to non ptr type
             if(${ptr})
                 typemap_as_none_ptr(${type} type_nonptr)
@@ -455,6 +461,69 @@ macro(GENERATE_PYTHON_FRAGMENT _type)
 
     typemap_tofile(${PYF_FILE} ${PYF_APPEND} ${fragment})
 
+endmacro()
+
+macro(GENERATE_POINTER_CONVERTERS _type)
+    set(oneValueArgs CONVERTER) # used to marke values with a single value
+    set(multiValueArgs TYPES)
+
+    cmake_parse_arguments(GPC "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
+
+    generate_includes(TYPES ${GPC_TYPES} CONVERTER "${GPC_CONVERTER}" FILE "./${GPC_CONVERTER}.i")
+
+    set(GPC_INCLUDE
+        "%fragment(\"${GPC_CONVERTER}PointerInclude\", \"header\",fragment=\"${GPC_CONVERTER}Include\")%{%}\n\n%fragment(\"${GPC_CONVERTER}PtrInclude\", \"header\",fragment=\"${GPC_CONVERTER}Include\")%{%}\n\n%fragment(\"${GPC_CONVERTER}CPtrInclude\", \"header\",fragment=\"${GPC_CONVERTER}Include\")%{%}\n\n"
+    )
+    typemap_tofile("./${GPC_CONVERTER}.i" TRUE ${GPC_INCLUDE})
+
+    set(GPC_POINTOR_TYPES ${_type} "rw::core::Ptr<${_type}>")
+    set(GPC_PTR_TYPES "rw::core::Ptr<${_type}>" ${_type})
+    set(GPC_CPTR_TYPES "rw::core::Ptr<${_type} const>" "rw::core::Ptr<${_type}>" ${_type})
+    foreach(type ${GPC_TYPES})
+        if(${type} STREQUAL "int")
+            set(GPC_POINTOR_TYPES ${GPC_POINTOR_TYPES} "${type}")
+            set(GPC_PTR_TYPES ${GPC_PTR_TYPES} "${type}")
+            set(GPC_CPTR_TYPES ${GPC_CPTR_TYPES} "${type}")
+        else()
+            set(GPC_POINTOR_TYPES ${GPC_POINTOR_TYPES} "rw::core::Ptr<${type}>")
+            set(GPC_PTR_TYPES ${GPC_PTR_TYPES} "${type}" "rw::core::Ptr<${type}>")
+            set(GPC_CPTR_TYPES ${GPC_CPTR_TYPES} "rw::core::Ptr<${type} const>"
+                "rw::core::Ptr<${type}>" "${type}"
+            )
+        endif()
+    endforeach(type)
+    set(GPC_AS_POINTOR "${GPC_CONVERTER}Pointer" FILE "./${GPC_CONVERTER}.i" APPEND)
+    set(GPC_AS_PTR "${GPC_CONVERTER}Ptr" FILE "./${GPC_CONVERTER}.i" APPEND)
+    set(GPC_AS_CPTR "${GPC_CONVERTER}CPtr" FILE "./${GPC_CONVERTER}.i" APPEND)
+
+    set(GPC_TYPE_POINTOR "${_type}*")
+    set(GPC_TYPE_PTR "rw::core::Ptr<${_type}>")
+    set(GPC_TYPE_CPTR "rw::core::Ptr<${_type} const>")
+
+    foreach(P_TYPE PTR CPTR POINTOR)
+
+        if(${P_TYPE} STREQUAL POINTOR)
+            generate_standard_pointer_fragment(${GPC_TYPE_${P_TYPE}} CONVERTER ${GPC_AS_${P_TYPE}})
+        else()
+            generate_standard_ptr_fragment(${GPC_TYPE_${P_TYPE}} CONVERTER ${GPC_AS_${P_TYPE}})
+        endif()
+
+        generate_from_swig_fragment(
+            ${GPC_TYPE_${P_TYPE}} TYPES ${GPC_${P_TYPE}_TYPES} CONVERTER ${GPC_AS_${P_TYPE}}
+        )
+
+        generate_python_fragment(
+            ${GPC_TYPE_${P_TYPE}} TYPES ${GPC_${P_TYPE}_TYPES} CONVERTER ${GPC_AS_${P_TYPE}}
+        )
+
+        generate_typecheck(${GPC_TYPE_${P_TYPE}} TYPES ${GPC_${P_TYPE}_TYPES} CONVERTER
+                           ${GPC_AS_${P_TYPE}}
+        )
+
+        generate_typemap(${GPC_TYPE_${P_TYPE}} TYPES ${GPC_${P_TYPE}_TYPES} CONVERTER
+                         ${GPC_AS_${P_TYPE}}
+        )
+    endforeach()
 endmacro()
 
 macro(GENERATE_TYPEMAP_CHECK _type)
