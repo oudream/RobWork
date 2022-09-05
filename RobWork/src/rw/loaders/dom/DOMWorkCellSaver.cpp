@@ -546,8 +546,8 @@ void writeDrawablesAndColModels (rw::models::Object::Ptr object, DOMElem::Ptr pa
                         }
                         else {
                             // Save object as STL
-                            /*rw::loaders::STLFile::save (*(geom->getGeometryData ()->getTriMesh ()),
-                                                        dir + "/model_" + geom->getName () +
+                            /*rw::loaders::STLFile::save (*(geom->getGeometryData ()->getTriMesh
+                            ()), dir + "/model_" + geom->getName () +
                                                             ".stl");
 
                             DOMElem::Ptr polytope_element = var_element->addChild ("Polytope");
@@ -966,22 +966,25 @@ void createDOMDocument (DOMElem::Ptr rootDoc, rw::core::Ptr< const rw::models::W
     // get where to save the proximity setup, assumes that a main proximity setup file was provided.
     const std::string id_main = "ProximitySetupFilePath";
     const std::string id_rel  = "ProximitySetupRelFilePath";
-    std::string proxFilePath =
-        static_cast< std::string > (workcell->getPropertyMap ().get< std::string > (id_main));
-    std::string proxRelFilepath =
-        static_cast< std::string > (workcell->getPropertyMap ().get< std::string > (id_rel));
-    // std::cout << "Proximity filename: " << proxFilePath << std::endl;
-    // save using the DOMProximitySetupSaver
-    rw::loaders::DOMProximitySetupSaver::save (prox_setup, proxFilePath);
+    if (workcell->getPropertyMap ().has (id_main)) {
+        std::string proxFilePath =
+            static_cast< std::string > (workcell->getPropertyMap ().get< std::string > (id_main));
+        std::string proxRelFilepath =
+            static_cast< std::string > (workcell->getPropertyMap ().get< std::string > (id_rel));
+        // std::cout << "Proximity filename: " << proxFilePath << std::endl;
+        // save using the DOMProximitySetupSaver
+        rw::loaders::DOMProximitySetupSaver::save (prox_setup, proxFilePath);
 
-    // add relative reference to the proximity setup file
-    boost::filesystem::path p_file = filename;
-    p_file = p_file.parent_path ().string()+ "/" + proxRelFilepath;
-    if (boost::filesystem::exists (p_file)) {
-        DOMElem::Ptr element = rootElement->addChild ("ProximitySetup");
-        element->addAttribute ("file")->setValue (proxRelFilepath);
-    }else{
-        RW_WARN("ProximitySetup file not found at: " << p_file.string ());
+        // add relative reference to the proximity setup file
+        boost::filesystem::path p_file = filename;
+        p_file                         = p_file.parent_path ().string () + "/" + proxRelFilepath;
+        if (boost::filesystem::exists (p_file)) {
+            DOMElem::Ptr element = rootElement->addChild ("ProximitySetup");
+            element->addAttribute ("file")->setValue (proxRelFilepath);
+        }
+        else {
+            RW_WARN ("ProximitySetup file not found at: " << p_file.string ());
+        }
     }
 }
 }    // end of anonymous namespace

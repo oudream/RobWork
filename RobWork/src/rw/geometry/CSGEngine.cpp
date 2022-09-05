@@ -18,7 +18,7 @@ std::vector< std::string > CSGEngine::Factory::getAvailableEngines ()
     CSGEngine::Factory ep;
     std::vector< Extension::Descriptor > exts = ep.getExtensionDescriptors ();
     for (Extension::Descriptor& ext : exts) {
-        ids.push_back (ext.getProperties ().get ("strategyID", ext.name));
+        ids.push_back (ext.getProperties ().get ("EngineID", ext.name));
     }
     return ids;
 }
@@ -30,7 +30,7 @@ CSGEngine::Ptr CSGEngine::Factory::getCSGEngine (std::string id)
     CSGEngine::Factory ep;
     std::vector< Extension::Ptr > exts = ep.getExtensions ();
     for (Extension::Ptr& ext : exts) {
-        std::string id = ext->getProperties ().get ("strategyID", ext->getName ());
+        std::string id = ext->getProperties ().get ("EngineID", ext->getName ());
         std::transform (id.begin (), id.end (), id.begin (), ::toupper);
         if (id == upper) {
             return ext->getObject ().cast< CSGEngine > ();
@@ -47,7 +47,7 @@ bool CSGEngine::Factory::hasEngine (const std::string& engine)
     CSGEngine::Factory ep;
     std::vector< Extension::Descriptor > exts = ep.getExtensionDescriptors ();
     for (Extension::Descriptor& ext : exts) {
-        std::string id = ext.getProperties ().get ("strategyID", ext.name);
+        std::string id = ext.getProperties ().get ("EngineID", ext.name);
         std::transform (id.begin (), id.end (), id.begin (), ::toupper);
         if (id == upper)
             return true;

@@ -39,7 +39,7 @@ ClosedFormIK::Ptr ClosedFormIK::make (const Device& device, const State& state)
         RW_THROW ("Device " << device << " is not a subtype of JointDevice.");
 
     // Check DOFs.
-    if (jd->getDOF ()) {
+    if (jd->getDOF () != 6) {
         RW_THROW ("Device " << device << " is not a 6 DOF device. DOF is " << jd->getDOF ());
     }
 

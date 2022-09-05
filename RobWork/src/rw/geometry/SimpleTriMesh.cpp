@@ -11,114 +11,6 @@ using namespace rw::math;
 using namespace rw::geometry;
 using namespace rw::core;
 
-ReferencedVertice::ReferencedVertice (TriMeshData::Ptr ref, uint32_t vertice) :
-    _mesh (ref), _verIndex (vertice)
-{
-    RW_ASSERT (_mesh != NULL);
-}
-
-double& ReferencedVertice::operator[] (size_t i) const
-{
-    return _mesh->_vertecies (_verIndex, i);
-}
-ReferencedVertice& ReferencedVertice::operator= (rw::math::Vector3D< double > rhs)
-{
-    _mesh->_vertecies (_verIndex, 0) = rhs[0];
-    _mesh->_vertecies (_verIndex, 1) = rhs[1];
-    _mesh->_vertecies (_verIndex, 2) = rhs[2];
-    return *this;
-}
-ReferencedVertice& ReferencedVertice::operator= (rw::math::Vector3D< float > rhs)
-{
-    _mesh->_vertecies (_verIndex, 0) = rhs[0];
-    _mesh->_vertecies (_verIndex, 1) = rhs[1];
-    _mesh->_vertecies (_verIndex, 2) = rhs[2];
-    return *this;
-}
-
-ReferencedVertice& ReferencedVertice::operator*= (rw::math::Transform3D< double > rhs)
-{
-    Vector3D< double > v = *this;
-    return *this         = (rhs * v);
-}
-
-ReferencedVertice::operator rw::math::Vector3D< double > () const
-{
-    return rw::math::Vector3D< double > (_mesh->_vertecies (_verIndex, 0),
-                                         _mesh->_vertecies (_verIndex, 1),
-                                         _mesh->_vertecies (_verIndex, 2));
-}
-ReferencedVertice::operator rw::math::Vector3D< float > () const
-{
-    return rw::math::Vector3D< float > (_mesh->_vertecies (_verIndex, 0),
-                                        _mesh->_vertecies (_verIndex, 1),
-                                        _mesh->_vertecies (_verIndex, 2));
-}
-
-ReferencedTriangle::ReferencedTriangle (TriMeshData::Ptr ref, uint32_t triangle) :
-    _mesh (ref), _triIndex (triangle)
-{
-    RW_ASSERT (_mesh != NULL);
-}
-
-ReferencedVertice ReferencedTriangle::operator[] (size_t i) const
-{
-    return ReferencedVertice (_mesh, _mesh->_triangles (_triIndex, i));
-}
-
-uint32_t& ReferencedTriangle::idx (size_t i) const
-{
-    return _mesh->_triangles (_triIndex, i);
-}
-
-ReferencedTriangle& ReferencedTriangle::operator= (rw::geometry::Triangle< double > rhs)
-{
-    (*this)[0] = rhs[0];
-    (*this)[1] = rhs[1];
-    (*this)[2] = rhs[2];
-    return *this;
-}
-
-ReferencedTriangle& ReferencedTriangle::operator= (rw::geometry::Triangle< float > rhs)
-{
-    (*this)[0] = rhs[0];
-    (*this)[1] = rhs[1];
-    (*this)[2] = rhs[2];
-    return *this;
-}
-
-ReferencedTriangle::operator rw::geometry::Triangle< double > () const
-{
-    return rw::geometry::Triangle< double > ((*this)[0], (*this)[1], (*this)[2]);
-}
-ReferencedTriangle::operator rw::geometry::Triangle< float > () const
-{
-    return rw::geometry::Triangle< float > ((*this)[0], (*this)[1], (*this)[2]);
-}
-
-ReferencedTriangle::operator int () const
-{
-    return _triIndex;
-}
-
-namespace rw { namespace geometry {
-    std::ostream& operator<< (std::ostream& os, const ReferencedVertice& v)
-    {
-        os << "{" << v[0] << ", " << v[1] << ", " << v[2] << "}";
-        return os;
-    }
-    std::ostream& operator<< (std::ostream& os, const ReferencedTriangle& t)
-    {
-        {
-            os << "{"
-               << "[" << t.idx (0) << "] " << t[0] << ", "
-               << "[" << t.idx (1) << "] " << t[1] << ", "
-               << "[" << t.idx (2) << "] " << t[2] << "}";
-            return os;
-        }
-    }
-}}    // namespace rw::geometry
-
 SimpleTriMesh::SimpleTriMesh (TriMeshData::Ptr data) :
     _engine (CSGEngine::Factory::getDefaultEngine ())
 {
@@ -145,7 +37,7 @@ SimpleTriMesh::~SimpleTriMesh ()
 
 SimpleTriMesh::SimpleTriMesh (const SimpleTriMesh& copy) :
     _data (rw::core::ownedPtr (new TriMeshData ())),
-    _engine (CSGEngine::Factory::getDefaultEngine ())
+    _engine (copy._engine)
 {
     _data->_triangles = copy._data->_triangles;
     _data->_vertecies = copy._data->_vertecies;
@@ -166,8 +58,9 @@ SimpleTriMesh::SimpleTriMesh (const SimpleTriMesh&& copy) :
 
 SimpleTriMesh::SimpleTriMesh (const rw::core::Ptr< SimpleTriMesh >& copy) :
     _data (rw::core::ownedPtr (new TriMeshData ())),
-    _engine (CSGEngine::Factory::getDefaultEngine ())
+    _engine (copy.isNull()?CSGEngine::Factory::getDefaultEngine ():copy->_engine)
 {
+    if(copy.isNull()) return;
     _data->_triangles = copy->_data->_triangles;
     _data->_vertecies = copy->_data->_vertecies;
 }
@@ -454,7 +347,9 @@ SimpleTriMesh SimpleTriMesh::operator+ (const SimpleTriMesh& rhs) const
     if (_engine.isNull ()) {
         RW_THROW ("NO CSGEngine Found");
     }
-    return SimpleTriMesh (_engine->Union (this->_data, rhs._data));
+
+    auto data = _engine->Union (this->_data, rhs._data);
+    return SimpleTriMesh (data);
 }
 
 SimpleTriMesh& SimpleTriMesh::operator+= (const SimpleTriMesh& rhs)
@@ -534,16 +429,22 @@ SimpleTriMesh& SimpleTriMesh::operator= (TriMeshData::Ptr data)
 
 SimpleTriMesh& SimpleTriMesh::operator= (const SimpleTriMesh& copy)
 {
-    return *this = SimpleTriMesh (copy).getData ();
+    _engine = copy._engine;
+    _data = rw::core::ownedPtr (new TriMeshData (copy._data)); 
+    return *this;
 }
 
 SimpleTriMesh& SimpleTriMesh::operator= (const SimpleTriMesh&& tmp)
 {
-    return *this = SimpleTriMesh (tmp);
+    _engine = tmp._engine;
+    _data = tmp._data;
+    return *this;
 }
 
 SimpleTriMesh& SimpleTriMesh::operator= (const rw::core::Ptr< SimpleTriMesh >& copy)
 {
+    _engine = copy->_engine;
+    _data = rw::core::ownedPtr (new TriMeshData (copy->_data)); 
     return *this = SimpleTriMesh (copy);
 }
 

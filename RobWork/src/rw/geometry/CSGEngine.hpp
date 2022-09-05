@@ -30,6 +30,24 @@ namespace rw { namespace geometry {
     struct TriMeshData
     {
         using Ptr = rw::core::Ptr< TriMeshData >;
+        /**
+         * @brief Default constructor
+         */
+        TriMeshData() {}
+
+        /**
+         * @brief copy constructor
+         */
+        TriMeshData (const TriMeshData& data) :
+            _triangles (data._triangles), _vertecies (data._vertecies)
+        {}
+
+        /**
+         * @brief copy constructor
+         */
+        TriMeshData (const TriMeshData::Ptr& data) :
+            _triangles (data->_triangles), _vertecies (data->_vertecies)
+        {}
 
         Eigen::Matrix< uint32_t, Eigen::Infinity, 3 > _triangles;
         Eigen::Matrix< double, Eigen::Infinity, 3 > _vertecies;
