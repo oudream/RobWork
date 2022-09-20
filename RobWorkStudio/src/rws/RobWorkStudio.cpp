@@ -524,9 +524,7 @@ void RobWorkStudio::showAboutBox ()
 void RobWorkStudio::showDocumentation ()
 {
     QStringList filepaths;
-    // std::cout << QCoreApplication::applicationFilePath().toStdString() << std::endl;
     filepaths.append (QCoreApplication::applicationDirPath ());
-
     _assistant->showDocumentation (filepaths);
 }
 

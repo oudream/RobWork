@@ -232,23 +232,5 @@ if(WIN32)
     )
 endif()
 
-# And if possible we would also like to install all the dll's and stuff that we use this will
-# configure the dependency file that will be used if install is invoked
-# GET_TARGET_PROPERTY(rw_executable_name loader-test LOCATION) # not allowed anymore - must use
-# generator expressions instead
-configure_file("${RW_ROOT}/cmake/dependencies.cmake.in" "${RW_ROOT}/cmake/dependencies.cmake.gen"
-               @ONLY
-)
-
-# Documentation build target
-find_program(doc_executable doxygen)
-if(doc_executable)
-    add_custom_target(
-        doc
-        doxygen
-        WORKING_DIRECTORY ${RW_ROOT}
-    )
-endif()
-
 # Packaging
 rw_create_installer()
