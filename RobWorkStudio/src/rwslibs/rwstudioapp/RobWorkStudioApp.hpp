@@ -21,6 +21,8 @@
 #include "RobWorkStudio.hpp"
 
 #include <rw/core/macros.hpp>
+#include <rw/core/os.hpp>
+#include <rw/core/Ptr.hpp>
 
 #include <thread>
 #endif
@@ -87,7 +89,7 @@ class RobWorkStudioApp
      * RobWorkStudio interface.
      * @return handle to RobWorkStudio
      */
-#ifdef RWS_USE_PTR 
+#if  defined(RWS_USE_PTR) || defined(RW_WIN32)
     rw::core::Ptr< RobWorkStudio >& getRobWorkStudio () { return _rwstudio; };
 #else
     DEPRECATED ("In the feuture this will return RobWorkStudio::Ptr instead of RobWorkStudio*. use #define RWS_USE_PTR before including this file to enable the new behavior");

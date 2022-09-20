@@ -16,6 +16,7 @@
  *****************************************************************************/
 
 #include "ChartView.hpp"
+#include <RobWorkStudioConfig.hpp>
 
 #include <QAction>
 #include <QChartGlobal>
@@ -27,6 +28,12 @@
 using rw::core::ownedPtr;
 using namespace rws;
 
+#ifdef RWS_USE_QT5
+#include <QtCharts>
+#include <QtCharts/QLineSeries>
+//#include <QtCharts/QChartView>
+using namespace QtCharts;
+#endif 
 
 namespace {
 class OwnChartView: public QChartView {

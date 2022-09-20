@@ -4,6 +4,7 @@
 #include <rw/core/Ptr.hpp>
 #include <rw/models.hpp>
 #include <rw/trajectory.hpp>
+#include <rw/core/os.hpp>
 #include <rw/kinematics/MovableFrame.hpp>
 #include <rw/kinematics/FixedFrame.hpp>
 
@@ -18,6 +19,18 @@
 
 using rw::math::Metric;
 using rw::trajectory::Path;
+
+#ifdef RW_WIN32
+namespace rwlibs { namespace pathoptimization {
+    const std::string ClearanceOptimizer::PROP_STEPSIZE  = "StepSize";
+    const std::string ClearanceOptimizer::PROP_LOOPCOUNT = "LoopCount";
+    const std::string ClearanceOptimizer::PROP_MAXTIME   = "MaxTime";
+
+    const std::string PathLengthOptimizer::PROP_LOOPCOUNT    = "LoopCount";
+    const std::string PathLengthOptimizer::PROP_MAXTIME      = "MaxTime";
+    const std::string PathLengthOptimizer::PROP_SUBDIVLENGTH = "SubDivideLength";
+}}    // namespace rwlibs::pathoptimization
+#endif 
 %}
 
 %include <rwlibs/swig/swig_macros.i>
@@ -72,65 +85,3 @@ NAMED_OWNEDPTR(MinimumClearanceCalculator,rwlibs::pathoptimization::MinimumClear
 
 %include  <rwlibs/pathoptimization/pathlength/PathLengthOptimizer.hpp>
 NAMED_OWNEDPTR(PathLengthOptimizer,rwlibs::pathoptimization::PathLengthOptimizer)
-
-/*
-class PathLengthOptimizer
-{
-public:
-
-    %extend {
-
-        PathLengthOptimizer(rw::core::Ptr<rw::proximity::CollisionDetector> cd,
-                            rw::core::Ptr<rw::models::Device> dev,
-                            const rw::kinematics::State &state)
-        {
-            rw::pathplanning::PlannerConstraint constraint =
-                    rw::pathplanning::PlannerConstraint::make(cd.get(), dev, state);
-            return new PathLengthOptimizer(constraint, rw::math::MetricFactory::makeEuclidean< rw::math::Q >());
-        }
-
-        PathLengthOptimizer(rw::core::Ptr<rw::proximity::CollisionDetector> cd,
-                            rw::core::Ptr<rw::models::Device> dev,
-                            rw::core::Ptr< rw::math::Metric< rw::math::Q > > metric,
-                            const rw::kinematics::State &state)
-        {
-            rw::pathplanning::PlannerConstraint constraint =
-                    rw::pathplanning::PlannerConstraint::make(cd.get(), dev, state);
-            return new PathLengthOptimizer(constraint, metric );
-        }
-
-        PathLengthOptimizer(rw::core::Ptr<rw::pathplanning::PlannerConstraint> constraint,
-                            rw::core::Ptr< rw::math::Metric< rw::math::Q > > metric)
-        {
-            return new PathLengthOptimizer(*constraint, metric);
-        }
-
-        rw::core::Ptr<rw::trajectory::Path< rw::math::Q > > pathPruning(rw::core::Ptr<rw::trajectory::Path< rw::math::Q > > path){
-            rw::trajectory::Path< rw::math::Q > res = $self->rwlibs::pathoptimization::PathLengthOptimizer::pathPruning(*path);
-            return rw::core::ownedPtr( new rw::trajectory::Path< rw::math::Q >(res) );
-        }
-/*
-        rw::core::Ptr<rw::trajectory::Path< rw::math::Q > > shortCut(rw::core::Ptr<rw::trajectory::Path< rw::math::Q > > path,
-                                       size_t cnt,
-                                       double time,
-                                       double subDivideLength);
-
-        rw::core::Ptr<rw::trajectory::Path< rw::math::Q > > shortCut(rw::core::Ptr<rw::trajectory::Path< rw::math::Q > > path){
-            rw::trajectory::Path< rw::math::Q > res = $self->rwlibs::pathoptimization::PathLengthOptimizer::shortCut(*path);
-            return rw::core::ownedPtr( new rw::trajectory::Path< rw::math::Q >(res) );
-        }
-
-        rw::core::Ptr<rw::trajectory::Path< rw::math::Q > > partialShortCut(rw::core::Ptr<rw::trajectory::Path< rw::math::Q > > path){
-            rw::trajectory::Path< rw::math::Q > res = $self->rwlibs::pathoptimization::PathLengthOptimizer::partialShortCut(*path);
-            return rw::core::ownedPtr( new rw::trajectory::Path< rw::math::Q >(res) );
-        }
-/*
-        rw::core::Ptr<rw::trajectory::Path< rw::math::Q > > partialShortCut(rw::core::Ptr<rw::trajectory::Path< rw::math::Q > > path,
-                                              size_t cnt,
-                                              double time,
-                                              double subDivideLength);
-                                              
-    }
-    rw::core::PropertyMap& getPropertyMap();
-
-};*/

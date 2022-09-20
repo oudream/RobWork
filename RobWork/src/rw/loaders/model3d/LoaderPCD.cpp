@@ -12,7 +12,7 @@ rw::graphics::Model3D::Ptr LoaderPCD::load (const std::string& filename)
 {
     std::string name = _defaultName;
     if (name.empty ()) {
-        name = boost::filesystem::path (filename).filename ().c_str ();
+        name = boost::filesystem::path (filename).filename ().string();
     }
 
     rw::geometry::PointCloud::Ptr img = rw::geometry::PointCloud::loadPCD (filename);

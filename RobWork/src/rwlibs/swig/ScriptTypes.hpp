@@ -41,8 +41,6 @@
 #include <rwlibs/control/Controller.hpp>
 #include <rwlibs/control/JointController.hpp>
 #include <rwlibs/opengl/RenderImage.hpp>
-#include <rwlibs/pathoptimization/clearance/ClearanceOptimizer.hpp>
-#include <rwlibs/pathoptimization/pathlength/PathLengthOptimizer.hpp>
 #include <rwlibs/pathplanners/arw/ARWExpand.hpp>
 #include <rwlibs/pathplanners/arw/ARWPlanner.hpp>
 #include <rwlibs/pathplanners/prm/PRMPlanner.hpp>
@@ -125,19 +123,6 @@ namespace swig {
 
     //! @copydoc rwlibs::opengl::RenderImage
     typedef rwlibs::opengl::RenderImage RenderImage;
-
-    // rwlibs os
-
-    /**
-     * @name pathoptimization
-     * Wrapped classes in pathoptimization.
-     */
-    ///@{
-    //! @copydoc rwlibs::pathoptimization::PathLengthOptimizer
-    typedef rwlibs::pathoptimization::PathLengthOptimizer PathLengthOptimizer;
-    //! @copydoc rwlibs::pathoptimization::ClearanceOptimizer
-    typedef rwlibs::pathoptimization::ClearanceOptimizer ClearanceOptimizer;
-    ///@}
 
     /**
      * @name pathplanners

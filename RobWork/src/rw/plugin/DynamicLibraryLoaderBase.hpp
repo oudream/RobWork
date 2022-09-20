@@ -23,7 +23,6 @@
 #include <string>
 
 #ifdef RW_WIN32
-#include <winbase.h>
 #include <windows.h>
 #endif
 

@@ -22,6 +22,7 @@
 #include <RobWorkConfig.hpp>
 #include <rw/core/PropertyMap.hpp>
 #include <rw/core/Ptr.hpp>
+#include <rw/core/os.hpp>
 #include <rw/math/Metric.hpp>
 #include <rw/trajectory/Path.hpp>
 //#include <rw/models/WorkCell.hpp>
@@ -133,6 +134,7 @@ namespace rwlibs { namespace pathoptimization {
         static const std::string PROP_MAXTIME;
         //! Property key for step size
         static const std::string PROP_STEPSIZE;
+
 
         /**
          * @brief Returns the PropertyMap associated with the optimizer.

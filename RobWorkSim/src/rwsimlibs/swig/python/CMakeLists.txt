@@ -62,7 +62,10 @@ if(build)
         SOURCES ../ScriptTypes.cpp
         SWIG_FLAGS ${SWIG_FLAGS}
     )
-
+    if(UNIX)
+        target_compile_options(${TARGET_NAME} PRIVATE -Wno-missing-field-initializers)
+    endif()
+    
     if(CMAKE_COMPILER_IS_GNUCXX)
         set_source_files_properties(../ScriptTypes.cpp COMPILE_FLAGS -fno-gnu-unique)
     endif()

@@ -47,9 +47,9 @@ ReferencedVertice::operator rw::math::Vector3D< double > () const
 }
 ReferencedVertice::operator rw::math::Vector3D< float > () const
 {
-    return rw::math::Vector3D< float > (_mesh->_vertecies (_verIndex, 0),
-                                        _mesh->_vertecies (_verIndex, 1),
-                                        _mesh->_vertecies (_verIndex, 2));
+    return rw::math::Vector3D< float > ((float) _mesh->_vertecies (_verIndex, 0),
+                                        (float)_mesh->_vertecies (_verIndex, 1),
+                                        (float) _mesh->_vertecies (_verIndex, 2));
 }
 namespace rw { namespace geometry {
     std::ostream& operator<< (std::ostream& os, const ReferencedVertice& v)

@@ -125,6 +125,8 @@
     - cd RWSimExamples
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 ../../RobWorkSim/example
     - msbuild RWSimExamples.sln -m /property:Configuration=Release
+  artifacts:
+    expire_in: 1 day
 
 .windows-tests:
   extends: .CI-common
@@ -153,3 +155,5 @@
     - move .\\bin\\Release\\gtest_reports\\* ..\\..\\gtest\\
     - ctest -C Release --no-compress-output -T Test -j 1
     - FOR /D %%F IN ("Testing\\*") DO IF EXIST %%F\\Test.xml move %%F\\Test.xml ..\\..\\RWSim-CTest.xml
+  artifacts:
+    expire_in: 1 day

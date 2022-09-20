@@ -19,9 +19,6 @@
     # Merge Pipeline for ubuntu20 problems
     - if: '$CI_MERGE_REQUEST_TITLE =~ /^.*[uU]buntu.?20/ && $CI_JOB_NAME =~ /^.*[^(pre)(debian)].ubuntu-2004/   && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
     - if: '$CI_COMMIT_TITLE =~ /^.*[uU]buntu.?20.?/ && $CI_JOB_NAME =~ /^.*[^(pre)(debian)].ubuntu-2004/        && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
-    # Merge Pipeline for ubuntu2110 problems
-    - if: '$CI_MERGE_REQUEST_TITLE =~ /^.*[uU]buntu.?2110/ && $CI_JOB_NAME =~ /^.*[^(pre)].ubuntu-2110/         && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
-    - if: '$CI_COMMIT_TITLE =~ /^.*[uU]buntu.?2110/ && $CI_JOB_NAME =~ /^.*[^(pre)].ubuntu-2110/                && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
     # Merge Pipeline for windows problems
     - if: '$CI_MERGE_REQUEST_TITLE =~ /^.*[wW]indows/ && $CI_JOB_NAME =~ /^.*windows10.*/                       && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'
     - if: '$CI_COMMIT_TITLE =~ /^.*[wW]indows/ && $CI_JOB_NAME =~ /^.*windows10.*/                              && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "devel"'

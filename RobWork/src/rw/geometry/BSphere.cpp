@@ -29,6 +29,9 @@ template< class T > BSphere< T > BSphere< T >::fitEigen (const rw::geometry::Tri
     // 1. Compute convex hull
     // std::cout << "build hull from: " << tris.size() <<  std::endl;
     const int nrOfTris = (int) tris.getSize ();
+    if(nrOfTris == 0){
+        return BSphere<T>();
+    }
 
     // 2. Compute centroid for convex hull
     // 2.1 centroid is computed using the triangles of the convex hull

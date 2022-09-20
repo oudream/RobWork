@@ -79,11 +79,6 @@ void PluginRepository::loadFilesInFolder (const std::string& path, bool searchSu
     }
 }
 
-void PluginRepository::addListener (boost::function< void (void) >& listener)
-{
-    _listeners.push_back (listener);
-}
-
 /*std::vector<PluginFactoryBasePtr> PluginRepository::getPlugins(PluginType type) const {
     std::vector<PluginFactoryBasePtr> result;
     for (std::map<std::string, PluginFactoryBasePtr>::const_iterator it =
