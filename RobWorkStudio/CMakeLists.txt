@@ -1,5 +1,5 @@
 # Test CMake version
-cmake_minimum_required(VERSION 3.10  FATAL_ERROR )
+cmake_minimum_required(VERSION 3.10 FATAL_ERROR)
 
 if(POLICY CMP0071) # Introduce cmake 3.10
     cmake_policy(SET CMP0071 NEW)
@@ -44,7 +44,11 @@ else()
 endif()
 
 if(NOT DEFINED RWP_ROOT)
-    find_package(RobWork ${ROBWORKSTUDIO_VERSION} REQUIRED PATHS ${RWS_ROOT}/../RobWork/cmake )
+    find_package(
+        RobWork ${ROBWORKSTUDIO_VERSION}
+        REQUIRED
+        PATHS ${RWS_ROOT}/../RobWork/cmake
+    )
 else()
     string(TOLOWER ${RW_BUILD_TYPE} tmp)
     include(${RW_ROOT}cmake/RobWorkBuildConfig_${tmp}.cmake)
@@ -77,9 +81,8 @@ if(DEFINED USE_WERROR)
     endif()
 endif()
 
-set(RWS_CXX_FLAGS
-    "${WERROR_FLAG} ${RW_BUILD_WITH_CXX_FLAGS}"
-    CACHE STRING "Change this to force using your own flags and not those of RobWorkStudio"
+set(RWS_CXX_FLAGS "${WERROR_FLAG} ${RW_BUILD_WITH_CXX_FLAGS}" CACHE STRING
+    "Change this to force using your own flags and not those of RobWorkStudio"
 )
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${RWS_CXX_FLAGS}")
 
@@ -157,7 +160,10 @@ configure_file(${RW_ROOT}/cmake/RobWorkConfigMacros.cmake.in
 
 if(NOT WIN32)
     file(MAKE_DIRECTORY $ENV{HOME}/.cmake/packages/RobWorkStudio)
-    file(WRITE "$ENV{HOME}/.cmake/packages/RobWorkStudio/${ROBWORKSTUDIO_VERSION}-${ROBWORKSTUDIO_BRANCH}" "${RWS_ROOT}/cmake")
+    file(WRITE
+         "$ENV{HOME}/.cmake/packages/RobWorkStudio/${ROBWORKSTUDIO_VERSION}-${ROBWORKSTUDIO_BRANCH}"
+         "${RWS_ROOT}/cmake"
+    )
 endif()
 
 # ##################################################################################################
@@ -173,7 +179,8 @@ install(
 )
 
 install(
-    FILES "cmake/RobWorkStudioBuildConfig_${RWS_BUILD_TYPE}.cmake" "cmake/RobWorkStudioMacros.cmake" "cmake/RobWorkStudioConfigMacros.cmake"
+    FILES "cmake/RobWorkStudioBuildConfig_${RWS_BUILD_TYPE}.cmake" "cmake/RobWorkStudioMacros.cmake"
+          "cmake/RobWorkStudioConfigMacros.cmake"
     DESTINATION "${RWS_INSTALL_DIR}/cmake"
     COMPONENT cmake
 )
@@ -200,62 +207,24 @@ if(WIN32)
         DESTINATION "${RWS_INSTALL_DIR}/cmake/Modules"
         COMPONENT cmake
     )
-    STRING(REPLACE ".lib" ".dll" PYTHON_DLL "${PYTHON_LIBRARIES}")
+    string(REPLACE ".lib" ".dll" PYTHON_DLL "${PYTHON_LIBRARIES}")
     if(EXISTS "${PYTHON_DLL}")
-        install(FILES ${PYTHON_DLL} DESTINATION ${BIN_INSTALL_DIR} COMPONENT python_dll)
+        install(
+            FILES ${PYTHON_DLL}
+            DESTINATION ${BIN_INSTALL_DIR}
+            COMPONENT python_dll
+        )
     else()
         get_filename_component(python_file ${PYTHON_DLL} NAME)
         get_filename_component(python_path ${PYTHON_DLL} DIRECTORY)
-        install(FILES "${python_path}/../${python_file}" DESTINATION ${BIN_INSTALL_DIR} COMPONENT python_dll)
+        install(
+            FILES "${python_path}/../${python_file}"
+            DESTINATION ${BIN_INSTALL_DIR}
+            COMPONENT python_dll
+        )
     endif()
 endif()
 
-# this will configure the dependency file that will be used if install is invoked
-# GET_TARGET_PROPERTY(rwstudio_executable_name RobWorkStudio LOCATION) # not allowed anymore - must
-# use generator expressions instead
-configure_file("${RWS_ROOT}/cmake/dependencies.cmake.in" "${RWS_ROOT}/cmake/dependencies.cmake.gen"
-               @ONLY
-)
-
-# Install the example directories
-install(
-    DIRECTORY "${RWS_ROOT}/example/"
-    DESTINATION "${RWS_INSTALL_DIR}/example/"
-    PATTERN ".svn" EXCLUDE
-    PATTERN "example/CMakeLists.txt" EXCLUDE
-)
-
-# Documentation build target
-find_program(doc_executable doxygen)
-if(doc_executable)
-    add_custom_target(
-        apidoc
-        doxygen
-        WORKING_DIRECTORY ${RW_ROOT}/..
-    )
-
-    if(EXISTS "${RW_ROOT}/../apidocs/html/index.qhp")
-        add_custom_target(qtrwdoc qhelpgenerator ${RW_ROOT}/../apidocs/html/index.qhp -o
-                                  ${RWS_ROOT}/docs/robwork-v${ROBWORKSTUDIO_VERSION}.qch
-        )
-    elseif(doc_executable)
-        add_custom_target(qtrwdoc qhelpgenerator ${RW_ROOT}/../apidocs/html/index.qhp -o
-                                  ${RWS_ROOT}/docs/robwork-v${ROBWORKSTUDIO_VERSION}.qch
-        )
-        add_dependencies(qtrwdoc apidoc)
-    endif()
-
-    if(TARGET qtrwdoc)
-        configure_file(${RWS_ROOT}/docs/sdurw_help.qhcp.in
-                       ${RWS_ROOT}/docs/sdurw_help-v${ROBWORK_VERSION}.qhcp
-        )
-        add_custom_target(sdurw_help
-                          qcollectiongenerator ${RWS_ROOT}/docs/sdurw_help-v${ROBWORK_VERSION}.qhcp
-                          -o ${RWS_ROOT}/docs/robwork_help-v${ROBWORK_VERSION}.qhc
-        )
-        add_dependencies(sdurw_help qtrwdoc)
-    endif()
-endif()
 
 # Packaging include(cmake/packing.cmake)
 

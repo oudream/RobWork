@@ -3,16 +3,18 @@
 ---
 AccessModifierOffset: -2
 AlignAfterOpenBracket: Align
+AlignArrayOfStructures: Left
 AlignConsecutiveAssignments: true
 AlignConsecutiveDeclarations: false
 AlignEscapedNewlines: Left
 AlignOperands: true
 AlignTrailingComments: true
-AllowShortBlocksOnASingleLine: false
+AllowShortBlocksOnASingleLine: Always
 AllowShortCaseLabelsOnASingleLine: true 
-AllowShortFunctionsOnASingleLine: InlineOnly
-AllowShortIfStatementsOnASingleLine: false
-AllowShortLoopsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: Inline
+AllowShortIfStatementsOnASingleLine: AllIfsAndElse
+AllowShortLambdasOnASingleLine: All
+AllowShortLoopsOnASingleLine: true
 AlwaysBreakAfterReturnType: None
 AlwaysBreakBeforeMultilineStrings: false
 AlwaysBreakTemplateDeclarations: false
@@ -22,7 +24,7 @@ BreakBeforeBraces: Custom
 BraceWrapping:
     AfterClass: true 
     AfterControlStatement: false 
-    AfterFunction: true 
+    AfterFunction: false 
     AfterNamespace: false 
     AfterStruct: true 
     AfterUnion: true 
@@ -72,15 +74,15 @@ SortUsingDeclarations: true
 SpaceAfterCStyleCast: true 
 SpaceAfterTemplateKeyword: false 
 SpaceBeforeAssignmentOperators: true 
-SpaceBeforeParens: Always 
+SpaceBeforeParens: Never 
 SpaceInEmptyParentheses: false 
 SpacesBeforeTrailingComments: 4 
-SpacesInAngles: true 
+SpacesInAngles: false 
 SpacesInCStyleCastParentheses: false 
 SpacesInContainerLiterals: true 
 SpacesInParentheses: false  
 SpacesInSquareBrackets: false
-Standard: Cpp11
+Standard: Latest
 TabWidth:        8
 UseTab:          Never
 
