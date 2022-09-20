@@ -25,8 +25,21 @@
 using namespace rw::common;
 using namespace rw::math;
 
-const Rotation2D<double> rw::math::Rotation2DDoubleIdentity(1, 0, 0, 1);
-const Rotation2D<float> rw::math::Rotation2DFloatIdentity(1, 0, 0, 1);
+namespace rw { namespace math {
+    template<> const Rotation2D< float > Rotation2DIdentity ()
+    {
+        return Rotation2D< float > (1, 0, 0, 1);
+    }
+    template<> const Rotation2D< double > Rotation2DIdentity ()
+    {
+        return Rotation2D< double > (1, 0, 0, 1);
+    }
+    template<> const Rotation2D< int > Rotation2DIdentity ()
+    {
+        return Rotation2D< int > (1, 0, 0, 1);
+    }
+}};    // namespace rw::math
+
 
 // Explicit template specifications.
 template class rw::math::Rotation2D< double >;

@@ -10,7 +10,7 @@ rw::graphics::Model3D::Ptr LoaderSTL::load (const std::string& filename)
 {
     std::string name = _defaultName;
     if (name.empty ()) {
-        name = boost::filesystem::path (filename).filename ().c_str ();
+        name = boost::filesystem::path (filename).filename ().string ();
     }
 
     rw::geometry::PlainTriMeshN1F::Ptr mesh = STLFile::load (filename);

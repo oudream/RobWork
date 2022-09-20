@@ -15,8 +15,7 @@
  * limitations under the License.
  ********************************************************************************/
 
-#include <gtest/gtest.h>
-
+#include <rw/core/Ptr.hpp>
 #include <rw/kinematics/Frame.hpp>
 #include <rw/kinematics/State.hpp>
 #include <rw/kinematics/StateStructure.hpp>
@@ -28,7 +27,8 @@
 #include <rw/trajectory/Path.hpp>
 #include <rwlibs/pathoptimization/clearance/ClearanceOptimizer.hpp>
 #include <rwlibs/pathoptimization/clearance/MinimumClearanceCalculator.hpp>
-#include <rw/core/Ptr.hpp>
+
+#include <gtest/gtest.h>
 
 using rw::core::ownedPtr;
 using namespace rw::kinematics;
@@ -38,69 +38,82 @@ using rw::trajectory::QPath;
 using namespace rwlibs::pathoptimization;
 
 namespace {
-class TestClearanceCalculator: public ClearanceCalculator {
-public:
-	TestClearanceCalculator(const Device::CPtr& device): _device(device) {}
-	~TestClearanceCalculator() {}
-	double clearance(const State& state) const {
-		const Q q = _device->getQ(state);
-		const double d1 = q.norm2()-0.1; // distance to circle at origo
-		const double d2 = (q-Q(2,0.,0.3)).norm2()-0.1; // distance to circle at {0,0.3}
-		return std::min(d1,d2);
-	}
-private:
-	const Device::CPtr _device;
+class TestClearanceCalculator : public ClearanceCalculator
+{
+  public:
+    TestClearanceCalculator (const Device::CPtr& device) : _device (device) {}
+    ~TestClearanceCalculator () {}
+    double clearance (const State& state) const
+    {
+        const Q q       = _device->getQ (state);
+        const double d1 = q.norm2 () - 0.1;                       // distance to circle at origo
+        const double d2 = (q - Q (2, 0., 0.3)).norm2 () - 0.1;    // distance to circle at {0,0.3}
+        return std::min (d1, d2);
+    }
+
+  private:
+    const Device::CPtr _device;
 };
 
-void print(const std::string& name, const QPath& path) {
-	std::cout << name << "={";
-	for (std::size_t i = 0; i < path.size()-1; i++) {
-		const Q& q = path[i];
-		std::cout << "{" << q[0] << "," << q[1] << "},";
-	}
-	std::cout << "{" << path.back()[0] << "," << path.back()[1] << "}};" << std::endl;
+void print (const std::string& name, const QPath& path)
+{
+    std::cout << name << "={";
+    for (std::size_t i = 0; i < path.size () - 1; i++) {
+        const Q& q = path[i];
+        std::cout << "{" << q[0] << "," << q[1] << "},";
+    }
+    std::cout << "{" << path.back ()[0] << "," << path.back ()[1] << "}};" << std::endl;
 }
-}
+}    // namespace
 
-TEST(ClearanceOptimizer, Test) {
-	PrismaticJoint* const xJoint = new PrismaticJoint("xJoint",Transform3D<>(Vector3D<>::zero(),RPY<>(0,Pi/2,0)));
-	PrismaticJoint* const yJoint = new PrismaticJoint("yJoint",Transform3D<>(Vector3D<>::zero(),RPY<>(0,0,-Pi/2)));
-	StateStructure sstruct;
-	sstruct.addFrame(xJoint);
-	sstruct.addFrame(yJoint,xJoint);
-	State state = sstruct.getDefaultState();
+TEST (ClearanceOptimizer, Test)
+{
+    PrismaticJoint* const xJoint =
+        new PrismaticJoint ("xJoint", Transform3D<> (Vector3D<>::zero (), RPY<> (0, Pi / 2, 0)));
+    PrismaticJoint* const yJoint =
+        new PrismaticJoint ("yJoint", Transform3D<> (Vector3D<>::zero (), RPY<> (0, 0, -Pi / 2)));
+    StateStructure sstruct;
+    sstruct.addFrame (xJoint);
+    sstruct.addFrame (yJoint, xJoint);
+    State state = sstruct.getDefaultState ();
 
-	const Device::Ptr device = ownedPtr(new SerialDevice(sstruct.getRoot(),yJoint,"TestDevice",state));
-	device->setBounds(std::make_pair(Q(2,-0.5,-0.5),Q(2,0.5,0.5)));
-	const ClearanceCalculator::CPtr clearanceCalculator = ownedPtr(new TestClearanceCalculator(device));
-	const QMetric::CPtr metric = ownedPtr(new EuclideanMetric<Q>());
+    const Device::Ptr device =
+        ownedPtr (new SerialDevice (sstruct.getRoot (), yJoint, "TestDevice", state));
+    device->setBounds (std::make_pair (Q (2, -0.5, -0.5), Q (2, 0.5, 0.5)));
+    const ClearanceCalculator::CPtr clearanceCalculator =
+        ownedPtr (new TestClearanceCalculator (device));
+    const QMetric::CPtr metric = ownedPtr (new EuclideanMetric< Q > ());
 
-	ClearanceOptimizer optimizer(device, state, metric, clearanceCalculator);
-	optimizer.setMinimumClearance(0.05);
+    ClearanceOptimizer optimizer (device, state, metric, clearanceCalculator);
+    optimizer.setMinimumClearance (0.05);
 
-	QPath inPath;
-	inPath.push_back(Q(2,-0.5,0.));
-	inPath.push_back(Q(2,-0.1,0.));
-	inPath.push_back(Q(2,-0.1*std::sqrt(2.)/2,0.1*std::sqrt(2.)/2));
-	inPath.push_back(Q(2, 0,  0.1));
-	inPath.push_back(Q(2, 0.1*std::sqrt(2.)/2,0.1*std::sqrt(2.)/2));
-	inPath.push_back(Q(2, 0.1,0.));
-	inPath.push_back(Q(2, 0.5,0.));
+    QPath inPath;
+    inPath.push_back (Q (2, -0.5, 0.));
+    inPath.push_back (Q (2, -0.1, 0.));
+    inPath.push_back (Q (2, -0.1 * std::sqrt (2.) / 2, 0.1 * std::sqrt (2.) / 2));
+    inPath.push_back (Q (2, 0, 0.1));
+    inPath.push_back (Q (2, 0.1 * std::sqrt (2.) / 2, 0.1 * std::sqrt (2.) / 2));
+    inPath.push_back (Q (2, 0.1, 0.));
+    inPath.push_back (Q (2, 0.5, 0.));
 
-	const double stepsize = 0.1;
-	const std::size_t maxcount = 20;
-	const double maxtime = 10;
-	const QPath outPath = optimizer.optimize(inPath,stepsize,maxcount,maxtime);
+    const double stepsize = 0.1;
+    const std::size_t maxcount = 20;
+    const double maxtime = 10;
+    const QPath outPath = optimizer.optimize (inPath, stepsize, maxcount, maxtime);
 
-	bool minimumClearanceReached = true;
-	for (const Q& q : outPath) {
-		device->setQ(q,state);
-		const double clearance = clearanceCalculator->clearance(state);
-		if (clearance < 0.05)
-			minimumClearanceReached = false;
-	}
-	EXPECT_TRUE(minimumClearanceReached);
+    bool minimumClearanceReached = true;
+    for (const Q& q : outPath) {
+        std::cout << __FILE__ << ":" << __LINE__ << std::endl << std::flush;
+        device->setQ (q, state);
+        std::cout << __FILE__ << ":" << __LINE__ << std::endl << std::flush;
+        const double clearance = clearanceCalculator->clearance (state);
+        std::cout << __FILE__ << ":" << __LINE__ << std::endl << std::flush;
+        if (clearance < 0.05)
+            minimumClearanceReached = false;
+        std::cout << __FILE__ << ":" << __LINE__ << std::endl << std::flush;
+    }
+    EXPECT_TRUE (minimumClearanceReached);
 
-	//print("inPath",inPath);
-	//print("outPath",outPath);
+    // print("inPath",inPath);
+    // print("outPath",outPath);
 }

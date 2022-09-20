@@ -279,15 +279,15 @@ namespace rw { namespace geometry {
         void scale (double scale)
         {
             for (rw::math::Vector3D< float >& v : _vertices) {
-                v *= scale;
+                v *= (float) scale;
             }
 
             for (rw::math::Vector2D< float >& v : _texCoords) {
-                v *= scale;
+                v *= (float) scale;
             }
-            _transform.P () *= scale;
-            _texOffset *= scale;
-            _texRepeat *= scale;
+            _transform.P () *= (float) scale;
+            _texOffset *= (float) scale;
+            _texRepeat *= (float) scale;
 
             for (Object3DGeneric::Ptr kid : _kids) {
                 kid->scale (scale);

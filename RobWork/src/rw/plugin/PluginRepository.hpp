@@ -26,7 +26,6 @@
 
 #include <rw/plugin/PluginFactory.hpp>
 
-#include <boost/function.hpp>
 #include <map>
 #include <vector>
 
@@ -93,13 +92,6 @@ namespace rw { namespace plugin {
         void addPlugin (PluginFactoryBase::Ptr plugin, bool force = false);
 
         /**
-         * @brief Add a listener which should be informed when new plugins are loaded
-         *
-         * @param listener [in] The function to call for notification
-         */
-        void addListener (boost::function< void (void) >& listener);
-
-        /**
          * @brief Returns map in which keys are the identifiers of loaded plugins factories and the
          * value is the plugin factory.
          *
@@ -139,8 +131,6 @@ namespace rw { namespace plugin {
 
       private:
         std::map< std::string, PluginFactoryBase::Ptr > _str2constructorMap;
-
-        std::vector< boost::function< void (void) > > _listeners;
     };
 
     /* @} */

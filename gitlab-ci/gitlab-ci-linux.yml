@@ -22,6 +22,8 @@
     - *remove-rw-install
     - THREADS=$(nproc --all)
     - WERROR=True
+  artifacts:
+    expire_in: 1 day
 
 .linux-doc:
   extends: .CI-common

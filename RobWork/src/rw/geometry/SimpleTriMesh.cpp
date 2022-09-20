@@ -170,7 +170,7 @@ void SimpleTriMesh::scale (const rw::math::Vector3D< double >& scale)
 
 ReferencedTriangle SimpleTriMesh::triangle (size_t idx) const
 {
-    return ReferencedTriangle (_data, idx);
+    return ReferencedTriangle (_data, (uint32_t) idx);
 }
 
 size_t SimpleTriMesh::triangles () const
@@ -180,7 +180,7 @@ size_t SimpleTriMesh::triangles () const
 
 ReferencedVertice SimpleTriMesh::vertice (size_t idx) const
 {
-    return ReferencedVertice (_data, idx);
+    return ReferencedVertice (_data,(uint32_t) idx);
 }
 
 size_t SimpleTriMesh::vertices () const
@@ -246,7 +246,7 @@ std::vector< SimpleTriMesh > SimpleTriMesh::separateMeshes () const
                     visited[t] = true;
 
                     for (size_t j = 0; j < 3; j++) {
-                        for (const ReferencedTriangle& t_new : conn[Edge (t, j)]) {
+                        for (const ReferencedTriangle& t_new : conn[Edge (t, (int) j)]) {
                             toDo.push_back (t_new);
                         }
                     }
@@ -270,7 +270,7 @@ SimpleTriMesh SimpleTriMesh::combine (const SimpleTriMesh& mesh) const
     v.resize (vertices () + mesh.vertices (), 3);
     v << _data->_vertecies, mesh._data->_vertecies;
 
-    for (long int i = _data->_triangles.rows (); i < t.rows (); i++) {
+    for (Eigen::Index i = _data->_triangles.rows (); i < t.rows (); i++) {
         t (i, 0) += vertices ();
         t (i, 1) += vertices ();
         t (i, 2) += vertices ();

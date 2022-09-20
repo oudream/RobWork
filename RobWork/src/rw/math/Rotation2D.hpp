@@ -32,7 +32,9 @@
 
 namespace rw { namespace math {
 
+    template< class T > class Rotation2D;
     template< class T > class Rotation2DVector;
+    template< class T > const Rotation2D<T> Rotation2DIdentity();
 
     /** @addtogroup math */
     /* @{*/
@@ -59,9 +61,6 @@ namespace rw { namespace math {
      * @f$
      */
 #endif
-
-    template<class T>
-    struct Rotation2DIdentity;
 
     template< class T = double > class Rotation2D
     {
@@ -197,9 +196,9 @@ namespace rw { namespace math {
          */
 
 #endif
-        static const Rotation2D& identity ()
+        static const Rotation2D identity ()
         {
-            return Rotation2DIdentity<T>::identity();
+            return Rotation2DIdentity<T>();
         }
 
 #if !defined(SWIG)
@@ -319,31 +318,6 @@ namespace rw { namespace math {
       private:
         T _m[2][2];
         // Base _atrix;
-    };
-
-    extern const Rotation2D<double> Rotation2DDoubleIdentity;
-    extern const Rotation2D<float> Rotation2DFloatIdentity;
-
-    template<class T>
-    struct Rotation2DIdentity {
-        static const Rotation2D<T>& identity() {
-            static Rotation2D<T> id (1, 0, 0, 1);
-            return id;
-        }
-    };
-
-    template<>
-    struct Rotation2DIdentity<double> {
-        static const Rotation2D<double>& identity() {
-            return Rotation2DDoubleIdentity;
-        }
-    };
-
-    template<>
-    struct Rotation2DIdentity<float> {
-        static const Rotation2D<float>& identity() {
-            return Rotation2DFloatIdentity;
-        }
     };
 
     /**

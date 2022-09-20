@@ -35,9 +35,11 @@ using namespace rw::pathplanning;
 using namespace rw::trajectory;
 using namespace rwlibs::pathoptimization;
 
-const std::string ClearanceOptimizer::PROP_STEPSIZE  = "StepSize";
-const std::string ClearanceOptimizer::PROP_LOOPCOUNT = "LoopCount";
-const std::string ClearanceOptimizer::PROP_MAXTIME   = "MaxTime";
+namespace rwlibs { namespace pathoptimization {
+    const std::string ClearanceOptimizer::PROP_STEPSIZE  = "StepSize";
+    const std::string ClearanceOptimizer::PROP_LOOPCOUNT = "LoopCount";
+    const std::string ClearanceOptimizer::PROP_MAXTIME   = "MaxTime";
+}}    // namespace rwlibs::pathoptimization
 
 ClearanceOptimizer::ClearanceOptimizer (const Device::CPtr& device, const State& state,
                                         const QMetric::CPtr& metric,
