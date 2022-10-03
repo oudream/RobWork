@@ -2,14 +2,14 @@
 
 build-RW:ubuntu-1804:
   extends: .linux-build-RW
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
+  image: gitlab.sdu.dk:5050/sdurobotics/docker-images/robwork-build:ubuntu-1804
 
 build-RWS:ubuntu-1804:
   extends: .linux-build-RWS
   dependencies:
     - build-RW:ubuntu-1804
   needs: ["build-RW:ubuntu-1804"]
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
+  image: gitlab.sdu.dk:5050/sdurobotics/docker-images/robwork-build:ubuntu-1804
 
 build-RWSim:ubuntu-1804:
   extends: .linux-build-RWSim
@@ -17,7 +17,7 @@ build-RWSim:ubuntu-1804:
     - build-RW:ubuntu-1804
     - build-RWS:ubuntu-1804
   needs: ["build-RW:ubuntu-1804", "build-RWS:ubuntu-1804"]
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
+  image: gitlab.sdu.dk:5050/sdurobotics/docker-images/robwork-build:ubuntu-1804
 
 examples:ubuntu-1804:
   extends: .linux-examples
@@ -31,7 +31,7 @@ examples:ubuntu-1804:
       "build-RWS:ubuntu-1804",
       "build-RWSim:ubuntu-1804",
     ]
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
+  image: gitlab.sdu.dk:5050/sdurobotics/docker-images/robwork-build:ubuntu-1804
 
 tests:ubuntu-1804:
   extends: .linux-tests
@@ -45,7 +45,7 @@ tests:ubuntu-1804:
       "build-RWS:ubuntu-1804",
       "build-RWSim:ubuntu-1804",
     ]
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
+  image: gitlab.sdu.dk:5050/sdurobotics/docker-images/robwork-build:ubuntu-1804
 
 python-tests:ubuntu-1804:
   extends: .linux-python-tests
@@ -59,7 +59,7 @@ python-tests:ubuntu-1804:
       "build-RWS:ubuntu-1804",
       "build-RWSim:ubuntu-1804",
     ]
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
+  image: gitlab.sdu.dk:5050/sdurobotics/docker-images/robwork-build:ubuntu-1804
 
 
 install-tests:ubuntu-1804:
@@ -74,27 +74,27 @@ install-tests:ubuntu-1804:
       "build-RWS:ubuntu-1804",
       "build-RWSim:ubuntu-1804",
     ]
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804
+  image: gitlab.sdu.dk:5050/sdurobotics/docker-images/robwork-build:ubuntu-1804
 
 build-debian:ubuntu-1804:
   extends: .linux-build-debian
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804-deb
+  image: gitlab.sdu.dk:5050/sdurobotics/docker-images/robwork-build:ubuntu-1804-deb
 
 test-debian:ubuntu-1804:
   extends: .linux-test-debian
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804-deb-test
+  image: gitlab.sdu.dk:5050/sdurobotics/docker-images/robwork-build:ubuntu-1804-deb-test
   dependencies:
     - "build-debian:ubuntu-1804"
   needs: ["build-debian:ubuntu-1804"]
 
 test-debian-upgrade:ubuntu-1804:
   extends: .linux-debian-upgrade-test
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804-deb-test
+  image: gitlab.sdu.dk:5050/sdurobotics/docker-images/robwork-build:ubuntu-1804-deb-test
   dependencies:
     - build-debian:ubuntu-1804
   needs: ["build-debian:ubuntu-1804"]
 
 ppa-test:ubuntu-1804:
   extends: .ppa-install-tests
-  image: registry.gitlab.com/sdurobotics/docker-images/robwork-build:ubuntu-1804-deb-test
+  image: gitlab.sdu.dk:5050/sdurobotics/docker-images/robwork-build:ubuntu-1804-deb-test
   needs: []
