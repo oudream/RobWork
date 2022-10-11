@@ -170,8 +170,8 @@ Optionally, it is possible to use Qt Charts for better visualization of plots. U
 
 .. code-block:: shell
 
-    sudo apt-get install libqt5charts5
-    sudo apt-get install libqt6charts6
+    sudo apt-get install libqt5charts5-dev
+    sudo apt-get install libqt6charts6-dev
 
 RobWorkSim Dependencies
 -----------------------

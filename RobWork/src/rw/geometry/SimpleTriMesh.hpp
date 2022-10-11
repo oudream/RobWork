@@ -204,7 +204,7 @@ namespace rw { namespace geometry {
          * @brief get direct access to the data container
          */
 
-        TriMeshData::Ptr getData () { return _data; }
+        TriMeshData::Ptr getData () const { return _data; }
 
         /**
          * @brief get the current CSGEngine

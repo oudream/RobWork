@@ -1,5 +1,5 @@
 #include <rw/kinematics.hpp>
-#include <rw/loaders/WorkCellFactory.hpp>
+#include <rw/loaders/WorkCellLoader.hpp>
 #include <rw/math.hpp>
 #include <rw/models.hpp>
 #include <rw/proximity.hpp>

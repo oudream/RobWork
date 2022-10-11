@@ -33,6 +33,8 @@ class ChartView: public PlotView
                        const std::string& title = "", const std::string& xlabel = "",
                        const std::string& ylabel = "");
 
+        void addPlot(const std::vector< double >& x, const std::vector< double >& y,std::string name);
+
         //! @copydoc PlotView::getWidget
         virtual QGraphicsView* getWidget(QWidget* parent);
 

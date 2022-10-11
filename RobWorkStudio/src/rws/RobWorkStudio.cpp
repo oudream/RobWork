@@ -463,11 +463,9 @@ void RobWorkStudio::unloadPlugin ()
         this, tr ("Unload plugin"), tr ("Which Plugin should be removed"), list, 0, false, &ok);
 
     if (ok) {
-        std::cout << "OK: " << text.toStdString () << std::endl;
         for (RobWorkStudioPlugin* pl : _plugins) {
             if (pl->name () == text) {
-                bool test = unloadPlugin (pl);
-                std::cout << "test: " << test << std::endl;
+                unloadPlugin (pl);
                 break;
             }
         }
@@ -923,7 +921,6 @@ void RobWorkStudio::openFile (const std::string& file)
 
     try {
         const QString filename (file.c_str ());
-        // std::cout << filename.toStdString() << std::endl;
 
         if (!filename.isEmpty ()) {
             std::vector< std::string > lastfiles = _settingsMap->get< std::vector< std::string > > (
@@ -968,7 +965,6 @@ void RobWorkStudio::openFile (const std::string& file)
         QMessageBox::information (
             NULL, "Exception", exp.getMessage ().getText ().c_str (), QMessageBox::Ok);
     }
-    // std::cout << "Update handler!" << std::endl;
     updateHandler ();
 }
 
@@ -1036,7 +1032,6 @@ void RobWorkStudio::openWorkCellFile (const QString& filename)
         wc = emptyWorkCell ();
     }
 
-    // std::cout<<"Number of devices in workcell in RobWorkStudio::setWorkCell:
     // "<<workcell->getDevices().size()<<std::endl;
     // don't set any variables before we know they are good
 
@@ -1417,7 +1412,6 @@ class AnyEventListener
     AnyEventListener (const std::string& myid) : _id (myid), _eventSuccess (false) {}
     void cb (const std::string& id, boost::any data)
     {
-        // std::cout << "Any event recieved in CALLBACK!!!!" << std::endl;
         if (!_eventSuccess) {
             if (_id == id) {
                 _data         = data;
@@ -1433,12 +1427,10 @@ class AnyEventListener
 
 boost::any RobWorkStudio::waitForAnyEvent (const std::string& id, double timeout)
 {
-    // std::cout << " Wait for ANY event, with id: " << id << std::endl;
     AnyEventListener listener (id);
     genericAnyEvent ().add (
         boost::bind (&AnyEventListener::cb, &listener, boost::arg< 1 > (), boost::arg< 2 > ()),
         &listener);
-    // std::cout << "Added event, now wait!" << std::endl;
     // now wait until event is called
     const double starttime = TimerUtil::currentTime ();
     bool reachedTimeout    = false;
