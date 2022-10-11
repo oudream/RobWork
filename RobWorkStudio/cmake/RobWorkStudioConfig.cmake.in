@@ -49,6 +49,7 @@ if(NOT TARGET sdurws)
         sdurws_workcelleditorplugin
         sdurws_atask
         sdurws_gtask
+        sdurws_charts_qt
     )
         if(EXISTS "${RWSCFG_ROOT}/targets/${RWS_MODULE}.cmake")
             include("${RWSCFG_ROOT}/targets/${RWS_MODULE}.cmake")
@@ -105,6 +106,9 @@ if(EXISTS ${RWSCFG_ROOT}/RobWorkStudioBuildConfig_${RWS_BUILD_TYPE}.cmake)
         set(QT_LIBRARIES ${Qt6Core_LIBRARIES} ${Qt6Gui_LIBRARIES} ${Qt6Widgets_LIBRARIES}
                          ${Qt6OpenGL_LIBRARIES} ${Qt6OpenGLWidgets_LIBRARIES}
         )
+        if(TARGET RWS::sdurws_charts_qt)
+            find_package(Qt6 COMPONENTS Charts REQUIRED)
+        endif()
     else()
         find_package(Qt5Core 5.5.1 REQUIRED)
         find_package(Qt5Gui 5.5.1 REQUIRED)

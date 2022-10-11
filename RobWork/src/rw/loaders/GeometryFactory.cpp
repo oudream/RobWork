@@ -32,6 +32,7 @@
 #include <rw/geometry/Sphere.hpp>
 #include <rw/geometry/Tube.hpp>
 
+#include <algorithm>
 #include <boost/filesystem.hpp>
 #include <string>
 #include <sys/stat.h>
@@ -46,258 +47,227 @@ using namespace rw::math;
 using namespace std;
 
 namespace {
-std::string getLastModifiedStr (const std::string& file)
-{
+std::string getLastModifiedStr(const std::string& file) {
     struct stat status;
-    stat (file.c_str (), &status);
+    stat(file.c_str(), &status);
     // std::cout << "LAST MODIFIED DATE: " << status.st_mtime << std::endl;
     std::stringstream sstr;
     sstr << status.st_mtime;
-    return sstr.str ();
+    return sstr.str();
 }
 
-Geometry::Ptr constructBox (std::stringstream& sstr)
-{
+Geometry::Ptr constructBox(std::stringstream& sstr) {
     float x, y, z;
     sstr >> x >> y >> z;
-    return ownedPtr (new Geometry (ownedPtr (new Box (x, y, z))));
+    return ownedPtr(new Geometry(ownedPtr(new Box(x, y, z))));
 }
 
-Geometry::Ptr constructCylinder (std::stringstream& sstr)
-{
+Geometry::Ptr constructCylinder(std::stringstream& sstr) {
     float radius, height;
     int divisions;
-    if (sstr >> radius >> height >> divisions) {
-        if (divisions < 0)
-            RW_THROW ("Negative discretization level " << divisions);
+    if(sstr >> radius >> height >> divisions) {
+        if(divisions < 0) RW_THROW("Negative discretization level " << divisions);
 
-        return ownedPtr (new Geometry (ownedPtr (new Cylinder (radius, height, divisions))));
+        return ownedPtr(new Geometry(ownedPtr(new Cylinder(radius, height, divisions))));
     }
     else {
-        RW_THROW ("Could not read (radius, height, divisions).");
+        RW_THROW("Could not read (radius, height, divisions).");
         return NULL;
     }
 }
 
-Geometry::Ptr constructTube (std::stringstream& sstr)
-{
+Geometry::Ptr constructTube(std::stringstream& sstr) {
     float radius, thickness, height;
     int divisions;
-    if (sstr >> radius >> thickness >> height >> divisions) {
-        if (divisions < 0)
-            RW_THROW ("Negative discretization level " << divisions);
-        return ownedPtr (new Geometry (ownedPtr (new Tube (radius, thickness, height, divisions))));
+    if(sstr >> radius >> thickness >> height >> divisions) {
+        if(divisions < 0) RW_THROW("Negative discretization level " << divisions);
+        return ownedPtr(new Geometry(ownedPtr(new Tube(radius, thickness, height, divisions))));
     }
     else {
-        RW_THROW ("Could not read (radius, thickness, height, divisions).");
+        RW_THROW("Could not read (radius, thickness, height, divisions).");
         return NULL;
     }
 }
 
-Geometry::Ptr constructCustom (std::stringstream& sstr)
-{
+Geometry::Ptr constructCustom(std::stringstream& sstr) {
     /*
      * Extract custom geometry parameters.
      */
     string geometryType, parameterString;
 
-    if (sstr >> geometryType && getline (sstr, parameterString)) {
-        pair< bool, vector< double > > parameters =
-            StringUtil::toDoubles (StringUtil::words (parameterString));
-        Q q (parameters.second);
+    if(sstr >> geometryType && getline(sstr, parameterString)) {
+        pair<bool, vector<double>> parameters =
+            StringUtil::toDoubles(StringUtil::words(parameterString));
+        Q q(parameters.second);
 
         /*
          * Look up the geometry type in extensions.
          */
         GeometryFactory geoFactory;
-        vector< Extension::Ptr > extensions = geoFactory.getExtensions ();
+        vector<Extension::Ptr> extensions = geoFactory.getExtensions();
 
-        for (Extension::Ptr& extension : extensions) {
-            if (extension->getProperties ().get ("type", extension->getName ()) == geometryType) {
-                GeometryData::Ptr geomData = extension->getObject ().cast< GeometryData > ();
+        for(Extension::Ptr& extension : extensions) {
+            if(extension->getProperties().get("type", extension->getName()) == geometryType) {
+                GeometryData::Ptr geomData = extension->getObject().cast<GeometryData>();
 
-                if (q.size () > 0) {
-                    const Primitive::Ptr primitive = geomData.cast< Primitive > ();
-                    if (!primitive.isNull ()) {
-                        primitive->setParameters (q);
-                    }
+                if(q.size() > 0) {
+                    const Primitive::Ptr primitive = geomData.cast<Primitive>();
+                    if(!primitive.isNull()) { primitive->setParameters(q); }
                 }
 
-                return ownedPtr (new Geometry (geomData));
+                return ownedPtr(new Geometry(geomData));
             }
         }
     }
     else {
-        RW_THROW ("Could not read (type, parameters).");
+        RW_THROW("Could not read (type, parameters).");
         return NULL;
     }
 
     return NULL;
 }
 
-Geometry::Ptr constructSphere (std::stringstream& sstr)
-{
+Geometry::Ptr constructSphere(std::stringstream& sstr) {
     float radius;
     int divisions;
-    if (sstr >> radius >> divisions) {
-        return ownedPtr (new Geometry (ownedPtr (new Sphere (radius, divisions))));
+    if(sstr >> radius >> divisions) {
+        return ownedPtr(new Geometry(ownedPtr(new Sphere(radius, divisions))));
     }
     else {
-        RW_THROW ("Could not read (radius).");
+        RW_THROW("Could not read (radius).");
         return NULL;
     }
     return NULL;
 }
 
-Geometry::Ptr constructCone (std::stringstream& sstr)
-{
+Geometry::Ptr constructCone(std::stringstream& sstr) {
     float height, radiusTop;
     int divisions;
-    if (sstr >> radiusTop >> height >> divisions) {
-        return ownedPtr (new Geometry (ownedPtr (new Cone (height, radiusTop, 0, divisions))));
+    if(sstr >> radiusTop >> height >> divisions) {
+        return ownedPtr(new Geometry(ownedPtr(new Cone(height, radiusTop, 0, divisions))));
     }
     else {
-        RW_THROW ("Could not read (radius, height).");
+        RW_THROW("Could not read (radius, height).");
         return NULL;
     }
     return NULL;
 }
 
-Geometry::Ptr constructLine (std::stringstream& sstr)
-{
-    RW_THROW ("Could not read (radius, height, divisions).");
+Geometry::Ptr constructLine(std::stringstream& sstr) {
+    RW_THROW("Could not read (radius, height, divisions).");
     return NULL;
 }
 
-Geometry::Ptr constructPyramid (std::stringstream& sstr)
-{
+Geometry::Ptr constructPyramid(std::stringstream& sstr) {
     float dx, dy, height;
-    if (sstr >> dx >> dy >> height) {
-        return ownedPtr (new Geometry (ownedPtr (new Pyramid (dx, dy, height))));
+    if(sstr >> dx >> dy >> height) {
+        return ownedPtr(new Geometry(ownedPtr(new Pyramid(dx, dy, height))));
     }
     else {
-        RW_THROW ("Could not read (dx, dy, height).");
+        RW_THROW("Could not read (dx, dy, height).");
         return NULL;
     }
     return NULL;
 }
 
-Geometry::Ptr constructPlane (std::stringstream& sstr)
-{
-    return ownedPtr (new Geometry (ownedPtr (new Plane (Vector3D<>::z (), 0))));
+Geometry::Ptr constructPlane(std::stringstream& sstr) {
+    return ownedPtr(new Geometry(ownedPtr(new Plane(Vector3D<>::z(), 0))));
 }
 }    // namespace
 
-Geometry::Ptr GeometryFactory::load (const std::string& raw_filename, bool useCache)
-{
-    return getGeometry (raw_filename, useCache);
+Geometry::Ptr GeometryFactory::load(const std::string& raw_filename, bool useCache) {
+    return getGeometry(raw_filename, useCache);
 }
 
 namespace {
-std::vector< std::string >& operator+= (std::vector< std::string >& lhs,
-                                        const std::vector< std::string >& rhs)
-{
-    lhs.insert (lhs.end (), rhs.begin (), rhs.end ());
+std::vector<std::string>& operator+=(std::vector<std::string>& lhs,
+                                     const std::vector<std::string>& rhs) {
+    lhs.insert(lhs.end(), rhs.begin(), rhs.end());
     return lhs;
 }
 }    // namespace
 
-Geometry::Ptr GeometryFactory::getGeometry (const std::string& raw_filename, bool useCache)
-{
-    if (raw_filename[0] != '#') {
-        std::vector< std::string > extensions = Model3DLoader::Factory::getSupportedFormats ();
+Geometry::Ptr GeometryFactory::getGeometry(const std::string& raw_filename, bool useCache) {
+    if(raw_filename[0] != '#') {
+        std::vector<std::string> extensions = Model3DLoader::Factory::getSupportedFormats();
+        std::reverse(extensions.begin(), extensions.end());
 
         std::string filename;
         try {
-            filename = IOUtil::resolveFileName (raw_filename, extensions);
+            filename = IOUtil::resolveFileName(raw_filename, extensions);
         }
-        catch (...) {
+        catch(...) {
             // try loading a model instead, and create geometry from this
         }
-        std::string filetype = StringUtil::toUpper (StringUtil::getFileExtension (filename));
+        std::string filetype = StringUtil::toUpper(StringUtil::getFileExtension(filename));
 
         // if the file does not exist then throw an exception
-        if (filetype.empty ()) {
-            RW_WARN ("No file type known for file " << StringUtil::quote (raw_filename)
-                                                    << " that was resolved to file name "
-                                                    << filename << ": defaults to STL!");
+        if(filetype.empty()) {
+            RW_WARN("No file type known for file " << StringUtil::quote(raw_filename)
+                                                   << " that was resolved to file name " << filename
+                                                   << ": defaults to STL!");
             filetype = ".STL";
         }
+        
+        std::string moddate = getLastModifiedStr(filename);
+        if(useCache && getCache().isInCache(filename, moddate))
+            return ownedPtr(new Geometry(getCache().get(filename)));
 
-        std::string moddate = getLastModifiedStr (filename);
-        if (useCache && getCache ().isInCache (filename, moddate))
-            return ownedPtr (new Geometry (getCache ().get (filename)));
-
-        if (STLFile ().isSupported (filetype)) {
-            GeometryData::Ptr data = STLFile::load (filename);
-            if (data == NULL)
-                RW_THROW ("Reading of geometry failed!");
-            getCache ().add (filename, data, moddate);
-            return ownedPtr (new Geometry (getCache ().get (filename)));
+        if(STLFile().isSupported(filetype)) {
+            GeometryData::Ptr data = STLFile::load(filename);
+            if(data == NULL) RW_THROW("Reading of geometry failed!");
+            getCache().add(filename, data, moddate);
+            return ownedPtr(new Geometry(getCache().get(filename)));
         }
-        else if (filetype == ".PCD") {
-            GeometryData::Ptr data = PointCloud::loadPCD (filename);
+        else if(filetype == ".PCD") {
+            GeometryData::Ptr data = PointCloud::loadPCD(filename);
 
-            if (data == NULL)
-                RW_THROW ("Reading of geometry failed!");
-            getCache ().add (filename, data, moddate);
-            return ownedPtr (new Geometry (getCache ().get (filename)));
+            if(data == NULL) RW_THROW("Reading of geometry failed!");
+            getCache().add(filename, data, moddate);
+            return ownedPtr(new Geometry(getCache().get(filename)));
         }
         else {
-            rw::graphics::Model3D::Ptr model =
-                rw::loaders::Model3DFactory::loadModel (filename, "");
+            rw::graphics::Model3D::Ptr model = rw::loaders::Model3DFactory::loadModel(filename, "");
 
-            GeometryData::Ptr data = model->toGeometryData ();
-            getCache ().add (filename, data, moddate);
-            return ownedPtr (new Geometry (getCache ().get (filename)));
+            GeometryData::Ptr data = model->toGeometryData();
+            getCache().add(filename, data, moddate);
+            return ownedPtr(new Geometry(getCache().get(filename)));
         }
     }
 
-    std::stringstream sstr (raw_filename);
+    std::stringstream sstr(raw_filename);
     std::string type;
     sstr >> type;
 
-    if (type == "#Plane")
-        return constructPlane (sstr);
-    if (type == "#Box")
-        return constructBox (sstr);
-    if (type == "#Cylinder")
-        return constructCylinder (sstr);
-    if (type == "#Tube")
-        return constructTube (sstr);
-    if (type == "#Cone")
-        return constructCone (sstr);
-    if (type == "#Line")
-        return constructLine (sstr);
-    if (type == "#Sphere")
-        return constructSphere (sstr);
-    if (type == "#Pyramid")
-        return constructPyramid (sstr);
-    if (type == "#Custom")
-        return constructCustom (sstr);
+    if(type == "#Plane") return constructPlane(sstr);
+    if(type == "#Box") return constructBox(sstr);
+    if(type == "#Cylinder") return constructCylinder(sstr);
+    if(type == "#Tube") return constructTube(sstr);
+    if(type == "#Cone") return constructCone(sstr);
+    if(type == "#Line") return constructLine(sstr);
+    if(type == "#Sphere") return constructSphere(sstr);
+    if(type == "#Pyramid") return constructPyramid(sstr);
+    if(type == "#Custom") return constructCustom(sstr);
     else {
-        RW_THROW ("Unable to construct geometry from string: \"" << raw_filename << "\"");
+        RW_THROW("Unable to construct geometry from string: \"" << raw_filename << "\"");
         // To avoid a compiler warning.
         return NULL;
     }
 
-    RW_ASSERT (!"Impossible");
+    RW_ASSERT(!"Impossible");
     return NULL;    // To avoid a compiler warning.
 }
 
-GeometryFactory::GeometryFactory () :
-    ExtensionPoint< GeometryData > (
+GeometryFactory::GeometryFactory() :
+    ExtensionPoint<GeometryData>(
         "rw.loaders.GeometryFactory",
-        "extension point for adding custom geometry primitives to the XML workcell format")
-{}
+        "extension point for adding custom geometry primitives to the XML workcell format") {}
 
-GeometryFactory::Cache& GeometryFactory::getCache ()
-{
+GeometryFactory::Cache& GeometryFactory::getCache() {
     static Cache cache;
     return cache;
 }
 
-void GeometryFactory::clearGeometryCache ()
-{
-    getCache ().clear ();
+void GeometryFactory::clearGeometryCache() {
+    getCache().clear();
 }

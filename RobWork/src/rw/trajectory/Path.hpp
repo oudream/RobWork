@@ -22,14 +22,13 @@
    @file Path.hpp
 */
 #if !defined(SWIG)
-#include <rw/trajectory/Timed.hpp>
-
 #include <rw/core/Ptr.hpp>
 #include <rw/kinematics/State.hpp>
 #include <rw/math/Q.hpp>
 #include <rw/math/Rotation3D.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/Vector3D.hpp>
+#include <rw/trajectory/Timed.hpp>
 
 #include <vector>
 
@@ -45,6 +44,9 @@
 #endif
 namespace rw { namespace trajectory {
 
+    /**
+     * @brief This is a std::Vector overloaded with some extra constructor functionality
+     */
     template< class T > class Path : public std::vector< T >
     {
       public:
@@ -84,13 +86,17 @@ namespace rw { namespace trajectory {
          * @brief Construct Path and copies elements from \b v
          * @param v [in] vector to copy data from
          */
-        Path (const std::vector< T >& v) : std::vector< T > (v) {}
+        Path (const std::vector< T >& v) : std::vector< T > (v)
+        {}
 
         /**
          * @brief Construct Path and copies elements from \b rhs
          * @param rhs [in] vector to copy data from
          */
-        Path< T >& operator= (const std::vector< T >& rhs) { return (*this) = Path< T > (rhs); }
+        Path< T >& operator= (const std::vector< T >& rhs)
+        {
+            return (*this) = Path< T > (rhs);
+        }
 
 #if defined(SWIG)
         SWIG_PATH_FUNCTIONS ();

@@ -136,17 +136,17 @@ void QCodeEditor::updateStyle()
 
     if (m_syntaxStyle)
     {
-        auto currentPalette = palette();
+        QPalette currentPalette = palette();
 
         // Setting text format/color
-        currentPalette.setColor(
+       currentPalette.setColor(
             QPalette::ColorRole::Text,
             m_syntaxStyle->getFormat("Text").foreground().color()
         );
 
         // Setting common background
         currentPalette.setColor(
-            QPalette::Base,
+            QPalette::Base, 
             m_syntaxStyle->getFormat("Text").background().color()
         );
 
