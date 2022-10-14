@@ -19,7 +19,7 @@ void Object3DGeneric::getTriangle (size_t idx, rw::geometry::Triangle< double >&
 
 void Object3DGeneric::getTriangle (size_t idx, rw::geometry::Triangle< float >& dst) const
 {
-    rw::geometry::Triangle< double > res;
+    rw::geometry::Triangle< double > res = getTriangle (idx);
     dst[0] = Vector3D<float> (res[0].e());
     dst[1] = Vector3D<float> (res[1].e());
     dst[2] = Vector3D<float> (res[2].e());
