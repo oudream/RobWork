@@ -126,23 +126,26 @@ QGraphicsView* ChartView::getWidget(QWidget* parent) {
     OwnChartView* view = new OwnChartView(parent);
     QValueAxis* axisX  = new QValueAxis;
     axisX->setTickCount(10);
+
+#ifdef RWS_USE_QT6
     axisX->setTickAnchor(0);
+#endif
     axisX->setTitleText(_impl->ylabel);
     view->chart()->addAxis(axisX, Qt::AlignBottom);
-    
-    
+
     QValueAxis* axisY = new QValueAxis;
     axisY->setTickCount(5);
+#ifdef RWS_USE_QT6
     axisY->setTickAnchor(0);
-    axisY->setTitleText(_impl->xlabel); // Not sure why but this has to be the Xlabel to be at the x axis
+#endif
+    axisY->setTitleText(
+        _impl->xlabel);    // Not sure why but this has to be the Xlabel to be at the x axis
     view->chart()->addAxis(axisY, Qt::AlignLeft);
 
     for(rw::core::Ptr<QLineSeries> s : _impl->series) {
-
         view->plot(s);
         s->attachAxis(axisX);
         s->attachAxis(axisY);
-
     }
     view->chart()->setTitle(_impl->title);
     return view;
