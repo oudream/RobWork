@@ -154,9 +154,10 @@ if(RW_HAVE_GTEST)
     endif()
 endif()
 
-if(NOT WIN32)
-file(MAKE_DIRECTORY $ENV{HOME}/.cmake/packages/RobWork)
-file(WRITE "$ENV{HOME}/.cmake/packages/RobWork/${ROBWORK_VERSION}-${ROBWORK_BRANCH}" "${RW_ROOT}/cmake")
+option(EXPORT_RW_LOCATION "Enable this to export the RobWork Location to a place CMake Can automatically find it" TRUE)
+if(NOT WIN32 AND EXPORT_RW_LOCATION)
+    file(MAKE_DIRECTORY $ENV{HOME}/.cmake/packages/RobWork)
+    file(WRITE "$ENV{HOME}/.cmake/packages/RobWork/${ROBWORK_VERSION}-${ROBWORK_BRANCH}" "${RW_ROOT}/cmake")
 endif()
 
 # ##################################################################################################

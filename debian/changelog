@@ -1,3 +1,118 @@
+robwork (2.5.3-5) bionic; urgency=medium
+
+  * Version number updated to 2.5.3-5
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Tue, 08 Nov 2022 16:04:50 +0100
+
+robwork (2.5.3-4) focal; urgency=medium
+
+  * Version number updated to 2.5.3-4
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Tue, 08 Nov 2022 16:03:08 +0100
+
+robwork (2.5.3-3) jammy; urgency=medium
+
+  * Fixed spelling error in rules file
+  * Version number updated to 2.5.3-3
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Tue, 08 Nov 2022 13:22:58 +0100
+
+robwork (2.5.3-2) jammy; urgency=medium
+
+  * Updated rules file to run on new cmake settings
+  * Version number updated to 2.5.3-2
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Tue, 08 Nov 2022 13:13:04 +0100
+
+robwork (2.5.3-1) jammy; urgency=medium
+
+  * fixed cmake for deb upload
+  * Version number updated to 2.5.3-1
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Tue, 08 Nov 2022 13:08:43 +0100
+
+robwork (2.5.2-1) jammy; urgency=medium
+
+  * Version number updated to 2.5.2-1
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Tue, 08 Nov 2022 12:28:34 +0100
+
+robwork (2.5.1-1) jammy; urgency=medium
+
+  * Version number updated to 2.5.1-1
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Tue, 08 Nov 2022 12:27:14 +0100
+
+robwork (2.5.0-1) jammy; urgency=medium
+
+  [ Kasper Høj Lorenzen ]
+  * GTest disabled by default
+  * Added the Missing CSGJS compile
+
+  [ Ken Sørensen ]
+  * Python test trajectory 1
+
+  [ Kasper Høj Lorenzen ]
+  * Scaled 3D Model in WorkCell file
+  * Missing Typemap and Ptr conversions
+
+  [ Thomas Nicky Thulesen ]
+  * Prepared for Ubuntu 22.04. Fixed various warnings, documentation issues and tested with Qt 6.
+
+  [ Kasper Høj Lorenzen ]
+  * Fixing GilLock when Launching rws from Python
+
+  [ Thomas Nicky Thulesen ]
+  * Fix Debian package for Ubuntu 22.04
+
+  [ Kasper Høj Lorenzen ]
+  * Swig model review
+
+  [ Thomas Nicky Thulesen ]
+  * Allow unloading of so libraries by avoiding unique symbols
+
+  [ Kasper Høj Lorenzen ]
+  * swig path optimization
+  * Step loader
+  * Obj saver & STL Saver
+  * Load png images as textures
+  * Rws swig segfault
+  * Rws camera movement
+  * BetterCSG
+  * Misc updates
+  * Debian fixes
+
+  [ Ken Sørensen ]
+  * Still errors in InvKinTest.py and JacobianIKSolverTest.py and...
+
+  [ Thomas Nicky Thulesen ]
+  * Added plugin structure for generation of plots. It is now possible to use a MathGL2 implementation (in RobWork) or a QtCharts implementation (RobWorkStudio).
+
+  [ Kasper Høj Lorenzen ]
+  * ConnectedTriangles
+  * Ubuntu18 and other pipline fixes
+
+  [ Thomas Nicky Thulesen ]
+  * CMake fix for the case where MathGL is not available.
+
+  [ Kasper Høj Lorenzen ]
+  * Simulation timing
+  * MeshRepair
+  * Simplify Swig Typemaps
+  * Fixed RobWorkStudio help menu
+  * Preparing for Release. Devel Fix
+
+  [ Thomas Nicky Thulesen ]
+  * Use docker registry at gitlab.sdu.dk for build images.
+
+  [ Kasper Høj Lorenzen ]
+  * Minor fixes
+  * Model3D to Geometry Conversion Fail
+  * Fixing qt5 error on ubuntu 18
+  * Version number updated to 2.5.0-1
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Tue, 08 Nov 2022 12:19:39 +0100
+
 robwork (2.4.7-1) focal; urgency=medium
 
   * Reuploade to overcom OOM error

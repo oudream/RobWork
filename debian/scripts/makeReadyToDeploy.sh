@@ -36,9 +36,7 @@ readArg () {
             echo "Invalid key"
             exit 2
         fi
-    fi
-
-    
+    fi 
 }
 
 findScriptDir () {

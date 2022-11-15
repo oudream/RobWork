@@ -26,8 +26,8 @@ Install git build package
 add the following lines to .bashrc and change the name and email address to your own
 
 ```
-export DEBFULLNAME="Kasper Høj Lorenzen" 
-export DEBEMAIL="kalor@mmmi.sdu.dk"
+export DEBFULLNAME="Your Name Here" 
+export DEBEMAIL="Your@email.here"
 ```
 ##### gpg key
 
@@ -66,16 +66,34 @@ source ~/.bashrc
 
 next step is to upload the key to the key server
 ```
-gpg --send-keys --keyserver keyserver.ubuntu.com $UR_RTDE_DEB_KEY
+gpg --send-keys --keyserver keyserver.ubuntu.com $ROBWORK_DEB_KEY
+```
+go to launchpad find OpenPGPkeys and select edit. Add the fingerprint you have stored in RW_DEB_KEY
+They will then send you a confirmation email including the following text
+
+-----BEGIN PGP MESSAGE-----
+Version: GnuPG v2
+
+hQGMA2Qteis//9mLAQv+Py9iUqO3GwMy0DHCrk0k8DAzLolF7yTYTDft8f7Gc12U
+<...>
+KD2x9Q==
+=mJtl
+-----END PGP MESSAGE-----
+
+copy the text into a file and use the following command to decrypt the text. 
+
+``` bash
+gpg --decrypt /path/to/file
 ```
 
+when it is decrypted use the confirmation link to confirm that you own the key
 
 ### Uploading a package to launchpad
 
 go to the root of the git repository and run:
 `./debian/scripts/makeReadyToDeploy key=<Your key>`
 where `<Your key>` are the 8 last caracters from the fingerprint of the gpg key uploaded to launchpad.
-if ROBWORK_DEB_KEY is defined as a environment variable you can neglect the key part:
+if RW_DEB_KEY is defined as a environment variable you can neglect the key part:
 `./debian/scripts/makeReadyToDeploy`
 
 This script will take you trough the whole procedure of uploading the package

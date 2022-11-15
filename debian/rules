@@ -25,6 +25,9 @@ override_dh_auto_configure:
 	-DBUILD_sdurw_lua=OFF \
 	-DBUILD_sdurws_lua=OFF \
 	-DBUILD_sdurwsim_lua=OFF \
+	-DEXPORT_RW_LOCATION=OFF \
+	-DEXPORT_RWS_LOCATION=OFF \
+	-DEXPORT_RWSIM_LOCATION=OFF \
 	-DSWIG_DEFAULT_COMPILE=TRUE \
 	$(shell ./debian/scripts/getVersion.sh "./debian/scripts" -n) 
 
