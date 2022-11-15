@@ -111,7 +111,8 @@ configure_file(${RWSIM_ROOT}/src/rwsimlibs/gui/RWSimGuiConfig.hpp.in
 # process sub directories add_subdirectory(ext)
 add_subdirectory(src)
 
-if(NOT WIN32)
+option(EXPORT_RWSIM_LOCATION "Enable this to export the RobWorkSim Location to a place CMake Can automatically find it" TRUE)
+if(NOT WIN32 AND EXPORT_RWSIM_LOCATION)
     file(MAKE_DIRECTORY $ENV{HOME}/.cmake/packages/RobWorkSim)
     file(WRITE "$ENV{HOME}/.cmake/packages/RobWorkSim/${ROBWORKSIM_VERSION}-${ROBWORKSIM_BRANCH}" "${RWSIM_ROOT}/cmake")
 endif()
