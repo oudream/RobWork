@@ -119,7 +119,10 @@ enable_language(CXX)
 #
 # For some libs we need the opengl package, though it is OPTIONAL
 #
-find_package(OpenGL)
+find_package(OpenGL REQUIRED)
+if(OPENGL_FOUND)
+    message(STATUS "USE_OPENGL Required : OpenGL Found")
+endif()
 include(CMakeDependentOption)
 
 #
@@ -127,24 +130,32 @@ include(CMakeDependentOption)
 #
 set(RW_HAVE_GLUT False)
 set(FreeGLUT_FOUND False)
-find_package(GLUT QUIET)
+option(USE_GLUT "Set to ON to include OpenCascade support." ON)
+if(USE_GLUT)
+    find_package(GLUT QUIET)
 
-if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    if(NOT GLUT_FOUND) # Check if free glut exsist
-        find_package(FreeGLUT QUIET)
-        if(FreeGLUT_FOUND)
-            set(GLUT_glut_LIBRARY FreeGLUT::freeglut_static)
-            set(GLUT_FOUND ${FreeGLUT_FOUND})
+    if(NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+        if(NOT GLUT_FOUND) # Check if free glut exsist
+            find_package(FreeGLUT QUIET)
+            if(FreeGLUT_FOUND)
+                set(GLUT_glut_LIBRARY FreeGLUT::freeglut_static)
+                set(GLUT_FOUND ${FreeGLUT_FOUND})
+            endif()
         endif()
     endif()
-endif()
 
-if(OPENGL_FOUND AND GLUT_FOUND)
-    set(RW_HAVE_GLUT True)
-    message(STATUS "RobWork: OpenGL and GLUT ENABLED! FOUND!")
+    if(OPENGL_FOUND AND FreeGLUT_FOUND)
+        set(RW_HAVE_GLUT True)
+        message(STATUS "USE_GLUT ON : FreeGLUT Found!")
+    elseif(OPENGL_FOUND AND GLUT_FOUND)
+        set(RW_HAVE_GLUT True)
+        message(STATUS "USE_GLUT ON : GLUT Found!")
+    else()
+        set(GLUT_glut_LIBRARY "")
+        message(STATUS "USE_GLUT OFF : GLUT NOT Found!")
+    endif()
 else()
-    set(GLUT_glut_LIBRARY "")
-    message(STATUS "RobWork: OpenGL and GLUT NOT FOUND! code disabled!")
+    message(STATUS "USE_GLUT OFF : Disabled Manually")
 endif()
 
 #
@@ -223,9 +234,10 @@ if(EIGEN3_FOUND)
     message(STATUS "RobWork: EIGEN3 ${EIGEN3_VERSION} Found")
 else()
     hunter_add_package(Eigen)
-    find_package(Eigen3 REQUIRED)
+    find_package(Eigen3 CONFIG REQUIRED)
     message(STATUS "RobWork: EIGEN3 ${EIGEN3_VERSION} Found w. Hunter")
 endif()
+
 
 #
 # Find Qhull
@@ -233,13 +245,20 @@ endif()
 find_package(Qhull QUIET MODULE)
 if(Qhull_FOUND)
     message(STATUS "RobWork: Qhull Found")
-    if(NOT DEFINED QHULL_ROOT)
-        set(QHULL_ROOT "${QHULL_INCLUDE_DIRS}/..")
+    if(NOT DEFINED QHULL_ROOT OR "${QHULL_ROOT}" STREQUAL "" )
+        set(QHULL_ROOT "${Qhull_DIR}")
     endif()
+
 else()
     hunter_add_package(qhull)
     find_package(Qhull REQUIRED)
+    get_target_property(QHULL_ROOT qhull::qhull_r INTERFACE_INCLUDE_DIRECTORIES )
+    get_filename_component(QHULL_ROOT "${QHULL_ROOT}" PATH)
+    set(QHULL_ROOT "${QHULL_ROOT}/lib/cmake")
+
+    message(STATUS "RobWork: Qhull Found w. Hunter")
 endif()
+
 
 #
 # If the user wants to use opencascade then search for it or use the default
@@ -300,7 +319,7 @@ if(USE_FCL)
         set(RW_HAVE_FCL True)
         set(ROBWORK_LIBRARIES_EXTERNAL ${ROBWORK_LIBRARIES_EXTERNAL} ${FCL_LIBRARIES})
     else()
-        message(STATUS "USE_FCL ${USE_FCL} : FCL not Found")
+        message(STATUS "USE_FCL OFF : FCL not Found")
     endif()
 else()
     message(STATUS "USE_FCL ${USE_FCL} : Disabled Manually")
@@ -527,11 +546,11 @@ if(USE_numpy)
         if(NOT RW_GOT_PIP AND WIN32)
             execute_process(COMMAND powershell -Command Invoke-WebRequest -Uri
                                     https://bootstrap.pypa.io/get-pip.py -OutFile get-pip.py
-                            COMMAND ${PYTHON_EXECUTABLE} get-pip.py
+                            COMMAND ${PYTHON_EXECUTABLE} .\get-pip.py
             )
         endif()
 
-        execute_process(COMMAND ${PYTHON_EXECUTABLE} - m pip install numpy)
+        execute_process(COMMAND ${PYTHON_EXECUTABLE} -m pip install numpy)
     endif()
 
     execute_process(
@@ -556,12 +575,12 @@ if(USE_numpy)
 else()
     if(SWIG_FOUND AND PYTHONINTERP_FOUND)
         message(STATUS "USE_numpy ${USE_numpy} : Disabled Manually")
-    elseif(SWIG_FOUND)
+    elseif(NOT SWIG_FOUND)
         message(STATUS "USE_numpy OFF : Swig Not Found")
-    elseif(PYTHONINTERP_FOUND)
+    elseif(NOT PYTHONINTERP_FOUND)
         message(STATUS "USE_numpy OFF : Python Not Found")
     else()
-        message(STATUS "USE_numpy OFF} : Swig and Python Not found")
+        message(STATUS "USE_numpy OFF : Swig and Python Not found")
     endif()
 
 endif()
@@ -595,7 +614,7 @@ if(USE_GTest)
         endif()
     else()
         hunter_add_package(GTest)
-        find_package(GTest REQUIRED)
+        find_package(GTest REQUIRED NO_MODULE)
         set(RW_GTEST_FROM_HUNTER TRUE)
     endif()
 else()

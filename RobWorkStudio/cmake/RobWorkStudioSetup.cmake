@@ -86,7 +86,15 @@ endif()
 find_package(OpenGL REQUIRED)
 
 # Find and setup Qt.
-find_package(Qt6 COMPONENTS Core Gui Widgets OpenGL OpenGLWidgets QUIET)
+
+
+if(MSVC)
+    set(CMAKE_MODULE_PATH ${RWS_ROOT}/cmake/Modules/QT6_module ${CMAKE_MODULE_PATH})
+endif()
+find_package(Qt6 COMPONENTS  Core Gui Widgets OpenGL OpenGLWidgets QUIET)
+
+
+
 if(Qt6Core_FOUND
    AND Qt6Gui_FOUND
    AND Qt6Widgets_FOUND

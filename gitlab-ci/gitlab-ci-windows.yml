@@ -48,6 +48,7 @@
     # Build RobWorkStudio
     - cd RWS
     - cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 -DSWIG_EXECUTABLE=%SWIG_ROOT%\swig.exe ../../RobWorkStudio
+    #cmake -DCMAKE_BUILD_TYPE=RelWithDebInfo -G "Visual Studio 16 2019" -A x64 ../../RobWorkStudio
     - msbuild RobWorkStudio.sln -m /property:Configuration=Release
     - msbuild src\\rwslibs\\swig\\python\\python.vcxproj -m /property:Configuration=Release
     - msbuild src\\rwslibs\\swig\\java\\java.vcxproj -m /property:Configuration=Release

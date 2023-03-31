@@ -209,8 +209,13 @@ void RobWork::initialize (const std::vector< std::string >& plugins)
                 break;
             }
         }
-        plugins.add("location-5", "Generic Plugin Folder" , std::string(std::getenv ("HOME")) + SLASH + std::string(".RobWork") + SLASH);
-
+        char * home = std::getenv ("HOME");
+        if(home != NULL) {
+            std::string home_s(home);
+            std::string path = home_s + SLASH + std::string(".RobWork") + SLASH;
+            plugins.add("location-5", "Generic Plugin Folder" , path);
+        }
+        
         _settings.add ("plugins", "List of plugins or plugin locations", plugins);
     }
 
