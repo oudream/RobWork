@@ -273,9 +273,10 @@ function(@PROJECT_PREFIX@_VERIFY_LIBRARY _name _result)
             set(result "${_name}")
         elseif(EXISTS ${_name})
             set(result "${_name}")
+        elseif(${_name} MATCHES "^\\s?-")
+            set(result ${_name})
         else()
             DEBUG_MESSAGE("Could not find library: ${_name}")
-        
         endif()
     endif()
 

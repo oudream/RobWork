@@ -71,6 +71,9 @@ class RobWorkStudio : public QMainWindow
 {
     Q_OBJECT
   public:
+
+    typedef rw::core::Ptr< RobWorkStudio > Ptr;
+
     /**
        @brief RobWorkStudio object with a number of plugins loaded elsewhere.
     */

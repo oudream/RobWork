@@ -198,7 +198,7 @@ namespace rw { namespace core {
          * @param p the other (compatible) smart pointer.
          */
         template< class S >
-        Ptr< T > (Ptr< S > const& p,
+        Ptr (Ptr< S > const& p,
                   typename std::enable_if< std::is_base_of< T, S >::value >::type* = 0)
         {
             _owned_ptr = p.getSharedPtr ();

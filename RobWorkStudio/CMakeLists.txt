@@ -203,8 +203,8 @@ install(
 if(WIN32)
     set(_RWS_MODULES_ROOT "${RWS_ROOT}/cmake/Modules")
     install(
-        FILES "${_RWS_MODULES_ROOT}/Find_QT5_DIR.cmake" "${_RWS_MODULES_ROOT}/FindQt5Core.cmake"
-              "${_RWS_MODULES_ROOT}/FindQt5Gui.cmake" "${_RWS_MODULES_ROOT}/FindQt5Widgets.cmake"
+        FILES "${_RWS_MODULES_ROOT}/Find_QT_DIR.cmake" "${_RWS_MODULES_ROOT}/FindQt5Core.cmake"
+              "${_RWS_MODULES_ROOT}/FindQt5Gui.cmake" "${_RWS_MODULES_ROOT}/FindQt5Widgets.cmake" "${_RWS_MODULES_ROOT}/QT6_module/FindQt6.cmake"
         DESTINATION "${RWS_INSTALL_DIR}/cmake/Modules"
         COMPONENT cmake
     )
@@ -216,13 +216,29 @@ if(WIN32)
             COMPONENT python_dll
         )
     else()
-        get_filename_component(python_file ${PYTHON_DLL} NAME)
-        get_filename_component(python_path ${PYTHON_DLL} DIRECTORY)
-        install(
-            FILES "${python_path}/../${python_file}"
-            DESTINATION ${BIN_INSTALL_DIR}
-            COMPONENT python_dll
-        )
+        message(STATUS "PYTHON ${PYTHON_DLL}")
+        list(LENGTH PYTHON_DLL DLL_SIZE)
+        
+        # IF DLL is not a list
+        IF(DLL_SIZE EQUAL 1)
+            get_filename_component(python_file "${PYTHON_DLL}" NAME)
+            get_filename_component(python_path "${PYTHON_DLL}" DIRECTORY)
+            install(
+                FILES "${python_path}/../${python_file}"
+                DESTINATION ${BIN_INSTALL_DIR}
+                COMPONENT python_dll
+            )
+        ELSE ()
+            foreach(lib ${PYTHON_DLL})
+                if(EXISTS "${lib}")
+                    install(
+                        FILES ${PYTHON_DLL}
+                        DESTINATION ${BIN_INSTALL_DIR}
+                        COMPONENT python_dll
+                    )
+                endif()
+            endforeach()
+        ENDIF()
     endif()
 endif()
 

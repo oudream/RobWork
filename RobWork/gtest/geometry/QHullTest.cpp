@@ -188,6 +188,8 @@ TEST (QHullND, volume_nSphere)
 TEST (QHullND, QuadraticObjectA)
 {
     const Geometry::Ptr geomA = GeometryFactory::getGeometry ("#Custom QuadraticTestObjectA ");
+    ASSERT_FALSE(geomA.isNull());
+
     QHullND< 3 > qhull;
     std::vector< rw::math::VectorND< 3 > > vertecies;
 	GeometryData::Ptr geoData = geomA->getGeometryData (); 

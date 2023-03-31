@@ -1,6 +1,7 @@
 
 set(QT_MISSING True)
 # msvc only; mingw will need different logic
+
 if(MSVC)
     # look for user-registry pointing to qtcreator
     get_filename_component(
@@ -8,18 +9,20 @@ if(MSVC)
         [HKEY_CURRENT_USER\\Software\\Classes\\Applications\\QtProject.QtCreator.cpp\\shell\\Open\\Command]
         PATH
     )
-    if(EXISTS "$ENV{Qt5_DIR}" AND NOT "$ENV{Qt5_DIR}" STREQUAL "/")
-        set(QT_PATH "$ENV{Qt5_DIR}")
+    string(REPLACE "//" "/" QT_BIN "${QT_BIN}")
+    if(EXISTS "$ENV{Qt${FIND_VERSION_MAJOR}_DIR}" AND NOT "$ENV{Qt${FIND_VERSION_MAJOR}_DIR}" STREQUAL "/")
+        set(QT${FIND_VERSION_MAJOR}_PATH "$ENV{Qt${FIND_VERSION_MAJOR}_DIR}")
     elseif(EXISTS "${QT_BIN}" AND NOT "${QT_BIN}" STREQUAL "/")
+
         # get root path so we can search for 5.3, 5.4, 5.5, etc
         string(REPLACE "/Tools" ";" QT_BIN "${QT_BIN}")
         list(GET QT_BIN 0 QT_BIN)
-
-        file(GLOB QT_VERSIONS "${QT_BIN}/5.*")
+        file(GLOB QT_VERSIONS "${QT_BIN}/${FIND_VERSION_MAJOR}.*")
         list(SORT QT_VERSIONS)
         # assume the latest version will be last alphabetically
         list(REVERSE QT_VERSIONS)
         list(GET QT_VERSIONS 0 QT_VERSION)
+
         # fix any double slashes which seem to be common
         string(REPLACE "//" "/" QT_VERSION "${QT_VERSION}")
 
@@ -27,12 +30,12 @@ if(MSVC)
             set(BIT_SELECT "_64")
         endif()
 
-        if(EXISTS ${QT_VERSIONS}/msvc2019${BITS})
-            set(QT_PATH "${QT_VERSIONS}/msvc2019${BITS}")
-        elseif(EXISTS ${QT_VERSIONS}/msvc2017${BITS})
-            set(QT_PATH "${QT_VERSIONS}/msvc2017${BITS}")
+        if(EXISTS ${QT_VERSION}/msvc2019${BIT_SELECT})
+            set(QT_PATH "${QT_VERSION}/msvc2019${BIT_SELECT}")
+        elseif(EXISTS ${QT_VERSION}/msvc2017${BIT_SELECT})
+            set(QT_PATH "${QT_VERSION}/msvc2017${BIT_SELECT}")
         else()
-            file(GLOB QT_DIR "${QT_VERSIONS}/*")
+            file(GLOB QT_DIR "${QT_VERSION}/*")
             list(SORT QT_DIR)
             list(REVERSE QT_DIR)
             string(REPLACE "//" "/" QT_DIR "${QT_DIR}")
@@ -79,7 +82,7 @@ macro(FIND_QT_PACKAGE _name)
     else()
         set(CMP "${CMAKE_MODULE_PATH}")
         set(CMAKE_MODULE_PATH)
-        find_package(${_name} ${REQ_QUIET})
+        find_package(${_name} ${REQ_QUIET} ${ARGN})
         set(CMAKE_MODULE_PATH "${CMP}")
     endif()
 endmacro()
