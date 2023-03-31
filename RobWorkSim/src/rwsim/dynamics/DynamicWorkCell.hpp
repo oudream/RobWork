@@ -50,9 +50,8 @@ namespace rwsim { namespace dynamics {
          * @param c [in] center.
          * @param box [in] the halflengths of the workspace.
          */
-        WorkCellDimension (const rw::math::Vector3D<>& c, const rw::math::Vector3D<>& box) :
-            center (c), boxDim (box)
-        {}
+        WorkCellDimension(const rw::math::Vector3D<>& c, const rw::math::Vector3D<>& box) :
+            center(c), boxDim(box) {}
         //! @brief The center of the workspace.
         rw::math::Vector3D<> center;
         //! @brief The halftlengths of the workspace.
@@ -75,25 +74,25 @@ namespace rwsim { namespace dynamics {
     {
       public:
         //! @brief Type for the collection of bodies.
-        typedef std::vector< Body::Ptr > BodyList;
+        typedef std::vector<Body::Ptr> BodyList;
         //! @brief Type for the collection of constraints.
-        typedef std::vector< Constraint::Ptr > ConstraintList;
+        typedef std::vector<Constraint::Ptr> ConstraintList;
         //! @brief Type for the collection of devices.
-        typedef std::vector< DynamicDevice::Ptr > DeviceList;
+        typedef std::vector<DynamicDevice::Ptr> DeviceList;
         //! @brief Type for the collection of simulated controllers.
-        typedef std::vector< rwlibs::simulation::SimulatedController::Ptr > ControllerList;
+        typedef std::vector<rwlibs::simulation::SimulatedController::Ptr> ControllerList;
         //! @brief Type for the collection of simulated sensors.
-        typedef std::vector< rwlibs::simulation::SimulatedSensor::Ptr > SensorList;
+        typedef std::vector<rwlibs::simulation::SimulatedSensor::Ptr> SensorList;
         //! @brief Smart pointer type for DynamicWorkCell.
-        typedef rw::core::Ptr< DynamicWorkCell > Ptr;
+        typedef rw::core::Ptr<DynamicWorkCell> Ptr;
         //! @brief Smart pointer type for const DynamicWorkCell.
-        typedef rw::core::Ptr< const DynamicWorkCell > CPtr;
+        typedef rw::core::Ptr<const DynamicWorkCell> CPtr;
 
         /**
          * @brief Constructor
          * @param workcell [in] a smart pointer to the rw::models::WorkCell
          */
-        DynamicWorkCell (rw::models::WorkCell::Ptr workcell);
+        DynamicWorkCell(rw::models::WorkCell::Ptr workcell);
 
         /**
          * @brief Constructor
@@ -104,51 +103,46 @@ namespace rwsim { namespace dynamics {
          * @param devices [in] a list of devices.
          * @param controllers [in] a list of controllers.
          */
-        DynamicWorkCell (rw::models::WorkCell::Ptr workcell, const BodyList& bodies,
-                         const BodyList& allbodies, const ConstraintList& constraints,
-                         const DeviceList& devices, const ControllerList& controllers);
+        DynamicWorkCell(rw::models::WorkCell::Ptr workcell, const BodyList& bodies,
+                        const BodyList& allbodies, const ConstraintList& constraints,
+                        const DeviceList& devices, const ControllerList& controllers);
 
         /**
          * @brief destructor
          */
-        virtual ~DynamicWorkCell ();
+        virtual ~DynamicWorkCell();
 
         /**
          * @brief gets a list of all bodies in the dynamic workcell
          */
-        const BodyList& getBodies () const { return _allbodies; };
+        const BodyList& getBodies() const { return _allbodies; };
 
         /**
          * @brief find a specific body with name \b name
          * @param name [in] name of body
          * @return body if found, NULL otherwise
          */
-        Body::Ptr findBody (const std::string& name) const;
+        Body::Ptr findBody(const std::string& name) const;
 
         /**
          * @brief find a specific body with name \b name and type \b T
          * @param name [in] name of body
          * @return body if found, NULL otherwise
          */
-        template< class T > rw::core::Ptr< T > findBody (const std::string& name) const
-        {
-            Body::Ptr body = findBody (name);
-            if (body == NULL)
-                return NULL;
-            return body.cast< T > ();
+        template<class T> rw::core::Ptr<T> findBody(const std::string& name) const {
+            Body::Ptr body = findBody(name);
+            if(body == NULL) return NULL;
+            return body.cast<T>();
         }
 
         /**
          * @brief find all bodies with type \b T
          * @return list of all bodies of type \b T
          */
-        template< class T > std::vector< rw::core::Ptr< T > > findBodies () const
-        {
-            std::vector< rw::core::Ptr< T > > bodies;
-            for (const Body::Ptr& b : _allbodies) {
-                if (rw::core::Ptr< T > tb = b.cast< T > ()) {
-                    bodies.push_back (tb);
-                }
+        template<class T> std::vector<rw::core::Ptr<T>> findBodies() const {
+            std::vector<rw::core::Ptr<T>> bodies;
+            for(const Body::Ptr& b : _allbodies) {
+                if(rw::core::Ptr<T> tb = b.cast<T>()) { bodies.push_back(tb); }
             }
             return bodies;
         }
@@ -157,35 +151,34 @@ namespace rwsim { namespace dynamics {
          * @brief Add a constraint to the dynamic workcell.
          * @param constraint [in] a smart pointer to the constraint to add.
          */
-        void addConstraint (Constraint::Ptr constraint);
+        void addConstraint(Constraint::Ptr constraint);
 
         /**
          * @brief gets a list of all constraints in the dynamic workcell
          */
-        const ConstraintList& getConstraints () const { return _constraints; }
+        const ConstraintList& getConstraints() const { return _constraints; }
 
         /**
          * @brief find a specific constraint with name \b name
          * @param name [in] name of constraint
          * @return constraint if found, NULL otherwise
          */
-        Constraint::Ptr findConstraint (const std::string& name) const;
+        Constraint::Ptr findConstraint(const std::string& name) const;
 
         /**
          * @brief gets a list of all dynamic devices in the dynamic workcell
          * @return a list of dynamic devices.
          */
-        const DeviceList& getDynamicDevices () const { return _devices; };
+        const DeviceList& getDynamicDevices() const { return _devices; };
 
         /**
          * @brief add a device to the dynamic workcell
          * @param device [in] a device
          */
-        void addDevice (DynamicDevice::Ptr device)
-        {
-            device->registerIn (_workcell->getStateStructure ());
-            _devices.push_back (device);
-            _changedEvent.fire (DeviceAddedEvent, boost::any (device));
+        void addDevice(DynamicDevice::Ptr device) {
+            device->registerIn(_workcell->getStateStructure());
+            _devices.push_back(device);
+            _changedEvent.fire(DeviceAddedEvent, boost::any(device));
         };
 
         /**
@@ -193,55 +186,51 @@ namespace rwsim { namespace dynamics {
          * @param name [in] name of device
          * @return a device with name \b name or null
          */
-        DynamicDevice::Ptr findDevice (const std::string& name) const;
+        DynamicDevice::Ptr findDevice(const std::string& name) const;
 
         /**
          * @brief find a specific device with name \b name and type \b T
          * @param name [in] name of body
          * @return body if found, NULL otherwise
          */
-        template< class T > rw::core::Ptr< T > findDevice (const std::string& name) const
-        {
-            DynamicDevice::Ptr dev = findDevice (name);
-            if (dev == NULL)
-                return NULL;
-            return dev.cast< T > ();
+        template<class T> rw::core::Ptr<T> findDevice(const std::string& name) const {
+            DynamicDevice::Ptr dev = findDevice(name);
+            if(dev == NULL) return NULL;
+            return dev.cast<T>();
         }
 
         /**
          * @brief gets a list of all controllers in the dynamic workcell
          */
-        const ControllerList& getControllers () const { return _controllers; }
+        const ControllerList& getControllers() const { return _controllers; }
 
         /**
          * @brief get the list of sensors
          */
-        const SensorList& getSensors () const { return _sensors; };
+        const SensorList& getSensors() const { return _sensors; };
 
         /**
          * @brief add a sensor to the dynamic workcell
          * @param sensor [in] a simulated sensor
          */
-        void addSensor (rwlibs::simulation::SimulatedSensor::Ptr sensor);
+        void addSensor(rwlibs::simulation::SimulatedSensor::Ptr sensor);
 
         /**
          * @brief find a sensor
          * @param name [in] the sensor
          * @return
          */
-        rwlibs::simulation::SimulatedSensor::Ptr findSensor (const std::string& name) const;
+        rwlibs::simulation::SimulatedSensor::Ptr findSensor(const std::string& name) const;
 
         /**
          * @brief find a sensor of a specific type.
          * @param name [in] name of sensor
          * @return
          */
-        template< class T > rw::core::Ptr< T > findSensor (const std::string& name) const
-        {
-            rwlibs::simulation::SimulatedSensor::Ptr sensor = findSensor (name);
-            if (sensor == NULL)
-                return NULL;
-            return sensor.cast< T > ();
+        template<class T> rw::core::Ptr<T> findSensor(const std::string& name) const {
+            rwlibs::simulation::SimulatedSensor::Ptr sensor = findSensor(name);
+            if(sensor == NULL) return NULL;
+            return sensor.cast<T>();
         }
 
         /**
@@ -250,7 +239,7 @@ namespace rwsim { namespace dynamics {
          * Notice that this will change the length of the default
          * State.
          */
-        void addBody (Body::Ptr body);
+        void addBody(Body::Ptr body);
 
         /**
          * @brief adds a body controller to the dynamic workcell.
@@ -258,16 +247,15 @@ namespace rwsim { namespace dynamics {
          * Notice that this will change the length of the default
          * State.
          */
-        void addController (rwlibs::simulation::SimulatedController::Ptr manipulator)
-        {
+        void addController(rwlibs::simulation::SimulatedController::Ptr manipulator) {
             // TODO: change STATE and WorkCell accordingly
-            if (!manipulator->getControllerModel ()->isRegistered ())
-                _workcell->add (manipulator->getControllerModel ());
-            if (!manipulator->isRegistered ())
-                manipulator->registerIn (_workcell->getStateStructure ());
+            if(!manipulator->getControllerModel()->isRegistered())
+                _workcell->add(manipulator->getControllerModel());
+            if(!manipulator->isRegistered())
+                manipulator->registerIn(_workcell->getStateStructure());
 
-            _controllers.push_back (manipulator);
-            _changedEvent.fire (ControllerAddedEvent, boost::any (manipulator));
+            _controllers.push_back(manipulator);
+            _changedEvent.fire(ControllerAddedEvent, boost::any(manipulator));
         }
 
         /**
@@ -275,110 +263,114 @@ namespace rwsim { namespace dynamics {
          * @param name [in] name of the controller.
          * @return the simulated controller if found, NULL otherwise.
          */
-        rwlibs::simulation::SimulatedController::Ptr findController (const std::string& name) const;
+        rwlibs::simulation::SimulatedController::Ptr findController(const std::string& name) const;
 
         /**
          * @brief Find a simulated controller.
          * @param name [in] name of the controller.
          * @return the simulated controller if found, NULL otherwise.
          */
-        template< class T > rw::core::Ptr< T > findController (const std::string& name) const
-        {
-            rwlibs::simulation::SimulatedController::Ptr controller = findController (name);
-            if (controller == NULL)
-                return NULL;
-            return controller.cast< T > ();
+        template<class T> rw::core::Ptr<T> findController(const std::string& name) const {
+            rwlibs::simulation::SimulatedController::Ptr controller = findController(name);
+            if(controller == NULL) return NULL;
+            return controller.cast<T>();
         }
 
         /**
          * @brief gets the static contact data information
          */
-        ContactDataMap& getContactData () { return _contactDataMap; }
+        ContactDataMap& getContactData() { return _contactDataMap; }
 
         /**
          * @brief Get the static contact data information.
          * @return a reference to a constant rwsim::dynamics::ContactDataMap.
          */
-        const ContactDataMap& getContactData () const { return _contactDataMap; }
+        const ContactDataMap& getContactData() const { return _contactDataMap; }
 
         /**
          * @brief gets the material data information, like friction
          * properties
          */
-        MaterialDataMap& getMaterialData () { return _matDataMap; }
+        MaterialDataMap& getMaterialData() { return _matDataMap; }
 
         /**
          * @brief Get the material data information, like friction.
          * @return a reference to a constant rwsim::dynamics::ContactDataMap.
          */
-        const MaterialDataMap& getMaterialData () const { return _matDataMap; }
+        const MaterialDataMap& getMaterialData() const { return _matDataMap; }
 
         /**
          * @brief gets the body associated with frame f if any.
          */
-        Body::Ptr getBody (rw::core::Ptr< rw::kinematics::Frame > f);
+        Body::Ptr getBody(rw::core::Ptr<rw::kinematics::Frame> f);
 
         /**
          * @brief gets the default kinematic workcell
          */
-        rw::models::WorkCell::Ptr getWorkcell () const { return _workcell; };
+        rw::models::WorkCell::Ptr getWorkcell() const { return _workcell; };
 
         /**
          * @brief gets the default kinematic workcell
          */
-        rw::models::WorkCell::Ptr getWorkCell () const { return _workcell; };
+        rw::models::WorkCell::Ptr getWorkCell() const { return _workcell; };
 
         /**
          * @brief the collision margin describe how close
          */
-        double getCollisionMargin () { return _collisionMargin; }
+        double getCollisionMargin() { return _collisionMargin; }
 
         /**
          * @brief Set the collision margin.
          * @param margin [in] the new margin.
          */
-        void setCollisionMargin (double margin) { _collisionMargin = margin; }
+        void setCollisionMargin(double margin) { _collisionMargin = margin; }
 
         /**
          * @brief Get dimensions of workspace.
          * @return the dimensions.
          */
-        WorkCellDimension getWorldDimension () { return _worldDimension; }
+        WorkCellDimension getWorldDimension() { return _worldDimension; }
 
         /**
          * @brief tests if a body is part of a device
          * @param body [in] the body to test for.
          * @return true if body is part of the device.
          */
-        bool inDevice (rw::core::Ptr< const Body > body) const;
+        bool inDevice(rw::core::Ptr<const Body> body) const;
 
         /**
          * @brief Set the gravity in this dynamic workcell
          * @return gravity
          */
-        void setGravity (const rw::math::Vector3D<>& grav)
-        {
+        void setGravity(const rw::math::Vector3D<>& grav) {
             _gravity = grav;
-            _changedEvent.fire (GravityChangedEvent, boost::any (grav));
+            _changedEvent.fire(GravityChangedEvent, boost::any(grav));
         }
 
         /**
          * @brief get the gravity in this dynamic workcell
          * @return gravity
          */
-        const rw::math::Vector3D<>& getGravity () const { return _gravity; }
+        const rw::math::Vector3D<>& getGravity() const { return _gravity; }
 
         /**
          * @brief get the settings and properties for the physics engine
          * @return propertymap
          */
-        rw::core::PropertyMap& getEngineSettings () { return _engineSettings; }
+        rw::core::PropertyMap& getEngineSettings() { return _engineSettings; }
 
         /**
          * @brief Get the settings and properties for the physics engine.
          * @return a reference to a constant PropertyMap.
          */
-        const rw::core::PropertyMap& getEngineSettings () const { return _engineSettings; }
+        const rw::core::PropertyMap& getEngineSettings() const { return _engineSettings; }
+
+        /**
+         * @brief Remove a body from the list of bodies
+         * @param body [in] the body to be removed
+         * @return True if body was removed otherwise false
+         */
+        bool remove(Body::Ptr body);
 
         //! @brief Types of events a DynamicWorkCell can emit.
         typedef enum {
@@ -391,15 +383,15 @@ namespace rwsim { namespace dynamics {
         } DWCEventType;
 
         //! @brief Type for an event listener.
-        typedef boost::function< void (DWCEventType, boost::any) > DWCChangedListener;
+        typedef boost::function<void(DWCEventType, boost::any)> DWCChangedListener;
         //! @brief Type for the event.
-        typedef rw::core::Event< DWCChangedListener, DWCEventType, boost::any > DWCChangedEvent;
+        typedef rw::core::Event<DWCChangedListener, DWCEventType, boost::any> DWCChangedEvent;
 
         /**
          * @brief Returns StateChangeEvent needed for subscribing and firing the event.
          * @return Reference to the StateChangedEvent
          */
-        DWCChangedEvent& changedEvent () { return _changedEvent; }
+        DWCChangedEvent& changedEvent() { return _changedEvent; }
 
       private:
         DWCChangedEvent _changedEvent;
@@ -421,7 +413,7 @@ namespace rwsim { namespace dynamics {
         SensorList _sensors;
 
         // deprecated
-        std::map< rw::kinematics::Frame*, Body::Ptr > _frameToBody;
+        std::map<rw::kinematics::Frame*, Body::Ptr> _frameToBody;
 
         MaterialDataMap _matDataMap;
         ContactDataMap _contactDataMap;
