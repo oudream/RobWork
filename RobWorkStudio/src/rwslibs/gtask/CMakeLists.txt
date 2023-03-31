@@ -54,7 +54,7 @@ if(build)
         ${SUBSYS_NAME}
         ${SUBSYS_DEPS}
         PUBLIC ${QT_LIBRARIES}
-        PRIVATE ${OPENGL_LIBRARIES}
+        PRIVATE OpenGL::GL OpenGL::GLU
     )
     target_include_directories(
         ${SUBSYS_NAME}

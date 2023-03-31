@@ -43,7 +43,7 @@ set(RWSMAIN_TEST_SRC
   test-main.cpp
 )
 add_library( sdurws-gtest-main STATIC ${RWSMAIN_TEST_SRC})
-target_link_libraries( sdurws-gtest-main PUBLIC ${RW_BUILD_WITH_LIBRARIES_GTEST} RW::sdurw_core)
+target_link_libraries( sdurws-gtest-main PUBLIC RW::gtest RW::gtest_main RW::sdurw_core)
 
 ########################################################################
 # RWS
@@ -76,14 +76,14 @@ SET(SENSOR_TEST_LIBRARIES
     RW::sdurw_simulation
     RW::sdurw
 )
-
-
 SET(SENSOR_TEST_SRC
   rws/SimulatedSensorTest.cpp
 )
+
 add_executable( sdurws_sensor-gtest ${SENSOR_TEST_SRC})
 target_link_libraries( sdurws_sensor-gtest PRIVATE ${SENSOR_TEST_LIBRARIES})
 ADD_RWS_GTEST(sdurws_sensor-gtest)
+
 
 ########################################################################
 # Target for generation of all detailed reports

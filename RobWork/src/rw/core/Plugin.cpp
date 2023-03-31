@@ -142,8 +142,10 @@ rw::core::Ptr< Plugin > Plugin::loadDirect (const std::string& filename)
         else if (GetLastError () == 126 ){
             RW_THROW ("Error 126: Error loading dependent dll");
         }
-        else {
-            RW_THROW ("Unknown Error: Could not open library");
+        else if (boost::filesystem::exists(filename) ){
+            RW_THROW ("Unknown Error: Library exists but, could not opened. Library: " << filename);
+        }else{
+            RW_THROW(" Could not open library: " << filename );
         }
     }
 

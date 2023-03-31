@@ -1,0 +1,6 @@
+
+
+get_filename_component(MOD_ROOT ${CMAKE_CURRENT_LIST_FILE} PATH)
+set(FIND_VERSION_MAJOR 6)
+include("${MOD_ROOT}/../Find_QT_DIR.cmake")
+FIND_QT_PACKAGE(Qt6 COMPONENTS ${Qt6_FIND_COMPONENTS})

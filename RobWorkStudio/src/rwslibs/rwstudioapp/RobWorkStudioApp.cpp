@@ -194,6 +194,19 @@ std::vector< std::string > split (std::string str, std::string token)
     return result;
 }
 
+std::string trim(const std::string& str,
+                 const std::string& whitespace = " \t")
+{
+    const auto strBegin = str.find_first_not_of(whitespace);
+    if (strBegin == std::string::npos)
+        return ""; // no content
+
+    const auto strEnd = str.find_last_not_of(whitespace);
+    const auto strRange = strEnd - strBegin + 1;
+
+    return str.substr(strBegin, strRange);
+}
+
 void loadPluginFolder (RobWorkStudio* rws, const std::string& folder,
                        const std::vector< std::string >& excludeList)
 {
@@ -203,7 +216,9 @@ void loadPluginFolder (RobWorkStudio* rws, const std::string& folder,
              i != boost::filesystem::directory_iterator ();
              i++) {
             std::string plPath = std::string (folder) + "/" + i->path ().filename ().string ();
-
+            if (boost::filesystem::is_directory(plPath)) {
+                continue;
+            }
             bool exclude = false;
             for (const std::string& expl : excludeList) {
                 if (plPath == expl || i->path ().filename ().string () == expl) {
@@ -225,7 +240,16 @@ int RobWorkStudioApp::run ()
     initReasource ();
 
     char* argv[30];
-    std::vector< std::string > args = boost::program_options::split_unix (_args);
+    _args = trim(_args);
+
+    std::vector< std::string > args;
+    try {
+        args = boost::program_options::split_unix(_args);
+    }
+    catch (...) {
+        std::cout << "Somthing went wrong while loading the Arguments, trying a simplified method" << std::endl;
+        args = split(_args, " ");
+    }
 
     if (args.size () == 0) {
         args.push_back ("RobWorkStudio");
@@ -246,9 +270,11 @@ int RobWorkStudioApp::run ()
 
     ProgramOptions poptions ("RobWorkStudio", RW_VERSION);
 
-    poptions.addStringOption ("ini-file",
-                              std::string (getenv ("HOME")) + "/.RobWorkStudio.ini",
-                              "RobWorkStudio ini-file");
+    if (getenv("HOME") != NULL) {
+        poptions.addStringOption("ini-file",
+            std::string(getenv("HOME")) + "/.RobWorkStudio.ini",
+            "RobWorkStudio ini-file");
+    }
     poptions.addStringOption ("input-file", "", "Project/Workcell/Device input file");
     poptions.addStringOption (
         "rwsplugin", "", "load RobWorkStudio plugin, not to be confused with '--rwplugin'");
@@ -269,7 +295,7 @@ int RobWorkStudioApp::run ()
     RobWork rw;
     if (!boost::filesystem::exists (inifile)) {
         rw.getLog ().infoLog () << "inifile not found at: " << inifile << std::endl;
-        if (boost::filesystem::exists (std::string (getenv ("HOME")) + "/RobWorkStudio.ini")) {
+        if (getenv("HOME") != NULL && boost::filesystem::exists (std::string (getenv ("HOME")) + "/RobWorkStudio.ini")) {
             inifile = std::string (getenv ("HOME")) + "/RobWorkStudio.ini";
         }
         else if (boost::filesystem::exists ("RobWorkStudio.ini")) {
@@ -371,7 +397,10 @@ int RobWorkStudioApp::run ()
                     splash->showMessage ("Loading static plugins");
                 }
 
-                rwstudio.loadSettingsSetupPlugins (inifile);
+                if (boost::filesystem::exists(inifile)) {
+                    rwstudio.loadSettingsSetupPlugins(inifile);
+                }
+
                 // Load all plugins from the rwsplugins folder
                 if (boost::filesystem::exists ("/usr/lib/")) {
                     boost::filesystem::path p ("/usr/lib");

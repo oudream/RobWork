@@ -13,6 +13,9 @@ endif()
 if(POLICY CMP0086) # Introduce cmake 3.14
     cmake_policy(SET CMP0086 NEW)
 endif()
+if(POLICY CMP0135)
+    cmake_policy(SET CMP0135 NEW)
+endif()
 
 if(NOT DEFINED RWP_ROOT)
 include("cmake/HunterGate.cmake")
@@ -140,14 +143,14 @@ if(RW_HAVE_GTEST)
         "add_library(gtest INTERFACE)
         add_library(RW::gtest ALIAS gtest)
         set_target_properties(gtest PROPERTIES
-            INTERFACE_INCLUDE_DIRECTORIES ${GTEST_NATIVE_ROOT}/include
+            INTERFACE_INCLUDE_DIRECTORIES ${GTEST_INCLUDE_DIRS}
             INTERFACE_LINK_LIBRARIES ${GTEST_LIBRARY}
         )
 
         add_library(gtest_main INTERFACE)
-        add_library(RW::gtest_main ALIAS gtest)
+        add_library(RW::gtest_main ALIAS gtest_main)
         set_target_properties(gtest_main PROPERTIES
-            INTERFACE_INCLUDE_DIRECTORIES ${GTEST_NATIVE_ROOT}/include
+            INTERFACE_INCLUDE_DIRECTORIES ${GTEST_INCLUDE_DIRS}
             INTERFACE_LINK_LIBRARIES ${GTEST_MAIN_LIBRARY}
         )
         ")

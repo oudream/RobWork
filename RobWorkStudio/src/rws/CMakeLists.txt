@@ -135,7 +135,7 @@ if(build)
                ${QT_LIBRARIES}
                ${QTGL_LIBRARIES}
                ${SUBSYS_DEPS}
-        PUBLIC ${OPENGL_LIBRARIES}
+        PUBLIC OpenGL::GL OpenGL::GLU
         PRIVATE ${GLUT_glut_LIBRARY} ${PYTHON_LIBRARIES}
     )
 
