@@ -20,9 +20,9 @@
 #if !defined(SWIG)
 #include "RobWorkStudio.hpp"
 
+#include <rw/core/Ptr.hpp>
 #include <rw/core/macros.hpp>
 #include <rw/core/os.hpp>
-#include <rw/core/Ptr.hpp>
 
 #include <thread>
 #endif
@@ -30,10 +30,10 @@
 #define RWS_START(rwsapp)                                \
     rws::RobWorkStudioApp& rws_macro_interface = rwsapp; \
     std::thread rws_macro_thread([&] { while(!rwsapp.isRunning ()){ rw::common::TimerUtil::sleepMs (1);}
-#define RWS_END(end)            \
-    });                         \
-    rws_macro_thread.detach (); \
-    rws_macro_interface.run ();
+#define RWS_END(end)           \
+    });                        \
+    rws_macro_thread.detach(); \
+    rws_macro_interface.run();
 
 namespace rws {
 
@@ -49,38 +49,51 @@ namespace rws {
 class RobWorkStudioApp
 {
   public:
+#if defined(SWIGPYTHON)
     /**
      * @brief constructor
      * @param args [in] command line arguments for RobWorkStudio
      */
-    RobWorkStudioApp (const std::string& args);
+    RobWorkStudioApp(const std::string& args = "") :
+        _rwstudio(NULL), _args(args), _thread(NULL), _isRunning(false), _fromPython(true) {}
+#else
+    /**
+     * @brief constructor
+     * @param args [in] command line arguments for RobWorkStudio
+     */
+    RobWorkStudioApp(const std::string& args = "") :
+        _rwstudio(NULL), _args(args), _thread(NULL), _isRunning(false), _fromPython(false) {}
+
+#endif
 
     //! destructor
-    virtual ~RobWorkStudioApp ();
+    virtual ~RobWorkStudioApp();
 
     /**
      * @brief start RobWorkStudio in its own thread, the function is blocking until rws is up and
      * running
      */
-    void start ();
+    void start();
 
     /**
      * @brief start RobWorkStudio in this thread. Notice this method call will
      * block until RobWorkStudio is exited.
      * @return zero if exited normally.
      */
-    int run ();
+    int run();
 
     /**
      * @brief check if RobwWrkStudio is running
      * @return true if running false otherwise
      */
-    bool isRunning () { return _isRunning; }
+    bool isRunning() {
+        return _isRunning;
+    }
 
     /**
      * @brief Close RobWorkStudio. Blocking until rws is closed. This might take awaile.
      */
-    void close ();
+    void close();
 
     /**
      * @brief get handle to the running RobWorkStudio instance.
@@ -89,18 +102,24 @@ class RobWorkStudioApp
      * RobWorkStudio interface.
      * @return handle to RobWorkStudio
      */
-#if  defined(RWS_USE_PTR) || defined(RW_WIN32)
-    rw::core::Ptr< RobWorkStudio >& getRobWorkStudio () { return _rwstudio; };
+#if defined(RWS_USE_PTR) || defined(RW_WIN32)
+    rw::core::Ptr<RobWorkStudio>& getRobWorkStudio() {
+        return _rwstudio;
+    };
 #else
-    DEPRECATED ("In the feuture this will return RobWorkStudio::Ptr instead of RobWorkStudio*. use #define RWS_USE_PTR before including this file to enable the new behavior");
-    RobWorkStudio* getRobWorkStudio () { return _rwstudio.get (); };
-#endif 
+    DEPRECATED("In the feuture this will return RobWorkStudio::Ptr instead of RobWorkStudio*. use "
+               "#define RWS_USE_PTR before including this file to enable the new behavior");
+    RobWorkStudio* getRobWorkStudio() {
+        return _rwstudio.get();
+    };
+#endif
 
   private:
-    rw::core::Ptr< RobWorkStudio > _rwstudio;
+    rw::core::Ptr<RobWorkStudio> _rwstudio;
     std::string _args;
     std::thread* _thread;
     bool _isRunning;
+    bool _fromPython;
 };
 }    // namespace rws
 

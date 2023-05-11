@@ -28,8 +28,8 @@
 #include <rw/core/RobWork.hpp>
 
 #include <QApplication>
-#include <QCoreApplication>
 #include <QCloseEvent>
+#include <QCoreApplication>
 #include <QMessageBox>
 #include <QSplashScreen>
 #ifdef RWS_USE_STATIC_LINK_PLUGINS
@@ -88,29 +88,24 @@ namespace {
 class MyQApplication : public QApplication
 {
   public:
-    MyQApplication (int& argc, char** argv) : QApplication (argc, argv), devMode (false) {}
+    MyQApplication(int& argc, char** argv) : QApplication(argc, argv), devMode(false) {}
 
-    virtual ~MyQApplication() {
-        closeAllWindows();
-    }
+    virtual ~MyQApplication() { closeAllWindows(); }
 
-    bool notify (QObject* rec, QEvent* ev)
-    {
-        if (!devMode) {
+    bool notify(QObject* rec, QEvent* ev) {
+        if(!devMode) {
             try {
-                return QApplication::notify (rec, ev);
+                return QApplication::notify(rec, ev);
             }
-            catch (std::exception& e) {
-                QMessageBox::warning (0, tr ("An error occurred"), e.what ());
+            catch(std::exception& e) {
+                QMessageBox::warning(0, tr("An error occurred"), e.what());
             }
-            catch (...) {
-                QMessageBox::warning (
-                    0, tr ("An unexpected error occurred"), tr ("This is likely a bug."));
+            catch(...) {
+                QMessageBox::warning(
+                    0, tr("An unexpected error occurred"), tr("This is likely a bug."));
             }
         }
-        else {
-            return QApplication::notify (rec, ev);
-        }
+        else { return QApplication::notify(rec, ev); }
         return false;
     }
 
@@ -118,223 +113,164 @@ class MyQApplication : public QApplication
 };
 }    // namespace
 
-RobWorkStudioApp::RobWorkStudioApp (const std::string& args) :
-    _rwstudio (NULL), _args (args), _thread (NULL), _isRunning (false)
-{}
-
-RobWorkStudioApp::~RobWorkStudioApp ()
-{
+RobWorkStudioApp::~RobWorkStudioApp() {
     close();
 }
 
-void RobWorkStudioApp::start ()
-{
+void RobWorkStudioApp::start() {
     close();
-    _thread = new std::thread (std::bind (&RobWorkStudioApp::run, this));
-    while (!this->isRunning ()) {
-        rw::common::TimerUtil::sleepMs (1);
-    }
+    _thread = new std::thread(std::bind(&RobWorkStudioApp::run, this));
+    while(!this->isRunning()) { rw::common::TimerUtil::sleepMs(1); }
 }
 
-void RobWorkStudioApp::close ()
-{
-    if (isRunning ()) {
-        _rwstudio->postExit ();
-        while (isRunning ()) {
-            rw::common::TimerUtil::sleepMs (1);
-        }
+void RobWorkStudioApp::close() {
+    if(isRunning()) {
+        _rwstudio->postExit();
+        while(isRunning()) { rw::common::TimerUtil::sleepMs(1); }
 
         // Make Sure All Widgets are closed to avoid segfault
-        QWidgetList all_w = QApplication::allWidgets ();
-        long ctime        = rw::common::TimerUtil::currentTimeMs ();
-        while (all_w.count () > 0 && rw::common::TimerUtil::currentTimeMs () - ctime < 300) {
-            rw::common::TimerUtil::sleepMs (1);
-            all_w = QApplication::allWidgets ();
+        QWidgetList all_w = QApplication::allWidgets();
+        long ctime        = rw::common::TimerUtil::currentTimeMs();
+        while(all_w.count() > 0 && rw::common::TimerUtil::currentTimeMs() - ctime < 300) {
+            rw::common::TimerUtil::sleepMs(1);
+            all_w = QApplication::allWidgets();
         }
-        rw::common::TimerUtil::sleepMs (1000);    // Final timing to let the rest of QT close down
+        rw::common::TimerUtil::sleepMs(1000);    // Final timing to let the rest of QT close down
     }
 
-    if (_thread) {
-        _thread->join ();
+    if(_thread) {
+        _thread->join();
         delete _thread;
         _thread = NULL;
     }
     _rwstudio = NULL;
 }
 
-void initReasource ()
-{
-    Q_INIT_RESOURCE (rwstudio_resources);
+void initReasource() {
+    Q_INIT_RESOURCE(rwstudio_resources);
 }
 
 namespace {
-std::vector< std::string > split (std::string str, std::string token)
-{
-    std::vector< std::string > result;
-    size_t index = str.find (token);
-    if (index != std::string::npos) {
-        while (str.size ()) {
-            size_t index = str.find (token);
-            if (index != std::string::npos) {
-                result.push_back (str.substr (0, index));
-                str = str.substr (index + token.size ());
-                if (str.size () == 0)
-
-                    result.push_back (str);
+std::vector<std::string> split(std::string str, std::string token) {
+    std::vector<std::string> result;
+    size_t index = str.find(token);
+    if(index != std::string::npos) {
+        while(str.size()) {
+            size_t index = str.find(token);
+            if(index != std::string::npos) {
+                result.push_back(str.substr(0, index));
+                str = str.substr(index + token.size());
+                if(str.size() == 0) result.push_back(str);
             }
             else {
-                result.push_back (str);
+                result.push_back(str);
                 str = "";
             }
         }
     }
-    else {
-        result.push_back (str);
-    }
+    else { result.push_back(str); }
     return result;
 }
 
-std::string trim(const std::string& str,
-                 const std::string& whitespace = " \t")
-{
-    const auto strBegin = str.find_first_not_of(whitespace);
-    if (strBegin == std::string::npos)
-        return ""; // no content
+void loadPluginFolder(RobWorkStudio* rws, const std::string& folder,
+                      const std::vector<std::string>& excludeList) {
+    if(boost::filesystem::exists(folder)) {
+        boost::filesystem::path p2(folder);
+        for(boost::filesystem::directory_iterator i(p2);
+            i != boost::filesystem::directory_iterator();
+            i++) {
+            std::string plPath = std::string(folder) + "/" + i->path().filename().string();
 
-    const auto strEnd = str.find_last_not_of(whitespace);
-    const auto strRange = strEnd - strBegin + 1;
-
-    return str.substr(strBegin, strRange);
-}
-
-void loadPluginFolder (RobWorkStudio* rws, const std::string& folder,
-                       const std::vector< std::string >& excludeList)
-{
-    if (boost::filesystem::exists (folder)) {
-        boost::filesystem::path p2 (folder);
-        for (boost::filesystem::directory_iterator i (p2);
-             i != boost::filesystem::directory_iterator ();
-             i++) {
-            std::string plPath = std::string (folder) + "/" + i->path ().filename ().string ();
-            if (boost::filesystem::is_directory(plPath)) {
-                continue;
-            }
             bool exclude = false;
-            for (const std::string& expl : excludeList) {
-                if (plPath == expl || i->path ().filename ().string () == expl) {
+            for(const std::string& expl : excludeList) {
+                if(plPath == expl || i->path().filename().replace_extension("").string() == expl) {
                     exclude = true;
                     break;
                 }
             }
 
-            if (!exclude) {
-                rws->loadPlugin (plPath.c_str (), 0, 1);
-            }
+            if(!exclude) { rws->loadPlugin(plPath.c_str(), 0, 1); }
         }
     }
 }
 }    // namespace
 
-int RobWorkStudioApp::run ()
-{
-    initReasource ();
+int RobWorkStudioApp::run() {
+    initReasource();
 
     char* argv[30];
-    _args = trim(_args);
+    std::vector<std::string> args = boost::program_options::split_unix(_args);
 
-    std::vector< std::string > args;
-    try {
-        args = boost::program_options::split_unix(_args);
-    }
-    catch (...) {
-        std::cout << "Somthing went wrong while loading the Arguments, trying a simplified method" << std::endl;
-        args = split(_args, " ");
-    }
+    if(args.size() == 0) { args.push_back("RobWorkStudio"); }
+    for(size_t i = 0; i < args.size(); i++) { argv[i] = &(args[i][0]); }
 
-    if (args.size () == 0) {
-        args.push_back ("RobWorkStudio");
-    }
-    for (size_t i = 0; i < args.size (); i++) {
-        argv[i] = &(args[i][0]);
-    }
-
-    int argc = (int) args.size ();
+    int argc = (int) args.size();
     // now initialize robwork, such that plugins and stuff might work
 
-    if (argc == 0) {
-        RobWork::init ();
-    }
-    else {
-        RobWork::init (argc, argv);
-    }
+    if(argc == 0) { RobWork::init(); }
+    else { RobWork::init(argc, argv); }
 
-    ProgramOptions poptions ("RobWorkStudio", RW_VERSION);
+    ProgramOptions poptions("RobWorkStudio", RW_VERSION);
 
-    if (getenv("HOME") != NULL) {
-        poptions.addStringOption("ini-file",
-            std::string(getenv("HOME")) + "/.RobWorkStudio.ini",
-            "RobWorkStudio ini-file");
-    }
-    poptions.addStringOption ("input-file", "", "Project/Workcell/Device input file");
-    poptions.addStringOption (
+    poptions.addStringOption(
+        "ini-file", std::string(getenv("HOME")) + "/.RobWorkStudio.ini", "RobWorkStudio ini-file");
+    poptions.addStringOption("input-file", "", "Project/Workcell/Device input file");
+    poptions.addStringOption(
         "rwsplugin", "", "load RobWorkStudio plugin, not to be confused with '--rwplugin'");
-    poptions.addStringOption ("nosplash", "", "If defined the splash screen will not be shown");
-    poptions.addStringOption ("exclude-plugins", "", "list of plugins not to load seperated by ,");
-    poptions.addBoolOption (
+    poptions.addStringOption("nosplash", "", "If defined the splash screen will not be shown");
+    poptions.addStringOption("exclude-plugins", "", "list of plugins not to load seperated by ,");
+    poptions.addBoolOption(
         "developer", false, "use developer mode. This lets exceptions be caught by a debugger");
-    poptions.setPositionalOption ("input-file", -1);
+    poptions.setPositionalOption("input-file", -1);
 
-    poptions.initOptions ();
+    poptions.initOptions();
 
-    poptions.parse (argc, argv);
+    poptions.parse(argc, argv);
 
-    PropertyMap map = poptions.getPropertyMap ();
+    PropertyMap map = poptions.getPropertyMap();
 
     bool showSplash     = false;    //! map.has("nosplash");
-    std::string inifile = map.get< std::string > ("ini-file", "");
+    std::string inifile = map.get<std::string>("ini-file", "");
     RobWork rw;
-    if (!boost::filesystem::exists (inifile)) {
-        rw.getLog ().infoLog () << "inifile not found at: " << inifile << std::endl;
-        if (getenv("HOME") != NULL && boost::filesystem::exists (std::string (getenv ("HOME")) + "/RobWorkStudio.ini")) {
-            inifile = std::string (getenv ("HOME")) + "/RobWorkStudio.ini";
+    if(!boost::filesystem::exists(inifile)) {
+        rw.getLog().infoLog() << "inifile not found at: " << inifile << std::endl;
+        if(boost::filesystem::exists(std::string(getenv("HOME")) + "/RobWorkStudio.ini")) {
+            inifile = std::string(getenv("HOME")) + "/RobWorkStudio.ini";
         }
-        else if (boost::filesystem::exists ("RobWorkStudio.ini")) {
-            inifile = "RobWorkStudio.ini";
-        }
-        if (boost::filesystem::exists (inifile)) {
-            rw.getLog ().infoLog () << "using inifile: " << inifile << std::endl;
+        else if(boost::filesystem::exists("RobWorkStudio.ini")) { inifile = "RobWorkStudio.ini"; }
+        if(boost::filesystem::exists(inifile)) {
+            rw.getLog().infoLog() << "using inifile: " << inifile << std::endl;
         }
     }
 
-    std::string inputfile = map.get< std::string > ("input-file", "");
+    std::string inputfile = map.get<std::string>("input-file", "");
 
-    std::string rwsplugin = map.get< std::string > ("rwsplugin", "");
-    std::vector< std::string > excludePl =
-        split (map.get< std::string > ("exclude-plugins", ""), ",");
+    std::string rwsplugin              = map.get<std::string>("rwsplugin", "");
+    std::vector<std::string> excludePl = split(map.get<std::string>("exclude-plugins", ""), ",");
+    if(_fromPython) { excludePl.push_back("libsdurws_pythoneditor"); }
 
     {
-        MyQApplication app (argc, argv);
-        app.devMode = map.get< bool > ("developer");
+        MyQApplication app(argc, argv);
+        app.devMode = map.get<bool>("developer");
 #ifdef RWS_HAVE_GLUT
-        glutInit (&argc, argv);
+        glutInit(&argc, argv);
 #endif
 
-        std::function< void (void) > AppRunner = [&] () {
+        std::function<void(void)> AppRunner = [&]() {
             QSplashScreen* splash = NULL;
-            if (showSplash) {
-                QPixmap pixmap (":/images/splash.jpg");
-                splash = new QSplashScreen (pixmap);
-                splash->show ();
+            if(showSplash) {
+                QPixmap pixmap(":/images/splash.jpg");
+                splash = new QSplashScreen(pixmap);
+                splash->show();
                 // Loading some items
-                splash->showMessage ("Adding static plugins");
+                splash->showMessage("Adding static plugins");
             }
 
-            app.processEvents ();
+            app.processEvents();
 
             // Establishing connections
 
-            if (showSplash)
-                splash->showMessage ("Loading static plugins");
+            if(showSplash) splash->showMessage("Loading static plugins");
 
             std::string pluginFolder = "./plugins/";
             {
@@ -345,138 +281,123 @@ int RobWorkStudioApp::run ()
 #ifdef RWS_USE_STATIC_LINK_PLUGINS
 #ifdef RWS_HAVE_PLUGIN_LOG
 
-                rwstudio.addPlugin (new rws::ShowLog (), false, Qt::BottomDockWidgetArea);
+                rwstudio.addPlugin(new rws::ShowLog(), false, Qt::BottomDockWidgetArea);
 #endif
 #ifdef RWS_HAVE_PLUGIN_JOG
 
-                rwstudio.addPlugin (new rws::Jog (), false, Qt::LeftDockWidgetArea);
+                rwstudio.addPlugin(new rws::Jog(), false, Qt::LeftDockWidgetArea);
 #endif
 #ifdef RWS_HAVE_PLUGIN_TREEVIEW
 
-                rwstudio.addPlugin (new rws::TreeView (), false, Qt::LeftDockWidgetArea);
+                rwstudio.addPlugin(new rws::TreeView(), false, Qt::LeftDockWidgetArea);
 #endif
 #ifdef RWS_HAVE_PLUGIN_PLAYBACK
 
-                rwstudio.addPlugin (new rws::PlayBack (), false, Qt::BottomDockWidgetArea);
+                rwstudio.addPlugin(new rws::PlayBack(), false, Qt::BottomDockWidgetArea);
 #endif
 #ifdef RWS_HAVE_PLUGIN_PROPERTYVIEW
 
-                rwstudio.addPlugin (new rws::PropertyView (), false, Qt::LeftDockWidgetArea);
+                rwstudio.addPlugin(new rws::PropertyView(), false, Qt::LeftDockWidgetArea);
 #endif
 #ifdef RWS_HAVE_PLUGIN_PLANNING
 
-                rwstudio.addPlugin (new rws::Planning (), false, Qt::LeftDockWidgetArea);
+                rwstudio.addPlugin(new rws::Planning(), false, Qt::LeftDockWidgetArea);
 #endif
 #ifdef RWS_HAVE_PLUGIN_SENSORS
 
-                rwstudio.addPlugin (new rws::Sensors (), false, Qt::RightDockWidgetArea);
+                rwstudio.addPlugin(new rws::Sensors(), false, Qt::RightDockWidgetArea);
 #endif
 #ifdef RWS_HAVE_PLUGIN_WORKCELLEDITOR
 
-                rwstudio.addPlugin (
-                    new rws::WorkcellEditorPlugin (), false, Qt::LeftDockWidgetArea);
+                rwstudio.addPlugin(new rws::WorkcellEditorPlugin(), false, Qt::LeftDockWidgetArea);
 #endif
 #ifdef RW_HAVE_EIGEN
 
-                rwstudio.addPlugin (new rws::Calibration (), false, Qt::RightDockWidgetArea);
+                rwstudio.addPlugin(new rws::Calibration(), false, Qt::RightDockWidgetArea);
 #endif
 
 #if RWS_HAVE_PLUGIN_LUAPL
 
-                rwstudio.addPlugin (new rws::Lua (), false, Qt::LeftDockWidgetArea);
+                rwstudio.addPlugin(new rws::Lua(), false, Qt::LeftDockWidgetArea);
 #endif
 #if RWS_HAVE_PLUGIN_PYTHONEDITOR
-                rwstudio.addPlugin (new rws::PyEditor (), false, Qt::LeftDockWidgetArea);
+                if(!_fromPython) {
+                    rwstudio.addPlugin(new rws::PyEditor(), false, Qt::LeftDockWidgetArea);
+                }
 #endif
 #endif
 
                 // Load all plugins from the local rwsplugins folder
-                loadPluginFolder (&rwstudio, RWS_COMPILE_PLUGIN_DIR, excludePl);
+                loadPluginFolder(&rwstudio, RWS_COMPILE_PLUGIN_DIR, excludePl);
 
-                if (showSplash) {
-                    splash->showMessage ("Loading static plugins");
-                }
+                if(showSplash) { splash->showMessage("Loading static plugins"); }
 
-                if (boost::filesystem::exists(inifile)) {
-                    rwstudio.loadSettingsSetupPlugins(inifile);
-                }
-
+                rwstudio.loadSettingsSetupPlugins(inifile);
                 // Load all plugins from the rwsplugins folder
-                if (boost::filesystem::exists ("/usr/lib/")) {
-                    boost::filesystem::path p ("/usr/lib");
+                if(boost::filesystem::exists("/usr/lib/")) {
+                    boost::filesystem::path p("/usr/lib");
                     // Find the architecture dependendt folder containing the
                     // rwsplugins folder
                     std::string rwspluginFolder = "";
-                    for (boost::filesystem::directory_iterator i (p);
-                         i != boost::filesystem::directory_iterator ();
-                         i++) {
-                        if (boost::filesystem::is_directory (i->path ())) {
+                    for(boost::filesystem::directory_iterator i(p);
+                        i != boost::filesystem::directory_iterator();
+                        i++) {
+                        if(boost::filesystem::is_directory(i->path())) {
                             rwspluginFolder = "/usr/lib/";
-                            rwspluginFolder += i->path ().filename ().string ();
+                            rwspluginFolder += i->path().filename().string();
                             rwspluginFolder += "/RobWork/rwsplugins";
-                            if (boost::filesystem::exists (rwspluginFolder)) {
-                                break;
-                            }
-                            else {
-                                rwspluginFolder = "";
-                            }
+                            if(boost::filesystem::exists(rwspluginFolder)) { break; }
+                            else { rwspluginFolder = ""; }
                         }
                     }
                     // Load all plugins from the rwsplugins folder
-                    loadPluginFolder (&rwstudio, rwspluginFolder, excludePl);
+                    loadPluginFolder(&rwstudio, rwspluginFolder, excludePl);
                 }
-                if (inputfile.empty ()) {
-                    std::string workcellFile = rwstudio.loadSettingsWorkcell (inifile);
-                    if (showSplash) {
-                        splash->showMessage ("Opening workcell...");
-                    }
-                    rwstudio.openFile (workcellFile);
+                if(inputfile.empty()) {
+                    std::string workcellFile = rwstudio.loadSettingsWorkcell(inifile);
+                    if(showSplash) { splash->showMessage("Opening workcell..."); }
+                    rwstudio.openFile(workcellFile);
                 }
 
-                if (!inputfile.empty ()) {
-                    if (showSplash)
-                        splash->showMessage ("Opening workcell...");
-                    rwstudio.openFile (inputfile);
+                if(!inputfile.empty()) {
+                    if(showSplash) splash->showMessage("Opening workcell...");
+                    rwstudio.openFile(inputfile);
                 }
 
-                if (!rwsplugin.empty ()) {
-                    rwstudio.loadPlugin (rwsplugin);
-                }
+                if(!rwsplugin.empty()) { rwstudio.loadPlugin(rwsplugin); }
 
                 // load configuration into RobWorkStudio
-                if (showSplash) {
-                    splash->showMessage ("Loading settings");
-                    splash->finish (&rwstudio);
+                if(showSplash) {
+                    splash->showMessage("Loading settings");
+                    splash->finish(&rwstudio);
                 }
 
                 _rwstudio = &rwstudio;
-                rwstudio.show ();
+                rwstudio.show();
                 _isRunning = true;
 
-                app.exec ();
-                _rwstudio  = NULL;
+                app.exec();
+                _rwstudio = NULL;
             }
         };
-        if (app.devMode) {
-            AppRunner ();
-        }
+        if(app.devMode) { AppRunner(); }
         else {
             try {
-                AppRunner ();
+                AppRunner();
             }
-            catch (const Exception& e) {
-                std::cout << e.what () << std::endl;
-                QMessageBox::critical (NULL, "RW Exception", e.what ());
+            catch(const Exception& e) {
+                std::cout << e.what() << std::endl;
+                QMessageBox::critical(NULL, "RW Exception", e.what());
                 _isRunning = false;
                 return -1;
             }
-            catch (std::exception& e) {
-                std::cout << e.what () << std::endl;
-                QMessageBox::critical (NULL, "Exception", e.what ());
+            catch(std::exception& e) {
+                std::cout << e.what() << std::endl;
+                QMessageBox::critical(NULL, "Exception", e.what());
                 _isRunning = false;
                 return -1;
             }
-            catch (int) {
+            catch(int) {
             }
         }
     }

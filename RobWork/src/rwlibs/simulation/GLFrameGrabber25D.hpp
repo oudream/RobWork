@@ -78,7 +78,7 @@ namespace rwlibs { namespace simulation {
          * @return true if initialization succeeded, false otherwise (depends on the capabilities of
          * the SceneViewer).
          */
-        bool init (rw::graphics::SceneViewer::Ptr drawer);
+        bool init (rw::core::Ptr<rw::graphics::SceneViewer> drawer);
 
         /**
          * @brief set the maximum depth that is percieved by this frame grabber.
