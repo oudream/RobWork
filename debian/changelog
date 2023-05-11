@@ -1,3 +1,29 @@
+robwork (2.5.6-3) bionic; urgency=medium
+
+  * Version number updated to 2.5.6-3
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Thu, 17 Nov 2022 10:35:01 +0100
+
+robwork (2.5.6-2) focal; urgency=medium
+
+  * Version number updated to 2.5.6-2
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Thu, 17 Nov 2022 10:32:35 +0100
+
+robwork (2.5.6-1) jammy; urgency=medium
+
+  * added missing hpp files
+  * Version number updated to 2.5.6-1
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Thu, 17 Nov 2022 10:28:13 +0100
+
+robwork (2.5.4-1) jammy; urgency=medium
+
+  * fixed ubuntu python problems for RWS
+  * Version number updated to 2.5.4-1
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Mon, 14 Nov 2022 10:08:27 +0100
+
 robwork (2.5.3-5) bionic; urgency=medium
 
   * Version number updated to 2.5.3-5

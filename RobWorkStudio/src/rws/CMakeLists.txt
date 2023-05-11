@@ -59,6 +59,7 @@ if(build)
         ArcBallController.hpp
         RWSImageLoaderPlugin.hpp
         ImageUtil.hpp
+        CameraController.hpp
         # FixedAxisController.hpp
         RobWorkStudio.hpp
         RWSSpinBox.hpp
@@ -70,6 +71,7 @@ if(build)
         ImageView.hpp
         PlotView.hpp
         PlotSimpleView.hpp
+        SceneViewerWidget.hpp
     )
     set(SRC_FILES_HPP_propertyview propertyview/PropertyViewEditor.hpp
                                    propertyview/PropertyViewDialog.hpp
