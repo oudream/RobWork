@@ -55,12 +55,12 @@ namespace rw { namespace proximity {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< ProximityStrategy > Ptr;
+        typedef rw::core::Ptr<ProximityStrategy> Ptr;
 
         /**
          * @brief Destructor.
          */
-        virtual ~ProximityStrategy ();
+        virtual ~ProximityStrategy();
 
         /**
          * @brief Adds a Proximity model of a frame to this strategy.
@@ -74,7 +74,7 @@ namespace rw { namespace proximity {
          * with the frame; false otherwise.
          */
         // virtual bool addModel(const rw::core::Ptr<kinematics::Frame> frame);
-        virtual bool addModel (rw::core::Ptr< rw::models::Object > object);
+        virtual bool addModel(rw::core::Ptr<rw::models::Object> object);
 
         /**
          * @brief Adds a Proximity model to a frame where the geometry is copied
@@ -87,8 +87,8 @@ namespace rw { namespace proximity {
          * @return true if a Proximity model was succesfully created and linked
          * with the frame; false otherwise.
          */
-        virtual bool addModel (const rw::core::Ptr< rw::kinematics::Frame > frame,
-                               const rw::geometry::Geometry& faces);
+        virtual bool addModel(const rw::core::Ptr<rw::kinematics::Frame> frame,
+                              const rw::geometry::Geometry& faces);
 
         /**
          * @brief Adds a Proximity model to a frame.
@@ -102,9 +102,8 @@ namespace rw { namespace proximity {
          * @return true if a Proximity model was succesfully created and linked
          * with the frame; false otherwise.
          */
-        virtual bool addModel (const rw::core::Ptr< rw::kinematics::Frame > frame,
-                               rw::core::Ptr< rw::geometry::Geometry > faces,
-                               bool forceCopy = false);
+        virtual bool addModel(const rw::core::Ptr<rw::kinematics::Frame> frame,
+                              rw::core::Ptr<rw::geometry::Geometry> faces, bool forceCopy = false);
 
         /**
          * @brief Tells whether the frame has a proximity model in the strategy
@@ -115,17 +114,17 @@ namespace rw { namespace proximity {
          * @param frame [in] the frame to check for1.0/
          * @return true if a model exists or can be created
          */
-        virtual bool hasModel (const rw::core::Ptr< rw::kinematics::Frame > frame);
+        virtual bool hasModel(const rw::core::Ptr<rw::kinematics::Frame> frame);
 
         /**
            @brief Clear (remove all) model information for frame \b frame.
          */
-        virtual void clearFrame (const rw::core::Ptr< rw::kinematics::Frame > frame);
+        virtual void clearFrame(const rw::core::Ptr<rw::kinematics::Frame> frame);
 
         /**
            @brief Clear (remove all) model information for all frames.
          */
-        virtual void clearFrames ();
+        virtual void clearFrames();
 
         //// new functions added to support old interface
 
@@ -134,19 +133,19 @@ namespace rw { namespace proximity {
          * has been associated to frame then NULL is returned.
          * @param frame [in] frame for which an proximitymodel is associated
          */
-        ProximityModel::Ptr getModel (const rw::core::Ptr< rw::kinematics::Frame > frame);
+        ProximityModel::Ptr getModel(const rw::core::Ptr<rw::kinematics::Frame> frame);
 
         //// this is the new interface based on CollisionModelInfo
         /**
          * @brief creates an empty ProximityModel
          */
-        virtual ProximityModel::Ptr createModel () = 0;
+        virtual ProximityModel::Ptr createModel() = 0;
 
         /**
          * @brief deallocates the memory used for \b model
          * @param model
          */
-        virtual void destroyModel (ProximityModel* model) = 0;
+        virtual void destroyModel(ProximityModel* model) = 0;
 
         /**
          * @brief adds geometry to a specific proximity model. The proximity strategy copies all
@@ -154,7 +153,7 @@ namespace rw { namespace proximity {
          * @param model [in] the proximity model to add data to
          * @param geom [in] the geometry that is to be added
          */
-        virtual bool addGeometry (ProximityModel* model, const rw::geometry::Geometry& geom) = 0;
+        virtual bool addGeometry(ProximityModel* model, const rw::geometry::Geometry& geom) = 0;
 
         /**
          * @brief adds geometry to a specific model. Depending on the option \b forceCopy the
@@ -164,14 +163,13 @@ namespace rw { namespace proximity {
          * @param forceCopy
          * @return
          */
-        virtual bool addGeometry (ProximityModel* model,
-                                  rw::core::Ptr< rw::geometry::Geometry > geom,
-                                  bool forceCopy = false) = 0;
+        virtual bool addGeometry(ProximityModel* model, rw::core::Ptr<rw::geometry::Geometry> geom,
+                                 bool forceCopy = false) = 0;
 
         /**
          * @brief removes a geometry from a specific proximity model
          */
-        virtual bool removeGeometry (ProximityModel* model, const std::string& geomId) = 0;
+        virtual bool removeGeometry(ProximityModel* model, const std::string& geomId) = 0;
 
         /**
          * @brief the list of all geometry ids that are associated to
@@ -179,7 +177,7 @@ namespace rw { namespace proximity {
          * @param model [in] the model containing the geometries
          * @return all geometry ids associated to the proximity model
          */
-        virtual std::vector< std::string > getGeometryIDs (ProximityModel* model) = 0;
+        virtual std::vector<std::string> getGeometryIDs(ProximityModel* model) = 0;
 
         /**
          * @brief the list of all geometry that are associated to
@@ -187,21 +185,22 @@ namespace rw { namespace proximity {
          * @param model [in] the model containing the geometries
          * @return all geometry associated to the proximity model
          */
-        virtual std::vector< rw::core::Ptr< rw::geometry::Geometry > >
-        getGeometries (rw::proximity::ProximityModel* model) = 0;
+        virtual std::vector<rw::core::Ptr<rw::geometry::Geometry>>
+        getGeometries(rw::proximity::ProximityModel* model) = 0;
 
-        DEPRECATED ("This function is deprecated due to a spelling mistake, use the correct "
-                    "spelling \"getGeometries\" instead")
-        std::vector< rw::core::Ptr< rw::geometry::Geometry > >
-        getGeometrys (rw::proximity::ProximityModel* model)
-        {
-            return getGeometries (model);
+#ifndef SWIG
+        DEPRECATED("This function is deprecated due to a spelling mistake, use the correct "
+                   "spelling \"getGeometries\" instead")
+        std::vector<rw::core::Ptr<rw::geometry::Geometry>>
+        getGeometrys(rw::proximity::ProximityModel* model) {
+            return getGeometries(model);
         }
+#endif
 
         /**
          * @brief Clears any stored model information
          */
-        virtual void clear () = 0;
+        virtual void clear() = 0;
 
         /**
          * @brief setNumber of threads the strategy may use
@@ -209,7 +208,7 @@ namespace rw { namespace proximity {
          * @note this does not enforce the use of threads in the algorithms but mearly allows for
          * the use.
          */
-        void useThreads (int threads);
+        void useThreads(int threads);
 
         /**
          * @addtogroup extensionpoints
@@ -229,44 +228,44 @@ namespace rw { namespace proximity {
          *  - FCL - rwlibs::proximitystrategies::ProximityStrategyFCL - Flexible Collision Library
          *  - Yaobi - rwlibs::proximitystrategies::ProximityStrategyYaobi - Yaobi
          */
-        class Factory : public rw::core::ExtensionPoint< ProximityStrategy >
+        class Factory : public rw::core::ExtensionPoint<ProximityStrategy>
         {
           public:
             /**
              * @brief Get the available strategies.
              * @return a vector of identifiers for strategies.
              */
-            static std::vector< std::string > getStrategies ();
+            static std::vector<std::string> getStrategies();
 
             /**
              * @brief Check if strategy is available.
              * @param strategy [in] the name of the strategy.
              * @return true if available, false otherwise.
              */
-            static bool hasStrategy (const std::string& strategy);
+            static bool hasStrategy(const std::string& strategy);
 
             /**
              * @brief Create a new strategy.
              * @param strategy [in] the name of the strategy.
              * @return a pointer to a new CollisionStrategy.
              */
-            static ProximityStrategy::Ptr makeStrategy (const std::string& strategy);
+            static ProximityStrategy::Ptr makeStrategy(const std::string& strategy);
 
           private:
-            Factory ();
+            Factory();
         };
 
       private:
-        ProximityStrategy (const ProximityStrategy&);
-        ProximityStrategy& operator= (const ProximityStrategy&);
+        ProximityStrategy(const ProximityStrategy&);
+        ProximityStrategy& operator=(const ProximityStrategy&);
 
-        rw::kinematics::FrameMap< ProximityModel::Ptr > _frameToModel;
+        rw::kinematics::FrameMap<ProximityModel::Ptr> _frameToModel;
 
       protected:
         /**
          * @brief Creates object
          */
-        ProximityStrategy ();
+        ProximityStrategy();
 
         //! @brief the number of threads the strategy may use
         size_t _threads;

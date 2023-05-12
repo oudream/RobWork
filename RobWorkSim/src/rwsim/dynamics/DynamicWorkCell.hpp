@@ -18,6 +18,7 @@
 #ifndef RWSIM_DYNAMICS_DYNAMICWORKCELL_HPP_
 #define RWSIM_DYNAMICS_DYNAMICWORKCELL_HPP_
 
+#ifndef SWIG
 #include "Body.hpp"
 #include "Constraint.hpp"
 #include "ContactDataMap.hpp"
@@ -34,6 +35,7 @@
 #include <boost/any.hpp>
 #include <map>
 #include <vector>
+#endif
 namespace rwsim { namespace dynamics {
     //! @addtogroup rwsim_dynamics
     //! @{
@@ -97,15 +99,14 @@ namespace rwsim { namespace dynamics {
         /**
          * @brief Constructor
          * @param workcell [in] a smart pointer to the rw::models::WorkCell
-         * @param bodies [in] a list of bodies.
          * @param allbodies [in] a list of bodies.
          * @param constraints [in] a list of constraints.
          * @param devices [in] a list of devices.
          * @param controllers [in] a list of controllers.
          */
-        DynamicWorkCell(rw::models::WorkCell::Ptr workcell, const BodyList& bodies,
-                        const BodyList& allbodies, const ConstraintList& constraints,
-                        const DeviceList& devices, const ControllerList& controllers);
+        DynamicWorkCell(rw::models::WorkCell::Ptr workcell, const BodyList& allbodies,
+                        const ConstraintList& constraints, const DeviceList& devices,
+                        const ControllerList& controllers);
 
         /**
          * @brief destructor
@@ -175,12 +176,7 @@ namespace rwsim { namespace dynamics {
          * @brief add a device to the dynamic workcell
          * @param device [in] a device
          */
-        void addDevice(DynamicDevice::Ptr device) {
-            device->registerIn(_workcell->getStateStructure());
-            _devices.push_back(device);
-            _changedEvent.fire(DeviceAddedEvent, boost::any(device));
-        };
-
+        void addDevice(DynamicDevice::Ptr device);
         /**
          * @brief find a dynamic device of name \b name
          * @param name [in] name of device
@@ -340,7 +336,7 @@ namespace rwsim { namespace dynamics {
 
         /**
          * @brief Set the gravity in this dynamic workcell
-         * @return gravity
+         * @param grav [in] the direction and strength of gravity
          */
         void setGravity(const rw::math::Vector3D<>& grav) {
             _gravity = grav;
@@ -398,7 +394,6 @@ namespace rwsim { namespace dynamics {
         // the workcell
         rw::models::WorkCell::Ptr _workcell;
         // length of nr of bodies
-        BodyList _bodies;
         BodyList _allbodies;
         ConstraintList _constraints;
         DeviceList _devices;
@@ -421,6 +416,12 @@ namespace rwsim { namespace dynamics {
         rw::core::PropertyMap _engineSettings;
     };
     //! @}
+
 }}    // namespace rwsim::dynamics
+
+std::ostream& operator<<(std::ostream& os,
+                         const rwsim::dynamics::DynamicWorkCell::ControllerList& list);
+std::ostream& operator<<(std::ostream& os,
+                         const rwsim::dynamics::DynamicWorkCell::DeviceList& list);
 
 #endif /*DYNAMICWORKCELL_HPP_*/

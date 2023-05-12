@@ -75,8 +75,8 @@ std::pair<Q, Q> JointDevice::getBounds() const {
     std::pair<Q, Q> bounds(q, q);
     int i = 0;
     for(std::vector<Joint*>::const_iterator p = _joints.begin(); p != _joints.end(); ++p) {
-        const std::pair<Q, Q> pair = (*p)->getBounds();
-        if((*p)->getDOF()) {
+        if((*p)->getDOF() > 0) {
+            const std::pair<Q, Q> pair = (*p)->getBounds();
             bounds.first.setSubPart(i, pair.first);
             bounds.second.setSubPart(i, pair.second);
             i += (*p)->getDOF();
