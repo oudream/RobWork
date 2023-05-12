@@ -35,13 +35,13 @@ DynamicWorkCell::DynamicWorkCell(WorkCell::Ptr workcell) :
     _workcell(workcell), _collisionMargin(0.001),
     _worldDimension(Vector3D<>(0, 0, 0), Vector3D<>(20, 20, 20)), _gravity(0, 0, -9.82) {}
 
-DynamicWorkCell::DynamicWorkCell(WorkCell::Ptr workcell, const DynamicWorkCell::BodyList& bodies,
+DynamicWorkCell::DynamicWorkCell(WorkCell::Ptr workcell,
                                  const DynamicWorkCell::BodyList& allbodies,
                                  const ConstraintList& constraints,
                                  const DynamicWorkCell::DeviceList& devices,
                                  const ControllerList& controllers) :
     _workcell(workcell),
-    _bodies(bodies), _allbodies(allbodies), _constraints(constraints), _devices(devices),
+    _allbodies(allbodies), _constraints(constraints), _devices(devices),
     _controllers(controllers), _collisionMargin(0.001),
     _worldDimension(Vector3D<>(0, 0, 0), Vector3D<>(20, 20, 20)), _gravity(0, 0, -9.82) {
     for(SimulatedController::Ptr b : _controllers) {
@@ -68,18 +68,11 @@ DynamicDevice::Ptr DynamicWorkCell::findDevice(const std::string& name) const {
     return NULL;
 }
 
-bool DynamicWorkCell::inDevice(rw::core::Ptr<const Body> body) const {
-    // inspect name scope, if its the same as any device then
-    const std::string& bname = body->getName();
+bool DynamicWorkCell::inDevice(rw::core::Ptr<const Body> gotBody) const {
     for(DynamicDevice::Ptr dev : _devices) {
-        const std::string& devname = dev->getName();
-        bool isInDev               = true;
-        for(int i = 0; i < (int) devname.length(); i++)
-            if(devname[i] != bname[i]) {
-                isInDev = false;
-                break;
-            }
-        if(isInDev) return true;
+        for(Body::Ptr body : dev->getLinks()) {
+            if(body->getName() == gotBody->getName()) { return true; }
+        }
     }
     return false;
 }
@@ -93,7 +86,7 @@ DynamicWorkCell::findController(const std::string& name) const {
 }
 
 Body::Ptr DynamicWorkCell::findBody(const std::string& name) const {
-    for(const Body::Ptr& body : _bodies) {
+    for(const Body::Ptr& body : _allbodies) {
         if(body->getName() == name) return body;
     }
     return NULL;
@@ -115,8 +108,21 @@ void DynamicWorkCell::addBody(Body::Ptr body) {
     body->registerIn(_workcell->getStateStructure());
     _frameToBody[body->getBodyFrame()] = body;
     _allbodies.push_back(body);
-    _bodies.push_back(body);
 }
+
+void DynamicWorkCell::addDevice(DynamicDevice::Ptr device) {
+    if(_frameToBody.find(device->getBase()->getBodyFrame()) == _frameToBody.end()) {
+        addBody(device->getBase());
+    }
+    for(Body::Ptr link : device->getLinks()) {
+        if(!link->isRegistered()) { addBody(link); }
+    }
+
+    device->registerIn(_workcell->getStateStructure());
+    _devices.push_back(device);
+
+    _changedEvent.fire(DeviceAddedEvent, boost::any(device));
+};
 
 void DynamicWorkCell::addConstraint(Constraint::Ptr constraint) {
     _workcell->getStateStructure()->addData(constraint);
@@ -141,14 +147,24 @@ bool DynamicWorkCell::remove(Body::Ptr body) {
     for(size_t i = 0; i < _allbodies.size(); i++) {
         if(_allbodies[i] == body) {
             _allbodies.erase(_allbodies.begin() + i);
-
             _frameToBody[body->getBodyFrame()] = NULL;
-
-            for(size_t i = 0; i < _bodies.size(); i++) {
-                if(_bodies[i] == body) { _bodies.erase(_bodies.begin() + i); }
-            }
             return true;
         }
     }
     return false;
+}
+
+
+std::ostream& operator<<(std::ostream& os, const rwsim::dynamics::DynamicWorkCell::ControllerList& list) {
+    os << "Controllers[" << list.size() << "] {";
+    for(auto ctrl : list) { os << "Controller{ " << ctrl->getControllerName() << "} "; }
+    os << "}";
+    return os;
+}
+
+std::ostream& operator<<(std::ostream& os, const rwsim::dynamics::DynamicWorkCell::DeviceList& list) {
+    os << "Devices[" << list.size() << "] {";
+    for(auto dev : list) { os << "Device{ " << dev->getName() << "} "; }
+    os << "}";
+    return os;
 }

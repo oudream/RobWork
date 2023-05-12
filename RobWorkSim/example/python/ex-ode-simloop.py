@@ -5,6 +5,7 @@ import sys,os
 
 if __name__ == '__main__':
     dwc = DynamicWorkCellLoader.load(os.path.dirname(sys.argv[0]) + "/../../gtest/testfiles/ur_control_test_scene/cup_pg70_table.dwc.xml")
+    print(dwc)
     cd = ownedPtr(ContactDetector(dwc.getWorkcell()))
     odesim = ODESimulator(dwc)
     state = dwc.getWorkcell().getDefaultState()
