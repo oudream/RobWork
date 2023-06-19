@@ -29,7 +29,7 @@ namespace rw { namespace geometry {
      */
     struct TriMeshData
     {
-        using Ptr = rw::core::Ptr< TriMeshData >;
+        using Ptr = rw::core::Ptr<TriMeshData>;
         /**
          * @brief Default constructor
          */
@@ -38,19 +38,17 @@ namespace rw { namespace geometry {
         /**
          * @brief copy constructor
          */
-        TriMeshData (const TriMeshData& data) :
-            _triangles (data._triangles), _vertecies (data._vertecies)
-        {}
+        TriMeshData(const TriMeshData& data) :
+            _triangles(data._triangles), _vertecies(data._vertecies) {}
 
         /**
          * @brief copy constructor
          */
-        TriMeshData (const TriMeshData::Ptr& data) :
-            _triangles (data->_triangles), _vertecies (data->_vertecies)
-        {}
+        TriMeshData(const TriMeshData::Ptr& data) :
+            _triangles(data->_triangles), _vertecies(data->_vertecies) {}
 
-        Eigen::Matrix< uint32_t, Eigen::Infinity, 3 > _triangles;
-        Eigen::Matrix< double, Eigen::Infinity, 3 > _vertecies;
+        Eigen::Matrix<uint32_t, Eigen::Infinity, 3> _triangles;
+        Eigen::Matrix<double, Eigen::Infinity, 3> _vertecies;
     };
 
     /**
@@ -62,13 +60,15 @@ namespace rw { namespace geometry {
     class CSGEngine
     {
       public:
-        using Ptr = rw::core::Ptr< CSGEngine >;
+        using Ptr = rw::core::Ptr<CSGEngine>;
+
+        virtual ~CSGEngine() {}
 
         /**
          * @brief get the String id of the engine
          * @return std::string
          */
-        virtual std::string getID () const = 0;
+        virtual std::string getID() const = 0;
 
         /**
          * @brief Create a Union of two TriMeshes
@@ -76,7 +76,7 @@ namespace rw { namespace geometry {
          * @param m2 Second TriMesh
          * @return The Resulting TriMesh created as a new Shared pointer
          */
-        virtual TriMeshData::Ptr Union (TriMeshData::Ptr m1, TriMeshData::Ptr m2) const = 0;
+        virtual TriMeshData::Ptr Union(TriMeshData::Ptr m1, TriMeshData::Ptr m2) const = 0;
 
         /**
          * @brief Create a Union of two TriMeshes
@@ -84,7 +84,7 @@ namespace rw { namespace geometry {
          * @param m2 Second TriMesh
          * @return The Resulting TriMesh created as a new Shared pointer
          */
-        virtual TriMeshData::Ptr Difference (TriMeshData::Ptr m1, TriMeshData::Ptr m2) const = 0;
+        virtual TriMeshData::Ptr Difference(TriMeshData::Ptr m1, TriMeshData::Ptr m2) const = 0;
 
         /**
          * @brief Create a Union of two TriMeshes
@@ -92,7 +92,7 @@ namespace rw { namespace geometry {
          * @param m2 Second TriMesh
          * @return The Resulting TriMesh created as a new Shared pointer
          */
-        virtual TriMeshData::Ptr Intersection (TriMeshData::Ptr m1, TriMeshData::Ptr m2) const = 0;
+        virtual TriMeshData::Ptr Intersection(TriMeshData::Ptr m1, TriMeshData::Ptr m2) const = 0;
 
         /**
          * @brief Create a Union of two TriMeshes
@@ -100,8 +100,8 @@ namespace rw { namespace geometry {
          * @param m2 Second TriMesh
          * @return The Resulting TriMesh created as a new Shared pointer
          */
-        virtual TriMeshData::Ptr SymmetricDifference (TriMeshData::Ptr m1,
-                                                      TriMeshData::Ptr m2) const = 0;
+        virtual TriMeshData::Ptr SymmetricDifference(TriMeshData::Ptr m1,
+                                                     TriMeshData::Ptr m2) const = 0;
 
         /**
          * @addtogroup extensionpoints
@@ -111,44 +111,49 @@ namespace rw { namespace geometry {
         /**
          * @brief a factory for CSGEngine. This factory defines an extension point for CSGEngine.
          */
-        class Factory : public rw::core::ExtensionPoint< CSGEngine >
+        class Factory : public rw::core::ExtensionPoint<CSGEngine>
         {
           public:
             //! constructor
-            Factory () :
-                rw::core::ExtensionPoint< CSGEngine > ("rw.geometry.CSGEngine", "CSGEngineFactory")
-            {}
+            Factory() :
+                rw::core::ExtensionPoint<CSGEngine>("rw.geometry.CSGEngine", "CSGEngineFactory") {}
 
             /**
              * @brief Get the First CSGEngine in the list.
              * @return CSGEngine or NULL if no Engine is Found
              */
-            static CSGEngine::Ptr getDefaultEngine ();
+            static CSGEngine::Ptr getDefaultEngine();
+
+            /**
+             * @brief set the default CSGEngine
+             * @param engine [in] the engine to use
+             */
+            static void setDefaultEngine(CSGEngine::Ptr engine);
 
             /**
              * @brief get a list a valid Engine id's
              * @return std::vector< std::string >
              */
-            static std::vector< std::string > getAvailableEngines ();
+            static std::vector<std::string> getAvailableEngines();
 
             /**
              * @brief Check if engine is available.
              * @param engine [in] the name of the engine.
              * @return true if available, false otherwise.
              */
-            static bool hasEngine (const std::string& engine);
+            static bool hasEngine(const std::string& engine);
 
             /**
              * @brief get a specific engine.
              * @param id [in] id of the engine
              * @return Null if engine not found else returns the engine
              */
-            static CSGEngine::Ptr getCSGEngine (std::string id);
+            static CSGEngine::Ptr getCSGEngine(std::string id);
         };
 
       protected:
-        CSGEngine () {}
-        CSGEngine (const CSGEngine&);
+        CSGEngine() {}
+        CSGEngine(const CSGEngine&);
     };
 
 }}    // namespace rw::geometry

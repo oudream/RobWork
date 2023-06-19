@@ -163,7 +163,7 @@ namespace rw { namespace models {
          * @param state [in] the state in which to get center of mass
          * @return Position of COM
          */
-        rw::math::Vector3D<double> getCOM (rw::kinematics::State& state) const;
+        rw::math::Vector3D<double> getCOM (const rw::kinematics::State& state) const;
 
         /**
          * @brief returns the inertia matrix of this body calculated around COM with the orientation
