@@ -187,7 +187,7 @@ namespace rw { namespace models {
         }
 
         //! @copydoc Object::getCOM
-        rw::math::Vector3D<double> getCOM (rw::kinematics::State& state) const { return _com; }
+        rw::math::Vector3D<double> getCOM (const rw::kinematics::State& state) const { return _com; }
 
       protected:
         friend class WorkCell;

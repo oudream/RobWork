@@ -31,6 +31,9 @@ namespace rwlibs { namespace csg { namespace engines {
          *
          */
         CSGJSEngine () {}
+
+        virtual ~CSGJSEngine() {}
+        
         /**
          * @brief get the String id of the engine
          * @return std::string
