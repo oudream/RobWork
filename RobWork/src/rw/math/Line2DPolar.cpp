@@ -76,9 +76,9 @@ Line2DPolar::Line2DPolar (const Line2D& line)
     }
 }
 
-double Line2DPolar::dist2 (const Vector2D<>& pnt)
+double Line2DPolar::dist2 (const Vector2D<>& pnt) const
 {
-    return fabs (dot (pnt, calcNormal ()) - _rho);
+    return std::fabs (dot (pnt, calcNormal ()) - _rho);
 }
 
 Vector2D<> Line2DPolar::calcNormal () const

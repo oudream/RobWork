@@ -23,9 +23,8 @@
  */
 
 #if !defined(SWIG)
-#include <rw/math/Vector2D.hpp>
-
 #include <rw/common/Serializable.hpp>
+#include <rw/math/Vector2D.hpp>
 
 #include <Eigen/Core>
 #endif
@@ -68,8 +67,8 @@ namespace rw { namespace math {
         //! Value type.
         typedef T value_type;
 
-        //! The type of the internal Boost matrix implementation.
-        typedef Eigen::Matrix< T, 2, 2 > EigenMatrix2x2;
+        //! The type of the internal Eigen matrix implementation.
+        typedef Eigen::Rotation2D< T > EigenMatrix2x2;
 
         /**
            @brief A rotation matrix with uninitialized storage.
@@ -253,19 +252,19 @@ namespace rw { namespace math {
         bool operator!= (const Rotation2D< T >& rhs) const { return !(*this == rhs); }
 
         /**
-         * @brief Returns a boost 2x2 matrix @f$ \mathbf{M}\in SO(2)
+         * @brief Returns a Eigen 2x2 matrix @f$ \mathbf{M}\in SO(2)
          * @f$ that represents this rotation
          *
          * @return @f$ \mathbf{M}\in SO(2) @f$
          */
-        EigenMatrix2x2 e ()
+        EigenMatrix2x2 e () const
         {
-            EigenMatrix2x2 matrix;
+            typename EigenMatrix2x2::Matrix2 matrix;
             matrix (0, 0) = _m[0][0];
             matrix (0, 1) = _m[0][1];
             matrix (1, 0) = _m[1][0];
             matrix (1, 1) = _m[1][1];
-            return matrix;
+            return EigenMatrix2x2{matrix};
         }
 
         /**
@@ -309,7 +308,7 @@ namespace rw { namespace math {
         friend std::ostream& operator<< (std::ostream& os, const Rotation2D& r)
         {
             return os << "Rotation2D {" << r (0, 0) << ", " << r (0, 1) << ", " << r (1, 0) << ", "
-                      << r (1, 1) << "}";
+                   << r (1, 1) << "}";
         }
 #else
         TOSTRING (rw::math::Rotation2D< T >);
@@ -420,5 +419,23 @@ namespace rw { namespace common {
 
     }    // namespace serialization
 }}       // namespace rw::common
+
+namespace boost { namespace serialization {
+    /**
+     * @brief Boost serialization.
+     * @param archive [in] the boost archive to read from or write to.
+     * @param R [in/out] the rotation matrix to read/write.
+     * @param version [in] class version (currently version 0).
+     * @relatedalso rw::math::Rotation2D
+     */
+    template< class Archive, class T >
+    void serialize (Archive& archive, rw::math::Rotation2D< T >& R, const unsigned int version)
+    {
+        archive& R (0, 0);
+        archive& R (0, 1);
+        archive& R (1, 0);
+        archive& R (1, 1);
+    }
+}}    // namespace boost::serialization
 
 #endif    // end include guard

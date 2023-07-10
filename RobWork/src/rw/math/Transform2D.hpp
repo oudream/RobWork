@@ -35,14 +35,14 @@ namespace rw { namespace math {
     /*@{*/
 
     /**
-     * @brief A 4x4 homogeneous transform matrix @f$ \mathbf{T}\in SE(3) @f$
+     * @brief A 3x3 homogeneous transform matrix @f$ \mathbf{T}\in SE(2) @f$
      *
      * @f$
      * \mathbf{T} =
      * \left[
      *  \begin{array}{cc}
      *  \mathbf{R} & \mathbf{d} \\
-     *  \begin{array}{ccc}0 & 0 & 0\end{array} & 1
+     *  \begin{array}{cc}0 & 0\end{array} & 1
      *  \end{array}
      * \right]
      * @f$
@@ -67,8 +67,8 @@ namespace rw { namespace math {
 
         /**
          * @brief Constructs a homogeneous transform
-         * @param d [in] @f$ \mathbf{d} @f$ A 3x1 translation vector
-         * @param R [in] @f$ \mathbf{R} @f$ A 3x3 rotation matrix
+         * @param d [in] @f$ \mathbf{d} @f$ A 2x1 translation vector
+         * @param R [in] @f$ \mathbf{R} @f$ A 2x2 rotation matrix
          */
         Transform2D (const Vector2D< T >& d, const Rotation2D< T >& R) : _d (d), _R (R) {}
 
@@ -110,8 +110,8 @@ namespace rw { namespace math {
 
         /**
          * @brief Returns const matrix element reference
-         * @param row [in] row, row must be @f$ < 3 @f$
-         * @param col [in] col, col must be @f$ < 4 @f$
+         * @param row [in] row, row must be @f$ < 2 @f$
+         * @param col [in] col, col must be @f$ < 3 @f$
          * @return const reference to matrix element
          */
         const T& operator() (std::size_t row, std::size_t col) const
@@ -122,6 +122,34 @@ namespace rw { namespace math {
                 return _R (row, col);
             else
                 return _d (row);
+        }
+
+        /**
+         * @brief Comparison operator.
+         *
+         * The comparison operator makes a element wise comparison.
+         * Returns true only if all elements are equal.
+         *
+         * @param rhs [in] Transform to compare with
+         * @return True if equal.
+         */
+        bool operator==(const Transform2D<T>& rhs) const
+        {
+            return (R() == rhs.R()) && (P() == rhs.P());
+        }
+
+        /**
+         * @brief Comparison operator.
+         *
+         * The comparison operator makes a element wise comparison.
+         * Returns true if any of the elements are different.
+         *
+         * @param rhs [in] Transform to compare with
+         * @return True if not equal.
+         */
+        bool operator!=(const Transform2D<T>& rhs) const
+        {
+            return !(*this == rhs);
         }
 
         /**
@@ -138,7 +166,7 @@ namespace rw { namespace math {
            \begin{array}{cc}
            \robabx{a}{b}{\mathbf{R}}\robabx{b}{c}{\mathbf{R}} &
            \robabx{a}{b}{\mathbf{d}} + \robabx{a}{b}{\mathbf{R}}\robabx{b}{c}{\mathbf{d}} \\
-           \begin{array}{ccc} 0 & 0 & 0 \end{array} & 1
+           \begin{array}{cc} 0 & 0 \end{array} & 1
            \end{array}
            \right]
            @f$
@@ -253,7 +281,7 @@ namespace rw { namespace math {
      * \left[
      *  \begin{array}{cc}
      *  \robabx{a}{b}{\mathbf{R}}^{T} & - \robabx{a}{b}{\mathbf{R}}^{T} \robabx{a}{b}{\mathbf{d}} \\
-     *  \begin{array}{ccc}0 & 0 & 0\end{array} & 1
+     *  \begin{array}{cc}0 & 0\end{array} & 1
      *  \end{array}
      * \right]
      *
@@ -311,5 +339,24 @@ namespace rw { namespace common {
                    const std::string& id);
     }    // namespace serialization
 }}       // namespace rw::common
+
+namespace boost {
+    namespace serialization {
+        /**
+         * @brief Boost serialization.
+         * @param archive [in] the boost archive to read from or write to.
+         * @param transform [in/out] the transformation to read/write.
+         * @param version [in] class version (currently version 0).
+         * @relatedalso rw::math::Transform2D
+         */
+        template<class Archive, class T>
+        void serialize(Archive& archive, rw::math::Transform2D<T>& transform,
+            const unsigned int version)
+        {
+            archive& transform.P();
+            archive& transform.R();
+        }
+    }
+} // end namespaces
 
 #endif    // end include guard
