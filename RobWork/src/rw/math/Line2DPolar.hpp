@@ -83,7 +83,7 @@ namespace rw { namespace math {
         rw::math::Vector2D<> calcNormal () const;
 
         //! @brief The L_2 distance from 'pnt' to the line.
-        double dist2 (const rw::math::Vector2D<>& pnt);
+        double dist2 (const rw::math::Vector2D<>& pnt) const;
 
         //! The point for the projection of 'pnt' onto 'line'.
         static rw::math::Vector2D<> projectionPoint (const Line2DPolar& line, const rw::math::Vector2D<>& pnt);

@@ -267,7 +267,7 @@ namespace rw { namespace math {
          * this vector and the x-axis vector (1,0). The angle
          * returned will be in the interval [-Pi,Pi]
          */
-        double angle () { return atan2 (_vec[1], _vec[0]); }
+        double angle () const { return atan2 (_vec[1], _vec[0]); }
 #if !defined(SWIG)
         /**
            @brief Streaming operator.
