@@ -12,6 +12,10 @@ if(MSVC)
     string(REPLACE "//" "/" QT_BIN "${QT_BIN}")
     if(EXISTS "$ENV{Qt${FIND_VERSION_MAJOR}_DIR}" AND NOT "$ENV{Qt${FIND_VERSION_MAJOR}_DIR}" STREQUAL "/")
         set(QT${FIND_VERSION_MAJOR}_PATH "$ENV{Qt${FIND_VERSION_MAJOR}_DIR}")
+    elseif(DEFINED Qt6_DIR AND EXISTS "${Qt6_DIR}")
+        set(QT_PATH "${Qt6_DIR}")
+    elseif(DEFINED Qt5_DIR AND EXISTS "${Qt5_DIR}")
+        set(QT_PATH "${Qt5_DIR}")
     elseif(EXISTS "${QT_BIN}" AND NOT "${QT_BIN}" STREQUAL "/")
 
         # get root path so we can search for 5.3, 5.4, 5.5, etc

@@ -208,7 +208,19 @@ if(WIN32)
         DESTINATION "${RWS_INSTALL_DIR}/cmake/Modules"
         COMPONENT cmake
     )
+   
+    # Find the .dll's.
     string(REPLACE ".lib" ".dll" PYTHON_DLL "${PYTHON_LIBRARIES}")
+
+    # When multiple versions are present (debug and release) then only keep the version which fits the build mode.
+    if( CMAKE_BUILD_TYPE STREQUAL "Debug" )
+        list(FILTER PYTHON_DLL INCLUDE REGEX ".*_d\.dll")
+    else()
+       list(FILTER PYTHON_DLL EXCLUDE REGEX ".*_d\.dll")
+       list(FILTER PYTHON_DLL INCLUDE REGEX ".*\.dll")
+    endif()
+
+    # Note, this assumes only one dll is left in the PYTHON_DLL variable.
     if(EXISTS "${PYTHON_DLL}")
         install(
             FILES ${PYTHON_DLL}
