@@ -116,7 +116,7 @@ if(EXISTS ${RWCFG_ROOT}/RobWorkBuildConfig_${RW_BUILD_TYPE}.cmake)
     endif()
     if(NOT Boost_FOUND)
         find_package(Boost REQUIRED COMPONENTS filesystem serialization system thread
-                                               program_options
+                                               program_options date_time
         )
     endif()
     if(TARGET Boost::headers)

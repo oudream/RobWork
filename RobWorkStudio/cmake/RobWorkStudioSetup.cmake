@@ -91,16 +91,11 @@ find_package(OpenGL REQUIRED)
 if(MSVC)
     set(CMAKE_MODULE_PATH ${RWS_ROOT}/cmake/Modules/QT6_module ${CMAKE_MODULE_PATH})
 endif()
-find_package(Qt6 COMPONENTS  Core Gui Widgets OpenGL OpenGLWidgets QUIET)
+find_package(Qt6 QUIET COMPONENTS Core Gui Widgets OpenGL OpenGLWidgets)
 
 
 
-if(Qt6Core_FOUND
-   AND Qt6Gui_FOUND
-   AND Qt6Widgets_FOUND
-   AND Qt6OpenGL_FOUND
-   AND Qt6OpenGLWidgets_FOUND
-)
+if(Qt6_FOUND)
     set(QT_LIBRARIES Qt6::Core Qt6::Gui Qt6::Widgets)
     set(QTGL_LIBRARIES ${Qt6OpenGL_LIBRARIES} ${Qt6OpenGLWidgets_LIBRARIES})
     message(STATUS "RobWorkStudio: Using Qt ${Qt6_VERSION}.")
@@ -131,19 +126,11 @@ else()
     if(Qt6OpenGLWidgets_FOUND)
         message(STATUS "RobWorkStudio: - Qt6OpenGLWidgets found.")
     else()
-        message(
-            STATUS
-                "RobWorkStudio: - Qt6OpenGLWidgets NOT found. Please set Qt6OpenGLWidgets_DIR to find."
-        )
+        message(STATUS "RobWorkStudio: - Qt6OpenGLWidgets NOT found. Please set Qt6OpenGLWidgets_DIR to find.")
     endif()
 
-    find_package(Qt5Core 5.5.1 QUIET)
-    find_package(Qt5Gui 5.5.1 QUIET)
-    find_package(Qt5Widgets 5.5.1 QUIET)
-    if(Qt5Core_FOUND
-       AND Qt5Gui_FOUND
-       AND Qt5Widgets_FOUND
-    )
+    find_package(Qt5 5.5.1 QUIET COMPONENTS Core Gui Widgets)
+    if(Qt5_FOUND)
         set(QT_LIBRARIES ${Qt5Core_LIBRARIES} ${Qt5Gui_LIBRARIES} ${Qt5Widgets_LIBRARIES})
         set(QTGL_LIBRARIES)
         message(STATUS "RobWorkStudio: Using Qt ${Qt5Core_VERSION}.")
@@ -164,14 +151,9 @@ else()
         if(Qt5Widgets_FOUND)
             message(STATUS "RobWorkStudio: - Qt5Widgets found.")
         else()
-            message(
-                STATUS "RobWorkStudio: - Qt5Widgets NOT found. Please set Qt5Widgets_DIR to find."
-            )
+            message(STATUS "RobWorkStudio: - Qt5Widgets NOT found. Please set Qt5Widgets_DIR to find.")
         endif()
-        message(
-            FATAL_ERROR
-                "RobWorkStudio: Could NOT find Qt6 or Qt5. Please set the Qt6 or Qt5 directories."
-        )
+        message(FATAL_ERROR "RobWorkStudio: Could NOT find Qt6 or Qt5. Please set the Qt6 or Qt5 directories.")
     endif()
 endif()
 

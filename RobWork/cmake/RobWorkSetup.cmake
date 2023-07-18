@@ -62,24 +62,64 @@ if(${RW_BUILD_TYPE} STREQUAL "release")
     set(Boost_USE_RELEASE_LIBS ON) # only find release libs
 endif()
 
+# Set the boost root and dir from the environmental variables if they have not already been set by command line arguments.
+set(BOOST_ROOT "$ENV{BOOST_ROOT}" CACHE STRING "Boost root")
+set(Boost_DIR "$ENV{Boost_DIR}" CACHE STRING "Boost dir")
+
+# Fix the paths in case the environmental variables have been set with backslash on Windows.
+if( WIN32 )
+    string(REPLACE "\\" "/" BOOST_ROOT "${BOOST_ROOT}")
+    string(REPLACE "\\" "/" Boost_DIR "${Boost_DIR}")
+endif()
+
 # hunter_add_package(Boost COMPONENTS filesystem serialization system thread program_options)
-if((NOT DEFINED Boost_DIR OR NOT DEFINED BOOST_ROOT) AND WIN32)
-    file(
-        GLOB BOOST_ROOT
-        LIST_DIRECTORIES TRUE
-        "C:/local/boost*"
-    )
-    if(EXISTS ${BOOST_ROOT})
+if((NOT DEFINED Boost_DIR OR "${Boost_DIR}" STREQUAL "" OR NOT DEFINED BOOST_ROOT OR "${BOOST_ROOT}" STREQUAL "") AND WIN32)
+    # If boost root has not been set, then try to locate it where it usually is installed on Windows.
+    if( NOT EXISTS ${BOOST_ROOT} )
+        # Locate possible directories.
+        file(
+            GLOB BOOST_ROOT
+            LIST_DIRECTORIES TRUE
+            "C:/local/boost*"
+        )
+
+        # Check if more than one directory was found to avoid crashing cmake when checking if a list exists.
+        list(LENGTH BOOST_ROOT BOOST_ROOT_length)
+        if(BOOST_ROOT_length EQUAL 0)
+            # If no path was found, unset it and find_package see if it succeeds.
+            unset(BOOST_ROOT CACHE)
+            message(WARNING "No possible boost root could be found. Try to set it manually.")
+        elseif(BOOST_ROOT_length GREATER 1)
+            message(FATAL_ERROR "Found ${BOOST_ROOT_length} possible BOOST_ROOT's. Delete the catch and specify one manually to proceed.\nFound: ${BOOST_ROOT}")
+        elseif(NOT EXISTS "${BOOST_ROOT}")
+            message(WARNING "BOOST_ROOT found does not exist. If boost can not be found try to set it manually.")
+            unset(BOOST_ROOT CACHE)
+        endif()
+    endif()
+
+    # If boost dir has not been set, then try to locate the folder based on the root and where it usually is installed on Windows.
+    if(EXISTS ${BOOST_ROOT} AND NOT EXISTS ${Boost_DIR})
+        # Locate possible directories.
         file(
             GLOB Boost_DIR
             LIST_DIRECTORIES TRUE
             "${BOOST_ROOT}/lib64*/cmake/Boost-*"
         )
-        if(NOT EXISTS ${Boost_DIR})
-            unset(Boost_DIR)
+
+        # Check if more than one directory was found to avoid crashing cmake when checking if a list exists.
+        list(LENGTH Boost_DIR Boost_DIR_length)
+        if(Boost_DIR_length EQUAL 0)
+            # If no path was found, unset it and find_package see if it succeeds.
+            unset(Boost_DIR CACHE)
+            message(WARNING "Boost_DIR was not set and could not be found in the BOOST_ROOT. If boost can not be found try to set it manually.")
+        elseif(Boost_DIR_length GREATER 1)
+            message(FATAL_ERROR "Found ${Boost_DIR_length} possible Boost_DIR's. Delete the catch and specify one manually to proceed.\nFound: ${Boost_DIR}")
+        elseif(NOT EXISTS "${Boost_DIR}")
+            message(WARNING "Boost_DIR found does not exist. If boost can not be found try to set it manually.")
+            unset(Boost_DIR CACHE)
         endif()
     else()
-        unset(BOOST_ROOT)
+        unset(BOOST_ROOT CACHE)
     endif()
 endif()
 
@@ -891,10 +931,6 @@ elseif(${Boost_MINOR_VERSION} VERSION_LESS 46) # version 3 is the default for Bo
     add_definitions("-DBOOST_FILESYSTEM_VERSION=3")
 endif()
 
-if(MSVC)
-    add_definitions("-DEIGEN_DONT_ALIGN_STATICALLY=1")
-endif()
-
 # ##################################################################################################
 # SETTING UP VARS here we setup the output variables
 #
@@ -965,7 +1001,6 @@ set(ROBWORK_LIBRARIES_INTERNAL
     sdurw_csg
     sdurw_control
     sdurw_proximitystrategies
-    sdurw
     sdurw_core
     sdurw_common
     sdurw_math
