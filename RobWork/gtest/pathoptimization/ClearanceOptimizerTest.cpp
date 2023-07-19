@@ -103,14 +103,10 @@ TEST (ClearanceOptimizer, Test)
 
     bool minimumClearanceReached = true;
     for (const Q& q : outPath) {
-        std::cout << __FILE__ << ":" << __LINE__ << std::endl << std::flush;
         device->setQ (q, state);
-        std::cout << __FILE__ << ":" << __LINE__ << std::endl << std::flush;
         const double clearance = clearanceCalculator->clearance (state);
-        std::cout << __FILE__ << ":" << __LINE__ << std::endl << std::flush;
         if (clearance < 0.05)
             minimumClearanceReached = false;
-        std::cout << __FILE__ << ":" << __LINE__ << std::endl << std::flush;
     }
     EXPECT_TRUE (minimumClearanceReached);
 

@@ -134,6 +134,8 @@
   stage: test
   tags:
     - windows
+  before_script:
+    - set PATH=%PATH%;%CD%\Build\RW\bin\Release;%CD%\Build\RWS\bin\Release;%CD%\Build\RWSim\bin\Release
   script:
     - cd Build
     # Run RobWork tests
