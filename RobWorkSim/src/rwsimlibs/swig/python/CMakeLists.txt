@@ -77,30 +77,6 @@ if(build)
     set(RW_USE_NUMPY ${RW_BUILD_WITH_NUMPY})
     target_compile_definitions(${TARGET_NAME} PRIVATE RW_USE_NUMPY)
 
-
-    # ############# Documentation ##############
-    if(NOT ${SWIG_VERSION} VERSION_LESS 4.0.0)
-        find_program(pydoc pydoc3)
-        if(NOT pydoc)
-            find_program(pydoc pydoc)
-        endif()
-        if(pydoc)
-            add_custom_command(
-                TARGET ${TARGET_NAME} POST_BUILD
-                COMMAND
-                    ${CMAKE_COMMAND}
-                    -E
-                    env
-                    PYTHONPATH=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/../../../RobWork/libs/${RW_BUILD_TYPE}
-                    ${pydoc}
-                    -w
-                    ${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RWSIM_MODULE}/${RWSIM_MODULE}.py
-                WORKING_DIRECTORY ${SWIG_OUT_ORIG}
-                COMMENT "Creating pydoc..."
-            )
-        endif()
-    endif()
-
     # ################# Install files ################
     configure_file(__init__.py.in
                    ${RWSIM_CMAKE_LIBRARY_OUTPUT_DIRECTORY}/${RWSIM_MODULE}/__init__.py)
