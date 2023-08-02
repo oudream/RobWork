@@ -19,11 +19,12 @@
 
 #ifdef _WIN32
 #include <windows.h>
-#endif    //#ifdef _WIN32
+#endif    // #ifdef _WIN32
 
 #include <RobWorkConfig.hpp>
 #include <RobWorkStudioConfig.hpp>
 #include <rw/common/ProgramOptions.hpp>
+#include <rw/core/Log.hpp>
 #include <rw/core/PropertyMap.hpp>
 #include <rw/core/RobWork.hpp>
 
@@ -66,7 +67,7 @@
 #endif
 #ifdef RWS_HAVE_GLUT
 #if defined(RW_MACOS)
-//#include <GLUT/glut.h>
+// #include <GLUT/glut.h>
 // TODO(kalor) Figure Out how to get GLUT to work as glutBitmapString is undeclared i mac
 #undef RW_HAVE_GLUT
 #else
@@ -199,7 +200,18 @@ int RobWorkStudioApp::run() {
     initReasource();
 
     char* argv[30];
-    std::vector<std::string> args = boost::program_options::split_unix(_args);
+    std::vector<std::string> args;
+    try {
+        args = boost::program_options::split_unix(_args);
+    }
+    catch(const std::exception& err) {
+        // Catch errors thrown when splitting the arguments to avoid program crash.
+        // Note, this catch is necessary on windows because split_unix throws an error
+        // because it can not handle the path of the executable using escaped backslashes.
+        // e.g. 'C:\\some\\path\\to\\RobWorkStudio.exe'
+        rw::core::Log::warningLog()
+            << "Could not interpret program options. " << err.what() << std::endl;
+    }
 
     if(args.size() == 0) { args.push_back("RobWorkStudio"); }
     for(size_t i = 0; i < args.size(); i++) { argv[i] = &(args[i][0]); }
