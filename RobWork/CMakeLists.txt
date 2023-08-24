@@ -20,8 +20,8 @@ endif()
 if(NOT DEFINED RWP_ROOT)
 include("cmake/HunterGate.cmake")
 HunterGate(
-    URL "https://github.com/cpp-pm/hunter/archive/v0.23.314.tar.gz"
-    SHA1 "95c47c92f68edb091b5d6d18924baabe02a6962a"
+    URL "https://github.com/cpp-pm/hunter/archive/v0.24.18.tar.gz"
+    SHA1 "1292e4d661e1770d6d6ca08c12c07cf34a0bf718"
 )
 else()
     function(hunter_add_package)     
