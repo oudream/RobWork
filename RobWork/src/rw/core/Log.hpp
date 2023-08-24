@@ -31,7 +31,6 @@
 #endif
 
 namespace rw { namespace core {
-    class Log;
     class Message;
 
     /** @addtogroup core */
@@ -76,8 +75,6 @@ namespace rw { namespace core {
      * \code
      * Log::log().setLevel(Log::Debug);
      * \endcode
-     *
-     *
      */
     class Log
     {
@@ -444,8 +441,6 @@ namespace rw { namespace core {
         std::vector< rw::core::LogWriter::Ptr > _writers;
         rw::core::LogWriter::Ptr _defaultWriter;
     };
-
-    /*@}*/
 }}    // namespace rw::core
 
 /*

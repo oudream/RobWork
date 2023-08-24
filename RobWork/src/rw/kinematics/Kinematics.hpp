@@ -50,8 +50,9 @@ namespace rw { namespace kinematics {
          *
          * @return The transform of the frame relative to the world frame.
          */
-        static math::Transform3D<> worldTframe (rw::core::Ptr< const rw::kinematics::Frame > to,
-                                                const rw::kinematics::State& state);
+        static math::Transform3D<>
+        worldTframe (const rw::core::Ptr< const rw::kinematics::Frame >& to,
+                     const rw::kinematics::State& state);
 
         /**
          * @brief The transform of frame \b to relative to frame \b from.
@@ -71,9 +72,10 @@ namespace rw { namespace kinematics {
          *
          * @return The transform from the start frame to the end frame.
          */
-        static math::Transform3D<> frameTframe (rw::core::Ptr< const rw::kinematics::Frame > from,
-                                                rw::core::Ptr< const rw::kinematics::Frame > to,
-                                                const rw::kinematics::State& state);
+        static math::Transform3D<>
+        frameTframe (const rw::core::Ptr< const rw::kinematics::Frame >& from,
+                     const rw::core::Ptr< const rw::kinematics::Frame >& to,
+                     const rw::kinematics::State& state);
 
         /** @brief All frames reachable from \b root for a tree structure of \b
          * state.
@@ -127,7 +129,7 @@ namespace rw { namespace kinematics {
            The state \b state is needed to retrieve the parent frames, but the
            world frame returned is the same for any (valid) state.
         */
-        static const Frame* worldFrame (rw::core::Ptr< const Frame > frame,
+        static const Frame* worldFrame (const rw::core::Ptr< const Frame >& frame,
                                         const rw::kinematics::State& state);
 #endif
         /**
@@ -192,7 +194,7 @@ namespace rw { namespace kinematics {
          * @param frame [in] the frame.
          * @return true if fixed, false otherwise.
          */
-        static bool isFixedFrame (rw::core::Ptr< const rw::kinematics::Frame > frame);
+        static bool isFixedFrame (const rw::core::Ptr< const rw::kinematics::Frame >& frame);
 
 #if !defined(SWIGJAVA)
         /**

@@ -22,11 +22,10 @@
  * @file Frame.hpp
  */
 #if !defined(SWIG)
-#include <rw/kinematics/StateData.hpp>
-
 #include <rw/common/ConcatVectorIterator.hpp>
 #include <rw/core/PairIterator.hpp>
 #include <rw/core/PropertyMap.hpp>
+#include <rw/kinematics/StateData.hpp>
 #include <rw/math/Transform3D.hpp>
 
 #include <set>
@@ -61,6 +60,7 @@ namespace rw { namespace kinematics {
       public:
         //! @brief Smart pointer type for a Frame object
         typedef rw::core::Ptr< Frame > Ptr;
+
         //! @brief Smart pointer type for a constant Frame object
         typedef rw::core::Ptr< const Frame > CPtr;
 
@@ -146,12 +146,12 @@ namespace rw { namespace kinematics {
         /**
          * @brief The parent of the frame or NULL if the frame is a DAF.
          */
-        const rw::kinematics::Frame* getParent () const { return _parent.get(); }
+        const rw::kinematics::Frame* getParent () const { return _parent.get (); }
 
         /**
          * @brief The parent of the frame or NULL if the frame is a DAF.
          */
-        rw::kinematics::Frame* getParent () { return _parent.get(); }
+        rw::kinematics::Frame* getParent () { return _parent.get (); }
 
         /**
          * @brief Returns the parent of the frame
@@ -254,7 +254,7 @@ namespace rw { namespace kinematics {
          * @param parent [in] The frame to attach \b frame to.
          * @param state [inout] The state to which the attachment is written.
          */
-        void attachTo (rw::core::Ptr<rw::kinematics::Frame> parent, rw::kinematics::State& state);
+        void attachTo (const Ptr& parent, rw::kinematics::State& state);
 
         /**
          * @brief Test if this frame is a Dynamically Attachable Frame
@@ -275,8 +275,7 @@ namespace rw { namespace kinematics {
          * @param state [in] the state.
          * @return transform of frame \b to relative to this frame.
          */
-        rw::math::Transform3D<> fTf (const rw::core::Ptr<rw::kinematics::Frame> to, const rw::kinematics::State& state) const;
-
+        rw::math::Transform3D<> fTf (const CPtr& to, const rw::kinematics::State& state) const;
 
         /**
          * @brief Compares the Frame to see if they are the same
@@ -294,7 +293,6 @@ namespace rw { namespace kinematics {
          * @return false if equal
          */
         bool operator!= (const Frame& rhs) { return !(*this == rhs); }
-
 
 #if !defined(SWIG)
         /**
@@ -339,9 +337,9 @@ namespace rw { namespace kinematics {
       private:
         friend class StateStructure;
 
-        void setParent (rw::core::Ptr<rw::kinematics::Frame> frame) { _parent = frame; }
+        void setParent (Ptr frame) { _parent = frame; }
 
-        void removeChild (const rw::core::Ptr<rw::kinematics::Frame> frame)
+        void removeChild (const CPtr& frame)
         {
             for (ChildList::iterator it = _children.begin (); it != _children.end (); ++it)
                 if ((*it) == frame) {
@@ -356,10 +354,10 @@ namespace rw { namespace kinematics {
         core::PropertyMap _propertyMap;
 
         // static connected parent and children
-        rw::core::Ptr<rw::kinematics::Frame> _parent;
+        Ptr _parent;
         ChildList _children;
 
-        void addChild (rw::core::Ptr<rw::kinematics::Frame> const child) { _children.push_back (child.get()); }
+        void addChild (const Ptr& child) { _children.push_back (child.get ()); }
 
         static iterator_pair makeIteratorPair (const ChildList& children)
         {
