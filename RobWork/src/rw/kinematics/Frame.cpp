@@ -20,6 +20,7 @@
 #include "Kinematics.hpp"
 #include "State.hpp"
 #include "TreeState.hpp"
+
 using namespace rw::math;
 using namespace rw::kinematics;
 
@@ -30,18 +31,18 @@ Frame::Frame (int dof, const std::string& name) : StateData (dof, name), _parent
 
 Frame* Frame::getParent (const State& state)
 {
-    rw::core::Ptr<Frame>  f1 = getParent ();
+    rw::core::Ptr< Frame > f1 = getParent ();
     if (f1)
-        return f1.get();
+        return f1.get ();
     else
         return getDafParent (state);
 }
 
 const Frame* Frame::getParent (const State& state) const
 {
-    rw::core::Ptr<const Frame> f1 = getParent ();
+    rw::core::Ptr< const Frame > f1 = getParent ();
     if (f1)
-        return f1.get();
+        return f1.get ();
     else
         return getDafParent (state);
 }
@@ -53,26 +54,29 @@ const Frame* Frame::getDafParent (const State& state) const
 
 Frame* Frame::getDafParent (const State& state)
 {
-    return state.getTreeState ().getParent (rw::core::Ptr<Frame>(this));
+    return state.getTreeState ().getParent (rw::core::Ptr< Frame > (this));
 }
 
 // Children.
 
 Frame::const_iterator_pair Frame::getChildren (const State& state) const
 {
-    const std::vector< Frame* >& list = state.getTreeState ().getChildren (rw::core::Ptr<const Frame>(this));
+    const std::vector< Frame* >& list =
+        state.getTreeState ().getChildren (rw::core::Ptr< const Frame > (this));
     return makeConstIteratorPair (_children, list);
 }
 
 Frame::iterator_pair Frame::getChildren (const State& state)
 {
-    const std::vector< Frame* >& dafs = state.getTreeState ().getChildren (rw::core::Ptr<Frame>(this));
+    const std::vector< Frame* >& dafs =
+        state.getTreeState ().getChildren (rw::core::Ptr< Frame > (this));
     return makeIteratorPair (_children, dafs);
 }
 
 std::vector< Frame::Ptr > Frame::getChildrenList (const State& state)
 {
-    const std::vector< Frame* >& children = state.getTreeState ().getChildren (rw::core::Ptr<Frame>(this));
+    const std::vector< Frame* >& children =
+        state.getTreeState ().getChildren (rw::core::Ptr< Frame > (this));
 
     std::vector< Frame::Ptr > allChildren;
 
@@ -101,7 +105,7 @@ Frame::iterator_pair Frame::getDafChildren (const State& state)
 
 // Frame attachments.
 
-void Frame::attachTo (rw::core::Ptr<Frame> parent, State& state)
+void Frame::attachTo (const Ptr& parent, State& state)
 {
     state.getTreeState ().attachFrame (this, parent);
 }
@@ -111,28 +115,29 @@ bool Frame::isDAF ()
     return Kinematics::isDAF (this);
 }
 
-namespace rw{ namespace kinematics {
-std::ostream& operator<< (std::ostream& out, const Frame& frame)
-{
-    return out << "Frame[" << frame.getName () << "]";
-}
-}}
+namespace rw { namespace kinematics {
+    std::ostream& operator<< (std::ostream& out, const Frame& frame)
+    {
+        return out << "Frame[" << frame.getName () << "]";
+    }
+}}    // namespace rw::kinematics
 
 rw::math::Transform3D<> Frame::wTf (const rw::kinematics::State& state) const
 {
     return Kinematics::worldTframe (this, state);
 }
 
-rw::math::Transform3D<> Frame::fTf (const rw::core::Ptr< Frame> to, const rw::kinematics::State& state) const
+rw::math::Transform3D<> Frame::fTf (const CPtr& to, const rw::kinematics::State& state) const
 {
     return Kinematics::frameTframe (this, to, state);
 }
 
 bool Frame::operator== (const Frame& rhs)
 {
-    if(StateData::operator==(rhs) && this->_parent == rhs._parent && this->_children.size() == rhs._children.size()){
-        for(size_t i = 0; i < this->_children.size();i++){
-            if(this->_children[i] != rhs._children[i]){
+    if (StateData::operator== (rhs) && this->_parent == rhs._parent &&
+        this->_children.size () == rhs._children.size ()) {
+        for (size_t i = 0; i < this->_children.size (); i++) {
+            if (this->_children[i] != rhs._children[i]) {
                 return false;
             }
         }
