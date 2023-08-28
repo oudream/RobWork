@@ -17,7 +17,7 @@
 
 #include "List.hpp"
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rwlibs::mathematica;
 
 List::List () : FunctionBase ("List")

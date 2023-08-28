@@ -5,12 +5,12 @@
  *      Author: jimali
  */
 
-#include <rw/common/Log.hpp>
+#include <rw/core/Log.hpp>
 #include <rw/loaders.hpp>
 #include <rw/models.hpp>
 #include <sandbox/loaders/RWXMLFile.hpp>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::loaders;
 using namespace rw::models;
 

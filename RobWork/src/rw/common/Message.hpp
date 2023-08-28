@@ -20,6 +20,15 @@
 
 #include <rw/core/Message.hpp>
 #include <rw/core/os.hpp>
+
+/**
+ * @brief Deprecated namespace since 16/4-2020 for this class
+ * @deprecated use rw::core not rw::common
+ */
+namespace rw { namespace common {
+    using Message = rw::core::Message;
+}}    // namespace rw::common
+
 #ifdef RW_WIN32
 #pragma message( \
     "#include <rw/common/Message.hpp> is deprecated use #include <rw/core/Message.hpp> instead")

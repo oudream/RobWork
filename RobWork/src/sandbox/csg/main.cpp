@@ -8,7 +8,6 @@ using namespace std;
 
 USE_ROBWORK_NAMESPACE
 using namespace robwork;
-using namespace rw::common;
 using namespace rw::math;
 using namespace rw::geometry;
 using namespace rw::csg;

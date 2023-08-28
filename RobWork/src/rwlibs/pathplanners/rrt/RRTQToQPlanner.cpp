@@ -47,7 +47,7 @@ enum ExtendResult { Trapped, Reached, Advanced };
 class RRTStruct
 {
   public:
-    RRTStruct (const PlannerConstraint& constraint, QSampler::Ptr sampler, QMetric::Ptr metric,
+    RRTStruct (const PlannerConstraint& constraint, QSampler::Ptr sampler, QMetric::CPtr metric,
                double extend) :
         constraint (constraint),
         sampler (sampler), metric (metric), extend (extend)
@@ -58,7 +58,7 @@ class RRTStruct
 
     PlannerConstraint constraint;
     QSampler::Ptr sampler;
-    QMetric::Ptr metric;
+    QMetric::CPtr metric;
     double extend;
 };
 
@@ -310,30 +310,31 @@ class RDTBalancedBidirectional : public QToQPlanner
 }    // namespace
 
 QToQPlanner::Ptr RRTQToQPlanner::makeBasic (const PlannerConstraint& constraint,
-                                            QSampler::Ptr sampler, QMetric::Ptr metric,
-                                            double extend)
+                                            const QSampler::Ptr& sampler,
+                                            const QMetric::CPtr& metric, double extend)
 {
     return ownedPtr (new RRTBasic (RRTStruct (constraint, sampler, metric, extend)));
 }
 
 QToQPlanner::Ptr RRTQToQPlanner::makeConnect (const PlannerConstraint& constraint,
-                                              QSampler::Ptr sampler, QMetric::Ptr metric,
-                                              double extend)
+                                              const QSampler::Ptr& sampler,
+                                              const QMetric::CPtr& metric, double extend)
 {
     return ownedPtr (new RRTConnect (RRTStruct (constraint, sampler, metric, extend)));
 }
 
 QToQPlanner::Ptr RRTQToQPlanner::makeBidirectional (const PlannerConstraint& constraint,
-                                                    QSampler::Ptr sampler, QMetric::Ptr metric,
-                                                    double extend)
+                                                    const QSampler::Ptr& sampler,
+                                                    const QMetric::CPtr& metric, double extend)
 {
     return ownedPtr (
         new RDTBalancedBidirectional (RRTStruct (constraint, sampler, metric, extend), true));
 }
 
 QToQPlanner::Ptr RRTQToQPlanner::makeBalancedBidirectional (const PlannerConstraint& constraint,
-                                                            QSampler::Ptr sampler,
-                                                            QMetric::Ptr metric, double extend)
+                                                            const QSampler::Ptr& sampler,
+                                                            const QMetric::CPtr& metric,
+                                                            double extend)
 {
     return ownedPtr (
         new RDTBalancedBidirectional (RRTStruct (constraint, sampler, metric, extend), false));

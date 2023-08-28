@@ -38,7 +38,7 @@ namespace rw { namespace loaders {
         static const std::string& idPropertyMap ();
 
         /**
-         * @brief Get identifier for rw::common::Property.
+         * @brief Get identifier for rw::core::Property.
          * @return the identifier.
          */
         static const std::string& idProperty ();

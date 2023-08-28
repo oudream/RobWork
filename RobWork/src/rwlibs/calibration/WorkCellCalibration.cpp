@@ -17,12 +17,6 @@
 
 #include "WorkCellCalibration.hpp"
 
-#include <rw/models/SerialDevice.hpp>
-
-using namespace rw::math;
-using namespace rw::common;
-using namespace rw::models;
-using namespace rw::kinematics;
 using namespace rwlibs::calibration;
 
 WorkCellCalibration::WorkCellCalibration ()

@@ -26,7 +26,6 @@
 
 using namespace rw::kinematics;
 using namespace rw::models;
-using namespace rw::common;
 using namespace rws;
 
 PropertyView::PropertyView () :
@@ -106,7 +105,7 @@ void PropertyView::frameSelectedListener (Frame* frame)
             int index = _cmbFrames->findText (frame->getName ().c_str ());
             _cmbFrames->setCurrentIndex (index);
         }
-        // rw::core::Ptr< PropertyMap > map = rw::common::ownedPtr( new PropertyMap(
+        // rw::core::Ptr< PropertyMap > map = rw::core::ownedPtr( new PropertyMap(
         // frame->getPropertyMap() ) );
         _inspector->setPropertyMap (&frame->getPropertyMap ());
         //_inspector->setPropertyMap(NULL);

@@ -17,7 +17,6 @@
 
 #include "ProximityStrategyBullet.hpp"
 
-#include <rw/common/Exception.hpp>
 #include <rw/core/macros.hpp>
 #include <rw/geometry/TriMesh.hpp>
 #include <rw/geometry/TriangleUtil.hpp>
@@ -32,6 +31,7 @@
 #include <float.h>
 #include <vector>
 
+using namespace rw::core;
 using namespace rw::common;
 using namespace rw::proximity;
 using namespace rw::geometry;

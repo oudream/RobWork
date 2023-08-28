@@ -20,10 +20,18 @@
 
 #include <rw/core/Log.hpp>
 #include <rw/core/os.hpp>
+
+/**
+ * @brief Deprecated namespace since 16/4-2020 for this class
+ * @deprecated use rw::core not rw::common
+ */
+namespace rw { namespace common {
+    using Log = rw::core::Log;
+}}    // namespace rw::common
+
 #ifdef RW_WIN32
 #pragma message("#include <rw/common/Log.hpp> is deprecated use #include <rw/core/Log.hpp> instead")
 #else
 #warning "#include <rw/common/Log.hpp> is deprecated use #include <rw/core/Log.hpp> instead"
 #endif
-
 #endif

@@ -208,7 +208,7 @@ bool LogDistanceMultiResult::autoLink ()
 
 SimulatorLogEntry::Ptr LogDistanceMultiResult::createNew (SimulatorLogScope* parent) const
 {
-    return ownedPtr (new LogDistanceMultiResult (parent));
+    return rw::core::ownedPtr (new LogDistanceMultiResult (parent));
 }
 
 std::string LogDistanceMultiResult::getTypeID ()

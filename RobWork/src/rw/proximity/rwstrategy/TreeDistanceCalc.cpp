@@ -13,18 +13,6 @@
 using namespace rw::math;
 using namespace rw::geometry;
 using namespace rw::proximity;
-using namespace rw::common;
-
-//#define RW_DEBUG( str ) std::cout << str  << std::endl;
-#define TIMING(str, func)                                              \
-    {                                                                  \
-        long start = rw::common::TimerUtil::currentTimeMs ();          \
-        func;                                                          \
-        long end = rw::common::TimerUtil::currentTimeMs ();            \
-        std::cout << str << ":" << (end - start) << "ms" << std::endl; \
-    }
-
-//#define TIMING( str, func ) {func;}
 
 namespace {
 

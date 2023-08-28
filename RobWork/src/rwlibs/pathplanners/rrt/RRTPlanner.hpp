@@ -50,7 +50,10 @@ namespace rwlibs { namespace pathplanners {
     {
       public:
         //! @brief Smart pointer type for a RRTPlanner.
-        typedef rw::core::Ptr< RRTPlanner > Ptr;
+        typedef rw::core::Ptr<RRTPlanner> Ptr;
+
+        //! @brief Smart pointer type for a const RRTPlanner.
+        typedef rw::core::Ptr<const RRTPlanner> CPtr;
 
         //! The type of RRT planner to construct.
         enum PlannerType {
@@ -90,6 +93,10 @@ namespace rwlibs { namespace pathplanners {
             RRTBalancedBidirectional
         };
 
+        RRTPlanner()                             = delete;
+        RRTPlanner(const RRTPlanner&)            = delete;
+        RRTPlanner& operator=(const RRTPlanner&) = delete;
+
         /**
            @brief RRT based point-to-point planner.
 
@@ -105,10 +112,10 @@ namespace rwlibs { namespace pathplanners {
            @param type [in] The particular variation the RRT planner algorithm.
         */
         static rw::pathplanning::QToQPlanner::Ptr
-        makeQToQPlanner (const rw::pathplanning::PlannerConstraint& constraint,
-                         rw::core::Ptr< rw::pathplanning::QSampler > sampler,
-                         rw::math::QMetric::Ptr metric, double extend,
-                         PlannerType type = RRTBalancedBidirectional);
+        makeQToQPlanner(const rw::pathplanning::PlannerConstraint& constraint,
+                        const rw::core::Ptr<rw::pathplanning::QSampler>& sampler,
+                        const rw::math::QMetric::CPtr& metric, double extend,
+                        PlannerType type = RRTBalancedBidirectional);
 
         /**
            @brief RRT based point-to-point planner.
@@ -124,14 +131,9 @@ namespace rwlibs { namespace pathplanners {
            @param type [in] The particular variation the RRT planner algorithm.
         */
         static rw::pathplanning::QToQPlanner::Ptr
-        makeQToQPlanner (const rw::pathplanning::PlannerConstraint& constraint,
-                         rw::core::Ptr< rw::models::Device > device,
-                         PlannerType type = RRTBalancedBidirectional);
-
-      private:
-        RRTPlanner ();
-        RRTPlanner (const RRTPlanner&);
-        RRTPlanner& operator= (const RRTPlanner&);
+        makeQToQPlanner(const rw::pathplanning::PlannerConstraint& constraint,
+                        const rw::core::Ptr<rw::models::Device>& device,
+                        PlannerType type = RRTBalancedBidirectional);
     };
 
     /*\}*/

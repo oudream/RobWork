@@ -7,7 +7,6 @@
 
 
 using namespace std;
-using namespace rw::common;
 using namespace rw::math;
 using namespace rw::geometry;
 using namespace rw::csg;

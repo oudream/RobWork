@@ -22,9 +22,9 @@ RobWork has various loaders, for XML files, images, geometry data and workcells.
 
 <table>
 <tr><th>Extension Point</th><th>Description</th><th>Known Extensions</th></tr>
-<tr><td>rw::common::DOMParser::Factory</td><td>Different parsers understanding the Document Object Model.</td><td>
+<tr><td>rw::core::DOMParser::Factory</td><td>Different parsers understanding the Document Object Model.</td><td>
   <ul>
-    <li>rw::common::BoostXMLParser</li>
+    <li>rw::core::BoostXMLParser</li>
   </ul>
 </td></tr>
 <tr><td>rw::loaders::ImageLoader::Factory</td><td>Loaders that are able to load an rw::sensor::Image</td><td>
@@ -164,16 +164,16 @@ The engine test framework also allows extension with new custom tests.
 </table>
 
 # Writing a Plugin - ImageLoader Example # {#sec_rw_plugins_plugin}
-Most plugins will have a very similar structure. In this example a plugin named MyPlugin is created, by implementing the rw::common::Plugin interface. The MyPlugin.hpp file will look as follows:
+Most plugins will have a very similar structure. In this example a plugin named MyPlugin is created, by implementing the rw::core::Plugin interface. The MyPlugin.hpp file will look as follows:
 \code{.cpp}
-#include <rw/common/Plugin.hpp>
+#include <rw/core/Plugin.hpp>
 
-class MyPlugin: public rw::common::Plugin {
+class MyPlugin: public rw::core::Plugin {
 public:
 	MyPlugin();
 	virtual ~MyPlugin() {};
-    std::vector<rw::common::Extension::Descriptor> getExtensionDescriptors();
-    rw::common::Ptr<rw::common::Extension> makeExtension(const std::string& id);
+    std::vector<rw::core::Extension::Descriptor> getExtensionDescriptors();
+    rw::core::Ptr<rw::core::Extension> makeExtension(const std::string& id);
 };
 \endcode
 By default, RobWork has the ability to load images in PGM, PPM and RGB formats. If, for instance, a user needs support for JPG or JPEG formats, it is possible to implement the rw::loaders::ImageLoader interface with a specific loader for these formats. Assume that such an implementation, MyImageLoader, is already developed. Now, the user could just use this loader directly in its program. Instead, the loader should be provided in a plugin, as it will then be possible to use the loader in all programs based on the RobWork framework, such as RobWorkStudio. The implementation of the Plugin interface would then look similar to the following example:
@@ -182,7 +182,7 @@ By default, RobWork has the ability to load images in PGM, PPM and RGB formats. 
 #include "MyPlugin.hpp"
 #include "MyImageLoader.hpp"
 
-using namespace rw::common;
+using namespace rw::core;
 
 RW_ADD_PLUGIN(MyPlugin)
 
@@ -235,14 +235,12 @@ On Linux the plugin will have the name libMyPlugin.rwplugin.so. When this plugin
 # Loading Plugins # {#sec_rw_plugins_loading}
 There are different ways to actually load the plugins after creation. RobWork will look in various default directories where it will try to load all libraries with the correct rwplugin extension. If plugins lie in other directories, the user must point RobWork to these plugins. Currently, RobWork will automatically do the loading. <b>In the future this behaviour is likely to change</b>, so if program is written that depends on plugins being loaded, an explicit statement should be used to initialize the RobWork framework.
 
-Every program that needs to use plugins, should initialize RobWork in the main function using rw::RobWork::init() or rw::RobWork::init(int argc, const char *const * argv) :
+Every program that needs to use plugins, should initialize RobWork in the main function using rw::core::RobWork::init() or rw::core::RobWork::init(int argc, const char *const * argv) :
 \code{.cpp}
-#include <rw/RobWork.hpp>
-
-using rw::RobWork;
+#include <rw/core/RobWork.hpp>
 
 int main(int argc, char** argv) {
-    RobWork::init(argc,argv);
+    rw::core::RobWork::init(argc,argv);
     
     ...
     

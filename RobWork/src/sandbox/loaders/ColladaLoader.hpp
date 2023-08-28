@@ -73,7 +73,7 @@ namespace loaders {
          * It is possible to specify whether to use the default schema which is the default behavior. If a
          * schema is specified in the XML-file or no schema should be used set \b useDefaultSchema to false.
          *
-         * Throw rw::common::Exception if reading the path fails
+         * Throw rw::core::Exception if reading the path fails
          *
          * @param instream [in] The input stream to read from
          */

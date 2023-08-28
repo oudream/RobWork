@@ -134,7 +134,7 @@ namespace rwlibs { namespace mathematica {
          * @brief Construct ListPlot from existing expression.
          * @param expression [in] the expression to parse as ListPlot.
          * @return the parsed ListPlot expression.
-         * @throws rw::common::Exception if parsing fails.
+         * @throws rw::core::Exception if parsing fails.
          */
         static ListPlot fromExpression (const Mathematica::Expression& expression);
 

@@ -20,6 +20,15 @@
 
 #include <rw/core/Plugin.hpp>
 #include <rw/core/os.hpp>
+
+/**
+ * @brief Deprecated namespace since 16/4-2020 for this class
+ * @deprecated use rw::core not rw::common
+ */
+namespace rw { namespace common {
+    using Plugin = rw::core::Plugin;
+}}    // namespace rw::common
+
 #ifdef RW_WIN32
 #pragma message( \
     "#include <rw/core/Plugin.hpp> is deprecated use #include <rw/core/Plugin.hpp> instead")

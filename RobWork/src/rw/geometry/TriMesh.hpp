@@ -169,10 +169,6 @@ namespace rw { namespace geometry {
 
             void inc ()
             {
-                using namespace rw::geometry;
-                using namespace rw::math;
-                using namespace rw::common;
-
                 if (_first != _end) {
                     _pos = _mesh.getTriangle (_first).getVertex (_subIdx);
                     _subIdx++;

@@ -15,11 +15,20 @@
  * limitations under the License.
  ********************************************************************************/
 
-#ifndef RW_COMMON_IOUTIL_HPP_
-#define RW_COMMON_IOUTIL_HPP_
+#ifndef RW_COMMON_IOUTIL_HPP
+#define RW_COMMON_IOUTIL_HPP
 
 #include <rw/core/IOUtil.hpp>
 #include <rw/core/os.hpp>
+
+/**
+ * @brief Deprecated namespace since 16/4-2020 for this class
+ * @deprecated use rw::core not rw::common
+ */
+namespace rw { namespace common {
+    using IOUtil = rw::core::IOUtil;
+}}    // namespace rw::common
+
 #ifdef RW_WIN32
 #pragma message( \
     "#include <rw/common/IOUtil.hpp> is deprecated use #include <rw/core/IOUtil.hpp> instead")

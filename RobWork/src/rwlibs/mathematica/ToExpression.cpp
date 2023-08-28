@@ -17,7 +17,7 @@
 
 #include "ToExpression.hpp"
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rwlibs::mathematica;
 
 ToExpression::ToExpression (const char* expression) :

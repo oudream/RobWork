@@ -59,26 +59,26 @@ namespace rwsim { namespace log {
          * Ownership is shared by the caller and the parent widget if given.
          */
         DistanceMultiResultWidget (
-            rw::common::Ptr< const rwsim::log::LogDistanceMultiResult > entry, QWidget* parent = 0);
+            rw::core::Ptr< const rwsim::log::LogDistanceMultiResult > entry, QWidget* parent = 0);
 
         //! @brief Destructor.
         virtual ~DistanceMultiResultWidget ();
 
         //! @copydoc rwsimlibs::gui::SimulatorLogEntryWidget::setDWC
-        virtual void setDWC (rw::common::Ptr< const rwsim::dynamics::DynamicWorkCell > dwc);
+        virtual void setDWC (rw::core::Ptr< const rwsim::dynamics::DynamicWorkCell > dwc);
 
         //! @copydoc rwsimlibs::gui::SimulatorLogEntryWidget::setEntry
-        virtual void setEntry (rw::common::Ptr< const rwsim::log::SimulatorLog > entry);
+        virtual void setEntry (rw::core::Ptr< const rwsim::log::SimulatorLog > entry);
 
         //! @copydoc rwsimlibs::gui::SimulatorLogEntryWidget::getEntry
-        virtual rw::common::Ptr< const rwsim::log::SimulatorLog > getEntry () const;
+        virtual rw::core::Ptr< const rwsim::log::SimulatorLog > getEntry () const;
 
         //! @copydoc rwsimlibs::gui::SimulatorLogEntryWidget::updateEntryWidget
         virtual void updateEntryWidget ();
 
         //! @copydoc rwsimlibs::gui::SimulatorLogEntryWidget::showGraphics
-        virtual void showGraphics (rw::common::Ptr< rw::graphics::GroupNode > root,
-                                   rw::common::Ptr< rw::graphics::SceneGraph > graph);
+        virtual void showGraphics (rw::core::Ptr< rw::graphics::GroupNode > root,
+                                   rw::core::Ptr< rw::graphics::SceneGraph > graph);
 
         //! @copydoc rwsimlibs::gui::SimulatorLogEntryWidget::getName
         virtual std::string getName () const;
@@ -95,11 +95,11 @@ namespace rwsim { namespace log {
 
             //! @copydoc rwsimlibs::gui::SimulatorLogEntryWidget::Dispatcher::makeWidget
             SimulatorLogEntryWidget*
-            makeWidget (rw::common::Ptr< const rwsim::log::SimulatorLog > entry,
+            makeWidget (rw::core::Ptr< const rwsim::log::SimulatorLog > entry,
                         QWidget* parent = 0) const;
 
             //! @copydoc rwsimlibs::gui::SimulatorLogEntryWidget::Dispatcher::accepts
-            bool accepts (rw::common::Ptr< const rwsim::log::SimulatorLog > entry) const;
+            bool accepts (rw::core::Ptr< const rwsim::log::SimulatorLog > entry) const;
         };
 
       private slots:
@@ -108,11 +108,11 @@ namespace rwsim { namespace log {
 
       private:
         Ui::DistanceResultWidget* const _ui;
-        rw::common::Ptr< const rwsim::dynamics::DynamicWorkCell > _dwc;
-        rw::common::Ptr< const rwsim::log::LogPositions > _positions;
-        rw::common::Ptr< const rwsim::log::LogDistanceMultiResult > _result;
-        rw::common::Ptr< rw::graphics::GroupNode > _root;
-        rw::common::Ptr< rw::graphics::SceneGraph > _graph;
+        rw::core::Ptr< const rwsim::dynamics::DynamicWorkCell > _dwc;
+        rw::core::Ptr< const rwsim::log::LogPositions > _positions;
+        rw::core::Ptr< const rwsim::log::LogDistanceMultiResult > _result;
+        rw::core::Ptr< rw::graphics::GroupNode > _root;
+        rw::core::Ptr< rw::graphics::SceneGraph > _graph;
     };
     //! @}
 

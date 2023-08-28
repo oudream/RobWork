@@ -56,7 +56,7 @@ namespace rw { namespace core {
          *
          * @param message [in] A message for a user.
          */
-        Exception (const rw::core::Message& message); 
+        Exception (const rw::core::Message& message);
 
         /**
          * @brief Constructor
@@ -122,13 +122,5 @@ namespace rw { namespace core {
 
     /*@}*/
 }}    // namespace rw::core
-
-/*
- * Deprecated namespace since 16/4-2020 for this class
- * use rw::core not rw::common
- */
-namespace rw { namespace common {
-    using namespace rw::core;
-}}    // namespace rw::common
 
 #endif    // end include guard

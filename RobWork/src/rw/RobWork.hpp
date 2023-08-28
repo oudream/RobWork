@@ -14,11 +14,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ********************************************************************************/
-#ifndef RW_ROBWORK_HPP_
-#define RW_ROBWORK_HPP_
+#ifndef RW_ROBWORK_HPP
+#define RW_ROBWORK_HPP
 
 #include <rw/core/RobWork.hpp>
 #include <rw/core/os.hpp>
+
+/**
+ * @brief Deprecated namespace since 16/4-2020 for this class
+ * @deprecated use rw::core not rw
+ */
+namespace rw {
+using RobWork = rw::core::RobWork;
+}
+
 #ifdef RW_WIN32
 #pragma message("This is deprecated use <rw/core/RobWork.hpp> instead")
 #else

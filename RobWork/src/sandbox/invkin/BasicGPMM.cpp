@@ -18,7 +18,7 @@
 
 #include "BasicGPMM.hpp"
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/kinematics/FKRange.hpp>
 #include <rw/math/Math.hpp>
 #include <rw/math/LinearAlgebra.hpp>

@@ -15,11 +15,32 @@
  * limitations under the License.
  ********************************************************************************/
 
-#ifndef RW_COMMON_PROPERTY_HPP_
-#define RW_COMMON_PROPERTY_HPP_
+#ifndef RW_COMMON_PROPERTY_HPP
+#define RW_COMMON_PROPERTY_HPP
 
 #include <rw/core/Property.hpp>
 #include <rw/core/os.hpp>
+
+/**
+ * @brief Deprecated namespace since 16/4-2020 for this class
+ * @deprecated use rw::core not rw::common
+ */
+namespace rw { namespace common {
+    template< class T > using Property = rw::core::Property< T >;
+
+    /**
+     * @brief cast a property base to a specific property. Notice that the pointer
+     * returned is owned by the PropertyBase::Ptr.
+     * @param base [in] property base pointer
+     * @return property of type \b T or null if property is of another type
+     */
+    template< class T > Property< T >* toProperty (rw::core::PropertyBase::Ptr base)
+    {
+        Property< T >* p = dynamic_cast< Property< T >* > (base.get ());
+        return p;
+    }
+}}    // namespace rw::common
+
 #ifdef RW_WIN32
 #pragma message( \
     "#include <rw/common/Property.hpp> is deprecated use #include <rw/core/Property.hpp> instead")

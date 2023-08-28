@@ -541,7 +541,7 @@ CartesianDeviceTab::CartesianDeviceTab (const std::pair< rw::math::Q, rw::math::
 
     tablayout->addWidget (_transformSliderWidget, 2, 0);
 
-    _iksolver = ownedPtr (new JacobianIKSolver (_device, _tcpFrame, _state));
+    _iksolver = rw::core::ownedPtr(new JacobianIKSolver(_device, _tcpFrame, _state));
 
     _updating = false;
 }
@@ -555,7 +555,7 @@ void CartesianDeviceTab::setUnits (const std::vector< double >& converters,
 void CartesianDeviceTab::tcpFrameChanged (int index)
 {
     _tcpFrame = _frames[index];
-    _iksolver = ownedPtr (new JacobianIKSolver (_device, _tcpFrame, _state));
+    _iksolver = rw::core::ownedPtr(new JacobianIKSolver(_device, _tcpFrame, _state));
     _refTtcp  = FKRange (_refFrame, _tcpFrame, _state);
 
     doUpdateValues ();

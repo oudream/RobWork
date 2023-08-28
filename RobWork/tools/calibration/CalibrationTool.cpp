@@ -146,7 +146,7 @@ int main(int argumentCount, char** argumentArray) {
 	try {
 		optionParser.parseArguments(argumentCount, argumentArray);
 		std::cout << "Parsed." << std::endl;
-	} catch(rw::common::Exception& exception) {
+	} catch(rw::core::Exception& exception) {
 		std::cout << "FAILED: " << exception.getMessage() << std::endl;
 		std::cout << optionParser << std::endl;
 		return -1;
@@ -273,7 +273,7 @@ int main(int argumentCount, char** argumentArray) {
 
 
 	//Run the extrinsic calibration
-	WorkCellCalibration::Ptr exCalibration = rw::common::ownedPtr(new WorkCellCalibration(devicesAndFrames, sensorFrames));
+	WorkCellCalibration::Ptr exCalibration = rw::core::ownedPtr(new WorkCellCalibration(devicesAndFrames, sensorFrames));
 	if (optionParser.isPreCalibrateExtrinsicsEnabled()) {
 		std::cout<<"Precalibrating Extrinsics...";
 		std::wcout.flush();
@@ -335,18 +335,18 @@ int main(int argumentCount, char** argumentArray) {
 	std::cout << "Initializing calibration... "<<std::endl;
 
 
-	WorkCellCalibration::Ptr workcellCalibration = rw::common::ownedPtr(new WorkCellCalibration(devicesAndFrames, sensorFrames));
+	WorkCellCalibration::Ptr workcellCalibration = rw::core::ownedPtr(new WorkCellCalibration(devicesAndFrames, sensorFrames));
 	std::cout << "Initialized." << std::endl;
 
 	std::cout << "Initializing jacobian... ";
 	std::cout.flush();
-	WorkCellJacobian::Ptr workcellJacobian= rw::common::ownedPtr(new WorkCellJacobian(workcellCalibration));
+	WorkCellJacobian::Ptr workcellJacobian= rw::core::ownedPtr(new WorkCellJacobian(workcellCalibration));
 	std::cout << "Initialized." << std::endl;
 
 	bool isWeightingMeasurements = optionParser.isWeightingMeasurements();
 	std::cout << "Initializing calibrator [ Weighting: " << (isWeightingMeasurements ? "Enabled" : "Disabled") << " ].. ";
 	std::cout.flush();
-	WorkCellCalibrator::Ptr workcellCalibrator = rw::common::ownedPtr(new WorkCellCalibrator(workCell, workcellCalibration, workcellJacobian));
+	WorkCellCalibrator::Ptr workcellCalibrator = rw::core::ownedPtr(new WorkCellCalibrator(workCell, workcellCalibration, workcellJacobian));
 	workcellCalibrator->setMeasurements(calibrationMeasurements);
 	workcellCalibrator->setUseWeightedMeasurements(true || isWeightingMeasurements);
 	std::cout << "Initialized." << std::endl;
@@ -404,7 +404,7 @@ int main(int argumentCount, char** argumentArray) {
 			std::cout << "Saved." << std::endl;
 		}
 
-	} catch (rw::common::Exception& exception) {
+	} catch (rw::core::Exception& exception) {
 		std::cout << "FAILED: " << exception.getMessage() << std::endl;
 
 		std::cout << "Solver log:" << std::endl;

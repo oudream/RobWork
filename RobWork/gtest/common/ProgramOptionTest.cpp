@@ -67,7 +67,7 @@ TEST (ProgramOptions, ParseInitOptions)
     ProgramOptions parser ("testApp", "6.6.6");
     parser.initOptions ();
 
-    rw::common::Log::getInstance ()->setLevel (Log::LogIndex::Warning);
+    rw::core::Log::getInstance()->setLevel(rw::core::Log::LogIndex::Warning);
     EXPECT_EQ (parser.parse ("--help"), -1);
     EXPECT_EQ (parser.parse ("--version"), -1);
 

@@ -203,9 +203,9 @@ namespace proximity {
 
         void optimize ()
         {
-            using namespace rw::common;
-            using namespace boost;
             /*
+            using namespace rw::core;
+            using namespace boost;
             // this copies all nodes into a memory friendlier structure
             std::pair<int,int> nrNodes = countNodes();
             rw::core::Ptr<std::vector<Node> > nodes = ownedPtr( new

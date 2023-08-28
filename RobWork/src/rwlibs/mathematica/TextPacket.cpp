@@ -17,7 +17,7 @@
 
 #include "TextPacket.hpp"
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rwlibs::mathematica;
 
 TextPacket::TextPacket (const Mathematica::String& string) :

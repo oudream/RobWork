@@ -44,16 +44,16 @@ C++ shared pointer conventions
 The **RobWork** libraries make extensive use of non-copyable objects
 (such as object referred to by interface) shared by pointer between
 different algorithms. Ownership of objects is managed by the shared
-pointer type rw::common::Ptr. If an object needs access to a
+pointer type rw::core::Ptr. If an object needs access to a
 non-copyable object, the constructor of the object will conventionally
-take a rw::common::Ptr type as parameter.
+take a rw::core::Ptr type as parameter.
 
 Classes that are commonly referred to by shared pointer define a
 shortcut for this pointer type. If the class is named *T*, the name
 of the pointer type will be *T::Ptr*, and the type of the pointer will
-be rw::common::Ptr<T>. Often there will also be a *T::CPtr* defined
+be rw::core::Ptr<T>. Often there will also be a *T::CPtr* defined
 for pointers to constant objects that can not be modified.
-This will give the type rw::common::Ptr<const T>.
+This will give the type rw::core::Ptr<const T>.
 
 Here are some examples of these such pointer types:
 
@@ -70,24 +70,24 @@ Here are some examples of constructor functions for such objects:
 - rw::pathplanning::QSampler::makeUniform()
 - rwlibs::pathplanners::RRTPlanner::makeQToQPlanner()
 
-The rw::common::Ptr type differs from standard shared pointer
+The rw::core::Ptr type differs from standard shared pointer
 implementations by allowing the pointer to refer to a stack allocated
 object or another object for which an entity has already taken
 the full ownership. To make the use of such objects easy, a
 pointer to *T* can be implicitly converted to Ptr<T>, but the
-implicitly constructed rw::common::Ptr type *does not* take
-ownership of the object. If the rw::common::Ptr type should take
+implicitly constructed rw::core::Ptr type *does not* take
+ownership of the object. If the rw::core::Ptr type should take
 ownership of the entity, you must explicitly call the
-rw::common::ownedPtr() function. This example illustrates the idiom:
+rw::core::ownedPtr() function. This example illustrates the idiom:
 
 .. literalinclude:: ../../../RobWork/example/snippets/ex-owned-ptr.cpp
    :language: c++
    :linenos:
 
-In everyday programming, the construction of rw::common::Ptr types is
+In everyday programming, the construction of rw::core::Ptr types is
 managed by the constructor functions for the various objects. Only if
 you write your own extensions for interfaces in **RobWork** will you
-need to explicitly call rw::common::ownedPtr().
+need to explicitly call rw::core::ownedPtr().
 
 Serialization
 =============

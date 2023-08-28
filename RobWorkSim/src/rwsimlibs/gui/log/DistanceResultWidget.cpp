@@ -27,7 +27,7 @@
 #include <rwsim/log/LogDistanceResult.hpp>
 #include <rwsim/log/LogPositions.hpp>
 
-using rw::common::ownedPtr;
+using rw::core::ownedPtr;
 using namespace rw::geometry;
 using namespace rw::graphics;
 using namespace rw::models;
@@ -67,7 +67,7 @@ void DistanceResultWidget::setDWC (const DynamicWorkCell::CPtr dwc)
 
 void DistanceResultWidget::setEntry (const SimulatorLog::CPtr entry)
 {
-    const rw::common::Ptr< const LogDistanceResult > set = entry.cast< const LogDistanceResult > ();
+    const rw::core::Ptr< const LogDistanceResult > set = entry.cast< const LogDistanceResult > ();
     if (!(set == NULL))
         _result = set;
     else
@@ -141,7 +141,7 @@ DistanceResultWidget::Dispatcher::~Dispatcher ()
 SimulatorLogEntryWidget*
 DistanceResultWidget::Dispatcher::makeWidget (const SimulatorLog::CPtr entry, QWidget* parent) const
 {
-    const rw::common::Ptr< const LogDistanceResult > tentry =
+    const rw::core::Ptr< const LogDistanceResult > tentry =
         entry.cast< const LogDistanceResult > ();
     if (!(tentry == NULL))
         return new DistanceResultWidget (tentry, parent);

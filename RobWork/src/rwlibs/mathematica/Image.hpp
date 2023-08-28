@@ -90,7 +90,7 @@ namespace rwlibs { namespace mathematica {
          * @brief Construct RobWork Image from Mathematica Image expression.
          * @param expression [in] the expression to parse.
          * @return the parsed Image expression.
-         * @throws rw::common::Exception if parsing fails.
+         * @throws rw::core::Exception if parsing fails.
          */
         static rw::core::Ptr< rw::sensor::Image >
         toRobWorkImage (const Mathematica::Expression& expression);

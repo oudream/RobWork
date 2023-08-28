@@ -114,7 +114,6 @@ void RenderGeometry::draw (const DrawableNode::RenderInfo& info, DrawableNode::D
             render ();
             break;
     }
-    // rw::common::Log::infoLog() << "Drawing geometry\n";
     glPopMatrix ();
 }
 

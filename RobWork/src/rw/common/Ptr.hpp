@@ -15,15 +15,32 @@
  * limitations under the License.
  ********************************************************************************/
 
-#ifndef RW_COMMON_PTR_HPP_
-#define RW_COMMON_PTR_HPP_
+#ifndef RW_COMMON_PTR_HPP
+#define RW_COMMON_PTR_HPP
 
 #include <rw/core/Ptr.hpp>
 #include <rw/core/os.hpp>
+
+/**
+ * @brief Deprecated namespace since 16/4-2020 for this class
+ * @deprecated use rw::core not rw::common
+ */
+namespace rw { namespace common {
+    template< class T > using Ptr = rw::core::Ptr< T >;
+
+    /**
+     * @brief A Ptr that takes ownership over a raw pointer \b ptr.
+     * @relates Ptr
+     */
+    template< class T > Ptr< T > ownedPtr (T* ptr)
+    {
+        return Ptr< T > (typename Ptr< T >::shared_ptr (ptr));
+    }
+}}    // namespace rw::common
+
 #ifdef RW_WIN32
 #pragma message("#include <rw/common/Ptr.hpp> is deprecated use #include <rw/core/Ptr.hpp> instead")
 #else
 #warning "#include <rw/common/Ptr.hpp> is deprecated use #include <rw/core/Ptr.hpp> instead"
 #endif
-
 #endif

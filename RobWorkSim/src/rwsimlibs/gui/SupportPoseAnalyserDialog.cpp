@@ -1221,7 +1221,8 @@ void SupportPoseAnalyserDialog::process ()
         typedef std::map< int, std::vector< int > >::value_type mapType2;
         for (mapType2 val : *regions) {
             if (val.second.size () > 4)
-                Log::infoLog () << "Region stat: " << val.first << ":" << val.second.size ();
+                rw::core::Log::infoLog()
+                    << "Region stat: " << val.first << ":" << val.second.size();
 
             Vector3D<> dir (0, 0, 0);
             double angle = 0;

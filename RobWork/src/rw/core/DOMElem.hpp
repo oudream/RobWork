@@ -385,7 +385,7 @@ namespace rw { namespace core {
             }
 
             //! @brief Pointer to the T element
-            virtual rw::core::Ptr< DOMElem > operator-> ()
+            virtual rw::core::Ptr< DOMElem > operator->()
             {
                 if (_impl)
                     return _impl->getElem ();
@@ -434,13 +434,5 @@ namespace rw { namespace core {
         };
     };
 }}    // namespace rw::core
-
-/*
- * Deprecated namespace since 16/4-2020 for this class
- * use rw::core not rw::common
- */
-namespace rw { namespace common {
-    using namespace rw::core;
-}}    // namespace rw::common
 
 #endif

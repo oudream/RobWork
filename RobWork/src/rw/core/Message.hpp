@@ -144,7 +144,7 @@ namespace rw { namespace core {
         std::string _message;
     };
 
-//#if !defined(SWIG)
+// #if !defined(SWIG)
     /** @brief Format to \b out the message \b msg.
      *
      * The format for the exception is
@@ -155,7 +155,7 @@ namespace rw { namespace core {
      */
     std::ostream& operator<< (std::ostream& out, const Message& msg);
 
-//#endif
+// #endif
 
     /*@}*/
 }}    // namespace rw::core
@@ -163,13 +163,5 @@ namespace rw { namespace core {
 #if defined(SWIG)
 TOSTRING_OUTOFCLASSDEF (rw::core::Message)
 #endif
-
-/*
- * Deprecated namespace since 16/4-2020 for this class
- * use rw::core not rw::common
- */
-namespace rw { namespace common {
-    using namespace rw::core;
-}}    // namespace rw::common
 
 #endif    // end include guard

@@ -20,6 +20,15 @@
 
 #include <rw/core/Exception.hpp>
 #include <rw/core/os.hpp>
+
+/**
+ * @brief Deprecated namespace since 16/4-2020 for this class
+ * @deprecated use rw::core not rw::common
+ */
+namespace rw { namespace common {
+    using Exception = rw::core::Exception;
+}}    // namespace rw::common
+
 #ifdef RW_WIN32
 #pragma message( \
     "#include <rw/common/Exception.hpp> is deprecated use #include <rw/core/Exception.hpp> instead")

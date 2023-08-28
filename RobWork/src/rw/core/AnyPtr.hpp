@@ -130,7 +130,7 @@ namespace rw { namespace core {
             if (content == p.content) {
                 return true;
             }
-            if (content.isNull () || p.content.isNull()) {
+            if (content.isNull () || p.content.isNull ()) {
                 return false;
             }
             return content->getVoidPtr () == p.content->getVoidPtr ();
@@ -218,13 +218,5 @@ namespace rw { namespace core {
         rw::core::Ptr< placeholder > content;
     };
 }}    // namespace rw::core
-
-/*
- * Deprecated namespace since 16/4-2020 for this class
- * use rw::core not rw::common
- */
-namespace rw { namespace common {
-    using namespace rw::core;
-}}    // namespace rw::common
 
 #endif

@@ -23,7 +23,7 @@
 #include <rw/core/PropertyMap.hpp>
 #include <rw/sensor/Image.hpp>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rwlibs::mathematica;
 
 Image::Image (rw::core::Ptr< const rw::sensor::Image > image) : Mathematica::FunctionBase ("Image")

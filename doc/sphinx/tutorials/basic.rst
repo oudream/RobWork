@@ -87,8 +87,8 @@ Now edit you “HelloWorld.cpp” file and type in a small main application.
 
 .. code-block:: c++
 
-   #include <rw/common/Log.hpp>
-   using namespace rw::common;
+   #include <rw/core/Log.hpp>
+   using namespace rw::core;
 
    int main(int argc, char** argv) {
       Log::infoLog() << "Hey, we are printing to the RobWork log!\n";
@@ -96,9 +96,9 @@ Now edit you “HelloWorld.cpp” file and type in a small main application.
    }
 
 This is very basic but the reader should notice two important aspects. Firstly, the header file
-rw/common/Log.hpp is included. This file includes only the Log class functionality which is the only class
+rw/core/Log.hpp is included. This file includes only the Log class functionality which is the only class
 used in the code. Secondly the “using namespace” clause is used such that we can call Log::infoLog()
-instead of rw::common::Log::infoLog().
+instead of rw::core::Log::infoLog().
 When many different namespaces and classes from robwork are used, it can be somewhat tedious to write
 the “using namespace” and includes in every file. Instead a general header file rw/rw.hpp and a macro can
 be used to assemble all classes into one namespace: “robwork”. We rewrite the code snippet from above.
@@ -112,7 +112,7 @@ be used to assemble all classes into one namespace: “robwork”. We rewrite th
    
    int main() {
        Log::infoLog() << "The using namespace enables us to call Log directly!\n";
-       rw::common::Log::infoLog() << "We can still use the native namespace!\n";
+       rw::core::Log::infoLog() << "We can still use the native namespace!\n";
        robwork::Log::infoLog() << "but also the general namespace!\n";
        return 0;
    }

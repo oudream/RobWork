@@ -1,11 +1,11 @@
 #include <rw/core/Ptr.hpp>
 
-using namespace rw::common;
+using namespace rw::core;
 
 class T {
     public:
-        typedef rw::common::Ptr<T> Ptr;
-        typedef rw::common::Ptr<const T> CPtr;
+        typedef rw::core::Ptr<T> Ptr;
+        typedef rw::core::Ptr<const T> CPtr;
 
         static Ptr make()
         {

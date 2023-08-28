@@ -14,10 +14,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ********************************************************************************/
-#ifndef RW_COMMON_STRINGUTIL_HPP_
-#define RW_COMMON_STRINGUTIL_HPP_
+
+#ifndef RW_COMMON_STRINGUTIL_HPP
+#define RW_COMMON_STRINGUTIL_HPP
 
 #include <rw/core/StringUtil.hpp>
+
+/**
+ * @brief Deprecated namespace since 16/4-2020 for this class
+ * @deprecated use rw::core not rw::common
+ */
+namespace rw { namespace common {
+    using StringUtil     = rw::core::StringUtil;
+    using StringPair     = rw::core::StringPair;
+    using StringPairList = rw::core::StringPairList;
+}}    // namespace rw::common
+
 #warning \
     "#include <rw/core/StringUtil.hpp> is deprecated use #include <rw/core/StringUtil.hpp> instead"
 

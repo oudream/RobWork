@@ -7,11 +7,11 @@
 
 #include <vector>
 
-#include <rw/common/Log.hpp>
+#include <rw/core/Log.hpp>
 #include <rwsim/dynamics/DynamicWorkCell.hpp>
 #include <rwsim/loaders/DynamicWorkCellLoader.hpp>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rwsim::dynamics;
 using namespace rwsim::loaders;
 

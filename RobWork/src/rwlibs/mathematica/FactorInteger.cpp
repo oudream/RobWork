@@ -17,7 +17,7 @@
 
 #include "FactorInteger.hpp"
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rwlibs::mathematica;
 
 FactorInteger::FactorInteger (const Mathematica::Integer& integer) :

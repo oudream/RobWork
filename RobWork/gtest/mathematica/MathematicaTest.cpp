@@ -17,13 +17,14 @@
 
 #include <gtest/gtest.h>
 
-#include <rw/common/Exception.hpp>
-#include <rw/common/PropertyMap.hpp>
+#include <rw/core/Exception.hpp>
+#include <rw/core/PropertyMap.hpp>
 #include <rw/common/TimerUtil.hpp>
 #include <rw/sensor/Image.hpp>
 #include <rwlibs/mathematica.hpp>
 
 using namespace rw::common;
+using namespace rw::core;
 using namespace rwlibs::mathematica;
 
 TEST(MathematicaTest, MathematicaTest ){
@@ -49,10 +50,10 @@ TEST(MathematicaTest, MathematicaTest ){
 			try {
 				const List::Ptr list = List::fromExpression(*packet->expression());
 				EXPECT_FALSE(list.isNull());
-				const std::list<rw::common::Ptr<const Mathematica::Expression> > sols = list->getArguments();
+				const std::list<rw::core::Ptr<const Mathematica::Expression> > sols = list->getArguments();
 				EXPECT_EQ(sols.size() , 3);
-				for(const rw::common::Ptr<const Mathematica::Expression> sol : sols) {
-					const rw::common::Ptr<const Mathematica::FunctionBase> fct = sol.cast<const Mathematica::FunctionBase>();
+				for(const rw::core::Ptr<const Mathematica::Expression> sol : sols) {
+					const rw::core::Ptr<const Mathematica::FunctionBase> fct = sol.cast<const Mathematica::FunctionBase>();
 					const PropertyMap::Ptr map = Rule::toPropertyMap(fct->getArguments());
 					const int x = map->get<int>("x");
 					const int y = map->get<int>("y");

@@ -82,7 +82,6 @@ namespace rw { namespace core {
          */
         void writeln (const std::string& str);
 
-
         /**
          * @brief general stream operator
          */
@@ -92,7 +91,6 @@ namespace rw { namespace core {
             tmp << t;
             return this->operator<< (tmp.str ());
         }
-
 
         /**
          * @brief specialized stream operator
@@ -144,13 +142,5 @@ namespace rw { namespace core {
     /* @} */
 
 }}    // namespace rw::core
-
-/*
- * Deprecated namespace since 16/4-2020 for this class
- * use rw::core not rw::common
- */
-namespace rw { namespace common {
-    using namespace rw::core;
-}}    // namespace rw::common
 
 #endif /*RW_CORE_LOGWRITER_HPP*/

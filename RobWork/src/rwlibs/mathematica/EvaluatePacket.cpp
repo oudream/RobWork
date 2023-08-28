@@ -17,7 +17,7 @@
 
 #include "EvaluatePacket.hpp"
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rwlibs::mathematica;
 
 EvaluatePacket::EvaluatePacket (const Mathematica::Expression& expression) :
