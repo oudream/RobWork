@@ -25,7 +25,6 @@
 using namespace rw::math;
 using namespace rw::pathplanning;
 using namespace rw::trajectory;
-using namespace rw::common;
 using namespace rw::kinematics;
 using namespace rw::models;
 using namespace rwlibs::pathplanners;

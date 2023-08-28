@@ -36,7 +36,7 @@ namespace rw { namespace loaders {
     /**
      * @brief Class for saving rw::core::PropertyMap to XML
      *
-     * The saver is capable of saving all types defined in rw::common::PropertyType.
+     * The saver is capable of saving all types defined in rw::core::PropertyType.
      *
      * Implemented using RobWork DOM parser abstraction.
      */

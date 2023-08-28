@@ -32,7 +32,6 @@
 #include <rw/proximity/rwstrategy/ProximityStrategyRW.hpp>
 
 using namespace rw;
-using namespace rw::common;
 using namespace rw::core;
 using namespace rw::kinematics;
 using namespace rw::models;

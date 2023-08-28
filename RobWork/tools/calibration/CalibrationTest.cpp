@@ -63,8 +63,8 @@ BOOST_AUTO_TEST_CASE( CalibratorTest ) {
 	const int ENCODER_PARAMETER_TAU = 0, ENCODER_PARAMETER_SIGMA = 1; 
 	std::vector<rw::math::Function<>::Ptr> encoderCorrectionFunctions;
 
-	encoderCorrectionFunctions.push_back(rw::common::ownedPtr(new EncoderTauFunction()));
-	encoderCorrectionFunctions.push_back(rw::common::ownedPtr(new EncoderSigmaFunction()));
+	encoderCorrectionFunctions.push_back(rw::core::ownedPtr(new EncoderTauFunction()));
+	encoderCorrectionFunctions.push_back(rw::core::ownedPtr(new EncoderSigmaFunction()));
 	std::vector<rw::kinematics::Frame*> sensorFrames;
 	sensorFrames.push_back(sensorFrame1.get());
 	sensorFrames.push_back(sensorFrame2.get());
@@ -73,7 +73,7 @@ BOOST_AUTO_TEST_CASE( CalibratorTest ) {
 	std::vector<DevAndFrame> deviceAndFrame;
 	deviceAndFrame.push_back(std::make_pair(serialDevice, measurementFrame.get()));
 
-	WorkCellCalibration::Ptr artificialCalibration(rw::common::ownedPtr(new WorkCellCalibration(deviceAndFrame, sensorFrames, encoderCorrectionFunctions)));
+	WorkCellCalibration::Ptr artificialCalibration(rw::core::ownedPtr(new WorkCellCalibration(deviceAndFrame, sensorFrames, encoderCorrectionFunctions)));
 	artificialCalibration->getFixedFrameCalibrations()->getCalibration(0)->setCorrectionTransform(rw::math::Transform3D<>(rw::math::Vector3D<>(10.0 / 1000.0, -8.0 / 1000.0, 7 / 1000.0), 
 																														  rw::math::RPY<>(1.7 * rw::math::Deg2Rad, 0.7 * rw::math::Deg2Rad, -2.0 * rw::math::Deg2Rad)));
 	artificialCalibration->getFixedFrameCalibrations()->getCalibration(1)->setCorrectionTransform(rw::math::Transform3D<>(rw::math::Vector3D<>(-9.0 / 1000.0, 11.0 / 1000.0, 17.0 / 1000.0), 
@@ -121,9 +121,9 @@ BOOST_AUTO_TEST_CASE( CalibratorTest ) {
 	std::vector<DevAndFrame> deviceAndFrame2;
 	deviceAndFrame2.push_back(std::make_pair(serialDevice, measurementFrame.get()));
 
-	WorkCellCalibration::Ptr calibration(rw::common::ownedPtr(new WorkCellCalibration(deviceAndFrame2, sensorFrames, encoderCorrectionFunctions)));
-	WorkCellJacobian::Ptr jacobian(rw::common::ownedPtr(new WorkCellJacobian(calibration)));
-	WorkCellCalibrator::Ptr calibrator(rw::common::ownedPtr(new WorkCellCalibrator(workCell, calibration, jacobian)));
+	WorkCellCalibration::Ptr calibration(rw::core::ownedPtr(new WorkCellCalibration(deviceAndFrame2, sensorFrames, encoderCorrectionFunctions)));
+	WorkCellJacobian::Ptr jacobian(rw::core::ownedPtr(new WorkCellJacobian(calibration)));
+	WorkCellCalibrator::Ptr calibrator(rw::core::ownedPtr(new WorkCellCalibrator(workCell, calibration, jacobian)));
 	calibrator->setMeasurements(measurements);
 
 
@@ -137,7 +137,7 @@ BOOST_AUTO_TEST_CASE( CalibratorTest ) {
 	try {
 		// Run calibrator.
 		calibrator->calibrate(state);
-	} catch (rw::common::Exception& ex) {
+	} catch (rw::core::Exception& ex) {
 		BOOST_ERROR(ex.getMessage());
 	} 
 	 
@@ -346,7 +346,7 @@ std::vector<CalibrationMeasurement::Ptr> generateMeasurements(rw::models::Serial
 				transform.R() = rw::math::RPY<>(mvndVector(3), mvndVector(4), mvndVector(5)).toRotation3D() * transform.R();
 			}
 		
-			measurements.push_back(rw::common::ownedPtr(new CalibrationMeasurement(q, transform, covariance, serialDevice->getName(), sensorFrame->getName(), markerFrame->getName())));
+			measurements.push_back(rw::core::ownedPtr(new CalibrationMeasurement(q, transform, covariance, serialDevice->getName(), sensorFrame->getName(), markerFrame->getName())));
 		}
 	}
 	return measurements;

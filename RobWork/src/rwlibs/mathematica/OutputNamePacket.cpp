@@ -17,7 +17,7 @@
 
 #include "OutputNamePacket.hpp"
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rwlibs::mathematica;
 
 OutputNamePacket::OutputNamePacket (const Mathematica::String& string) :

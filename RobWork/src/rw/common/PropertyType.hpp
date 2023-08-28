@@ -15,11 +15,20 @@
  * limitations under the License.
  ********************************************************************************/
 
-#ifndef RW_COMMON_PROPERTYTYPE_HPP_
-#define RW_COMMON_PROPERTYTYPE_HPP_
+#ifndef RW_COMMON_PROPERTYTYPE_HPP
+#define RW_COMMON_PROPERTYTYPE_HPP
 
 #include <rw/core/PropertyType.hpp>
 #include <rw/core/os.hpp>
+
+/**
+ * @brief Deprecated namespace since 16/4-2020 for this class
+ * @deprecated use rw::core not rw::common
+ */
+namespace rw { namespace common {
+    using PropertyType = rw::core::PropertyType;
+}}    // namespace rw::common
+
 #ifdef RW_WIN32
 #pragma message( \
     "#include <rw/common/PropertyType.hpp> is deprecated use #include <rw/core/PropertyType.hpp> instead")

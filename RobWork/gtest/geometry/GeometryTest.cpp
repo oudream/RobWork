@@ -32,7 +32,7 @@ using rw::common::Timer;
 using namespace rw::geometry;
 using rw::loaders::STLFile;
 
-#define PRINT_TYPE_SIZE(arg) rw::common::Log::infoLog() <<"sizeof(" \
+#define PRINT_TYPE_SIZE(arg) rw::core::Log::infoLog() <<"sizeof(" \
 		<< typeid(arg).name() << ") = " << sizeof(arg) << "\n" ;
 
 TEST(GeometryTest, TriangleTypeSize){

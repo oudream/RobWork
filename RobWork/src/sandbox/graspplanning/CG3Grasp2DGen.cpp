@@ -22,7 +22,7 @@
 #include <rw/math/Constants.hpp>
 #include <rw/math/Rotation2D.hpp>
 #include "Contour2DInfoMap.hpp"
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/kinematics/Kinematics.hpp>
 #include <rw/kinematics/Frame.hpp>
 #include <rw/models/Joint.hpp>

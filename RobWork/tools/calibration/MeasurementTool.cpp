@@ -142,7 +142,7 @@ int main(int argumentCount, char** arguments) {
 		deviceAndFramePairs.push_back(std::make_pair(devices[i], markerFrames[i]));
 	}
 
-	WorkCellCalibration::Ptr artificialCalibration(rw::common::ownedPtr(new WorkCellCalibration(deviceAndFramePairs, sensorFrames)));
+	WorkCellCalibration::Ptr artificialCalibration(rw::core::ownedPtr(new WorkCellCalibration(deviceAndFramePairs, sensorFrames)));
 	artificialCalibration->getFixedFrameCalibrations()->getCalibration(0)->setCorrectionTransform(rw::math::Transform3D<>(rw::math::Vector3D<>(10.0 / 1000.0, -8.0 / 1000.0, 7 / 1000.0), 
 																														  rw::math::RPY<>(1.7 * rw::math::Deg2Rad, 0.7 * rw::math::Deg2Rad, -2.0 * rw::math::Deg2Rad)));
 	artificialCalibration->getFixedFrameCalibrations()->getCalibration(1)->setCorrectionTransform(rw::math::Transform3D<>(rw::math::Vector3D<>(-9.0 / 1000.0, 11.0 / 1000.0, 17.0 / 1000.0), 
@@ -288,7 +288,7 @@ std::vector<CalibrationMeasurement::Ptr> generateMeasurements(rw::models::Serial
 				transform.P() = rw::math::Vector3D<>(mvndVector(0), mvndVector(1), mvndVector(2)) + transform.P();
 				transform.R() = rw::math::RPY<>(mvndVector(3), mvndVector(4), mvndVector(5)).toRotation3D() * transform.R();
 			}
-			CalibrationMeasurement::Ptr measurement = rw::common::ownedPtr(new CalibrationMeasurement(q, transform, covariance));
+			CalibrationMeasurement::Ptr measurement = rw::core::ownedPtr(new CalibrationMeasurement(q, transform, covariance));
 			measurement->setDeviceName(serialDevice->getName());
 			measurement->setMarkerFrameName(markerFrame->getName());
 			measurement->setSensorFrameName(sensorFrame->getName());

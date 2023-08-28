@@ -14,11 +14,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ********************************************************************************/
-#ifndef RW_COMMON_BOOSTXMLPARSER_
-#define RW_COMMON_BOOSTXMLPARSER_
+
+#ifndef RW_COMMON_BOOSTXMLPARSER
+#define RW_COMMON_BOOSTXMLPARSER
 
 #include <rw/core/BoostXMLParser.hpp>
 #include <rw/core/os.hpp>
+
+/**
+ * @brief Deprecated namespace since 16/4-2020 for this class
+ * @deprecated use rw::core not rw::common
+ */
+namespace rw { namespace common {
+    using BoostXMLParser = rw::core::BoostXMLParser;
+    using BoostDOMElem   = rw::core::BoostDOMElem;
+}}    // namespace rw::common
+
 #ifdef RW_WIN32
 #pragma message( \
     "#include <rw/common/BoostXMLParser.hpp> is deprecated use #include <rw/core/BoostXMLParser.hpp> instead")

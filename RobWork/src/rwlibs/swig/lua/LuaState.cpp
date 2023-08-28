@@ -88,7 +88,7 @@ void LuaState::reset ()
 
 std::vector< LuaState::LuaLibrary::Ptr > LuaState::Factory::getLuaLibraries ()
 {
-    using namespace rw::common;
+    using namespace rw::core;
     LuaState::Factory ep;
     std::vector< Extension::Ptr > exts = ep.getExtensions ();
     std::vector< LuaState::LuaLibrary::Ptr > libs;
@@ -104,7 +104,7 @@ std::vector< LuaState::LuaLibrary::Ptr > LuaState::Factory::getLuaLibraries ()
 
 std::vector< std::string > LuaState::Factory::getLuaLibraryIDs ()
 {
-    using namespace rw::common;
+    using namespace rw::core;
     LuaState::Factory ep;
     std::vector< Extension::Ptr > exts = ep.getExtensions ();
     std::vector< std::string > libs;
@@ -118,7 +118,7 @@ std::vector< std::string > LuaState::Factory::getLuaLibraryIDs ()
 
 LuaState::LuaLibrary::Ptr LuaState::Factory::getLuaLibrary (const std::string& id)
 {
-    using namespace rw::common;
+    using namespace rw::core;
     LuaState::Factory ep;
     std::vector< Extension::Ptr > exts = ep.getExtensions ();
     for (Extension::Ptr ext : exts) {

@@ -2,7 +2,7 @@
 #define RW_LOADERS_ASCIIPATHSAVER_HPP
 
 
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/trajectory/Path.hpp>
 #include <rw/trajectory/Timed.hpp>
 #include <rw/math/Q.hpp>
@@ -71,7 +71,7 @@ public:
 	/**
 	 * @brief Writes path to file
 	 *
-	 * This methods throws a rw::common::Exception if the file could not be opened.
+	 * This methods throws a rw::core::Exception if the file could not be opened.
 	 *
 	 * @param filename [in] File to write to
 	 * @param path [in] Path to write

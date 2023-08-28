@@ -25,7 +25,7 @@
 #include <rw/math/Vector2D.hpp>
 #include <rw/math/Vector3D.hpp>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::math;
 using namespace rwlibs::mathematica;
 

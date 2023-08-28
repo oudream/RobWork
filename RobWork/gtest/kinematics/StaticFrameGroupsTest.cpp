@@ -27,7 +27,7 @@
 using namespace rw::math;
 using namespace rw::kinematics;
 using namespace rw::models;
-using namespace rw::common;
+using namespace rw::core;
 
 namespace {
 void addTestFrames (WorkCell& world)

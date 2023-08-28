@@ -17,7 +17,7 @@
 
 #include "ReturnPacket.hpp"
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rwlibs::mathematica;
 
 ReturnPacket::ReturnPacket (const Mathematica::Expression& expression) :

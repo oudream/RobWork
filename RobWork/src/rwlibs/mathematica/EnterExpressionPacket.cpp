@@ -17,7 +17,7 @@
 
 #include "EnterExpressionPacket.hpp"
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rwlibs::mathematica;
 
 EnterExpressionPacket::EnterExpressionPacket (const Mathematica::Expression& expression) :

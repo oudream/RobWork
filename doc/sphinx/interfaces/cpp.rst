@@ -22,12 +22,12 @@ Now add a **SampleTest.cpp** file and type in a small main application:
 This example loads a WorkCell based on the argument given to the program.
 In the first lines, the header files are included for the types we use in the program.
 With the *using* statements we can avoid typing the full name when we use the Log, WorkCellLoader and WorkCell types in the code.
-Alternatively, one would have to write rw::common::Log, rw::loaders::WorkCellLoader and rw::models::WorkCell respectively.
+Alternatively, one would have to write rw::core::Log, rw::loaders::WorkCellLoader and rw::models::WorkCell respectively.
 If you use more than one class from the same namespace, you should instead write:
 
 .. code-block:: c++
 
-   using namespace rw::common;
+   using namespace rw::core;
    using namespace rw::loaders;
    using namespace rw::models;
 

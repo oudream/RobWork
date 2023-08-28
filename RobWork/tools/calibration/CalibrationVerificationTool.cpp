@@ -84,7 +84,7 @@ int main(int argumentCount, char** argumentArray) {
 	try {
 		optionParser.parseArguments(argumentCount, argumentArray);
 		std::cout << "Parsed." << std::endl;
-	} catch(rw::common::Exception& exception) {
+	} catch(rw::core::Exception& exception) {
 		std::cout << "FAILED: " << exception.getMessage() << std::endl;
 		std::cout << optionParser << std::endl;
 		return -1;

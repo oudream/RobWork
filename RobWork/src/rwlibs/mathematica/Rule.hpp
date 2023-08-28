@@ -57,7 +57,7 @@ namespace rwlibs { namespace mathematica {
          * @brief Construct a Mathematica Rule based on RobWork property.
          * @param property [in] the property.
          */
-        Rule (const rw::common::PropertyBase& property);
+        Rule (const rw::core::PropertyBase& property);
 
         //! @brief Destructor.
         virtual ~Rule ();
@@ -84,7 +84,7 @@ namespace rwlibs { namespace mathematica {
          * @brief Convert a PropertyMap to a list of Mathematica rules.
          * @param options [in] the map with options.
          * @return a list of Rule expressions.
-         * @throws rw::common::Exception if a property not supported.
+         * @throws rw::core::Exception if a property not supported.
          */
         static std::list< Rule::Ptr > toRules (const rw::core::PropertyMap& options);
 
@@ -92,7 +92,7 @@ namespace rwlibs { namespace mathematica {
          * @brief Construct PropertyMap from existing expression.
          * @param rules [in] the expressions to parse as Rules.
          * @return the PropertyMap.
-         * @throws rw::common::Exception if parsing fails.
+         * @throws rw::core::Exception if parsing fails.
          */
         static rw::core::Ptr< rw::core::PropertyMap >
         toPropertyMap (const std::list< rw::core::Ptr< const Mathematica::Expression > >& rules);

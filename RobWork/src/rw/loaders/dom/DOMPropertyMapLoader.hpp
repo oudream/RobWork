@@ -35,7 +35,7 @@ namespace rw { namespace loaders {
     /**
      * @brief Class for loading rw::core::PropertyMap from XML
      *
-     * The loader is capable of loading all type defined in rw::common::PropertyType.
+     * The loader is capable of loading all type defined in rw::core::PropertyType.
      *
      * Implemented using RobWork DOM parser abstraction.
      */

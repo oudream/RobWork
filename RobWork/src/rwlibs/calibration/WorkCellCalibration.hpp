@@ -18,16 +18,11 @@
 #ifndef RWLIBS_CALIBRATION_WORKCELLCALIBRATION_HPP
 #define RWLIBS_CALIBRATION_WORKCELLCALIBRATION_HPP
 
+#include <vector>
+
 #include <rwlibs/calibration/Calibration.hpp>
 
 #include <rw/core/Ptr.hpp>
-
-namespace rw { namespace kinematics {
-    class Frame;
-}}    // namespace rw::kinematics
-namespace rw { namespace models {
-    class SerialDevice;
-}}    // namespace rw::models
 
 namespace rwlibs { namespace calibration {
 

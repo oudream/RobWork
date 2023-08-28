@@ -17,7 +17,7 @@
 
 #include "InputNamePacket.hpp"
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rwlibs::mathematica;
 
 InputNamePacket::InputNamePacket (const Mathematica::String& string) :

@@ -17,7 +17,7 @@
 
 #include "EnterTextPacket.hpp"
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rwlibs::mathematica;
 
 EnterTextPacket::EnterTextPacket (const Mathematica::String& string) :

@@ -23,6 +23,7 @@
 
 #include <RobWorkConfig.hpp>
 #include <RobWorkStudioConfig.hpp>
+#include <rw/common/Timer.hpp>
 #include <rw/common/ProgramOptions.hpp>
 #include <rw/core/Log.hpp>
 #include <rw/core/PropertyMap.hpp>
@@ -286,7 +287,7 @@ int RobWorkStudioApp::run() {
 
             std::string pluginFolder = "./plugins/";
             {
-                Timer t;
+                rw::common::Timer t;
 
                 rws::RobWorkStudio rwstudio(map);
 

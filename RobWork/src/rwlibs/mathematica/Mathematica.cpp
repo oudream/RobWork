@@ -35,7 +35,7 @@
 #include "ToExpression.hpp"
 #include "wstp.h"
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rwlibs::mathematica;
 
 struct Mathematica::Environment

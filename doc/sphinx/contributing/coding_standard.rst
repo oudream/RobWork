@@ -212,14 +212,14 @@ Use the RobWork smart pointer
 *****************************
 
 All classes which are expected to be passed as pointers should declare a pointer typedef using the
-RobWork smart pointer rw::common::Ptr.
+RobWork smart pointer rw::core::Ptr.
 
 .. code-block:: cpp
 
    class MyClass;
 
    // A pointer to a MyClass
-   typedef rw::common::Ptr<MyClass> MyClassPtr;
+   typedef rw::core::Ptr<MyClass> MyClassPtr;
 
 Classes taking pointers to objects should likewise use the smart pointer to determine ownership
 and avoid memory leaks.
@@ -282,9 +282,9 @@ These can also be used at templates when developing new classes.
            {
                public:
                    //! @brief smart pointer type to this class
-                   typedef rw::common::Ptr<SerialDevice> Ptr;
+                   typedef rw::core::Ptr<SerialDevice> Ptr;
                    //! @brief smart pointer type to this const class
-                   typedef rw::common::Ptr< const SerialDevice > CPtr;
+                   typedef rw::core::Ptr< const SerialDevice > CPtr;
 
                    /**
                     * @brief Constructor
@@ -357,7 +357,7 @@ These can also be used at templates when developing new classes.
 
    #include <vector>
 
-   using namespace rw::common;
+   using namespace rw::core;
    using namespace rw::kinematics;
    using namespace rw::math;
    using namespace rw::models;

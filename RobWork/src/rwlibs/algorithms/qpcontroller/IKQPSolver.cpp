@@ -25,7 +25,6 @@ using namespace rwlibs::algorithms;
 
 using namespace boost;
 using namespace rw::math;
-using namespace rw::common;
 using namespace rw::models;
 using namespace rw::kinematics;
 

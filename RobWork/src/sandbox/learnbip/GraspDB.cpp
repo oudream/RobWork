@@ -7,7 +7,7 @@
 
 #include "GraspDB.hpp"
 
-#include <rw/common/Exception.hpp>
+#include <rw/core/Exception.hpp>
 
 #include <boost/filesystem.hpp>
 
@@ -16,8 +16,8 @@
 #include <iostream>
 
 using namespace boost;
-using namespace boost::filesystem3;
-using namespace rw::common;
+using namespace boost::filesystem;
+using namespace rw::core;
 using namespace rw::math;
 using namespace rwlibs::task;
 

@@ -42,10 +42,10 @@ namespace rwsim { namespace log {
     {
       public:
         //! Smart pointer type of LogDistanceResult
-        typedef rw::common::Ptr< LogDistanceResult > Ptr;
+        typedef rw::core::Ptr< LogDistanceResult > Ptr;
 
         //! Smart pointer type of const LogDistanceResult
-        typedef rw::common::Ptr< const LogDistanceResult > CPtr;
+        typedef rw::core::Ptr< const LogDistanceResult > CPtr;
 
         //! @copydoc SimulatorLogEntry::SimulatorLogEntry
         LogDistanceResult (SimulatorLogScope* parent);
@@ -131,10 +131,10 @@ namespace rwsim { namespace log {
          *
          * @return the log entry with positions of objects (or NULL if not linked).
          */
-        rw::common::Ptr< LogPositions > getPositions () const;
+        rw::core::Ptr< LogPositions > getPositions () const;
 
       private:
-        rw::common::Ptr< LogPositions > _positions;
+        rw::core::Ptr< LogPositions > _positions;
         std::vector< ResultInfo > _results;
     };
     //! @}

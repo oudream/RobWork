@@ -26,11 +26,11 @@ using namespace rwlibs::pathplanners;
 using namespace rw::pathplanning;
 using namespace rw::math;
 using namespace rw::models;
-using namespace rw::common;
 
 QToQPlanner::Ptr RRTPlanner::makeQToQPlanner (const PlannerConstraint& constraint,
-                                              QSampler::Ptr sampler, QMetric::Ptr metric,
-                                              double extend, PlannerType type)
+                                              const QSampler::Ptr& sampler,
+                                              const QMetric::CPtr& metric, double extend,
+                                              PlannerType type)
 {
     switch (type) {
         case RRTBasic: return RRTQToQPlanner::makeBasic (constraint, sampler, metric, extend);
@@ -45,7 +45,7 @@ QToQPlanner::Ptr RRTPlanner::makeQToQPlanner (const PlannerConstraint& constrain
 }
 
 QToQPlanner::Ptr RRTPlanner::makeQToQPlanner (const PlannerConstraint& constraint,
-                                              Device::Ptr device, PlannerType type)
+                                              const Device::Ptr& device, PlannerType type)
 {
     const double extend = 0.05;
 

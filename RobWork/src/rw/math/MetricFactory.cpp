@@ -23,7 +23,6 @@
 #include <vector>
 
 using namespace rw::math;
-using namespace rw::common;
 
 // These should all compile:
 

@@ -125,7 +125,7 @@ void MathematicaPlotWidget::listPlot (const std::vector< double >& x,
     std::list< Mathematica::Expression::Ptr > options;
     if (!title.empty ())
         options.push_back (
-            ownedPtr (new Rule ("PlotLabel", ToExpression ("Style[\"" + title + "\", font]"))));
+            rw::core::ownedPtr (new Rule ("PlotLabel", ToExpression ("Style[\"" + title + "\", font]"))));
     List axes;
     axes.add (ToExpression ("Style[\"" + xlabel + "\", font]"));
     axes.add (ToExpression ("Style[\"" + ylabel + "\", font]"));
@@ -134,8 +134,8 @@ void MathematicaPlotWidget::listPlot (const std::vector< double >& x,
     // List legends;
     // legends.add(ToExpression("Style[\"Series A\", font]"));
     // legends.add(ToExpression("Style[\"Series B\", font]"));
-    // options.push_back(ownedPtr(new Rule("PlotLegends",legends)));
-    _render->listPlot = ownedPtr (new ListPlot (x, y, options));
+    // options.push_back(rw::core::ownedPtr(new Rule("PlotLegends",legends)));
+    _render->listPlot = rw::core::ownedPtr(new ListPlot(x, y, options));
     _render->listPlot->setImageSize (width (), height ());
     _render->listPlot->option ("AspectRatio", Mathematica::Real (((double) height ()) / width ()));
     _render->listPlot->option ("PlotRange", Mathematica::Symbol ("All"));

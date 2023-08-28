@@ -58,8 +58,6 @@ double TriMesh::getVolume () const
 void TriMesh::TriCenterIterator::inc ()
 {
     using namespace rw::geometry;
-    using namespace rw::math;
-    using namespace rw::common;
 
     ++_first;
     if (_first != _end) {

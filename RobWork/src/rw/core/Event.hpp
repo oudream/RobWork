@@ -43,8 +43,7 @@ namespace rw { namespace core {
               class T5 = _n1 >
     struct FireFunctor;
 
-    template<class CallBackMethod>
-    struct EventListener;
+    template< class CallBackMethod > struct EventListener;
 
     /**
      * @brief Event is used for managing subscribtions and firing of events.
@@ -90,7 +89,7 @@ namespace rw { namespace core {
     class Event
     {
       public:
-        typedef rw::core::EventListener<CallBackMethod> Listener;
+        typedef rw::core::EventListener< CallBackMethod > Listener;
 
         /**
          * @brief constructor
@@ -214,7 +213,7 @@ namespace rw { namespace core {
     /**
      * @brief Structure for data associated to a listener
      */
-    template< class CallBackMethod> struct EventListener
+    template< class CallBackMethod > struct EventListener
     {
         /**
          * @brief The callback method
@@ -362,13 +361,5 @@ namespace rw { namespace core {
     };
 
 }}    // namespace rw::core
-
-/*
- * Deprecated namespace since 16/4-2020 for this class
- * use rw::core not rw::common
- */
-namespace rw { namespace common {
-    using namespace rw::core;
-}}    // namespace rw::common
 
 #endif /*EVENT_HPP*/

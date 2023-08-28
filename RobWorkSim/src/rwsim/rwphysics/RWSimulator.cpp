@@ -25,7 +25,6 @@ using namespace rwsim;
 using namespace rw::math;
 using namespace rw::common;
 using namespace rw::core;
-using namespace rw::core;
 using namespace rw::kinematics;
 using namespace rwsim;
 

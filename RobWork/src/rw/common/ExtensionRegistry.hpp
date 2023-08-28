@@ -20,6 +20,15 @@
 
 #include <rw/core/ExtensionRegistry.hpp>
 #include <rw/core/os.hpp>
+
+/**
+ * @brief Deprecated namespace since 16/4-2020 for this class
+ * @deprecated use rw::core not rw::common
+ */
+namespace rw { namespace common {
+    using ExtensionRegistry = rw::core::ExtensionRegistry;
+}}    // namespace rw::common
+
 #ifdef RW_WIN32
 #pragma message( \
     "#include <rw/common/ExtensionRegistry.hpp> is deprecated use #include <rw/core/ExtensionRegistry.hpp> instead")

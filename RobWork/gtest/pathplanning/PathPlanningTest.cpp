@@ -17,6 +17,7 @@
 
 #include "../TestEnvironment.hpp"
 
+#include <rw/common/Timer.hpp>
 #include <rw/core/Ptr.hpp>
 #include <rw/loaders/WorkCellLoader.hpp>
 #include <rw/math/MetricFactory.hpp>
@@ -35,7 +36,6 @@
 #include <rwlibs/proximitystrategies/ProximityStrategyFactory.hpp>
 
 using namespace rw::core;
-using namespace rw::common;
 using rw::kinematics::State;
 using rw::loaders::WorkCellLoader;
 using namespace rw::math;
@@ -190,7 +190,7 @@ void testPathPlanning (const CollisionStrategy::Ptr& strategy)
         typedef std::pair< std::string, QToQPlanner::Ptr > Pair;
         for (const Pair& planner : planners) {
             std::cout << "Testing QToQPlanner " << planner.first;
-            Timer time;
+            rw::common::Timer time;
             for (const Q& to : samples) {
                 QPath path;
 

@@ -33,7 +33,6 @@
 using namespace rw::kinematics;
 using namespace rw::models;
 using namespace rw::math;
-using namespace rw::common;
 
 int clvl=0;
 

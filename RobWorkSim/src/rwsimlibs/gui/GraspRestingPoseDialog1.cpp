@@ -277,16 +277,16 @@ void GraspRestingPoseDialog::initializeStart ()
         sim->initPhysics (state);
 
         // create a controller
-        PDControllerPtr pdctrl = ownedPtr (new PDController (_hand, state));
+        PDControllerPtr pdctrl = rw::core::ownedPtr (new PDController (_hand, state));
         sim->addController (pdctrl);
         _controllers.push_back (pdctrl);
         pdctrl->setTargetPos (_targetQ[0]);
 
         // add body sensor
-        _bodySensor = ownedPtr (new BodyContactSensor ("BodySensor", _object));
+        _bodySensor = rw::core::ownedPtr(new BodyContactSensor("BodySensor", _object));
         sim->addSensor (_bodySensor);
 
-        _simulators.push_back (ownedPtr (new ThreadSimulator (sim, state)));
+        _simulators.push_back(rw::core::ownedPtr(new ThreadSimulator(sim, state)));
         RW_DEBUG ("-- Calc random cfg " << i);
         calcRandomCfg (state);
         _initStates.push_back (state);
@@ -349,7 +349,7 @@ void GraspRestingPoseDialog::btnPressed ()
         _stopBtn->setDisabled (true);
         _resetBtn->setDisabled (false);
         _timer->stop ();
-        for (Ptr< ThreadSimulator > sim : _simulators) {
+        for(rw::core::Ptr<ThreadSimulator> sim : _simulators) {
             if (sim->isRunning ())
                 sim->stop ();
         }
@@ -417,7 +417,7 @@ void GraspRestingPoseDialog::changedEvent ()
     }
 }
 
-bool GraspRestingPoseDialog::isSimulationFinished (Ptr< ThreadSimulator > sim)
+bool GraspRestingPoseDialog::isSimulationFinished (rw::core::Ptr< ThreadSimulator > sim)
 {
     // test if the hand has stopped moving
     State state = sim->getState ();
@@ -432,7 +432,7 @@ bool GraspRestingPoseDialog::isSimulationFinished (Ptr< ThreadSimulator > sim)
     return false;
 }
 
-void GraspRestingPoseDialog::saveRestingState (Ptr< ThreadSimulator > sim)
+void GraspRestingPoseDialog::saveRestingState (rw::core::Ptr< ThreadSimulator > sim)
 {
     // test if the hand has stopped moving
     State state = sim->getState ();
@@ -536,7 +536,7 @@ void GraspRestingPoseDialog::updateStatus ()
     int nrOfTestsOld = _nrOfTests;
 
     for (size_t i = 0; i < _simulators.size (); i++) {
-        Ptr< ThreadSimulator >& sim = _simulators[i];
+        rw::core::Ptr< ThreadSimulator >& sim = _simulators[i];
 
         bool isSimRunning = sim->isRunning ();
         if (!isSimRunning && _nrOfTests >= _nrOfTestsSpin->value ()) {

@@ -9,7 +9,7 @@
 #define MOVINGAVERAGE_HPP_
 
 #include <vector>
-#include <rw/common/macros.hpp>
+#include <rw/core/macros.hpp>
 
 /**
  * @brief calculates the moving average over a continues input of samples.

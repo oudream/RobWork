@@ -47,6 +47,10 @@ namespace rwlibs { namespace pathplanners {
     class RRTQToQPlanner
     {
       public:
+        RRTQToQPlanner(const RRTQToQPlanner&)            = delete;
+        RRTQToQPlanner& operator=(const RRTQToQPlanner&) = delete;
+        RRTQToQPlanner()                                 = delete;
+
         /**
            @brief Basic RRT planner.
 
@@ -66,8 +70,8 @@ namespace rwlibs { namespace pathplanners {
         */
         static rw::pathplanning::QToQPlanner::Ptr
         makeBasic (const rw::pathplanning::PlannerConstraint& constraint,
-                   rw::core::Ptr< rw::pathplanning::QSampler > sampler,
-                   rw::math::QMetric::Ptr metric, double extend);
+                   const rw::core::Ptr< rw::pathplanning::QSampler >& sampler,
+                   const rw::math::QMetric::CPtr& metric, double extend);
 
         /**
            @brief RRT-Connect planner.
@@ -87,8 +91,8 @@ namespace rwlibs { namespace pathplanners {
         */
         static rw::pathplanning::QToQPlanner::Ptr
         makeConnect (const rw::pathplanning::PlannerConstraint& constraint,
-                     rw::core::Ptr< rw::pathplanning::QSampler > sampler,
-                     rw::math::QMetric::Ptr metric, double extend);
+                     const rw::core::Ptr< rw::pathplanning::QSampler >& sampler,
+                     const rw::math::QMetric::CPtr& metric, double extend);
 
         /**
            @brief Bidirectional RRT planner.
@@ -109,8 +113,8 @@ namespace rwlibs { namespace pathplanners {
         */
         static rw::pathplanning::QToQPlanner::Ptr
         makeBidirectional (const rw::pathplanning::PlannerConstraint& constraint,
-                           rw::core::Ptr< rw::pathplanning::QSampler > sampler,
-                           rw::math::QMetric::Ptr metric, double extend);
+                           const rw::core::Ptr< rw::pathplanning::QSampler >& sampler,
+                           const rw::math::QMetric::CPtr& metric, double extend);
 
         /**
            @brief Balanced, bidirectional RRT planner.
@@ -130,13 +134,8 @@ namespace rwlibs { namespace pathplanners {
         */
         static rw::pathplanning::QToQPlanner::Ptr
         makeBalancedBidirectional (const rw::pathplanning::PlannerConstraint& constraint,
-                                   rw::core::Ptr< rw::pathplanning::QSampler > sampler,
-                                   rw::math::QMetric::Ptr metric, double extend);
-
-      private:
-        RRTQToQPlanner (const RRTQToQPlanner&);
-        RRTQToQPlanner& operator= (const RRTQToQPlanner&);
-        RRTQToQPlanner ();
+                                   const rw::core::Ptr< rw::pathplanning::QSampler >& sampler,
+                                   const rw::math::QMetric::CPtr& metric, double extend);
     };
 
     /*\}*/

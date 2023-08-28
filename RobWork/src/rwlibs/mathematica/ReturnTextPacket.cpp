@@ -17,7 +17,7 @@
 
 #include "ReturnTextPacket.hpp"
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rwlibs::mathematica;
 
 ReturnTextPacket::ReturnTextPacket (const Mathematica::String& string) :

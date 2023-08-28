@@ -6,7 +6,7 @@
 
 using namespace std;
 using animals::Dog;
-using namespace rw::common;
+using namespace rw::core;
 
 
 

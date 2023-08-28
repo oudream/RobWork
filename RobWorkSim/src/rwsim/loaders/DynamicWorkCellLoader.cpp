@@ -83,7 +83,6 @@ using namespace rw::loaders;
 using namespace rw::math;
 using namespace rw::common;
 using namespace rw::core;
-using namespace rw::core;
 using namespace rw::sensor;
 using namespace rw::geometry;
 using namespace rwlibs::control;

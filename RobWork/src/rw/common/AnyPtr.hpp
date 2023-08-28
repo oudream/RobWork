@@ -14,11 +14,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ********************************************************************************/
+
 #ifndef RW_COMMON_ANYPTR_HPP
 #define RW_COMMON_ANYPTR_HPP
 
 #include <rw/core/AnyPtr.hpp>
 #include <rw/core/os.hpp>
+
+/**
+ * @brief Deprecated namespace since 16/4-2020 for this class
+ * @deprecated use rw::core not rw::common
+ */
+namespace rw { namespace common {
+    using AnyPtr = rw::core::AnyPtr;
+}}    // namespace rw::common
+
 #ifdef RW_WIN32
 #pragma message( \
     "#include <rw/common/AnyPtr.hpp> is deprecated use #include <rw/core/AnyPtr.hpp> instead")

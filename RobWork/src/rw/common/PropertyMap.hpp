@@ -15,11 +15,20 @@
  * limitations under the License.
  ********************************************************************************/
 
-#ifndef RW_COMMON_PROPERTYMAP_HPP_
-#define RW_COMMON_PROPERTYMAP_HPP_
+#ifndef RW_COMMON_PROPERTYMAP_HPP
+#define RW_COMMON_PROPERTYMAP_HPP
 
 #include <rw/core/PropertyMap.hpp>
 #include <rw/core/os.hpp>
+
+/**
+ * @brief Deprecated namespace since 16/4-2020 for this class
+ * @deprecated use rw::core not rw::common
+ */
+namespace rw { namespace common {
+    using PropertyMap = rw::core::PropertyMap;
+}}    // namespace rw::common
+
 #ifdef RW_WIN32
 #pragma message( \
     "#include <rw/common/PropertyMap.hpp> is deprecated use #include <rw/core/PropertyMap.hpp> instead")

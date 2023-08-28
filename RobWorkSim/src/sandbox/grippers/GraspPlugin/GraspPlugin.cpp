@@ -121,7 +121,7 @@ void GraspPlugin::open(WorkCell* workcell)
 		
 		_render = ownedPtr( new RenderTargets() );
 		getRobWorkStudio()->getWorkCellScene()->addRender("pointRender", _render, workcell->getWorldFrame());
-    } catch (const rw::common::Exception& e) {
+    } catch (const rw::core::Exception& e) {
 		QMessageBox::critical(NULL, "RW Exception", e.what());
     }
 }
@@ -500,7 +500,7 @@ void GraspPlugin::planTasks()
 			
 			_tasks = _generator->getTasks();
 			_samples = _generator->getSamples();
-		} catch (rw::common::Exception& e) {
+		} catch (rw::core::Exception& e) {
 			QMessageBox::critical(NULL, "RW Exception", e.what());
 			//finally = false;
 		}
@@ -540,7 +540,7 @@ void GraspPlugin::perturbTasks()
 		if(onlySuccesses) _tasks = TaskGenerator::copyTasks(_tasks, true);
 		_tasks = TaskGenerator::addPerturbations(_tasks, 0.003, 8.0*Deg2Rad, nPerturbations);
 		
-	} catch (rw::common::Exception& e) {
+	} catch (rw::core::Exception& e) {
 		
 		QMessageBox::critical(NULL, "RW Exception", e.what());
 	}

@@ -22,7 +22,7 @@
 
 #include <rw/core/macros.hpp>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rwlibs::mathematica;
 
 ListPlot::ListPlot () : Mathematica::FunctionBase ("ListPlot")

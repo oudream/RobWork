@@ -26,7 +26,6 @@
 #include <float.h>
 #include <vector>
 
-using namespace rw::common;
 using namespace rw::core;
 using namespace rw::proximity;
 using namespace rw::geometry;

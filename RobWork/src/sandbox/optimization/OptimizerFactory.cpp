@@ -14,7 +14,7 @@
 namespace rwlibs {
 namespace optimization {
 
-using namespace rw::common;
+using namespace rw::core;
 
 Optimizer::Ptr OptimizerFactory::makeOptimizer(
 		typename FunctionType::Ptr function) {

@@ -1,17 +1,16 @@
 #include <path.hpp>
 
 #include <iostream>
-#include <rw/core/RobWork.hpp>
+#include <rw/core/macros.hpp>
 #include <rw/core/Plugin.hpp>
+#include <rw/core/RobWork.hpp>
 
 #include <animals.hpp>
 
 
-
 using namespace std;
 using namespace animals;
-using rw::RobWork;
-using namespace rw::common;
+using namespace rw::core;
 
 
 

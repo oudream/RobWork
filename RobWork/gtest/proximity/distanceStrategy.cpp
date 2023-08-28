@@ -15,6 +15,7 @@
  * limitations under the License.
  ********************************************************************************/
 
+#include <rw/common/Timer.hpp>
 #include <rw/common/TimerUtil.hpp>
 #include <rw/geometry.hpp>
 #include <rw/kinematics.hpp>

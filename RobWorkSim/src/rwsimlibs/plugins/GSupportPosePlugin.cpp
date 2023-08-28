@@ -97,7 +97,7 @@ SupportPoseAnalyserDialog::SupportPoseAnalyserDialog (const rw::kinematics::Stat
     for (RigidBody* body : _bodies) {
         _selectObjBox->addItem (body->getBodyFrame ().getName ().c_str ());
     }
-    _frameRender = ownedPtr (new RenderFrame ());
+    _frameRender = rw::core::ownedPtr(new RenderFrame());
     _fDraw       = new Drawable (_frameRender);
     _fDraw1      = new Drawable (_frameRender);
     _fDraw2      = new Drawable (_frameRender);
@@ -105,9 +105,9 @@ SupportPoseAnalyserDialog::SupportPoseAnalyserDialog (const rw::kinematics::Stat
     _fDraw4      = new Drawable (_frameRender);
     _fDraw5      = new Drawable (_frameRender);
 
-    _xRender = ownedPtr (new RenderPoints ());
-    _yRender = ownedPtr (new RenderPoints ());
-    _zRender = ownedPtr (new RenderPoints ());
+    _xRender = rw::core::ownedPtr(new RenderPoints());
+    _yRender = rw::core::ownedPtr(new RenderPoints());
+    _zRender = rw::core::ownedPtr(new RenderPoints());
     _xRender->setColor (1.0, 0.0, 0.0);
     _yRender->setColor (0.0, 1.0, 0.0);
     _zRender->setColor (0.0, 0.0, 1.0);
@@ -115,19 +115,19 @@ SupportPoseAnalyserDialog::SupportPoseAnalyserDialog (const rw::kinematics::Stat
     _yDraw = new Drawable (_yRender);
     _zDraw = new Drawable (_zRender);
 
-    _selPosePntRenderX = ownedPtr (new RenderPoints ());
+    _selPosePntRenderX = rw::core::ownedPtr(new RenderPoints());
     _selPoseDrawX      = new Drawable (_selPosePntRenderX);
-    _selPosePntRenderY = ownedPtr (new RenderPoints ());
+    _selPosePntRenderY = rw::core::ownedPtr(new RenderPoints());
     _selPoseDrawY      = new Drawable (_selPosePntRenderY);
-    _selPosePntRenderZ = ownedPtr (new RenderPoints ());
+    _selPosePntRenderZ = rw::core::ownedPtr(new RenderPoints());
     _selPoseDrawZ      = new Drawable (_selPosePntRenderZ);
     _selPosePntRenderX->setColor (1.0, 0.0, 0.0);
     _selPosePntRenderY->setColor (0.0, 1.0, 0.0);
     _selPosePntRenderZ->setColor (0.0, 0.0, 1.0);
 
-    _xcRender = ownedPtr (new RenderCircles ());
-    _ycRender = ownedPtr (new RenderCircles ());
-    _zcRender = ownedPtr (new RenderCircles ());
+    _xcRender = rw::core::ownedPtr (new RenderCircles ());
+    _ycRender = rw::core::ownedPtr (new RenderCircles ());
+    _zcRender = rw::core::ownedPtr (new RenderCircles ());
     _xcRender->setColor (1.0, 0.0, 0.0);
     _ycRender->setColor (0.0, 1.0, 0.0);
     _zcRender->setColor (0.0, 0.0, 1.0);

@@ -9,14 +9,14 @@
 
 #include <boost/tokenizer.hpp>
 
-#include <rw/common.hpp>
+#include <rw/core.hpp>
 #include <rw/kinematics/Kinematics.hpp>
 #include <rw/pathplanning/PlannerConstraint.hpp>
 #include <rwlibs/pathplanners/rrt/RRTQToQPlanner.hpp>
 #include <rwlibs/pathoptimization/pathlength/PathLengthOptimizer.hpp>
 #include <rwlibs/proximitystrategies/ProximityStrategyFactory.hpp>
 
-using namespace rw::common;
+using namespace rw::core;
 using namespace rw::math;
 using namespace rw::models;
 using namespace rw::kinematics;
