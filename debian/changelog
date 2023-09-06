@@ -1,3 +1,36 @@
+robwork (2.6.1-1) jammy; urgency=medium
+
+  [ kasper Høj Lorenzen ]
+  * Fixed Warnings and upload problems
+  * Version number updated to 2.6.1-1
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Thu, 31 Aug 2023 11:53:02 +0200
+
+robwork (2.6.0-1) jammy; urgency=medium
+
+  [ Kasper Høj Lorenzen ]
+  * Fixed dependent joint bounds
+  * DynamicWorkCell and RigidDevice update
+  * Set Default CSGEngine
+
+  [ Lukas ]
+  * Updated math types
+  * Windows cmake qt update (and more)
+
+  [ Kasper Høj Lorenzen ]
+  * Windows and mac errors
+
+  [ Lukas ]
+  * Fixed RWS not opening in windows.
+  * Updated hunter version
+  * Added missing const inputs of functions
+  * Reduce namespace cluttering
+
+  [ kasper Høj Lorenzen ]
+  * Version number updated to 2.6.0-1
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Thu, 31 Aug 2023 11:51:33 +0200
+
 robwork (2.5.6-3) bionic; urgency=medium
 
   * Version number updated to 2.5.6-3

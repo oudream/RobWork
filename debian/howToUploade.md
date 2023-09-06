@@ -68,7 +68,7 @@ next step is to upload the key to the key server
 ```
 gpg --send-keys --keyserver keyserver.ubuntu.com $ROBWORK_DEB_KEY
 ```
-go to launchpad find OpenPGPkeys and select edit. Add the fingerprint you have stored in RW_DEB_KEY
+go to launchpad find OpenPGPkeys and select edit. Add the fingerprint you have stored in ROBWORK_DEB_KEY
 They will then send you a confirmation email including the following text
 
 -----BEGIN PGP MESSAGE-----
@@ -93,7 +93,7 @@ when it is decrypted use the confirmation link to confirm that you own the key
 go to the root of the git repository and run:
 `./debian/scripts/makeReadyToDeploy key=<Your key>`
 where `<Your key>` are the 8 last caracters from the fingerprint of the gpg key uploaded to launchpad.
-if RW_DEB_KEY is defined as a environment variable you can neglect the key part:
+if ROBWORK_DEB_KEY is defined as a environment variable you can neglect the key part:
 `./debian/scripts/makeReadyToDeploy`
 
 This script will take you trough the whole procedure of uploading the package

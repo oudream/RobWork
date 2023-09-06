@@ -365,18 +365,4 @@ For RobWorkSim:
     make -j4 lua
     make -j4 java
 
-Finally, we need to add the following paths to ~/.bashrc:
-
-.. code:: shell
-
-    #ROBWORK#
-    export RW_ROOT=~/RobWork/RobWork/
-    export RWS_ROOT=~/RobWork/RobWorkStudio/
-    export RWSIM_ROOT=~/RobWork/RobWorkSim/
-
-Remember to only add paths to the components you have actually
-installed. Ie. if you only installed RobWork and RobWorkStudio, the
-path for RobWorkSim should not be set.
-
-By setting these environment variables, it will be possible for other
-projects to find the RobWork projects.
+During Compile CMake is automatically informed of where RobWork is installed so it can be found by other projects

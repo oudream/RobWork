@@ -4,6 +4,7 @@ Ubuntu installation by PPA
 Precompiled Debian packages exist for:
  * Ubuntu 18.04
  * Ubuntu 20.04
+ * Ubuntu 22.04
  
 They can be installed by adding sdurobotics/robwork to 'apt' ppa repositories.
 

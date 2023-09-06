@@ -176,7 +176,6 @@ void ODESuctionCupDevice::updateNoRollBack (const rwlibs::simulation::Simulator:
                     // for now we just check if all spikes are in contact
                     for (int i = pair.startIdx; i < pair.startIdx + pair.size; i++) {
                         size_t idx = result._geomPrimIds[i].second;
-                        RW_ASSERT (idx >= 0);
                         RW_ASSERT ((int) idx < NR_OF_SPIKES);
                         spikeContact[idx] = true;
                     }

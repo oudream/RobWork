@@ -21,8 +21,8 @@ readArg () {
     echo "Do test build: $doTestBuild"
     
     #if RW_DEB_KEY is a global variable
-    if [[ -z $key ]] && [[ ! -z $RW_DEB_KEY ]] ; then
-        key=$RW_DEB_KEY
+    if [[ -z $key ]] && [[ ! -z $ROBWORK_DEB_KEY ]] ; then
+        key=$ROBWORK_DEB_KEY
     fi
     
     if [[ $doTestBuild == "False" ]] ; then
