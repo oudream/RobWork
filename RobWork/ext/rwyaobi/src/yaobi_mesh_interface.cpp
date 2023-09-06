@@ -52,9 +52,9 @@ TriMeshInterface::GetIndexedTriangle(unsigned int n) const
   tri.p2 = static_cast<yaobi::VertIndex>(tris_[n++]);
   tri.p3 = static_cast<yaobi::VertIndex>(tris_[n]);
   
-  assert(tri.p1 >= 0 && tri.p1 < num_verts_);
-  assert(tri.p2 >= 0 && tri.p2 < num_verts_);
-  assert(tri.p3 >= 0 && tri.p3 < num_verts_);
+  assert(tri.p1 < num_verts_);
+  assert(tri.p2 < num_verts_);
+  assert(tri.p3 < num_verts_);
   
   return tri;
 }

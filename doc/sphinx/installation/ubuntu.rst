@@ -4,8 +4,8 @@ Ubuntu
 
 RobWork can be installed in two ways:
 
-* by PPA (Personal Package Archive),  this is true for Ubuntu 18.04, 20.04
-* by Source built by the user
+* by PPA (Personal Package Archive),  meaning install using apt-get install
+* by Source build by the user
 
 .. toctree::
    :glob:
