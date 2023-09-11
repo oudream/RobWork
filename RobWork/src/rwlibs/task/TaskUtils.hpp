@@ -32,7 +32,7 @@ namespace rwlibs { namespace task {
     class TaskUtils
     {
       public:
-        virtual ~TaskUtils () {}
+        virtual ~TaskUtils() {}
 
         /**
          * @brief Constructs a task with type T from a path.
@@ -45,24 +45,21 @@ namespace rwlibs { namespace task {
          * @param path [in] Path to convert to task
          * @return The Task constructed
          */
-        template< class T, class M >
-        static typename Task< T >::Ptr pathToTask (const std::vector< T >& path)
-        {
-            typename Task< T >::Ptr task = ownedPtr (new Task< T > ());
-            typedef typename Target< T >::Ptr TargetPtr;
+        template<class T, class M>
+        static typename Task<T>::Ptr pathToTask(const std::vector<T>& path) {
+            typename Task<T>::Ptr task = ownedPtr(new Task<T>());
+            typedef typename Target<T>::Ptr TargetPtr;
             TargetPtr previous = NULL;
-            for (typename std::vector< T >::const_iterator it = path.begin (); it != path.end ();
-                 ++it) {
-                TargetPtr target = task->addTargetByValue (*it);
-                if (previous != NULL)
-                    task->addMotion (ownedPtr (new M (previous, target)));
+            for(typename std::vector<T>::const_iterator it = path.begin(); it != path.end(); ++it) {
+                TargetPtr target = task->addTargetByValue(*it);
+                if(previous != NULL) task->addMotion(ownedPtr(new M(previous, target)));
                 previous = target;
             }
             return task;
         }
 
       private:
-        TaskUtils (){};
+        TaskUtils(){};
     };
 
     /* @} */

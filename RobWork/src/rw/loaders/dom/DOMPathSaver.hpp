@@ -46,7 +46,7 @@ namespace rw { namespace loaders {
          * @param path [in] Path to save
          * @param filename [in] Target filename
          */
-        static void save (const rw::trajectory::QPath& path, const std::string& filename);
+        static void save(const rw::trajectory::QPath& path, const std::string& filename);
 
         /**
          * @brief Saves rw::trajectory::Vector3DPath \b path to file
@@ -56,7 +56,7 @@ namespace rw { namespace loaders {
          * @param path [in] Path to save
          * @param filename [in] Target filename
          */
-        static void save (const rw::trajectory::Vector3DPath& path, const std::string& filename);
+        static void save(const rw::trajectory::Vector3DPath& path, const std::string& filename);
 
         /**
          * @brief Saves rw::trajectory::Rotation3DPath \b path to file
@@ -66,7 +66,7 @@ namespace rw { namespace loaders {
          * @param path [in] Path to save
          * @param filename [in] Target filename
          */
-        static void save (const rw::trajectory::Rotation3DPath& path, const std::string& filename);
+        static void save(const rw::trajectory::Rotation3DPath& path, const std::string& filename);
 
         /**
          * @brief Saves rw::trajectory::Transform3DPath \b path to file
@@ -76,7 +76,7 @@ namespace rw { namespace loaders {
          * @param path [in] Path to save
          * @param filename [in] Target filename
          */
-        static void save (const rw::trajectory::Transform3DPath& path, const std::string& filename);
+        static void save(const rw::trajectory::Transform3DPath& path, const std::string& filename);
 
         /**
          * @brief Saves rw::trajectory::StatePath \b to file
@@ -86,7 +86,7 @@ namespace rw { namespace loaders {
          * @param path [in] Path to save
          * @param filename [in] Target filename
          */
-        static void save (const rw::trajectory::StatePath& path, const std::string& filename);
+        static void save(const rw::trajectory::StatePath& path, const std::string& filename);
 
         /**
          * @brief Saves rw::trajectory::TimedQPath \b to file
@@ -96,7 +96,7 @@ namespace rw { namespace loaders {
          * @param path [in] Path to save
          * @param filename [in] Target filename
          */
-        static void save (const rw::trajectory::TimedQPath& path, const std::string& filename);
+        static void save(const rw::trajectory::TimedQPath& path, const std::string& filename);
 
         /**
          * @brief Saves rw::trajectory::TimedStatePath \b to file
@@ -106,7 +106,7 @@ namespace rw { namespace loaders {
          * @param path [in] Path to save
          * @param filename [in] Target filename
          */
-        static void save (const rw::trajectory::TimedStatePath& path, const std::string& filename);
+        static void save(const rw::trajectory::TimedStatePath& path, const std::string& filename);
 
         /**
          * @brief Writes the rw::trajectory::QPath \b path to \b outstream
@@ -116,7 +116,7 @@ namespace rw { namespace loaders {
          * @param path [in] Path to save
          * @param outstream [in] Stream to write to
          */
-        static void write (const rw::trajectory::QPath& path, std::ostream& outstream);
+        static void write(const rw::trajectory::QPath& path, std::ostream& outstream);
 
         /**
          * @brief Writes rw::trajectory::Vector3DPath \b path to \b outstream
@@ -126,7 +126,7 @@ namespace rw { namespace loaders {
          * @param path [in] Path to save8
          * @param outstream [in] Stream to write to
          */
-        static void write (const rw::trajectory::Vector3DPath& path, std::ostream& outstream);
+        static void write(const rw::trajectory::Vector3DPath& path, std::ostream& outstream);
 
         /**
          * @brief Writes rw::trajectory::Rotation3DPath \b path to \b outstream
@@ -136,7 +136,7 @@ namespace rw { namespace loaders {
          * @param path [in] Path to save
          * @param outstream [in] Stream to write to
          */
-        static void write (const rw::trajectory::Rotation3DPath& path, std::ostream& outstream);
+        static void write(const rw::trajectory::Rotation3DPath& path, std::ostream& outstream);
 
         /**
          * @brief Writes rw::trajectory::Rotation3DPath \b path to \b outstream
@@ -146,7 +146,7 @@ namespace rw { namespace loaders {
          * @param path [in] Path to save
          * @param outstream [in] Stream to write to
          */
-        static void write (const rw::trajectory::Transform3DPath& path, std::ostream& outstream);
+        static void write(const rw::trajectory::Transform3DPath& path, std::ostream& outstream);
 
         /**
          * @brief Writes rw::trajectory::Rotation3DPath \b path to \b outstream
@@ -156,7 +156,7 @@ namespace rw { namespace loaders {
          * @param path [in] Path to save
          * @param outstream [in] Stream to write to
          */
-        static void write (const rw::trajectory::StatePath& path, std::ostream& outstream);
+        static void write(const rw::trajectory::StatePath& path, std::ostream& outstream);
 
         /**
          * @brief Writes rw::trajectory::Rotation3DPath \b path to \b outstream
@@ -166,7 +166,7 @@ namespace rw { namespace loaders {
          * @param path [in] Path to save
          * @param outstream [in] Stream to write to
          */
-        static void write (const rw::trajectory::TimedQPath& path, std::ostream& outstream);
+        static void write(const rw::trajectory::TimedQPath& path, std::ostream& outstream);
 
         /**
          * @brief Writes rw::trajectory::Rotation3DPath \b path to \b outstream
@@ -176,7 +176,7 @@ namespace rw { namespace loaders {
          * @param path [in] Path to save
          * @param outstream [in] Stream to write to
          */
-        static void write (const rw::trajectory::TimedStatePath& path, std::ostream& outstream);
+        static void write(const rw::trajectory::TimedStatePath& path, std::ostream& outstream);
 
         //-------------------------------- Creating and writing DOMElem
         /**
@@ -189,8 +189,8 @@ namespace rw { namespace loaders {
          * @return Pointer to the newly created DOMElem
          */
         static rw::core::DOMElem::Ptr
-        createTransform3DPath (const rw::trajectory::Transform3DPath& path,
-                               rw::core::DOMElem::Ptr doc);
+        createTransform3DPath(const rw::trajectory::Transform3DPath& path,
+                              rw::core::DOMElem::Ptr doc);
 
         /**
          * @brief Creates a DOMElem to represent \b path
@@ -201,8 +201,8 @@ namespace rw { namespace loaders {
          * @param doc [in] Document which should contain the element
          * @return Pointer to the newly created DOMElem
          */
-        static rw::core::DOMElem::Ptr createQPath (const rw::trajectory::QPath& path,
-                                                   rw::core::DOMElem::Ptr doc);
+        static rw::core::DOMElem::Ptr createQPath(const rw::trajectory::QPath& path,
+                                                  rw::core::DOMElem::Ptr doc);
 
         /**
          * @brief Utility class which initializes local static variables.
@@ -219,13 +219,13 @@ namespace rw { namespace loaders {
         {
           public:
             //! @brief Initializes when constructed.
-            Initializer ();
+            Initializer();
         };
 
       private:
         static const Initializer initializer;
 
-        DOMPathSaver (){}
+        DOMPathSaver() {}
     };
 
     /* @} */

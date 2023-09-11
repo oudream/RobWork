@@ -64,8 +64,7 @@ namespace rwsimlibs { namespace gui {
          * @param parent [in] (optional) the parent Qt widget. Ownership is shared by the caller and
          * the parent widget if given.
          */
-        BodyMotionWidget (rw::core::Ptr< const rwsim::log::LogPositions > entry,
-                          QWidget* parent = 0);
+        BodyMotionWidget(rw::core::Ptr<const rwsim::log::LogPositions> entry, QWidget* parent = 0);
 
         /**
          * @brief Construct new widget for a log entry.
@@ -73,69 +72,66 @@ namespace rwsimlibs { namespace gui {
          * @param parent [in] (optional) the parent Qt widget. Ownership is shared by the caller and
          * the parent widget if given.
          */
-        BodyMotionWidget (rw::core::Ptr< const rwsim::log::LogVelocities > entry,
-                          QWidget* parent = 0);
+        BodyMotionWidget(rw::core::Ptr<const rwsim::log::LogVelocities> entry, QWidget* parent = 0);
 
         //! @brief Destructor.
-        virtual ~BodyMotionWidget ();
+        virtual ~BodyMotionWidget();
 
         //! @copydoc SimulatorLogEntryWidget::setDWC
-        virtual void setDWC (rw::core::Ptr< const rwsim::dynamics::DynamicWorkCell > dwc);
+        virtual void setDWC(rw::core::Ptr<const rwsim::dynamics::DynamicWorkCell> dwc);
 
         //! @copydoc SimulatorLogEntryWidget::setEntry
-        virtual void setEntry (rw::core::Ptr< const rwsim::log::SimulatorLog > entry);
+        virtual void setEntry(rw::core::Ptr<const rwsim::log::SimulatorLog> entry);
 
         //! @copydoc SimulatorLogEntryWidget::getEntry
-        virtual rw::core::Ptr< const rwsim::log::SimulatorLog > getEntry () const;
+        virtual rw::core::Ptr<const rwsim::log::SimulatorLog> getEntry() const;
 
         //! @copydoc SimulatorLogEntryWidget::updateEntryWidget
-        virtual void updateEntryWidget ();
+        virtual void updateEntryWidget();
 
         //! @copydoc SimulatorLogEntryWidget::showGraphics
-        virtual void showGraphics (rw::core::Ptr< rw::graphics::GroupNode > root,
-                                   rw::core::Ptr< rw::graphics::SceneGraph > graph);
+        virtual void showGraphics(rw::core::Ptr<rw::graphics::GroupNode> root,
+                                  rw::core::Ptr<rw::graphics::SceneGraph> graph);
 
         //! @copydoc SimulatorLogEntryWidget::getName
-        virtual std::string getName () const;
+        virtual std::string getName() const;
 
         //! @copydoc SimulatorLogEntryWidget::setProperties
-        virtual void setProperties (rw::core::Ptr< rw::core::PropertyMap > properties);
+        virtual void setProperties(rw::core::Ptr<rw::core::PropertyMap> properties);
 
         //! @copydoc SimulatorLogEntryWidget::Dispatcher
         class Dispatcher : public SimulatorLogEntryWidget::Dispatcher
         {
           public:
             //! @brief Constructor.
-            Dispatcher ();
+            Dispatcher();
 
             //! @brief Destructor.
-            virtual ~Dispatcher ();
+            virtual ~Dispatcher();
 
             //! @copydoc SimulatorLogEntryWidget::Dispatcher::makeWidget
-            SimulatorLogEntryWidget*
-            makeWidget (rw::core::Ptr< const rwsim::log::SimulatorLog > entry,
-                        QWidget* parent = 0) const;
+            SimulatorLogEntryWidget* makeWidget(rw::core::Ptr<const rwsim::log::SimulatorLog> entry,
+                                                QWidget* parent = 0) const;
 
             //! @copydoc SimulatorLogEntryWidget::Dispatcher::accepts
-            bool accepts (rw::core::Ptr< const rwsim::log::SimulatorLog > entry) const;
+            bool accepts(rw::core::Ptr<const rwsim::log::SimulatorLog> entry) const;
         };
 
       private slots:
-        void motionBodiesChanged (const QItemSelection& selection,
-                                  const QItemSelection& deselection);
-        void scalingChanged (double d);
+        void motionBodiesChanged(const QItemSelection& selection,
+                                 const QItemSelection& deselection);
+        void scalingChanged(double d);
 
       private:
         Ui::BodyMotionWidget* const _ui;
-        rw::core::Ptr< const rwsim::dynamics::DynamicWorkCell > _dwc;
-        rw::core::Ptr< const rwsim::log::LogPositions > _positions;
-        rw::core::Ptr< const rwsim::log::LogVelocities > _velocities;
-        rw::core::Ptr< rw::graphics::GroupNode > _root;
-        rw::core::Ptr< rw::graphics::GroupNode > _positionGroup;
-        rw::core::Ptr< rw::graphics::GroupNode > _velocityGroup;
-        rw::core::Ptr< rw::graphics::SceneGraph > _graph;
-        std::map< std::string, std::list< rw::core::Ptr< rwlibs::opengl::RenderVelocity > > >
-            _velRenders;
+        rw::core::Ptr<const rwsim::dynamics::DynamicWorkCell> _dwc;
+        rw::core::Ptr<const rwsim::log::LogPositions> _positions;
+        rw::core::Ptr<const rwsim::log::LogVelocities> _velocities;
+        rw::core::Ptr<rw::graphics::GroupNode> _root;
+        rw::core::Ptr<rw::graphics::GroupNode> _positionGroup;
+        rw::core::Ptr<rw::graphics::GroupNode> _velocityGroup;
+        rw::core::Ptr<rw::graphics::SceneGraph> _graph;
+        std::map<std::string, std::list<rw::core::Ptr<rwlibs::opengl::RenderVelocity>>> _velRenders;
     };
     //! @}
 }}     // namespace rwsimlibs::gui

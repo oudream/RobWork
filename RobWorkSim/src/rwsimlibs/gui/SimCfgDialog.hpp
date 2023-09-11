@@ -26,11 +26,11 @@ class SimCfgDialog : public QDialog
     Q_OBJECT
 
   public:
-    SimCfgDialog (rw::core::Ptr< rwsim::simulator::DynamicSimulator > sim, QWidget* parent = 0);
+    SimCfgDialog(rw::core::Ptr<rwsim::simulator::DynamicSimulator> sim, QWidget* parent = 0);
 
   private slots:
-    void btnPressed ();
-    void changedEvent ();
+    void btnPressed();
+    void changedEvent();
 
   private:
     Ui::SimCfgDialog* _ui;

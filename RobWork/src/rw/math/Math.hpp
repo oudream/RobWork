@@ -43,8 +43,8 @@ namespace rw { namespace math {
     class Math
     {
       public:
-        Math ()  = delete;
-        ~Math () = delete;
+        Math()  = delete;
+        ~Math() = delete;
 
         /**
          * @brief Quaternion to equivalent angle axis conversion.
@@ -53,40 +53,38 @@ namespace rw { namespace math {
          *
          * @return a EAA object that represents the converted quaternion
          */
-        template< class A >
-        static rw::math::EAA< A > quaternionToEAA (const rw::math::Quaternion< A >& quat)
-        {
-            Quaternion< A > q = quat;
+        template<class A>
+        static rw::math::EAA<A> quaternionToEAA(const rw::math::Quaternion<A>& quat) {
+            Quaternion<A> q = quat;
 
             // If w > 1 then acos and sqrt will produce errors. This can't
             // happen if the quaternion is normalised.
-            if (q.getQw () > 1)
-                q.normalize ();
+            if(q.getQw() > 1) q.normalize();
 
-            const A angle = 2 * acos (q.getQw ());
+            const A angle = 2 * acos(q.getQw());
 
             // assuming quaternion normalised then w is less than 1, so term
             // always positive.
-            const A s = std::sqrt (1 - q.getQw () * q.getQw ());
+            const A s = std::sqrt(1 - q.getQw() * q.getQw());
 
             // Check to avoid a division by zero. s is always positive due to
             // sqrt.
             A kx, ky, kz;
-            if (s < 1e-3) {
+            if(s < 1e-3) {
                 // If s close to zero then direction of axis not important. If
                 // it is important that the axis is of the right length then
                 // replace with x = 1 and y = z = 0.
-                kx = q.getQx ();
-                ky = q.getQy ();
-                kz = q.getQz ();
+                kx = q.getQx();
+                ky = q.getQy();
+                kz = q.getQz();
             }
             else {
-                kx = q.getQx () / s;    // normalise axis
-                ky = q.getQy () / s;
-                kz = q.getQz () / s;
+                kx = q.getQx() / s;    // normalise axis
+                ky = q.getQy() / s;
+                kz = q.getQz() / s;
             }
 
-            return EAA< A > (kx * angle, ky * angle, kz * angle);
+            return EAA<A>(kx * angle, ky * angle, kz * angle);
         }
 
         /**
@@ -96,17 +94,16 @@ namespace rw { namespace math {
          *
          * @return a Quaternion object that represents the converted EAA
          */
-        template< class A >
-        static rw::math::Quaternion< A > eaaToQuaternion (const rw::math::EAA< A >& eaa)
-        {
-            const Vector3D< A > v = eaa.axis ();
-            const A a2            = eaa.angle () / 2;
-            const A s             = sin (a2);
-            const A x             = v[0] * s;
-            const A y             = v[1] * s;
-            const A z             = v[2] * s;
-            const A w             = cos (a2);
-            return Quaternion< A > (x, y, z, w);
+        template<class A>
+        static rw::math::Quaternion<A> eaaToQuaternion(const rw::math::EAA<A>& eaa) {
+            const Vector3D<A> v = eaa.axis();
+            const A a2          = eaa.angle() / 2;
+            const A s           = sin(a2);
+            const A x           = v[0] * s;
+            const A y           = v[1] * s;
+            const A z           = v[2] * s;
+            const A w           = cos(a2);
+            return Quaternion<A>(x, y, z, w);
         }
 
         /**
@@ -118,10 +115,8 @@ namespace rw { namespace math {
          *
          * @return a Quaternion object that represents the converted EAA
          */
-        template< class A >
-        static rw::math::Rotation3D< A > zyxToRotation3D (A roll, A pitch, A yaw)
-        {
-            return RPY< A > (roll, pitch, yaw).toRotation3D ();
+        template<class A> static rw::math::Rotation3D<A> zyxToRotation3D(A roll, A pitch, A yaw) {
+            return RPY<A>(roll, pitch, yaw).toRotation3D();
         }
 
 #if !defined(SWIGJAVA)
@@ -143,19 +138,18 @@ namespace rw { namespace math {
          * \f$
          */
 #endif
-        template< class R >
-        static inline Eigen::Matrix< R, 3, 3 > skew (const rw::math::Vector3D< R >& s)
-        {
-            Eigen::Matrix< R, 3, 3 > S;
-            S (0, 0) = 0.0;
-            S (0, 1) = -s[2];
-            S (0, 2) = s[1];
-            S (1, 0) = s[2];
-            S (1, 1) = 0.0;
-            S (1, 2) = -s[0];
-            S (2, 0) = -s[1];
-            S (2, 1) = s[0];
-            S (2, 2) = 0.0;
+        template<class R>
+        static inline Eigen::Matrix<R, 3, 3> skew(const rw::math::Vector3D<R>& s) {
+            Eigen::Matrix<R, 3, 3> S;
+            S(0, 0) = 0.0;
+            S(0, 1) = -s[2];
+            S(0, 2) = s[1];
+            S(1, 0) = s[2];
+            S(1, 1) = 0.0;
+            S(1, 2) = -s[0];
+            S(2, 0) = -s[1];
+            S(2, 1) = s[0];
+            S(2, 2) = 0.0;
             return S;
         }
 
@@ -168,12 +162,9 @@ namespace rw { namespace math {
          * @return the clamped value of val
          */
 
-        static inline double clamp (double val, double min, double max)
-        {
-            if (val < min)
-                return min;
-            if (val > max)
-                return max;
+        static inline double clamp(double val, double min, double max) {
+            if(val < min) return min;
+            if(val > max) return max;
             return val;
         }
 
@@ -185,8 +176,8 @@ namespace rw { namespace math {
          * @param max [min] The maximum value
          * @return The clamped values
          */
-        static rw::math::Q clampQ (const rw::math::Q& q, const rw::math::Q& min,
-                                   const rw::math::Q& max);
+        static rw::math::Q clampQ(const rw::math::Q& q, const rw::math::Q& min,
+                                  const rw::math::Q& max);
 
         /**
          * @brief Clamps values of \b q with \b bounds.first and \b bounds.second
@@ -196,10 +187,9 @@ namespace rw { namespace math {
          * element
          * @return The clamped values
          */
-        static rw::math::Q clampQ (const rw::math::Q& q,
-                                   const std::pair< rw::math::Q, rw::math::Q >& bounds)
-        {
-            return Math::clampQ (q, bounds.first, bounds.second);
+        static rw::math::Q clampQ(const rw::math::Q& q,
+                                  const std::pair<rw::math::Q, rw::math::Q>& bounds) {
+            return Math::clampQ(q, bounds.first, bounds.second);
         }
 
         /**
@@ -210,16 +200,14 @@ namespace rw { namespace math {
          * @param max [min] The maximum value
          * @return The clamped values
          */
-        static rw::math::Vector3D<> clamp (const rw::math::Vector3D<>& q,
-                                           const rw::math::Vector3D<>& min,
-                                           const rw::math::Vector3D<>& max)
-        {
-            assert (q.size () == min.size ());
-            assert (q.size () == max.size ());
+        static rw::math::Vector3D<> clamp(const rw::math::Vector3D<>& q,
+                                          const rw::math::Vector3D<>& min,
+                                          const rw::math::Vector3D<>& max) {
+            assert(q.size() == min.size());
+            assert(q.size() == max.size());
 
             Vector3D<> qres;
-            for (size_t i = 0; i < 3; i++)
-                qres (i) = clamp (q (i), min (i), max (i));
+            for(size_t i = 0; i < 3; i++) qres(i) = clamp(q(i), min(i), max(i));
 
             return qres;
         }
@@ -231,35 +219,35 @@ namespace rw { namespace math {
          *
          * @note Uses boost::random
          */
-        static double ran ();
+        static double ran();
 
         /**
          * @brief Seeds the random number generator.
          *
          * @note Uses boost::random
          */
-        static void seed (unsigned seed);
+        static void seed(unsigned seed);
 
         /**
          * @brief Seeds the random number generator with current time of day
          *
          * @note Uses boost::random
          */
-        static void seed ();
+        static void seed();
 
         /**
          * @brief A random double in the range [from, to[ using a uniform distribution.
          *
          * @note Uses boost::random
          */
-        static double ran (double from, double to);
+        static double ran(double from, double to);
 
         /**
          * @brief A random integer in the range [from, to[ using a uniform distribution.
          *
          * @note Uses boost::random
          */
-        static int ranI (int from, int to);
+        static int ranI(int from, int to);
 
         /**
          * @brief Returns a random sample around \b mean with standard deviation \b sigma using the
@@ -273,7 +261,7 @@ namespace rw { namespace math {
          * @param sigma [in] Standard deviation
          * @return Random sample
          */
-        static double ranNormalDist (double mean, double sigma);
+        static double ranNormalDist(double mean, double sigma);
 
         /**
          * @brief Returns a random Q between with values in the range [from, to[ using a uniform
@@ -285,7 +273,7 @@ namespace rw { namespace math {
          * @param to [in] The upper bound
          * @return Random Q
          */
-        static rw::math::Q ranQ (const rw::math::Q& from, const rw::math::Q& to);
+        static rw::math::Q ranQ(const rw::math::Q& from, const rw::math::Q& to);
 
         /**
          * @brief Returns a random Q between with values in the range [bounds.first, bounds.second[
@@ -296,7 +284,7 @@ namespace rw { namespace math {
          * @param bounds [in] The lower and upper bounds
          * @return Random Q
          */
-        static rw::math::Q ranQ (const std::pair< rw::math::Q, rw::math::Q >& bounds);
+        static rw::math::Q ranQ(const std::pair<rw::math::Q, rw::math::Q>& bounds);
 
         /**
          * @brief Returns a random direction in \b dim dimensions using the standard normal
@@ -310,7 +298,7 @@ namespace rw { namespace math {
          *
          * @warning Please see the warning for Math::ranNormalDist
          */
-        static rw::math::Q ranDir (size_t dim, double length = 1);
+        static rw::math::Q ranDir(size_t dim, double length = 1);
 
         /**
          * @brief Returns a weighted random direction in \b dim dimensions using the standard normal
@@ -326,23 +314,22 @@ namespace rw { namespace math {
          *
          * @warning Please see the warning for Math::ranNormalDist
          */
-        static rw::math::Q ranWeightedDir (size_t dim, const rw::math::Q& weights,
-                                           double length = 1);
+        static rw::math::Q ranWeightedDir(size_t dim, const rw::math::Q& weights,
+                                          double length = 1);
 
         /**
          * @brief Returns a uniformly distributed random orientation.
          *
          * @return Random orientation represented as a Quaternion
          */
-        template< class T > static rw::math::Quaternion< T > ranQuaternion ()
-        {
-            double u1 = Math::ran ();
-            double u2 = Math::ran ();
-            double u3 = Math::ran ();
-            Quaternion< T > q (static_cast< T > (std::sqrt (1 - u1) * sin (2 * Pi * u2)),
-                               static_cast< T > (std::sqrt (1 - u1) * cos (2 * Pi * u2)),
-                               static_cast< T > (std::sqrt (u1) * sin (2 * Pi * u3)),
-                               static_cast< T > (std::sqrt (u1) * cos (2 * Pi * u3)));
+        template<class T> static rw::math::Quaternion<T> ranQuaternion() {
+            double u1 = Math::ran();
+            double u2 = Math::ran();
+            double u3 = Math::ran();
+            Quaternion<T> q(static_cast<T>(std::sqrt(1 - u1) * sin(2 * Pi * u2)),
+                            static_cast<T>(std::sqrt(1 - u1) * cos(2 * Pi * u2)),
+                            static_cast<T>(std::sqrt(u1) * sin(2 * Pi * u3)),
+                            static_cast<T>(std::sqrt(u1) * cos(2 * Pi * u3)));
             return q;
         }
 
@@ -351,9 +338,8 @@ namespace rw { namespace math {
          *
          * @return Random orientation represented as a Rotation3D
          */
-        template< class T > static rw::math::Rotation3D< T > ranRotation3D ()
-        {
-            return ranQuaternion< T > ().toRotation3D ();
+        template<class T> static rw::math::Rotation3D<T> ranRotation3D() {
+            return ranQuaternion<T>().toRotation3D();
         }
 
         /**
@@ -363,13 +349,12 @@ namespace rw { namespace math {
          * @param translationLength [in]
          * @return Random Transform3D
          */
-        template< class T >
-        static rw::math::Transform3D< T > ranTransform3D (const double translationLength = 1)
-        {
-            rw::math::Q dir = ranDir (3, translationLength);
-            rw::math::Vector3D< T > translation (
-                static_cast< T > (dir (0)), static_cast< T > (dir (1)), static_cast< T > (dir (2)));
-            return rw::math::Transform3D< T > (translation, ranRotation3D< T > ());
+        template<class T>
+        static rw::math::Transform3D<T> ranTransform3D(const double translationLength = 1) {
+            rw::math::Q dir = ranDir(3, translationLength);
+            rw::math::Vector3D<T> translation(
+                static_cast<T>(dir(0)), static_cast<T>(dir(1)), static_cast<T>(dir(2)));
+            return rw::math::Transform3D<T>(translation, ranRotation3D<T>());
         }
 
         /**
@@ -381,7 +366,9 @@ namespace rw { namespace math {
          * @param d [in] number to round
          * @return d rounded to nearest integer.
          */
-        static double round (double d) { return floor (d + 0.5); }
+        static double round(double d) {
+            return floor(d + 0.5);
+        }
 
         /**
           @brief The square of \b d
@@ -389,17 +376,19 @@ namespace rw { namespace math {
           @param d [in] Number to square
           @return d * d
         */
-        template< class T > static inline T sqr (const T& d) { return d * d; }
+        template<class T> static inline T sqr(const T& d) {
+            return d * d;
+        }
 
         /**
          * @brief The squares of the elements of \b q.
          */
-        static rw::math::Q sqr (const rw::math::Q& q);
+        static rw::math::Q sqr(const rw::math::Q& q);
 
         /**
          * @brief The square roots of the elements of \b q.
          */
-        static rw::math::Q sqrt (const rw::math::Q& q);
+        static rw::math::Q sqrt(const rw::math::Q& q);
 
         /**
          * @brief Returns vector with the absolute values
@@ -410,11 +399,9 @@ namespace rw { namespace math {
          * @param v [in] the vector \f$ v\f$
          * @return the vector \f$ Abs(v)\f$
          */
-        static rw::math::Q abs (const rw::math::Q& v)
-        {
-            rw::math::Q result (v.size ());
-            for (size_t i = 0; i < v.size (); i++)
-                result[i] = std::fabs (v[i]);
+        static rw::math::Q abs(const rw::math::Q& v) {
+            rw::math::Q result(v.size());
+            for(size_t i = 0; i < v.size(); i++) result[i] = std::fabs(v[i]);
             return result;
         }
 
@@ -426,10 +413,9 @@ namespace rw { namespace math {
          * @param v [in] the vector v
          * @return the smallest element
          */
-        static double min (const rw::math::Q& v)
-        {
-            std::vector< double > vec = v.toStdVector ();
-            return *std::min_element (vec.begin (), vec.end ());
+        static double min(const rw::math::Q& v) {
+            std::vector<double> vec = v.toStdVector();
+            return *std::min_element(vec.begin(), vec.end());
         }
 
         /**
@@ -440,10 +426,9 @@ namespace rw { namespace math {
          * @param v [in] the vector v
          * @return the largest element
          */
-        static double max (const rw::math::Q& v)
-        {
-            std::vector< double > vec = v.toStdVector ();
-            return *std::max_element (vec.begin (), vec.end ());
+        static double max(const rw::math::Q& v) {
+            std::vector<double> vec = v.toStdVector();
+            return *std::max_element(vec.begin(), vec.end());
         }
 
         /**
@@ -453,13 +438,11 @@ namespace rw { namespace math {
          * @param b [in] the vector \b b
          * @return Q with smallest elements
          */
-        template< class T > static T min (const T& a, const T& b)
-        {
-            assert (a.size () == b.size ());
+        template<class T> static T min(const T& a, const T& b) {
+            assert(a.size() == b.size());
 
-            T result (a.size ());
-            for (size_t i = 0; i < a.size (); i++)
-                result[i] = std::min (a[i], b[i]);
+            T result(a.size());
+            for(size_t i = 0; i < a.size(); i++) result[i] = std::min(a[i], b[i]);
             return result;
         }
 
@@ -470,13 +453,11 @@ namespace rw { namespace math {
          * @param b [in] the vector \b b
          * @return Q with largest elements
          */
-        template< class T > static T max (const T& a, const T& b)
-        {
-            assert (a.size () == b.size ());
+        template<class T> static T max(const T& a, const T& b) {
+            assert(a.size() == b.size());
 
-            T result (a.size ());
-            for (size_t i = 0; i < a.size (); i++)
-                result (i) = std::max (a[i], b[i]);
+            T result(a.size());
+            for(size_t i = 0; i < a.size(); i++) result(i) = std::max(a[i], b[i]);
             return result;
         }
 
@@ -489,11 +470,9 @@ namespace rw { namespace math {
          * @param v [in] the vector \f$v\f$
          * @return the vector \f$Abs(v)\f$
          */
-        template< class T > static Vector3D< T > abs (const Vector3D< T >& v)
-        {
-            Vector3D< T > result;
-            for (size_t i = 0; i < 3; i++)
-                result[i] = std::fabs (v[i]);
+        template<class T> static Vector3D<T> abs(const Vector3D<T>& v) {
+            Vector3D<T> result;
+            for(size_t i = 0; i < 3; i++) result[i] = std::fabs(v[i]);
             return result;
         }
 
@@ -503,12 +482,10 @@ namespace rw { namespace math {
          * @param v [in] the vector v
          * @return the smallest element
          */
-        template< class T > static T min (const Vector3D< T >& v)
-        {
-            T minval = v (0);
-            for (size_t i = 1; i < 3; i++)
-                if (v (i) < minval)
-                    minval = v (i);
+        template<class T> static T min(const Vector3D<T>& v) {
+            T minval = v(0);
+            for(size_t i = 1; i < 3; i++)
+                if(v(i) < minval) minval = v(i);
             return minval;
         }
 
@@ -518,12 +495,10 @@ namespace rw { namespace math {
          * @param v [in] the vector v
          * @return the largest element
          */
-        template< class T > static T max (const Vector3D< T >& v)
-        {
-            T maxval = v (0);
-            for (size_t i = 1; i < 3; i++)
-                if (v (i) > maxval)
-                    maxval = v (i);
+        template<class T> static T max(const Vector3D<T>& v) {
+            T maxval = v(0);
+            for(size_t i = 1; i < 3; i++)
+                if(v(i) > maxval) maxval = v(i);
             return maxval;
         }
 
@@ -534,12 +509,9 @@ namespace rw { namespace math {
          * @param b [in] the vector \b b
          * @return Vector with smallest elements
          */
-        template< class T >
-        static Vector3D< T > min (const Vector3D< T >& a, const Vector3D< T >& b)
-        {
-            Vector3D< T > result;
-            for (size_t i = 0; i < 3; i++)
-                result (i) = std::min (a[i], b[i]);
+        template<class T> static Vector3D<T> min(const Vector3D<T>& a, const Vector3D<T>& b) {
+            Vector3D<T> result;
+            for(size_t i = 0; i < 3; i++) result(i) = std::min(a[i], b[i]);
             return result;
         }
 
@@ -550,12 +522,9 @@ namespace rw { namespace math {
          * @param b [in] the vector \b b
          * @return Vector with largest elements
          */
-        template< class T >
-        static Vector3D< T > max (const Vector3D< T >& a, const Vector3D< T >& b)
-        {
-            Vector3D< T > result;
-            for (size_t i = 0; i < 3; i++)
-                result (i) = std::max (a[i], b[i]);
+        template<class T> static Vector3D<T> max(const Vector3D<T>& a, const Vector3D<T>& b) {
+            Vector3D<T> result;
+            for(size_t i = 0; i < 3; i++) result(i) = std::max(a[i], b[i]);
             return result;
         }
 
@@ -567,7 +536,9 @@ namespace rw { namespace math {
          * @param s [in] The value for which to return the sign
          * @return The sign
          */
-        static double sign (double s) { return s >= 0 ? 1 : -1; }
+        static double sign(double s) {
+            return s >= 0 ? 1 : -1;
+        }
 
         /**
          * @brief Returns the sign of each element
@@ -578,27 +549,24 @@ namespace rw { namespace math {
          * @param q [in] Vector for which to get the signs
          * @return Vector of sign values
          */
-        static rw::math::Q sign (const rw::math::Q& q)
-        {
-            rw::math::Q res (q.size ());
-            for (size_t i = 0; i < q.size (); i++)
-                res (i) = sign (q (i));
+        static rw::math::Q sign(const rw::math::Q& q) {
+            rw::math::Q res(q.size());
+            for(size_t i = 0; i < q.size(); i++) res(i) = sign(q(i));
             return res;
         }
 
         /**
            @brief Exact implementation of ceil(log_2(n)) for n > 0.
         */
-        static int ceilLog2 (int n);
+        static int ceilLog2(int n);
 
         /**
          * @brief Factorial
          * The method does not implement any safe guards for negative numbers of overflow of
          * numbers.
          */
-        static long long factorial (long long n)
-        {
-            return (n == 1 || n == 0) ? 1 : factorial (n - 1) * n;
+        static long long factorial(long long n) {
+            return (n == 1 || n == 0) ? 1 : factorial(n - 1) * n;
         }
 
         /**
@@ -608,12 +576,9 @@ namespace rw { namespace math {
          * @param size [in] length of tmp
          * @return vector of doubles
          */
-        template< class ARR > static std::vector< double > toStdVector (const ARR& tmp, int size)
-        {
-            std::vector< double > qvec (size);
-            for (int i = 0; i < size; i++) {
-                qvec[i] = tmp (i);
-            }
+        template<class ARR> static std::vector<double> toStdVector(const ARR& tmp, int size) {
+            std::vector<double> qvec(size);
+            for(int i = 0; i < size; i++) { qvec[i] = tmp(i); }
             return qvec;
         }
 
@@ -625,14 +590,11 @@ namespace rw { namespace math {
          * @param size2 [in] height of tmp
          * @return vector of doubles
          */
-        template< class MAT >
-        static std::vector< double > toStdVector (const MAT& tmp, int size1, int size2)
-        {
-            std::vector< double > qvec (size1 * size2);
-            for (int i = 0; i < size1; i++) {
-                for (int j = 0; j < size2; j++) {
-                    qvec[i * size2 + j] = tmp (i, j);
-                }
+        template<class MAT>
+        static std::vector<double> toStdVector(const MAT& tmp, int size1, int size2) {
+            std::vector<double> qvec(size1 * size2);
+            for(int i = 0; i < size1; i++) {
+                for(int j = 0; j < size2; j++) { qvec[i * size2 + j] = tmp(i, j); }
             }
             return qvec;
         }
@@ -644,12 +606,9 @@ namespace rw { namespace math {
          * @param tmp [out] the output
          * @return reference to tmp
          */
-        template< class T, class ARR >
-        static ARR fromStdVector (const std::vector< T >& data, ARR& tmp)
-        {
-            for (size_t i = 0; i < data.size (); i++) {
-                tmp (i) = data[i];
-            }
+        template<class T, class ARR>
+        static ARR fromStdVector(const std::vector<T>& data, ARR& tmp) {
+            for(size_t i = 0; i < data.size(); i++) { tmp(i) = data[i]; }
             return tmp;
         }
 
@@ -662,13 +621,10 @@ namespace rw { namespace math {
          * @param size2 [in] the size of the second dimension of the matrix.
          * @return reference to tmp
          */
-        template< class T, class MAT >
-        static MAT fromStdVectorToMat (const std::vector< T >& data, MAT& tmp, int size1, int size2)
-        {
-            for (size_t i = 0; (int) i < size1; i++) {
-                for (size_t j = 0; (int) j < size2; j++) {
-                    tmp (i, j) = data[i * size2 + j];
-                }
+        template<class T, class MAT>
+        static MAT fromStdVectorToMat(const std::vector<T>& data, MAT& tmp, int size1, int size2) {
+            for(size_t i = 0; (int) i < size1; i++) {
+                for(size_t j = 0; (int) j < size2; j++) { tmp(i, j) = data[i * size2 + j]; }
             }
             return tmp;
         }
@@ -678,7 +634,7 @@ namespace rw { namespace math {
          *
          * Use to make sure code is independent of specific compile specific implementations
          */
-        static bool isNaN (double d);
+        static bool isNaN(double d);
 
         /**
          * @brief Get a value for NaN.
@@ -687,7 +643,7 @@ namespace rw { namespace math {
          *
          * @return a double representation of NaN.
          */
-        static double NaN ();
+        static double NaN();
     };
 
     /*@}*/

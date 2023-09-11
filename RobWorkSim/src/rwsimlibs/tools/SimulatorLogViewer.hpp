@@ -55,45 +55,45 @@ namespace rwsimlibs { namespace tools {
         Q_OBJECT
       public:
         //! @brief Constructor.
-        SimulatorLogViewer ();
+        SimulatorLogViewer();
 
         //! @brief Destructor.
-        virtual ~SimulatorLogViewer ();
+        virtual ~SimulatorLogViewer();
 
         /**
          * @brief Set the dynamic workcell.
          * @param dwc [in] the dynamic workcell.
          */
-        void setDWC (rw::core::Ptr< const rwsim::dynamics::DynamicWorkCell > dwc);
+        void setDWC(rw::core::Ptr<const rwsim::dynamics::DynamicWorkCell> dwc);
 
         /**
          * @brief Set the log structure.
          * @param log [in/out] the log structure - the statistics info might be updated if requested
          * by user.
          */
-        void setLog (rw::core::Ptr< rwsim::log::SimulatorLogScope > log);
+        void setLog(rw::core::Ptr<rwsim::log::SimulatorLogScope> log);
 
       public slots:
         //! @brief Open dialog for choosing a dynamic workcell.
-        void openDWC ();
+        void openDWC();
 
         //! @brief Close the currently open dynamic workcell.
-        void closeDWC ();
+        void closeDWC();
 
         //! @brief Open dialog for choosing a log to compare with.
-        void openCompare ();
+        void openCompare();
 
       signals:
         /**
          * @brief Signal for a changed dynamic workcell.
          * @param dwc [in] the new dynamic workcell, or NULL if no dynamic workcell.
          */
-        void dwcChanged (rw::core::Ptr< const rwsim::dynamics::DynamicWorkCell > dwc);
+        void dwcChanged(rw::core::Ptr<const rwsim::dynamics::DynamicWorkCell> dwc);
 
       private:
         Ui::SimulatorLogViewer* const _ui;
-        rw::core::Ptr< const rwsim::dynamics::DynamicWorkCell > _dwc;
-        rw::core::Ptr< rwsim::log::SimulatorLogScope > _log;
+        rw::core::Ptr<const rwsim::dynamics::DynamicWorkCell> _dwc;
+        rw::core::Ptr<rwsim::log::SimulatorLogScope> _log;
         rwsimlibs::gui::SimulatorLogWidget* _widget;
     };
     //! @}

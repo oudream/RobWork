@@ -22,7 +22,7 @@
 #include <rw/graspplanning/ContactValidateFilter.hpp>
 
 #include <vector>
-#endif 
+#endif
 namespace rw { namespace graspplanning {
 
     /**
@@ -35,39 +35,39 @@ namespace rw { namespace graspplanning {
         /**
          * @brief Cconstructor
          */
-        CompositeContactFilter (bool enableFullStats = false);
+        CompositeContactFilter(bool enableFullStats = false);
 
         /**
          * @brief destructor
          */
-        virtual ~CompositeContactFilter (){};
+        virtual ~CompositeContactFilter(){};
 
         /**
          * @copydoc ContactValidateFilter::isValid
          */
-        bool isValid (const rw::sensor::Contact3D& contact);
+        bool isValid(const rw::sensor::Contact3D& contact);
 
         /**
          * @brief add contact validation filter
          * @param filter
          */
-        void addFilter (ContactValidateFilter* filter);
+        void addFilter(ContactValidateFilter* filter);
 
         /**
          * @brief get a vector of all contact filters
          * @return
          */
-        std::vector< ContactValidateFilter* > getFilters () { return _cfilters; };
+        std::vector<ContactValidateFilter*> getFilters() { return _cfilters; };
 
         /**
          * @brief set all contact filters
          */
-        void setFilters (std::vector< ContactValidateFilter* > filters);
+        void setFilters(std::vector<ContactValidateFilter*> filters);
 
       private:
-        std::vector< ContactValidateFilter* > _cfilters;
+        std::vector<ContactValidateFilter*> _cfilters;
         // the number of contacts that was invalid by the filter indicated by the index
-        std::vector< int > _stats;
+        std::vector<int> _stats;
         int _nrOfTests;
         bool _fullTestEnabled;
     };

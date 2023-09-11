@@ -53,18 +53,18 @@ namespace rw { namespace math {
      * \theta k_z)@f$ describes the orientation in equal angle axis (EAA)
      * format.
      */
-    template< class T = double > class Pose6D
+    template<class T = double> class Pose6D
     {
       private:
-        rw::math::Vector3D< T > _position;
-        EAA< T > _orientation;
+        rw::math::Vector3D<T> _position;
+        EAA<T> _orientation;
 
       public:
         /**
          * @brief Creates an "identity" Pose6D. Position is zero vector and orientation
          * is zero vector
          */
-        Pose6D () : _position (0, 0, 0), _orientation (0, 0, 0) {}
+        Pose6D() : _position(0, 0, 0), _orientation(0, 0, 0) {}
 
         /**
          * @brief Creates a Pose6D from 6 parameters. 3 defining the
@@ -76,24 +76,23 @@ namespace rw { namespace math {
          * @param ky [in] @f$ \theta k_y @f$
          * @param kz [in] @f$ \theta k_z @f$
          */
-        Pose6D (T x, T y, T z, T kx, T ky, T kz) : _position (x, y, z), _orientation (kx, ky, kz) {}
+        Pose6D(T x, T y, T z, T kx, T ky, T kz) : _position(x, y, z), _orientation(kx, ky, kz) {}
 
         /**
          * @brief Creates a Pose6D from a Vector3D and a EAA
          * @param v3d [in] Vector3D describing the 3D position of the Pose6D
          * @param eaa [in] EAA describing the rotational component of the Pose6D.
          */
-        Pose6D (const rw::math::Vector3D< T >& v3d, const EAA< T >& eaa) : _position (v3d), _orientation (eaa)
-        {}
+        Pose6D(const rw::math::Vector3D<T>& v3d, const EAA<T>& eaa) :
+            _position(v3d), _orientation(eaa) {}
 
         /**
          * @brief Creates a Pose6D from a Transform3D
          *
          * @param t3d [in] A Transform3D
          */
-        explicit Pose6D (const rw::math::Transform3D< T >& t3d) :
-            _position (t3d.P ()), _orientation (t3d.R ())
-        {}
+        explicit Pose6D(const rw::math::Transform3D<T>& t3d) :
+            _position(t3d.P()), _orientation(t3d.R()) {}
 
         /**
          * @brief Returns the \f$ i\f$'th element in the pose.
@@ -104,32 +103,29 @@ namespace rw { namespace math {
          * @param i [in] index to return
          * @return the \f$ i\f$ in the index of the pose.
          */
-        T get (size_t i) const
-        {
-            assert (i < 6);
-            if (i < 3)
-                return _position (i);
-            else
-                return _orientation.axis () (i - 3) * _orientation.angle ();
+        T get(size_t i) const {
+            assert(i < 6);
+            if(i < 3) return _position(i);
+            else return _orientation.axis()(i - 3) * _orientation.angle();
         }
 
         /**
          * @brief Get the position.
          * @return reference to position vector.
          */
-        const rw::math::Vector3D< T >& getPos () const { return _position; }
+        const rw::math::Vector3D<T>& getPos() const { return _position; }
 
         //! @copydoc getPos() const
-        rw::math::Vector3D< T >& getPos () { return _position; }
+        rw::math::Vector3D<T>& getPos() { return _position; }
 
         /**
          * @brief Get the orientation.
          * @return reference to orientation rotation vector.
          */
-        const EAA< T >& getEAA () const { return _orientation; }
+        const EAA<T>& getEAA() const { return _orientation; }
 
         //! @copydoc getEAA() const
-        EAA< T >& getEAA () { return _orientation; }
+        EAA<T>& getEAA() { return _orientation; }
 
 #if !defined(SWIG)
         /**
@@ -142,13 +138,10 @@ namespace rw { namespace math {
          *
          * @return the \f$i\f$'th index of the pose.
          */
-        T operator() (size_t i) const
-        {
-            assert (i < 6);
-            if (i < 3)
-                return _position (i);
-            else
-                return _orientation.axis () (i - 3) * _orientation.angle ();
+        T operator()(size_t i) const {
+            assert(i < 6);
+            if(i < 3) return _position(i);
+            else return _orientation.axis()(i - 3) * _orientation.angle();
         }
 
         /**
@@ -161,13 +154,10 @@ namespace rw { namespace math {
          *
          * @return the \f$i\f$'th index of the pose.
          */
-        T& operator() (size_t i)
-        {
-            assert (i < 6);
-            if (i < 3)
-                return _position (i);
-            else
-                return _orientation[i - 3];
+        T& operator()(size_t i) {
+            assert(i < 6);
+            if(i < 3) return _position(i);
+            else return _orientation[i - 3];
         }
 
         /**
@@ -180,13 +170,10 @@ namespace rw { namespace math {
          *
          * @return the \f$i\f$'th index of the pose.
          */
-        T operator[] (size_t i) const
-        {
-            assert (i < 6);
-            if (i < 3)
-                return _position (i);
-            else
-                return _orientation.axis () (i - 3) * _orientation.angle ();
+        T operator[](size_t i) const {
+            assert(i < 6);
+            if(i < 3) return _position(i);
+            else return _orientation.axis()(i - 3) * _orientation.angle();
         }
 
         /**
@@ -199,28 +186,22 @@ namespace rw { namespace math {
          *
          * @return the \f$i\f$'th index of the pose.
          */
-        T& operator[] (size_t i)
-        {
-            assert (i < 6);
-            if (i < 3)
-                return _position (i);
-            else
-                return _orientation[i - 3];
+        T& operator[](size_t i) {
+            assert(i < 6);
+            if(i < 3) return _position(i);
+            else return _orientation[i - 3];
         }
 #else
-        ARRAYOPERATOR (T);
+        ARRAYOPERATOR(T);
         TOSTRING(rw::math::Pose6D<T>);
 #endif
         /**
          * @brief Converts the Pose6D into the corresponding Transform3D
          * @return the corresponding Transform3D
          */
-        const rw::math::Transform3D< T > toTransform3D () const
-        {
-            return rw::math::Transform3D< T > (_position, _orientation);
+        const rw::math::Transform3D<T> toTransform3D() const {
+            return rw::math::Transform3D<T>(_position, _orientation);
         }
-
-
     };
 
     /**
@@ -228,14 +209,13 @@ namespace rw { namespace math {
      * @param pose [in] Pose6D with type T
      * @return Pose6D with type Q
      */
-    template< class Q, class T > const Pose6D< Q > cast (const Pose6D< T >& pose)
-    {
-        return Pose6D< Q > (static_cast< Q > (pose.get (0)),
-                            static_cast< Q > (pose.get (1)),
-                            static_cast< Q > (pose.get (2)),
-                            static_cast< Q > (pose.get (3)),
-                            static_cast< Q > (pose.get (4)),
-                            static_cast< Q > (pose.get (5)));
+    template<class Q, class T> const Pose6D<Q> cast(const Pose6D<T>& pose) {
+        return Pose6D<Q>(static_cast<Q>(pose.get(0)),
+                         static_cast<Q>(pose.get(1)),
+                         static_cast<Q>(pose.get(2)),
+                         static_cast<Q>(pose.get(3)),
+                         static_cast<Q>(pose.get(4)),
+                         static_cast<Q>(pose.get(5)));
     }
 
 #if !defined(SWIG)
@@ -244,30 +224,29 @@ namespace rw { namespace math {
      *
      * @relates Q
      */
-    template< class T > std::ostream& operator<< (std::ostream& out, const Pose6D< T >& v)
-    {
-        return out << "Pose6D {" << v (0) << ", " << v (1) << ", " << v (2) << ", " << v (3) << ", "
-                   << v (4) << ", " << v (5) << "}";
+    template<class T> std::ostream& operator<<(std::ostream& out, const Pose6D<T>& v) {
+        return out << "Pose6D {" << v(0) << ", " << v(1) << ", " << v(2) << ", " << v(3) << ", "
+                   << v(4) << ", " << v(5) << "}";
     }
-#endif 
+#endif
 
 #if !defined(SWIG)
-    extern template class rw::math::Pose6D< double >;
-    extern template class rw::math::Pose6D< float >;
+    extern template class rw::math::Pose6D<double>;
+    extern template class rw::math::Pose6D<float>;
 #else
 
 #if SWIG_VERSION < 0x040000
-    SWIG_DECLARE_TEMPLATE (Pose6Dd, rw::math::Pose6D< double >);
-    ADD_DEFINITION (Pose6Dd, Pose6D,sdurw_math);
+    SWIG_DECLARE_TEMPLATE(Pose6Dd, rw::math::Pose6D<double>);
+    ADD_DEFINITION(Pose6Dd, Pose6D, sdurw_math);
 #else
-    SWIG_DECLARE_TEMPLATE (Pose6D, rw::math::Pose6D< double >);
+    SWIG_DECLARE_TEMPLATE(Pose6D, rw::math::Pose6D<double>);
 #endif
 
-    SWIG_DECLARE_TEMPLATE (Pose6Df, rw::math::Pose6D< float >);
+    SWIG_DECLARE_TEMPLATE(Pose6Df, rw::math::Pose6D<float>);
 #endif
-    using Pose6Dd = Pose6D< double >;
-    using Pose6Df = Pose6D< float >;
-    
+    using Pose6Dd = Pose6D<double>;
+    using Pose6Df = Pose6D<float>;
+
 #if !defined(SWIG)
 /*@}*/
 #endif
@@ -282,23 +261,15 @@ namespace rw { namespace common {
          * @relatedalso rw::math::Pose6D
          */
         template<>
-        void write (const rw::math::Pose6D< double >& sobject, rw::common::OutputArchive& oarchive,
-                    const std::string& id);
+        void write(const rw::math::Pose6D<double>& sobject, rw::common::OutputArchive& oarchive,
+                   const std::string& id);
 
         /**
          * @copydoc rw::common::serialization::write
          * @relatedalso rw::math::Pose6D
          */
         template<>
-        void write (const rw::math::Pose6D< float >& sobject, rw::common::OutputArchive& oarchive,
-                    const std::string& id);
-
-        /**
-         * @copydoc rw::common::serialization::read
-         * @relatedalso rw::math::Pose6D
-         */
-        template<>
-        void read (rw::math::Pose6D< double >& sobject, rw::common::InputArchive& iarchive,
+        void write(const rw::math::Pose6D<float>& sobject, rw::common::OutputArchive& oarchive,
                    const std::string& id);
 
         /**
@@ -306,8 +277,16 @@ namespace rw { namespace common {
          * @relatedalso rw::math::Pose6D
          */
         template<>
-        void read (rw::math::Pose6D< float >& sobject, rw::common::InputArchive& iarchive,
-                   const std::string& id);
+        void read(rw::math::Pose6D<double>& sobject, rw::common::InputArchive& iarchive,
+                  const std::string& id);
+
+        /**
+         * @copydoc rw::common::serialization::read
+         * @relatedalso rw::math::Pose6D
+         */
+        template<>
+        void read(rw::math::Pose6D<float>& sobject, rw::common::InputArchive& iarchive,
+                  const std::string& id);
     }    // namespace serialization
 }}       // namespace rw::common
 

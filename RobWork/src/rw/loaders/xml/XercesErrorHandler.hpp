@@ -41,53 +41,53 @@ namespace rw { namespace loaders {
         /**
          * @brief Constructs XercesErrorHandler
          */
-        XercesErrorHandler ();
+        XercesErrorHandler();
 
-        virtual ~XercesErrorHandler ();
+        virtual ~XercesErrorHandler();
 
         /**
          * @brief Inherited from xercesc::ErrorHandler. Call when a warning occurs
          */
-        virtual void warning (const xercesc::SAXParseException& exc);
+        virtual void warning(const xercesc::SAXParseException& exc);
 
         /**
          * @brief Inherited from xercesc::ErrorHandler. Call when an error occurs
          */
-        virtual void error (const xercesc::SAXParseException& exc);
+        virtual void error(const xercesc::SAXParseException& exc);
 
         /**
          * @brief Inherited from xercesc::ErrorHandler. Call when a fatal error occurs
          */
-        virtual void fatalError (const xercesc::SAXParseException& exc);
+        virtual void fatalError(const xercesc::SAXParseException& exc);
 
         /**
          * @brief Inherited from xercesc::ErrorHandler. Resets the list of errors
          */
-        virtual void resetErrors ();
+        virtual void resetErrors();
 
         /**
          * @brief Inherited from xercesc::DOMErrorHandler
          */
-        virtual bool handleError (const xercesc::DOMError& domError);
+        virtual bool handleError(const xercesc::DOMError& domError);
 
         /**
          * @brief Returns a string containing all error and warning information
          */
-        std::string getMessages ();
+        std::string getMessages();
 
         /**
          * @brief Returns number of errors
          */
-        int getErrorCount ();
+        int getErrorCount();
 
         /**
          * @brief Returns number of warning
          */
-        int getWarningCount ();
+        int getWarningCount();
 
       private:
-        void printMsg (const std::string& title, const xercesc::SAXParseException& exc);
-        void printMsg (const std::string& title, const xercesc::DOMError& domError);
+        void printMsg(const std::string& title, const xercesc::SAXParseException& exc);
+        void printMsg(const std::string& title, const xercesc::DOMError& domError);
         std::ostringstream _messages;
         int _errCnt;
         int _warCnt;

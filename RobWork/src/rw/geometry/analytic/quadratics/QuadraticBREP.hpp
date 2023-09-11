@@ -24,13 +24,12 @@
  * \copydoc rw::geometry::QuadraticBREP
  */
 #if !defined(SWIG)
+#include <rw/geometry/OBB.hpp>
+#include <rw/geometry/analytic/BREP.hpp>
 #include <rw/geometry/analytic/quadratics/QuadraticCurve.hpp>
 #include <rw/geometry/analytic/quadratics/QuadraticFace.hpp>
 #include <rw/geometry/analytic/quadratics/QuadraticShell.hpp>
 #include <rw/geometry/analytic/quadratics/QuadraticSurface.hpp>
-
-#include <rw/geometry/OBB.hpp>
-#include <rw/geometry/analytic/BREP.hpp>
 #include <rw/math/Vector3D.hpp>
 
 #include <set>
@@ -87,42 +86,42 @@ namespace rw { namespace geometry {
     {
       public:
         //! @brief Smart pointer type to QuadraticBREP
-        typedef rw::core::Ptr< QuadraticBREP > Ptr;
+        typedef rw::core::Ptr<QuadraticBREP> Ptr;
 
         //! @brief Constructor.
-        QuadraticBREP ();
+        QuadraticBREP();
 
         //! @brief Destructor.
-        virtual ~QuadraticBREP ();
+        virtual ~QuadraticBREP();
 
         //! @copydoc BREP::getType
-        virtual GeometryType getType () const;
+        virtual GeometryType getType() const;
 
         //! @copydoc BREP::getSurface
-        virtual const rw::geometry::QuadraticSurface& getSurface (std::size_t surfaceIndex) const;
+        virtual const rw::geometry::QuadraticSurface& getSurface(std::size_t surfaceIndex) const;
 
         //! @copydoc BREP::getCurve
-        virtual const rw::geometry::QuadraticCurve& getCurve (std::size_t curveIndex) const;
+        virtual const rw::geometry::QuadraticCurve& getCurve(std::size_t curveIndex) const;
 
         //! @copydoc BREP::scale
-        virtual void scale (double factor);
+        virtual void scale(double factor);
 
         //! @copydoc BREP::clone
-        QuadraticBREP::Ptr clone () const;
+        QuadraticBREP::Ptr clone() const;
 
         //! @copydoc BREP::shellProxy
-        rw::core::Ptr< const QuadraticShell > shellProxy () const;
+        rw::core::Ptr<const QuadraticShell> shellProxy() const;
 
         /**
          * @brief Get a QuadraticShell representation by copying geometric information to a concrete
          * PlainQuadraticShell object.
          * @return smart pointer to a PlainQuadraticShell object.
          */
-        rw::core::Ptr< PlainQuadraticShell > shell () const;
+        rw::core::Ptr<PlainQuadraticShell> shell() const;
 
         //! @copydoc BREP::getCurves
-        std::vector< rw::core::Ptr< rw::geometry::QuadraticCurve > >
-        getCurves (std::size_t loopIdx) const;
+        std::vector<rw::core::Ptr<rw::geometry::QuadraticCurve>>
+        getCurves(std::size_t loopIdx) const;
 
 //! @brief Convenience type for a set of curves in a QuadraticBREP.
 #if !defined(SWIGJAVA)
@@ -133,35 +132,35 @@ namespace rw { namespace geometry {
         {
           public:
             //! @brief Smart pointer type to CommonQuadraticCurveSet
-            typedef rw::core::Ptr< const CommonQuadraticCurveSet > CPtr;
+            typedef rw::core::Ptr<const CommonQuadraticCurveSet> CPtr;
 
             //! @brief Constructor.
-            CommonQuadraticCurveSet ()
+            CommonQuadraticCurveSet()
 #if !defined(SWIGJAVA)
                 :
-                CommonCurveSet ()
+                CommonCurveSet()
 #endif
-            {}
+            {
+            }
 
             //! @brief Destructor.
-            virtual ~CommonQuadraticCurveSet () {}
+            virtual ~CommonQuadraticCurveSet() {}
 
             //! @copydoc BREP::CommonCurveSet::size
-            virtual std::size_t size () const = 0;
+            virtual std::size_t size() const = 0;
 
             //! @copydoc BREP::CommonCurveSet::curve
-            virtual const rw::geometry::QuadraticCurve& curve (std::size_t index) const = 0;
+            virtual const rw::geometry::QuadraticCurve& curve(std::size_t index) const = 0;
 
             //! @copydoc BREP::CommonCurveSet::surfaceLeft
-            virtual const rw::geometry::QuadraticSurface& surfaceLeft (std::size_t index) const = 0;
+            virtual const rw::geometry::QuadraticSurface& surfaceLeft(std::size_t index) const = 0;
 
             //! @copydoc BREP::CommonCurveSet::surfaceRight
-            virtual const rw::geometry::QuadraticSurface&
-            surfaceRight (std::size_t index) const = 0;
+            virtual const rw::geometry::QuadraticSurface& surfaceRight(std::size_t index) const = 0;
         };
 
         //! @copydoc BREP::getCommonCurves
-        CommonQuadraticCurveSet::CPtr getCommonCurves (const std::set< std::size_t >& faces) const;
+        CommonQuadraticCurveSet::CPtr getCommonCurves(const std::set<std::size_t>& faces) const;
 
         /**
          * @brief Add a QuadraticCurve to the BREP.
@@ -173,26 +172,28 @@ namespace rw { namespace geometry {
          * @param v1 [in] the start vertex.
          * @param v2 [in] the end vertex.
          */
-        void addEdge (const rw::geometry::QuadraticCurve& curve, std::size_t v1, std::size_t v2);
+        void addEdge(const rw::geometry::QuadraticCurve& curve, std::size_t v1, std::size_t v2);
 
         /**
          * @brief Attach a QuadraticSurface to a face of the BREP.
          * @param surface [in] surface to add.
          * @param loop [in] the loop index for the loop to attach surface to.
          */
-        void setFace (const rw::geometry::QuadraticSurface& surface, std::size_t loop);
+        void setFace(const rw::geometry::QuadraticSurface& surface, std::size_t loop);
 
       private:
         class CommonQuadraticCurveSetImpl;
-        virtual rw::core::Ptr< const Shell > doShellProxyBREP () const;
+        virtual rw::core::Ptr<const Shell> doShellProxyBREP() const;
 #if !defined(SWIGJAVA)
-        virtual BREP::Ptr doClone () const { return clone (); }
+        virtual BREP::Ptr doClone() const {
+            return clone();
+        }
 #endif
-        virtual void doRemoveCurve (std::size_t curveIndex);
+        virtual void doRemoveCurve(std::size_t curveIndex);
 
         // Geometry
-        std::vector< rw::geometry::QuadraticCurve::CPtr > _curves;
-        std::vector< rw::geometry::QuadraticSurface::CPtr > _surfaces;
+        std::vector<rw::geometry::QuadraticCurve::CPtr> _curves;
+        std::vector<rw::geometry::QuadraticSurface::CPtr> _surfaces;
     };
 #if !defined(SWIG)
 //! @}

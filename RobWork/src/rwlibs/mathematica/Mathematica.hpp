@@ -93,7 +93,7 @@ namespace rwlibs { namespace mathematica {
     {
       public:
         //! @brief Smart pointer.
-        typedef rw::core::Ptr< Mathematica > Ptr;
+        typedef rw::core::Ptr<Mathematica> Ptr;
 
         //! @brief Available link protocols.
         enum LinkProtocol {
@@ -138,77 +138,77 @@ namespace rwlibs { namespace mathematica {
         struct Link
         {
             //! @brief Smart pointer to a link.
-            typedef rw::core::Ptr< const Link > Ptr;
+            typedef rw::core::Ptr<const Link> Ptr;
 
             //! @brief Constructor.
-            Link ();
+            Link();
 
             //! @brief Destructor.
-            ~Link ();
+            ~Link();
 
             //! @brief Name of the link if name was given.
             std::string name;
 
             //! @brief Internals.
-            rw::core::Ptr< const LinkImpl > impl;
+            rw::core::Ptr<const LinkImpl> impl;
 
             /**
              * @brief Check if the link is open.
              * @return true if open, false otherwise.
              */
-            bool isOpen () const;
+            bool isOpen() const;
 
             /**
              * @brief Check if there is anything available on link.
              * @return true if a packet is available.
              */
-            bool ready () const;
+            bool ready() const;
 
             /**
              * @brief Wait until packet becomes available.
              * @return false if error occurred.
              */
-            bool wait () const;
+            bool wait() const;
 
             /**
              * @brief Send packet on link.
              * @param packet [in] the packet to send.
              * @return a reference to the link for chaining.
              */
-            const Link& operator<< (const Packet& packet) const;
+            const Link& operator<<(const Packet& packet) const;
 
             /**
              * @brief Send an expression on link in a EvaluatePacket.
              * @param expression [in] the expression to send.
              * @return a reference to the link for chaining.
              */
-            const Link& operator<< (const Expression& expression) const;
+            const Link& operator<<(const Expression& expression) const;
 
             /**
              * @brief Send a text string with an expression on link in a EvaluatePacket.
              * @param expression [in] the expression to send.
              * @return a reference to the link for chaining.
              */
-            const Link& operator<< (const ToExpression& expression) const;
+            const Link& operator<<(const ToExpression& expression) const;
 
             /**
              * @brief Get the next packet on link (blocks until packet is available).
              * @param result [out] a pointer to the retrieved packet.
              */
-            void operator>> (rw::core::Ptr< Packet >& result) const;
+            void operator>>(rw::core::Ptr<Packet>& result) const;
         };
 
         //! @brief Constructor.
-        Mathematica ();
+        Mathematica();
 
         //! @brief Destructor.
-        virtual ~Mathematica ();
+        virtual ~Mathematica();
 
         /**
          * @brief Initialize the WSTP framework.
          * @return true if success.
          */
-        bool initialize ();
+        bool initialize();
 
         /**
          * @brief Create a new link.
@@ -217,30 +217,30 @@ namespace rwlibs { namespace mathematica {
          * memory.
          * @return the link.
          */
-        Link::Ptr createLink (const std::string& name = "", LinkProtocol protocol = SharedMemory);
+        Link::Ptr createLink(const std::string& name = "", LinkProtocol protocol = SharedMemory);
 
         /**
          * @brief Connect to an existing link.
          * @param name [in] the name of the link to connect to.
          * @return a pointer to the link, or NULL if connection failed.
          */
-        Link::Ptr connectToLink (const std::string& name);
+        Link::Ptr connectToLink(const std::string& name);
 
         /**
          * @brief Launch a kernel.
          * @return link to the kernel.
          */
-        Link::Ptr launchKernel ();
+        Link::Ptr launchKernel();
 
         /**
          * @brief Close a link.
          * @param link [in] the link to close.
          * @return true if link was found and closed, false if it was already closed or not found.
          */
-        bool closeLink (Link::Ptr link);
+        bool closeLink(Link::Ptr link);
 
         //! @brief Close all open links, and deinitialize the WSTP framework.
-        void finalize ();
+        void finalize();
 
         class AutoExpression;
 
@@ -251,7 +251,7 @@ namespace rwlibs { namespace mathematica {
         {
           public:
             //! @brief Smart pointer type.
-            typedef rw::core::Ptr< Expression > Ptr;
+            typedef rw::core::Ptr<Expression> Ptr;
 
             //! @brief Type of expression.
             typedef enum Type {
@@ -273,19 +273,19 @@ namespace rwlibs { namespace mathematica {
              * @brief Print to output stream.
              * @param stream [in/out] the stream to print to.
              */
-            virtual void out (std::ostream& stream) const = 0;
+            virtual void out(std::ostream& stream) const = 0;
 
             /**
              * @brief Get the type of expression.
              * @return the type.
              */
-            virtual Type getType () const = 0;
+            virtual Type getType() const = 0;
 
             /**
              * @brief Make a copy of the expression.
              * @return a new copy.
              */
-            virtual Expression::Ptr clone () const = 0;
+            virtual Expression::Ptr clone() const = 0;
 
 #if __cplusplus >= 201103L
           protected:
@@ -297,7 +297,7 @@ namespace rwlibs { namespace mathematica {
              * @endcond
              * @note Only available for C++11
              */
-            template< typename Type > static void toList (std::list< rw::core::Ptr< Type > >&) {}
+            template<typename Type> static void toList(std::list<rw::core::Ptr<Type>>&) {}
 
             /**
              * @brief Helper function for extracting a list of arguments when given as a variable
@@ -307,15 +307,12 @@ namespace rwlibs { namespace mathematica {
              * @param t [in] the rest of the arguments (variable number of arguments)
              * @note Only available for C++11
              */
-            template< typename Type, typename Exp, typename... T >
-            static void toList (std::list< rw::core::Ptr< Type > >& list, const Exp& r, T... t)
-            {
-                const rw::core::Ptr< Type > exp = AutoExpression (r).expression ().cast< Type > ();
-                if (exp == NULL)
-                    RW_THROW ("Encountered expression of unexpected type.");
-                else
-                    list.push_back (exp);
-                toList (list, t...);
+            template<typename Type, typename Exp, typename... T>
+            static void toList(std::list<rw::core::Ptr<Type>>& list, const Exp& r, T... t) {
+                const rw::core::Ptr<Type> exp = AutoExpression(r).expression().cast<Type>();
+                if(exp == NULL) RW_THROW("Encountered expression of unexpected type.");
+                else list.push_back(exp);
+                toList(list, t...);
             }
 #endif
         };
@@ -325,40 +322,37 @@ namespace rwlibs { namespace mathematica {
         {
           public:
             //! @brief Smart pointer type
-            typedef rw::core::Ptr< String > Ptr;
+            typedef rw::core::Ptr<String> Ptr;
 
             /**
              * @brief Construct new primitive.
              * @param value [in] the value.
              */
-            String (const char* value) : _value (value) {}
+            String(const char* value) : _value(value) {}
 
             /**
              * @brief Construct new primitive.
              * @param value [in] the value.
              */
-            String (const std::string& value) : _value (value) {}
+            String(const std::string& value) : _value(value) {}
 
             //! @brief Destructor.
-            virtual ~String () {}
+            virtual ~String() {}
 
             //! @copydoc Expression::getType
-            Type getType () const { return Expression::String; }
+            Type getType() const { return Expression::String; }
 
             //! @copydoc Expression::out
-            void out (std::ostream& stream) const { stream << _value; }
+            void out(std::ostream& stream) const { stream << _value; }
 
             //! @copydoc Expression::clone
-            virtual Expression::Ptr clone () const
-            {
-                return rw::core::ownedPtr (new String (_value));
-            }
+            virtual Expression::Ptr clone() const { return rw::core::ownedPtr(new String(_value)); }
 
             /**
              * @brief Get the value.
              * @return the value.
              */
-            const std::string& value () const { return _value; }
+            const std::string& value() const { return _value; }
 
           private:
             const std::string _value;
@@ -369,34 +363,33 @@ namespace rwlibs { namespace mathematica {
         {
           public:
             //! @brief Smart pointer type
-            typedef rw::core::Ptr< Integer > Ptr;
+            typedef rw::core::Ptr<Integer> Ptr;
 
             /**
              * @brief Construct new integer.
              * @param value [in] the value.
              */
-            Integer (int value) : _value (value) {}
+            Integer(int value) : _value(value) {}
 
             //! @brief Destructor.
-            virtual ~Integer () {}
+            virtual ~Integer() {}
 
             //! @copydoc Expression::getType
-            Type getType () const { return Expression::Integer; }
+            Type getType() const { return Expression::Integer; }
 
             //! @copydoc Expression::out
-            void out (std::ostream& stream) const { stream << _value; }
+            void out(std::ostream& stream) const { stream << _value; }
 
             //! @copydoc Expression::clone
-            virtual Expression::Ptr clone () const
-            {
-                return rw::core::ownedPtr (new Integer (_value));
+            virtual Expression::Ptr clone() const {
+                return rw::core::ownedPtr(new Integer(_value));
             }
 
             /**
              * @brief Get the value.
              * @return the value.
              */
-            int value () const { return _value; }
+            int value() const { return _value; }
 
           private:
             int _value;
@@ -407,34 +400,31 @@ namespace rwlibs { namespace mathematica {
         {
           public:
             //! @brief Smart pointer type
-            typedef rw::core::Ptr< Real > Ptr;
+            typedef rw::core::Ptr<Real> Ptr;
 
             /**
              * @brief Construct new floating point value.
              * @param value [in] the value.
              */
-            Real (double value) : _value (value) {}
+            Real(double value) : _value(value) {}
 
             //! @brief Destructor.
-            virtual ~Real () {}
+            virtual ~Real() {}
 
             //! @copydoc Expression::getType
-            Type getType () const { return Expression::Real; }
+            Type getType() const { return Expression::Real; }
 
             //! @copydoc Expression::out
-            void out (std::ostream& stream) const { stream << _value; }
+            void out(std::ostream& stream) const { stream << _value; }
 
             //! @copydoc Expression::clone
-            virtual Expression::Ptr clone () const
-            {
-                return rw::core::ownedPtr (new Real (_value));
-            }
+            virtual Expression::Ptr clone() const { return rw::core::ownedPtr(new Real(_value)); }
 
             /**
              * @brief Get the value.
              * @return the value.
              */
-            double value () const { return _value; }
+            double value() const { return _value; }
 
           private:
             double _value;
@@ -445,46 +435,43 @@ namespace rwlibs { namespace mathematica {
         {
           public:
             //! @brief Smart pointer type
-            typedef rw::core::Ptr< Symbol > Ptr;
+            typedef rw::core::Ptr<Symbol> Ptr;
 
             /**
              * @brief Copy constructor.
              * @param symbol [in] symbol to copy.
              */
-            Symbol (const Symbol& symbol) : _name (symbol._name) {}
+            Symbol(const Symbol& symbol) : _name(symbol._name) {}
 
             /**
              * @brief Construct new symbol.
              * @param value [in] the name.
              */
-            Symbol (const char* value) : _name (value) {}
+            Symbol(const char* value) : _name(value) {}
 
             /**
              * @brief Construct new symbol.
              * @param name [in] the name.
              */
-            Symbol (const std::string& name) : _name (name) {}
+            Symbol(const std::string& name) : _name(name) {}
 
             //! @brief Destructor.
-            virtual ~Symbol () {}
+            virtual ~Symbol() {}
 
             //! @copydoc Expression::getType
-            Type getType () const { return Expression::Symbol; }
+            Type getType() const { return Expression::Symbol; }
 
             //! @copydoc Expression::out
-            void out (std::ostream& stream) const { stream << _name; }
+            void out(std::ostream& stream) const { stream << _name; }
 
             //! @copydoc Expression::clone
-            virtual Expression::Ptr clone () const
-            {
-                return rw::core::ownedPtr (new Symbol (_name));
-            }
+            virtual Expression::Ptr clone() const { return rw::core::ownedPtr(new Symbol(_name)); }
 
             /**
              * @brief Get the name of the symbol.
              * @return the name.
              */
-            const std::string getName () const { return _name; }
+            const std::string getName() const { return _name; }
 
           private:
             const std::string _name;
@@ -495,38 +482,38 @@ namespace rwlibs { namespace mathematica {
         {
           public:
             //! @brief Smart pointer type
-            typedef rw::core::Ptr< FunctionBase > Ptr;
+            typedef rw::core::Ptr<FunctionBase> Ptr;
 
             /**
              * @brief Construct new function.
              * @param name [in] the name of the function.
              */
-            FunctionBase (const std::string& name);
+            FunctionBase(const std::string& name);
 
             /**
              * @brief Get the name of the function.
              * @return the name of the function.
              */
-            std::string getName () const;
+            std::string getName() const;
 
             //! @copydoc Expression::getType
-            Type getType () const;
+            Type getType() const;
 
             //! @copydoc Expression::out
-            virtual void out (std::ostream& stream) const;
+            virtual void out(std::ostream& stream) const;
 
             /**
              * @brief Get a list of arguments for this function.
              * @return list of arguments.
              */
-            virtual std::list< rw::core::Ptr< const Expression > > getArguments () const = 0;
+            virtual std::list<rw::core::Ptr<const Expression>> getArguments() const = 0;
 
             /**
              * @brief Print function by using indentations.
              * @param stream [in/out] the output stream.
              * @param indent [in] the amount of indentation.
              */
-            virtual void out (std::ostream& stream, std::size_t indent) const;
+            virtual void out(std::ostream& stream, std::size_t indent) const;
 
           protected:
             //! @brief Name of the function.
@@ -538,91 +525,91 @@ namespace rwlibs { namespace mathematica {
         {
           public:
             //! @brief Smart pointer type
-            typedef rw::core::Ptr< Function > Ptr;
+            typedef rw::core::Ptr<Function> Ptr;
 
             /**
              * @brief Construct new function.
              * @param name [in] the name of the function.
              */
-            Function (const std::string& name);
+            Function(const std::string& name);
 
             /**
              * @brief Change the name of the function.
              * @param name [in] the new name.
              */
-            void setName (const std::string& name);
+            void setName(const std::string& name);
 
             /**
              * @brief Append argument.
              * @param arg [in] the argument.
              */
-            void addArgument (const AutoExpression& arg);
+            void addArgument(const AutoExpression& arg);
 
             /**
              * @brief Append argument.
              * @param arg [in] the argument.
              */
-            void addArgument (const Expression::Ptr arg);
+            void addArgument(const Expression::Ptr arg);
 
             /**
              * @brief Append list of arguments.
              * @param args [in] the list.
              */
-            void addArguments (const std::list< Expression::Ptr >& args);
+            void addArguments(const std::list<Expression::Ptr>& args);
 
             /**
              * @brief Change argument.
              * @param i [in] index.
              * @param arg [in] new argument.
              */
-            void setArgument (std::size_t i, Expression::Ptr arg);
+            void setArgument(std::size_t i, Expression::Ptr arg);
 
             //! @copydoc FunctionBase::getArguments
-            virtual std::list< rw::core::Ptr< const Expression > > getArguments () const;
+            virtual std::list<rw::core::Ptr<const Expression>> getArguments() const;
 
             //! @copydoc FunctionBase::getArguments
-            virtual std::list< Expression::Ptr > getArguments ();
+            virtual std::list<Expression::Ptr> getArguments();
 
             //! @copydoc Expression::clone
-            virtual Expression::Ptr clone () const;
+            virtual Expression::Ptr clone() const;
 
           private:
-            std::list< Expression::Ptr > _arguments;
+            std::list<Expression::Ptr> _arguments;
         };
 
         //! @brief An Array primitive.
-        template< typename T > class Array : public Expression
+        template<typename T> class Array : public Expression
         {
           public:
             //! @brief Smart pointer type
-            typedef rw::core::Ptr< Array< T > > Ptr;
+            typedef rw::core::Ptr<Array<T>> Ptr;
 
             //! @brief Destructor.
-            virtual ~Array () {}
+            virtual ~Array() {}
 
             //! @copydoc Expression::getType
-            Type getType () const { return Expression::Array; }
+            Type getType() const { return Expression::Array; }
 
             /**
              * @brief Get the shape as a list of integers.
              * @return list of same length as dimensions()
              */
-            virtual const int* size () const = 0;
+            virtual const int* size() const = 0;
 
             /**
              * @brief Get the dimensions.
              * @return the number of dimensions.
              */
-            virtual int dimensions () const = 0;
+            virtual int dimensions() const = 0;
 
             /**
              * @brief Get the raw data.
              * @return a pointer to the first element.
              */
-            virtual const T* data () const = 0;
+            virtual const T* data() const = 0;
 
           protected:
-            Array () {}
+            Array() {}
         };
 
         //! @brief Convenience class for automatic Expression deduction.
@@ -633,53 +620,51 @@ namespace rwlibs { namespace mathematica {
              * @brief Construct from other expression.
              * @param val [in] the value.
              */
-            AutoExpression (const Expression& val) : _exp (val.clone ()) {}
+            AutoExpression(const Expression& val) : _exp(val.clone()) {}
 
             /**
              * @brief Construct from double.
              * @param val [in] the value.
              */
-            AutoExpression (double val) : _exp (rw::core::ownedPtr (new Real (val))) {}
+            AutoExpression(double val) : _exp(rw::core::ownedPtr(new Real(val))) {}
 
             /**
              * @brief Construct from float.
              * @param val [in] the value.
              */
-            AutoExpression (float val) : _exp (rw::core::ownedPtr (new Real (val))) {}
+            AutoExpression(float val) : _exp(rw::core::ownedPtr(new Real(val))) {}
 
             /**
              * @brief Construct from int.
              * @param val [in] the value.
              */
-            AutoExpression (int val) : _exp (rw::core::ownedPtr (new Integer (val))) {}
+            AutoExpression(int val) : _exp(rw::core::ownedPtr(new Integer(val))) {}
 
             /**
              * @brief Construct from bool.
              * @param val [in] the value.
              */
-            AutoExpression (bool val) :
-                _exp (rw::core::ownedPtr (new Symbol (val ? "True" : "False")))
-            {}
+            AutoExpression(bool val) :
+                _exp(rw::core::ownedPtr(new Symbol(val ? "True" : "False"))) {}
 
             /**
              * @brief Construct from string.
              * @param string [in] the value.
              */
-            AutoExpression (const std::string& string) :
-                _exp (rw::core::ownedPtr (new String (string)))
-            {}
+            AutoExpression(const std::string& string) :
+                _exp(rw::core::ownedPtr(new String(string))) {}
 
             /**
              * @brief Construct from string.
              * @param string [in] the value.
              */
-            AutoExpression (const char* string) : _exp (rw::core::ownedPtr (new String (string))) {}
+            AutoExpression(const char* string) : _exp(rw::core::ownedPtr(new String(string))) {}
 
             /**
              * @brief Construct from list of arguments.
              * @param args [in] the arguments.
              */
-            AutoExpression (const std::list< AutoExpression >& args);
+            AutoExpression(const std::list<AutoExpression>& args);
 
 #if __cplusplus >= 201103L
             /**
@@ -687,14 +672,16 @@ namespace rwlibs { namespace mathematica {
              * @param args [in] the arguments.
              * @note Only defined for C++11
              */
-            AutoExpression (const std::initializer_list< Mathematica::AutoExpression >& args);
+            AutoExpression(const std::initializer_list<Mathematica::AutoExpression>& args);
 #endif
 
             /**
              * @brief Get expression.
              * @return the expression.
              */
-            Expression::Ptr expression () const { return _exp; }
+            Expression::Ptr expression() const {
+                return _exp;
+            }
 
           private:
             const Expression::Ptr _exp;
@@ -705,42 +692,42 @@ namespace rwlibs { namespace mathematica {
         {
           public:
             //! @brief Smart pointer type.
-            typedef rw::core::Ptr< Packet > Ptr;
+            typedef rw::core::Ptr<Packet> Ptr;
 
             /**
              * @brief Construct new expression.
              * @param name [in] name of the packet.
              * @param type [in] the type of the packet.
              */
-            Packet (const std::string& name, PacketType type) : FunctionBase (name), _type (type) {}
+            Packet(const std::string& name, PacketType type) : FunctionBase(name), _type(type) {}
 
             //! @brief Destructor.
-            virtual ~Packet () {}
+            virtual ~Packet() {}
 
             /**
              * @brief Get the type of packet.
              * @return the type.
              */
-            PacketType packetType () const { return _type; }
+            PacketType packetType() const { return _type; }
 
           private:
             const PacketType _type;
         };
 
       private:
-        static void put (rw::core::Ptr< const LinkImpl > link, const Expression& expression);
-        static void error (rw::core::Ptr< const LinkImpl > link);
-        static std::string readString (rw::core::Ptr< const LinkImpl > link, bool symbol);
-        static Expression::Ptr readExpression (rw::core::Ptr< const LinkImpl > link);
-        static void addExpression (Function::Ptr exp, rw::core::Ptr< const LinkImpl > link);
-        static void readRawByteArray (rw::core::Ptr< const LinkImpl > link, std::ostream& stream);
-        static int expectFunction (rw::core::Ptr< const LinkImpl > link, const std::string& name);
+        static void put(rw::core::Ptr<const LinkImpl> link, const Expression& expression);
+        static void error(rw::core::Ptr<const LinkImpl> link);
+        static std::string readString(rw::core::Ptr<const LinkImpl> link, bool symbol);
+        static Expression::Ptr readExpression(rw::core::Ptr<const LinkImpl> link);
+        static void addExpression(Function::Ptr exp, rw::core::Ptr<const LinkImpl> link);
+        static void readRawByteArray(rw::core::Ptr<const LinkImpl> link, std::ostream& stream);
+        static int expectFunction(rw::core::Ptr<const LinkImpl> link, const std::string& name);
 
         struct Environment;
 
       private:
         Environment* _env;
-        std::list< rw::core::Ptr< Link > > _links;
+        std::list<rw::core::Ptr<Link>> _links;
     };
 
     /**
@@ -749,7 +736,7 @@ namespace rwlibs { namespace mathematica {
      * @param expression [in] the expression to print.
      * @return a reference to the stream for chaining.
      */
-    std::ostream& operator<< (std::ostream& out, const Mathematica::Expression& expression);
+    std::ostream& operator<<(std::ostream& out, const Mathematica::Expression& expression);
 
     //! @}
 }}     // namespace rwlibs::mathematica

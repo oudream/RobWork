@@ -45,17 +45,17 @@ namespace rwlibs { namespace geometry {
          * @brief
          * @return TODO
          */
-        static rw::core::Ptr< rw::geometry::QuadraticBREP > objectA ();
+        static rw::core::Ptr<rw::geometry::QuadraticBREP> objectA();
 
         /**
          * @brief
          * @return TODO
          */
-        static rw::core::Ptr< rw::geometry::QuadraticBREP > objectB ();
+        static rw::core::Ptr<rw::geometry::QuadraticBREP> objectB();
 
       private:
-        QuadraticTestObjects ();
-        virtual ~QuadraticTestObjects ();
+        QuadraticTestObjects();
+        virtual ~QuadraticTestObjects();
     };
     //! @}
 

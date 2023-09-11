@@ -70,9 +70,9 @@ namespace rw { namespace loaders {
          * @param schemaFileName [in] Name of the schema to use. If empty it will use the schema
          * specified in the XML-file if available.
          */
-        XMLPathLoader (const std::string& filename,
-                       rw::core::Ptr< rw::models::WorkCell > workcell = NULL,
-                       const std::string& schemaFileName              = "");
+        XMLPathLoader(const std::string& filename,
+                      rw::core::Ptr<rw::models::WorkCell> workcell = NULL,
+                      const std::string& schemaFileName            = "");
 
         /**
          * @brief Constructs XMLPathLoader and parser input from \b instream
@@ -88,9 +88,8 @@ namespace rw { namespace loaders {
          * @param schemaFileName [in] Name of the schema to use. If empty it will use the schema
          * specified in the XML-file if available.
          */
-        XMLPathLoader (std::istream& instream,
-                       rw::core::Ptr< rw::models::WorkCell > workcell = NULL,
-                       const std::string& schemaFileName              = "");
+        XMLPathLoader(std::istream& instream, rw::core::Ptr<rw::models::WorkCell> workcell = NULL,
+                      const std::string& schemaFileName = "");
 
         /**
          * @brief Constructs XMLPathLoader and load in path in \b element.
@@ -101,12 +100,12 @@ namespace rw { namespace loaders {
          *
          * @param element [in] DOMElement representing the path
          */
-        XMLPathLoader (xercesc::DOMElement* element);
+        XMLPathLoader(xercesc::DOMElement* element);
 
         /**
          * @brief Destructor
          */
-        virtual ~XMLPathLoader ();
+        virtual ~XMLPathLoader();
 
         /**
          * @brief Enumeration specifying which type of path, that has been loaded
@@ -124,7 +123,7 @@ namespace rw { namespace loaders {
         /**
          * @brief Returns the type of the path loaded
          */
-        Type getType ();
+        Type getType();
 
         /**
          * @brief Returns path loaded
@@ -133,7 +132,7 @@ namespace rw { namespace loaders {
          *
          * @return Pointer to the path
          */
-        rw::trajectory::QPath::Ptr getQPath ();
+        rw::trajectory::QPath::Ptr getQPath();
 
         /**
          * @brief Returns path loaded
@@ -142,7 +141,7 @@ namespace rw { namespace loaders {
          *
          * @return Pointer to the path
          */
-        rw::trajectory::Vector3DPath::Ptr getVector3DPath ();
+        rw::trajectory::Vector3DPath::Ptr getVector3DPath();
 
         /**
          * @brief Returns path loaded
@@ -151,7 +150,7 @@ namespace rw { namespace loaders {
          *
          * @return Pointer to the path
          */
-        rw::trajectory::Rotation3DPath::Ptr getRotation3DPath ();
+        rw::trajectory::Rotation3DPath::Ptr getRotation3DPath();
 
         /**
          * @brief Returns loaded path
@@ -160,7 +159,7 @@ namespace rw { namespace loaders {
          *
          * @return Pointer to the path
          */
-        rw::trajectory::Transform3DPath::Ptr getTransform3DPath ();
+        rw::trajectory::Transform3DPath::Ptr getTransform3DPath();
 
         /**
          * @brief Returns loaded path
@@ -169,7 +168,7 @@ namespace rw { namespace loaders {
          *
          * @return Pointer to the path
          */
-        rw::trajectory::StatePath::Ptr getStatePath ();
+        rw::trajectory::StatePath::Ptr getStatePath();
 
         /**
          * @brief Returns loaded path
@@ -178,7 +177,7 @@ namespace rw { namespace loaders {
          *
          * @return Pointer to the path
          */
-        rw::trajectory::TimedQPath::Ptr getTimedQPath ();
+        rw::trajectory::TimedQPath::Ptr getTimedQPath();
 
         /**
          * @brief Returns loaded path
@@ -187,7 +186,7 @@ namespace rw { namespace loaders {
          *
          * @return Pointer to the path
          */
-        rw::trajectory::TimedStatePath::Ptr getTimedStatePath ();
+        rw::trajectory::TimedStatePath::Ptr getTimedStatePath();
 
         /**
          * @brief Utility class which initializes local static variables.
@@ -204,13 +203,13 @@ namespace rw { namespace loaders {
         {
           public:
             //! @brief Initializes when constructed.
-            Initializer ();
+            Initializer();
         };
 
       private:
         static const Initializer initializer;
 
-        void readPath (xercesc::DOMElement* element);
+        void readPath(xercesc::DOMElement* element);
 
         rw::trajectory::QPath::Ptr _qPath;
         rw::trajectory::Vector3DPath::Ptr _v3dPath;
@@ -221,7 +220,7 @@ namespace rw { namespace loaders {
         rw::trajectory::TimedStatePath::Ptr _timedStatePath;
 
         Type _type;
-        rw::core::Ptr< rw::models::WorkCell > _workcell;
+        rw::core::Ptr<rw::models::WorkCell> _workcell;
     };
 
     /* @} */

@@ -20,7 +20,7 @@
 
 #if !defined(SWIG)
 #include <rw/core/DOMElem.hpp>
-#endif 
+#endif
 namespace rw { namespace core {
 
     class DOMParser;
@@ -50,8 +50,8 @@ namespace rw { namespace core {
          * @param property [in] Property to save
          * @param parent [in] DOMDocument which should contain the property representation
          */
-        static void save (rw::core::Ptr< rw::core::PropertyBase > property,
-                          rw::core::DOMElem::Ptr parent);
+        static void save(rw::core::Ptr<rw::core::PropertyBase> property,
+                         rw::core::DOMElem::Ptr parent);
 
         /**
          * @brief Saves properties of a PropertyMap as childs to \b element.
@@ -64,7 +64,7 @@ namespace rw { namespace core {
          * @param map [in] Map of properties to save.
          * @param parent [in] DOMDocument which should contain the PropertyMap representation
          */
-        static void save (const rw::core::PropertyMap& map, rw::core::DOMElem::Ptr parent);
+        static void save(const rw::core::PropertyMap& map, rw::core::DOMElem::Ptr parent);
 
         /**
          * @brief Saves the properties of \b map to file named \b filename
@@ -74,7 +74,7 @@ namespace rw { namespace core {
          * @param map [in] Map of properties to save
          * @param filename [in] Filename
          */
-        static void save (const rw::core::PropertyMap& map, const std::string& filename);
+        static void save(const rw::core::PropertyMap& map, const std::string& filename);
 
         /**
          * @brief Writes the properties of \b map to \b outstream
@@ -84,7 +84,7 @@ namespace rw { namespace core {
          * @param map [in] Map of properties to save
          * @param outstream [in] Output stream
          */
-        static void write (const rw::core::PropertyMap& map, std::ostream& outstream);
+        static void write(const rw::core::PropertyMap& map, std::ostream& outstream);
 
         /**
          * @brief Creates DOMDocument for \b map
@@ -95,9 +95,8 @@ namespace rw { namespace core {
          * @param parser [in] DOMParser to use
          * @return DOMDocument containing properties.
          */
-        static rw::core::DOMElem::Ptr
-        createDOMDocument (const rw::core::PropertyMap& map,
-                           rw::core::Ptr< rw::core::DOMParser > parser);
+        static rw::core::DOMElem::Ptr createDOMDocument(const rw::core::PropertyMap& map,
+                                                        rw::core::Ptr<rw::core::DOMParser> parser);
 
         /**
          * @brief Utility class which initializes local static variables.
@@ -114,12 +113,12 @@ namespace rw { namespace core {
         {
           public:
             //! @brief Initializes when constructed.
-            Initializer ();
+            Initializer();
         };
 
       private:
         static const Initializer initializer;
-        DOMCorePropertyMapSaver (){};
+        DOMCorePropertyMapSaver(){};
     };
 
     /* @} */

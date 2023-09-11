@@ -55,51 +55,53 @@ namespace rw { namespace core {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< PropertyMap > Ptr;
+        typedef rw::core::Ptr<PropertyMap> Ptr;
 
         /**
          * @brief Constructor
          */
-        PropertyMap ();
+        PropertyMap();
 
         /**
          * @brief constructor
          * @param name [in] name of this propertymap
          */
-        PropertyMap (std::string name) : _name (name){}
+        PropertyMap(std::string name) : _name(name) {}
 
         /**
          * @brief Destructor
          */
-        ~PropertyMap ();
+        ~PropertyMap();
 
         /**
          * @brief Copy constructor.
          */
-        PropertyMap (const PropertyMap& other);
+        PropertyMap(const PropertyMap& other);
 
 #if !defined(SWIGPYTHON) || defined(RW_WIN32)
         /**
          * @brief Assignment operator.
          */
-        PropertyMap& operator= (const PropertyMap& other);
+        PropertyMap& operator=(const PropertyMap& other);
 #endif
 
         /**
          * @brief swap operator.
          */
-        void swap (PropertyMap& other);
+        void swap(PropertyMap& other);
 
         /**
          * @brief Clear the content of the property map
          */
-        void clear ();
+        void clear();
 
         /**
          * @brief get the name of this propertymap
          * @return name of this propertymap
          */
-        const std::string& getName () const { return _name; }
+        const std::string& getName() const {
+            return _name;
+        }
 
         /**
          * @brief Set the value of a property
@@ -112,15 +114,14 @@ namespace rw { namespace core {
          * @param identifier [in] the property identifier
          * @param value [in] the new value
          */
-        template< class T >
-        rw::core::Ptr< rw::core::Property< T > > set (const std::string& identifier, const T& value)
-        {
-            rw::core::Ptr< Property< T > > prop = findProperty< T > (identifier);
-            if (prop) {
-                prop->setValue (value);
+        template<class T>
+        rw::core::Ptr<rw::core::Property<T>> set(const std::string& identifier, const T& value) {
+            rw::core::Ptr<Property<T>> prop = findProperty<T>(identifier);
+            if(prop) {
+                prop->setValue(value);
                 return prop;
             }
-            return add (identifier, "", value);
+            return add(identifier, "", value);
         }
 
         /**
@@ -135,20 +136,17 @@ namespace rw { namespace core {
          * @return The property if added or the existing property if the identifier is already in
          *  use.
          */
-        template< typename T >
-        rw::core::Ptr< rw::core::Property< T > >
-        add (const std::string& identifier, const std::string& description, const T& value)
-        {
-            rw::core::Ptr< rw::core::Property< T > > prop = findProperty< T > (identifier);
-            if (!prop) {
-                rw::core::Ptr< Property< T > > property =
-                    rw::core::ownedPtr (new Property< T > (identifier, description, value));
+        template<typename T>
+        rw::core::Ptr<rw::core::Property<T>> add(const std::string& identifier,
+                                                 const std::string& description, const T& value) {
+            rw::core::Ptr<rw::core::Property<T>> prop = findProperty<T>(identifier);
+            if(!prop) {
+                rw::core::Ptr<Property<T>> property =
+                    rw::core::ownedPtr(new Property<T>(identifier, description, value));
 
-                const bool ok = insert (property);
-                if (ok)
-                    return property;
-                else
-                    return NULL;
+                const bool ok = insert(property);
+                if(ok) return property;
+                else return NULL;
             }
             return prop;
         }
@@ -165,22 +163,19 @@ namespace rw { namespace core {
          * @return The property if added or the existing property if the identifier is already in
          *  use.
          */
-        template< typename T >
-        rw::core::Ptr< rw::core::Property< T > >
-        addForce (const std::string& identifier, const std::string& description, const T& value)
-        {
-            rw::core::Ptr< Property< T > > prop = findProperty< T > (identifier);
-            if (!prop) {
-                rw::core::Ptr< Property< T > > property =
-                    rw::core::ownedPtr (new Property< T > (identifier, description, value));
-                const bool ok = insert (property);
-                if (ok)
-                    return property;
-                else
-                    return NULL;
+        template<typename T>
+        rw::core::Ptr<rw::core::Property<T>>
+        addForce(const std::string& identifier, const std::string& description, const T& value) {
+            rw::core::Ptr<Property<T>> prop = findProperty<T>(identifier);
+            if(!prop) {
+                rw::core::Ptr<Property<T>> property =
+                    rw::core::ownedPtr(new Property<T>(identifier, description, value));
+                const bool ok = insert(property);
+                if(ok) return property;
+                else return NULL;
             }
-            prop->setDescription (description, false);
-            prop->setValue (value);
+            prop->setDescription(description, false);
+            prop->setValue(value);
             return prop;
         }
 
@@ -193,7 +188,7 @@ namespace rw { namespace core {
          *
          * @return True if added, false if property already exists.
          */
-        bool add (rw::core::PropertyBase::Ptr property);
+        bool add(rw::core::PropertyBase::Ptr property);
 
         /**
          * @brief Get the value of a property or NULL if no such property.
@@ -205,13 +200,10 @@ namespace rw { namespace core {
          *
          * @return the value of the property
          */
-        template< class T > T* getPtr (const std::string& identifier)
-        {
-            rw::core::Ptr< Property< T > > prop = findProperty< T > (identifier);
-            if (prop)
-                return &prop->getValue ();
-            else
-                return NULL;
+        template<class T> T* getPtr(const std::string& identifier) {
+            rw::core::Ptr<Property<T>> prop = findProperty<T>(identifier);
+            if(prop) return &prop->getValue();
+            else return NULL;
         }
 
         /**
@@ -224,10 +216,9 @@ namespace rw { namespace core {
          *
          * @return the value of the property
          */
-        template< class T > const T* getPtr (const std::string& identifier) const
-        {
+        template<class T> const T* getPtr(const std::string& identifier) const {
             // Forward to non-const method.
-            return const_cast< PropertyMap* > (this)->getPtr< T > (identifier);
+            return const_cast<PropertyMap*>(this)->getPtr<T>(identifier);
         }
 
         /**
@@ -240,13 +231,12 @@ namespace rw { namespace core {
          *
          * @return the value of the property
          */
-        template< class T > T& get (const std::string& identifier)
-        {
-            T* p = getPtr< T > (identifier);
-            if (!p) {
-                RW_THROW ("Property "
-                          << "'" << identifier << "'"
-                          << " could not be found");
+        template<class T> T& get(const std::string& identifier) {
+            T* p = getPtr<T>(identifier);
+            if(!p) {
+                RW_THROW("Property "
+                         << "'" << identifier << "'"
+                         << " could not be found");
             }
             return *p;
         }
@@ -261,10 +251,9 @@ namespace rw { namespace core {
          *
          * @return the value of the property
          */
-        template< class T > const T& get (const std::string& identifier) const
-        {
+        template<class T> const T& get(const std::string& identifier) const {
             // Forward to non-const method.
-            return const_cast< PropertyMap* > (this)->get< T > (identifier);
+            return const_cast<PropertyMap*>(this)->get<T>(identifier);
         }
 #endif
         /**
@@ -286,12 +275,11 @@ namespace rw { namespace core {
          * @return the value of the property if it exists, else \b defval is returned
          *
          */
-        template< class T > T& get (const std::string& identifier, const T& defval)
-        {
-            T* p = getPtr< T > (identifier);
-            if (!p) {
-                set< T > (identifier, defval);
-                return *getPtr< T > (identifier);
+        template<class T> T& get(const std::string& identifier, const T& defval) {
+            T* p = getPtr<T>(identifier);
+            if(!p) {
+                set<T>(identifier, defval);
+                return *getPtr<T>(identifier);
             }
             return *p;
         }
@@ -311,12 +299,9 @@ namespace rw { namespace core {
          * @return the value of the property if it exists, else \b defval is returned
          *
          */
-        template< class T > const T& get (const std::string& identifier, const T& defval) const
-        {
-            const T* p = getPtr< T > (identifier);
-            if (!p) {
-                return defval;
-            }
+        template<class T> const T& get(const std::string& identifier, const T& defval) const {
+            const T* p = getPtr<T>(identifier);
+            if(!p) { return defval; }
             return *p;
         }
 
@@ -326,24 +311,24 @@ namespace rw { namespace core {
          * @param identifier [in] The identifier of the property
          * @return true if the property exists
          */
-        bool has (const std::string& identifier) const;
+        bool has(const std::string& identifier) const;
 
         /**
          * @brief The number of properties
          */
-        size_t size () const;
+        size_t size() const;
 
         /**
          * @brief True iff the property map contains no properties.
          */
-        bool empty () const;
+        bool empty() const;
 
         /**
          * @brief Remove a property
          *
          * @return true if the property was successfully removed.
          */
-        bool erase (const std::string& identifier);
+        bool erase(const std::string& identifier);
 
         // The following methods are rarely used and are therefore given longer
         // names. They more strongly expose the internal use of Property<T>.
@@ -359,10 +344,9 @@ namespace rw { namespace core {
          *
          * @return Property object with that identifier
          */
-        template< class T >
-        rw::core::Ptr< rw::core::Property< T > > findProperty (const std::string& identifier) const
-        {
-            return findPropertyBase (identifier).cast< Property< T > > ();
+        template<class T>
+        rw::core::Ptr<rw::core::Property<T>> findProperty(const std::string& identifier) const {
+            return findPropertyBase(identifier).cast<Property<T>>();
         }
 
         /**
@@ -373,7 +357,7 @@ namespace rw { namespace core {
          *
          * @param identifier [in] identifier for the property base to find.
          */
-        rw::core::PropertyBase::Ptr findPropertyBase (const std::string& identifier);
+        rw::core::PropertyBase::Ptr findPropertyBase(const std::string& identifier);
 
 #if !defined(SWIG)
         /**
@@ -384,35 +368,34 @@ namespace rw { namespace core {
          *
          * @param identifier [in] identifier for the property base to find.
          */
-        const rw::core::PropertyBase::Ptr findPropertyBase (const std::string& identifier) const;
+        const rw::core::PropertyBase::Ptr findPropertyBase(const std::string& identifier) const;
 #endif
         /**
          * @brief Method signature for a callback function
          */
-        typedef std::function< void (PropertyMap*, rw::core::PropertyBase*) >
-            PropertyChangedListener;
+        typedef std::function<void(PropertyMap*, rw::core::PropertyBase*)> PropertyChangedListener;
 
         /**
          * @brief Add listener to be call, when the property changes
          * @param callback [in] Callback method
          */
-        void addChangedListener (PropertyChangedListener callback);
+        void addChangedListener(PropertyChangedListener callback);
 
         /**
          * @brief Clears the list of changed listeners
          */
-        void clearChangedListeners ();
+        void clearChangedListeners();
 
         /**
          * @brief Notifies listeners about a change in the Property
          */
-        void notifyListeners (rw::core::PropertyBase* base = NULL);
+        void notifyListeners(rw::core::PropertyBase* base = NULL);
 
         /**
          * @brief used for listening for property changes in the map
          * @param base
          */
-        void propertyChangedListener (rw::core::PropertyBase* base);
+        void propertyChangedListener(rw::core::PropertyBase* base);
 
         /*
          * functions we need
@@ -424,13 +407,12 @@ namespace rw { namespace core {
       private:
         struct CmpPropertyBase
         {
-            bool operator() (const PropertyBase::Ptr a, const PropertyBase::Ptr b) const
-            {
-                return a->getIdentifier () < b->getIdentifier ();
+            bool operator()(const PropertyBase::Ptr a, const PropertyBase::Ptr b) const {
+                return a->getIdentifier() < b->getIdentifier();
             }
         };
 
-        typedef std::set< PropertyBase::Ptr, CmpPropertyBase > MapType;
+        typedef std::set<PropertyBase::Ptr, CmpPropertyBase> MapType;
 
       public:
         //! Iterator for const PropertyBase::Ptr
@@ -438,7 +420,7 @@ namespace rw { namespace core {
 
 #if !defined(SWIG)
         //! @brief Type for a range of properties.
-        typedef rw::core::iter_pair< iterator > Range;
+        typedef rw::core::iter_pair<iterator> Range;
 
         /**
        @brief Range of all PropertyBase* objects stored.
@@ -447,18 +429,18 @@ namespace rw { namespace core {
        values to be modified even though the method itself is declared
        const.
     */
-        Range getProperties () const;
+        Range getProperties() const;
 #endif
 
       private:
-        bool insert (PropertyBase::Ptr property);
+        bool insert(PropertyBase::Ptr property);
         MapType _properties;
         std::string _name;
 
         /**
          * @brief PropertyChanged Listeners
          */
-        std::vector< PropertyChangedListener > _listeners;
+        std::vector<PropertyChangedListener> _listeners;
     };
     /* @} */
 }}    // namespace rw::core

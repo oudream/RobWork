@@ -39,48 +39,48 @@ namespace rw { namespace geometry {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< PointCloud > Ptr;
+        typedef rw::core::Ptr<PointCloud> Ptr;
         //! type of point used internally in pointcloud
-        typedef rw::math::Vector3D< float > point_type;
+        typedef rw::math::Vector3D<float> point_type;
 
         /**
          * @brief constructor
          */
-        PointCloud () : _width (0), _height (0){};
+        PointCloud() : _width(0), _height(0){};
 
         /**
          * @brief constructor
          * @param w
          * @param h
          */
-        PointCloud (int w, int h) : _width (w), _height (h), _data (w * h){};
+        PointCloud(int w, int h) : _width(w), _height(h), _data(w * h){};
 
         /**
          * @brief destructor
          */
-        virtual ~PointCloud (){};
+        virtual ~PointCloud(){};
 
         //! @copydoc GeometryData::getType
-        GeometryType getType () const { return GeometryData::PointCloud; };
+        GeometryType getType() const { return GeometryData::PointCloud; };
 
         /**
          * @brief gets the number of points in the point cloud.
          */
-        virtual size_t size () const { return _data.size (); };
+        virtual size_t size() const { return _data.size(); };
 
-        bool isOrdered () { return _height > 1; }
+        bool isOrdered() { return _height > 1; }
 
         /**
          * @brief returns a char pointer to the image data
          * @return char pointer to the image data
          */
-        std::vector< rw::math::Vector3D< float > >& getData () { return _data; };
+        std::vector<rw::math::Vector3D<float>>& getData() { return _data; };
 
         /**
          * @brief returns a char pointer to the image data
          * @return const char pointer to the image data
          */
-        const std::vector< rw::math::Vector3D< float > >& getData () const { return _data; };
+        const std::vector<rw::math::Vector3D<float>>& getData() const { return _data; };
 #if !defined(SWIG)
         /**
          * @brief access points in point cloud.
@@ -88,8 +88,7 @@ namespace rw { namespace geometry {
          * @param y [in] y coordinate, must be in [0;height[
          * @return point
          */
-        const rw::math::Vector3D< float >& operator() (int x, int y) const
-        {
+        const rw::math::Vector3D<float>& operator()(int x, int y) const {
             return _data[y * _width + x];
         }
 
@@ -99,9 +98,11 @@ namespace rw { namespace geometry {
          * @param y [in] y coordinate, must be in [0;height[
          * @return point
          */
-        rw::math::Vector3D< float >& operator() (int x, int y) { return _data[y * _width + x]; }
+        rw::math::Vector3D<float>& operator()(int x, int y) {
+            return _data[y * _width + x];
+        }
 #else
-        MATRIXOPERATOR (rw::math::Vector3D< float >);
+        MATRIXOPERATOR(rw::math::Vector3D<float>);
 #endif
 
         /**
@@ -109,13 +110,17 @@ namespace rw { namespace geometry {
          * will be equal to the number of points.
          * @return width of data points
          */
-        int getWidth () const { return _width; }
+        int getWidth() const {
+            return _width;
+        }
 
         /**
          * @brief
          * @return height
          */
-        int getHeight () const { return _height; }
+        int getHeight() const {
+            return _height;
+        }
 
         /**
          * @brief set width of point cloud. Data elements are accessed as [x+y*width].
@@ -125,28 +130,28 @@ namespace rw { namespace geometry {
          * @param w [in] new width
          * @param h [in] new height
          */
-        void resize (int w, int h)
-        {
+        void resize(int w, int h) {
             _width  = w;
             _height = h;
-            if (_width * _height > (int) _data.size ())
-                _data.resize (_width * _height);
+            if(_width * _height > (int) _data.size()) _data.resize(_width * _height);
         };
 
         //! @copydoc GeometryData::getTriMesh
-        rw::core::Ptr< TriMesh > getTriMesh (bool forceCopy = true);
+        rw::core::Ptr<TriMesh> getTriMesh(bool forceCopy = true);
 
         //! @copydoc getTriMesh
-        rw::core::Ptr< const TriMesh > getTriMesh (bool forceCopy = true) const;
+        rw::core::Ptr<const TriMesh> getTriMesh(bool forceCopy = true) const;
 
-        const rw::math::Transform3D< float >& getDataTransform () const { return _sensorTransform; }
+        const rw::math::Transform3D<float>& getDataTransform() const {
+            return _sensorTransform;
+        }
 
         /**
          * @brief load point cloud from PCD file
          * @param filename [in] name of PCD file
          * @return a point cloud
          */
-        static rw::core::Ptr< PointCloud > loadPCD (const std::string& filename);
+        static rw::core::Ptr<PointCloud> loadPCD(const std::string& filename);
 
         /**
          * @brief save point cloud in PCD file format (PCL library format)
@@ -154,14 +159,14 @@ namespace rw { namespace geometry {
          * @param filename [in] the name of the file to save to
          * @param t3d [in] the transformation of the point cloud
          */
-        static void savePCD (const PointCloud& cloud, const std::string& filename,
-                             const rw::math::Transform3D< float >& t3d =
-                                 rw::math::Transform3D< float >::identity ());
+        static void
+        savePCD(const PointCloud& cloud, const std::string& filename,
+                const rw::math::Transform3D<float>& t3d = rw::math::Transform3D<float>::identity());
 
       private:
         int _width, _height;
-        std::vector< rw::math::Vector3D< float > > _data;
-        rw::math::Transform3D< float > _sensorTransform;
+        std::vector<rw::math::Vector3D<float>> _data;
+        rw::math::Transform3D<float> _sensorTransform;
     };
 
     //! @}

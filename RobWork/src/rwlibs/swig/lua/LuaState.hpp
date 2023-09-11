@@ -37,39 +37,39 @@ namespace rwlibs { namespace swig {
     {
       public:
         //! smart pointer type of LuaState
-        typedef rw::core::Ptr< LuaState > Ptr;
+        typedef rw::core::Ptr<LuaState> Ptr;
 
         //! @brief constructor
-        LuaState ();
+        LuaState();
 
         //! @brief destructor
-        virtual ~LuaState ();
+        virtual ~LuaState();
 
         //! @brief reset this luastate
-        void reset ();
+        void reset();
 
         //! @brief run a lua command block
-        int runCmd (const std::string& str);
+        int runCmd(const std::string& str);
 
         struct LuaLibrary
         {
-            typedef rw::core::Ptr< LuaLibrary > Ptr;
-            virtual ~LuaLibrary (){};
-            virtual const std::string getId ()         = 0;
-            virtual bool initLibrary (LuaState& state) = 0;
+            typedef rw::core::Ptr<LuaLibrary> Ptr;
+            virtual ~LuaLibrary(){};
+            virtual const std::string getId()         = 0;
+            virtual bool initLibrary(LuaState& state) = 0;
         };
 
         /**
          * @brief when the LuaState is reset all library constributers will be asked
          * to add their libraries to the state again.
          */
-        void addLibrary (LuaLibrary::Ptr lib);
+        void addLibrary(LuaLibrary::Ptr lib);
 
         //! remove specific library from luastate
-        void removeLibrary (const std::string& id);
+        void removeLibrary(const std::string& id);
 
         //! @brief get the lua_State
-        lua_State* get () { return _lua; }
+        lua_State* get() { return _lua; }
 
         /**
          * @addtogroup extensionpoints
@@ -81,12 +81,12 @@ namespace rwlibs { namespace swig {
          * extension point for LuaLibraries. This permit users to define extensions to
          * the lua interfaces through RobWork extension.
          */
-        class Factory : public rw::core::ExtensionPoint< LuaLibrary >
+        class Factory : public rw::core::ExtensionPoint<LuaLibrary>
         {
           public:
             //! constructor
-            Factory () :
-                rw::core::ExtensionPoint< LuaLibrary > (
+            Factory() :
+                rw::core::ExtensionPoint<LuaLibrary>(
                     "rwlibs.swig.LuaState.LuaLibrary",
                     "Extension point for Lua add-on libraries, acked in robwork plugins."){};
 
@@ -95,24 +95,24 @@ namespace rwlibs { namespace swig {
              * @param id [in] string identifier of lua library
              * @return a lualibrary if matching lib exists else NULL
              */
-            static rw::core::Ptr< LuaLibrary > getLuaLibrary (const std::string& id);
+            static rw::core::Ptr<LuaLibrary> getLuaLibrary(const std::string& id);
 
             /**
              * @brief get all avaliable lua libraries
              * @return all avalilable lua libraries
              */
-            static std::vector< LuaLibrary::Ptr > getLuaLibraries ();
+            static std::vector<LuaLibrary::Ptr> getLuaLibraries();
 
             /**
              * @brief get a list of supported lua libraries
              * @return
              */
-            static std::vector< std::string > getLuaLibraryIDs ();
+            static std::vector<std::string> getLuaLibraryIDs();
         };
 
       private:
         struct lua_State* _lua;
-        std::vector< LuaLibrary::Ptr > _libraryCBs;
+        std::vector<LuaLibrary::Ptr> _libraryCBs;
     };
 
 }}    // namespace rwlibs::swig

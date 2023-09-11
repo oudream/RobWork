@@ -31,8 +31,8 @@
 
 // Forward declarations
 namespace rwlibs { namespace task {
-    template< class T > class Target;
-    typedef Target< rw::math::Transform3D<> > CartesianTarget;
+    template<class T> class Target;
+    typedef Target<rw::math::Transform3D<>> CartesianTarget;
 }}    // namespace rwlibs::task
 
 namespace rwlibs { namespace assembly {
@@ -49,27 +49,27 @@ namespace rwlibs { namespace assembly {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< AssemblyState > Ptr;
+        typedef rw::core::Ptr<AssemblyState> Ptr;
 
         //! @brief Constructor of empty AssemblyState.
-        AssemblyState ();
+        AssemblyState();
 
         /**
          * @brief Construct AssemblyState from CartesianTarget.
          * @param target [in] the CartesianTarget.
          */
-        AssemblyState (rw::core::Ptr< rwlibs::task::CartesianTarget > target);
+        AssemblyState(rw::core::Ptr<rwlibs::task::CartesianTarget> target);
 
         //! @brief Destructor.
-        virtual ~AssemblyState ();
+        virtual ~AssemblyState();
 
         /**
          * @brief Convert to CartesianTarget representation.
          * @param state [in] the state to convert.
          * @return new CartesianTarget.
          */
-        static rw::core::Ptr< rwlibs::task::CartesianTarget >
-        toCartesianTarget (const AssemblyState& state);
+        static rw::core::Ptr<rwlibs::task::CartesianTarget>
+        toCartesianTarget(const AssemblyState& state);
 
       public:
         //! @brief A string describing the current phase of the assembly operation.
@@ -99,13 +99,13 @@ namespace rwlibs { namespace assembly {
         bool contact;
 
         //! @brief Transformations for specified male frames.
-        rw::trajectory::Path< rw::math::Transform3D<> > maleflexT;
+        rw::trajectory::Path<rw::math::Transform3D<>> maleflexT;
 
         //! @brief Transformations for specified female frames.
-        rw::trajectory::Path< rw::math::Transform3D<> > femaleflexT;
+        rw::trajectory::Path<rw::math::Transform3D<>> femaleflexT;
 
         //! @brief Contacts detected.
-        rw::trajectory::Path< rw::math::Transform3D<> > contacts;
+        rw::trajectory::Path<rw::math::Transform3D<>> contacts;
 
         //! @brief Maximum contact force detected (of the contacts in the \b contacts list).
         rw::math::Vector3D<> maxContactForce;

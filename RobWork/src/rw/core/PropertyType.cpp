@@ -21,7 +21,6 @@ using namespace rw::core;
 
 int PropertyType::_NextID = (int) User;
 
-int PropertyType::getNewID ()
-{
+int PropertyType::getNewID() {
     return _NextID++;
 }

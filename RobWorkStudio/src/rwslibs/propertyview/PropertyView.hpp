@@ -37,38 +37,38 @@ class PropertyView : public RobWorkStudioPlugin
 {
     Q_OBJECT
 #ifndef RWS_USE_STATIC_LINK_PLUGINS
-    Q_INTERFACES (rws::RobWorkStudioPlugin)
-    Q_PLUGIN_METADATA (IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "plugin.json")
+    Q_INTERFACES(rws::RobWorkStudioPlugin)
+    Q_PLUGIN_METADATA(IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "plugin.json")
 #endif
   public:
     //! @brief Constructor.
-    PropertyView ();
+    PropertyView();
 
     //! @brief Destructor.
-    virtual ~PropertyView ();
+    virtual ~PropertyView();
 
     //! @copydoc RobWorkStudioPlugin::initialize
-    virtual void initialize ();
+    virtual void initialize();
 
     //! @copydoc RobWorkStudioPlugin::open
-    virtual void open (rw::models::WorkCell* workcell);
+    virtual void open(rw::models::WorkCell* workcell);
 
     //! @copydoc RobWorkStudioPlugin::close
-    virtual void close ();
+    virtual void close();
 
     // protected:
     // void frameSelectedHandler(rw::kinematics::Frame* frame, RobWorkStudioPlugin* sender);
   private Q_SLOTS:
     // void frameChanged(rw::kinematics::Frame* frame);
 
-    void frameChanged (const QString& item);
+    void frameChanged(const QString& item);
 
-    void propertyChanged (const std::string& identifier);
+    void propertyChanged(const std::string& identifier);
 
   private:
-    void frameSelectedListener (rw::kinematics::Frame* frame);
+    void frameSelectedListener(rw::kinematics::Frame* frame);
 
-    void addFrame (const rw::kinematics::Frame* frame);
+    void addFrame(const rw::kinematics::Frame* frame);
 
     bool _updating;
 

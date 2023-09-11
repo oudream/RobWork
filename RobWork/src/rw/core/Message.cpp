@@ -21,17 +21,16 @@
 
 using namespace rw::core;
 
-Message::Message (const std::string& file, int line, const std::string& message) :
-#if (BOOST_FILESYSTEM_VERSION == 2)
-    _file (boost::filesystem::path (file.c_str ()).filename ()),
+Message::Message(const std::string& file, int line, const std::string& message) :
+#if(BOOST_FILESYSTEM_VERSION == 2)
+    _file(boost::filesystem::path(file.c_str()).filename()),
 #else
-    _file (boost::filesystem::path (file.c_str ()).filename ().string ()),
+    _file(boost::filesystem::path(file.c_str()).filename().string()),
 #endif
-    _line (line), _message (message)
-{}
+    _line(line), _message(message) {
+}
 
-std::ostream& rw::core::operator<< (std::ostream& out, const Message& msg)
-{
-    out << msg.getFile () << ":" << msg.getLine () << " " << msg.getText () << std::endl;
+std::ostream& rw::core::operator<<(std::ostream& out, const Message& msg) {
+    out << msg.getFile() << ":" << msg.getLine() << " " << msg.getText() << std::endl;
     return out;
 }

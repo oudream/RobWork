@@ -18,10 +18,9 @@
 #ifndef RW_PLUGIN_PLUGINFACTORY_HPP
 #define RW_PLUGIN_PLUGINFACTORY_HPP
 
-#include <rw/plugin/PluginFactoryBase.hpp>
-
 #include <rw/core/Ptr.hpp>
 #include <rw/core/macros.hpp>
+#include <rw/plugin/PluginFactoryBase.hpp>
 
 namespace rw { namespace plugin {
 
@@ -50,18 +49,18 @@ namespace rw { namespace plugin {
      Make sure
      * that MyDeviceFactory has a default constructor.
      */
-    template< class T > class PluginFactory : public PluginFactoryBase
+    template<class T> class PluginFactory : public PluginFactoryBase
     {
       public:
         //! @brief Smart pointer type for PluginFactory.
-        typedef rw::core::Ptr< PluginFactory< T > > Ptr;
+        typedef rw::core::Ptr<PluginFactory<T>> Ptr;
 
         /**
          * @brief Constructs a PluginFactory
          *
          * @param identifier [in] Identifiers of the PluginFactory
          */
-        PluginFactory (const std::string& identifier) : PluginFactoryBase (identifier) {}
+        PluginFactory(const std::string& identifier) : PluginFactoryBase(identifier) {}
 
         /**
          * @brief Creates plugin of type T by calling default constructor
@@ -70,9 +69,8 @@ namespace rw { namespace plugin {
          *
          * @return Pointer with ownership to new plugin instance.
          */
-        virtual rw::core::Ptr< T > make ()
-        {
-            RW_THROW2 (5000, "PluginFactory<T>::make() is not implemented");
+        virtual rw::core::Ptr<T> make() {
+            RW_THROW2(5000, "PluginFactory<T>::make() is not implemented");
         };
 
         /**
@@ -82,9 +80,8 @@ namespace rw { namespace plugin {
          *
          * @return Pointer with ownership to new plugin instance.
          */
-        virtual rw::core::Ptr< T > make (const std::string&)
-        {
-            RW_THROW2 (5001, "PluginFactory<T>::make(const std::string&) is not implemented");
+        virtual rw::core::Ptr<T> make(const std::string&) {
+            RW_THROW2(5001, "PluginFactory<T>::make(const std::string&) is not implemented");
         };
     };
 

@@ -25,46 +25,43 @@ namespace rwsim { namespace control {
                               public rwlibs::simulation::SimulatedController
     {
       public:
-        VelRampController (const std::string& name, dynamics::KinematicDevice* kdev,
-                           const rw::kinematics::State& state);
+        VelRampController(const std::string& name, dynamics::KinematicDevice* kdev,
+                          const rw::kinematics::State& state);
 
-        virtual ~VelRampController (){};
+        virtual ~VelRampController(){};
 
-        unsigned int getControlModes () { return POSITION; }
+        unsigned int getControlModes() { return POSITION; }
 
-        void setControlMode (ControlMode mode)
-        {
-            if (mode != POSITION)
-                RW_THROW ("Unsupported control mode!");
+        void setControlMode(ControlMode mode) {
+            if(mode != POSITION) RW_THROW("Unsupported control mode!");
         }
 
-        void setTargetPos (const rw::math::Q& target);
+        void setTargetPos(const rw::math::Q& target);
 
-        void setTargetVel (const rw::math::Q& vals){};
-        void setTargetAcc (const rw::math::Q& vals){};
+        void setTargetVel(const rw::math::Q& vals){};
+        void setTargetAcc(const rw::math::Q& vals){};
 
         //! @copydoc rwlibs::simulation::SimulatedController::update
-        void update (const rwlibs::simulation::Simulator::UpdateInfo& info,
-                     rw::kinematics::State& state);
+        void update(const rwlibs::simulation::Simulator::UpdateInfo& info,
+                    rw::kinematics::State& state);
 
         //! @copydoc rwlibs::simulation::SimulatedController::reset
-        void reset (const rw::kinematics::State& state);
+        void reset(const rw::kinematics::State& state);
 
-        rw::math::Q getQ ();
+        rw::math::Q getQ();
 
-        rw::math::Q getQd () { return _target; }
+        rw::math::Q getQd() { return _target; }
 
-        std::string getControllerName () { return getName (); };
+        std::string getControllerName() { return getName(); };
 
-        Controller* getController () { return this; };
+        Controller* getController() { return this; };
 
-        void setEnabled (bool enabled) { _enabled = enabled; };
+        void setEnabled(bool enabled) { _enabled = enabled; };
 
-        bool isEnabled () const { return _enabled; };
+        bool isEnabled() const { return _enabled; };
 
         rwlibs::control::Controller::Ptr
-        getControllerHandle (rwlibs::simulation::Simulator::Ptr sim)
-        {
+        getControllerHandle(rwlibs::simulation::Simulator::Ptr sim) {
             return this;
         }
 
@@ -77,7 +74,7 @@ namespace rwsim { namespace control {
         bool _enabled;
     };
 
-    typedef rw::core::Ptr< VelRampController > VelRampControllerPtr;
+    typedef rw::core::Ptr<VelRampController> VelRampControllerPtr;
 
     //! @}
 }}    // namespace rwsim::control

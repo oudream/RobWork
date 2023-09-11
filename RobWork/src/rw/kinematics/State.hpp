@@ -22,12 +22,11 @@
  * @file State.hpp
  */
 #if !defined(SWIG)
+#include <rw/common/Serializable.hpp>
+#include <rw/core/Ptr.hpp>
 #include <rw/kinematics/QState.hpp>
 #include <rw/kinematics/StateCache.hpp>
 #include <rw/kinematics/TreeState.hpp>
-
-#include <rw/common/Serializable.hpp>
-#include <rw/core/Ptr.hpp>
 
 #include <vector>
 #endif
@@ -65,7 +64,7 @@ namespace rw { namespace kinematics {
     {
       public:
         //! @brief Smart pointer type to State.
-        typedef rw::core::Ptr< State > Ptr;
+        typedef rw::core::Ptr<State> Ptr;
         //! Value type.
         typedef double value_type;
 
@@ -74,10 +73,10 @@ namespace rw { namespace kinematics {
          * Beware that the state is not initialized and that passing this state
          * to a procedure will typically cause a program crash.
          */
-        State ();
+        State();
 
         //! destructor
-        virtual ~State ();
+        virtual ~State();
 
         /**
          * @brief Assign to a state the configuration state of this state.
@@ -89,7 +88,7 @@ namespace rw { namespace kinematics {
          *
          * @param to [out] The state to which the configuration state is written.
          */
-        void setQStateInState (State& to) const { to.getQState () = getQState (); }
+        void setQStateInState(State& to) const { to.getQState() = getQState(); }
 
         /**
          * @brief Assign to a state the tree state of this state.
@@ -105,16 +104,15 @@ namespace rw { namespace kinematics {
          *
          * @param to [out] The state to which the tree state is written.
          */
-        void setTreeStateInState (State& to) const { to.getTreeState () = getTreeState (); }
+        void setTreeStateInState(State& to) const { to.getTreeState() = getTreeState(); }
 
         /**
          * @brief Scaling of the configuration state by a scalar.
          *
          * The tree state remains the same.
          */
-        State operator* (double scale) const
-        {
-            return State (this->_q_state * scale, this->_tree_state, this->getUniqueId ());
+        State operator*(double scale) const {
+            return State(this->_q_state * scale, this->_tree_state, this->getUniqueId());
         }
 
         /**
@@ -122,9 +120,8 @@ namespace rw { namespace kinematics {
          *
          * The tree state remains the same.
          */
-        State operator/ (double scale) const
-        {
-            return State (this->_q_state / scale, this->_tree_state, this->getUniqueId ());
+        State operator/(double scale) const {
+            return State(this->_q_state / scale, this->_tree_state, this->getUniqueId());
         }
 #if !defined(SWIGPYTHON)
         /**
@@ -132,9 +129,8 @@ namespace rw { namespace kinematics {
          *
          * The tree state remains the same.
          */
-        friend State operator* (double scale, const State& state)
-        {
-            return State (scale * state._q_state, state._tree_state, state.getUniqueId ());
+        friend State operator*(double scale, const State& state) {
+            return State(scale * state._q_state, state._tree_state, state.getUniqueId());
         }
 #endif
         /**
@@ -145,9 +141,8 @@ namespace rw { namespace kinematics {
          * you to use setTreeStateInState() to make you explicitly choose the
          * tree state.
          */
-        State operator+ (const State& b) const
-        {
-            return State (this->_q_state + b._q_state, this->_tree_state, this->getUniqueId ());
+        State operator+(const State& b) const {
+            return State(this->_q_state + b._q_state, this->_tree_state, this->getUniqueId());
         }
 
         /**
@@ -158,9 +153,8 @@ namespace rw { namespace kinematics {
          * you to use setTreeStateInState() to make you explicitly choose the
          * tree state.
          */
-        State operator- (const State& b) const
-        {
-            return State (this->_q_state - b._q_state, this->_tree_state, this->getUniqueId ());
+        State operator-(const State& b) const {
+            return State(this->_q_state - b._q_state, this->_tree_state, this->getUniqueId());
         }
 
         /**
@@ -168,7 +162,9 @@ namespace rw { namespace kinematics {
          *
          * The tree state remains the same.
          */
-        State operator- () const { return State (-_q_state, _tree_state, getUniqueId ()); }
+        State operator-() const {
+            return State(-_q_state, _tree_state, getUniqueId());
+        }
 
         /**
          * @brief copies data from a state into this state. The version
@@ -176,7 +172,7 @@ namespace rw { namespace kinematics {
          * state data that is valid for both states will be copied.
          * @param src [in] the state that is to be copied
          */
-        void copy (const State& src);
+        void copy(const State& src);
 
         /**
          * @brief performs a deep copy of this state and returns the clone. Both
@@ -184,30 +180,29 @@ namespace rw { namespace kinematics {
          * be copied using their clone method.
          * @return a deep copy of this state (clone)
          */
-        State clone ();
+        State clone();
 
         /**
          * @brief performs a deep copy of \b src into this state.
          * @param src [in] the state that is to be cloned
          */
-        void clone (const State& src);
+        void clone(const State& src);
 
         /**
          * @brief this function upgrades the current version of this
          * State to the newest state. It will not override data values that
          * is set in the current state.
          */
-        void upgrade ();
+        void upgrade();
 
         /**
          * @brief this function upgrades the current version of this
          * State with the given state. It will not override data values that
          * is set in the current state.
          */
-        void upgradeTo (const State& state)
-        {
+        void upgradeTo(const State& state) {
             State newState = state;
-            newState.copy (*this);
+            newState.copy(*this);
             *this = newState;
         }
 
@@ -218,7 +213,9 @@ namespace rw { namespace kinematics {
          * messages, so that you can report if two states seem to belong to
          * different workcells.
          */
-        size_t size () const { return getQState ().size (); }
+        size_t size() const {
+            return getQState().size();
+        }
 #if !defined(SWIG)
         /**
          * @brief Provides direct access to the configurations stored in the state
@@ -227,59 +224,69 @@ namespace rw { namespace kinematics {
          *
          * @param index [in] Index of element to access
          */
-        double& operator() (size_t index) { return getQState () (index); }
+        double& operator()(size_t index) {
+            return getQState()(index);
+        }
 
         /**
          * @brief Provides direct read access to the configurations stored in the state
          *
          * @param index [in] Index of element to access
          */
-        const double& operator() (size_t index) const { return getQState () (index); }
+        const double& operator()(size_t index) const {
+            return getQState()(index);
+        }
 
         /**
            @brief Same as operator().
          */
-        double& operator[] (size_t index) { return operator() (index); }
+        double& operator[](size_t index) {
+            return operator()(index);
+        }
 
         /**
            @brief Same as operator().
          */
-        const double& operator[] (size_t index) const { return operator() (index); }
+        const double& operator[](size_t index) const {
+            return operator()(index);
+        }
 #else
-        ARRAYOPERATOR (double);
+        ARRAYOPERATOR(double);
 #endif
         /**
          * @brief gets the frame with id \b id. If a frame with id \b id does not exist
          * NULL is returned
          */
-        rw::kinematics::Frame* getFrame (int id);
+        rw::kinematics::Frame* getFrame(int id);
 
         /**
          * @brief get the state id. Represents the static structure of the StateStructure that
          * this state relates to.
          */
-        int getUniqueId () const { return _stateUniqueId; }
+        int getUniqueId() const {
+            return _stateUniqueId;
+        }
 
         /**
          * @brief Returns pointer to the state structure (the structure of Frame's and StateData)
          * @return Pointer to the StateStructure matching the frame
          */
-        rw::core::Ptr< StateStructure > getStateStructure () const;
+        rw::core::Ptr<StateStructure> getStateStructure() const;
 
         // void add(Stateless& obj);
 
         //! @copydoc rw::common::Serializable::read
-        void read (class rw::common::InputArchive& iarchive, const std::string& id);
+        void read(class rw::common::InputArchive& iarchive, const std::string& id);
 
         //! @copydoc rw::common::Serializable::write
-        void write (class rw::common::OutputArchive& oarchive, const std::string& id) const;
+        void write(class rw::common::OutputArchive& oarchive, const std::string& id) const;
 
         /**
          * @brief Get default.
          * @param data [in] the state data.
          * @return default state.
          */
-        static const State& getDefault (rw::kinematics::StateData* data);
+        static const State& getDefault(rw::kinematics::StateData* data);
 
       private:
         friend class StateData;
@@ -288,22 +295,30 @@ namespace rw { namespace kinematics {
         /**
          * @brief The configuration values part of the state.
          */
-        const rw::kinematics::QState& getQState () const { return _q_state; }
+        const rw::kinematics::QState& getQState() const {
+            return _q_state;
+        }
 
         /**
          * @brief The configuration values part of the state.
          */
-        rw::kinematics::QState& getQState () { return _q_state; }
+        rw::kinematics::QState& getQState() {
+            return _q_state;
+        }
 
         /**
          * @brief The tree structure part of the state.
          */
-        const rw::kinematics::TreeState& getTreeState () const { return _tree_state; }
+        const rw::kinematics::TreeState& getTreeState() const {
+            return _tree_state;
+        }
 
         /**
          * @brief The tree structure part of the state.
          */
-        rw::kinematics::TreeState& getTreeState () { return _tree_state; }
+        rw::kinematics::TreeState& getTreeState() {
+            return _tree_state;
+        }
 
         /**
          * @brief the cache part of the state
@@ -311,22 +326,22 @@ namespace rw { namespace kinematics {
          */
         // std::vector<rw::core::Ptr<StateCache> >& getCacheState(){return _cache_state;}
 
-        rw::core::Ptr< rw::kinematics::StateCache > getCache (int id);
+        rw::core::Ptr<rw::kinematics::StateCache> getCache(int id);
 
-        rw::core::Ptr< rw::kinematics::StateCache > getCache (int id) const;
+        rw::core::Ptr<rw::kinematics::StateCache> getCache(int id) const;
 
-        void setCache (int id, rw::core::Ptr< rw::kinematics::StateCache > cache);
+        void setCache(int id, rw::core::Ptr<rw::kinematics::StateCache> cache);
 
         /**
          * @brief Constructs a state
          */
-        State (const rw::kinematics::QState& q_state, const rw::kinematics::TreeState& tree_state,
-               int stateUniqueId);
+        State(const rw::kinematics::QState& q_state, const rw::kinematics::TreeState& tree_state,
+              int stateUniqueId);
 
       private:
         rw::kinematics::TreeState _tree_state;
         rw::kinematics::QState _q_state;
-        std::vector< rw::core::Ptr< rw::kinematics::StateCache > > _cache_state;
+        std::vector<rw::core::Ptr<rw::kinematics::StateCache>> _cache_state;
         int _stateUniqueId;
     };
 

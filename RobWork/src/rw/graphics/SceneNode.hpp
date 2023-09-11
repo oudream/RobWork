@@ -24,7 +24,7 @@
 #include <algorithm>
 #include <list>
 #include <string>
-#endif 
+#endif
 
 namespace rw { namespace graphics {
 
@@ -46,13 +46,13 @@ namespace rw { namespace graphics {
         } AddPolicy;
 
         //! @brief Smart pointer type for SceneNode.
-        typedef rw::core::Ptr< SceneNode > Ptr;
+        typedef rw::core::Ptr<SceneNode> Ptr;
 
         //! @brief Type for the list of nodes.
-        typedef std::list< SceneNode::Ptr > NodeList;
+        typedef std::list<SceneNode::Ptr> NodeList;
 
         //! @brief Type for a const list of nodes.
-        typedef const std::list< SceneNode::Ptr > NodeListConst;
+        typedef const std::list<SceneNode::Ptr> NodeListConst;
 
         //! @brief Node types.
         enum NodeType {
@@ -63,9 +63,9 @@ namespace rw { namespace graphics {
         };
 
       private:
-        SceneNode ();
-        SceneNode (const SceneNode&);
-        SceneNode& operator= (const SceneNode&);
+        SceneNode();
+        SceneNode(const SceneNode&);
+        SceneNode& operator=(const SceneNode&);
 
       protected:
         /**
@@ -73,11 +73,11 @@ namespace rw { namespace graphics {
          * @param name [in] name of the node.
          * @param type [in] the NodeType.
          */
-        SceneNode (const std::string& name, int type) : _name (name), _type (type) {}
+        SceneNode(const std::string& name, int type) : _name(name), _type(type) {}
 
       public:
         //! @brief Destructor.
-        virtual ~SceneNode () {}
+        virtual ~SceneNode() {}
 
         /*void setParent(SceneNode::Ptr node){
             _parent = node;
@@ -88,15 +88,10 @@ namespace rw { namespace graphics {
          * @param node [in] the node to add as parent node.
          * @param policy [in] the AddPolicy (default is Back).
          */
-        void addParent (SceneNode::Ptr node, AddPolicy policy = Back)
-        {
-            if (!hasParent (node)) {
-                if (policy == Back) {
-                    _parentNodes.push_back (node);
-                }
-                else {
-                    _parentNodes.push_front (node);
-                }
+        void addParent(SceneNode::Ptr node, AddPolicy policy = Back) {
+            if(!hasParent(node)) {
+                if(policy == Back) { _parentNodes.push_back(node); }
+                else { _parentNodes.push_front(node); }
             }
         }
 
@@ -105,11 +100,10 @@ namespace rw { namespace graphics {
          * @param parent [in] the node to look for.
          * @return true if \b parent is a parent node.
          */
-        bool hasParent (SceneNode::Ptr parent)
-        {
-            std::list< SceneNode::Ptr >::iterator location =
-                std::find (_parentNodes.begin (), _parentNodes.end (), parent);
-            return location != _parentNodes.end ();
+        bool hasParent(SceneNode::Ptr parent) {
+            std::list<SceneNode::Ptr>::iterator location =
+                std::find(_parentNodes.begin(), _parentNodes.end(), parent);
+            return location != _parentNodes.end();
         }
 
         /**
@@ -117,13 +111,11 @@ namespace rw { namespace graphics {
          * @note this node is not removed from the parents child list, using this
          * @param node [in] the parent to remove.
          */
-        void removeParent (SceneNode::Ptr node)
-        {
-            std::list< SceneNode::Ptr >::iterator location =
-                std::find (_parentNodes.begin (), _parentNodes.end (), node);
+        void removeParent(SceneNode::Ptr node) {
+            std::list<SceneNode::Ptr>::iterator location =
+                std::find(_parentNodes.begin(), _parentNodes.end(), node);
 
-            if (location != _parentNodes.end ())
-                _parentNodes.erase (location);
+            if(location != _parentNodes.end()) _parentNodes.erase(location);
         }
 
         /**
@@ -131,9 +123,8 @@ namespace rw { namespace graphics {
          * @param node [in] the node.
          * @param parent [in] the parent node to remove as a parent of \b node.
          */
-        static void removeParent (SceneNode::Ptr node, SceneNode::Ptr parent)
-        {
-            node->removeParent (parent);
+        static void removeParent(SceneNode::Ptr node, SceneNode::Ptr parent) {
+            node->removeParent(parent);
         }
 
       public:
@@ -141,43 +132,43 @@ namespace rw { namespace graphics {
          * @brief Get a pointer to a GroupNode, if this is a GroupNode.
          * @return a pointer, or NULL if the SceneNode is not of correct type.
          */
-        virtual GroupNode* asGroupNode () { return NULL; }
+        virtual GroupNode* asGroupNode() { return NULL; }
 
         /**
          * @brief Get a pointer to a CameraNode, if this is a CameraNode.
          * @return a pointer, or NULL if the SceneNode is not of correct type.
          */
-        virtual SceneCamera* asCameraNode () { return NULL; }
+        virtual SceneCamera* asCameraNode() { return NULL; }
 
         /**
          * @brief Get a pointer to a DrawableNode, if this is a DrawableNode.
          * @return a pointer, or NULL if the SceneNode is not of correct type.
          */
-        virtual DrawableNode* asDrawableNode () { return NULL; }
+        virtual DrawableNode* asDrawableNode() { return NULL; }
 
         /**
          * @brief Get the NodeType.
          * @return the type of node.
          */
-        int getType () { return _type; }
+        int getType() { return _type; }
 
         /**
          * @brief Get the name of the node.
          * @return the name.
          */
-        const std::string& getName () { return _name; }
+        const std::string& getName() { return _name; }
 
         /**
          * @brief Set the name of this node.
          * @param name [in] a new name.
          */
-        void setName (const std::string& name) { _name = name; }
+        void setName(const std::string& name) { _name = name; }
 
         //! @brief The name of the node.
         std::string _name;
 
         //! @brief The list of parent nodes.
-        std::list< SceneNode::Ptr > _parentNodes;
+        std::list<SceneNode::Ptr> _parentNodes;
 
         //! @brief The NodeType.
         int _type;

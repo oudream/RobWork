@@ -30,7 +30,7 @@ namespace rwsim { namespace swig {
      * @param L
      * @return
      */
-    int openLuaLibRWSim (lua_State* L);
+    int openLuaLibRWSim(lua_State* L);
 
     /**
      * @brief A Lua plugin that define extensions for rwlibs.swig.LuaState.LuaLibrary
@@ -41,16 +41,16 @@ namespace rwsim { namespace swig {
         /**
          * @brief constructor
          */
-        LuaPlugin ();
+        LuaPlugin();
 
         //! destructor
-        virtual ~LuaPlugin ();
+        virtual ~LuaPlugin();
 
         //! @copydoc rw::core::Plugin::getExtensionDescriptors
-        std::vector< rw::core::Extension::Descriptor > getExtensionDescriptors ();
+        std::vector<rw::core::Extension::Descriptor> getExtensionDescriptors();
 
         //! @copydoc rw::core::Plugin::makeExtension
-        rw::core::Ptr< rw::core::Extension > makeExtension (const std::string& str);
+        rw::core::Ptr<rw::core::Extension> makeExtension(const std::string& str);
     };
 
 }}     // namespace rwsim::swig

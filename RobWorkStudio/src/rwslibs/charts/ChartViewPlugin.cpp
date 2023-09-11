@@ -16,6 +16,7 @@
  *****************************************************************************/
 
 #include "ChartViewPlugin.hpp"
+
 #include "ChartView.hpp"
 #include "ChartViewGenerator.hpp"
 
@@ -25,36 +26,39 @@ using namespace rws;
 
 RW_ADD_PLUGIN(ChartViewPlugin)
 
-ChartViewPlugin::ChartViewPlugin():
-    Plugin("rws.PlotView", "QChartView based PlotViewer.", "1.0")
-{
-}
+ChartViewPlugin::ChartViewPlugin() :
+    Plugin("rws.PlotView", "QChartView based PlotViewer.", "1.0") {}
 
-ChartViewPlugin::~ChartViewPlugin()
-{
-}
+ChartViewPlugin::~ChartViewPlugin() {}
 
-std::vector< Extension::Descriptor > ChartViewPlugin::getExtensionDescriptors ()
-{
-    std::vector< Extension::Descriptor > exts;
-    exts.push_back(Extension::Descriptor("rwslibs.charts.qchartview","rws.PlotView"));
+std::vector<Extension::Descriptor> ChartViewPlugin::getExtensionDescriptors() {
+    std::vector<Extension::Descriptor> exts;
+    exts.push_back(Extension::Descriptor("rwslibs.charts.qchartview", "rws.PlotView"));
     exts.back().name = "QChartView";
     exts.back().getProperties().set<std::string>("identifier", "rwslibs.charts.qchartview");
-    exts.push_back(Extension::Descriptor("rwslibs.charts.qchartgenerator","rw.graphics.PlotGenerator"));
+    exts.push_back(
+        Extension::Descriptor("rwslibs.charts.qchartgenerator", "rw.graphics.PlotGenerator"));
     exts.back().name = "QChartView Generator";
     exts.back().getProperties().set<std::string>("generator", "rwslibs.charts.qchartgenerator");
     return exts;
 }
 
-Extension::Ptr ChartViewPlugin::makeExtension (const std::string& id)
-{
+Extension::Ptr ChartViewPlugin::makeExtension(const std::string& id) {
     if(id == "rwslibs.charts.qchartview") {
-        const Extension::Ptr extension = ownedPtr(new Extension("rwslibs.charts.qchartview","rws.PlotView", this, ownedPtr(new ChartView::Dispatcher).cast< const PlotView::Dispatcher > () ) );
+        const Extension::Ptr extension = ownedPtr(
+            new Extension("rwslibs.charts.qchartview",
+                          "rws.PlotView",
+                          this,
+                          ownedPtr(new ChartView::Dispatcher).cast<const PlotView::Dispatcher>()));
         extension->getProperties().set<std::string>("identifier", "rwslibs.charts.qchartview");
         return extension;
     }
     else if(id == "rwslibs.charts.qchartgenerator") {
-        const Extension::Ptr extension = ownedPtr(new Extension("rwslibs.charts.qchartgenerator","rw.graphics.PlotGenerator", this, ownedPtr(new ChartViewGenerator).cast< PlotGenerator > () ) );
+        const Extension::Ptr extension =
+            ownedPtr(new Extension("rwslibs.charts.qchartgenerator",
+                                   "rw.graphics.PlotGenerator",
+                                   this,
+                                   ownedPtr(new ChartViewGenerator).cast<PlotGenerator>()));
         extension->getProperties().set<std::string>("generator", "rwslibs.charts.qchartgenerator");
         return extension;
     }

@@ -13,28 +13,28 @@ class HelpAssistant
 {
   public:
     //! @brief Constructor.
-    HelpAssistant ();
+    HelpAssistant();
 
     //! @brief Destructor.
-    virtual ~HelpAssistant ();
+    virtual ~HelpAssistant();
 
     /**
      * @brief Show the help assistant.
      * @param paths [in] a list of paths to search for the documentation files.
      */
-    bool showDocumentation (const QStringList& paths);
+    bool showDocumentation(const QStringList& paths);
 
     /**
      * @brief Go to the given URL in documentation.
      * @param url [in] the URL.
      */
-    void gotoURL (const std::string& url);
+    void gotoURL(const std::string& url);
 
     //! @brief Show only the page and hide as much as possible else.
-    void minimumView ();
+    void minimumView();
 
   private:
-    bool startAssistant (QString collectionFileName);
+    bool startAssistant(QString collectionFileName);
     QProcess* proc;
 };
 

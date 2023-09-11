@@ -50,28 +50,28 @@ namespace rwsimlibs { namespace bullet {
     {
       public:
         //! @brief Definition of a RobWork frame and Bullet body pair.
-        typedef std::pair< const rw::kinematics::Frame*, btRigidBody* > FrameBodyPair;
+        typedef std::pair<const rw::kinematics::Frame*, btRigidBody*> FrameBodyPair;
 
         /**
          * @brief Constructor.
          * @param dev [in] a kinematic device.
          * @param frameToBtBody [in] a list of pairs of Frames and Bullet bodies.
          */
-        BtPositionDevice (rw::core::Ptr< rwsim::dynamics::KinematicDevice > dev,
-                          const std::vector< FrameBodyPair >& frameToBtBody);
+        BtPositionDevice(rw::core::Ptr<rwsim::dynamics::KinematicDevice> dev,
+                         const std::vector<FrameBodyPair>& frameToBtBody);
 
         //! @brief Destructor.
-        virtual ~BtPositionDevice ();
+        virtual ~BtPositionDevice();
 
         //! @brief @copydoc BtDevice::update
-        virtual void update (double dt, rw::kinematics::State& state);
+        virtual void update(double dt, rw::kinematics::State& state);
 
         //! @brief @copydoc BtDevice::postUpdate
-        virtual void postUpdate (rw::kinematics::State& state);
+        virtual void postUpdate(rw::kinematics::State& state);
 
       private:
-        const rw::core::Ptr< rwsim::dynamics::KinematicDevice > _kdev;
-        const std::vector< FrameBodyPair > _frameToBtBody;
+        const rw::core::Ptr<rwsim::dynamics::KinematicDevice> _kdev;
+        const std::vector<FrameBodyPair> _frameToBtBody;
     };
     //! @}
 }}     // namespace rwsimlibs::bullet

@@ -43,17 +43,17 @@ namespace rwsimlibs { namespace bullet {
          * @brief Constructor.
          * @param sim the simulator the debug render is associated to.
          */
-        BtDebugRender (BtSimulator* sim);
+        BtDebugRender(BtSimulator* sim);
 
         //! @brief Destructor
-        virtual ~BtDebugRender ();
+        virtual ~BtDebugRender();
 
         //! @copydoc rw::graphics::Render::draw
-        virtual void draw (const rw::graphics::DrawableNode::RenderInfo& info, DrawType type,
-                           double alpha) const;
+        virtual void draw(const rw::graphics::DrawableNode::RenderInfo& info, DrawType type,
+                          double alpha) const;
 
         //! @copydoc rwsim::drawable::SimulatorDebugRender::setDrawMask
-        virtual void setDrawMask (unsigned int mask);
+        virtual void setDrawMask(unsigned int mask);
 
       private:
         BtSimulator* _sim;

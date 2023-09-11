@@ -37,7 +37,7 @@ namespace rw { namespace common {
     {
       public:
         //! destructor
-        virtual ~Serializable (){};
+        virtual ~Serializable(){};
 
         /**
          * Enable read-serialization of inherited class by implementing this method. Data is read
@@ -49,7 +49,7 @@ namespace rw { namespace common {
          * a default identifier. E.g. the Vector3D class defined "Vector3D" as its default
          * id.
          */
-        virtual void read (class InputArchive& iarchive, const std::string& id) = 0;
+        virtual void read(class InputArchive& iarchive, const std::string& id) = 0;
 
         /**
          * Enable write-serialization of inherited class by implementing this method. Data is
@@ -61,7 +61,7 @@ namespace rw { namespace common {
          * a default identifier. E.g. the Vector3D class defined "Vector3D" as its default
          * id.
          */
-        virtual void write (class OutputArchive& oarchive, const std::string& id) const = 0;
+        virtual void write(class OutputArchive& oarchive, const std::string& id) const = 0;
     };
 
     /**
@@ -84,10 +84,9 @@ namespace rw { namespace common {
          * a default identifier. E.g. the Vector3D class defined "Vector3D" as its default
          * id.
          */
-        template< class T >
-        void read (T& sobject, class InputArchive& iarchive, const std::string& id)
-        {
-            RW_THROW ("No overloaded method to deserialize class: " << typeid (T).name ());
+        template<class T>
+        void read(T& sobject, class InputArchive& iarchive, const std::string& id) {
+            RW_THROW("No overloaded method to deserialize class: " << typeid(T).name());
         }
 
         /**
@@ -101,10 +100,9 @@ namespace rw { namespace common {
          * a default identifier. E.g. the Vector3D class defined "Vector3D" as its default
          * id.
          */
-        template< class T >
-        void write (const T& sobject, class OutputArchive& oarchive, const std::string& id)
-        {
-            RW_THROW ("No overloaded method to serialize class: " << typeid (T).name ());
+        template<class T>
+        void write(const T& sobject, class OutputArchive& oarchive, const std::string& id) {
+            RW_THROW("No overloaded method to serialize class: " << typeid(T).name());
         }
 
     }    // namespace serialization

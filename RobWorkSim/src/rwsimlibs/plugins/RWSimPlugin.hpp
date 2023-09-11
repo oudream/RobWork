@@ -53,39 +53,39 @@ struct UserContext
 class RWSimPlugin : public rws::RobWorkStudioPlugin, private Ui::RWSimPlugin
 {
     Q_OBJECT
-    Q_INTERFACES (rws::RobWorkStudioPlugin)
-    Q_PLUGIN_METADATA (IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "RWSimPlugin.json");
+    Q_INTERFACES(rws::RobWorkStudioPlugin)
+    Q_PLUGIN_METADATA(IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "RWSimPlugin.json");
 
   public:
     /**
      * @brief constructor
      */
-    RWSimPlugin ();
+    RWSimPlugin();
 
     /**
      * @brief destructor
      */
-    virtual ~RWSimPlugin ();
+    virtual ~RWSimPlugin();
 
     /**
      * @copydoc rws::RobWorkStudioPlugin::open
      */
-    void open (rw::models::WorkCell* workcell);
+    void open(rw::models::WorkCell* workcell);
 
     /**
      * @copydoc rws::RobWorkStudioPlugin::close
      */
-    void close ();
+    void close();
 
     /**
      * @copydoc rws::RobWorkStudioPlugin::initialize
      */
-    void initialize ();
+    void initialize();
 
     /**
      *
      */
-    void stateChangedListener (const rw::kinematics::State& state);
+    void stateChangedListener(const rw::kinematics::State& state);
 
     /**
      * @brief opens a dynamic workcell with filename \b file.
@@ -94,26 +94,26 @@ class RWSimPlugin : public rws::RobWorkStudioPlugin, private Ui::RWSimPlugin
      * 'DynamicWorkCellLoaded' will be emitted and the DynamicWorkCell will
      * be saved in the RobWorkStudio propertymap with the string id 'DynamicWorkcell'.
      */
-    void openDwc (const std::string& file);
+    void openDwc(const std::string& file);
 
-    void stepCallBack (const rw::kinematics::State& state);
+    void stepCallBack(const rw::kinematics::State& state);
 
-    void setupMenu (QMenu* menu);
+    void setupMenu(QMenu* menu);
 
   signals:
-    void updateView ();
+    void updateView();
     // void updateDialog();
-    void updateDialog (const rw::kinematics::State& state);
+    void updateDialog(const rw::kinematics::State& state);
 
   private slots:
-    void btnPressed ();
-    void changedEvent ();
-    void setRobWorkStudioState (const rw::kinematics::State& state);
+    void btnPressed();
+    void changedEvent();
+    void setRobWorkStudioState(const rw::kinematics::State& state);
 
   protected:
-    void updateStatus ();
+    void updateStatus();
 
-    rw::core::PropertyMap& settings ();
+    rw::core::PropertyMap& settings();
 
   private:
 #ifdef RWSIM_PLUGIN_HAVE_LUA
@@ -124,8 +124,8 @@ class RWSimPlugin : public rws::RobWorkStudioPlugin, private Ui::RWSimPlugin
 
     QTimer* _timer;
     UserContext _context;
-    rw::core::Ptr< rwsim::dynamics::DynamicWorkCell > _dwc;
-    rw::core::Ptr< rwsim::simulator::ThreadSimulator > _sim;
+    rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> _dwc;
+    rw::core::Ptr<rwsim::simulator::ThreadSimulator> _sim;
 
     rw::kinematics::State _state;
 
@@ -133,7 +133,7 @@ class RWSimPlugin : public rws::RobWorkStudioPlugin, private Ui::RWSimPlugin
 
     rw::trajectory::TimedStatePath _path;
     rwlibs::opengl::Drawable* _debugDrawable;
-    rw::core::Ptr< rwsim::drawable::SimulatorDebugRender > _debugRender;
+    rw::core::Ptr<rwsim::drawable::SimulatorDebugRender> _debugRender;
 
     bool _openCalled;
 

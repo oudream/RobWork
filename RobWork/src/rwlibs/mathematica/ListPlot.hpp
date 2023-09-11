@@ -24,9 +24,8 @@
  * \copydoc rwlibs::mathematica::ListPlot
  */
 
-#include <rwlibs/mathematica/Mathematica.hpp>
-
 #include <rw/core/Ptr.hpp>
+#include <rwlibs/mathematica/Mathematica.hpp>
 
 #if __cplusplus >= 201103L
 #include <rwlibs/mathematica/List.hpp>
@@ -53,14 +52,14 @@ namespace rwlibs { namespace mathematica {
     {
       public:
         //! @brief Smart pointer type.
-        typedef rw::core::Ptr< ListPlot > Ptr;
+        typedef rw::core::Ptr<ListPlot> Ptr;
 
         /**
          * @brief Construct a ListPlot expression.
          * @param data [in] the data expression (e.g. a variable name, table/list expression, or
          * data array).
          */
-        ListPlot (const Mathematica::Expression& data);
+        ListPlot(const Mathematica::Expression& data);
 
         /**
          * @brief Construct a ListPlot expression.
@@ -68,8 +67,8 @@ namespace rwlibs { namespace mathematica {
          * data array).
          * @param options [in] the options to use (such as PlotRange, AxesLabels etc.)
          */
-        ListPlot (const Mathematica::Expression& data,
-                  const std::list< Mathematica::Expression::Ptr >& options);
+        ListPlot(const Mathematica::Expression& data,
+                 const std::list<Mathematica::Expression::Ptr>& options);
 
         /**
          * @brief Construct a ListPlot expression.
@@ -77,9 +76,9 @@ namespace rwlibs { namespace mathematica {
          * @param y [in] a list of y-values.
          * @param options [in] (optional) the options to use (such as PlotRange, AxesLabels etc.)
          */
-        ListPlot (const std::vector< double >& x, const std::vector< double >& y,
-                  const std::list< Mathematica::Expression::Ptr >& options =
-                      std::list< Mathematica::Expression::Ptr > ());
+        ListPlot(const std::vector<double>& x, const std::vector<double>& y,
+                 const std::list<Mathematica::Expression::Ptr>& options =
+                     std::list<Mathematica::Expression::Ptr>());
 
 #if __cplusplus >= 201103L
         /**
@@ -89,46 +88,43 @@ namespace rwlibs { namespace mathematica {
          * @param options [in] the options to use (such as PlotRange, AxesLabels etc.)
          * @note Only available for C++-11
          */
-        template< typename... Option >
-        ListPlot (const std::initializer_list< std::initializer_list< double > >& data,
-                  const Option&... options) :
-            Mathematica::FunctionBase ("ListPlot")
-        {
-            List::Ptr list = rw::core::ownedPtr (new List ());
-            for (const std::initializer_list< double >& val : data) {
-                List::Ptr inner = rw::core::ownedPtr (new List ());
-                for (const double v : val) {
-                    inner->add (v);
-                }
-                list->add (inner);
+        template<typename... Option>
+        ListPlot(const std::initializer_list<std::initializer_list<double>>& data,
+                 const Option&... options) :
+            Mathematica::FunctionBase("ListPlot") {
+            List::Ptr list = rw::core::ownedPtr(new List());
+            for(const std::initializer_list<double>& val : data) {
+                List::Ptr inner = rw::core::ownedPtr(new List());
+                for(const double v : val) { inner->add(v); }
+                list->add(inner);
             }
             _data = list;
-            toList< Expression > (_options, options...);
+            toList<Expression>(_options, options...);
         }
 #endif
 
         //! @brief Destructor.
-        virtual ~ListPlot ();
+        virtual ~ListPlot();
 
         //! @copydoc Mathematica::FunctionBase::getArguments
-        virtual std::list< rw::core::Ptr< const Mathematica::Expression > > getArguments () const;
+        virtual std::list<rw::core::Ptr<const Mathematica::Expression>> getArguments() const;
 
         //! @copydoc Mathematica::Expression::clone
-        virtual Mathematica::Expression::Ptr clone () const;
+        virtual Mathematica::Expression::Ptr clone() const;
 
         /**
          * @brief Set an option.
          * @param name [in] the name of the option.
          * @param value [in] the value to set.
          */
-        void option (const std::string& name, const Mathematica::Expression& value);
+        void option(const std::string& name, const Mathematica::Expression& value);
 
         /**
          * @brief Set the image size option.
          * @param width [in] the width.
          * @param height [in] the height.
          */
-        void setImageSize (int width, int height);
+        void setImageSize(int width, int height);
 
         /**
          * @brief Construct ListPlot from existing expression.
@@ -136,13 +132,13 @@ namespace rwlibs { namespace mathematica {
          * @return the parsed ListPlot expression.
          * @throws rw::core::Exception if parsing fails.
          */
-        static ListPlot fromExpression (const Mathematica::Expression& expression);
+        static ListPlot fromExpression(const Mathematica::Expression& expression);
 
       private:
-        ListPlot ();
+        ListPlot();
 
         Mathematica::Expression::Ptr _data;
-        std::list< Mathematica::Expression::Ptr > _options;
+        std::list<Mathematica::Expression::Ptr> _options;
     };
     //! @}
 }}     // namespace rwlibs::mathematica

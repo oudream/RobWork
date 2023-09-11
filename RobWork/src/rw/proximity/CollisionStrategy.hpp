@@ -27,8 +27,9 @@
 #include <rw/core/Ptr.hpp>
 #include <rw/kinematics/FrameMap.hpp>
 #include <rw/math/Transform3D.hpp>
-#include <rw/proximity/ProximityStrategy.hpp>
 #include <rw/proximity/CollisionResult.hpp>
+#include <rw/proximity/ProximityStrategy.hpp>
+
 #include <string>
 #endif
 
@@ -51,7 +52,7 @@ namespace rw { namespace proximity {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< CollisionStrategy > Ptr;
+        typedef rw::core::Ptr<CollisionStrategy> Ptr;
 
         //! the type of query that is to be performed
         typedef enum { FirstContact, AllContacts } QueryType;
@@ -61,7 +62,7 @@ namespace rw { namespace proximity {
         /**
          * @brief Destroys object
          */
-        virtual ~CollisionStrategy ();
+        virtual ~CollisionStrategy();
 
         /**
          * @brief Checks to see if two given frames @f$ \mathcal{F}_a @f$ and
@@ -74,10 +75,10 @@ namespace rw { namespace proximity {
          * @return true if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * colliding, false otherwise.
          */
-        bool inCollision (const rw::core::Ptr< kinematics::Frame > a,
-                          const math::Transform3D< double >& wTa,
-                          const rw::core::Ptr< kinematics::Frame > b,
-                          const math::Transform3D< double >& wTb, QueryType type = FirstContact);
+        bool inCollision(const rw::core::Ptr<kinematics::Frame> a,
+                         const math::Transform3D<double>& wTa,
+                         const rw::core::Ptr<kinematics::Frame> b,
+                         const math::Transform3D<double>& wTb, QueryType type = FirstContact);
 
         /**
          * @brief Checks to see if two given frames @f$ \mathcal{F}_a @f$ and
@@ -91,11 +92,11 @@ namespace rw { namespace proximity {
          * @return true if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * colliding, false otherwise.
          */
-        bool inCollision (const rw::core::Ptr< kinematics::Frame > a,
-                          const math::Transform3D< double >& wTa,
-                          const rw::core::Ptr< kinematics::Frame > b,
-                          const math::Transform3D< double >& wTb, class ProximityStrategyData& data,
-                          QueryType type = FirstContact);
+        bool inCollision(const rw::core::Ptr<kinematics::Frame> a,
+                         const math::Transform3D<double>& wTa,
+                         const rw::core::Ptr<kinematics::Frame> b,
+                         const math::Transform3D<double>& wTb, class ProximityStrategyData& data,
+                         QueryType type = FirstContact);
 
         /**
          * @brief Checks to see if two proximity models are in collision
@@ -107,9 +108,9 @@ namespace rw { namespace proximity {
          * @return true if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * colliding, false otherwise.
          */
-        bool inCollision (ProximityModel::Ptr a, const math::Transform3D< double >& wTa,
-                          ProximityModel::Ptr b, const math::Transform3D< double >& wTb,
-                          ProximityStrategyData& data);
+        bool inCollision(ProximityModel::Ptr a, const math::Transform3D<double>& wTa,
+                         ProximityModel::Ptr b, const math::Transform3D<double>& wTb,
+                         ProximityStrategyData& data);
 
         /**
          * @brief describes a simple collision contact data structure
@@ -117,11 +118,11 @@ namespace rw { namespace proximity {
         struct Contact
         {
             // point described in object A frame
-            rw::math::Vector3D< double > point;
+            rw::math::Vector3D<double> point;
 
             // surface normal on object B described in object A coordinates
-            rw::math::Vector3D< double > normalA;
-            rw::math::Vector3D< double > normalB;
+            rw::math::Vector3D<double> normalA;
+            rw::math::Vector3D<double> normalB;
         };
 
         /**
@@ -135,8 +136,8 @@ namespace rw { namespace proximity {
          * @param contacts [out] list of contacts that can be calculated from data
          * @param data [in] the result from the collision query
          */
-        virtual void getCollisionContacts (std::vector< CollisionStrategy::Contact >& contacts,
-                                           ProximityStrategyData& data) = 0;
+        virtual void getCollisionContacts(std::vector<CollisionStrategy::Contact>& contacts,
+                                          ProximityStrategyData& data) = 0;
 
         /**
            @brief A collision strategy constructed from a collision tolerance
@@ -146,8 +147,8 @@ namespace rw { namespace proximity {
            be in collision if \b strategy claim they are in collision for a
            tolerance of \b tolerance.
         */
-        static CollisionStrategy::Ptr make (rw::core::Ptr< CollisionToleranceStrategy > strategy,
-                                            double tolerance);
+        static CollisionStrategy::Ptr make(rw::core::Ptr<CollisionToleranceStrategy> strategy,
+                                           double tolerance);
 
         /**
            @brief A collision strategy constructed from a collision tolerance
@@ -157,9 +158,9 @@ namespace rw { namespace proximity {
            be in collision if \b strategy claim they are in collision for a
            tolerance of \b tolerance.
         */
-        static CollisionStrategy::Ptr
-        make (rw::core::Ptr< CollisionToleranceStrategy > strategy,
-              const rw::kinematics::FrameMap< double >& frameToTolerance, double defaultTolerance);
+        static CollisionStrategy::Ptr make(rw::core::Ptr<CollisionToleranceStrategy> strategy,
+                                           const rw::kinematics::FrameMap<double>& frameToTolerance,
+                                           double defaultTolerance);
 
         /**
          * @addtogroup extensionpoints
@@ -179,31 +180,31 @@ namespace rw { namespace proximity {
          *  - FCL - rwlibs::proximitystrategies::ProximityStrategyFCL - Flexible Collision Library
          *  - Yaobi - rwlibs::proximitystrategies::ProximityStrategyYaobi - Yaobi
          */
-        class Factory : public rw::core::ExtensionPoint< CollisionStrategy >
+        class Factory : public rw::core::ExtensionPoint<CollisionStrategy>
         {
           public:
             //! @brief Constructor.
-            Factory ();
+            Factory();
 
             /**
              * @brief Get the available strategies.
              * @return a vector of identifiers for strategies.
              */
-            static std::vector< std::string > getStrategies ();
+            static std::vector<std::string> getStrategies();
 
             /**
              * @brief Check if strategy is available.
              * @param strategy [in] the name of the strategy.
              * @return true if available, false otherwise.
              */
-            static bool hasStrategy (const std::string& strategy);
+            static bool hasStrategy(const std::string& strategy);
 
             /**
              * @brief Create a new strategy.
              * @param strategy [in] the name of the strategy.
              * @return a pointer to a new CollisionStrategy.
              */
-            static CollisionStrategy::Ptr makeStrategy (const std::string& strategy);
+            static CollisionStrategy::Ptr makeStrategy(const std::string& strategy);
         };
 
       protected:
@@ -217,19 +218,19 @@ namespace rw { namespace proximity {
          * @return true if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * colliding, false otherwise.
          */
-        virtual bool doInCollision (ProximityModel::Ptr a, const math::Transform3D< double >& wTa,
-                                    ProximityModel::Ptr b, const math::Transform3D< double >& wTb,
-                                    ProximityStrategyData& data) = 0;
+        virtual bool doInCollision(ProximityModel::Ptr a, const math::Transform3D<double>& wTa,
+                                   ProximityModel::Ptr b, const math::Transform3D<double>& wTb,
+                                   ProximityStrategyData& data) = 0;
 
       private:
-        CollisionStrategy (const CollisionStrategy&);
-        CollisionStrategy& operator= (const CollisionStrategy&);
+        CollisionStrategy(const CollisionStrategy&);
+        CollisionStrategy& operator=(const CollisionStrategy&);
 
       protected:
         /**
          * @brief Creates object
          */
-        CollisionStrategy ();
+        CollisionStrategy();
     };
     /*@}*/
 }}    // namespace rw::proximity

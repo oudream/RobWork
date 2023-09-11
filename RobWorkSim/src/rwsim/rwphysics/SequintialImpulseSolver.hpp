@@ -20,16 +20,16 @@ namespace rwsim { namespace simulator {
     {
       public:
         //! @brief constructor
-        SequintialImpulseSolver (){};
+        SequintialImpulseSolver(){};
 
         //! @brief destructor
-        virtual ~SequintialImpulseSolver (){};
+        virtual ~SequintialImpulseSolver(){};
 
         /**
          * @brief solves the constraints forces of a group of constraints
          * @return
          */
-        bool solveGroup (CEdgeGroup& group, SolverInfo& info, rw::kinematics::State& state);
+        bool solveGroup(CEdgeGroup& group, SolverInfo& info, rw::kinematics::State& state);
     };
 
 }}    // namespace rwsim::simulator

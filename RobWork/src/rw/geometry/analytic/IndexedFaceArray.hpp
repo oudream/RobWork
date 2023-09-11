@@ -24,12 +24,11 @@
  * \copydoc rw::geometry::IndexedFaceArray
  */
 #if !defined(SWIG)
-#include <rw/geometry/analytic/Shell.hpp>
-
 #include <rw/geometry/OBB.hpp>
+#include <rw/geometry/analytic/Shell.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/Vector3D.hpp>
-#endif 
+#endif
 
 namespace rw { namespace geometry {
 
@@ -38,7 +37,7 @@ namespace rw { namespace geometry {
     //! @addtogroup geometry
 #if !defined(SWIG)
     //! @{
-      #endif
+#endif
     /**
      * @brief An indexed face array is a proxy to a Shell, that makes it possible to easily sort
      * faces and take subsets without modifying the underlying Shell.
@@ -47,16 +46,16 @@ namespace rw { namespace geometry {
     {
       public:
         //! @brief Smart pointer type to IndexedFaceArray
-        typedef rw::core::Ptr< IndexedFaceArray > Ptr;
+        typedef rw::core::Ptr<IndexedFaceArray> Ptr;
 
         //! @brief Smart pointer type for a const IndexedFaceArray.
-        typedef rw::core::Ptr< const IndexedFaceArray > CPtr;
+        typedef rw::core::Ptr<const IndexedFaceArray> CPtr;
 
         //! @brief Structure that holds information for each face.
         struct IndexedFace
         {
             //! @brief Constructor.
-            IndexedFace () : originalID (0), lower (0), upper (0), center (0) {}
+            IndexedFace() : originalID(0), lower(0), upper(0), center(0) {}
 
             //! @brief Index of the original face.
             std::size_t originalID;
@@ -73,7 +72,7 @@ namespace rw { namespace geometry {
          * @brief Construct new indexed face array.
          * @param shell [in] the underlying Shell.
          */
-        IndexedFaceArray (rw::core::Ptr< const Shell > shell);
+        IndexedFaceArray(rw::core::Ptr<const Shell> shell);
 
         /**
          * @brief Construct new indexed face array.
@@ -82,42 +81,41 @@ namespace rw { namespace geometry {
          * @param first [in] skip the \b first \b faces.
          * @param last [in] last index of \b faces to include.
          */
-        IndexedFaceArray (rw::core::Ptr< const Shell > shell,
-                          const std::vector< IndexedFace >& faces, std::size_t first,
-                          std::size_t last);
+        IndexedFaceArray(rw::core::Ptr<const Shell> shell, const std::vector<IndexedFace>& faces,
+                         std::size_t first, std::size_t last);
 
         //! @brief Destructor.
-        virtual ~IndexedFaceArray ();
+        virtual ~IndexedFaceArray();
 
         //! @copydoc Shell::getType
-        virtual GeometryType getType () const;
+        virtual GeometryType getType() const;
 
         //! @copydoc Shell::isConvex
-        virtual bool isConvex ();
+        virtual bool isConvex();
 
         //! @copydoc Shell::size
-        virtual std::size_t size () const;
+        virtual std::size_t size() const;
 
         /**
          * @brief Get the indexed face.
          * @param idx [in] index of indexed face.
          * @return the indexed face.
          */
-        IndexedFace getIndexedFace (std::size_t idx) const;
+        IndexedFace getIndexedFace(std::size_t idx) const;
 
         /**
          * @brief Get the indexed face.
          * @param idx [in] index of indexed face.
          * @param dst [out] existing object to copy data into.
          */
-        void getIndexedFace (std::size_t idx, IndexedFace& dst) const;
+        void getIndexedFace(std::size_t idx, IndexedFace& dst) const;
 
         /**
          * @brief Sort the faces according to their extent in the direction along \b axis.
          * @param axis [in] axis to sort.
          * @param t3d [in] transform giving the position and axis directions.
          */
-        void sortAxis (int axis, const rw::math::Transform3D<>& t3d);
+        void sortAxis(int axis, const rw::math::Transform3D<>& t3d);
 
         /**
          * @brief Take out a subrange of faces.
@@ -125,28 +123,28 @@ namespace rw { namespace geometry {
          * @param last [in] last index.
          * @return a new indexed face array.
          */
-        IndexedFaceArray getSubRange (std::size_t first, std::size_t last) const;
+        IndexedFaceArray getSubRange(std::size_t first, std::size_t last) const;
 
         /**
          * @brief Get the original face index.
          * @param idx [in] the indexed face index.
          * @return the original index.
          */
-        std::size_t getGlobalIndex (std::size_t idx) const;
+        std::size_t getGlobalIndex(std::size_t idx) const;
 
       private:
-        virtual rw::core::Ptr< const Face > doGetFace (std::size_t idx) const;
+        virtual rw::core::Ptr<const Face> doGetFace(std::size_t idx) const;
 
         struct CenterSort;
 
-        const rw::core::Ptr< const Shell > _shell;
-        std::vector< IndexedFace > _faces;
+        const rw::core::Ptr<const Shell> _shell;
+        std::vector<IndexedFace> _faces;
         std::size_t _first;
         std::size_t _last;
     };
-    #if !defined(SWIG)
-    //! @}
-    #endif
+#if !defined(SWIG)
+//! @}
+#endif
 }}    // namespace rw::geometry
 
 #endif /* RW_GEOMETRY_ANALYTIC_INDEXEDFACEARRAY_HPP_ */

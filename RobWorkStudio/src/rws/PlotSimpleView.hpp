@@ -22,26 +22,26 @@
 
 namespace rws {
 
-class PlotSimpleView: public PlotView
+class PlotSimpleView : public PlotView
 {
-    public:
-        //! @brief Constructor.
-        PlotSimpleView();
+  public:
+    //! @brief Constructor.
+    PlotSimpleView();
 
-        //! @brief Destructor.
-        virtual ~PlotSimpleView();
+    //! @brief Destructor.
+    virtual ~PlotSimpleView();
 
-        //! @copydoc PlotView::listPlot
-        virtual void listPlot (const std::vector< double >& x, const std::vector< double >& y,
-                       const std::string& title = "", const std::string& xlabel = "",
-                       const std::string& ylabel = "");
+    //! @copydoc PlotView::listPlot
+    virtual void listPlot(const std::vector<double>& x, const std::vector<double>& y,
+                          const std::string& title = "", const std::string& xlabel = "",
+                          const std::string& ylabel = "");
 
-        //! @copydoc PlotView::getWidget
-        virtual QGraphicsView* getWidget(QWidget* parent);
+    //! @copydoc PlotView::getWidget
+    virtual QGraphicsView* getWidget(QWidget* parent);
 
-    private:
-        class PrivateImpl;
-        PrivateImpl* const _impl;
+  private:
+    class PrivateImpl;
+    PrivateImpl* const _impl;
 };
 
 } /* namespace rws */

@@ -118,208 +118,192 @@ namespace rwsim { namespace simulator {
         //! type of broad phase collision detection to use
         typedef enum { Simple, HashTable, QuadTree } SpaceType;
         //! smart pointer type
-        typedef rw::core::Ptr< ODESimulator > Ptr;
+        typedef rw::core::Ptr<ODESimulator> Ptr;
 
         //! empty constructor
-        ODESimulator ();
+        ODESimulator();
 
         /**
          * @brief constructor
          * @param dwc [in] the dynamic workcell for which the simulator should work
          * @param detector [in] the contact detector to use
          */
-        ODESimulator (dynamics::DynamicWorkCell::Ptr dwc,
-                      rw::core::Ptr< rwsim::contacts::ContactDetector > detector = NULL);
+        ODESimulator(dynamics::DynamicWorkCell::Ptr dwc,
+                     rw::core::Ptr<rwsim::contacts::ContactDetector> detector = NULL);
 
         /**
          * @brief destructor
          */
-        virtual ~ODESimulator ();
+        virtual ~ODESimulator();
 
         //! @copydoc PhysicsEngine::load
-        void load (rwsim::dynamics::DynamicWorkCell::Ptr dwc);
+        void load(rwsim::dynamics::DynamicWorkCell::Ptr dwc);
 
         //! @copydoc PhysicsEngine::setContactDetector
-        bool setContactDetector (rw::core::Ptr< rwsim::contacts::ContactDetector > detector);
+        bool setContactDetector(rw::core::Ptr<rwsim::contacts::ContactDetector> detector);
 
         /**
          * @brief sets the ODE step method that should be used for stepping
          */
-        void setStepMethod (StepMethod method) { _stepMethod = method; };
+        void setStepMethod(StepMethod method) { _stepMethod = method; };
 
         // inherited functions
         /**
          * @copydoc rwsim::simulator::PhysicsEngine::step
          */
-        void step (double dt, rw::kinematics::State& state);
+        void step(double dt, rw::kinematics::State& state);
 
         /**
          * @copydoc rwsim::simulator::PhysicsEngine::resetScene
          */
-        void resetScene (rw::kinematics::State& state);
+        void resetScene(rw::kinematics::State& state);
 
         /**
          * @copydoc rwsim::simulator::PhysicsEngine::initPhysics
          */
-        void initPhysics (rw::kinematics::State& state);
+        void initPhysics(rw::kinematics::State& state);
 
         /**
          * @copydoc rwsim::simulator::PhysicsEngine::exitPhysics
          */
-        void exitPhysics ();
+        void exitPhysics();
 
         /**
          * @copydoc rwsim::simulator::PhysicsEngine::getTime
          */
-        double getTime () { return _time; }
+        double getTime() { return _time; }
 
-        void DWCChangedListener (dynamics::DynamicWorkCell::DWCEventType type, boost::any data);
-
-        //! @copydoc rwsim::simulator::PhysicsEngine::setEnabled
-        void setEnabled (dynamics::Body::Ptr body, bool enabled);
+        void DWCChangedListener(dynamics::DynamicWorkCell::DWCEventType type, boost::any data);
 
         //! @copydoc rwsim::simulator::PhysicsEngine::setEnabled
-        void setDynamicsEnabled (dynamics::Body::Ptr body, bool enabled);
+        void setEnabled(dynamics::Body::Ptr body, bool enabled);
+
+        //! @copydoc rwsim::simulator::PhysicsEngine::setEnabled
+        void setDynamicsEnabled(dynamics::Body::Ptr body, bool enabled);
 
         //! @copydoc rwsim::simulator::PhysicsEngine::createDebugRender
-        drawable::SimulatorDebugRender::Ptr createDebugRender ();
+        drawable::SimulatorDebugRender::Ptr createDebugRender();
 
         //! @copydoc rwsim::simulator::PhysicsEngine::getPropertyMap
-        virtual rw::core::PropertyMap& getPropertyMap () { return _propertyMap; };
+        virtual rw::core::PropertyMap& getPropertyMap() { return _propertyMap; };
 
         //! @copydoc rwsim::simulator::PhysicsEngine::emitPropertyChanged
-        void emitPropertyChanged ();
+        void emitPropertyChanged();
 
-        void addController (rwlibs::simulation::SimulatedController::Ptr controller);
+        void addController(rwlibs::simulation::SimulatedController::Ptr controller);
 
-        bool isInitialized () { return _isSimulatorInitialized; };
+        bool isInitialized() { return _isSimulatorInitialized; };
 
-        void addBody (rwsim::dynamics::Body::Ptr body, rw::kinematics::State& state);
+        void addBody(rwsim::dynamics::Body::Ptr body, rw::kinematics::State& state);
 
         /**
          * @brief Add a Constraint between two bodies.
          * @param constraint [in] a pointer to the RobWork constraint.
          */
-        void addConstraint (rwsim::dynamics::Constraint::Ptr constraint);
-        void addDevice (rwsim::dynamics::DynamicDevice::Ptr device, rw::kinematics::State& state);
-        void addSensor (rwlibs::simulation::SimulatedSensor::Ptr sensor,
-                        rw::kinematics::State& state);
+        void addConstraint(rwsim::dynamics::Constraint::Ptr constraint);
+        void addDevice(rwsim::dynamics::DynamicDevice::Ptr device, rw::kinematics::State& state);
+        void addSensor(rwlibs::simulation::SimulatedSensor::Ptr sensor,
+                       rw::kinematics::State& state);
 
-        void removeController (rwlibs::simulation::SimulatedController::Ptr controller);
-        void removeSensor (rwlibs::simulation::SimulatedSensor::Ptr sensor);
+        void removeController(rwlibs::simulation::SimulatedController::Ptr controller);
+        void removeSensor(rwlibs::simulation::SimulatedSensor::Ptr sensor);
 
-        const rw::kinematics::FramePairMap< std::vector< dynamics::ContactManifold > >&
-        getContactManifoldMap ()
-        {
+        const rw::kinematics::FramePairMap<std::vector<dynamics::ContactManifold>>&
+        getContactManifoldMap() {
             return _manifolds;
         }
 
-        std::vector< ODEBody* >& getODEBodies () { return _odeBodies; }
+        std::vector<ODEBody*>& getODEBodies() { return _odeBodies; }
         // std::vector<ODESensor>& getODEBodies(){ return _odeBodies;}
 
-        dynamics::DynamicWorkCell::Ptr getDynamicWorkCell () { return _dwc; };
+        dynamics::DynamicWorkCell::Ptr getDynamicWorkCell() { return _dwc; };
 
-        std::vector< rwlibs::simulation::SimulatedSensor::Ptr > getSensors () { return _sensors; }
+        std::vector<rwlibs::simulation::SimulatedSensor::Ptr> getSensors() { return _sensors; }
 
-        void attach (rwsim::dynamics::Body::Ptr b1, rwsim::dynamics::Body::Ptr b2);
-        void detach (rwsim::dynamics::Body::Ptr b1, rwsim::dynamics::Body::Ptr b2);
+        void attach(rwsim::dynamics::Body::Ptr b1, rwsim::dynamics::Body::Ptr b2);
+        void detach(rwsim::dynamics::Body::Ptr b1, rwsim::dynamics::Body::Ptr b2);
 
         //! @copydoc PhysicsEngine::setSimulatorLog
-        void setSimulatorLog (rw::core::Ptr< rwsim::log::SimulatorLogScope > log);
+        void setSimulatorLog(rw::core::Ptr<rwsim::log::SimulatorLogScope> log);
 
-        void disableCollision (rwsim::dynamics::Body::Ptr b1, rwsim::dynamics::Body::Ptr b2);
+        void disableCollision(rwsim::dynamics::Body::Ptr b1, rwsim::dynamics::Body::Ptr b2);
 
-        void enableCollision (rwsim::dynamics::Body::Ptr b1, rwsim::dynamics::Body::Ptr b2);
+        void enableCollision(rwsim::dynamics::Body::Ptr b1, rwsim::dynamics::Body::Ptr b2);
 
         //! get current gravity
-        rw::math::Vector3D<> getGravity () { return _dwc->getGravity (); }
+        rw::math::Vector3D<> getGravity() { return _dwc->getGravity(); }
 
         // std::map<rw::kinematics::Frame*, dBodyID> _rwFrameToODEBody;
         // std::map< dBodyID, rw::kinematics::Frame*> _rwODEBodyToFrame;
         // std::map<rw::kinematics::Frame*, ODEJoint*> _jointToODEJoint;
         // std::map<rw::kinematics::Frame*, dGeomID> _frameToOdeGeoms;
 
-        dWorldID getODEWorldId () const { return _worldId; }
+        dWorldID getODEWorldId() const { return _worldId; }
 
-        void addODEJoint (ODEJoint* odejoint)
-        {
-            _jointToODEJoint[odejoint->getJoint ()] = odejoint;
-        }
+        void addODEJoint(ODEJoint* odejoint) { _jointToODEJoint[odejoint->getJoint()] = odejoint; }
 
-        ODEJoint* getODEJoint (rw::models::Joint* joint)
-        {
-            if (_jointToODEJoint.find (joint) == _jointToODEJoint.end ()) {
-                return NULL;
-            }
+        ODEJoint* getODEJoint(rw::models::Joint* joint) {
+            if(_jointToODEJoint.find(joint) == _jointToODEJoint.end()) { return NULL; }
             return _jointToODEJoint[joint];
         }
 
-        void addODEBody (ODEBody* odebody);
-        void addODEBody (dBodyID body);
-        void addODEJoint (dJointID joint);
+        void addODEBody(ODEBody* odebody);
+        void addODEBody(dBodyID body);
+        void addODEJoint(dJointID joint);
 
-        ODEBody* getODEBody (rw::kinematics::Frame* frame)
-        {
-            if (_rwFrameToODEBody.find (frame) == _rwFrameToODEBody.end ()) {
-                return NULL;
-            }
+        ODEBody* getODEBody(rw::kinematics::Frame* frame) {
+            if(_rwFrameToODEBody.find(frame) == _rwFrameToODEBody.end()) { return NULL; }
             return _rwFrameToODEBody[frame];
         }
 
-        dBodyID getODEBodyId (rw::kinematics::Frame::Ptr frame)
-        {
-            if (_rwFrameToODEBody.find (frame.get()) == _rwFrameToODEBody.end ()) {
-                return NULL;
-            }
-            return _rwFrameToODEBody[frame.get()]->getBodyID ();
+        dBodyID getODEBodyId(rw::kinematics::Frame::Ptr frame) {
+            if(_rwFrameToODEBody.find(frame.get()) == _rwFrameToODEBody.end()) { return NULL; }
+            return _rwFrameToODEBody[frame.get()]->getBodyID();
         }
 
-        dBodyID getODEBodyId (rwsim::dynamics::Body* body)
-        {
-            return getODEBodyId (body->getBodyFrame ());
+        dBodyID getODEBodyId(rwsim::dynamics::Body* body) {
+            return getODEBodyId(body->getBodyFrame());
         }
 
-        std::vector< ODEDevice* > getODEDevices () { return _odeDevices; }
+        std::vector<ODEDevice*> getODEDevices() { return _odeDevices; }
 
-        void addEmulatedContact (const rw::math::Vector3D<>& pos, const rw::math::Vector3D<>& force,
-                                 const rw::math::Vector3D<>& normal, dynamics::Body* b);
+        void addEmulatedContact(const rw::math::Vector3D<>& pos, const rw::math::Vector3D<>& force,
+                                const rw::math::Vector3D<>& normal, dynamics::Body* b);
 
       protected:
         // ODEBody* createKinematicBody(KinematicBody* kbody, rw::kinematics::State &state, dSpaceID
         // spaceid);
-        void detectCollisionsContactDetector (const rw::kinematics::State& state);
-        bool detectCollisionsRW (rw::kinematics::State& state, bool onlyTestPenetration = false);
+        void detectCollisionsContactDetector(const rw::kinematics::State& state);
+        bool detectCollisionsRW(rw::kinematics::State& state, bool onlyTestPenetration = false);
 
       public:
         /// Enables logging of the contact points
-        void setContactLoggingEnabled (bool enable) { _logContactingBodies = enable; }
+        void setContactLoggingEnabled(bool enable) { _logContactingBodies = enable; }
 
         /// Returns a map of contacting body frame names and their contact points
-        boost::unordered_map< std::pair< std::string, std::string >, bool > getContactingBodies ()
-        {
+        boost::unordered_map<std::pair<std::string, std::string>, bool> getContactingBodies() {
             return _contactingBodies;
         }
 
-        void handleCollisionBetween (dGeomID o0, dGeomID o1);
+        void handleCollisionBetween(dGeomID o0, dGeomID o1);
 
-        const std::vector< ODEUtil::TriGeomData* >& getTriMeshs () { return _triGeomDatas; }
+        const std::vector<ODEUtil::TriGeomData*>& getTriMeshs() { return _triGeomDatas; }
 
-        std::vector< dynamics::ContactPoint > getContacts ()
-        {
-            std::vector< dynamics::ContactPoint > contacts;
+        std::vector<dynamics::ContactPoint> getContacts() {
+            std::vector<dynamics::ContactPoint> contacts;
             {
-                boost::mutex::scoped_lock lock (_contactMutex);
+                boost::mutex::scoped_lock lock(_contactMutex);
                 contacts = _allcontactsTmp;
             }
 
             return contacts;
         }
 
-        int getContactCnt () { return _nrOfCon; }
+        int getContactCnt() { return _nrOfCon; }
 
         struct ODEStateStuff
         {
-            ODEStateStuff () : body (NULL) {}
+            ODEStateStuff() : body(NULL) {}
             dBodyID body;
             dReal pos[4];
             dReal rot[4];
@@ -357,96 +341,94 @@ ODEBody* createFixedBody(dynamics::Body* bframe,
 
         //
 
-        double getMaxSeperatingDistance ();
+        double getMaxSeperatingDistance();
 
-        dSpaceID getODESpace () { return _spaceId; };
+        dSpaceID getODESpace() { return _spaceId; };
 
-        void addContacts (std::vector< dContact >& contacts, size_t nr_con, ODEBody* dataB1,
-                          ODEBody* dataB2);
+        void addContacts(std::vector<dContact>& contacts, size_t nr_con, ODEBody* dataB1,
+                         ODEBody* dataB2);
 
-        std::vector< ODETactileSensor* > getODESensors (dBodyID odebody)
-        {
+        std::vector<ODETactileSensor*> getODESensors(dBodyID odebody) {
             return _odeBodyToSensor[odebody];
         }
 
-        dynamics::MaterialDataMap& getMaterialMap () { return _materialMap; }
+        dynamics::MaterialDataMap& getMaterialMap() { return _materialMap; }
 
-        dynamics::ContactDataMap& getContactMap () { return _contactMap; }
+        dynamics::ContactDataMap& getContactMap() { return _contactMap; }
 
       private:
-        void saveODEState ();
-        void restoreODEState ();
-        void readProperties ();
+        void saveODEState();
+        void restoreODEState();
+        void readProperties();
         // return the contact normal
         // rw::math::Vector3D<> addContacts(int numc, dBodyID b1, dBodyID b2, dGeomID o1, dGeomID
         // o2, rw::kinematics::Frame *f1, rw::kinematics::Frame *f2);
-        rw::math::Vector3D<> addContacts (int numc, ODEBody* b1, ODEBody* b2,
-                                          rw::kinematics::Frame* f1, rw::kinematics::Frame* f2);
+        rw::math::Vector3D<> addContacts(int numc, ODEBody* b1, ODEBody* b2,
+                                         rw::kinematics::Frame* f1, rw::kinematics::Frame* f2);
 
       private:
         dynamics::DynamicWorkCell::Ptr _dwc;
         double _time;
-        rw::core::Ptr< ODEDebugRender > _render;
-        std::vector< dContact > _contacts;
-        std::vector< dContact > _filteredContacts;
-        std::vector< dynamics::ContactPoint > _rwcontacts;
-        std::vector< dynamics::ContactPoint > _rwClusteredContacts;
-        std::vector< int > _srcIdx, _dstIdx;
+        rw::core::Ptr<ODEDebugRender> _render;
+        std::vector<dContact> _contacts;
+        std::vector<dContact> _filteredContacts;
+        std::vector<dynamics::ContactPoint> _rwcontacts;
+        std::vector<dynamics::ContactPoint> _rwClusteredContacts;
+        std::vector<int> _srcIdx, _dstIdx;
         int _nrOfCon;
-        rw::kinematics::FrameMap< int > _enabledMap;
+        rw::kinematics::FrameMap<int> _enabledMap;
         dynamics::MaterialDataMap _materialMap;
         dynamics::ContactDataMap _contactMap;
         rwlibs::proximitystrategies::ProximityStrategyPQP* _narrowStrategy;
-        std::vector< dJointFeedback > _sensorFeedbacks;
-        std::vector< dJointFeedback > _sensorFeedbacksGlobal;
+        std::vector<dJointFeedback> _sensorFeedbacks;
+        std::vector<dJointFeedback> _sensorFeedbacksGlobal;
 
         int _nextFeedbackIdx, _nextFeedbackGlobalIdx;
-        rw::kinematics::FramePairMap< int > _excludeMap;
+        rw::kinematics::FramePairMap<int> _excludeMap;
 
         // ODE specific variables
         dWorldID _worldId;
         dSpaceID _spaceId;
         dJointGroupID _contactGroupId;
         // std::vector<dBodyID> _bodies;
-        std::vector< dBodyID > _allbodies;
-        std::vector< dJointID > _alljoints;
+        std::vector<dBodyID> _allbodies;
+        std::vector<dJointID> _alljoints;
 
         // RWODE bodies
-        std::vector< ODEBody* > _odeBodies;
+        std::vector<ODEBody*> _odeBodies;
 
         // RW rigid bodies
-        std::vector< dynamics::RigidBody* > _rwBodies;
+        std::vector<dynamics::RigidBody*> _rwBodies;
         // FrameMap<dBodyID> _rwFrameToODEBody;
 
-        std::map< const rw::kinematics::Frame*, ODEBody* > _rwFrameToODEBody;
-        std::map< ODEBody*, rw::kinematics::Frame* > _rwODEBodyToFrame;
-        std::map< rw::kinematics::Frame*, ODEJoint* > _jointToODEJoint;
-        std::map< rw::kinematics::Frame*, dGeomID > _frameToOdeGeoms;
+        std::map<const rw::kinematics::Frame*, ODEBody*> _rwFrameToODEBody;
+        std::map<ODEBody*, rw::kinematics::Frame*> _rwODEBodyToFrame;
+        std::map<rw::kinematics::Frame*, ODEJoint*> _jointToODEJoint;
+        std::map<rw::kinematics::Frame*, dGeomID> _frameToOdeGeoms;
 
-        std::vector< ODEJoint* > _allODEJoints;
+        std::vector<ODEJoint*> _allODEJoints;
         double _maxPenetration;
 
-        std::map< rwsim::dynamics::Constraint::Ptr, ODEConstraint* > _constraintToODEConstraint;
-        std::vector< ODEConstraint* > _odeConstraints;
+        std::map<rwsim::dynamics::Constraint::Ptr, ODEConstraint*> _constraintToODEConstraint;
+        std::vector<ODEConstraint*> _odeConstraints;
 
-        std::map< dBodyID, std::vector< ODETactileSensor* > > _odeBodyToSensor;
-        std::map< rwlibs::simulation::SimulatedSensor::Ptr, ODETactileSensor* >
-            _rwsensorToOdesensor;
-        std::vector< ODETactileSensor* > _odeSensors;
+        std::map<dBodyID, std::vector<ODETactileSensor*>> _odeBodyToSensor;
+        std::map<rwlibs::simulation::SimulatedSensor::Ptr, ODETactileSensor*> _rwsensorToOdesensor;
+        std::vector<ODETactileSensor*> _odeSensors;
 
-        std::vector< ODEDevice* > _odeDevices;
+        std::vector<ODEDevice*> _odeDevices;
 
         StepMethod _stepMethod;
         rw::kinematics::State* _stepState;
 
-        std::vector< dynamics::ContactPoint > _allcontacts, _allcontactsTmp;
+        std::vector<dynamics::ContactPoint> _allcontacts, _allcontactsTmp;
         // std::vector<std::vector<ContactPoint> > _rwClusteredContacts;
 
-        rw::kinematics::FramePairMap< std::vector< dynamics::ContactManifold > > _manifolds;
+        rw::kinematics::FramePairMap<std::vector<dynamics::ContactManifold>> _manifolds;
 
-        std::vector< ODEStateStuff > _odeStateStuff;
+        std::vector<ODEStateStuff> _odeStateStuff;
 
-        std::vector< ODEUtil::TriGeomData* > _triGeomDatas;
+        std::vector<ODEUtil::TriGeomData*> _triGeomDatas;
 
         rw::core::PropertyMap _propertyMap;
 
@@ -467,21 +449,21 @@ ODEBody* createFixedBody(dynamics::Body* bframe,
 
         bool _useRobWorkContactGeneration;
         bool _prevStepEndedInCollision;
-        std::vector< rwlibs::simulation::SimulatedController::Ptr > _controllers;
-        std::vector< rwlibs::simulation::SimulatedSensor::Ptr > _sensors;
+        std::vector<rwlibs::simulation::SimulatedController::Ptr> _controllers;
+        std::vector<rwlibs::simulation::SimulatedSensor::Ptr> _sensors;
 
         bool _isSimulatorInitialized;
 
-        rw::core::Ptr< rw::proximity::BasicFilterStrategy > _bpstrategy;
-        rw::kinematics::FrameMap< rw::core::Ptr< rw::proximity::ProximityModel > > _frameToModels;
+        rw::core::Ptr<rw::proximity::BasicFilterStrategy> _bpstrategy;
+        rw::kinematics::FrameMap<rw::core::Ptr<rw::proximity::ProximityModel>> _frameToModels;
         boost::mutex _contactMutex;
 
-        rw::core::Ptr< rwsim::contacts::ContactDetector > _detector;
+        rw::core::Ptr<rwsim::contacts::ContactDetector> _detector;
 
         bool _logContactingBodies;
-        std::vector< boost::tuple< std::string, std::string, dynamics::ContactPoint > >
-            _contactPoints, _contactPointsTmp;
-        boost::unordered_map< std::pair< std::string, std::string >, bool > _contactingBodies,
+        std::vector<boost::tuple<std::string, std::string, dynamics::ContactPoint>> _contactPoints,
+            _contactPointsTmp;
+        boost::unordered_map<std::pair<std::string, std::string>, bool> _contactingBodies,
             _contactingBodiesTmp;
 
         struct CutState
@@ -489,20 +471,19 @@ ODEBody* createFixedBody(dynamics::Body* bframe,
 
         struct BodyBodyContact
         {
-            BodyBodyContact () : firstContact (true) {}
-            BodyBodyContact (rw::math::Transform3D<> tta, rw::math::Transform3D<> ttb) :
-                aT (tta), bT (ttb), firstContact (true)
-            {}
+            BodyBodyContact() : firstContact(true) {}
+            BodyBodyContact(rw::math::Transform3D<> tta, rw::math::Transform3D<> ttb) :
+                aT(tta), bT(ttb), firstContact(true) {}
             rw::math::Transform3D<> aT, bT;
             bool firstContact;
             // defined in a
             rw::math::Vector3D<> cnormal;
         };
 
-        std::map< std::pair< rw::kinematics::Frame*, rw::kinematics::Frame* >, BodyBodyContact >
+        std::map<std::pair<rw::kinematics::Frame*, rw::kinematics::Frame*>, BodyBodyContact>
             _lastNonCollidingTransform;
 
-        std::map< std::pair< rw::kinematics::Frame*, rw::kinematics::Frame* >, dJointID >
+        std::map<std::pair<rw::kinematics::Frame*, rw::kinematics::Frame*>, dJointID>
             _attachConstraints;
 
         class ODELogUtil* _log;

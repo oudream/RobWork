@@ -10,41 +10,42 @@
 
 #include "Experiments.hpp"
 
-#include <boost/thread/mutex.hpp>
-
 #include <rw/math/Vector3D.hpp>
 #include <rwlibs/task/GraspTask.hpp>
 
-class GraspDB {
-public:
-	typedef rw::core::Ptr<GraspDB> Ptr;
+#include <boost/thread/mutex.hpp>
 
-	GraspDB();
-	GraspDB(const rwlibs::task::GraspTask::Ptr gtask);
-	virtual ~GraspDB();
-	void addTasks(const rwlibs::task::GraspTask::Ptr gtask);
+class GraspDB
+{
+  public:
+    typedef rw::core::Ptr<GraspDB> Ptr;
 
-	void addResult(const Experiment result);
-	void addGeneralResult(const Experiment result);
-	std::vector<unsigned int> getSum();
-	const std::vector<rwlibs::task::GraspSubTask>& getTasks() const;
-	void saveToFile(const std::string &dbFilename, const std::string &expPrefix);
-	void loadFromFile(const std::string &dbFilename);
-	double getMaxQuality() const;
+    GraspDB();
+    GraspDB(const rwlibs::task::GraspTask::Ptr gtask);
+    virtual ~GraspDB();
+    void addTasks(const rwlibs::task::GraspTask::Ptr gtask);
 
-	static rwlibs::task::GraspTask::Ptr loadSymmetricTasks(const std::string &filename);
+    void addResult(const Experiment result);
+    void addGeneralResult(const Experiment result);
+    std::vector<unsigned int> getSum();
+    const std::vector<rwlibs::task::GraspSubTask>& getTasks() const;
+    void saveToFile(const std::string& dbFilename, const std::string& expPrefix);
+    void loadFromFile(const std::string& dbFilename);
+    double getMaxQuality() const;
 
-private:
-	static rwlibs::task::GraspSubTask switchFingers(const rwlibs::task::GraspSubTask &task);
+    static rwlibs::task::GraspTask::Ptr loadSymmetricTasks(const std::string& filename);
 
-	std::vector<rwlibs::task::GraspSubTask> _tasks;
-	double _maxQuality;
+  private:
+    static rwlibs::task::GraspSubTask switchFingers(const rwlibs::task::GraspSubTask& task);
 
-	boost::mutex _mutex;
-	Experiments* _experiments;
-	std::vector<unsigned int> _counter;
-	std::vector<std::vector<unsigned int> > _result;
-	std::vector<unsigned int> _generalResult;
+    std::vector<rwlibs::task::GraspSubTask> _tasks;
+    double _maxQuality;
+
+    boost::mutex _mutex;
+    Experiments* _experiments;
+    std::vector<unsigned int> _counter;
+    std::vector<std::vector<unsigned int>> _result;
+    std::vector<unsigned int> _generalResult;
 };
 
 #endif /* GRASPDB_H_ */

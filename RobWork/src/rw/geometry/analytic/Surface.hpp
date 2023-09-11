@@ -48,15 +48,15 @@ namespace rw { namespace geometry {
     {
       public:
         //! @brief Smart pointer type for Surface.
-        typedef rw::core::Ptr< Surface > Ptr;
+        typedef rw::core::Ptr<Surface> Ptr;
         //! @brief Smart pointer type for const Surface.
-        typedef rw::core::Ptr< const Surface > CPtr;
+        typedef rw::core::Ptr<const Surface> CPtr;
 
         //! @brief Constructor.
-        Surface () {}
+        Surface() {}
 
         //! @brief Destructor.
-        virtual ~Surface () {}
+        virtual ~Surface() {}
 
 #if !defined(SWIGJAVA)
         /**
@@ -67,10 +67,9 @@ namespace rw { namespace geometry {
          * This will preserve some nice properties for certain types of surfaces.
          */
 
-         #endif 
-        inline Surface::Ptr transform (const rw::math::Transform3D<double>& T) const
-        {
-            return doTransformSurface (T);
+#endif
+        inline Surface::Ptr transform(const rw::math::Transform3D<double>& T) const {
+            return doTransformSurface(T);
         }
 
         /**
@@ -83,9 +82,8 @@ namespace rw { namespace geometry {
          * @param P [in] the translation vector to the new surface.
          * @return pointer to a new surface.
          */
-        inline Surface::Ptr transform (const rw::math::Vector3D<double>& P) const
-        {
-            return doTransformSurface (P);
+        inline Surface::Ptr transform(const rw::math::Vector3D<double>& P) const {
+            return doTransformSurface(P);
         }
 
         /**
@@ -93,13 +91,17 @@ namespace rw { namespace geometry {
          * @param factor [in] the factor to scale with.
          * @return a new scaled surface.
          */
-        inline Surface::Ptr scale (double factor) const { return doScaleSurface (factor); }
+        inline Surface::Ptr scale(double factor) const {
+            return doScaleSurface(factor);
+        }
 
         /**
          * @brief Clone the surface.
          * @return pointer to copy of surface.
          */
-        inline Surface::Ptr clone () const { return doCloneSurface (); }
+        inline Surface::Ptr clone() const {
+            return doCloneSurface();
+        }
 
         /**
          * @brief Find the extent of the surface along a specific direction.
@@ -117,8 +119,8 @@ namespace rw { namespace geometry {
          * @note This function does not take trimming conditions into account.
          * For trimmed surfaces, create a Face with the boundary curves and use Face::extremums.
          */
-        virtual std::pair< double, double >
-        extremums (const rw::math::Vector3D<double>& direction) const = 0;
+        virtual std::pair<double, double>
+        extremums(const rw::math::Vector3D<double>& direction) const = 0;
 
         /**
          * @brief Discretize the surface into a triangle mesh representation.
@@ -133,9 +135,9 @@ namespace rw { namespace geometry {
          * border of the patch to triangulate.
          * @return a new TriMesh.
          */
-        virtual rw::core::Ptr< TriMesh >
-        getTriMesh (const std::vector< rw::math::Vector3D<double> >& border =
-                        std::vector< rw::math::Vector3D<double> > ()) const = 0;
+        virtual rw::core::Ptr<TriMesh>
+        getTriMesh(const std::vector<rw::math::Vector3D<double>>& border =
+                       std::vector<rw::math::Vector3D<double>>()) const = 0;
 
         /**
          * @brief Set the resolution used for discretization in the getTriMesh function.
@@ -144,7 +146,7 @@ namespace rw { namespace geometry {
          *
          * @param resolution [in] the resolution parameter.
          */
-        virtual void setDiscretizationResolution (double resolution) = 0;
+        virtual void setDiscretizationResolution(double resolution) = 0;
 
         /**
          * @brief Check if this surface is identical to other \b surface .
@@ -153,13 +155,13 @@ namespace rw { namespace geometry {
          * identical.
          * @return true if identical, false otherwise.
          */
-        virtual bool equals (const Surface& surface, double threshold) const = 0;
+        virtual bool equals(const Surface& surface, double threshold) const = 0;
 
       private:
-        virtual Surface::Ptr doTransformSurface (const rw::math::Transform3D<>& T) const = 0;
-        virtual Surface::Ptr doTransformSurface (const rw::math::Vector3D<double>& P) const    = 0;
-        virtual Surface::Ptr doScaleSurface (double factor) const                        = 0;
-        virtual Surface::Ptr doCloneSurface () const                                     = 0;
+        virtual Surface::Ptr doTransformSurface(const rw::math::Transform3D<>& T) const    = 0;
+        virtual Surface::Ptr doTransformSurface(const rw::math::Vector3D<double>& P) const = 0;
+        virtual Surface::Ptr doScaleSurface(double factor) const                           = 0;
+        virtual Surface::Ptr doCloneSurface() const                                        = 0;
     };
 #if !defined(SWIG)
 //! @}

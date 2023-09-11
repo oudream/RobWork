@@ -37,13 +37,13 @@ namespace rw { namespace trajectory {
      *
      *
      */
-    template< class T = rw::math::Q > class BlendedTrajectory : public rw::trajectory::Trajectory< T >
+    template<class T = rw::math::Q> class BlendedTrajectory : public rw::trajectory::Trajectory<T>
     {
       public:
         /**
          * @brief Default constructor creating an empty trajectory
          */
-        BlendedTrajectory (){};
+        BlendedTrajectory(){};
 
         /**
          * @brief Constrcuts a trajectory.
@@ -61,88 +61,86 @@ namespace rw { namespace trajectory {
          * @param ascaleIn [in] The acceleration scale [0;1]
          * @param verbose [in] True to print our debug text
          */
-        BlendedTrajectory (rw::core::Ptr< rw::models::Device > deviceIn,
-                           const rw::trajectory::QPath& pathIn, const std::vector< double >& betaIn,
-                           const double vscaleIn, const double ascaleIn,
-                           const bool verbose = false);
+        BlendedTrajectory(rw::core::Ptr<rw::models::Device> deviceIn,
+                          const rw::trajectory::QPath& pathIn, const std::vector<double>& betaIn,
+                          const double vscaleIn, const double ascaleIn, const bool verbose = false);
 
         /**
          * @brief Destructor
          */
-        virtual ~BlendedTrajectory ();
+        virtual ~BlendedTrajectory();
 
         //! @copydoc rw::trajectory::Trajectory::x(double) const
-        T x (double t) const;
+        T x(double t) const;
 
         //! @copydoc rw::trajectory::Trajectory::dx(double) const
-        T dx (double t) const;
+        T dx(double t) const;
 
         //! @copydoc rw::trajectory::Trajectory::ddx(double) const
-        T ddx (double t) const;
+        T ddx(double t) const;
 
         //! @copydoc rw::trajectory::Trajectory::duration() const
-        double duration () const { return endTime (); }
+        double duration() const { return endTime(); }
 
         //! @copydoc rw::trajectory::Trajectory::startTime() const
-        double startTime () const { return 0.0; }
+        double startTime() const { return 0.0; }
 
         //! @copydoc rw::trajectory::Trajectory::endTime() const
-        double endTime () const { return t_total; }
+        double endTime() const { return t_total; }
 
         //! @copydoc rw::trajectory::Trajectory<T>::getIterator(double) const
-        virtual typename rw::trajectory::TrajectoryIterator< T >::Ptr getIterator (double dt) const
-        {
-            return rw::core::ownedPtr (
-                new BlendedTrajectoryIterator< T > (const_cast< BlendedTrajectory* > (this), dt));
+        virtual typename rw::trajectory::TrajectoryIterator<T>::Ptr getIterator(double dt) const {
+            return rw::core::ownedPtr(
+                new BlendedTrajectoryIterator<T>(const_cast<BlendedTrajectory*>(this), dt));
         }
 
       private:
         // Algorithm functions
-        bool init ();
-        bool checkPath ();
-        void updateLimits ();
-        void updateWI ();
-        void updateWF ();
-        void updateWFnext ();
-        void updateWInext ();
-        void updatedwSMax ();
-        void updateddwSMax ();
-        void updateddwSMin ();
-        T findQext (T& qI, T& q, T& qF);
-        double findDWI (T& deltaq, T& qI, T& qext, double wI, double wFprev, double dwFprev,
-                        double dwSMax, double ddwSMax, T& aBMax);
-        double findDWF (T& deltaq, T& qI, T& qext, T& qextnext, T& qF, T& qInext, T& deltaqnext,
-                        T& deltaqnextnext, T& dqI, T& dqMax, T& aBMin, T& aBMax, T& aBMaxNext);
-        double tau (double x, double uI, double uF, double a);
-        double findDWSReached (double wI, double dwI, double wFprev, double dwFprev, double dwSMax,
-                               double ddwSMax, double ddwSMin);
-        double findTSdecc (double dwI, double dwSreached, double ddwSMin);
-        double findTS (double wI, double dwI, double wFprev, double dwFprev, double ddwSMax,
-                       double ddwSMin, double dwSreached, double TSdecc);
-        double findTB (T& qI, T& qF, T& qext, T& dqI, T& dqF, T& aBMax, T& aBMin, T& deltaq,
-                       T& deltaqnext);
+        bool init();
+        bool checkPath();
+        void updateLimits();
+        void updateWI();
+        void updateWF();
+        void updateWFnext();
+        void updateWInext();
+        void updatedwSMax();
+        void updateddwSMax();
+        void updateddwSMin();
+        T findQext(T& qI, T& q, T& qF);
+        double findDWI(T& deltaq, T& qI, T& qext, double wI, double wFprev, double dwFprev,
+                       double dwSMax, double ddwSMax, T& aBMax);
+        double findDWF(T& deltaq, T& qI, T& qext, T& qextnext, T& qF, T& qInext, T& deltaqnext,
+                       T& deltaqnextnext, T& dqI, T& dqMax, T& aBMin, T& aBMax, T& aBMaxNext);
+        double tau(double x, double uI, double uF, double a);
+        double findDWSReached(double wI, double dwI, double wFprev, double dwFprev, double dwSMax,
+                              double ddwSMax, double ddwSMin);
+        double findTSdecc(double dwI, double dwSreached, double ddwSMin);
+        double findTS(double wI, double dwI, double wFprev, double dwFprev, double ddwSMax,
+                      double ddwSMin, double dwSreached, double TSdecc);
+        double findTB(T& qI, T& qF, T& qext, T& dqI, T& dqF, T& aBMax, T& aBMin, T& deltaq,
+                      T& deltaqnext);
 
-        static double phimin (double v, double a, double tau, double t);
-        static double dphimin (double v, double a, double tau, double t);
-        static double ddphimin (double v, double a, double tau, double t);
-        static double phimax (double v, double a, double tau, double t);
-        static double dphimax (double v, double a, double tau, double t);
-        static double ddphimax (double v, double a, double tau, double t);
-        static double phistarmin (double v0, double v, double a, double tau, double t);
-        static double dphistarmin (double v0, double v, double a, double tau, double t);
-        static double ddphistarmin (double v0, double v, double a, double tau, double t);
-        static double phistarmax (double v0, double v, double a, double tau, double t);
-        static double dphistarmax (double v0, double v, double a, double tau, double t);
-        static double ddphistarmax (double v0, double v, double a, double tau, double t);
+        static double phimin(double v, double a, double tau, double t);
+        static double dphimin(double v, double a, double tau, double t);
+        static double ddphimin(double v, double a, double tau, double t);
+        static double phimax(double v, double a, double tau, double t);
+        static double dphimax(double v, double a, double tau, double t);
+        static double ddphimax(double v, double a, double tau, double t);
+        static double phistarmin(double v0, double v, double a, double tau, double t);
+        static double dphistarmin(double v0, double v, double a, double tau, double t);
+        static double ddphistarmin(double v0, double v, double a, double tau, double t);
+        static double phistarmax(double v0, double v, double a, double tau, double t);
+        static double dphistarmax(double v0, double v, double a, double tau, double t);
+        static double ddphistarmax(double v0, double v, double a, double tau, double t);
 
         // Class variables
         bool verbose;
-        rw::core::Ptr< rw::models::Device > device;    // Device
-        unsigned int K;                                // DOF
-        rw::trajectory::QPath path;                    // Path
-        unsigned int Npath;                            // Path size
-        std::vector< double > betas;                   // Blend parameters
-        double beta, betaNext;                         // Current and next blend parameter
+        rw::core::Ptr<rw::models::Device> device;    // Device
+        unsigned int K;                              // DOF
+        rw::trajectory::QPath path;                  // Path
+        unsigned int Npath;                          // Path size
+        std::vector<double> betas;                   // Blend parameters
+        double beta, betaNext;                       // Current and next blend parameter
         double vscale, ascale;               // Scale factors of maximum velocity and acceleration
         double t, t_total;                   // Current time and total trajectory time
         unsigned int confNum;                // Current configuration index in path
@@ -153,7 +151,7 @@ namespace rw { namespace trajectory {
         T aSMax, aSMin, aSnextMin;                   // Current linear segment acceleration limits
         T aBMax, aBMin, aBMaxNext;                   // Current blend segment acceleration limits
         double TI, TF, TS, TB, TSdecc, TFprev;       // Time instances and intervals
-        std::vector< double > Tmid, deltaTmid;       // Blend midpoint
+        std::vector<double> Tmid, deltaTmid;         // Blend midpoint
         T aI, aF, a, dqav, delta, dqIF, vmin, dqI, dqF;    // Various velocities and accelerations
         T qFprev, qprev, q, qnext, qnextnext, qext, qextnext, deltaq, deltaqnext, deltaqnextnext,
             qI, qInext, qF, qFnext;    // Configurations
@@ -165,60 +163,54 @@ namespace rw { namespace trajectory {
         {
             double _TFprev, _TS, _TSdecc, _qFprevk, _dwFprev, _deltaqk, _dwSreached, _ddwSMax,
                 _ddwSMin;
-            funcLinear () {}
-            funcLinear (double TFprev, double TS, double TSdecc, double qFprevk, double dwFprev,
-                        double deltaqk, double dwSreached, double ddwSMax, double ddwSMin) :
-                _TFprev (TFprev),
-                _TS (TS), _TSdecc (TSdecc), _qFprevk (qFprevk), _dwFprev (dwFprev),
-                _deltaqk (deltaqk), _dwSreached (dwSreached), _ddwSMax (ddwSMax), _ddwSMin (ddwSMin)
-            {}
-            double x (double t) const
-            {
-                if (t <= _TFprev + _TS - _TSdecc) {
-                    return _qFprevk + phistarmin (_dwFprev * _deltaqk,
-                                                  _dwSreached * _deltaqk,
-                                                  _ddwSMax * _deltaqk,
-                                                  _TS - _TSdecc,
-                                                  t - _TFprev);
+            funcLinear() {}
+            funcLinear(double TFprev, double TS, double TSdecc, double qFprevk, double dwFprev,
+                       double deltaqk, double dwSreached, double ddwSMax, double ddwSMin) :
+                _TFprev(TFprev),
+                _TS(TS), _TSdecc(TSdecc), _qFprevk(qFprevk), _dwFprev(dwFprev), _deltaqk(deltaqk),
+                _dwSreached(dwSreached), _ddwSMax(ddwSMax), _ddwSMin(ddwSMin) {}
+            double x(double t) const {
+                if(t <= _TFprev + _TS - _TSdecc) {
+                    return _qFprevk + phistarmin(_dwFprev * _deltaqk,
+                                                 _dwSreached * _deltaqk,
+                                                 _ddwSMax * _deltaqk,
+                                                 _TS - _TSdecc,
+                                                 t - _TFprev);
                 }
                 else {
                     return _qFprevk +
-                           phistarmin (_dwFprev * _deltaqk,
-                                       _dwSreached * _deltaqk,
-                                       _ddwSMax * _deltaqk,
-                                       _TS - _TSdecc,
-                                       _TS - _TSdecc) +
+                           phistarmin(_dwFprev * _deltaqk,
+                                      _dwSreached * _deltaqk,
+                                      _ddwSMax * _deltaqk,
+                                      _TS - _TSdecc,
+                                      _TS - _TSdecc) +
                            _dwSreached * _deltaqk * (t - _TFprev - (_TS - _TSdecc)) +
                            0.5 * _ddwSMin * _deltaqk * (t - _TFprev - (_TS - _TSdecc)) *
                                (t - _TFprev - (_TS - _TSdecc));
                 }
             }
-            double dx (double t) const
-            {
-                if (t <= _TFprev + _TS - _TSdecc) {
-                    return dphistarmin (_dwFprev * _deltaqk,
-                                        _dwSreached * _deltaqk,
-                                        _ddwSMax * _deltaqk,
-                                        _TS - _TSdecc,
-                                        t - _TFprev);
+            double dx(double t) const {
+                if(t <= _TFprev + _TS - _TSdecc) {
+                    return dphistarmin(_dwFprev * _deltaqk,
+                                       _dwSreached * _deltaqk,
+                                       _ddwSMax * _deltaqk,
+                                       _TS - _TSdecc,
+                                       t - _TFprev);
                 }
                 else {
                     return _dwSreached * _deltaqk +
                            _ddwSMin * _deltaqk * (t - _TFprev - _TS + _TSdecc);
                 }
             }
-            double ddx (double t) const
-            {
-                if (t <= _TFprev + _TS - _TSdecc) {
-                    return ddphistarmin (_dwFprev * _deltaqk,
-                                         _dwSreached * _deltaqk,
-                                         _ddwSMax * _deltaqk,
-                                         _TS - _TSdecc,
-                                         t - _TFprev);
+            double ddx(double t) const {
+                if(t <= _TFprev + _TS - _TSdecc) {
+                    return ddphistarmin(_dwFprev * _deltaqk,
+                                        _dwSreached * _deltaqk,
+                                        _ddwSMax * _deltaqk,
+                                        _TS - _TSdecc,
+                                        t - _TFprev);
                 }
-                else {
-                    return _ddwSMin * _deltaqk;
-                }
+                else { return _ddwSMin * _deltaqk; }
             }
         };
         // First blend part functor
@@ -228,56 +220,52 @@ namespace rw { namespace trajectory {
             // double _qextk, _dqIk, _aIk, _deltaTmidk, _Tmidk, _dqIFk, _aBMink, _aBMaxk, _vmink;
             double _aIk, _dqIFk, _aBMink, _aBMaxk, _vmink, _qextk, _dqIk, _deltaTmidk, _Tmidk;
             BlendType _type;
-            funcIext () {}
-            funcIext (BlendType type, double qextk, double dqIk, double deltaTmidk, double Tmidk,
-                      double aIk = 0.0, double dqIFk = 0.0, double aBMink = 0.0,
-                      double aBMaxk = 0.0, double vmink = 0.0) :
-                _aIk (aIk),
-                _dqIFk (dqIFk), _aBMink (aBMink), _aBMaxk (aBMaxk), _vmink (vmink), _qextk (qextk),
-                _dqIk (dqIk), _deltaTmidk (deltaTmidk), _Tmidk (Tmidk), _type (type)
-            {}
-            double x (double t) const
-            {
-                switch (_type) {
-                    case TURNING1: return _qextk - phimax (_dqIk, _aIk, _deltaTmidk, _Tmidk - t);
-                    case TURNING2: return _qextk - phimin (_dqIk, -_aIk, _deltaTmidk, _Tmidk - t);
+            funcIext() {}
+            funcIext(BlendType type, double qextk, double dqIk, double deltaTmidk, double Tmidk,
+                     double aIk = 0.0, double dqIFk = 0.0, double aBMink = 0.0, double aBMaxk = 0.0,
+                     double vmink = 0.0) :
+                _aIk(aIk),
+                _dqIFk(dqIFk), _aBMink(aBMink), _aBMaxk(aBMaxk), _vmink(vmink), _qextk(qextk),
+                _dqIk(dqIk), _deltaTmidk(deltaTmidk), _Tmidk(Tmidk), _type(type) {}
+            double x(double t) const {
+                switch(_type) {
+                    case TURNING1: return _qextk - phimax(_dqIk, _aIk, _deltaTmidk, _Tmidk - t);
+                    case TURNING2: return _qextk - phimin(_dqIk, -_aIk, _deltaTmidk, _Tmidk - t);
                     case NONTURNING1:
                         return _qextk -
-                               phistarmin (_dqIFk, _dqIk, -_aBMink, _deltaTmidk, _Tmidk - t);
+                               phistarmin(_dqIFk, _dqIk, -_aBMink, _deltaTmidk, _Tmidk - t);
                     case NONTURNING2:
                         return _qextk -
-                               phistarmin (_dqIFk, _dqIk, -_aBMaxk, _deltaTmidk, _Tmidk - t);
+                               phistarmin(_dqIFk, _dqIk, -_aBMaxk, _deltaTmidk, _Tmidk - t);
                     case NONTURNING3:
                         return _qextk -
-                               phistarmax (_vmink, _dqIk, -_aBMaxk, _deltaTmidk, _Tmidk - t);
+                               phistarmax(_vmink, _dqIk, -_aBMaxk, _deltaTmidk, _Tmidk - t);
                 }
                 return 0.0;
             }
-            double dx (double t) const
-            {
-                switch (_type) {
-                    case TURNING1: return dphimax (_dqIk, _aIk, _deltaTmidk, _Tmidk - t);
-                    case TURNING2: return dphimin (_dqIk, -_aIk, _deltaTmidk, _Tmidk - t);
+            double dx(double t) const {
+                switch(_type) {
+                    case TURNING1: return dphimax(_dqIk, _aIk, _deltaTmidk, _Tmidk - t);
+                    case TURNING2: return dphimin(_dqIk, -_aIk, _deltaTmidk, _Tmidk - t);
                     case NONTURNING1:
-                        return dphistarmin (_dqIFk, _dqIk, -_aBMink, _deltaTmidk, _Tmidk - t);
+                        return dphistarmin(_dqIFk, _dqIk, -_aBMink, _deltaTmidk, _Tmidk - t);
                     case NONTURNING2:
-                        return dphistarmin (_dqIFk, _dqIk, -_aBMaxk, _deltaTmidk, _Tmidk - t);
+                        return dphistarmin(_dqIFk, _dqIk, -_aBMaxk, _deltaTmidk, _Tmidk - t);
                     case NONTURNING3:
-                        return dphistarmax (_vmink, _dqIk, -_aBMaxk, _deltaTmidk, _Tmidk - t);
+                        return dphistarmax(_vmink, _dqIk, -_aBMaxk, _deltaTmidk, _Tmidk - t);
                 }
                 return 0.0;
             }
-            double ddx (double t) const
-            {
-                switch (_type) {
-                    case TURNING1: return -ddphimax (_dqIk, _aIk, _deltaTmidk, _Tmidk - t);
-                    case TURNING2: return -ddphimin (_dqIk, -_aIk, _deltaTmidk, _Tmidk - t);
+            double ddx(double t) const {
+                switch(_type) {
+                    case TURNING1: return -ddphimax(_dqIk, _aIk, _deltaTmidk, _Tmidk - t);
+                    case TURNING2: return -ddphimin(_dqIk, -_aIk, _deltaTmidk, _Tmidk - t);
                     case NONTURNING1:
-                        return -ddphistarmin (_dqIFk, _dqIk, -_aBMink, _deltaTmidk, _Tmidk - t);
+                        return -ddphistarmin(_dqIFk, _dqIk, -_aBMink, _deltaTmidk, _Tmidk - t);
                     case NONTURNING2:
-                        return -ddphistarmin (_dqIFk, _dqIk, -_aBMaxk, _deltaTmidk, _Tmidk - t);
+                        return -ddphistarmin(_dqIFk, _dqIk, -_aBMaxk, _deltaTmidk, _Tmidk - t);
                     case NONTURNING3:
-                        return -ddphistarmax (_vmink, _dqIk, -_aBMaxk, _deltaTmidk, _Tmidk - t);
+                        return -ddphistarmax(_vmink, _dqIk, -_aBMaxk, _deltaTmidk, _Tmidk - t);
                 }
                 return 0.0;
             }
@@ -289,79 +277,76 @@ namespace rw { namespace trajectory {
             // _vmink;
             double _aFk, _dqIFk, _aBMink, _aBMaxk, _vmink, _qextk, _dqFk, _TB, _deltaTmidk, _Tmidk;
             BlendType _type;
-            funcExtF () {}
-            funcExtF (BlendType type, double qextk, double dqFk, double TB, double deltaTmidk,
-                      double Tmidk, double aFk = 0.0, double dqIFk = 0.0, double aBMink = 0.0,
-                      double aBMaxk = 0.0, double vmink = 0.0) :
-                _aFk (aFk),
-                _dqIFk (dqIFk), _aBMink (aBMink), _aBMaxk (aBMaxk), _vmink (vmink), _qextk (qextk),
-                _dqFk (dqFk), _TB (TB), _deltaTmidk (deltaTmidk), _Tmidk (Tmidk), _type (type)
-            {}
-            double x (double t) const
-            {
-                switch (_type) {
+            funcExtF() {}
+            funcExtF(BlendType type, double qextk, double dqFk, double TB, double deltaTmidk,
+                     double Tmidk, double aFk = 0.0, double dqIFk = 0.0, double aBMink = 0.0,
+                     double aBMaxk = 0.0, double vmink = 0.0) :
+                _aFk(aFk),
+                _dqIFk(dqIFk), _aBMink(aBMink), _aBMaxk(aBMaxk), _vmink(vmink), _qextk(qextk),
+                _dqFk(dqFk), _TB(TB), _deltaTmidk(deltaTmidk), _Tmidk(Tmidk), _type(type) {}
+            double x(double t) const {
+                switch(_type) {
                     case TURNING1:
-                        return _qextk + phimax (_dqFk, _aFk, _TB - _deltaTmidk, t - _Tmidk);
+                        return _qextk + phimax(_dqFk, _aFk, _TB - _deltaTmidk, t - _Tmidk);
                     case TURNING2:
-                        return _qextk + phimin (_dqFk, _aFk, _TB - _deltaTmidk, t - _Tmidk);
+                        return _qextk + phimin(_dqFk, _aFk, _TB - _deltaTmidk, t - _Tmidk);
                     case NONTURNING1:
                         return _qextk +
-                               phistarmin (_dqIFk, _dqFk, _aBMink, _TB - _deltaTmidk, t - _Tmidk);
+                               phistarmin(_dqIFk, _dqFk, _aBMink, _TB - _deltaTmidk, t - _Tmidk);
                     case NONTURNING2:
                         return _qextk +
-                               phistarmin (_dqIFk, _dqFk, _aBMaxk, _TB - _deltaTmidk, t - _Tmidk);
+                               phistarmin(_dqIFk, _dqFk, _aBMaxk, _TB - _deltaTmidk, t - _Tmidk);
                     case NONTURNING3:
                         return _qextk +
-                               phistarmax (_vmink, _dqFk, _aBMink, _TB - _deltaTmidk, t - _Tmidk);
+                               phistarmax(_vmink, _dqFk, _aBMink, _TB - _deltaTmidk, t - _Tmidk);
                 }
                 return 0.0;
             }
-            double dx (double t) const
-            {
-                switch (_type) {
-                    case TURNING1: return dphimax (_dqFk, _aFk, _TB - _deltaTmidk, t - _Tmidk);
-                    case TURNING2: return dphimin (_dqFk, _aFk, _TB - _deltaTmidk, t - _Tmidk);
+            double dx(double t) const {
+                switch(_type) {
+                    case TURNING1: return dphimax(_dqFk, _aFk, _TB - _deltaTmidk, t - _Tmidk);
+                    case TURNING2: return dphimin(_dqFk, _aFk, _TB - _deltaTmidk, t - _Tmidk);
                     case NONTURNING1:
-                        return dphistarmin (_dqIFk, _dqFk, _aBMink, _TB - _deltaTmidk, t - _Tmidk);
+                        return dphistarmin(_dqIFk, _dqFk, _aBMink, _TB - _deltaTmidk, t - _Tmidk);
                     case NONTURNING2:
-                        return dphistarmin (_dqIFk, _dqFk, _aBMaxk, _TB - _deltaTmidk, t - _Tmidk);
+                        return dphistarmin(_dqIFk, _dqFk, _aBMaxk, _TB - _deltaTmidk, t - _Tmidk);
                     case NONTURNING3:
-                        return dphistarmax (_vmink, _dqFk, _aBMink, _TB - _deltaTmidk, t - _Tmidk);
+                        return dphistarmax(_vmink, _dqFk, _aBMink, _TB - _deltaTmidk, t - _Tmidk);
                 }
                 return 0.0;
             }
-            double ddx (double t) const
-            {
-                switch (_type) {
-                    case TURNING1: return ddphimax (_dqFk, _aFk, _TB - _deltaTmidk, t - _Tmidk);
-                    case TURNING2: return ddphimin (_dqFk, _aFk, _TB - _deltaTmidk, t - _Tmidk);
+            double ddx(double t) const {
+                switch(_type) {
+                    case TURNING1: return ddphimax(_dqFk, _aFk, _TB - _deltaTmidk, t - _Tmidk);
+                    case TURNING2: return ddphimin(_dqFk, _aFk, _TB - _deltaTmidk, t - _Tmidk);
                     case NONTURNING1:
-                        return ddphistarmin (_dqIFk, _dqFk, _aBMink, _TB - _deltaTmidk, t - _Tmidk);
+                        return ddphistarmin(_dqIFk, _dqFk, _aBMink, _TB - _deltaTmidk, t - _Tmidk);
                     case NONTURNING2:
-                        return ddphistarmin (_dqIFk, _dqFk, _aBMaxk, _TB - _deltaTmidk, t - _Tmidk);
+                        return ddphistarmin(_dqIFk, _dqFk, _aBMaxk, _TB - _deltaTmidk, t - _Tmidk);
                     case NONTURNING3:
-                        return ddphistarmax (_vmink, _dqFk, _aBMink, _TB - _deltaTmidk, t - _Tmidk);
+                        return ddphistarmax(_vmink, _dqFk, _aBMink, _TB - _deltaTmidk, t - _Tmidk);
                 }
                 return 0.0;
             }
         };
         // rw::trajectory::Trajectory lists
-        std::vector< std::vector< funcLinear > > sList;
-        std::vector< std::vector< funcIext > > iExtList;
-        std::vector< std::vector< funcExtF > > extFList;
-        std::vector< double > TIList, TFList;
-        std::vector< std::vector< double > > TmidList;
+        std::vector<std::vector<funcLinear>> sList;
+        std::vector<std::vector<funcIext>> iExtList;
+        std::vector<std::vector<funcExtF>> extFList;
+        std::vector<double> TIList, TFList;
+        std::vector<std::vector<double>> TmidList;
 
       public:
-        const std::vector< double >& getBlendStartTimes () { return TIList; }
+        const std::vector<double>& getBlendStartTimes() { return TIList; }
 
-        const std::vector< double >& getBlendEndTimes () { return TFList; }
+        const std::vector<double>& getBlendEndTimes() { return TFList; }
 
       private:
         /**
          * @brief Bi-directional iterator for running efficiently through a trajectory
          */
-        template< class U > class BlendedTrajectoryIterator : public rw::trajectory::TrajectoryIterator< U >
+        template<class U>
+        class BlendedTrajectoryIterator : public rw::trajectory::TrajectoryIterator<U>
         {
           public:
             /**
@@ -370,83 +355,76 @@ namespace rw { namespace trajectory {
              * @param trajectory [in] Trajectory to iterate through
              * @param dt [in] Default stepsize used for ++ and -- operators
              */
-            BlendedTrajectoryIterator (typename BlendedTrajectory< U >::Ptr trajectory,
-                                       double dt = 1)
-            {
+            BlendedTrajectoryIterator(typename BlendedTrajectory<U>::Ptr trajectory,
+                                      double dt = 1) {
                 _trajectory = trajectory;
                 _dt         = dt;
-                _time       = _trajectory->startTime ();
+                _time       = _trajectory->startTime();
             }
 
             /**
              * @copydoc rw::trajectory::TrajectoryIterator::getTime()
              */
-            double getTime () const { return _time; }
+            double getTime() const { return _time; }
 
             /**
              * @copydoc rw::trajectory::TrajectoryIterator::dec(double)
              */
-            void dec (double dt)
-            {
-                if (_time - dt < _trajectory->startTime ())
-                    _time = _trajectory->startTime ();
-                else
-                    _time -= dt;
+            void dec(double dt) {
+                if(_time - dt < _trajectory->startTime()) _time = _trajectory->startTime();
+                else _time -= dt;
             }
 
             /**
              * @copydoc rw::trajectory::TrajectoryIterator::inc(double)
              */
-            void inc (double dt)
-            {
-                if (_time + dt > _trajectory->endTime ())
-                    _time = _trajectory->endTime ();
-                else
-                    _time += dt;
+            void inc(double dt) {
+                if(_time + dt > _trajectory->endTime()) _time = _trajectory->endTime();
+                else _time += dt;
             }
 
             /**
              * @copydoc rw::trajectory::TrajectoryIterator::dec()
              */
-            void dec () { dec (_dt); }
+            void dec() { dec(_dt); }
 
             /**
              * @copydoc rw::trajectory::TrajectoryIterator::inc()
              */
-            void inc () { inc (_dt); }
+            void inc() { inc(_dt); }
 
             /**
              * @copydoc rw::trajectory::TrajectoryIterator::isEnd()
              */
-            bool isEnd () const { return _time >= _trajectory->duration (); }
+            bool isEnd() const { return _time >= _trajectory->duration(); }
 
             /**
              * @copydoc rw::trajectory::TrajectoryIterator::isBegin()
              */
-            bool isBegin () const { return _time <= 0; }
+            bool isBegin() const { return _time <= 0; }
 
             /**
              * @copydoc rw::trajectory::TrajectoryIterator::operator*()
              */
-            U operator* () const { return x (); }
+            U operator*() const { return x(); }
 
             /**
              * @copydoc rw::trajectory::TrajectoryIterator::x()
              */
-            U x () const { return _trajectory->x (_time); }
+            U x() const { return _trajectory->x(_time); }
 
             /**
              * @copydoc rw::trajectory::TrajectoryIterator::dx()
              */
-            U dx () const { return _trajectory->dx (_time); }
+            U dx() const { return _trajectory->dx(_time); }
 
             /**
              * @copydoc rw::trajectory::TrajectoryIterator::ddx()
              */
-            U ddx () const { return _trajectory->ddx (_time); }
+            U ddx() const { return _trajectory->ddx(_time); }
 
           private:
-            typename BlendedTrajectory< U >::Ptr _trajectory;
+            typename BlendedTrajectory<U>::Ptr _trajectory;
             double _time;
             double _dt;
         };

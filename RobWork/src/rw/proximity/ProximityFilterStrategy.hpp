@@ -22,7 +22,7 @@
 #include <rw/proximity/ProximityCache.hpp>
 #include <rw/proximity/ProximityFilter.hpp>
 #include <rw/proximity/ProximitySetup.hpp>
-#endif 
+#endif
 
 namespace rw { namespace geometry {
     class Geometry;
@@ -62,18 +62,18 @@ namespace rw { namespace proximity {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< ProximityFilterStrategy > Ptr;
+        typedef rw::core::Ptr<ProximityFilterStrategy> Ptr;
         //! @brief smart pointer type to this const class
-        typedef rw::core::Ptr< const ProximityFilterStrategy > CPtr;
+        typedef rw::core::Ptr<const ProximityFilterStrategy> CPtr;
 
         //! @brief Destructor
-        virtual ~ProximityFilterStrategy (){};
+        virtual ~ProximityFilterStrategy(){};
 
         /**
          * @brief Reset
          * @param state [in] the state.
          */
-        virtual void reset (const rw::kinematics::State& state) = 0;
+        virtual void reset(const rw::kinematics::State& state) = 0;
 
         /**
          * @brief creates a FilterData object. This is used for caching relavant data between calls
@@ -81,14 +81,15 @@ namespace rw { namespace proximity {
          *
          * @return
          */
-        virtual rw::core::Ptr<rw::proximity::ProximityCache> createProximityCache () = 0;
+        virtual rw::core::Ptr<rw::proximity::ProximityCache> createProximityCache() = 0;
 
         /**
          * @brief Do an update
          * @param state [in] the state.
          * @return
          */
-        virtual rw::core::Ptr<rw::proximity::ProximityFilter> update (const rw::kinematics::State& state) = 0;
+        virtual rw::core::Ptr<rw::proximity::ProximityFilter>
+        update(const rw::kinematics::State& state) = 0;
 
         /**
          * @brief called once before acquirering all possibly colliding
@@ -96,23 +97,24 @@ namespace rw { namespace proximity {
          * @param state [in] the state for which collision detection is performed.
          * @param data
          */
-        virtual rw::core::Ptr<rw::proximity::ProximityFilter> update (const rw::kinematics::State& state,
-                                             rw::core::Ptr<rw::proximity::ProximityCache> data) = 0;
+        virtual rw::core::Ptr<rw::proximity::ProximityFilter>
+        update(const rw::kinematics::State& state,
+               rw::core::Ptr<rw::proximity::ProximityCache> data) = 0;
 
         /**
          * @brief get the proximity setup that describe the include/exclude rules of this
          * BroadPhaseStrategy
          * @return a reference to the ProximitySetup
          */
-        virtual rw::proximity::ProximitySetup& getProximitySetup () = 0;
+        virtual rw::proximity::ProximitySetup& getProximitySetup() = 0;
 
         /**
          * @brief Adds geometry associated to frame
          * @param frame [in] Frame which has the geometry associated
          * @param geo [in] Geometry
          */
-        virtual void addGeometry (rw::core::Ptr<rw::kinematics::Frame> frame,
-                                  const rw::core::Ptr< rw::geometry::Geometry > geo) = 0;
+        virtual void addGeometry(rw::core::Ptr<rw::kinematics::Frame> frame,
+                                 const rw::core::Ptr<rw::geometry::Geometry> geo) = 0;
 
         /**
          * @brief Removes the geometric model \b geo associated with
@@ -121,8 +123,8 @@ namespace rw { namespace proximity {
          * @param frame [in] Frame which has the geometry associated
          * @param geo [in] Geometry
          */
-        virtual void removeGeometry (rw::core::Ptr<rw::kinematics::Frame> frame,
-                                     const rw::core::Ptr< rw::geometry::Geometry > geo) = 0;
+        virtual void removeGeometry(rw::core::Ptr<rw::kinematics::Frame> frame,
+                                    const rw::core::Ptr<rw::geometry::Geometry> geo) = 0;
 
         /**
          * @brief Removes the geometric model with name \b geoName and which is associated with
@@ -131,20 +133,21 @@ namespace rw { namespace proximity {
          * @param frame [in] Frame which has the geometry associated
          * @param geoName [in] Name of geometry
          */
-        virtual void removeGeometry (rw::core::Ptr<rw::kinematics::Frame> frame, const std::string& geoName) = 0;
+        virtual void removeGeometry(rw::core::Ptr<rw::kinematics::Frame> frame,
+                                    const std::string& geoName) = 0;
 
         /**
          * @brief Adds a ProximitySetupRule
          * @param rule [in] the rule to add.
          */
-        virtual void addRule (const rw::proximity::ProximitySetupRule& rule) = 0;
+        virtual void addRule(const rw::proximity::ProximitySetupRule& rule) = 0;
 
         /**
          * @brief Removes a ProximitySetupRule
          * If the rule cannot be found, then noting happens.
          * @param rule [in] the rule to remove.
          */
-        virtual void removeRule (const rw::proximity::ProximitySetupRule& rule) = 0;
+        virtual void removeRule(const rw::proximity::ProximitySetupRule& rule) = 0;
     };
 
 }}    // namespace rw::proximity

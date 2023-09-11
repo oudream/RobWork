@@ -23,27 +23,27 @@ namespace rwsim { namespace drawable {
         /**
          * @brief constructor
          */
-        RenderContacts ();
+        RenderContacts();
 
         /**
          * @brief destructor
          */
-        virtual ~RenderContacts ();
+        virtual ~RenderContacts();
 
         /**
          * @brief add a contact to render
          */
-        void addContact (const rw::sensor::Contact3D& contacts);
+        void addContact(const rw::sensor::Contact3D& contacts);
 
         /**
          * @brief add a number of contacts to render
          */
-        void addContacts (const std::vector< rw::sensor::Contact3D >& contacts);
+        void addContacts(const std::vector<rw::sensor::Contact3D>& contacts);
 
         /**
          * @brief set the contacts to render
          */
-        void setContacts (const std::vector< rw::sensor::Contact3D >& contacts);
+        void setContacts(const std::vector<rw::sensor::Contact3D>& contacts);
 
         /**
          * @brief set the color used for the model
@@ -51,14 +51,15 @@ namespace rwsim { namespace drawable {
          * @param g [in] green color value
          * @param b [in] blue color value
          */
-        void setColor (double r, double g, double b);
+        void setColor(double r, double g, double b);
 
-        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info, DrawableNode::DrawType type, double alpha) const
-        virtual void draw (const rw::graphics::DrawableNode::RenderInfo& info, DrawType type,
-                           double alpha) const;
+        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info,
+        //! DrawableNode::DrawType type, double alpha) const
+        virtual void draw(const rw::graphics::DrawableNode::RenderInfo& info, DrawType type,
+                          double alpha) const;
 
       private:
-        std::vector< rw::sensor::Contact3D > _contacts;
+        std::vector<rw::sensor::Contact3D> _contacts;
         struct GLData;
         const GLData* const _gl;
     };

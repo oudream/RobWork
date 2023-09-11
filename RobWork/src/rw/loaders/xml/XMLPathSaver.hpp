@@ -21,7 +21,6 @@
 #include <rw/loaders/xml/XMLBasisTypes.hpp>
 #include <rw/loaders/xml/XMLPathFormat.hpp>
 #include <rw/loaders/xml/XercesUtils.hpp>
-
 #include <rw/trajectory/Path.hpp>
 #include <rw/trajectory/Timed.hpp>
 
@@ -37,72 +36,67 @@ namespace rw { namespace loaders {
     /*@{*/
 
     namespace {
-        template< class T > class ElementCreator
+        template<class T> class ElementCreator
         {
           public:
-            static xercesc::DOMElement* createElement (const T& element, xercesc::DOMDocument* doc);
+            static xercesc::DOMElement* createElement(const T& element, xercesc::DOMDocument* doc);
         };
 
         template<>
-        xercesc::DOMElement*
-        ElementCreator< rw::math::Q >::createElement (const rw::math::Q& element,
-                                                      xercesc::DOMDocument* doc)
-        {
-            return XMLBasisTypes::createQ (element, doc);
+        xercesc::DOMElement* ElementCreator<rw::math::Q>::createElement(const rw::math::Q& element,
+                                                                        xercesc::DOMDocument* doc) {
+            return XMLBasisTypes::createQ(element, doc);
         }
 
         template<>
         xercesc::DOMElement*
-        ElementCreator< rw::math::Vector3D<> >::createElement (const rw::math::Vector3D<>& element,
-                                                               xercesc::DOMDocument* doc)
-        {
-            return XMLBasisTypes::createVector3D (element, doc);
+        ElementCreator<rw::math::Vector3D<>>::createElement(const rw::math::Vector3D<>& element,
+                                                            xercesc::DOMDocument* doc) {
+            return XMLBasisTypes::createVector3D(element, doc);
         }
 
         template<>
-        xercesc::DOMElement* ElementCreator< rw::math::Rotation3D<> >::createElement (
-            const rw::math::Rotation3D<>& element, xercesc::DOMDocument* doc)
-        {
-            return XMLBasisTypes::createRotation3D (element, doc);
+        xercesc::DOMElement*
+        ElementCreator<rw::math::Rotation3D<>>::createElement(const rw::math::Rotation3D<>& element,
+                                                              xercesc::DOMDocument* doc) {
+            return XMLBasisTypes::createRotation3D(element, doc);
         }
 
         template<>
-        xercesc::DOMElement* ElementCreator< rw::math::Transform3D<> >::createElement (
-            const rw::math::Transform3D<>& element, xercesc::DOMDocument* doc)
-        {
-            return XMLBasisTypes::createTransform3D (element, doc);
+        xercesc::DOMElement* ElementCreator<rw::math::Transform3D<>>::createElement(
+            const rw::math::Transform3D<>& element, xercesc::DOMDocument* doc) {
+            return XMLBasisTypes::createTransform3D(element, doc);
         }
 
         template<>
-        xercesc::DOMElement* ElementCreator< rw::kinematics::State >::createElement (
-            const rw::kinematics::State& element, xercesc::DOMDocument* doc)
-        {
-            return XMLBasisTypes::createState (element, doc);
+        xercesc::DOMElement*
+        ElementCreator<rw::kinematics::State>::createElement(const rw::kinematics::State& element,
+                                                             xercesc::DOMDocument* doc) {
+            return XMLBasisTypes::createState(element, doc);
         }
 
         template<>
-        xercesc::DOMElement* ElementCreator< rw::trajectory::TimedQ >::createElement (
-            const rw::trajectory::TimedQ& timedQ, xercesc::DOMDocument* doc)
-        {
-            xercesc::DOMElement* element = doc->createElement (XMLPathFormat::idTimedQ ());
+        xercesc::DOMElement*
+        ElementCreator<rw::trajectory::TimedQ>::createElement(const rw::trajectory::TimedQ& timedQ,
+                                                              xercesc::DOMDocument* doc) {
+            xercesc::DOMElement* element = doc->createElement(XMLPathFormat::idTimedQ());
 
-            xercesc::DOMElement* timeElement = doc->createElement (XMLPathFormat::idTime ());
-            timeElement->appendChild (doc->createTextNode (XMLStr (timedQ.getTime ()).uni ()));
-            element->appendChild (timeElement);
-            element->appendChild (XMLBasisTypes::createQ (timedQ.getValue (), doc));
+            xercesc::DOMElement* timeElement = doc->createElement(XMLPathFormat::idTime());
+            timeElement->appendChild(doc->createTextNode(XMLStr(timedQ.getTime()).uni()));
+            element->appendChild(timeElement);
+            element->appendChild(XMLBasisTypes::createQ(timedQ.getValue(), doc));
 
             return element;
         }
 
         template<>
-        xercesc::DOMElement* ElementCreator< rw::trajectory::TimedState >::createElement (
-            const rw::trajectory::TimedState& timedState, xercesc::DOMDocument* doc)
-        {
-            xercesc::DOMElement* element     = doc->createElement (XMLPathFormat::idTimedState ());
-            xercesc::DOMElement* timeElement = doc->createElement (XMLPathFormat::idTime ());
-            timeElement->appendChild (doc->createTextNode (XMLStr (timedState.getTime ()).uni ()));
-            element->appendChild (timeElement);
-            element->appendChild (XMLBasisTypes::createState (timedState.getValue (), doc));
+        xercesc::DOMElement* ElementCreator<rw::trajectory::TimedState>::createElement(
+            const rw::trajectory::TimedState& timedState, xercesc::DOMDocument* doc) {
+            xercesc::DOMElement* element     = doc->createElement(XMLPathFormat::idTimedState());
+            xercesc::DOMElement* timeElement = doc->createElement(XMLPathFormat::idTime());
+            timeElement->appendChild(doc->createTextNode(XMLStr(timedState.getTime()).uni()));
+            element->appendChild(timeElement);
+            element->appendChild(XMLBasisTypes::createState(timedState.getValue(), doc));
 
             return element;
         }
@@ -126,7 +120,7 @@ namespace rw { namespace loaders {
          * @param path [in] Path to save
          * @param filename [in] Target filename
          */
-        static void save (const rw::trajectory::QPath& path, const std::string& filename);
+        static void save(const rw::trajectory::QPath& path, const std::string& filename);
 
         /**
          * @brief Saves rw::trajectory::Vector3DPath \b path to file
@@ -136,7 +130,7 @@ namespace rw { namespace loaders {
          * @param path [in] Path to save
          * @param filename [in] Target filename
          */
-        static void save (const rw::trajectory::Vector3DPath& path, const std::string& filename);
+        static void save(const rw::trajectory::Vector3DPath& path, const std::string& filename);
 
         /**
          * @brief Saves rw::trajectory::Rotation3DPath \b path to file
@@ -146,7 +140,7 @@ namespace rw { namespace loaders {
          * @param path [in] Path to save
          * @param filename [in] Target filename
          */
-        static void save (const rw::trajectory::Rotation3DPath& path, const std::string& filename);
+        static void save(const rw::trajectory::Rotation3DPath& path, const std::string& filename);
 
         /**
          * @brief Saves rw::trajectory::Transform3DPath \b path to file
@@ -156,7 +150,7 @@ namespace rw { namespace loaders {
          * @param path [in] Path to save
          * @param filename [in] Target filename
          */
-        static void save (const rw::trajectory::Transform3DPath& path, const std::string& filename);
+        static void save(const rw::trajectory::Transform3DPath& path, const std::string& filename);
 
         /**
          * @brief Saves rw::trajectory::StatePath \b to file
@@ -166,7 +160,7 @@ namespace rw { namespace loaders {
          * @param path [in] Path to save
          * @param filename [in] Target filename
          */
-        static void save (const rw::trajectory::StatePath& path, const std::string& filename);
+        static void save(const rw::trajectory::StatePath& path, const std::string& filename);
 
         /**
          * @brief Saves rw::trajectory::TimedQPath \b to file
@@ -176,7 +170,7 @@ namespace rw { namespace loaders {
          * @param path [in] Path to save
          * @param filename [in] Target filename
          */
-        static void save (const rw::trajectory::TimedQPath& path, const std::string& filename);
+        static void save(const rw::trajectory::TimedQPath& path, const std::string& filename);
 
         /**
          * @brief Saves rw::trajectory::TimedStatePath \b to file
@@ -186,7 +180,7 @@ namespace rw { namespace loaders {
          * @param path [in] Path to save
          * @param filename [in] Target filename
          */
-        static void save (const rw::trajectory::TimedStatePath& path, const std::string& filename);
+        static void save(const rw::trajectory::TimedStatePath& path, const std::string& filename);
 
         /**
          * @brief Writes the rw::trajectory::QPath \b path to \b outstream
@@ -196,7 +190,7 @@ namespace rw { namespace loaders {
          * @param path [in] Path to save
          * @param outstream [in] Stream to write to
          */
-        static void write (const rw::trajectory::QPath& path, std::ostream& outstream);
+        static void write(const rw::trajectory::QPath& path, std::ostream& outstream);
 
         /**
          * @brief Writes rw::trajectory::Vector3DPath \b path to \b outstream
@@ -206,7 +200,7 @@ namespace rw { namespace loaders {
          * @param path [in] Path to save8
          * @param outstream [in] Stream to write to
          */
-        static void write (const rw::trajectory::Vector3DPath& path, std::ostream& outstream);
+        static void write(const rw::trajectory::Vector3DPath& path, std::ostream& outstream);
 
         /**
          * @brief Writes rw::trajectory::Rotation3DPath \b path to \b outstream
@@ -216,7 +210,7 @@ namespace rw { namespace loaders {
          * @param path [in] Path to save
          * @param outstream [in] Stream to write to
          */
-        static void write (const rw::trajectory::Rotation3DPath& path, std::ostream& outstream);
+        static void write(const rw::trajectory::Rotation3DPath& path, std::ostream& outstream);
 
         /**
          * @brief Writes rw::trajectory::Rotation3DPath \b path to \b outstream
@@ -226,7 +220,7 @@ namespace rw { namespace loaders {
          * @param path [in] Path to save
          * @param outstream [in] Stream to write to
          */
-        static void write (const rw::trajectory::Transform3DPath& path, std::ostream& outstream);
+        static void write(const rw::trajectory::Transform3DPath& path, std::ostream& outstream);
 
         /**
          * @brief Writes rw::trajectory::Rotation3DPath \b path to \b outstream
@@ -236,7 +230,7 @@ namespace rw { namespace loaders {
          * @param path [in] Path to save
          * @param outstream [in] Stream to write to
          */
-        static void write (const rw::trajectory::StatePath& path, std::ostream& outstream);
+        static void write(const rw::trajectory::StatePath& path, std::ostream& outstream);
 
         /**
          * @brief Writes rw::trajectory::Rotation3DPath \b path to \b outstream
@@ -246,7 +240,7 @@ namespace rw { namespace loaders {
          * @param path [in] Path to save
          * @param outstream [in] Stream to write to
          */
-        static void write (const rw::trajectory::TimedQPath& path, std::ostream& outstream);
+        static void write(const rw::trajectory::TimedQPath& path, std::ostream& outstream);
 
         /**
          * @brief Writes rw::trajectory::Rotation3DPath \b path to \b outstream
@@ -256,7 +250,7 @@ namespace rw { namespace loaders {
          * @param path [in] Path to save
          * @param outstream [in] Stream to write to
          */
-        static void write (const rw::trajectory::TimedStatePath& path, std::ostream& outstream);
+        static void write(const rw::trajectory::TimedStatePath& path, std::ostream& outstream);
 
         /**
          * @brief Create an element representing the path
@@ -268,12 +262,11 @@ namespace rw { namespace loaders {
          * @param pathId [in] Id of the path
          * @param doc [in] Document for which to construct the element
          */
-        template< class T, class PATH >
-        static xercesc::DOMElement* createElement (const PATH& path, const XMLCh* pathId,
-                                                   xercesc::DOMDocument* doc)
-        {
-            xercesc::DOMElement* pathElement = doc->createElement (pathId);
-            XMLPathSaver::insertElements< T, PATH > (path, pathElement, doc);
+        template<class T, class PATH>
+        static xercesc::DOMElement* createElement(const PATH& path, const XMLCh* pathId,
+                                                  xercesc::DOMDocument* doc) {
+            xercesc::DOMElement* pathElement = doc->createElement(pathId);
+            XMLPathSaver::insertElements<T, PATH>(path, pathElement, doc);
             return pathElement;
         }
 
@@ -292,64 +285,58 @@ namespace rw { namespace loaders {
         {
           public:
             //! @brief Initializes when constructed.
-            Initializer ();
+            Initializer();
         };
 
       private:
         static const Initializer initializer;
 
-        XMLPathSaver () {}
+        XMLPathSaver() {}
 
-        template< class T, class PATH >
-        static xercesc::DOMDocument* createDOMDocument (const PATH& path, const XMLCh* pathId)
-        {
+        template<class T, class PATH>
+        static xercesc::DOMDocument* createDOMDocument(const PATH& path, const XMLCh* pathId) {
             xercesc::DOMImplementation* impl =
-                xercesc::DOMImplementationRegistry::getDOMImplementation (XMLStr ("Core").uni ());
+                xercesc::DOMImplementationRegistry::getDOMImplementation(XMLStr("Core").uni());
 
-            if (impl != NULL) {
+            if(impl != NULL) {
                 try {
                     xercesc::DOMDocument* doc =
-                        impl->createDocument (0,         // root element namespace URI.
-                                              pathId,    // root element name
-                                              0);    // We do not wish to specify a document type
+                        impl->createDocument(0,         // root element namespace URI.
+                                             pathId,    // root element name
+                                             0);        // We do not wish to specify a document type
 
-                    xercesc::DOMElement* root = doc->getDocumentElement ();
-                    XMLPathSaver::insertElements< T, PATH > (path, root, doc);
+                    xercesc::DOMElement* root = doc->getDocumentElement();
+                    XMLPathSaver::insertElements<T, PATH>(path, root, doc);
                     return doc;
                 }
-                catch (const xercesc::OutOfMemoryException&) {
-                    RW_THROW ("XMLPathWriter: OutOfMemory");
+                catch(const xercesc::OutOfMemoryException&) {
+                    RW_THROW("XMLPathWriter: OutOfMemory");
                 }
-                catch (const xercesc::DOMException& e) {
-                    RW_THROW (
-                        "XMLPathWriter: DOMException code:  " << XMLStr (e.getMessage ()).str ());
+                catch(const xercesc::DOMException& e) {
+                    RW_THROW("XMLPathWriter: DOMException code:  " << XMLStr(e.getMessage()).str());
                 }
-                catch (const rw::core::Exception& exp) {
+                catch(const rw::core::Exception& exp) {
                     throw exp;
                 }
-                catch (...) {
-                    RW_THROW ("XMLPathWriter: Unknown Exception while creating saving path");
+                catch(...) {
+                    RW_THROW("XMLPathWriter: Unknown Exception while creating saving path");
                 }
             }
-            else {
-                RW_THROW ("XMLPathWriter: Unable to find a suitable DOM Implementation");
-            }
+            else { RW_THROW("XMLPathWriter: Unable to find a suitable DOM Implementation"); }
         }
 
-        template< class T, class PATH >
-        static void savePath (const PATH& path, const XMLCh* pathId, const std::string& filename)
-        {
-            xercesc::DOMDocument* doc = createDOMDocument< T, PATH > (path, pathId);
-            XercesDocumentWriter::writeDocument (doc, filename);
-            doc->release ();
+        template<class T, class PATH>
+        static void savePath(const PATH& path, const XMLCh* pathId, const std::string& filename) {
+            xercesc::DOMDocument* doc = createDOMDocument<T, PATH>(path, pathId);
+            XercesDocumentWriter::writeDocument(doc, filename);
+            doc->release();
         }
 
-        template< class T, class PATH >
-        static void writePath (const PATH& path, const XMLCh* pathId, std::ostream& outstream)
-        {
-            xercesc::DOMDocument* doc = createDOMDocument< T, PATH > (path, pathId);
-            XercesDocumentWriter::writeDocument (doc, outstream);
-            doc->release ();
+        template<class T, class PATH>
+        static void writePath(const PATH& path, const XMLCh* pathId, std::ostream& outstream) {
+            xercesc::DOMDocument* doc = createDOMDocument<T, PATH>(path, pathId);
+            XercesDocumentWriter::writeDocument(doc, outstream);
+            doc->release();
         }
         /*
            xercesc::DOMImplementation* impl =
@@ -393,12 +380,11 @@ namespace rw { namespace loaders {
            }
         }
     */
-        template< class T, class PATH >
-        static void insertElements (const PATH& path, xercesc::DOMElement* element,
-                                    xercesc::DOMDocument* doc)
-        {
-            for (typename PATH::const_iterator it = path.begin (); it != path.end (); ++it) {
-                element->appendChild (ElementCreator< T >::createElement (*it, doc));
+        template<class T, class PATH>
+        static void insertElements(const PATH& path, xercesc::DOMElement* element,
+                                   xercesc::DOMDocument* doc) {
+            for(typename PATH::const_iterator it = path.begin(); it != path.end(); ++it) {
+                element->appendChild(ElementCreator<T>::createElement(*it, doc));
             }
         }
     };

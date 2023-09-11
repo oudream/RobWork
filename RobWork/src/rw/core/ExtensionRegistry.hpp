@@ -35,61 +35,59 @@ namespace rw { namespace core {
     {
       public:
         //! smart pointer type of ExtensionPoint
-        typedef rw::core::Ptr< ExtensionRegistry > Ptr;
+        typedef rw::core::Ptr<ExtensionRegistry> Ptr;
 
         //! @brief Constructor
-        ExtensionRegistry ();
+        ExtensionRegistry();
 
         //! @brief Destructor
-        ~ExtensionRegistry ();
+        ~ExtensionRegistry();
 
         //! get registry instance
-        static rw::core::Ptr< ExtensionRegistry > getInstance ();
+        static rw::core::Ptr<ExtensionRegistry> getInstance();
 
         /**
          * @brief get all descriptors registered for a specific extension point id
          * @param ext_point_id [in] identifier of extension point
          * @return list of extension point descriptions
          */
-        std::vector< rw::core::Extension::Descriptor >
-        getExtensionDescriptors (const std::string& ext_point_id) const;
+        std::vector<rw::core::Extension::Descriptor>
+        getExtensionDescriptors(const std::string& ext_point_id) const;
 
         /**
          * @brief get all extensions of a specific extension point
          * @param ext_point_id [in] identifier of extension point
          * @return list of extensions
          */
-        std::vector< rw::core::Ptr< Extension > >
-        getExtensions (const std::string& ext_point_id) const;
+        std::vector<rw::core::Ptr<Extension>> getExtensions(const std::string& ext_point_id) const;
 
         /**
          * @brief register extensions and extension points of a plugin
          * @param plugin [in] the plugin that is to be registered
          */
-        void registerExtensions (rw::core::Ptr< Plugin > plugin);
+        void registerExtensions(rw::core::Ptr<Plugin> plugin);
 
         /**
          * @brief Unregister extensions and extension points of a plugin.
          * @param plugin [in] the plugin that is to be removed.
          */
-        void unregisterExtensions (rw::core::Ptr< Plugin > plugin);
+        void unregisterExtensions(rw::core::Ptr<Plugin> plugin);
 
         //! @brief Unregister all extensions.
-        void clearExtensions ();
+        void clearExtensions();
 
         /**
          * @brief get a list of registered plugins
          * @return list of plugins
          */
-        std::vector< rw::core::Ptr< Plugin > > getPlugins () const;
+        std::vector<rw::core::Ptr<Plugin>> getPlugins() const;
 
       private:
         // maps extension point id's into description-plugin pair
-        std::map< std::string,
-                  std::vector< std::pair< Extension::Descriptor, rw::core::Ptr< Plugin > > > >
+        std::map<std::string, std::vector<std::pair<Extension::Descriptor, rw::core::Ptr<Plugin>>>>
             _descMap;
 
-        std::list< rw::core::Ptr< Plugin > > _plugins;
+        std::list<rw::core::Ptr<Plugin>> _plugins;
     };
 
 }}    // namespace rw::core

@@ -17,10 +17,9 @@ Copyright 2013 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
 #ifndef RWLIBS_SOFTBODY_MODRUSSELBEAMBASE_HPP
 #define RWLIBS_SOFTBODY_MODRUSSELBEAMBASE_HPP
 
+#include <rw/math/Transform3D.hpp>
 #include <rwlibs/softbody/beam/BeamGeometry.hpp>
 #include <rwlibs/softbody/beam/BeamObstaclePlane.hpp>
-
-#include <rw/math/Transform3D.hpp>
 
 #include <memory>
 
@@ -40,14 +39,13 @@ namespace rwlibs { namespace softbody {
          * @param obstaclePtr pointer to the obstacle
          * @param M number of slices in the beam
          **/
-        ModRusselBeamBase (std::shared_ptr< rwlibs::softbody::BeamGeometry > geomPtr,
-                           std::shared_ptr< rwlibs::softbody::BeamObstaclePlane > obstaclePtr,
-                           int M);
+        ModRusselBeamBase(std::shared_ptr<rwlibs::softbody::BeamGeometry> geomPtr,
+                          std::shared_ptr<rwlibs::softbody::BeamObstaclePlane> obstaclePtr, int M);
 
-        virtual ~ModRusselBeamBase ();
+        virtual ~ModRusselBeamBase();
 
       public:
-        virtual void solve (Eigen::VectorXd& xinituser, Eigen::VectorXd& U, Eigen::VectorXd& V) = 0;
+        virtual void solve(Eigen::VectorXd& xinituser, Eigen::VectorXd& U, Eigen::VectorXd& V) = 0;
 
       public:
         /**
@@ -56,7 +54,7 @@ namespace rwlibs { namespace softbody {
          * @param U reference to the vector to store the x-component in
          * @param avec reference to the vector of angles
          **/
-        void integrateAngleU (Eigen::VectorXd& U, const Eigen::VectorXd& avec);
+        void integrateAngleU(Eigen::VectorXd& U, const Eigen::VectorXd& avec);
 
         /**
          * @brief given a vector of angles, calculates the y-part of the corresponding curve
@@ -64,7 +62,7 @@ namespace rwlibs { namespace softbody {
          * @param V reference to the vector to store the x-component in
          * @param avec reference to the vector of angles
          **/
-        void integrateAngleV (Eigen::VectorXd& V, const Eigen::VectorXd& avec);
+        void integrateAngleV(Eigen::VectorXd& V, const Eigen::VectorXd& avec);
 
         /**
          * @brief precomputes the indices on the beam at which to place integral constraints
@@ -79,15 +77,15 @@ namespace rwlibs { namespace softbody {
          * @bug Does not support more than M/2 integral constraints
          *
          **/
-        static std::vector< int > computeIntegralIndicies (const int nIntegralConstraints,
-                                                           const int N);
+        static std::vector<int> computeIntegralIndicies(const int nIntegralConstraints,
+                                                        const int N);
 
         /**
          * @brief returns the indices on the beam at which to place integral constraints
          *
          * @return indices on the beam
          **/
-        std::vector< int > getIntegralIndices (void) const;
+        std::vector<int> getIntegralIndices(void) const;
         ;
 
         /**
@@ -95,42 +93,42 @@ namespace rwlibs { namespace softbody {
          *
          * @param indices vector of indices
          */
-        void setIntegralIndices (const std::vector< int >& indices);
+        void setIntegralIndices(const std::vector<int>& indices);
 
         /**
          * @brief returns the BeamGeometry used by the beam
          *
          * @return the BeamGeometry used by the beam
          **/
-        std::shared_ptr< BeamGeometry > getGeometry (void) const;
+        std::shared_ptr<BeamGeometry> getGeometry(void) const;
 
         /**
          * @brief returns the BeamObstaclePlane used by the beam
          *
          * @return the BeamObstaclePlane used by the beam
          **/
-        std::shared_ptr< BeamObstaclePlane > getObstacle (void) const;
+        std::shared_ptr<BeamObstaclePlane> getObstacle(void) const;
 
         /**
          * @brief returns number of cross sections in beam
          *
          * @return number of cross sections in beam
          **/
-        int getM (void) const;
+        int getM(void) const;
 
         /**
          * @brief returns accuracy goal of underlying numerical methods
          *
          * @return accuracy goal
          **/
-        double getAccuracy (void) const;
+        double getAccuracy(void) const;
 
         /**
          * @brief sets accuracy goal of underlying numerical methods
          *
          * @param acc accuracy goal
          **/
-        void setAccuracy (double acc);
+        void setAccuracy(double acc);
 
         /**
          * @brief outputs a ModRusselBeamBase to stream
@@ -139,24 +137,23 @@ namespace rwlibs { namespace softbody {
          * @param obj the beam
          * @return a stream
          **/
-        friend std::ostream& operator<< (std::ostream& out, const ModRusselBeamBase& obj)
-        {
+        friend std::ostream& operator<<(std::ostream& out, const ModRusselBeamBase& obj) {
             std::stringstream str;
 
-            const rw::math::Transform3D<> planeTbeam = obj.get_planeTbeam ();
+            const rw::math::Transform3D<> planeTbeam = obj.get_planeTbeam();
 
-            double yTCP         = obj.getObstacle ()->get_yTCP (planeTbeam);
-            double thetaTCP     = obj.getObstacle ()->get_thetaTCP (planeTbeam);
-            double g1           = obj.getGeometry ()->g1 ();
-            double g2           = obj.getGeometry ()->g2 ();
-            const double uxTCPy = obj.get_uxTCPy ();
-            const double uyTCPy = obj.get_uyTCPy ();
+            double yTCP         = obj.getObstacle()->get_yTCP(planeTbeam);
+            double thetaTCP     = obj.getObstacle()->get_thetaTCP(planeTbeam);
+            double g1           = obj.getGeometry()->g1();
+            double g2           = obj.getGeometry()->g2();
+            const double uxTCPy = obj.get_uxTCPy();
+            const double uyTCPy = obj.get_uyTCPy();
 
-            str << "ModRusselBeam {M:" << obj.getM () << ", g1: " << g1 << ", g2:" << g2
+            str << "ModRusselBeam {M:" << obj.getM() << ", g1: " << g1 << ", g2:" << g2
                 << ", uxTCPy: " << uxTCPy << ", uyTCPy: " << uyTCPy << ", yTCP: " << yTCP
-                << ", thetaTCP: " << thetaTCP << ", accuracy: " << obj.getAccuracy () << "}";
+                << ", thetaTCP: " << thetaTCP << ", accuracy: " << obj.getAccuracy() << "}";
 
-            return out << str.str ();
+            return out << str.str();
         };
 
       public:
@@ -165,21 +162,21 @@ namespace rwlibs { namespace softbody {
          *
          * @return plane to beam transform
          **/
-        rw::math::Transform3D< double > get_planeTbeam (void) const;
+        rw::math::Transform3D<double> get_planeTbeam(void) const;
 
         /**
          * @brief returns the angle of the beam base frame wrt. the associated obstacle plane
          *
          * @return angle of beam base in radians
          **/
-        double get_thetaTCP (void) const;
+        double get_thetaTCP(void) const;
 
         /**
          * @brief returns the height of the beam baseframe over the associated obstacle plane
          *
          * @return height above the obstacle in millimeters
          **/
-        double get_yTCP (void) const;
+        double get_yTCP(void) const;
 
         /**
          * @brief return the x-component of the y-axis of the beam baseframe, for the current plane
@@ -187,7 +184,7 @@ namespace rwlibs { namespace softbody {
          *
          * @return x-component of the y-axis of the beam baseframe
          **/
-        double get_uxTCPy (void) const;
+        double get_uxTCPy(void) const;
 
         /**
          * @brief return the y-component of the y-axis of the beam baseframe, for the current plane
@@ -195,7 +192,7 @@ namespace rwlibs { namespace softbody {
          *
          * @return x-component of the y-axis of the beam baseframe
          **/
-        double get_uyTCPy (void) const;
+        double get_uyTCPy(void) const;
 
         /**
          * @brief return the x-component of the y-axis of the beam baseframe
@@ -203,7 +200,7 @@ namespace rwlibs { namespace softbody {
          * @param planeTbeam the plane to beam transform to use
          * @return x-component of the y-axis of the beam baseframe
          **/
-        static double get_uxTCPy (const rw::math::Transform3D<> planeTbeam);
+        static double get_uxTCPy(const rw::math::Transform3D<> planeTbeam);
 
         /**
          * @brief return the y-component of the y-axis of the beam baseframe
@@ -211,18 +208,18 @@ namespace rwlibs { namespace softbody {
          * @param planeTbeam the plane to beam transform to use
          * @return x-component of the y-axis of the beam baseframe
          **/
-        static double get_uyTCPy (const rw::math::Transform3D<> planeTbeam);
+        static double get_uyTCPy(const rw::math::Transform3D<> planeTbeam);
 
         /**
          * @brief return the discretization step for the beam cross sections
          *
          * @return discretization step
          **/
-        double get_h (void) const;
+        double get_h(void) const;
 
       private:
-        std::shared_ptr< BeamGeometry > _geomPtr;
-        std::shared_ptr< BeamObstaclePlane > _obstaclePtr;
+        std::shared_ptr<BeamGeometry> _geomPtr;
+        std::shared_ptr<BeamObstaclePlane> _obstaclePtr;
         int _M;
 
         double _accuracy;
@@ -232,7 +229,7 @@ namespace rwlibs { namespace softbody {
 
         bool _useHingeConstraint;
 
-        std::vector< int > _integralConstraintIdxList;
+        std::vector<int> _integralConstraintIdxList;
     };
     /*@}*/
 }};    // namespace rwlibs::softbody

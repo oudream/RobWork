@@ -38,48 +38,47 @@ namespace rw { namespace geometry {
          * @param ref pointer to the referenced mesh
          * @param vertice  index of the referenced vertice
          */
-        ReferencedVertice (TriMeshData::Ptr ref, uint32_t vertice);
+        ReferencedVertice(TriMeshData::Ptr ref, uint32_t vertice);
 
         /**
          * @brief access to the index this mesh is refering to
          * @return uint32_t&
          */
-        uint32_t& idx () { return _verIndex; }
-
+        uint32_t& idx() { return _verIndex; }
 
         /**
          * @brief access to the index this mesh is refering to
          * @return uint32_t&
          */
-        uint32_t idx () const { return _verIndex; }
+        uint32_t idx() const { return _verIndex; }
 
         /**
          * @brief acces the vertice data
          * @param i index for the vertix corrdinate x=0 y=1 z=2
          * @return double&
          */
-        double& operator[] (size_t i) const;
+        double& operator[](size_t i) const;
 
         /**
          * @brief Copy the data of a vector into the vertice
          * @param rhs the vector to copy
          * @return this Vertice
          */
-        ReferencedVertice& operator= (rw::math::Vector3D< double > rhs);
+        ReferencedVertice& operator=(rw::math::Vector3D<double> rhs);
 
         /**
          * @brief Copy the data of a vector into the vertice
          * @param rhs the vector to copy
          * @return this Vertice
          */
-        ReferencedVertice& operator= (rw::math::Vector3D< float > rhs);
+        ReferencedVertice& operator=(rw::math::Vector3D<float> rhs);
 
         /**
          * @brief apply a transform to this vertice.
          * @param rhs the transform to apply
          * @return this Vertice
          */
-        ReferencedVertice& operator*= (rw::math::Transform3D< double > rhs);
+        ReferencedVertice& operator*=(rw::math::Transform3D<double> rhs);
 
         /**
          * @brief Serilization operator for converting to string
@@ -87,19 +86,19 @@ namespace rw { namespace geometry {
          * @param v [in] the vertice
          * @return std::ostream&
          */
-        friend std::ostream& operator<< (std::ostream& os, const ReferencedVertice& v);
+        friend std::ostream& operator<<(std::ostream& os, const ReferencedVertice& v);
 
         //! @brief implicit convertion to Vector3D
-        operator rw::math::Vector3D< double > () const;
+        operator rw::math::Vector3D<double>() const;
 
         //! @brief implicit convertion to Vector3D
-        operator rw::math::Vector3D< float > () const;
+        operator rw::math::Vector3D<float>() const;
 
       private:
         friend class ReferencedTriangle;
         friend class ReferencedEdge;
 
-        ReferencedVertice ();
+        ReferencedVertice();
         TriMeshData::Ptr _mesh;
         uint32_t _verIndex;
     };

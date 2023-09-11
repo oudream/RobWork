@@ -35,7 +35,7 @@ namespace rw { namespace trajectory {
      *
      * The FixedInterpolator will always return the same value and 0 for velocity and acceleration.
      */
-    template< class T > class FixedInterpolator : public Interpolator< T >
+    template<class T> class FixedInterpolator : public Interpolator<T>
     {
       public:
         /**
@@ -51,11 +51,9 @@ namespace rw { namespace trajectory {
          * @param value [in] Value to return for x(double t).
          * @param duration [in] Duration of the interpolator.
          */
-        FixedInterpolator (const T& value, double duration) :
-            _value (value), _zeroValue (value), _duration (duration)
-        {
-            for (size_t i = 0; i < _zeroValue.size (); i++)
-                _zeroValue[i] = 0;
+        FixedInterpolator(const T& value, double duration) :
+            _value(value), _zeroValue(value), _duration(duration) {
+            for(size_t i = 0; i < _zeroValue.size(); i++) _zeroValue[i] = 0;
         }
 
         /**
@@ -66,29 +64,28 @@ namespace rw { namespace trajectory {
          * @param zeroValue documentation missing !
          * @param duration [in] Duration of the interpolator.
          */
-        FixedInterpolator (const T& value, const T& zeroValue, double duration) :
-            _value (value), _zeroValue (zeroValue), _duration (duration)
-        {}
+        FixedInterpolator(const T& value, const T& zeroValue, double duration) :
+            _value(value), _zeroValue(zeroValue), _duration(duration) {}
 
         /**
          * @copydoc Interpolator::x()
          */
-        T x (double t) const { return _value; }
+        T x(double t) const { return _value; }
 
         /**
          * @copydoc Interpolator::dx()
          */
-        T dx (double t) const { return _zeroValue; }
+        T dx(double t) const { return _zeroValue; }
 
         /**
          * @copydoc Interpolator::ddx()
          */
-        T ddx (double t) const { return _zeroValue; }
+        T ddx(double t) const { return _zeroValue; }
 
         /**
          * @copydoc Interpolator::duration()
          */
-        double duration () const { return _duration; }
+        double duration() const { return _duration; }
 
       private:
         T _value;

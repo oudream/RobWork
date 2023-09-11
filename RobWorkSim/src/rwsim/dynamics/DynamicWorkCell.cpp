@@ -35,15 +35,14 @@ DynamicWorkCell::DynamicWorkCell(WorkCell::Ptr workcell) :
     _workcell(workcell), _collisionMargin(0.001),
     _worldDimension(Vector3D<>(0, 0, 0), Vector3D<>(20, 20, 20)), _gravity(0, 0, -9.82) {}
 
-DynamicWorkCell::DynamicWorkCell(WorkCell::Ptr workcell,
-                                 const DynamicWorkCell::BodyList& allbodies,
+DynamicWorkCell::DynamicWorkCell(WorkCell::Ptr workcell, const DynamicWorkCell::BodyList& allbodies,
                                  const ConstraintList& constraints,
                                  const DynamicWorkCell::DeviceList& devices,
                                  const ControllerList& controllers) :
     _workcell(workcell),
-    _allbodies(allbodies), _constraints(constraints), _devices(devices),
-    _controllers(controllers), _collisionMargin(0.001),
-    _worldDimension(Vector3D<>(0, 0, 0), Vector3D<>(20, 20, 20)), _gravity(0, 0, -9.82) {
+    _allbodies(allbodies), _constraints(constraints), _devices(devices), _controllers(controllers),
+    _collisionMargin(0.001), _worldDimension(Vector3D<>(0, 0, 0), Vector3D<>(20, 20, 20)),
+    _gravity(0, 0, -9.82) {
     for(SimulatedController::Ptr b : _controllers) {
         if(!b->getControllerModel()->isRegistered()) workcell->add(b->getControllerModel());
         if(!b->isRegistered()) b->registerIn(workcell->getStateStructure());
@@ -154,15 +153,16 @@ bool DynamicWorkCell::remove(Body::Ptr body) {
     return false;
 }
 
-
-std::ostream& operator<<(std::ostream& os, const rwsim::dynamics::DynamicWorkCell::ControllerList& list) {
+std::ostream& operator<<(std::ostream& os,
+                         const rwsim::dynamics::DynamicWorkCell::ControllerList& list) {
     os << "Controllers[" << list.size() << "] {";
     for(auto ctrl : list) { os << "Controller{ " << ctrl->getControllerName() << "} "; }
     os << "}";
     return os;
 }
 
-std::ostream& operator<<(std::ostream& os, const rwsim::dynamics::DynamicWorkCell::DeviceList& list) {
+std::ostream& operator<<(std::ostream& os,
+                         const rwsim::dynamics::DynamicWorkCell::DeviceList& list) {
     os << "Devices[" << list.size() << "] {";
     for(auto dev : list) { os << "Device{ " << dev->getName() << "} "; }
     os << "}";

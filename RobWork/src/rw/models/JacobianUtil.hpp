@@ -24,7 +24,7 @@
 
 #if !defined(SWIG)
 #include <rw/math/Transform3D.hpp>
-#endif 
+#endif
 
 namespace rw { namespace math {
     class Jacobian;
@@ -57,9 +57,9 @@ namespace rw { namespace models {
            The Jacobian is given relative to the common world frame of \b joint
            and \b tcp.
         */
-        static void addRevoluteJacobianCol (rw::math::Jacobian& jacobian, int row, int col,
-                                            const rw::math::Transform3D<>& joint,
-                                            const rw::math::Transform3D<>& tcp);
+        static void addRevoluteJacobianCol(rw::math::Jacobian& jacobian, int row, int col,
+                                           const rw::math::Transform3D<>& joint,
+                                           const rw::math::Transform3D<>& tcp);
 
         /**
            @brief Add to column \b col of \b jacobian the Jacobian of a
@@ -69,9 +69,9 @@ namespace rw { namespace models {
            The Jacobian is given relative to the common world frame of \b joint
            and \b tcp.
         */
-        static void addPrismaticJacobianCol (rw::math::Jacobian& jacobian, int row, int col,
-                                             const rw::math::Transform3D<>& joint,
-                                             const rw::math::Transform3D<>& tcp);
+        static void addPrismaticJacobianCol(rw::math::Jacobian& jacobian, int row, int col,
+                                            const rw::math::Transform3D<>& joint,
+                                            const rw::math::Transform3D<>& tcp);
 
         /**
            @brief Add to column \b col of \b jacobian the Jacobian for a passive
@@ -82,9 +82,9 @@ namespace rw { namespace models {
            The Jacobian is given relative to the common world frame of \b joint
            and \b tcp.
         */
-        static void addPassiveRevoluteJacobianCol (rw::math::Jacobian& jacobian, int row, int col,
-                                                   const rw::math::Transform3D<>& passive,
-                                                   const rw::math::Transform3D<>& tcp, double scale);
+        static void addPassiveRevoluteJacobianCol(rw::math::Jacobian& jacobian, int row, int col,
+                                                  const rw::math::Transform3D<>& passive,
+                                                  const rw::math::Transform3D<>& tcp, double scale);
 
         /**
            @brief True iff \b child is in the subtree of \b parent for a tree
@@ -98,8 +98,9 @@ namespace rw { namespace models {
 
            isInSubTree() runs in time proportional to the size of the subtree.
         */
-        static bool isInSubTree (const rw::kinematics::Frame& parent, const rw::kinematics::Frame& child,
-                                 const rw::kinematics::State& state);
+        static bool isInSubTree(const rw::kinematics::Frame& parent,
+                                const rw::kinematics::Frame& child,
+                                const rw::kinematics::State& state);
 
         /*
            @brief True iff \b child is controlled by a joint of \b device for a

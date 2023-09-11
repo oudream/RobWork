@@ -30,7 +30,7 @@ namespace rwlibs { namespace geometry { namespace simplefinger {
     {
       public:
         //! Smart pointer to this type of class.
-        typedef rw::core::Ptr< SimpleFinger > Ptr;
+        typedef rw::core::Ptr<SimpleFinger> Ptr;
 
       public:
         /**
@@ -39,7 +39,7 @@ namespace rwlibs { namespace geometry { namespace simplefinger {
          * Creates a basic finger shape -- box (0.2 x 0.025 x 0.01) with
          * no extra geometric features.
          */
-        SimpleFinger ();
+        SimpleFinger();
 
         /**
          * Constructor.
@@ -47,40 +47,40 @@ namespace rwlibs { namespace geometry { namespace simplefinger {
          * @param initQ [in] vector of parameters (length, width, depth, chflength, chfdepth,
          * cutpos, cutdepth, cutangle, cuttilt).
          */
-        SimpleFinger (const rw::math::Q& initQ);
+        SimpleFinger(const rw::math::Q& initQ);
 
-        virtual ~SimpleFinger ();
-
-        //! @copydoc rw::geometry::Primitive::getParameters
-        virtual rw::geometry::TriMesh::Ptr createMesh (int resolution = 0) const;
+        virtual ~SimpleFinger();
 
         //! @copydoc rw::geometry::Primitive::getParameters
-        virtual rw::math::Q getParameters () const;
+        virtual rw::geometry::TriMesh::Ptr createMesh(int resolution = 0) const;
+
+        //! @copydoc rw::geometry::Primitive::getParameters
+        virtual rw::math::Q getParameters() const;
 
         //! @copydoc rw::geometry::Primitive::setParameters
-        virtual void setParameters (const rw::math::Q& q);
+        virtual void setParameters(const rw::math::Q& q);
 
         //! @copydoc rw::geometry::GeometryData::getType
-        GeometryType getType () const { return UserType; }
+        GeometryType getType() const { return UserType; }
 
-        double getLength () const { return _length; }
-        void setLength (double value) { _length = value; }
-        double getWidth () const { return _width; }
-        void setWidth (double value) { _width = value; }
-        double getDepth () const { return _length; }
-        void setDepth (double value) { _depth = value; }
-        double getChamferLength () const { return _chflength; }
-        void setChamferLength (double value) { _chflength = value; }
-        double getChamferDepth () const { return _chfdepth; }
-        void setChamferDepth (double value) { _chfdepth = value; }
-        double getCutPosition () const { return _cutpos; }
-        void setCutPosition (double value) { _cutpos = value; }
-        double getCutDepth () const { return _cutdepth; }
-        void setCutDepth (double value) { _cutdepth = value; }
-        double getCutAngle () const { return _cutangle; }
-        void setCutAngle (double value) { _cutangle = value; }
-        double getCutTilt () const { return _cuttilt; }
-        void setCutTilt (double value) { _cuttilt = value; }
+        double getLength() const { return _length; }
+        void setLength(double value) { _length = value; }
+        double getWidth() const { return _width; }
+        void setWidth(double value) { _width = value; }
+        double getDepth() const { return _length; }
+        void setDepth(double value) { _depth = value; }
+        double getChamferLength() const { return _chflength; }
+        void setChamferLength(double value) { _chflength = value; }
+        double getChamferDepth() const { return _chfdepth; }
+        void setChamferDepth(double value) { _chfdepth = value; }
+        double getCutPosition() const { return _cutpos; }
+        void setCutPosition(double value) { _cutpos = value; }
+        double getCutDepth() const { return _cutdepth; }
+        void setCutDepth(double value) { _cutdepth = value; }
+        double getCutAngle() const { return _cutangle; }
+        void setCutAngle(double value) { _cutangle = value; }
+        double getCutTilt() const { return _cuttilt; }
+        void setCutTilt(double value) { _cuttilt = value; }
 
       private:
         /* general dimensions */

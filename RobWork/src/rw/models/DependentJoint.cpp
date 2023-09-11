@@ -20,8 +20,6 @@
 using namespace rw::models;
 using namespace rw::kinematics;
 
-DependentJoint::DependentJoint (const std::string& name) : Joint (name, 0)
-{}
+DependentJoint::DependentJoint(const std::string& name) : Joint(name, 0) {}
 
-DependentJoint::~DependentJoint ()
-{}
+DependentJoint::~DependentJoint() {}

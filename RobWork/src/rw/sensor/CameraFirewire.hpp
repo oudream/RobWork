@@ -23,7 +23,7 @@
  */
 #if !defined(SWIG)
 #include <rw/sensor/Camera.hpp>
-#endif 
+#endif
 
 namespace rw { namespace sensor {
 
@@ -127,65 +127,65 @@ namespace rw { namespace sensor {
          * @param name [in] name of sensor
          * @param modelInfo [in] info string
          */
-        CameraFirewire (const std::string& name, const std::string& modelInfo);
+        CameraFirewire(const std::string& name, const std::string& modelInfo);
 
       public:
         /**
          * @brief destructor
          */
-        virtual ~CameraFirewire ();
+        virtual ~CameraFirewire();
 
         /**
          * @brief returns the CaptureMode of this camera
          * @return the camera capturemode
          */
-        virtual CaptureMode getCaptureMode () = 0;
+        virtual CaptureMode getCaptureMode() = 0;
 
         /**
          * @brief sets the CaptureMode of this camera.
          * @param mode [in] the wanted capture mode
          * @return true if CaptureMode was set successfully, false otherwise
          */
-        virtual bool setCaptureMode (CaptureMode mode) = 0;
+        virtual bool setCaptureMode(CaptureMode mode) = 0;
 
         /**
          * @brief returns the CaptureMode of this camera
          * @return the camera capturemode
          */
-        virtual ColorCode getColorMode () = 0;
+        virtual ColorCode getColorMode() = 0;
 
         /**
          * @brief sets the CaptureMode of this camera.
          * @param mode [in] the wanted capture mode
          * @return true if CaptureMode was set successfully, false otherwise
          */
-        virtual bool setColorMode (ColorCode mode) = 0;
+        virtual bool setColorMode(ColorCode mode) = 0;
 
         /**
          * @brief returns the errorcode of the latest error. If no error has occured
          * then SUCCES is returned.
          * @return the error code
          */
-        virtual ErrorCode getError () { return SUCCES; };
+        virtual ErrorCode getError() { return SUCCES; };
 
         /**
          * @brief tests whether this camera is in an error state.
          * @return true if camera is in error state, false otherwise
          */
-        virtual bool isError () { return false; };
+        virtual bool isError() { return false; };
 
         /**
          * @brief returns the capture policy of this camera.
          * @return capture policy of the camera
          */
-        virtual CapturePolicy getCapturePolicy () = 0;
+        virtual CapturePolicy getCapturePolicy() = 0;
 
         /**
          * @brief sets the capture policy of this camera
          * @param policy [in] the capture policy
          * @return true if capture policy was set succesfully, false otherwise
          */
-        virtual bool setCapturePolicy (CapturePolicy policy) { return false; };
+        virtual bool setCapturePolicy(CapturePolicy policy) { return false; };
 
         /**
          * @brief returns whether the specified camera option is supported
@@ -193,7 +193,7 @@ namespace rw { namespace sensor {
          * @param option [in] the specific CameraOption
          * @return true if the option is available, false otherwise.
          */
-        virtual bool isFeatureAvailable (CameraFeature option) { return false; };
+        virtual bool isFeatureAvailable(CameraFeature option) { return false; };
 
         /**
          * @brief returns the value of the specified camera setting. If the
@@ -202,7 +202,7 @@ namespace rw { namespace sensor {
          * @return value of the setting if setting is supported and camera is
          * initilized, else -1 is returned.
          */
-        virtual double getFeature (CameraFeature setting) { return -1; };
+        virtual double getFeature(CameraFeature setting) { return -1; };
 
         /**
          * @brief sets the value of the specified camera setting. If the
@@ -211,12 +211,12 @@ namespace rw { namespace sensor {
          * @param value [in] the value of the feature
          * @return true if the setting was succesfully changed, false otherwise.
          */
-        virtual bool setFeature (CameraFeature setting, double value) { return false; };
+        virtual bool setFeature(CameraFeature setting, double value) { return false; };
 
       protected:
       private:
-        CameraFirewire (const CameraFirewire&);
-        CameraFirewire& operator= (const CameraFirewire&);
+        CameraFirewire(const CameraFirewire&);
+        CameraFirewire& operator=(const CameraFirewire&);
     };
 
     /* @} */

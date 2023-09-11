@@ -32,92 +32,82 @@ using rwsimlibs::test::IntegratorRotationTest;
 
 #define ANGULAR_VELOCITY 4 * Pi
 
-IntegratorRotationTest::IntegratorRotationTest ()
-{}
+IntegratorRotationTest::IntegratorRotationTest() {}
 
-IntegratorRotationTest::~IntegratorRotationTest ()
-{}
+IntegratorRotationTest::~IntegratorRotationTest() {}
 
-void IntegratorRotationTest::run (TestHandle::Ptr handle, const std::string& engineID,
-                                  const PropertyMap& parameters,
-                                  rw::core::Ptr< rwsim::log::SimulatorLogScope > verbose)
-{
+void IntegratorRotationTest::run(TestHandle::Ptr handle, const std::string& engineID,
+                                 const PropertyMap& parameters,
+                                 rw::core::Ptr<rwsim::log::SimulatorLogScope> verbose) {
     using namespace std::placeholders;
-    static const InitCallback initCb (
-        std::bind (&IntegratorRotationTest::initialize, _1, _2));
-    static const TestCallback cb (
-        std::bind (&IntegratorRotationTest::updateResults, _1));
-    const double dt = parameters.get< double > ("Timestep") / 1000.;
+    static const InitCallback initCb(std::bind(&IntegratorRotationTest::initialize, _1, _2));
+    static const TestCallback cb(std::bind(&IntegratorRotationTest::updateResults, _1));
+    const double dt = parameters.get<double>("Timestep") / 1000.;
 
     // Initialize results with descriptions
-    handle->addResult ("Distance", "The distance of the center of mass from initial position.");
-    handle->addResult ("Energy", "The energy of the object.");
-    handle->addResult ("Angular Velocity", "The size of the angular velocity.");
+    handle->addResult("Distance", "The distance of the center of mass from initial position.");
+    handle->addResult("Energy", "The energy of the object.");
+    handle->addResult("Angular Velocity", "The size of the angular velocity.");
 
     // Run standard loop
-    runEngineLoop (dt, handle, engineID, parameters, verbose, cb, initCb);
+    runEngineLoop(dt, handle, engineID, parameters, verbose, cb, initCb);
 }
 
-double IntegratorRotationTest::getRunTime () const
-{
+double IntegratorRotationTest::getRunTime() const {
     return 30;
 }
 
-DynamicWorkCell::Ptr IntegratorRotationTest::makeIntegratorDWC (const std::string& integratorType)
-{
-    const DynamicWorkCell::Ptr dwc = IntegratorTest::makeIntegratorDWC (integratorType);
-    dwc->setGravity (Vector3D<>::zero ());
+DynamicWorkCell::Ptr IntegratorRotationTest::makeIntegratorDWC(const std::string& integratorType) {
+    const DynamicWorkCell::Ptr dwc = IntegratorTest::makeIntegratorDWC(integratorType);
+    dwc->setGravity(Vector3D<>::zero());
     return dwc;
 }
 
-double IntegratorRotationTest::getExpectedEnergy (const rw::core::Ptr< const DynamicWorkCell > dwc)
-{
-    State state                = dwc->getWorkcell ()->getDefaultState ();
-    const RigidBody::Ptr rbody = dwc->findBody< RigidBody > ("Object");
-    RW_ASSERT (!rbody.isNull ());
-    rbody->setAngVelW (Vector3D<> (0, 0, ANGULAR_VELOCITY), state);
-    return rbody->calcEnergy (state);
+double IntegratorRotationTest::getExpectedEnergy(const rw::core::Ptr<const DynamicWorkCell> dwc) {
+    State state                = dwc->getWorkcell()->getDefaultState();
+    const RigidBody::Ptr rbody = dwc->findBody<RigidBody>("Object");
+    RW_ASSERT(!rbody.isNull());
+    rbody->setAngVelW(Vector3D<>(0, 0, ANGULAR_VELOCITY), state);
+    return rbody->calcEnergy(state);
 }
 
-void IntegratorRotationTest::initialize (rw::core::Ptr< const DynamicWorkCell > dwc, State& state)
-{
-    const RigidBody::Ptr rbody = dwc->findBody< RigidBody > ("Object");
-    RW_ASSERT (!rbody.isNull ());
-    rbody->setAngVelW (Vector3D<> (0, 0, ANGULAR_VELOCITY), state);
+void IntegratorRotationTest::initialize(rw::core::Ptr<const DynamicWorkCell> dwc, State& state) {
+    const RigidBody::Ptr rbody = dwc->findBody<RigidBody>("Object");
+    RW_ASSERT(!rbody.isNull());
+    rbody->setAngVelW(Vector3D<>(0, 0, ANGULAR_VELOCITY), state);
 }
 
-void IntegratorRotationTest::updateResults (const EngineLoopInfo& info)
-{
+void IntegratorRotationTest::updateResults(const EngineLoopInfo& info) {
     // Extract info
-    const TestHandle::Ptr handle                     = info.handle;
-    const std::string& engineID                      = info.engineID;
-    const rw::core::Ptr< const DynamicWorkCell > dwc = info.dwc;
-    const State& state                               = *info.state;
-    const double time                                = info.time;
+    const TestHandle::Ptr handle                   = info.handle;
+    const std::string& engineID                    = info.engineID;
+    const rw::core::Ptr<const DynamicWorkCell> dwc = info.dwc;
+    const State& state                             = *info.state;
+    const double time                              = info.time;
 
     // Get required info
-    const RigidBody::Ptr rbody = dwc->findBody< RigidBody > ("Object");
-    RW_ASSERT (!rbody.isNull ());
-    const Transform3D<> T = rbody->getTransformW (state);
+    const RigidBody::Ptr rbody = dwc->findBody<RigidBody>("Object");
+    RW_ASSERT(!rbody.isNull());
+    const Transform3D<> T = rbody->getTransformW(state);
 
     // Calculate result values
-    const double distance = T.P ().norm2 ();
-    const double energy   = rbody->calcEnergy (state);
-    const double velAng   = rbody->getAngVel (state).norm2 ();
+    const double distance = T.P().norm2();
+    const double energy   = rbody->calcEnergy(state);
+    const double velAng   = rbody->getAngVel(state).norm2();
 
-    handle->addResult ("Distance", "The distance of the center of mass from initial position.");
-    handle->addResult ("Energy", "The energy of the object.");
-    handle->addResult ("Angular Velocity", "The size of the angular velocity.");
+    handle->addResult("Distance", "The distance of the center of mass from initial position.");
+    handle->addResult("Energy", "The energy of the object.");
+    handle->addResult("Angular Velocity", "The size of the angular velocity.");
 
     // Add results
-    handle->append (TimedState (time, state));
-    handle->getResult ("Distance").addValue (time, distance);
-    handle->getResult ("Energy").addValue (time, energy);
-    handle->getResult ("Angular Velocity").addValue (time, velAng);
+    handle->append(TimedState(time, state));
+    handle->getResult("Distance").addValue(time, distance);
+    handle->getResult("Energy").addValue(time, energy);
+    handle->getResult("Angular Velocity").addValue(time, velAng);
 
     // Add failures if results were not as expected
-    const double expEnergy = getExpectedEnergy (dwc);
-    handle->getResult ("Distance").checkLastValues (0);
+    const double expEnergy = getExpectedEnergy(dwc);
+    handle->getResult("Distance").checkLastValues(0);
 
     // For Bullet >= 2.82
     // handle->getResult("Energy").checkLastValuesBetween(expEnergy*0.325,expEnergy*1.0095); //
@@ -126,32 +116,31 @@ void IntegratorRotationTest::updateResults (const EngineLoopInfo& info)
     // Bullet, higher: RWPE
 
     // For Bullet <= 2.81
-    handle->getResult ("Energy").checkLastValuesBetween (
+    handle->getResult("Energy").checkLastValuesBetween(
         expEnergy * 0.325, expEnergy * 400);    // lower: Bullet, higher: Bullet <= 2.81
-    handle->getResult ("Angular Velocity")
-        .checkLastValuesBetween (ANGULAR_VELOCITY * 0.705,
-                                 ANGULAR_VELOCITY * 20);    // lower: Bullet, higher: Bullet <= 2.81
+    handle->getResult("Angular Velocity")
+        .checkLastValuesBetween(ANGULAR_VELOCITY * 0.705,
+                                ANGULAR_VELOCITY * 20);    // lower: Bullet, higher: Bullet <= 2.81
 
     // Engine specific tests
-    if (engineID == "ODE") {
+    if(engineID == "ODE") {
         // ODE 0.14:
         // handle->getResult("Energy").checkLastValuesBetween(expEnergy*0.915,expEnergy);
         // handle->getResult("Angular
         // Velocity").checkLastValuesBetween(ANGULAR_VELOCITY*0.815,ANGULAR_VELOCITY);
         // ODE 0.11.1:
-        handle->getResult ("Energy").checkLastValuesBetween (expEnergy * 0.915, expEnergy * 400);
-        handle->getResult ("Angular Velocity")
-            .checkLastValuesBetween (ANGULAR_VELOCITY * 0.815, ANGULAR_VELOCITY * 20);
+        handle->getResult("Energy").checkLastValuesBetween(expEnergy * 0.915, expEnergy * 400);
+        handle->getResult("Angular Velocity")
+            .checkLastValuesBetween(ANGULAR_VELOCITY * 0.815, ANGULAR_VELOCITY * 20);
     }
-    else if (engineID == "Bullet") {    // Bullet >= 2.82
+    else if(engineID == "Bullet") {    // Bullet >= 2.82
         // handle->getResult("Energy").checkLastValuesBetween(expEnergy*0.325,expEnergy);
         // handle->getResult("Angular
         // Velocity").checkLastValuesBetween(ANGULAR_VELOCITY*0.705,ANGULAR_VELOCITY);
     }
-    else if (engineID == "RWPEIsland") {
-        handle->getResult ("Energy").checkLastValuesBetween (expEnergy * 0.9985,
-                                                             expEnergy * 1.0095);
-        handle->getResult ("Angular Velocity")
-            .checkLastValuesBetween (ANGULAR_VELOCITY, ANGULAR_VELOCITY * 1.0045);
+    else if(engineID == "RWPEIsland") {
+        handle->getResult("Energy").checkLastValuesBetween(expEnergy * 0.9985, expEnergy * 1.0095);
+        handle->getResult("Angular Velocity")
+            .checkLastValuesBetween(ANGULAR_VELOCITY, ANGULAR_VELOCITY * 1.0045);
     }
 }

@@ -48,13 +48,13 @@ namespace rwsimlibs { namespace test {
         struct ColorScheme
         {
             //! @brief Constructor.
-            ColorScheme ();
+            ColorScheme();
 
             /**
              * @brief Construct with same color for everything.
              * @param color [in] the rgb color.
              */
-            ColorScheme (const rw::math::Vector3D< float >& color);
+            ColorScheme(const rw::math::Vector3D<float>& color);
 
             /**
              * @brief Construct with separate colors for fixed, kinematic and dynamic bodies.
@@ -62,33 +62,33 @@ namespace rwsimlibs { namespace test {
              * @param kinematicBodies [in] color for kinematic bodies.
              * @param dynamicBodies [in] color for dynamic bodies.
              */
-            ColorScheme (const rw::math::Vector3D< float >& fixedBodies,
-                         const rw::math::Vector3D< float >& kinematicBodies,
-                         const rw::math::Vector3D< float >& dynamicBodies);
+            ColorScheme(const rw::math::Vector3D<float>& fixedBodies,
+                        const rw::math::Vector3D<float>& kinematicBodies,
+                        const rw::math::Vector3D<float>& dynamicBodies);
 
             //! @brief Color for fixed bodies.
-            rw::math::Vector3D< float > fixedBodies;
+            rw::math::Vector3D<float> fixedBodies;
             //! @brief Color for kinematic bodies.
-            rw::math::Vector3D< float > kinematicBodies;
+            rw::math::Vector3D<float> kinematicBodies;
             //! @brief Color for dynamic bodies.
-            rw::math::Vector3D< float > dynamicBodies;
+            rw::math::Vector3D<float> dynamicBodies;
         };
 
         //! @brief Default color scheme.
         struct PaHColors : public ColorScheme
         {
             //! @brief Constructor.
-            PaHColors ();
+            PaHColors();
         };
 
         /**
          * @brief Create new builder with given color scheme.
          * @param colors [in] the colors to use.
          */
-        DynamicWorkCellBuilder (const ColorScheme& colors = PaHColors ());
+        DynamicWorkCellBuilder(const ColorScheme& colors = PaHColors());
 
         //! @brief Destructor.
-        virtual ~DynamicWorkCellBuilder ();
+        virtual ~DynamicWorkCellBuilder();
 
         /**
          * @brief Add a fixed floor.
@@ -96,8 +96,8 @@ namespace rwsimlibs { namespace test {
          * @param name [in] (optional) the name of the body - default is Floor.
          * @param trimesh [in] (optional) use a trimesh to represent the geometry.
          */
-        void addFloor (rw::core::Ptr< rwsim::dynamics::DynamicWorkCell > dwc,
-                       const std::string& name = "Floor", bool trimesh = false) const;
+        void addFloor(rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> dwc,
+                      const std::string& name = "Floor", bool trimesh = false) const;
 
         /**
          * @brief Add a fixed plane.
@@ -107,9 +107,9 @@ namespace rwsimlibs { namespace test {
          * @param name [in] (optional) the name of the body - default is Plane.
          * @param trimesh [in] (optional) use a trimesh to represent the geometry.
          */
-        void addPlane (rw::core::Ptr< rwsim::dynamics::DynamicWorkCell > dwc,
-                       const rw::math::Vector3D<>& n, double d, const std::string& name = "Plane",
-                       bool trimesh = false) const;
+        void addPlane(rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> dwc,
+                      const rw::math::Vector3D<>& n, double d, const std::string& name = "Plane",
+                      bool trimesh = false) const;
 
         /**
          * @brief Add a dynamic ball.
@@ -119,9 +119,9 @@ namespace rwsimlibs { namespace test {
          * @param name [in] (optional) the name of the body - default is Ball.
          * @param parent [in] (optional) the name of the parent frame - default is WORLD.
          */
-        void addBall (rw::core::Ptr< rwsim::dynamics::DynamicWorkCell > dwc, double radius,
-                      double density, const std::string& name = "Ball",
-                      const std::string& parent = "WORLD") const;
+        void addBall(rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> dwc, double radius,
+                     double density, const std::string& name = "Ball",
+                     const std::string& parent = "WORLD") const;
 
         /**
          * @brief Add a fixed ball.
@@ -130,9 +130,9 @@ namespace rwsimlibs { namespace test {
          * @param name [in] (optional) the name of the body - default is Ball.
          * @param parent [in] (optional) the name of the parent frame - default is WORLD.
          */
-        void addBallFixed (rw::core::Ptr< rwsim::dynamics::DynamicWorkCell > dwc, double radius,
-                           const std::string& name   = "Ball",
-                           const std::string& parent = "WORLD") const;
+        void addBallFixed(rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> dwc, double radius,
+                          const std::string& name   = "Ball",
+                          const std::string& parent = "WORLD") const;
 
         /**
          * @brief Add a dynamic cylinder.
@@ -144,9 +144,9 @@ namespace rwsimlibs { namespace test {
          * @param parent [in] (optional) the name of the parent frame - default is WORLD.
          * @param trimesh [in] (optional) use a trimesh to represent the geometry.
          */
-        void addCylinder (rw::core::Ptr< rwsim::dynamics::DynamicWorkCell > dwc, double radius,
-                          double height, double density, const std::string& name = "Cylinder",
-                          const std::string& parent = "WORLD", bool trimesh = false) const;
+        void addCylinder(rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> dwc, double radius,
+                         double height, double density, const std::string& name = "Cylinder",
+                         const std::string& parent = "WORLD", bool trimesh = false) const;
 
         /**
          * @brief Add a fixed cylinder.
@@ -157,9 +157,9 @@ namespace rwsimlibs { namespace test {
          * @param parent [in] (optional) the name of the parent frame - default is WORLD.
          * @param trimesh [in] (optional) use a trimesh to represent the geometry.
          */
-        void addCylinderFixed (rw::core::Ptr< rwsim::dynamics::DynamicWorkCell > dwc, double radius,
-                               double height, const std::string& name = "Cylinder",
-                               const std::string& parent = "WORLD", bool trimesh = false) const;
+        void addCylinderFixed(rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> dwc, double radius,
+                              double height, const std::string& name = "Cylinder",
+                              const std::string& parent = "WORLD", bool trimesh = false) const;
 
         /**
          * @brief Add a dynamic tube.
@@ -171,9 +171,9 @@ namespace rwsimlibs { namespace test {
          * @param name [in] (optional) the name of the body - default is Tube.
          * @param trimesh [in] (optional) use a trimesh to represent the geometry.
          */
-        void addTube (rw::core::Ptr< rwsim::dynamics::DynamicWorkCell > dwc, double radius,
-                      double thickness, double height, double density,
-                      const std::string& name = "Tube", bool trimesh = false) const;
+        void addTube(rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> dwc, double radius,
+                     double thickness, double height, double density,
+                     const std::string& name = "Tube", bool trimesh = false) const;
 
         /**
          * @brief Add a dynamic box.
@@ -185,9 +185,9 @@ namespace rwsimlibs { namespace test {
          * @param name [in] (optional) the name of the body - default is Box.
          * @param trimesh [in] (optional) use a trimesh to represent the geometry.
          */
-        void addBox (rw::core::Ptr< rwsim::dynamics::DynamicWorkCell > dwc, double x, double y,
-                     double z, double density, const std::string& name = "Box",
-                     bool trimesh = false) const;
+        void addBox(rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> dwc, double x, double y,
+                    double z, double density, const std::string& name = "Box",
+                    bool trimesh = false) const;
 
         /**
          * @brief Add a kinematic box.
@@ -198,20 +198,20 @@ namespace rwsimlibs { namespace test {
          * @param name [in] (optional) the name of the body - default is Box.
          * @param trimesh [in] (optional) use a trimesh to represent the geometry.
          */
-        void addBoxKin (rw::core::Ptr< rwsim::dynamics::DynamicWorkCell > dwc, double x, double y,
-                        double z, const std::string& name = "Box", bool trimesh = false) const;
+        void addBoxKin(rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> dwc, double x, double y,
+                       double z, const std::string& name = "Box", bool trimesh = false) const;
 
         /**
          * @brief Construct default body info.
          * @return default body info.
          */
-        static rwsim::dynamics::BodyInfo defaultInfo ();
+        static rwsim::dynamics::BodyInfo defaultInfo();
 
         /**
          * @brief Insert default info into existing body info.
          * @param info [in/out] the body info to update.
          */
-        static void defaultInfo (rwsim::dynamics::BodyInfo& info);
+        static void defaultInfo(rwsim::dynamics::BodyInfo& info);
 
         /**
          * @brief Add mass properties for a ball.
@@ -219,7 +219,7 @@ namespace rwsimlibs { namespace test {
          * @param radius [in] the radius of the ball.
          * @param density [in] the mass density.
          */
-        static void ballInfo (rwsim::dynamics::BodyInfo& info, double radius, double density);
+        static void ballInfo(rwsim::dynamics::BodyInfo& info, double radius, double density);
 
         /**
          * @brief Add mass properties for a cylinder.
@@ -228,8 +228,8 @@ namespace rwsimlibs { namespace test {
          * @param height [in] the length of the cylinder.
          * @param density [in] the mass density.
          */
-        static void cylinderInfo (rwsim::dynamics::BodyInfo& info, double radius, double height,
-                                  double density);
+        static void cylinderInfo(rwsim::dynamics::BodyInfo& info, double radius, double height,
+                                 double density);
 
         /**
          * @brief Add mass properties for a tube.
@@ -239,8 +239,8 @@ namespace rwsimlibs { namespace test {
          * @param height [in] the length of the tube.
          * @param density [in] the mass density.
          */
-        static void tubeInfo (rwsim::dynamics::BodyInfo& info, double radius, double thickness,
-                              double height, double density);
+        static void tubeInfo(rwsim::dynamics::BodyInfo& info, double radius, double thickness,
+                             double height, double density);
 
         /**
          * @brief Add mass properties for a box.
@@ -250,8 +250,8 @@ namespace rwsimlibs { namespace test {
          * @param z [in] side length.
          * @param density [in] the mass density.
          */
-        static void boxInfo (rwsim::dynamics::BodyInfo& info, double x, double y, double z,
-                             double density);
+        static void boxInfo(rwsim::dynamics::BodyInfo& info, double x, double y, double z,
+                            double density);
 
         /**
          * @brief Add material data to the dynamic workcell.
@@ -259,8 +259,8 @@ namespace rwsimlibs { namespace test {
          * @param friction [in] (optional) the friction coefficient - default is 0.
          * @param restitution [in] (optional) the restitution coefficient - default is 0.
          */
-        static void addMaterialData (rw::core::Ptr< rwsim::dynamics::DynamicWorkCell > dwc,
-                                     double friction = 0, double restitution = 0);
+        static void addMaterialData(rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> dwc,
+                                    double friction = 0, double restitution = 0);
 
         /**
          * @brief Exclude pairs of bodies from contact detection.
@@ -268,8 +268,8 @@ namespace rwsimlibs { namespace test {
          * @param bodyA [in] pattern of the first name.
          * @param bodyB [in] pattern of the second name.
          */
-        static void contactsExclude (rw::core::Ptr< rwsim::dynamics::DynamicWorkCell > dwc,
-                                     const std::string& bodyA, const std::string& bodyB);
+        static void contactsExclude(rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> dwc,
+                                    const std::string& bodyA, const std::string& bodyB);
 
       private:
         ColorScheme _colors;

@@ -29,16 +29,15 @@ namespace rw { namespace graspplanning {
     class GraspValidateFilter
     {
       public:
-
         /**
          * @brief Constructor
          */
-        GraspValidateFilter() {};
+        GraspValidateFilter(){};
 
         /**
          * @brief destructor
          */
-        virtual ~GraspValidateFilter (){};
+        virtual ~GraspValidateFilter(){};
 
         /**
          * @brief tests if a grasp \b grasp is valid in regard to the criterias
@@ -46,7 +45,7 @@ namespace rw { namespace graspplanning {
          * @param grasp
          * @return
          */
-        virtual bool isValid (const Grasp3D& grasp) = 0;
+        virtual bool isValid(const Grasp3D& grasp) = 0;
     };
 
 }}     // namespace rw::graspplanning

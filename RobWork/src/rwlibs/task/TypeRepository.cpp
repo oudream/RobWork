@@ -22,16 +22,13 @@
 
 using namespace rwlibs::task;
 
-TypeRepository::TypeRepository ()
-{
-    _typeMap[typeid (rw::math::Q).name ()]             = Type::Q;
-    _typeMap[typeid (rw::math::Transform3D<>).name ()] = Type::Transform3D;
-    _next                                              = Type::User;
+TypeRepository::TypeRepository() {
+    _typeMap[typeid(rw::math::Q).name()]             = Type::Q;
+    _typeMap[typeid(rw::math::Transform3D<>).name()] = Type::Transform3D;
+    _next                                            = Type::User;
 }
 
-
-TypeRepository& TypeRepository::instance ()
-{
+TypeRepository& TypeRepository::instance() {
     static TypeRepository repository;
     return repository;
 }

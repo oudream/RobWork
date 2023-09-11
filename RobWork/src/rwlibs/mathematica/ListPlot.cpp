@@ -25,108 +25,92 @@
 using namespace rw::core;
 using namespace rwlibs::mathematica;
 
-ListPlot::ListPlot () : Mathematica::FunctionBase ("ListPlot")
-{}
+ListPlot::ListPlot() : Mathematica::FunctionBase("ListPlot") {}
 
-ListPlot::ListPlot (const Expression& data) : Mathematica::FunctionBase ("ListPlot")
-{
-    _data = data.clone ();
+ListPlot::ListPlot(const Expression& data) : Mathematica::FunctionBase("ListPlot") {
+    _data = data.clone();
 }
 
-ListPlot::ListPlot (const Expression& data, const std::list< Expression::Ptr >& options) :
-    Mathematica::FunctionBase ("ListPlot")
-{
-    _data    = data.clone ();
+ListPlot::ListPlot(const Expression& data, const std::list<Expression::Ptr>& options) :
+    Mathematica::FunctionBase("ListPlot") {
+    _data    = data.clone();
     _options = options;
 }
 
-ListPlot::ListPlot (const std::vector< double >& x, const std::vector< double >& y,
-                    const std::list< Expression::Ptr >& options) :
-    Mathematica::FunctionBase ("ListPlot")
-{
-    RW_ASSERT (x.size () == y.size ());
-    const List::Ptr list = ownedPtr (new List ());
-    for (std::size_t i = 0; i < x.size (); i++) {
-        const List::Ptr innerList = ownedPtr (new List ());
-        innerList->add (x[i]);
-        innerList->add (y[i]);
-        list->add (innerList);
+ListPlot::ListPlot(const std::vector<double>& x, const std::vector<double>& y,
+                   const std::list<Expression::Ptr>& options) :
+    Mathematica::FunctionBase("ListPlot") {
+    RW_ASSERT(x.size() == y.size());
+    const List::Ptr list = ownedPtr(new List());
+    for(std::size_t i = 0; i < x.size(); i++) {
+        const List::Ptr innerList = ownedPtr(new List());
+        innerList->add(x[i]);
+        innerList->add(y[i]);
+        list->add(innerList);
     }
     _data    = list;
     _options = options;
 }
 
-ListPlot::~ListPlot ()
-{}
+ListPlot::~ListPlot() {}
 
-std::list< rw::core::Ptr< const Mathematica::Expression > > ListPlot::getArguments () const
-{
-    std::list< rw::core::Ptr< const Expression > > res;
-    res.push_back (_data);
-    for (const Expression::Ptr option : _options) {
-        res.push_back (option);
-    }
+std::list<rw::core::Ptr<const Mathematica::Expression>> ListPlot::getArguments() const {
+    std::list<rw::core::Ptr<const Expression>> res;
+    res.push_back(_data);
+    for(const Expression::Ptr option : _options) { res.push_back(option); }
     return res;
 }
 
-Mathematica::Expression::Ptr ListPlot::clone () const
-{
-    ListPlot::Ptr clone = ownedPtr (new ListPlot (*_data));
+Mathematica::Expression::Ptr ListPlot::clone() const {
+    ListPlot::Ptr clone = ownedPtr(new ListPlot(*_data));
     clone->_options     = _options;
     return clone;
 }
 
-void ListPlot::option (const std::string& name, const Mathematica::Expression& value)
-{
+void ListPlot::option(const std::string& name, const Mathematica::Expression& value) {
     Rule::Ptr option = NULL;
-    for (const Mathematica::Expression::Ptr o : _options) {
-        if (const Rule::Ptr r = o.cast< Rule > ()) {
-            if (r->getId () == name) {
+    for(const Mathematica::Expression::Ptr o : _options) {
+        if(const Rule::Ptr r = o.cast<Rule>()) {
+            if(r->getId() == name) {
                 option = r;
                 break;
             }
         }
     }
-    if (!option.isNull ())
-        option->setValue (value);
-    else
-        _options.push_back (ownedPtr (new Rule (name, value)));
+    if(!option.isNull()) option->setValue(value);
+    else _options.push_back(ownedPtr(new Rule(name, value)));
 }
 
-void ListPlot::setImageSize (int width, int height)
-{
+void ListPlot::setImageSize(int width, int height) {
     List size;
-    size.add (width);
-    size.add (height);
+    size.add(width);
+    size.add(height);
     Rule::Ptr option = NULL;
-    for (const Expression::Ptr o : _options) {
-        if (const Rule::Ptr r = o.cast< Rule > ()) {
-            if (r->getId () == "ImageSize") {
+    for(const Expression::Ptr o : _options) {
+        if(const Rule::Ptr r = o.cast<Rule>()) {
+            if(r->getId() == "ImageSize") {
                 option = r;
                 break;
             }
         }
     }
-    if (!option.isNull ())
-        option->setValue (size);
-    else
-        _options.push_back (ownedPtr (new Rule ("ImageSize", size)));
+    if(!option.isNull()) option->setValue(size);
+    else _options.push_back(ownedPtr(new Rule("ImageSize", size)));
 }
 
-ListPlot ListPlot::fromExpression (const Mathematica::Expression& expression)
-{
+ListPlot ListPlot::fromExpression(const Mathematica::Expression& expression) {
     ListPlot plot;
     try {
         const Mathematica::FunctionBase& fct =
-            dynamic_cast< const Mathematica::FunctionBase& > (expression);
-        if (fct.getName () != "ListPlot")
-            RW_THROW ("ListPlot could not be constructed from function of name \"" << fct.getName ()
-                                                                                   << "\"!");
-        RW_THROW ("ListPlot could not be constructed - not yet implemented!");
+            dynamic_cast<const Mathematica::FunctionBase&>(expression);
+        if(fct.getName() != "ListPlot")
+            RW_THROW("ListPlot could not be constructed from function of name \"" << fct.getName()
+                                                                                  << "\"!");
+        RW_THROW("ListPlot could not be constructed - not yet implemented!");
     }
-    catch (const std::bad_cast& e) {
-        RW_THROW ("ListPlot could not be constructed from expression as it is not a Function "
-                  "expression!");
+    catch(const std::bad_cast& e) {
+        RW_THROW("ListPlot could not be constructed from expression as it is not a Function "
+                 "expression!");
     }
     return plot;
 }

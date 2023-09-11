@@ -27,76 +27,57 @@ using namespace rwsim::dynamics;
 using namespace rwsim::log;
 using namespace rwsimlibs::gui;
 
-LogMessageWidget::LogMessageWidget (rw::core::Ptr< const LogMessage > entry, QWidget* parent) :
-    SimulatorLogEntryWidget (parent), _message (entry), _text (new QTextBrowser ())
-{
-    setLayout (new QVBoxLayout (this));
-    layout ()->addWidget (_text);
+LogMessageWidget::LogMessageWidget(rw::core::Ptr<const LogMessage> entry, QWidget* parent) :
+    SimulatorLogEntryWidget(parent), _message(entry), _text(new QTextBrowser()) {
+    setLayout(new QVBoxLayout(this));
+    layout()->addWidget(_text);
 }
 
-LogMessageWidget::~LogMessageWidget ()
-{}
+LogMessageWidget::~LogMessageWidget() {}
 
-void LogMessageWidget::setDWC (rw::core::Ptr< const DynamicWorkCell > dwc)
-{}
+void LogMessageWidget::setDWC(rw::core::Ptr<const DynamicWorkCell> dwc) {}
 
-void LogMessageWidget::setEntry (rw::core::Ptr< const SimulatorLog > entry)
-{
-    const rw::core::Ptr< const LogMessage > msg = entry.cast< const LogMessage > ();
-    if (!(msg == NULL)) {
-        _message = msg;
-    }
-    else {
-        RW_THROW ("LogMessageWidget (setEntry): invalid entry!");
-    }
+void LogMessageWidget::setEntry(rw::core::Ptr<const SimulatorLog> entry) {
+    const rw::core::Ptr<const LogMessage> msg = entry.cast<const LogMessage>();
+    if(!(msg == NULL)) { _message = msg; }
+    else { RW_THROW("LogMessageWidget (setEntry): invalid entry!"); }
 }
 
-rw::core::Ptr< const SimulatorLog > LogMessageWidget::getEntry () const
-{
-    if (!(_message == NULL))
-        return _message;
-    RW_THROW ("LogMessageWidget (getEntry): both positions and velocities is zero!");
+rw::core::Ptr<const SimulatorLog> LogMessageWidget::getEntry() const {
+    if(!(_message == NULL)) return _message;
+    RW_THROW("LogMessageWidget (getEntry): both positions and velocities is zero!");
     return NULL;
 }
 
-void LogMessageWidget::updateEntryWidget ()
-{
+void LogMessageWidget::updateEntryWidget() {
     std::stringstream str;
-    str << _message->getDescription () << std::endl;
+    str << _message->getDescription() << std::endl;
     str << std::endl;
-    str << _message->getMessage ();
-    _text->setText (QString::fromStdString (str.str ()));
+    str << _message->getMessage();
+    _text->setText(QString::fromStdString(str.str()));
 }
 
-void LogMessageWidget::showGraphics (rw::core::Ptr< GroupNode > root,
-                                     rw::core::Ptr< SceneGraph > graph)
-{}
+void LogMessageWidget::showGraphics(rw::core::Ptr<GroupNode> root,
+                                    rw::core::Ptr<SceneGraph> graph) {}
 
-std::string LogMessageWidget::getName () const
-{
+std::string LogMessageWidget::getName() const {
     return "Message";
 }
 
-LogMessageWidget::Dispatcher::Dispatcher ()
-{}
+LogMessageWidget::Dispatcher::Dispatcher() {}
 
-LogMessageWidget::Dispatcher::~Dispatcher ()
-{}
+LogMessageWidget::Dispatcher::~Dispatcher() {}
 
 SimulatorLogEntryWidget*
-LogMessageWidget::Dispatcher::makeWidget (rw::core::Ptr< const SimulatorLog > entry,
-                                          QWidget* parent) const
-{
-    rw::core::Ptr< const LogMessage > const msg = entry.cast< const LogMessage > ();
-    if (!(msg == NULL))
-        return new LogMessageWidget (msg, parent);
-    RW_THROW ("LogMessageWidget::Dispatcher (makeWidget): invalid entry!");
+LogMessageWidget::Dispatcher::makeWidget(rw::core::Ptr<const SimulatorLog> entry,
+                                         QWidget* parent) const {
+    rw::core::Ptr<const LogMessage> const msg = entry.cast<const LogMessage>();
+    if(!(msg == NULL)) return new LogMessageWidget(msg, parent);
+    RW_THROW("LogMessageWidget::Dispatcher (makeWidget): invalid entry!");
     return NULL;
 }
 
-bool LogMessageWidget::Dispatcher::accepts (rw::core::Ptr< const SimulatorLog > entry) const
-{
-    if (!(entry.cast< const LogMessage > () == NULL))
-        return true;
+bool LogMessageWidget::Dispatcher::accepts(rw::core::Ptr<const SimulatorLog> entry) const {
+    if(!(entry.cast<const LogMessage>() == NULL)) return true;
     return false;
 }

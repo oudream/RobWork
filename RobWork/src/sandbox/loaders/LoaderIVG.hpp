@@ -18,21 +18,20 @@
 #ifndef RW_GRAPHICS_LOADERIVG_HPP
 #define RW_GRAPHICS_LOADERIVG_HPP
 
-#include <list>
-#include <string>
+#include <rw/graphics/Model3DLoader.hpp>
+
 #include <cmath>
 #include <cstring>
-
-#include <rw/graphics/Model3DLoader.hpp>
+#include <list>
+#include <string>
 
 namespace rw { namespace graphics {
     /**
      * @brief Class for loading in IVG files
      */
-    class LoaderIVG: public Model3DLoader
+    class LoaderIVG : public Model3DLoader
     {
-    public:
-
+      public:
         //! @brief constructor
         LoaderIVG();
 
@@ -40,10 +39,9 @@ namespace rw { namespace graphics {
         virtual ~LoaderIVG();
 
         //! @copydoc Model3DLoader::load
-        Model3D::Ptr load(const std::string& name); // Loads a model
-
+        Model3D::Ptr load(const std::string& name);    // Loads a model
     };
 
-}} // end namespaces
+}}    // namespace rw::graphics
 
 #endif

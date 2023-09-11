@@ -59,8 +59,8 @@ namespace rwsim { namespace dynamics {
          * @param maxDist [in] the norm-2 distance threshold for the contact positions.
          * @return the number of clusters (the number of contacts in \b dst).
          */
-        static int thresClustering (ContactPoint src[], int srcCnt, int* cIdxSrc, int* cIdxDst,
-                                    ContactPoint dst[], double maxDist);
+        static int thresClustering(ContactPoint src[], int srcCnt, int* cIdxSrc, int* cIdxDst,
+                                   ContactPoint dst[], double maxDist);
 
         /**
          * @brief Cluster together contacts that have equal/close normals.
@@ -83,8 +83,8 @@ namespace rwsim { namespace dynamics {
          * @param maxDist [in] the norm-2 distance threshold for the contact normals.
          * @return the number of clusters (the number of contacts in \b dst).
          */
-        static int normalThresClustering (ContactPoint src[], int srcCnt, int* cIdxSrc,
-                                          int* cIdxDst, ContactPoint dst[], double maxDist);
+        static int normalThresClustering(ContactPoint src[], int srcCnt, int* cIdxSrc, int* cIdxDst,
+                                         ContactPoint dst[], double maxDist);
     };
     //! @}
 }}    // namespace rwsim::dynamics

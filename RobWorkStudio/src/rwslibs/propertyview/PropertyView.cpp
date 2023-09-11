@@ -28,90 +28,79 @@ using namespace rw::kinematics;
 using namespace rw::models;
 using namespace rws;
 
-PropertyView::PropertyView () :
-    RobWorkStudioPlugin ("PropertyView", QIcon (":/propertyview.png")), _workcell (NULL)
-{
-    QWidget* base        = new QWidget (this);
-    QGridLayout* pLayout = new QGridLayout (base);
+PropertyView::PropertyView() :
+    RobWorkStudioPlugin("PropertyView", QIcon(":/propertyview.png")), _workcell(NULL) {
+    QWidget* base        = new QWidget(this);
+    QGridLayout* pLayout = new QGridLayout(base);
     int row              = 0;
 
     /// pLayout->addWidget(new QPushButton("Tst"), row++, 1);
 
-    _cmbFrames = new QComboBox ();
-    _cmbFrames->setMinimumHeight (10);
-    connect (_cmbFrames,
-             SIGNAL (currentTextChanged (const QString&)),
-             this,
-             SLOT (frameChanged (const QString&)));
-    pLayout->addWidget (_cmbFrames, row++, 0);
+    _cmbFrames = new QComboBox();
+    _cmbFrames->setMinimumHeight(10);
+    connect(_cmbFrames,
+            SIGNAL(currentTextChanged(const QString&)),
+            this,
+            SLOT(frameChanged(const QString&)));
+    pLayout->addWidget(_cmbFrames, row++, 0);
 
-    _inspector = new PropertyViewEditor (this);
-    pLayout->addWidget (_inspector, row++, 0);
-    connect (_inspector,
-             SIGNAL (propertyChanged (const std::string&)),
-             this,
-             SLOT (propertyChanged (const std::string&)));
+    _inspector = new PropertyViewEditor(this);
+    pLayout->addWidget(_inspector, row++, 0);
+    connect(_inspector,
+            SIGNAL(propertyChanged(const std::string&)),
+            this,
+            SLOT(propertyChanged(const std::string&)));
 
     // Set widget to QDockArea
-    setWidget (base);
+    setWidget(base);
 }
 
-PropertyView::~PropertyView ()
-{}
+PropertyView::~PropertyView() {}
 
-void PropertyView::initialize ()
-{
-    getRobWorkStudio ()->frameSelectedEvent ().add (
-        boost::bind (&PropertyView::frameSelectedListener, this, boost::arg< 1 > ()), this);
+void PropertyView::initialize() {
+    getRobWorkStudio()->frameSelectedEvent().add(
+        boost::bind(&PropertyView::frameSelectedListener, this, boost::arg<1>()), this);
     //    getRobWorkStudio()->addFrameSelectedListener(boost::bind(&PropertyView::frameSelectedListener,
     //    this, boost::arg<1>());
 }
 
-void PropertyView::open (WorkCell* workcell)
-{
+void PropertyView::open(WorkCell* workcell) {
     _workcell = workcell;
-    _state    = getRobWorkStudio ()->getState ();
-    _cmbFrames->clear ();
-    _inspector->setPropertyMap (NULL);
-    if (workcell != NULL) {
+    _state    = getRobWorkStudio()->getState();
+    _cmbFrames->clear();
+    _inspector->setPropertyMap(NULL);
+    if(workcell != NULL) {
         _updating = true;
-        addFrame (workcell->getWorldFrame ());
+        addFrame(workcell->getWorldFrame());
         _updating = false;
     }
-    if (_cmbFrames->count () > 0)
-        frameChanged (_cmbFrames->itemText (0));
+    if(_cmbFrames->count() > 0) frameChanged(_cmbFrames->itemText(0));
 }
 
-void PropertyView::addFrame (const Frame* frame)
-{
-    State state = getRobWorkStudio ()->getState ();
-    _cmbFrames->addItem (frame->getName ().c_str ());
+void PropertyView::addFrame(const Frame* frame) {
+    State state = getRobWorkStudio()->getState();
+    _cmbFrames->addItem(frame->getName().c_str());
 
-    Frame::const_iterator_pair frames = frame->getChildren (state);
+    Frame::const_iterator_pair frames = frame->getChildren(state);
 
-    for (Frame::const_iterator it = frames.first; it != frames.second; ++it) {
-        addFrame (&(*it));
-    }
+    for(Frame::const_iterator it = frames.first; it != frames.second; ++it) { addFrame(&(*it)); }
 }
 
-void PropertyView::close ()
-{}
+void PropertyView::close() {}
 
-void PropertyView::frameSelectedListener (Frame* frame)
-{
+void PropertyView::frameSelectedListener(Frame* frame) {
     _updating = true;
-    if (frame != NULL) {
-        if (_cmbFrames->currentText () != frame->getName ().c_str ()) {
-            int index = _cmbFrames->findText (frame->getName ().c_str ());
-            _cmbFrames->setCurrentIndex (index);
+    if(frame != NULL) {
+        if(_cmbFrames->currentText() != frame->getName().c_str()) {
+            int index = _cmbFrames->findText(frame->getName().c_str());
+            _cmbFrames->setCurrentIndex(index);
         }
         // rw::core::Ptr< PropertyMap > map = rw::core::ownedPtr( new PropertyMap(
         // frame->getPropertyMap() ) );
-        _inspector->setPropertyMap (&frame->getPropertyMap ());
+        _inspector->setPropertyMap(&frame->getPropertyMap());
         //_inspector->setPropertyMap(NULL);
     }
-    else
-        _inspector->setPropertyMap (NULL);
+    else _inspector->setPropertyMap(NULL);
     _updating = false;
 }
 
@@ -127,20 +116,17 @@ void PropertyView::frameSelectedListener (Frame* frame)
         _inspector->setPropertyMap(NULL);
 }
 */
-void PropertyView::frameChanged (const QString& item)
-{
-    if (_updating)
-        return;
+void PropertyView::frameChanged(const QString& item) {
+    if(_updating) return;
 
-    Frame* frame = _workcell->findFrame (item.toStdString ());
-    getRobWorkStudio ()->frameSelectedEvent ().fire (frame);
+    Frame* frame = _workcell->findFrame(item.toStdString());
+    getRobWorkStudio()->frameSelectedEvent().fire(frame);
 }
 
-void PropertyView::propertyChanged (const std::string& identifier)
-{
+void PropertyView::propertyChanged(const std::string& identifier) {
     // getRobWorkStudio()->getWorkCellGLDrawer()->clearCache();
     // getRobWorkStudio()->getCollisionDetector()->clearCache();
 
-    getRobWorkStudio ()->updateAndRepaint ();
+    getRobWorkStudio()->updateAndRepaint();
     //    updateSignal();
 }

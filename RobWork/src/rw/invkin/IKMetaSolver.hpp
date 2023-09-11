@@ -19,9 +19,8 @@
 #define RW_INVKIN_IKMETASOLVER_HPP
 
 #if !defined(SWIG)
-#include <rw/invkin/IterativeIK.hpp>
-
 #include <rw/core/Ptr.hpp>
+#include <rw/invkin/IterativeIK.hpp>
 #include <rw/math/Q.hpp>
 #include <rw/math/Transform3D.hpp>
 #endif
@@ -71,7 +70,7 @@ namespace rw { namespace invkin {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< IKMetaSolver > Ptr;
+        typedef rw::core::Ptr<IKMetaSolver> Ptr;
 
         /**
          * @brief Constructs IKMetaSolver
@@ -86,9 +85,9 @@ namespace rw { namespace invkin {
          * @param collisionDetector [in] CollisionDetector to use. If null no
          * collision detection used.
          */
-        IKMetaSolver (rw::core::Ptr<rw::invkin::IterativeIK> iksolver,
-                      const rw::core::Ptr< class rw::models::Device > device,
-                      rw::core::Ptr< rw::proximity::CollisionDetector > collisionDetector = NULL);
+        IKMetaSolver(rw::core::Ptr<rw::invkin::IterativeIK> iksolver,
+                     const rw::core::Ptr<class rw::models::Device> device,
+                     rw::core::Ptr<rw::proximity::CollisionDetector> collisionDetector = NULL);
 
         /**
          * @brief Constructs IKMetaSolver
@@ -102,34 +101,34 @@ namespace rw { namespace invkin {
          * @param constraint [in] QConstraint pointer to use. If null no
          * constraints is applied
          */
-        IKMetaSolver (rw::core::Ptr<rw::invkin::IterativeIK> iksolver,
-                      const rw::core::Ptr< class rw::models::Device > device,
-                      rw::core::Ptr< rw::pathplanning::QConstraint > constraint);
+        IKMetaSolver(rw::core::Ptr<rw::invkin::IterativeIK> iksolver,
+                     const rw::core::Ptr<class rw::models::Device> device,
+                     rw::core::Ptr<rw::pathplanning::QConstraint> constraint);
 
         /**
          * @brief Descrutor
          */
-        virtual ~IKMetaSolver ();
+        virtual ~IKMetaSolver();
 
         /**
          * @copydoc rw::invkin::IterativeIK::solve
          *
          * Searches for a valid solution using the parameters set in the IKMetaSolver
          */
-        std::vector< rw::math::Q > solve (const rw::math::Transform3D<double>& baseTend,
-                                          const rw::kinematics::State& state) const;
+        std::vector<rw::math::Q> solve(const rw::math::Transform3D<double>& baseTend,
+                                       const rw::kinematics::State& state) const;
 
         /**
          * @brief Sets up the maximal number of attempts
          * @param maxAttempts [in] Maximal number of attempts
          */
-        void setMaxAttempts (size_t maxAttempts);
+        void setMaxAttempts(size_t maxAttempts);
 
         /**
          * @brief Sets whether to stop searching after the first solution
          * @param stopAtFirst [in] True to stop after first solution has been found
          */
-        void setStopAtFirst (bool stopAtFirst);
+        void setStopAtFirst(bool stopAtFirst);
 
         /**
          * @brief Sets the distance for which two solutions are considered the same.
@@ -140,12 +139,12 @@ namespace rw { namespace invkin {
          *
          * @param limit [in] The proximity limit.
          */
-        void setProximityLimit (double limit);
+        void setProximityLimit(double limit);
 
         /**
          * @copydoc InvKinSolver::setCheckJointLimits
          */
-        void setCheckJointLimits (bool check);
+        void setCheckJointLimits(bool check);
 
         /**
          * @brief Solves the inverse kinematics problem
@@ -164,22 +163,22 @@ namespace rw { namespace invkin {
          * solution is found. If false it will continue searching for more solution
          * until the maximal number of attemps is met.
          */
-        std::vector< rw::math::Q > solve (const rw::math::Transform3D<double>& baseTend,
-                                          const rw::kinematics::State& state, size_t cnt,
-                                          bool stopatfirst) const;
+        std::vector<rw::math::Q> solve(const rw::math::Transform3D<double>& baseTend,
+                                       const rw::kinematics::State& state, size_t cnt,
+                                       bool stopatfirst) const;
 
         /**
          * @copydoc InvKinSolver::getTCP
          */
-        virtual rw::core::Ptr< const rw::kinematics::Frame > getTCP () const;
+        virtual rw::core::Ptr<const rw::kinematics::Frame> getTCP() const;
 
       private:
         rw::invkin::IterativeIK::Ptr _iksolver;
-        rw::core::Ptr< rw::proximity::CollisionDetector > _collisionDetector;
-        mutable rw::core::Ptr< rw::pathplanning::QConstraint > _constraint;
-        const rw::core::Ptr< class rw::models::Device > _device;
+        rw::core::Ptr<rw::proximity::CollisionDetector> _collisionDetector;
+        mutable rw::core::Ptr<rw::pathplanning::QConstraint> _constraint;
+        const rw::core::Ptr<class rw::models::Device> _device;
 
-        std::pair< rw::math::Q, rw::math::Q > _bounds;
+        std::pair<rw::math::Q, rw::math::Q> _bounds;
         bool _checkForLimits;
         size_t _dof;
 
@@ -188,13 +187,13 @@ namespace rw { namespace invkin {
 
         double _proximityLimit;
 
-        void initialize ();
+        void initialize();
 
-        bool betweenLimits (const rw::math::Q& q) const;
+        bool betweenLimits(const rw::math::Q& q) const;
 
-        void addSolution (const rw::math::Q& q, std::vector< rw::math::Q >& res) const;
+        void addSolution(const rw::math::Q& q, std::vector<rw::math::Q>& res) const;
 
-        rw::math::Q getRandomConfig () const;
+        rw::math::Q getRandomConfig() const;
     };
 
     /*@}*/

@@ -39,10 +39,10 @@ namespace rwsimlibs { namespace gui {
          * @param parent [in] (optional) the parent Qt widget. Ownership is shared by the caller and
          * the parent widget if given.
          */
-        MathematicaPlotWidget (QWidget* parent = 0);
+        MathematicaPlotWidget(QWidget* parent = 0);
 
         //! @brief Destructor.
-        virtual ~MathematicaPlotWidget ();
+        virtual ~MathematicaPlotWidget();
 
         /**
          * @brief Do a ListPlot with the given x- and y-values.
@@ -52,19 +52,19 @@ namespace rwsimlibs { namespace gui {
          * @param xlabel [in] (optional) x axis label.
          * @param ylabel [in] (optional) y axis label.
          */
-        void listPlot (const std::vector< double >& x, const std::vector< double >& y,
-                       const std::string& title = "", const std::string& xlabel = "",
-                       const std::string& ylabel = "");
+        void listPlot(const std::vector<double>& x, const std::vector<double>& y,
+                      const std::string& title = "", const std::string& xlabel = "",
+                      const std::string& ylabel = "");
 
         /**
          * @brief Resize plot if widget size is changed.
          * @param event [in] the resize event.
          */
-        void resizeEvent (QResizeEvent* event);
+        void resizeEvent(QResizeEvent* event);
 
       private:
-        void render ();
-        void setStyle () const;
+        void render();
+        void setStyle() const;
 
       private:
         struct Kernel;

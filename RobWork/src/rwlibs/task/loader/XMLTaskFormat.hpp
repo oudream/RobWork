@@ -35,121 +35,121 @@ namespace rwlibs { namespace task {
          * @brief Identifier for rw::task::Task with rw::math::Q as content in the XML format.
          * @return the identifier.
          */
-        static const XMLCh* idQTask ();
+        static const XMLCh* idQTask();
 
         /**
          * @brief Identifier for CartesianTask.
          * @return the identifier.
          */
-        static const XMLCh* idCartesianTask ();
+        static const XMLCh* idCartesianTask();
 
         /**
          * @brief Identifier for Targets.
          * @return the identifier.
          */
-        static const XMLCh* idTargets ();
+        static const XMLCh* idTargets();
 
         /**
          * @brief Identifier for Entities.
          * @return the identifier.
          */
-        static const XMLCh* idEntities ();
+        static const XMLCh* idEntities();
 
         /**
          * @brief Identifier for Augmentations.
          * @return the identifier.
          */
-        static const XMLCh* idAugmentations ();
+        static const XMLCh* idAugmentations();
 
         /**
          * @brief Identifier for QTarget.
          * @return the identifier.
          */
-        static const XMLCh* idQTarget ();
+        static const XMLCh* idQTarget();
 
         /**
          * @brief Identifier for CartesianTarget.
          * @return the identifier.
          */
-        static const XMLCh* idCartesianTarget ();
+        static const XMLCh* idCartesianTarget();
 
         /**
          * @brief Identifier for Motion.
          * @return the identifier.
          */
-        static const XMLCh* idMotion ();
+        static const XMLCh* idMotion();
 
         /**
          * @brief Identifier for Action.
          * @return the identifier.
          */
-        static const XMLCh* idAction ();
+        static const XMLCh* idAction();
 
         /**
          * @brief Identifier for EntityIndex.
          * @return the identifier.
          */
-        static const XMLCh* idEntityIndex ();
+        static const XMLCh* idEntityIndex();
 
         /**
          * @brief Identifier for EntityId.
          * @return the identifier.
          */
-        static const XMLCh* idEntityId ();
+        static const XMLCh* idEntityId();
 
         /**
          * @brief Identifier for TargetIdAttr.
          * @return the identifier.
          */
-        static const XMLCh* idTargetIdAttr ();
+        static const XMLCh* idTargetIdAttr();
 
         /**
          * @brief Identifier for MotionTypeAttr.
          * @return the identifier.
          */
-        static const XMLCh* idMotionTypeAttr ();
+        static const XMLCh* idMotionTypeAttr();
 
         /**
          * @brief Identifier for MotionStart.
          * @return the identifier.
          */
-        static const XMLCh* idMotionStart ();
+        static const XMLCh* idMotionStart();
 
         /**
          * @brief Identifier for MotionMid.
          * @return the identifier.
          */
-        static const XMLCh* idMotionMid ();
+        static const XMLCh* idMotionMid();
 
         /**
          * @brief Identifier for MotionEnd.
          * @return the identifier.
          */
-        static const XMLCh* idMotionEnd ();
+        static const XMLCh* idMotionEnd();
 
         /**
          * @brief Identifier for LinearMotion.
          * @return the identifier.
          */
-        static const XMLCh* idLinearMotion ();
+        static const XMLCh* idLinearMotion();
 
         /**
          * @brief Identifier for P2PMotion.
          * @return the identifier.
          */
-        static const XMLCh* idP2PMotion ();
+        static const XMLCh* idP2PMotion();
 
         /**
          * @brief Identifier for CircularMotion.
          * @return the identifier.
          */
-        static const XMLCh* idCircularMotion ();
+        static const XMLCh* idCircularMotion();
 
         /**
          * @brief Identifier for ActionTypeAttr.
          * @return the identifier.
          */
-        static const XMLCh* idActionTypeAttr ();
+        static const XMLCh* idActionTypeAttr();
 
         /**
          * @brief Utility class which initializes local static variables.
@@ -166,13 +166,13 @@ namespace rwlibs { namespace task {
         {
           public:
             //! @brief Initializes when constructed.
-            Initializer ();
+            Initializer();
         };
 
       private:
         static const Initializer initializer;
 
-        XMLTaskFormat (){}
+        XMLTaskFormat() {}
     };
 
     /* @} */

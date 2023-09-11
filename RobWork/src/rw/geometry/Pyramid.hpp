@@ -20,7 +20,7 @@
 
 #if !defined(SWIG)
 #include <rw/geometry/Primitive.hpp>
-#endif 
+#endif
 
 namespace rw { namespace geometry {
 
@@ -34,7 +34,7 @@ namespace rw { namespace geometry {
         /**
          * @brief constructor
          */
-        Pyramid (const rw::math::Q& initQ);
+        Pyramid(const rw::math::Q& initQ);
 
         /**
          * @brief constructor
@@ -42,26 +42,26 @@ namespace rw { namespace geometry {
          * @param widthy [in] width of pyramid in y-axis
          * @param height [in] height of pyramid in z-axis
          */
-        Pyramid (double widthx, double widthy, double height);
+        Pyramid(double widthx, double widthy, double height);
 
         //! @brief destructor
-        virtual ~Pyramid ();
+        virtual ~Pyramid();
 
         // inherited from Primitive
         //! @copydoc Primitive::createMesh
-        TriMesh::Ptr createMesh (int resolution) const;
+        TriMesh::Ptr createMesh(int resolution) const;
 
         //! @copydoc Primitive::getParameters
-        virtual rw::math::Q getParameters () const;
+        virtual rw::math::Q getParameters() const;
 
         //! @copydoc Primitive::setParameters
-        virtual void setParameters (const rw::math::Q& q);
+        virtual void setParameters(const rw::math::Q& q);
 
         //! @copydoc GeometryData::getType
-        GeometryType getType () const { return PyramidPrim; };
+        GeometryType getType() const { return PyramidPrim; };
 
       protected:
-        bool doIsInside (const rw::math::Vector3D<double>& point);
+        bool doIsInside(const rw::math::Vector3D<double>& point);
 
       private:
         double _widthX, _widthY, _height;

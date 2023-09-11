@@ -22,13 +22,12 @@
  * @file Device.hpp
  */
 #if !defined(SWIG)
-#include <rw/models/JacobianCalculator.hpp>
-
 #include <rw/core/PropertyMap.hpp>
 #include <rw/core/Ptr.hpp>
 #include <rw/kinematics/Stateless.hpp>
 #include <rw/math/Q.hpp>
 #include <rw/math/Transform3D.hpp>
+#include <rw/models/JacobianCalculator.hpp>
 
 #include <iosfwd>
 #include <string>
@@ -58,24 +57,24 @@ namespace rw { namespace models {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< Device > Ptr;
+        typedef rw::core::Ptr<Device> Ptr;
         //! @brief const smart pointer type to this class
-        typedef rw::core::Ptr< const Device > CPtr;
+        typedef rw::core::Ptr<const Device> CPtr;
 
         //! Lower and upper corner of a box shaped configuration space.
-        typedef std::pair< rw::math::Q, rw::math::Q > QBox;
+        typedef std::pair<rw::math::Q, rw::math::Q> QBox;
 
         /**
          * Constructs a device with a name
          *
          * @param name [in] name of the device
          */
-        Device (const std::string& name) : _name (name) {}
+        Device(const std::string& name) : _name(name) {}
 
         /**
          * @brief Virtual destructor
          */
-        virtual ~Device () {}
+        virtual ~Device() {}
 
         /**
          * @brief Sets configuration vector @f$ \mathbf{q} \in \mathbb{R}^n @f$
@@ -85,7 +84,7 @@ namespace rw { namespace models {
          *
          * @pre q.size() == getDOF()
          */
-        virtual void setQ (const rw::math::Q& q, rw::kinematics::State& state) const = 0;
+        virtual void setQ(const rw::math::Q& q, rw::kinematics::State& state) const = 0;
 
         /**
          * @brief Gets configuration vector @f$ \mathbf{q}\in \mathbb{R}^n @f$
@@ -93,7 +92,7 @@ namespace rw { namespace models {
          * @param state [in] state from which which to get @f$ \mathbf{q} @f$
          * @return configuration vector @f$ \mathbf{q} @f$
          */
-        virtual rw::math::Q getQ (const rw::kinematics::State& state) const = 0;
+        virtual rw::math::Q getQ(const rw::kinematics::State& state) const = 0;
 
         /**
          * @brief Returns the upper @f$ \mathbf{q}_{min} \in \mathbb{R}^n @f$ and
@@ -101,7 +100,7 @@ namespace rw { namespace models {
          *
          * @return std::pair containing @f$ (\mathbf{q}_{min}, \mathbf{q}_{max}) @f$
          */
-        virtual QBox getBounds () const = 0;
+        virtual QBox getBounds() const = 0;
 
         /**
          * @brief Sets the upper @f$ \mathbf{q}_{min} \in \mathbb{R}^n @f$ and
@@ -110,7 +109,7 @@ namespace rw { namespace models {
          * @param bounds [in] std::pair containing
          * @f$ (\mathbf{q}_{min}, \mathbf{q}_{max}) @f$
          */
-        virtual void setBounds (const QBox& bounds) = 0;
+        virtual void setBounds(const QBox& bounds) = 0;
 
         /**
          * @brief Returns the maximal velocity of the joints
@@ -121,7 +120,7 @@ namespace rw { namespace models {
          *
          * @return the maximal velocity
          */
-        virtual rw::math::Q getVelocityLimits () const = 0;
+        virtual rw::math::Q getVelocityLimits() const = 0;
 
         /**
          * @brief Sets the maximal velocity of the joints
@@ -132,7 +131,7 @@ namespace rw { namespace models {
          *
          * @param vellimits [in] Q with the maximal velocity
          */
-        virtual void setVelocityLimits (const rw::math::Q& vellimits) = 0;
+        virtual void setVelocityLimits(const rw::math::Q& vellimits) = 0;
 
         /**
          * @brief Returns the maximal acceleration of the joints
@@ -143,7 +142,7 @@ namespace rw { namespace models {
          *
          * @return the maximal acceleration
          */
-        virtual rw::math::Q getAccelerationLimits () const = 0;
+        virtual rw::math::Q getAccelerationLimits() const = 0;
 
         /**
          * @brief Sets the maximal acceleration of the joints
@@ -154,65 +153,65 @@ namespace rw { namespace models {
          *
          * @param  acclimits [in] the maximal acceleration
          */
-        virtual void setAccelerationLimits (const rw::math::Q& acclimits) = 0;
+        virtual void setAccelerationLimits(const rw::math::Q& acclimits) = 0;
 
         /**
          * @brief Returns number of active joints
          * @return number of active joints @f$ n @f$
          */
-        virtual size_t getDOF () const = 0;
+        virtual size_t getDOF() const = 0;
 
         /**
          * @brief Returns the name of the device
          * @return name of the device
          */
-        const std::string& getName () const { return _name; }
+        const std::string& getName() const { return _name; }
 
         /**
          * @brief Sets the name of the Device
          * @param name [in] the new name of the frame
          */
-        void setName (const std::string& name) { _name = name; }
+        void setName(const std::string& name) { _name = name; }
 
         /**
          * @brief a method to return the frame of the base of the device.
          * @return the base frame
          */
-        virtual rw::kinematics::Frame* getBase () = 0;
+        virtual rw::kinematics::Frame* getBase() = 0;
 
         /**
          * @brief a method to return the frame of the base of the device.
          * @return the base frame
          */
-        virtual const rw::kinematics::Frame* getBase () const = 0;
+        virtual const rw::kinematics::Frame* getBase() const = 0;
 
         /**
          * @brief a method to return the frame of the end of the device
          * @return the end frame
          */
-        virtual rw::kinematics::Frame* getEnd () = 0;
+        virtual rw::kinematics::Frame* getEnd() = 0;
 
         /**
          * @brief a method to return the frame of the end of the device
          *
          * @return the end frame
          */
-        virtual const rw::kinematics::Frame* getEnd () const = 0;
+        virtual const rw::kinematics::Frame* getEnd() const = 0;
 
         /**
          * @brief Calculates the homogeneous transform from base to a frame f
          * @f$ \robabx{b}{f}{\mathbf{T}} @f$
          * @return the homogeneous transform @f$ \robabx{b}{f}{\mathbf{T}} @f$
          */
-        rw::math::Transform3D< double > baseTframe (rw::core::Ptr<const rw::kinematics::Frame> f,
-                                                    const rw::kinematics::State& state) const;
+        rw::math::Transform3D<double> baseTframe(rw::core::Ptr<const rw::kinematics::Frame> f,
+                                                 const rw::kinematics::State& state) const;
 
         /**
          * @brief Calculates the homogeneous transform from base to the end frame
          * @f$ \robabx{base}{end}{\mathbf{T}} @f$
          * @return the homogeneous transform @f$ \robabx{base}{end}{\mathbf{T}} @f$
          */
-        rw::math::Transform3D< double > baseTend (const rw::kinematics::State& state) const;
+        rw::math::Transform3D<double> baseTend(const rw::kinematics::State& state) const;
 
         /**
          * @brief Calculates the homogeneous transform from world to base @f$
@@ -220,9 +219,9 @@ namespace rw { namespace models {
          *
          * @return the homogeneous transform @f$ \robabx{w}{b}{\mathbf{T}} @f$
          */
-        rw::math::Transform3D< double > worldTbase (const rw::kinematics::State& state) const;
+        rw::math::Transform3D<double> worldTbase(const rw::kinematics::State& state) const;
 
-# if !defined(SWIGJAVA)
+#if !defined(SWIGJAVA)
         /**
          * @brief Calculates the jacobian matrix of the end-effector described
          * in the robot base frame @f$ ^{base}_{end}\mathbf{J}_{\mathbf{q}}(\mathbf{q})
@@ -290,8 +289,8 @@ namespace rw { namespace models {
          * By default the method forwards to baseJframe().
          */
 
-         #endif 
-        virtual rw::math::Jacobian baseJend (const rw::kinematics::State& state) const = 0;
+#endif
+        virtual rw::math::Jacobian baseJend(const rw::kinematics::State& state) const = 0;
 
         /**
          * @brief Calculates the jacobian matrix of a frame f described in the
@@ -323,8 +322,8 @@ namespace rw { namespace models {
          *
          * By default the method forwards to baseJframes().
          */
-        virtual rw::math::Jacobian baseJframe (rw::core::Ptr<const rw::kinematics::Frame> frame,
-                                               const rw::kinematics::State& state) const;
+        virtual rw::math::Jacobian baseJframe(rw::core::Ptr<const rw::kinematics::Frame> frame,
+                                              const rw::kinematics::State& state) const;
 
         /**
          * @brief The Jacobian for a sequence of frames.
@@ -335,10 +334,9 @@ namespace rw { namespace models {
          * @param state [in] the state to calculate in
          * @return the jacobian
          */
-        virtual rw::math::Jacobian baseJframes (const std::vector< rw::kinematics::Frame* >& frames,
-                                                const rw::kinematics::State& state) const
-        {
-            return baseJCframes (frames, state)->get (state);
+        virtual rw::math::Jacobian baseJframes(const std::vector<rw::kinematics::Frame*>& frames,
+                                               const rw::kinematics::State& state) const {
+            return baseJCframes(frames, state)->get(state);
         }
 
         /**
@@ -346,23 +344,24 @@ namespace rw { namespace models {
 
            By default this method forwards to baseDJframe().
         */
-        virtual rw::core::Ptr< rw::models::JacobianCalculator >
-        baseJCend (const rw::kinematics::State& state) const;
+        virtual rw::core::Ptr<rw::models::JacobianCalculator>
+        baseJCend(const rw::kinematics::State& state) const;
 
         /**
            @brief DeviceJacobian for a particular frame.
 
            By default this method forwards to baseDJframes().
         */
-        virtual rw::core::Ptr< rw::models::JacobianCalculator >
-        baseJCframe ( rw::core::Ptr< const rw::kinematics::Frame> frame, const rw::kinematics::State& state) const;
+        virtual rw::core::Ptr<rw::models::JacobianCalculator>
+        baseJCframe(rw::core::Ptr<const rw::kinematics::Frame> frame,
+                    const rw::kinematics::State& state) const;
 
         /**
          * @brief DeviceJacobian for a sequence of frames.
          */
-        virtual rw::core::Ptr< rw::models::JacobianCalculator >
-        baseJCframes (const std::vector< rw::kinematics::Frame* >& frames,
-                      const rw::kinematics::State& state) const = 0;
+        virtual rw::core::Ptr<rw::models::JacobianCalculator>
+        baseJCframes(const std::vector<rw::kinematics::Frame*>& frames,
+                     const rw::kinematics::State& state) const = 0;
 
         /**
          * @brief Miscellaneous properties of the device.
@@ -379,12 +378,16 @@ namespace rw { namespace models {
          *
          * @return The property map of the device.
          */
-        const rw::core::PropertyMap& getPropertyMap () const { return _propertyMap; }
+        const rw::core::PropertyMap& getPropertyMap() const {
+            return _propertyMap;
+        }
 
         /**
          * @copydoc getPropertyMap
          */
-        rw::core::PropertyMap& getPropertyMap () { return _propertyMap; }
+        rw::core::PropertyMap& getPropertyMap() {
+            return _propertyMap;
+        }
 
       private:
         std::string _name;
@@ -392,15 +395,15 @@ namespace rw { namespace models {
         rw::core::PropertyMap _propertyMap;
 
       private:
-        Device (const Device&);
-        Device& operator= (const Device&);
+        Device(const Device&);
+        Device& operator=(const Device&);
     };
 
 #if !defined(SWIG)
     /**
        @brief Streaming operator for devices.
      */
-    std::ostream& operator<< (std::ostream& out, const Device& device);
+    std::ostream& operator<<(std::ostream& out, const Device& device);
 
 /*@}*/
 #endif
@@ -408,7 +411,7 @@ namespace rw { namespace models {
 }}    // namespace rw::models
 
 #if defined(SWIG)
-TOSTRING_OUTOFCLASSDEF (rw::models::Device);
+TOSTRING_OUTOFCLASSDEF(rw::models::Device);
 #endif
 
 #endif    // end include guard

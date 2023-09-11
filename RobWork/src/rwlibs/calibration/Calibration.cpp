@@ -19,25 +19,20 @@
 
 using namespace rwlibs::calibration;
 
-Calibration::Calibration () : _isApplied (false)
-{}
+Calibration::Calibration() : _isApplied(false) {}
 
-Calibration::~Calibration ()
-{}
+Calibration::~Calibration() {}
 
-bool Calibration::isApplied () const
-{
+bool Calibration::isApplied() const {
     return _isApplied;
 }
 
-void Calibration::apply ()
-{
-    doApply ();
+void Calibration::apply() {
+    doApply();
     _isApplied = true;
 }
 
-void Calibration::revert ()
-{
-    doRevert ();
+void Calibration::revert() {
+    doRevert();
     _isApplied = false;
 }

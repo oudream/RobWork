@@ -19,10 +19,9 @@
 
 using namespace rw::sensor;
 
-RGBDCameraModel::RGBDCameraModel (const std::string& name, rw::core::Ptr<rw::kinematics::Frame> frame,
-                                  const std::string& modelInfo) :
-    SensorModel (name, frame, modelInfo)
-{}
+RGBDCameraModel::RGBDCameraModel(const std::string& name,
+                                 rw::core::Ptr<rw::kinematics::Frame> frame,
+                                 const std::string& modelInfo) :
+    SensorModel(name, frame, modelInfo) {}
 
-RGBDCameraModel::~RGBDCameraModel ()
-{}
+RGBDCameraModel::~RGBDCameraModel() {}

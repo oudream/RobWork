@@ -43,20 +43,20 @@ namespace rwsim { namespace dynamics {
     {
       public:
         //! @brief Smart pointer type for a KinematicBody.
-        typedef rw::core::Ptr< KinematicBody > Ptr;
+        typedef rw::core::Ptr<KinematicBody> Ptr;
 
         //! @copydoc Body::Body()
-        KinematicBody (const BodyInfo& info, rw::models::Object::Ptr obj);
+        KinematicBody(const BodyInfo& info, rw::models::Object::Ptr obj);
 
         //! @brief Destructor.
-        virtual ~KinematicBody ();
+        virtual ~KinematicBody();
 
       public:    // functions that need to be implemented by specialized class
         /**
          * @brief Get the body frame as a movable frme.
          * @return a pointer to a movable frame.
          */
-        rw::kinematics::MovableFrame* getMovableFrame () { return _base; }
+        rw::kinematics::MovableFrame* getMovableFrame() { return _base; }
 
         /**
          * @cond
@@ -66,87 +66,79 @@ namespace rwsim { namespace dynamics {
         // rw::math::Vector3D<> getPointVelW(const rw::math::Vector3D<>& wPp, const
         // rw::kinematics::State& state) const;
 
-        rw::math::VelocityScrew6D<> getVelocity (const rw::kinematics::State& state) const;
+        rw::math::VelocityScrew6D<> getVelocity(const rw::kinematics::State& state) const;
 
         //! @copydoc Body::reset
-        virtual void reset (rw::kinematics::State& state);
+        virtual void reset(rw::kinematics::State& state);
 
         /**
          * @copydoc Body::calcEnergy
          */
         virtual double
-        calcEnergy (const rw::kinematics::State& state,
-                    const rw::math::Vector3D<>& gravity = rw::math::Vector3D<>::zero (),
-                    const rw::math::Vector3D<>& potZero = rw::math::Vector3D<>::zero ()) const
-        {
+        calcEnergy(const rw::kinematics::State& state,
+                   const rw::math::Vector3D<>& gravity = rw::math::Vector3D<>::zero(),
+                   const rw::math::Vector3D<>& potZero = rw::math::Vector3D<>::zero()) const {
             return 0;
         }
 
         //! @copydoc Body::setForce
-        void setForce (const rw::math::Vector3D<>& f, rw::kinematics::State& state){}
+        void setForce(const rw::math::Vector3D<>& f, rw::kinematics::State& state) {}
 
         //! @copydoc Body::getForce
-        rw::math::Vector3D<> getForce (const rw::kinematics::State& state) const
-        {
-            return rw::math::Vector3D<> (0, 0, 0);
+        rw::math::Vector3D<> getForce(const rw::kinematics::State& state) const {
+            return rw::math::Vector3D<>(0, 0, 0);
         }
 
         //! @copydoc Body::addForce
-        void addForce (const rw::math::Vector3D<>& force, rw::kinematics::State& state){}
+        void addForce(const rw::math::Vector3D<>& force, rw::kinematics::State& state) {}
 
         //! @copydoc Body::setTorque
-        void setTorque (const rw::math::Vector3D<>& t, rw::kinematics::State& state){}
+        void setTorque(const rw::math::Vector3D<>& t, rw::kinematics::State& state) {}
 
         //! @copydoc Body::addTorque
-        void addTorque (const rw::math::Vector3D<>& t, rw::kinematics::State& state){}
+        void addTorque(const rw::math::Vector3D<>& t, rw::kinematics::State& state) {}
 
         //! @copydoc Body::getTorque
-        rw::math::Vector3D<> getTorque (const rw::kinematics::State& state) const
-        {
-            return rw::math::Vector3D<> (0, 0, 0);
+        rw::math::Vector3D<> getTorque(const rw::kinematics::State& state) const {
+            return rw::math::Vector3D<>(0, 0, 0);
         }
 
       public:
         /**
          * @brief returns the linear velocity described in parent frame
          */
-        rw::math::Vector3D<> getLinVel (const rw::kinematics::State& state) const
-        {
-            return _kstate.get (state).linvel;
+        rw::math::Vector3D<> getLinVel(const rw::kinematics::State& state) const {
+            return _kstate.get(state).linvel;
         }
 
         /**
          * @brief returns the angular velocity described in parent frame
          */
-        rw::math::Vector3D<> getAngVel (const rw::kinematics::State& state) const
-        {
-            return _kstate.get (state).angvel;
+        rw::math::Vector3D<> getAngVel(const rw::kinematics::State& state) const {
+            return _kstate.get(state).angvel;
         }
 
         /**
          * @brief returns the linear velocity described in world frame
          */
-        rw::math::Vector3D<> getLinVelW (const rw::kinematics::State& state) const
-        {
-            return rw::kinematics::Kinematics::worldTframe (getParentFrame (state), state).R () *
-                   getLinVel (state);
+        rw::math::Vector3D<> getLinVelW(const rw::kinematics::State& state) const {
+            return rw::kinematics::Kinematics::worldTframe(getParentFrame(state), state).R() *
+                   getLinVel(state);
         }
 
         /**
          * @brief returns the angular velocity described in world frame
          */
-        rw::math::Vector3D<> getAngVelW (const rw::kinematics::State& state) const
-        {
-            return rw::kinematics::Kinematics::worldTframe (getParentFrame (state), state).R () *
-                   getAngVel (state);
+        rw::math::Vector3D<> getAngVelW(const rw::kinematics::State& state) const {
+            return rw::kinematics::Kinematics::worldTframe(getParentFrame(state), state).R() *
+                   getAngVel(state);
         }
 
         /**
          * @brief sets the linear velocity described in parent frame
          */
-        void setLinVel (const rw::math::Vector3D<>& vel, rw::kinematics::State& state)
-        {
-            _kstate.get (state).linvel = vel;
+        void setLinVel(const rw::math::Vector3D<>& vel, rw::kinematics::State& state) {
+            _kstate.get(state).linvel = vel;
         }
 
         /**
@@ -154,21 +146,19 @@ namespace rwsim { namespace dynamics {
          * @param vel [in] the linear velocity.
          * @param state the state giving the current pose of the body.
          */
-        void setLinVelW (const rw::math::Vector3D<>& vel, rw::kinematics::State& state)
-        {
-            setLinVel (rw::math::inverse (
-                           rw::kinematics::Kinematics::worldTframe (getParentFrame (state), state))
-                               .R () *
-                           vel,
-                       state);
+        void setLinVelW(const rw::math::Vector3D<>& vel, rw::kinematics::State& state) {
+            setLinVel(rw::math::inverse(
+                          rw::kinematics::Kinematics::worldTframe(getParentFrame(state), state))
+                              .R() *
+                          vel,
+                      state);
         }
 
         /**
          * @brief sets the angular velocity described in parent frame
          */
-        void setAngVel (const rw::math::Vector3D<>& vel, rw::kinematics::State& state)
-        {
-            _kstate.get (state).angvel = vel;
+        void setAngVel(const rw::math::Vector3D<>& vel, rw::kinematics::State& state) {
+            _kstate.get(state).angvel = vel;
         }
 
         /**
@@ -176,13 +166,12 @@ namespace rwsim { namespace dynamics {
          * @param vel [in] the angular velocity.
          * @param state the state giving the current pose of the body.
          */
-        void setAngVelW (const rw::math::Vector3D<>& vel, rw::kinematics::State& state)
-        {
-            setAngVel (rw::math::inverse (
-                           rw::kinematics::Kinematics::worldTframe (getParentFrame (state), state))
-                               .R () *
-                           vel,
-                       state);
+        void setAngVelW(const rw::math::Vector3D<>& vel, rw::kinematics::State& state) {
+            setAngVel(rw::math::inverse(
+                          rw::kinematics::Kinematics::worldTframe(getParentFrame(state), state))
+                              .R() *
+                          vel,
+                      state);
         }
 
       protected:
@@ -197,9 +186,9 @@ namespace rwsim { namespace dynamics {
 
       private:
         rw::kinematics::MovableFrame* _base;
-        rw::kinematics::StatelessData< KinematicBodyState > _kstate;
+        rw::kinematics::StatelessData<KinematicBodyState> _kstate;
     };
     //! @}
 }}    // namespace rwsim::dynamics
 
-#endif // RWSIM_DYNAMICS_KINEMATICBODY_HPP_
+#endif    // RWSIM_DYNAMICS_KINEMATICBODY_HPP_

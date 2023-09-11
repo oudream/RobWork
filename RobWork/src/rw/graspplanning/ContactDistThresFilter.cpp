@@ -26,31 +26,22 @@ using namespace rw::math;
 using namespace rw::graspplanning;
 using namespace rw::sensor;
 
-bool ContactDistThresFilter::isContactPairValid (const Contact3D& c1, const Contact3D& c2)
-{
-    double dist = MetricUtil::dist2 (c1.p, c2.p);
-    if (dist > _maxDist) {
-        return false;
-    }
-    if (dist < _minDist) {
-        if (!_allowCloseWhenOpposite) {
-            return false;
-        }
+bool ContactDistThresFilter::isContactPairValid(const Contact3D& c1, const Contact3D& c2) {
+    double dist = MetricUtil::dist2(c1.p, c2.p);
+    if(dist > _maxDist) { return false; }
+    if(dist < _minDist) {
+        if(!_allowCloseWhenOpposite) { return false; }
         // still valid if the contact normals are opposite
-        double ndist = MetricUtil::dist2 (normalize (c1.n), normalize (c2.n));
-        if (ndist < 1.5)
-            return false;
+        double ndist = MetricUtil::dist2(normalize(c1.n), normalize(c2.n));
+        if(ndist < 1.5) return false;
     }
     return true;
 }
 
-bool ContactDistThresFilter::isValid (const Grasp3D& grasp)
-{
-    for (int i = 0; i < ((int) grasp.contacts.size ()) - 1; i++) {
-        for (size_t j = i + 1; j < grasp.contacts.size (); j++) {
-            if (!isContactPairValid (grasp.contacts[i], grasp.contacts[j])) {
-                return false;
-            }
+bool ContactDistThresFilter::isValid(const Grasp3D& grasp) {
+    for(int i = 0; i < ((int) grasp.contacts.size()) - 1; i++) {
+        for(size_t j = i + 1; j < grasp.contacts.size(); j++) {
+            if(!isContactPairValid(grasp.contacts[i], grasp.contacts[j])) { return false; }
         }
     }
     return true;

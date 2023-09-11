@@ -44,66 +44,66 @@ class QTimer;
 class SimTaskPlugin : public rws::RobWorkStudioPlugin, private Ui::SimTaskPlugin
 {
     Q_OBJECT
-    Q_INTERFACES (rws::RobWorkStudioPlugin)
-    Q_PLUGIN_METADATA (IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "SimTaskPlugin.json");
+    Q_INTERFACES(rws::RobWorkStudioPlugin)
+    Q_PLUGIN_METADATA(IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "SimTaskPlugin.json");
 
   public:
     /**
      * @brief constructor
      */
-    SimTaskPlugin ();
+    SimTaskPlugin();
 
     //! @brief destructor
-    virtual ~SimTaskPlugin ();
+    virtual ~SimTaskPlugin();
 
     //! @copydoc rws::RobWorkStudioPlugin::open(rw::models::WorkCell* workcell)
-    virtual void open (rw::models::WorkCell* workcell);
+    virtual void open(rw::models::WorkCell* workcell);
 
     //! @copydoc rws::RobWorkStudioPlugin::close()
-    virtual void close ();
+    virtual void close();
 
     //! @copydoc rws::RobWorkStudioPlugin::initialize()
-    virtual void initialize ();
+    virtual void initialize();
 
     /**
      * @brief we listen for events regarding opening and closing of dynamic
      * workcell
      * @param event [in] the event id
      */
-    void genericEventListener (const std::string& event);
+    void genericEventListener(const std::string& event);
 
-    void loadTasks (bool automatic);
-    void saveTasks (bool automatic);
-    void exportMathematica (const std::string& filename);
-    void loadConfig (bool automatic);
-    void saveConfig ();
-    void updateConfig ();
-    void startSimulation ();
+    void loadTasks(bool automatic);
+    void saveTasks(bool automatic);
+    void exportMathematica(const std::string& filename);
+    void loadConfig(bool automatic);
+    void saveConfig();
+    void updateConfig();
+    void startSimulation();
 
-    rw::core::PropertyMap& settings ();
+    rw::core::PropertyMap& settings();
 
   private slots:
     /**
      * @
      */
-    void btnPressed ();
+    void btnPressed();
 
-    void stateChangedListener (const rw::kinematics::State& state);
+    void stateChangedListener(const rw::kinematics::State& state);
 
   private:
-    void setCurrentTask (rwlibs::task::GraspTask::Ptr task);
-    rwlibs::task::GraspTask::Ptr generateTasks (int nrTasks);
+    void setCurrentTask(rwlibs::task::GraspTask::Ptr task);
+    rwlibs::task::GraspTask::Ptr generateTasks(int nrTasks);
 
   private:
     rw::models::WorkCell* _wc;
-    rw::core::Ptr< rwsim::dynamics::DynamicWorkCell > _dwc;
-    rw::core::Ptr< rwsim::simulator::GraspTaskSimulator > _graspSim;
+    rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> _dwc;
+    rw::core::Ptr<rwsim::simulator::GraspTaskSimulator> _graspSim;
 
     QTimer* _timer;
     rw::common::Timer _wallTimer, _wallTotalTimer;
     double _restingTime, _simTime;
 
-    rw::core::Ptr< rwsim::drawable::SimulatorDebugRender > _debugRender;
+    rw::core::Ptr<rwsim::drawable::SimulatorDebugRender> _debugRender;
     rw::core::PropertyMap _config;
     PropertyViewEditor* _propertyView;
     rw::kinematics::State _initState;

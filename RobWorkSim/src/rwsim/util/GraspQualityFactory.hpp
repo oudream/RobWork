@@ -28,13 +28,14 @@ namespace rwsim { namespace util {
         /**
          * @brief a list of available quality metrics.
          */
-        static std::vector< std::string > getAvailableQualityMeasures ();
+        static std::vector<std::string> getAvailableQualityMeasures();
 
         /**
          * @brief instantiate a quality measure with ID \b id.
          * @param id [in] id of quality measure
          */
-        static rw::graspplanning::GraspQualityMeasure3D::Ptr makeQualityMeasure (const std::string& id);
+        static rw::graspplanning::GraspQualityMeasure3D::Ptr
+        makeQualityMeasure(const std::string& id);
     };
 }}     // namespace rwsim::util
 #endif /* GRASPSTRATEGYFACTORY_HPP_ */

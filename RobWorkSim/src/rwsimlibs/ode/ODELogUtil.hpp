@@ -48,15 +48,16 @@ namespace rwsim { namespace simulator {
     {
       public:
         //! @brief Constructor.
-        ODELogUtil ();
+        ODELogUtil();
 
         //! @brief Destructor.
-        virtual ~ODELogUtil ();
+        virtual ~ODELogUtil();
 
-        //! @copydoc rwsim::log::SimulatorLogUtil::addPositions(const std::string&, const std::map<std::string,rw::math::Transform3D<> >&, const char*, int)
-        void addPositions (const std::string& description,
-                           const std::map< std::string, rw::math::Transform3D<> >& positions,
-                           const char* file = "", int line = -1);
+        //! @copydoc rwsim::log::SimulatorLogUtil::addPositions(const std::string&, const
+        //! std::map<std::string,rw::math::Transform3D<> >&, const char*, int)
+        void addPositions(const std::string& description,
+                          const std::map<std::string, rw::math::Transform3D<>>& positions,
+                          const char* file = "", int line = -1);
 
         /**
          * @brief Add positions of bodies to log.
@@ -66,14 +67,14 @@ namespace rwsim { namespace simulator {
          * @param file [in] filename where logging is happening.
          * @param line [in] the line number of the file where logging is happening.
          */
-        void addPositions (const std::string& description, const std::vector< ODEBody* >& bodies,
-                           const rw::kinematics::State& state, const char* file = "",
-                           int line = -1);
+        void addPositions(const std::string& description, const std::vector<ODEBody*>& bodies,
+                          const rw::kinematics::State& state, const char* file = "", int line = -1);
 
-        //! @copydoc rwsim::log::SimulatorLogUtil::addVelocities(const std::string&, const std::map<std::string,rw::math::VelocityScrew6D<> >&, const char*, int)
-        void addVelocities (const std::string& description,
-                            const std::map< std::string, rw::math::VelocityScrew6D<> >& velocities,
-                            const char* file = "", int line = -1);
+        //! @copydoc rwsim::log::SimulatorLogUtil::addVelocities(const std::string&, const
+        //! std::map<std::string,rw::math::VelocityScrew6D<> >&, const char*, int)
+        void addVelocities(const std::string& description,
+                           const std::map<std::string, rw::math::VelocityScrew6D<>>& velocities,
+                           const char* file = "", int line = -1);
 
         /**
          * @brief Add velocities of bodies to log.
@@ -83,9 +84,9 @@ namespace rwsim { namespace simulator {
          * @param file [in] filename where logging is happening.
          * @param line [in] the line number of the file where logging is happening.
          */
-        void addVelocities (const std::string& description, const std::vector< ODEBody* >& bodies,
-                            const rw::kinematics::State& state, const char* file = "",
-                            int line = -1);
+        void addVelocities(const std::string& description, const std::vector<ODEBody*>& bodies,
+                           const rw::kinematics::State& state, const char* file = "",
+                           int line = -1);
     };
     //! @}
 

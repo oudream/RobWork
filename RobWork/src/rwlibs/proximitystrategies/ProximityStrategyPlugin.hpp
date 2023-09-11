@@ -45,19 +45,19 @@ namespace rwlibs { namespace proximitystrategies {
     {
       public:
         //! @brief Construct new plugin
-        ProximityStrategyPlugin ();
+        ProximityStrategyPlugin();
 
         //! @brief Destructor
-        virtual ~ProximityStrategyPlugin ();
+        virtual ~ProximityStrategyPlugin();
 
         //! @copydoc rw::core::Plugin::getExtensionDescriptors
-        std::vector< rw::core::Extension::Descriptor > getExtensionDescriptors ();
+        std::vector<rw::core::Extension::Descriptor> getExtensionDescriptors();
 
         //! @copydoc rw::core::Plugin::makeExtension
-        rw::core::Ptr< rw::core::Extension > makeExtension (const std::string& id);
+        rw::core::Ptr<rw::core::Extension> makeExtension(const std::string& id);
 
         //! @brief Register the plugins extensions in the rw::core::ExtensionRegistry.
-        static void registerPlugin ();
+        static void registerPlugin();
     };
     //! @}
 }}    // namespace rwlibs::proximitystrategies

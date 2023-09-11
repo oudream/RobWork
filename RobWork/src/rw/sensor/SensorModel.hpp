@@ -47,14 +47,14 @@ namespace rw { namespace sensor {
     {
       public:
         //! smart pointer type
-        typedef rw::core::Ptr< SensorModel > Ptr;
+        typedef rw::core::Ptr<SensorModel> Ptr;
 
         /**
          * @brief constructor
          * @param name [in] the name of this sensor
          * @param frame [in] the frame that the sensor is referenced to
          */
-        SensorModel (const std::string& name, rw::core::Ptr<kinematics::Frame> frame);
+        SensorModel(const std::string& name, rw::core::Ptr<kinematics::Frame> frame);
 
         /**
          * @brief constructor
@@ -62,59 +62,59 @@ namespace rw { namespace sensor {
          * @param frame [in] the frame that the sensor is referenced to
          * @param description [in] description of the sensor
          */
-        SensorModel (const std::string& name, rw::core::Ptr<kinematics::Frame> frame,
-                     const std::string& description);
+        SensorModel(const std::string& name, rw::core::Ptr<kinematics::Frame> frame,
+                    const std::string& description);
 
         //! destructor
-        virtual ~SensorModel () {}
+        virtual ~SensorModel() {}
 
         /**
          * @brief sets the name of this sensor
          * @param name [in] name of this sensor
          */
-        void setName (const std::string& name) { _name = name; }
+        void setName(const std::string& name) { _name = name; }
 
         /**
          * @brief sets the description of this sensor
          * @param description [in] description of this sensor
          */
-        void setDescription (const std::string& description) { _description = description; }
+        void setDescription(const std::string& description) { _description = description; }
 
         /**
          * @brief returns the name of this sensor
          * @return name of sensor
          */
-        const std::string& getName () const { return _name; }
+        const std::string& getName() const { return _name; }
 
         /**
          * @brief returns a description of this sensor
          * @return reference to this sensors description
          */
-        const std::string& getDescription () const { return _description; }
+        const std::string& getDescription() const { return _description; }
 
         /**
          * @brief The frame to which the sensor is attached.
          *
          * The frame can be NULL.
          */
-        kinematics::Frame* getFrame () const { return _frame.get(); }
+        kinematics::Frame* getFrame() const { return _frame.get(); }
 
         /**
          * @brief Sets the frame to which the sensor should be attached
          *
          * @param frame The frame, which can be NULL
          */
-        virtual void attachTo (rw::core::Ptr<kinematics::Frame> frame) { _frame = frame; }
+        virtual void attachTo(rw::core::Ptr<kinematics::Frame> frame) { _frame = frame; }
 
         /**
          * @brief gets the propertymap of this sensor
          */
-        rw::core::PropertyMap& getPropertyMap () { return _propertyMap; }
+        rw::core::PropertyMap& getPropertyMap() { return _propertyMap; }
 
         /**
          * @brief gets the propertymap of this sensor
          */
-        const rw::core::PropertyMap& getPropertyMap () const { return _propertyMap; }
+        const rw::core::PropertyMap& getPropertyMap() const { return _propertyMap; }
 
       private:
         std::string _name;

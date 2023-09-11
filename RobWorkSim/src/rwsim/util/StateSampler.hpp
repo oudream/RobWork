@@ -32,7 +32,7 @@ namespace rwsim { namespace util {
     class StateSampler
     {
       public:
-        typedef rw::core::Ptr< StateSampler > Ptr;
+        typedef rw::core::Ptr<StateSampler> Ptr;
 
         /**
                        @brief Sample a state.
@@ -41,13 +41,13 @@ namespace rwsim { namespace util {
                        empty() is true then the sampler has no more configurations.
                        Otherwise sample() may (or may not) succeed if called a second time.
                     */
-        virtual bool sample (rw::kinematics::State& state) = 0;
+        virtual bool sample(rw::kinematics::State& state) = 0;
 
         /**
            @brief True if the sampler is known to contain no more
            configurations.
         */
-        virtual bool empty () const = 0;
+        virtual bool empty() const = 0;
     };
 }}    // namespace rwsim::util
 

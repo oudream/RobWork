@@ -46,7 +46,7 @@ namespace rw { namespace proximity {
         /**
          * @brief Constructs empty exclude rule (only for SWIG internal use).
          */
-        ProximitySetupRule ();
+        ProximitySetupRule();
 
         /**
          * @brief Constructs rule with patternA and patternB and type
@@ -55,18 +55,17 @@ namespace rw { namespace proximity {
          * @param patternB [in] Pattern identifying second frame in rule
          * @param type documentation missing !
          */
-        ProximitySetupRule (const std::string& patternA, const std::string& patternB,
-                            RuleType type);
+        ProximitySetupRule(const std::string& patternA, const std::string& patternB, RuleType type);
 
         /**
          * @brief Returns the string patterns used to match
          */
-        std::pair< std::string, std::string > getPatterns () const { return _patterns; }
+        std::pair<std::string, std::string> getPatterns() const { return _patterns; }
 
         /**
          * @brief Returns the type of rule
          */
-        RuleType type () const { return _type; }
+        RuleType type() const { return _type; }
 
         /**
          * @brief Check whether \b str1 and \b str2 matches the pattern.
@@ -74,10 +73,9 @@ namespace rw { namespace proximity {
          * Success is defined if the first pattern matches \b str1 and the second
          * matches \b str2 or the first matches \b str2 and the second \b str1.
          */
-        bool match (const std::string& str1, const std::string& str2) const
-        {
-            return (matchPatternA (str1) && matchPatternB (str2)) ||
-                   (matchPatternA (str2) && matchPatternB (str1));
+        bool match(const std::string& str1, const std::string& str2) const {
+            return (matchPatternA(str1) && matchPatternB(str2)) ||
+                   (matchPatternA(str2) && matchPatternB(str1));
         }
 
         /**
@@ -86,99 +84,80 @@ namespace rw { namespace proximity {
          * Success is defined if the first pattern matches \b pair.first and the second
          * matches \b pair.second or the first matches \b pair.second and the second \b pair.first.
          */
-        bool match (std::pair< std::string, std::string >& pair) const
-        {
-            return match (pair.first, pair.second);
+        bool match(std::pair<std::string, std::string>& pair) const {
+            return match(pair.first, pair.second);
         }
 
         /**
          * @brief Check whether \b name matches one of the patterns
          */
-        bool matchOne (const std::string& name) const
-        {
-            if (std::regex_match (name, _regex1) || std::regex_match (name, _regex2)) {
-                return true;
-            }
+        bool matchOne(const std::string& name) const {
+            if(std::regex_match(name, _regex1) || std::regex_match(name, _regex2)) { return true; }
             return false;
         }
 
         /**
          * @brief Check whether \b str matches pattern A
          */
-        bool matchPatternA (const std::string& str) const
-        {
-            return std::regex_match (str, _regex1);
-        }
+        bool matchPatternA(const std::string& str) const { return std::regex_match(str, _regex1); }
 
         /**
          * @brief Check whether \b name matches pattern B
          */
-        bool matchPatternB (const std::string& str) const
-        {
-            return std::regex_match (str, _regex2);
-        }
+        bool matchPatternB(const std::string& str) const { return std::regex_match(str, _regex2); }
 #if !defined(SWIG)
         /**
          * @brief ostream operator formatting the rule for easy reading
          */
-        friend std::ostream& operator<< (std::ostream& s, const rw::proximity::ProximitySetupRule& r)
-        {
-            if (r._type == ProximitySetupRule::INCLUDE_RULE)
-                s << "Include: ";
-            else
-                s << "Exclude: ";
+        friend std::ostream& operator<<(std::ostream& s,
+                                        const rw::proximity::ProximitySetupRule& r) {
+            if(r._type == ProximitySetupRule::INCLUDE_RULE) s << "Include: ";
+            else s << "Exclude: ";
             s << r._patterns.first << " <=> " << r._patterns.second;
             return s;
         }
 #else
-        TOSTRING (rw::proximity::ProximitySetupRule);
+        TOSTRING(rw::proximity::ProximitySetupRule);
 #endif
         /**
          * @brief Compares if two rules are the same
          */
-        bool operator== (const rw::proximity::ProximitySetupRule& p) const
-        {
+        bool operator==(const rw::proximity::ProximitySetupRule& p) const {
             return _patterns == p._patterns && _type == p._type;
         }
 
         /**
          * @brief Make an exclude rule for the patterns
          */
-        static ProximitySetupRule
-        makeExclude (const std::pair< std::string, std::string >& patterns)
-        {
-            return ProximitySetupRule (patterns.first, patterns.second, EXCLUDE_RULE);
+        static ProximitySetupRule makeExclude(const std::pair<std::string, std::string>& patterns) {
+            return ProximitySetupRule(patterns.first, patterns.second, EXCLUDE_RULE);
         }
 
         /**
          * @brief Make an exclude rule for the patterns
          */
-        static rw::proximity::ProximitySetupRule makeExclude (const std::string& patternA,
-                                               const std::string& patternB)
-        {
-            return ProximitySetupRule (patternA, patternB, EXCLUDE_RULE);
+        static rw::proximity::ProximitySetupRule makeExclude(const std::string& patternA,
+                                                             const std::string& patternB) {
+            return ProximitySetupRule(patternA, patternB, EXCLUDE_RULE);
         }
 
         /**
          * @brief Make an include rule for the patterns
          */
-        static ProximitySetupRule
-        makeInclude (const std::pair< std::string, std::string >& patterns)
-        {
-            return rw::proximity::ProximitySetupRule (patterns.first, patterns.second, INCLUDE_RULE);
+        static ProximitySetupRule makeInclude(const std::pair<std::string, std::string>& patterns) {
+            return rw::proximity::ProximitySetupRule(patterns.first, patterns.second, INCLUDE_RULE);
         }
 
         /**
          * @brief Make an include rule for the patterns
          */
-        static rw::proximity::ProximitySetupRule makeInclude (const std::string& patternA,
-                                               const std::string& patternB)
-        {
-            return ProximitySetupRule (patternA, patternB, INCLUDE_RULE);
+        static rw::proximity::ProximitySetupRule makeInclude(const std::string& patternA,
+                                                             const std::string& patternB) {
+            return ProximitySetupRule(patternA, patternB, INCLUDE_RULE);
         }
 
       private:
-        std::pair< std::string, std::string > _patterns;
+        std::pair<std::string, std::string> _patterns;
         std::regex _regex1;
         std::regex _regex2;
         RuleType _type;

@@ -9,7 +9,7 @@ namespace rwsim { namespace simulator {
     class ConstraintEdge
     {
       private:
-        ConstraintEdge ();
+        ConstraintEdge();
 
       public:
         //! @brief edge states
@@ -34,45 +34,42 @@ namespace rwsim { namespace simulator {
         /**
          * @brief Default constructor
          */
-        ConstraintEdge (CNodePair n, EdgeType type, double touchDist, double penDist,
-                        double sepDist);
+        ConstraintEdge(CNodePair n, EdgeType type, double touchDist, double penDist,
+                       double sepDist);
 
-        ConstraintEdge (CNodePair n, EdgeType type, int id);
+        ConstraintEdge(CNodePair n, EdgeType type, int id);
 
         /**
          * @brief destructor
          */
-        virtual ~ConstraintEdge (){};
+        virtual ~ConstraintEdge(){};
 
-        inline void setType (EdgeType type) { _type = type; }
-        inline EdgeType getType () const { return _type; }
+        inline void setType(EdgeType type) { _type = type; }
+        inline EdgeType getType() const { return _type; }
 
-        inline void setColor (unsigned char color) { _color = color; }
+        inline void setColor(unsigned char color) { _color = color; }
 
-        inline unsigned char getColor () const { return _color; }
+        inline unsigned char getColor() const { return _color; }
 
-        inline const CNodePair& getNodes () const { return _nodes; }
+        inline const CNodePair& getNodes() const { return _nodes; }
 
-        inline double getLastDistance () const { return _shortestDist[1]; }
+        inline double getLastDistance() const { return _shortestDist[1]; }
 
-        inline double getDistance () const { return _shortestDist[0]; }
+        inline double getDistance() const { return _shortestDist[0]; }
 
-        inline void setDistance (double dist) { _shortestDist[0] = dist; }
+        inline void setDistance(double dist) { _shortestDist[0] = dist; }
 
-        bool isTouching () const
-        {
+        bool isTouching() const {
             return _state[0] == ConstraintEdge::NewTouch ||
                    _state[0] == ConstraintEdge::PersistentTouch;
         }
 
-        bool wasTouching () const
-        {
+        bool wasTouching() const {
             return _state[1] == ConstraintEdge::NewTouch ||
                    _state[1] == ConstraintEdge::PersistentTouch;
         }
 
-        bool isObsolete () const
-        {
+        bool isObsolete() const {
             return _state[1] == ConstraintEdge::VanishingProximity &&
                    _state[0] == ConstraintEdge::VanishingProximity;
         }
@@ -81,50 +78,48 @@ namespace rwsim { namespace simulator {
                     return _model;
                 }
         */
-        inline EdgeState getState () const { return _state[0]; }
+        inline EdgeState getState() const { return _state[0]; }
 
-        inline void setState (EdgeState state) { _state[0] = state; }
+        inline void setState(EdgeState state) { _state[0] = state; }
 
-        inline EdgeState getLastState () const { return _state[1]; }
+        inline EdgeState getLastState() const { return _state[1]; }
 
-        bool isPenetrating () const
-        {
-            if (_shortestDist[0] < _penDist) {
+        bool isPenetrating() const {
+            if(_shortestDist[0] < _penDist) {
                 std::cout << "PENETRATING: " << _shortestDist[0] << " < " << _penDist << std::endl;
-                std::cout << _nodes.first->getFrame ()->getName () << " "
-                          << _nodes.second->getFrame ()->getName () << std::endl;
+                std::cout << _nodes.first->getFrame()->getName() << " "
+                          << _nodes.second->getFrame()->getName() << std::endl;
             }
             return _shortestDist[0] < _penDist;
         }
 
-        bool wasSeperating () const { return _shortestDist[1] > _sepDist; }
+        bool wasSeperating() const { return _shortestDist[1] > _sepDist; }
 
-        bool isSeperating () const { return _shortestDist[0] > _sepDist; }
+        bool isSeperating() const { return _shortestDist[0] > _sepDist; }
 
-        void rollBack ();
+        void rollBack();
 
-        void saveState ();
+        void saveState();
 
-        void setResting (bool r) { _resting = r; }
+        void setResting(bool r) { _resting = r; }
 
-        bool isResting () const { return _resting; }
+        bool isResting() const { return _resting; }
 
-        void print ();
+        void print();
 
-        void printState (EdgeState state);
+        void printState(EdgeState state);
 
-        Contact& getContact () { return *_contact; }
+        Contact& getContact() { return *_contact; }
 
-        bool isDeleted () { return _deleted; };
+        bool isDeleted() { return _deleted; };
 
-        void setDeleted (bool del) { _deleted = del; }
+        void setDeleted(bool del) { _deleted = del; }
 
-        int getID () { return _id; };
+        int getID() { return _id; };
 
-        void setID (int id) { _id = id; };
+        void setID(int id) { _id = id; };
 
-        void setThresholds (double touch, double pen, double sep)
-        {
+        void setThresholds(double touch, double pen, double sep) {
             _touchDist = touch;
             _penDist   = pen;
             _sepDist   = sep;

@@ -55,15 +55,14 @@ namespace rw { namespace proximity {
         /**
          * @brief Default constructor for when no excludes are described
          */
-        CollisionSetup ();
+        CollisionSetup();
 
         /**
          @brief Constructs CollisionSetup with list of exclusions
 
          @param exclude [in] pairs to be excluded
          */
-        explicit CollisionSetup (
-            const std::vector< std::pair< std::string, std::string > >& exclude);
+        explicit CollisionSetup(const std::vector<std::pair<std::string, std::string>>& exclude);
 
         /**
          * @brief CollisionSetup for a list of pairs to exclude and a sequence
@@ -72,8 +71,8 @@ namespace rw { namespace proximity {
          * @param volatileFrames [in] names of frames to treat as volatile.
          * @param excludeStaticPairs [in] if true exclude statically related pairs.
          */
-        CollisionSetup (const rw::core::StringPairList& exclude,
-                        const std::set< std::string >& volatileFrames, bool excludeStaticPairs);
+        CollisionSetup(const rw::core::StringPairList& exclude,
+                       const std::set<std::string>& volatileFrames, bool excludeStaticPairs);
 
         /**
          * @brief CollisionSetup for a list of pairs to exclude and a sequence
@@ -82,24 +81,24 @@ namespace rw { namespace proximity {
          * @param volatileFrames [in] names of frames to treat as volatile.
          * @param excludeStaticPairs [in] if true exclude statically related pairs.
          */
-        CollisionSetup (const rw::core::StringPairList& exclude,
-                        const std::vector< std::string >& volatileFrames, bool excludeStaticPairs);
+        CollisionSetup(const rw::core::StringPairList& exclude,
+                       const std::vector<std::string>& volatileFrames, bool excludeStaticPairs);
 
-        void addExcludePair (rw::core::StringPair& pair);
+        void addExcludePair(rw::core::StringPair& pair);
 
-        void removeExcludePair (rw::core::StringPair& pair);
+        void removeExcludePair(rw::core::StringPair& pair);
 
         /**
          * @brief Returns the exclude list
          * @return the exclude list
          */
-        const rw::core::StringPairList& getExcludeList () const { return _exclude; }
+        const rw::core::StringPairList& getExcludeList() const { return _exclude; }
 
         /**
          @brief True iff the collision setup for the frame can change over
          time.
          */
-        bool isVolatile (const rw::kinematics::Frame& frame) const;
+        bool isVolatile(const rw::kinematics::Frame& frame) const;
 
         /**
          @brief True iff all statically related pairs of frames should be
@@ -108,33 +107,30 @@ namespace rw { namespace proximity {
          Note that this will exclude also statically related pairs of frames
          for which one or both of the pairs are volatile.
          */
-        bool excludeStaticPairs () const { return _excludeStaticPairs; }
+        bool excludeStaticPairs() const { return _excludeStaticPairs; }
 
 #if !defined(SWIG)
         /**
          * @brief ostream operator formatting the setup for easy reading
          */
-        friend std::ostream& operator<< (std::ostream& s, const CollisionSetup& r)
-        {
+        friend std::ostream& operator<<(std::ostream& s, const CollisionSetup& r) {
             s << "CollisionSetup( Exclude{ ";
-            if (!r._exclude.empty ()) {
+            if(!r._exclude.empty()) {
                 s << ", " << r._exclude[0].first << " <=>" << r._exclude[0].second;
             }
             bool first = true;
-            for (const rw::core::StringPair& sp : r._exclude) {
-                if (first) {
+            for(const rw::core::StringPair& sp : r._exclude) {
+                if(first) {
                     first = false;
                     continue;
                 }
                 s << ", " << sp.first << " <=>" << sp.second;
             }
             s << "}, Volatile{ ";
-            if (!r._volatileFrames.empty ()) {
-                s << ", " << (*r._volatileFrames.begin ());
-            }
+            if(!r._volatileFrames.empty()) { s << ", " << (*r._volatileFrames.begin()); }
             first = true;
-            for (const std::string& sp : r._volatileFrames) {
-                if (first) {
+            for(const std::string& sp : r._volatileFrames) {
+                if(first) {
                     first = false;
                     continue;
                 }
@@ -145,32 +141,32 @@ namespace rw { namespace proximity {
             return s;
         }
 #else
-        TOSTRING (rw::proximity::CollisionSetup);
+        TOSTRING(rw::proximity::CollisionSetup);
 #endif
         /**
          * @brief Combine setup of this and setup of \b b into this collision setup.
          */
-        void merge (const CollisionSetup& b);
+        void merge(const CollisionSetup& b);
 
 #if !defined(SWIG)
         /**
          * @brief Combine setup \b a and setup \b b into a single collision setup.
          */
-        static CollisionSetup merge (const CollisionSetup& a, const CollisionSetup& b);
+        static CollisionSetup merge(const CollisionSetup& a, const CollisionSetup& b);
 #endif
 
-        static CollisionSetup get (const rw::models::WorkCell& wc);
-        static CollisionSetup get (rw::core::Ptr< rw::models::WorkCell > wc);
+        static CollisionSetup get(const rw::models::WorkCell& wc);
+        static CollisionSetup get(rw::core::Ptr<rw::models::WorkCell> wc);
 
-        static CollisionSetup get (const rw::core::PropertyMap& map);
+        static CollisionSetup get(const rw::core::PropertyMap& map);
 
-        static void set (const CollisionSetup& setup, rw::core::Ptr< rw::models::WorkCell > wc);
+        static void set(const CollisionSetup& setup, rw::core::Ptr<rw::models::WorkCell> wc);
 
-        static void set (const CollisionSetup& setup, rw::core::PropertyMap& map);
+        static void set(const CollisionSetup& setup, rw::core::PropertyMap& map);
 
       private:
         rw::core::StringPairList _exclude;
-        std::set< std::string > _volatileFrames;
+        std::set<std::string> _volatileFrames;
         bool _excludeStaticPairs;
     };
 

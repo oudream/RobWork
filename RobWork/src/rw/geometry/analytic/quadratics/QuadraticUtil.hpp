@@ -45,7 +45,7 @@ namespace rw { namespace geometry {
     {
       public:
         //! @brief Type for a pair of points.
-        typedef std::pair< rw::math::Vector3D<double>, rw::math::Vector3D<double> > PointPair;
+        typedef std::pair<rw::math::Vector3D<double>, rw::math::Vector3D<double>> PointPair;
 
         /**
          * @brief Find and approximation of the closest points between two surfaces \b s1 and \b s2.
@@ -60,9 +60,9 @@ namespace rw { namespace geometry {
          * @param epsOut [in] threshold for distance.
          * @return true if there is a closest point pair within the given limits.
          */
-        static bool closestPointsApproximation (const rw::geometry::QuadraticSurface& s1,
-                                                const rw::geometry::QuadraticSurface& s2, PointPair& result,
-                                                double epsIn, double epsOut);
+        static bool closestPointsApproximation(const rw::geometry::QuadraticSurface& s1,
+                                               const rw::geometry::QuadraticSurface& s2,
+                                               PointPair& result, double epsIn, double epsOut);
 
         /**
          * @brief Find and approximation of the closest points between a surface \b s and a curve \b
@@ -79,8 +79,9 @@ namespace rw { namespace geometry {
          * @param epsOut [in] threshold for distance.
          * @return true if there is a closest point pair within the given limits.
          */
-        static bool closestPointsApproximation (const rw::geometry::QuadraticSurface& s, const rw::geometry::QuadraticCurve& c,
-                                                PointPair& result, double epsIn, double epsOut);
+        static bool closestPointsApproximation(const rw::geometry::QuadraticSurface& s,
+                                               const rw::geometry::QuadraticCurve& c,
+                                               PointPair& result, double epsIn, double epsOut);
 
         /**
          * @brief Find an approximation of the curve parameter values of curves \b ca and \b cb at
@@ -95,9 +96,9 @@ namespace rw { namespace geometry {
          * @param cb [in] the second curve.
          * @return a list of pairs of curve parameter values at the closest points.
          */
-        static std::vector< std::pair< double, double > >
-        closestTimesApproximation (const rw::geometry::QuadraticSurface& sa1, const rw::geometry::QuadraticSurface& sa2,
-                                   const rw::geometry::QuadraticCurve& ca, const rw::geometry::QuadraticCurve& cb);
+        static std::vector<std::pair<double, double>> closestTimesApproximation(
+            const rw::geometry::QuadraticSurface& sa1, const rw::geometry::QuadraticSurface& sa2,
+            const rw::geometry::QuadraticCurve& ca, const rw::geometry::QuadraticCurve& cb);
 
       private:
         /**
@@ -114,11 +115,10 @@ namespace rw { namespace geometry {
          * @param epsOut [in] threshold for distance.
          * @return a list of the closest point pairs within the given limits.
          */
-        static std::vector< PointPair > closestPointsApproximation (const rw::geometry::QuadraticSurface& sa1,
-                                                                    const rw::geometry::QuadraticSurface& sa2,
-                                                                    const rw::geometry::QuadraticCurve& ca,
-                                                                    const rw::geometry::QuadraticCurve& cb,
-                                                                    double epsIn, double epsOut);
+        static std::vector<PointPair> closestPointsApproximation(
+            const rw::geometry::QuadraticSurface& sa1, const rw::geometry::QuadraticSurface& sa2,
+            const rw::geometry::QuadraticCurve& ca, const rw::geometry::QuadraticCurve& cb,
+            double epsIn, double epsOut);
 
         /**
          * @brief Find an approximation of the closest points between the curve on surfaces \b sa
@@ -136,10 +136,9 @@ namespace rw { namespace geometry {
          * @param epsOut [in] threshold for distance.
          * @return a list of the closest point pairs within the given limits.
          */
-        static std::vector< PointPair > closestPointsApproximation (const rw::geometry::QuadraticSurface& sa,
-                                                                    const rw::geometry::QuadraticSurface& sb,
-                                                                    const rw::geometry::QuadraticCurve& c,
-                                                                    double epsIn, double epsOut);
+        static std::vector<PointPair> closestPointsApproximation(
+            const rw::geometry::QuadraticSurface& sa, const rw::geometry::QuadraticSurface& sb,
+            const rw::geometry::QuadraticCurve& c, double epsIn, double epsOut);
 
         /**
          * @brief Find an approximation of the curve parameter when the curve \b c is at its closest
@@ -154,14 +153,15 @@ namespace rw { namespace geometry {
          * @return a vector of one or more curve parameter values where there is a local minimum
          * between of the distance between the curves.
          */
-        static std::vector< double > closestTimesApproximation (const rw::geometry::QuadraticSurface& sa,
-                                                                const rw::geometry::QuadraticSurface& sb,
-                                                                const rw::geometry::QuadraticCurve& c);
+        static std::vector<double>
+        closestTimesApproximation(const rw::geometry::QuadraticSurface& sa,
+                                  const rw::geometry::QuadraticSurface& sb,
+                                  const rw::geometry::QuadraticCurve& c);
 
-        QuadraticUtil () {}
-        virtual ~QuadraticUtil () {}
+        QuadraticUtil() {}
+        virtual ~QuadraticUtil() {}
 
-        static Eigen::Matrix3d adjugate (const Eigen::Matrix3d& A);
+        static Eigen::Matrix3d adjugate(const Eigen::Matrix3d& A);
     };
 #if !defined(SWIG)
 //! @}

@@ -22,24 +22,24 @@
 
 namespace rws {
 
-class ChartViewGenerator: public rw::graphics::PlotGenerator
+class ChartViewGenerator : public rw::graphics::PlotGenerator
 {
-    public:
-        //! @brief Smart pointer type.
-        typedef rw::core::Ptr< PlotGenerator > Ptr;
+  public:
+    //! @brief Smart pointer type.
+    typedef rw::core::Ptr<PlotGenerator> Ptr;
 
-        //! @brief Constructor.
-        ChartViewGenerator();
+    //! @brief Constructor.
+    ChartViewGenerator();
 
-        //! @brief Destructor.
-        virtual ~ChartViewGenerator();
+    //! @brief Destructor.
+    virtual ~ChartViewGenerator();
 
-        /**
-         * @brief Create a new Plot.
-         *
-         * @return a new plot.
-         */
-        virtual rw::graphics::Plot::Ptr makePlot();
+    /**
+     * @brief Create a new Plot.
+     *
+     * @return a new plot.
+     */
+    virtual rw::graphics::Plot::Ptr makePlot();
 };
 
 } /* namespace rws */

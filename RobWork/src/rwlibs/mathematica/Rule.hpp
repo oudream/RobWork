@@ -24,9 +24,8 @@
  * \copydoc rwlibs::mathematica::Rule
  */
 
-#include <rwlibs/mathematica/Mathematica.hpp>
-
 #include <rw/core/Ptr.hpp>
+#include <rwlibs/mathematica/Mathematica.hpp>
 
 namespace rw { namespace core {
     class PropertyMap;
@@ -44,41 +43,41 @@ namespace rwlibs { namespace mathematica {
     {
       public:
         //! @brief Smart pointer type.
-        typedef rw::core::Ptr< Rule > Ptr;
+        typedef rw::core::Ptr<Rule> Ptr;
 
         /**
          * @brief Construct a new Rule expression.
          * @param name [in] the name of the rule.
          * @param value [in] the value of the rule.
          */
-        Rule (const Mathematica::Symbol& name, const Mathematica::AutoExpression& value);
+        Rule(const Mathematica::Symbol& name, const Mathematica::AutoExpression& value);
 
         /**
          * @brief Construct a Mathematica Rule based on RobWork property.
          * @param property [in] the property.
          */
-        Rule (const rw::core::PropertyBase& property);
+        Rule(const rw::core::PropertyBase& property);
 
         //! @brief Destructor.
-        virtual ~Rule ();
+        virtual ~Rule();
 
         //! @copydoc Mathematica::FunctionBase::getArguments
-        std::list< rw::core::Ptr< const Mathematica::Expression > > getArguments () const;
+        std::list<rw::core::Ptr<const Mathematica::Expression>> getArguments() const;
 
         //! @copydoc Mathematica::Expression::clone
-        Mathematica::Expression::Ptr clone () const;
+        Mathematica::Expression::Ptr clone() const;
 
         /**
          * @brief Get the symbol name of the rule.
          * @return the name of the rule.
          */
-        std::string getId () const;
+        std::string getId() const;
 
         /**
          * @brief Set the value of the rule.
          * @param value [in] new value.
          */
-        void setValue (const Mathematica::Expression& value);
+        void setValue(const Mathematica::Expression& value);
 
         /**
          * @brief Convert a PropertyMap to a list of Mathematica rules.
@@ -86,7 +85,7 @@ namespace rwlibs { namespace mathematica {
          * @return a list of Rule expressions.
          * @throws rw::core::Exception if a property not supported.
          */
-        static std::list< Rule::Ptr > toRules (const rw::core::PropertyMap& options);
+        static std::list<Rule::Ptr> toRules(const rw::core::PropertyMap& options);
 
         /**
          * @brief Construct PropertyMap from existing expression.
@@ -94,16 +93,16 @@ namespace rwlibs { namespace mathematica {
          * @return the PropertyMap.
          * @throws rw::core::Exception if parsing fails.
          */
-        static rw::core::Ptr< rw::core::PropertyMap >
-        toPropertyMap (const std::list< rw::core::Ptr< const Mathematica::Expression > >& rules);
+        static rw::core::Ptr<rw::core::PropertyMap>
+        toPropertyMap(const std::list<rw::core::Ptr<const Mathematica::Expression>>& rules);
 
         /**
          * @brief Convert a Mathematica rule expression to a Property.
          * @param rule [in] the rule expression.
          * @return the property.
          */
-        static rw::core::Ptr< rw::core::PropertyBase >
-        toProperty (const Mathematica::Expression& rule);
+        static rw::core::Ptr<rw::core::PropertyBase>
+        toProperty(const Mathematica::Expression& rule);
 
       private:
         Mathematica::Symbol::Ptr _name;

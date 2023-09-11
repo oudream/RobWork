@@ -32,10 +32,10 @@ namespace rwsim { namespace util {
     class SimStateConstraint
     {
       public:
-        typedef rw::core::Ptr< SimStateConstraint > Ptr;
+        typedef rw::core::Ptr<SimStateConstraint> Ptr;
 
-        virtual bool isSatisfied (const rw::kinematics::State& state,
-                                  simulator::DynamicSimulator* sim) = 0;
+        virtual bool isSatisfied(const rw::kinematics::State& state,
+                                 simulator::DynamicSimulator* sim) = 0;
     };
 }}     // namespace rwsim::util
 #endif /* SIMSTATECONSTRAINT_HPP_ */

@@ -49,10 +49,10 @@ namespace rwsim { namespace dynamics {
         };
 
         //! @brief Constructor.
-        ContactDataMap ();
+        ContactDataMap();
 
         //! @brief Destructor.
-        virtual ~ContactDataMap ();
+        virtual ~ContactDataMap();
 
         // double getContactMargin();
 
@@ -62,15 +62,14 @@ namespace rwsim { namespace dynamics {
          * @param name [in] the name of the object type
          * @param desc [in] the description of the object type
          */
-        void add (const std::string& name, const std::string& desc)
-        {
-            if (_nameToID.find (name) == _nameToID.end ()) {
+        void add(const std::string& name, const std::string& desc) {
+            if(_nameToID.find(name) == _nameToID.end()) {
                 _nameToID[name] = _objectCnt;
-                _objectNames.push_back ("");
+                _objectNames.push_back("");
                 _objectCnt++;
             }
 
-            int cid           = getDataID (name);
+            int cid           = getDataID(name);
             _idToDesc[cid]    = desc;
             _objectNames[cid] = name;
         }
@@ -80,48 +79,45 @@ namespace rwsim { namespace dynamics {
          * @param objType [in] name of object type.
          * @return integer id.
          */
-        int getDataID (const std::string& objType) const;
+        int getDataID(const std::string& objType) const;
 
         /**
          * @brief Get name of object type with \b id.
          * @param id [in] the id.
          * @return the name of the object type.
          */
-        const std::string& getObjectTypeName (int id) const { return _objectNames[id]; }
+        const std::string& getObjectTypeName(int id) const { return _objectNames[id]; }
 
         /**
          * @brief Get a list of all object types.
          * @return vector of names.
          */
-        const std::vector< std::string >& getObjectTypes () { return _objectNames; }
+        const std::vector<std::string>& getObjectTypes() { return _objectNames; }
 
         /**
          * @brief Get Object Description
          * @param matId the Object ID
          * @return a string Description of the Material
          */
-        std::string getDesctiption (const std::string& matId)
-        {
-            return _idToDesc[getDataID (matId)];
-        }
+        std::string getDesctiption(const std::string& matId) { return _idToDesc[getDataID(matId)]; }
 
         /**
          * @brief Get the maximum id.
          * @return the maximum id.
          */
-        int getMaxID () const { return _objectCnt; }
+        int getMaxID() const { return _objectCnt; }
 
         /**
          * @brief adds newton data description to the collision between nameA and nameB
          */
-        void addNewtonData (const std::string& nameA, const std::string& nameB,
-                            const NewtonData& data);
+        void addNewtonData(const std::string& nameA, const std::string& nameB,
+                           const NewtonData& data);
 
         /**
          * @brief adds chatterjee data description to the collision between nameA and nameB
          */
-        void addChatterjeeData (const std::string& nameA, const std::string& nameB,
-                                const ChatterjeeData& data);
+        void addChatterjeeData(const std::string& nameA, const std::string& nameB,
+                               const ChatterjeeData& data);
 
         /**
          * @brief Get Newton data for a pair of object types.
@@ -129,7 +125,7 @@ namespace rwsim { namespace dynamics {
          * @param nameB [in] name of second type.
          * @return the NewtonData.
          */
-        const NewtonData& getNewtonData (const std::string& nameA, const std::string& nameB) const;
+        const NewtonData& getNewtonData(const std::string& nameA, const std::string& nameB) const;
 
         /**
          * @brief Get Newton data for a pair of object type ids.
@@ -137,7 +133,7 @@ namespace rwsim { namespace dynamics {
          * @param idB [in] id of second type.
          * @return the NewtonData.
          */
-        const NewtonData& getNewtonData (int idA, int idB) const;
+        const NewtonData& getNewtonData(int idA, int idB) const;
 
         /**
          * @brief Get Chatterjee data for a pair of object types.
@@ -145,18 +141,18 @@ namespace rwsim { namespace dynamics {
          * @param nameB [in] name of second type.
          * @return the Chatterjee data.
          */
-        const ChatterjeeData& getChatterjeeData (const std::string& nameA,
-                                                 const std::string nameB) const;
+        const ChatterjeeData& getChatterjeeData(const std::string& nameA,
+                                                const std::string nameB) const;
 
       private:
-        typedef std::pair< int, int > IDPair;
-        std::vector< std::string > _objectNames;
-        std::map< std::string, int > _nameToID;
-        std::map< int, std::string > _idToDesc;
+        typedef std::pair<int, int> IDPair;
+        std::vector<std::string> _objectNames;
+        std::map<std::string, int> _nameToID;
+        std::map<int, std::string> _idToDesc;
         int _objectCnt;
 
-        typedef std::map< IDPair, NewtonData > NewtonMap;
-        typedef std::map< IDPair, ChatterjeeData > ChatterjeeMap;
+        typedef std::map<IDPair, NewtonData> NewtonMap;
+        typedef std::map<IDPair, ChatterjeeData> ChatterjeeMap;
 
         NewtonMap _newtonDataMap;
         ChatterjeeMap _chatterjeeDataMap;

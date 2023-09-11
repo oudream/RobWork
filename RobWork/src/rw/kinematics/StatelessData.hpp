@@ -19,11 +19,10 @@
 #define RW_KINEMATICS_STATELESSDATA_HPP_
 
 #if !defined(SWIG)
+#include <rw/core/StringUtil.hpp>
 #include <rw/kinematics/StateCache.hpp>
 #include <rw/kinematics/StateData.hpp>
 #include <rw/kinematics/StateStructure.hpp>
-
-#include <rw/core/StringUtil.hpp>
 #endif
 
 namespace rw { namespace kinematics {
@@ -31,34 +30,30 @@ namespace rw { namespace kinematics {
     /**
      * @brief class for enabling statelessness in classes that are data containers
      */
-    template< class DATA > class StatelessData
+    template<class DATA> class StatelessData
     {
       public:
         /**
          * @brief constructor
          * @param dN [in] the number of elements of type DATA that should be allocated in the state.
          */
-        StatelessData (int dN = 1) : _N (dN)
-        {
-            _sdata = rw::core::ownedPtr(
-                new StateData ((sizeof (DATA) * dN) / sizeof (double) + 1,
-                               rw::core::StringUtil::ranName ("sdata")));
+        StatelessData(int dN = 1) : _N(dN) {
+            _sdata = rw::core::ownedPtr(new StateData((sizeof(DATA) * dN) / sizeof(double) + 1,
+                                                      rw::core::StringUtil::ranName("sdata")));
         }
 
         /**
          * @copydoc StatelessData(int)
          * @param cache [in] data cache.
          */
-        StatelessData (int dN, rw::core::Ptr< StateCache > cache) : _N (dN)
-        {
-            _sdata = rw::core::ownedPtr(
-                new StateData ((sizeof (DATA) * dN) / sizeof (double) + 1,
-                               rw::core::StringUtil::ranName ("sdata"),
-                               cache));
+        StatelessData(int dN, rw::core::Ptr<StateCache> cache) : _N(dN) {
+            _sdata = rw::core::ownedPtr(new StateData((sizeof(DATA) * dN) / sizeof(double) + 1,
+                                                      rw::core::StringUtil::ranName("sdata"),
+                                                      cache));
         }
 
         //! destructor
-        virtual ~StatelessData () {}
+        virtual ~StatelessData() {}
 
         /**
          * @brief initialize this stateless data to a specific state
@@ -68,16 +63,15 @@ namespace rw { namespace kinematics {
          * and any copies or other instances of the \b state will therefore also
          * contain the added states.
          */
-        void init (State& state) { state.getStateStructure ()->addData (_sdata); }
+        void init(State& state) { state.getStateStructure()->addData(_sdata); }
 
         /**
          * @brief get the data from the \b state
          * @param state [in] the state in which the data is saved
          * @return reference to data
          */
-        DATA* getArray (const rw::kinematics::State& state)
-        {
-            return (DATA*) _sdata->getData (state);
+        DATA* getArray(const rw::kinematics::State& state) {
+            return (DATA*) _sdata->getData(state);
         }
 
         /**
@@ -85,19 +79,15 @@ namespace rw { namespace kinematics {
          * @param state [in] the state in which the data is saved
          * @return reference to data
          */
-        DATA& get (const rw::kinematics::State& state)
-        {
-            return *((DATA*) _sdata->getData (state));
-        }
+        DATA& get(const rw::kinematics::State& state) { return *((DATA*) _sdata->getData(state)); }
 
         /**
          * @brief get the data from the \b state
          * @param state [in] the state in which the data is saved
          * @return reference to data
          */
-        const DATA& get (const rw::kinematics::State& state) const
-        {
-            return ((DATA*) _sdata->getData (state))[0];
+        const DATA& get(const rw::kinematics::State& state) const {
+            return ((DATA*) _sdata->getData(state))[0];
         }
 
         /**
@@ -106,11 +96,10 @@ namespace rw { namespace kinematics {
          * @param state [in] the state in which the data is saved
          * @return reference to data
          */
-        DATA& get (int i, const rw::kinematics::State& state)
-        {
-            RW_ASSERT (i >= 0);
-            RW_ASSERT (i < _N);
-            return ((DATA*) _sdata->getData (state))[i];
+        DATA& get(int i, const rw::kinematics::State& state) {
+            RW_ASSERT(i >= 0);
+            RW_ASSERT(i < _N);
+            return ((DATA*) _sdata->getData(state))[i];
         }
 
         /**
@@ -119,9 +108,8 @@ namespace rw { namespace kinematics {
          * @param state [in] the state in which the data is saved
          * @return reference to data
          */
-        const DATA& get (int i, const rw::kinematics::State& state) const
-        {
-            return ((DATA*) _sdata->getData (state))[i];
+        const DATA& get(int i, const rw::kinematics::State& state) const {
+            return ((DATA*) _sdata->getData(state))[i];
         }
 
         /**
@@ -129,9 +117,8 @@ namespace rw { namespace kinematics {
          * @param data [in] data to copy into state
          * @param state [in] the state in which to change data
          */
-        void set (const DATA& data, rw::kinematics::State& state)
-        {
-            ((DATA*) _sdata->getData (state))[0] = data;
+        void set(const DATA& data, rw::kinematics::State& state) {
+            ((DATA*) _sdata->getData(state))[0] = data;
         }
 
         /**
@@ -140,16 +127,15 @@ namespace rw { namespace kinematics {
          * @param i [in] the index of the data.
          * @param state [in] the state in which to change data
          */
-        void set (const DATA& data, int i, rw::kinematics::State& state)
-        {
-            ((DATA*) _sdata->getData (state))[i] = data;
+        void set(const DATA& data, int i, rw::kinematics::State& state) {
+            ((DATA*) _sdata->getData(state))[i] = data;
         }
 
         /**
          * @brief number of array elements
          * @return number of elements in array
          */
-        int getN () const { return _N; }
+        int getN() const { return _N; }
 
         /**
          * @brief get the cache of this statedata object. If it has no cache then
@@ -157,27 +143,25 @@ namespace rw { namespace kinematics {
          * @param state [in] state in which to get cache from.
          * @return
          */
-        template< class CACHE_TYPE > CACHE_TYPE* getStateCache (rw::kinematics::State& state) const
-        {
-            return static_cast< CACHE_TYPE* > (_sdata->getCache (state).get ());
+        template<class CACHE_TYPE> CACHE_TYPE* getStateCache(rw::kinematics::State& state) const {
+            return static_cast<CACHE_TYPE*>(_sdata->getCache(state).get());
         }
 
         //! @copydoc getStateCache(rw::kinematics::State&) const
-        template< class CACHE_TYPE >
-        CACHE_TYPE* getStateCache (const rw::kinematics::State& state) const
-        {
-            return static_cast< CACHE_TYPE* > (_sdata->getCache (state).get ());
+        template<class CACHE_TYPE>
+        CACHE_TYPE* getStateCache(const rw::kinematics::State& state) const {
+            return static_cast<CACHE_TYPE*>(_sdata->getCache(state).get());
         }
 
         /**
          * @brief Get the state data.
          * @return state data.
          */
-        rw::core::Ptr< StateData > getStateData () { return _sdata; }
+        rw::core::Ptr<StateData> getStateData() { return _sdata; }
 
       private:
         int _N;
-        rw::core::Ptr< StateData > _sdata;
+        rw::core::Ptr<StateData> _sdata;
     };
 
 }}     // namespace rw::kinematics

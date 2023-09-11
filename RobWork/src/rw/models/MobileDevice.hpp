@@ -19,10 +19,9 @@
 #define RW_MODELS_MOBILEDEVICE_HPP
 
 #if !defined(SWIG)
+#include <rw/math/Q.hpp>
 #include <rw/models/Device.hpp>
 #include <rw/models/JointDevice.hpp>
-
-#include <rw/math/Q.hpp>
 #endif
 
 namespace rw { namespace kinematics {
@@ -60,13 +59,13 @@ namespace rw { namespace models {
          * @param state [in] the state of the device
          * @param name [in] name of device
          */
-        MobileDevice (rw::kinematics::MovableFrame* base, RevoluteJoint* wheel1,
-                      RevoluteJoint* wheel2, rw::kinematics::State& state, const std::string& name);
+        MobileDevice(rw::kinematics::MovableFrame* base, RevoluteJoint* wheel1,
+                     RevoluteJoint* wheel2, rw::kinematics::State& state, const std::string& name);
 
         /**
          * @brief Destructor
          */
-        virtual ~MobileDevice ();
+        virtual ~MobileDevice();
 
         /**
          * @brief Sets the position and orientation of the base
@@ -76,106 +75,106 @@ namespace rw { namespace models {
          * @param transform [in] new base transform
          * @param state [in] state to write change to
          */
-        void setDevicePose (const rw::math::Transform3D<>& transform, rw::kinematics::State& state);
+        void setDevicePose(const rw::math::Transform3D<>& transform, rw::kinematics::State& state);
 
         /**
          * @copydoc Device::setQ
          */
-        virtual void setQ (const rw::math::Q& q, rw::kinematics::State& state) const;
+        virtual void setQ(const rw::math::Q& q, rw::kinematics::State& state) const;
 
         /**
          * @copydoc Device::getQ
          */
-        virtual rw::math::Q getQ (const rw::kinematics::State& state) const;
+        virtual rw::math::Q getQ(const rw::kinematics::State& state) const;
 
         /**
          * @copydoc Device::getBounds
          */
-        virtual std::pair< rw::math::Q, rw::math::Q > getBounds () const;
+        virtual std::pair<rw::math::Q, rw::math::Q> getBounds() const;
 
         /**
          * @copydoc Device::setBounds
          */
-        virtual void setBounds (const std::pair< rw::math::Q, rw::math::Q >& bounds);
+        virtual void setBounds(const std::pair<rw::math::Q, rw::math::Q>& bounds);
 
         /**
          * @copydoc Device::getVelocityLimits
          */
-        virtual rw::math::Q getVelocityLimits () const;
+        virtual rw::math::Q getVelocityLimits() const;
 
         /**
          * @copydoc Device::setVelocityLimits
          */
-        virtual void setVelocityLimits (const rw::math::Q& vellimits);
+        virtual void setVelocityLimits(const rw::math::Q& vellimits);
 
         /**
          * @copydoc Device::getAccelerationLimits
          */
-        virtual rw::math::Q getAccelerationLimits () const;
+        virtual rw::math::Q getAccelerationLimits() const;
 
         /**
          * @copydoc Device::setAccelerationLimits
          */
-        virtual void setAccelerationLimits (const rw::math::Q& acclimits);
+        virtual void setAccelerationLimits(const rw::math::Q& acclimits);
 
         /**
          * @copydoc Device::getDOF
          */
-        virtual size_t getDOF () const;
+        virtual size_t getDOF() const;
 
         /**
          * @copydoc Device::getBase()
          */
-        virtual rw::kinematics::Frame* getBase ();
+        virtual rw::kinematics::Frame* getBase();
 
         /**
          * @copydoc Device::getBase() const
          */
-        virtual const rw::kinematics::Frame* getBase () const;
+        virtual const rw::kinematics::Frame* getBase() const;
 
         /**
          * @copydoc Device::getEnd()
          */
-        virtual rw::kinematics::Frame* getEnd ();
+        virtual rw::kinematics::Frame* getEnd();
 
         /**
          * @copydoc Device::getEnd() const
          */
-        virtual const rw::kinematics::Frame* getEnd () const;
+        virtual const rw::kinematics::Frame* getEnd() const;
 
         /**
          * @copydoc Device::baseJend
          */
-        virtual rw::math::Jacobian baseJend (const rw::kinematics::State& state) const;
+        virtual rw::math::Jacobian baseJend(const rw::kinematics::State& state) const;
 
         /**
            @copydoc Device::baseJframe
            Not implemented.
         */
-        virtual rw::math::Jacobian baseJframe (const rw::core::Ptr<rw::kinematics::Frame> frame,
-                                               const rw::kinematics::State& state) const;
+        virtual rw::math::Jacobian baseJframe(const rw::core::Ptr<rw::kinematics::Frame> frame,
+                                              const rw::kinematics::State& state) const;
 
         /**
            @copydoc Device::baseJframes
            Not implemented.
         */
-        virtual rw::math::Jacobian baseJframes (const std::vector< rw::kinematics::Frame* >& frames,
-                                                const rw::kinematics::State& state) const;
+        virtual rw::math::Jacobian baseJframes(const std::vector<rw::kinematics::Frame*>& frames,
+                                               const rw::kinematics::State& state) const;
 
         /**
            @copydoc Device::baseJCframes
            Not implemented.
         */
-        virtual rw::core::Ptr< rw::models::JacobianCalculator >
-        baseJCframes (const std::vector< rw::kinematics::Frame* >& frames,
-                      const rw::kinematics::State& state) const;
+        virtual rw::core::Ptr<rw::models::JacobianCalculator>
+        baseJCframes(const std::vector<rw::kinematics::Frame*>& frames,
+                     const rw::kinematics::State& state) const;
 
       private:
         rw::kinematics::MovableFrame* _base;
-        std::vector< rw::kinematics::Frame* > _axillaryFrames;
+        std::vector<rw::kinematics::Frame*> _axillaryFrames;
         double _width;
 
-        std::pair< rw::math::Q, rw::math::Q > _posLimits;
+        std::pair<rw::math::Q, rw::math::Q> _posLimits;
         rw::math::Q _velLimits;
         rw::math::Q _accLimits;
 

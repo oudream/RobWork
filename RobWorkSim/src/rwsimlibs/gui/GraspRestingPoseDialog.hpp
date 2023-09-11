@@ -50,10 +50,9 @@ class QTimer;
 
 struct RestingConfig
 {
-    RestingConfig (const rw::kinematics::State& state, const std::string& str) :
-        _state (state), _desc (str)
-    {}
-    RestingConfig (){};
+    RestingConfig(const rw::kinematics::State& state, const std::string& str) :
+        _state(state), _desc(str) {}
+    RestingConfig(){};
     rw::kinematics::State _state;
     std::string _desc;
 };
@@ -68,29 +67,29 @@ class GraspRestingPoseDialog : public QDialog
     Q_OBJECT
 
   public:
-    typedef std::vector< Eigen::MatrixXf > TactileSensorData;
+    typedef std::vector<Eigen::MatrixXf> TactileSensorData;
 
-    GraspRestingPoseDialog (const rw::kinematics::State& state,
-                            rwsim::dynamics::DynamicWorkCell* dwc,
-                            rw::proximity::CollisionDetector* detector, QWidget* parent = 0);
+    GraspRestingPoseDialog(const rw::kinematics::State& state,
+                           rwsim::dynamics::DynamicWorkCell* dwc,
+                           rw::proximity::CollisionDetector* detector, QWidget* parent = 0);
 
-    const rw::kinematics::State& getState () { return _state; };
+    const rw::kinematics::State& getState() { return _state; };
 
-    std::vector< rwsim::dynamics::RigidBody::Ptr >& getBodies () { return _bodies; };
+    std::vector<rwsim::dynamics::RigidBody::Ptr>& getBodies() { return _bodies; };
 
-    std::vector< rw::kinematics::State >& getStartPoses () { return _startPoses; };
+    std::vector<rw::kinematics::State>& getStartPoses() { return _startPoses; };
 
-    std::vector< rw::kinematics::State >& getRestingPoses () { return _resultPoses; };
+    std::vector<rw::kinematics::State>& getRestingPoses() { return _resultPoses; };
 
-    void setPreshapeStrategy (const std::string& str);
+    void setPreshapeStrategy(const std::string& str);
 
-    void setSaveDir (const std::string& str);
+    void setSaveDir(const std::string& str);
 
-    void setUniqueID (const std::string& id) { _id = id; }
+    void setUniqueID(const std::string& id) { _id = id; }
 
-    void startAuto ();
+    void startAuto();
 
-    void stepCallBack (int i, const rw::kinematics::State& state);
+    void stepCallBack(int i, const rw::kinematics::State& state);
 
   signals:
     /**
@@ -98,58 +97,57 @@ class GraspRestingPoseDialog : public QDialog
      * through this signal.
      * @param state
      */
-    void stateChanged (const rw::kinematics::State& state);
+    void stateChanged(const rw::kinematics::State& state);
 
     /**
      * @brief An event that is fired when a resting pose has been calculated.
      */
-    void restingPoseEvent (const RestingConfig& restcfg);
+    void restingPoseEvent(const RestingConfig& restcfg);
 
   private slots:
-    void btnPressed ();
-    void changedEvent ();
+    void btnPressed();
+    void changedEvent();
 
   private:
-    void initializeStart ();
-    void updateStatus ();
+    void initializeStart();
+    void updateStatus();
 
     /**
      * @brief calculates a random configuration of
      * all bodies
      * @param state
      */
-    void calcRandomCfg (rw::kinematics::State& state);
+    void calcRandomCfg(rw::kinematics::State& state);
 
     /**
      * @brief Calculate random configuration for \b bodies
      * @param bodies
      * @param state
      */
-    void calcRandomCfg (std::vector< rwsim::dynamics::RigidBody::Ptr >& bodies,
-                        rw::kinematics::State& state);
+    void calcRandomCfg(std::vector<rwsim::dynamics::RigidBody::Ptr>& bodies,
+                       rw::kinematics::State& state);
 
     /**
      * @brief calculates a collision free random configuration of
      * all bodies
      * @param state
      */
-    void calcColFreeRandomCfg (rw::kinematics::State& state);
+    void calcColFreeRandomCfg(rw::kinematics::State& state);
 
-    bool isSimulationFinished (rw::core::Ptr< rwsim::simulator::DynamicSimulator > sim,
-                               const rw::kinematics::State& state);
+    bool isSimulationFinished(rw::core::Ptr<rwsim::simulator::DynamicSimulator> sim,
+                              const rw::kinematics::State& state);
 
-    bool saveRestingState (int simidx, rw::core::Ptr< rwsim::simulator::DynamicSimulator > sim,
-                           const rw::kinematics::State& state);
+    bool saveRestingState(int simidx, rw::core::Ptr<rwsim::simulator::DynamicSimulator> sim,
+                          const rw::kinematics::State& state);
 
   private:
     struct CallBackFunctor
     {
-        CallBackFunctor (int i, GraspRestingPoseDialog* parent) : _i (i), _parent (parent) {}
+        CallBackFunctor(int i, GraspRestingPoseDialog* parent) : _i(i), _parent(parent) {}
 
-        void stepCallBack (rwsim::simulator::ThreadSimulator* sim,
-                           const rw::kinematics::State& state)
-        {
-            _parent->stepCallBack (_i, state);
+        void stepCallBack(rwsim::simulator::ThreadSimulator* sim,
+                          const rw::kinematics::State& state) {
+            _parent->stepCallBack(_i, state);
         }
 
         int _i;
@@ -160,51 +158,51 @@ class GraspRestingPoseDialog : public QDialog
     rw::kinematics::State _defstate;
     rw::kinematics::State _state;
     QTimer* _timer;
-    std::vector< rw::core::Ptr< rwsim::simulator::ThreadSimulator > > _simulators;
-    std::vector< rw::kinematics::State > _initStates;
-    std::vector< double > _simStartTimes;
+    std::vector<rw::core::Ptr<rwsim::simulator::ThreadSimulator>> _simulators;
+    std::vector<rw::kinematics::State> _initStates;
+    std::vector<double> _simStartTimes;
     int _nrOfTests;
     double _totalSimTime;
-    std::vector< rwsim::dynamics::RigidBody::Ptr > _bodies;
+    std::vector<rwsim::dynamics::RigidBody::Ptr> _bodies;
 
     long _startTime;
     std::string _id;
-    std::vector< rw::kinematics::State > _startPoses;
-    std::vector< rw::kinematics::State > _resultPoses;
+    std::vector<rw::kinematics::State> _startPoses;
+    std::vector<rw::kinematics::State> _resultPoses;
 
-    rw::kinematics::FrameMap< rwsim::dynamics::RigidBody::Ptr > _frameToBody;
+    rw::kinematics::FrameMap<rwsim::dynamics::RigidBody::Ptr> _frameToBody;
     rwsim::dynamics::DynamicWorkCell* _dwc;
     rw::proximity::CollisionDetector* _colDect;
     double _lastTime, _lastBelowThresUpdate;
     rwsim::util::MovingAverage _avgSimTime;
     rwsim::util::MovingAverage _avgTime;
 
-    std::vector< rw::core::Ptr< rwsim::control::PDController > > _controllers;
-    std::vector< rw::math::Q > _preshapes;
-    std::vector< rw::math::Q > _targetQ;
+    std::vector<rw::core::Ptr<rwsim::control::PDController>> _controllers;
+    std::vector<rw::math::Q> _preshapes;
+    std::vector<rw::math::Q> _targetQ;
     rwsim::dynamics::RigidBody::Ptr _body;
-    rw::core::Ptr< rwsim::dynamics::RigidDevice > _hand;
+    rw::core::Ptr<rwsim::dynamics::RigidDevice> _hand;
     rw::kinematics::MovableFrame *_handBase, *_object;
 
-    rw::core::Ptr< rwsim::sensor::BodyContactSensor > _bodySensor;
+    rw::core::Ptr<rwsim::sensor::BodyContactSensor> _bodySensor;
 
     bool _exitHard;
 
     bool _graspNotStable;
 
-    std::vector< bool > _fingersInContact;
+    std::vector<bool> _fingersInContact;
 
-    std::vector< std::vector< rw::math::Q > > _handconfigs;
-    std::vector< std::vector< TactileSensorData > > _tactiledatas;
+    std::vector<std::vector<rw::math::Q>> _handconfigs;
+    std::vector<std::vector<TactileSensorData>> _tactiledatas;
 
-    std::vector< rw::core::Ptr< CallBackFunctor > > _functors;
-    std::vector< double > _nextTimeUpdate;
+    std::vector<rw::core::Ptr<CallBackFunctor>> _functors;
+    std::vector<double> _nextTimeUpdate;
     int _nrOfTestsOld;
 
-    ThreadSafeStack< RestingConfig > _restingConfigs;
+    ThreadSafeStack<RestingConfig> _restingConfigs;
 
     // QSampler *_handQSampler;
-    std::vector< int > _currentPreshapeIDX;
+    std::vector<int> _currentPreshapeIDX;
     rw::math::Q _target, _preshape, _handForceLimitsDefault;
     rw::math::Transform3D<> _objTransform;
 

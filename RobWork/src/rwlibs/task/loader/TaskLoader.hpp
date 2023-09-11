@@ -24,9 +24,8 @@
  * \copydoc rwlibs::task::TaskLoader
  */
 
-#include <rwlibs/task//Task.hpp>
-
 #include <rw/core/ExtensionPoint.hpp>
+#include <rwlibs/task/Task.hpp>
 
 namespace rwlibs { namespace task {
     //! @addtogroup task
@@ -39,51 +38,51 @@ namespace rwlibs { namespace task {
     {
       public:
         //! @brief Smart pointer type for a TaskLoader.
-        typedef rw::core::Ptr< TaskLoader > Ptr;
+        typedef rw::core::Ptr<TaskLoader> Ptr;
 
         //! @brief Constructor.
-        TaskLoader () {}
+        TaskLoader() {}
 
         //! @brief Destructor.
-        virtual ~TaskLoader () {}
+        virtual ~TaskLoader() {}
 
         /**
          * @brief Load a task from a file.
          * @param filename [in] the filename.
          * @param schemaFileName [in] (optional) a schema describing the layout.
          */
-        virtual void load (const std::string& filename, const std::string& schemaFileName = "") = 0;
+        virtual void load(const std::string& filename, const std::string& schemaFileName = "") = 0;
 
         /**
          * @brief Load a task from an input stream.
          * @param instream [in] the stream to load from.
          * @param schemaFileName [in] (optional) a schema describing the layout.
          */
-        virtual void load (std::istream& instream, const std::string& schemaFileName = "") = 0;
+        virtual void load(std::istream& instream, const std::string& schemaFileName = "") = 0;
 
         /**
          * @brief Get an already loaded QTask.
          * @return smart pointer to the QTask, or NULL if no QTask has been loaded.
          */
-        virtual rwlibs::task::QTask::Ptr getQTask () = 0;
+        virtual rwlibs::task::QTask::Ptr getQTask() = 0;
 
         /**
          * @brief Get an already loaded CartesianTask.
          * @return smart pointer to the CartesianTask, or NULL if no CartesianTask has been loaded.
          */
-        virtual rwlibs::task::CartesianTask::Ptr getCartesianTask () = 0;
+        virtual rwlibs::task::CartesianTask::Ptr getCartesianTask() = 0;
 
         /**
          * @brief Get an already loaded Task.
          * @return smart pointer to the Task, or NULL if no Task has been loaded.
          */
-        virtual rwlibs::task::TaskBase::Ptr getTask () = 0;
+        virtual rwlibs::task::TaskBase::Ptr getTask() = 0;
 
         /**
          * @brief Clone the TaskLoader.
          * @return a new copy of the TaskLoader object.
          */
-        virtual TaskLoader::Ptr clone () const = 0;
+        virtual TaskLoader::Ptr clone() const = 0;
 
         /**
          * @addtogroup extensionpoints
@@ -95,7 +94,7 @@ namespace rwlibs { namespace task {
          * @brief A factory for TaskLoader. This factory also defines an
          * extension point for task loaders.
          */
-        class Factory : public rw::core::ExtensionPoint< TaskLoader >
+        class Factory : public rw::core::ExtensionPoint<TaskLoader>
         {
           public:
             /**
@@ -112,27 +111,26 @@ namespace rwlibs { namespace task {
              * available.
              * @return a suitable loader, or NULL if no suitable loader exist.
              */
-            static TaskLoader::Ptr getTaskLoader (const std::string& format,
-                                                  const std::string& id = "");
+            static TaskLoader::Ptr getTaskLoader(const std::string& format,
+                                                 const std::string& id = "");
 
             /**
              * @brief Check if the factory has a TaskLoader for a specific format.
              * @param format [in] the file ending excluding initial dot (such as xml)
              * @return true if a suitable loader exist, false otherwise.
              */
-            static bool hasTaskLoader (const std::string& format);
+            static bool hasTaskLoader(const std::string& format);
 
             /**
              * @brief Get a list of supported formats.
              * @return list of supported formats.
              */
-            static std::vector< std::string > getSupportedFormats ();
+            static std::vector<std::string> getSupportedFormats();
 
           private:
-            Factory () :
-                rw::core::ExtensionPoint< TaskLoader > ("rwlibs.task.TaskLoader",
-                                                        "Loaders for the RobWork Task format.")
-            {}
+            Factory() :
+                rw::core::ExtensionPoint<TaskLoader>("rwlibs.task.TaskLoader",
+                                                     "Loaders for the RobWork Task format.") {}
         };
     };
     //! @}

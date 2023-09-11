@@ -54,7 +54,7 @@ namespace rw { namespace kinematics {
         /**
          * @brief Constructs an empty QState
          */
-        QState ();
+        QState();
 
         /**
          * @brief A configuration state.
@@ -65,10 +65,10 @@ namespace rw { namespace kinematics {
          *
          * @param setup [in] The shared setup for configuration states.
          */
-        explicit QState (rw::core::Ptr< rw::kinematics::StateSetup > setup);
+        explicit QState(rw::core::Ptr<rw::kinematics::StateSetup> setup);
 
         //! destructor
-        virtual ~QState ();
+        virtual ~QState();
 
         /**
          * @brief An array of length frame.getDOF() containing the joint values
@@ -79,12 +79,12 @@ namespace rw { namespace kinematics {
          *
          * @return The joint values for the frame.
          */
-        double* getQ (const rw::kinematics::StateData& data);
+        double* getQ(const rw::kinematics::StateData& data);
 
         /**
          * @brief non const version of getQ.
          */
-        const double* getQ (const rw::kinematics::StateData& data) const;
+        const double* getQ(const rw::kinematics::StateData& data) const;
 
         /**
          * @brief Assign for \b frame the frame.getDOF() joint values of the
@@ -104,7 +104,7 @@ namespace rw { namespace kinematics {
          *   q_in[i] == q_out[i];
          * \endcode
          */
-        void setQ (const rw::kinematics::StateData& data, const double* vals);
+        void setQ(const rw::kinematics::StateData& data, const double* vals);
 
 #if !defined(SWIG)
         /**
@@ -116,79 +116,79 @@ namespace rw { namespace kinematics {
          *
          * @return the stream
          */
-        friend std::ostream& operator<< (std::ostream& os, const QState& state)
-        {
+        friend std::ostream& operator<<(std::ostream& os, const QState& state) {
             os << state._contents;
             return os;
         }
 #else
-        TOSTRING (rw::kinematics::QState);
+        TOSTRING(rw::kinematics::QState);
 #endif
 
         /**
          * @brief Scaling of a configuration state by a scalar.
          */
-        QState operator* (double scale) const
-        {
-            return QState (scale * this->_contents, this->_setup);
+        QState operator*(double scale) const {
+            return QState(scale * this->_contents, this->_setup);
         }
 
         /**
          * @brief Scaling of a configuration state by division
          */
-        QState operator/ (double scale) const
-        {
-            return QState (this->_contents / scale, this->_setup);
+        QState operator/(double scale) const {
+            return QState(this->_contents / scale, this->_setup);
         }
 #if !defined(SWIGPYTHON)
         /**
          * @brief Scaling of a configuration state by a scalar.
          */
-        friend QState operator* (double scale, const QState& q)
-        {
-            return QState (scale * q._contents, q._setup);
+        friend QState operator*(double scale, const QState& q) {
+            return QState(scale * q._contents, q._setup);
         }
 #endif
 
         /**
          * @brief Addition of configuration states.
          */
-        QState operator+ (const QState& b) const
-        {
+        QState operator+(const QState& b) const {
             // It does not matter here if we use the setup of a or b.
             // They are assumed to be the identical.
-            return QState (this->_contents + b._contents, this->_setup);
+            return QState(this->_contents + b._contents, this->_setup);
         }
 
         /**
          * @brief Subtraction of configuration states.
          */
-        QState operator- (const QState& b) const
-        {
-            return QState (this->_contents - b._contents, this->_setup);
+        QState operator-(const QState& b) const {
+            return QState(this->_contents - b._contents, this->_setup);
         }
 
         /**
          * @brief Unary minus operator.
          */
-        QState operator- () const { return QState (-_contents, _setup); }
+        QState operator-() const {
+            return QState(-_contents, _setup);
+        }
 
         /**
          * @brief returns the StateSetup
          */
-        rw::core::Ptr< rw::kinematics::StateSetup > getStateSetup () const { return _setup; }
-#if !defined(SWIGPYTHON)        
+        rw::core::Ptr<rw::kinematics::StateSetup> getStateSetup() const {
+            return _setup;
+        }
+#if !defined(SWIGPYTHON)
         /**
          * @brief Assignment operator.
          * @param rhs [in] the other QState to assign to this.
          * @return a reference to this QState.
          */
-        QState& operator= (const QState& rhs);
+        QState& operator=(const QState& rhs);
 #endif
         /**
          * @brief The dimension of the state vector.
          */
-        size_t size () const { return _contents.size (); }
+        size_t size() const {
+            return _contents.size();
+        }
 
 #if !defined(SWIG)
         /**
@@ -196,17 +196,15 @@ namespace rw { namespace kinematics {
          * @param index [in] the index.
          * @return the value at given index.
          */
-        double& operator() (size_t index)
-        {
-            RW_ASSERT (index < size ());
-            return _contents (index);
+        double& operator()(size_t index) {
+            RW_ASSERT(index < size());
+            return _contents(index);
         }
 
         //! @copydoc operator()(size_t)
-        const double& operator() (size_t index) const
-        {
-            RW_ASSERT (index < size ());
-            return _contents (index);
+        const double& operator()(size_t index) const {
+            RW_ASSERT(index < size());
+            return _contents(index);
         }
 
         /**
@@ -214,10 +212,9 @@ namespace rw { namespace kinematics {
          * @param index [in] the index.
          * @return the value at given index.
          */
-        double& operator[] (size_t index)
-        {
-            RW_ASSERT (index < size ());
-            return _contents (index);
+        double& operator[](size_t index) {
+            RW_ASSERT(index < size());
+            return _contents(index);
         }
 
         /**
@@ -225,22 +222,20 @@ namespace rw { namespace kinematics {
          * @param index [in] the index.
          * @return the value at given index.
          */
-        double operator[] (size_t index) const
-        {
-            RW_ASSERT (index < size ());
-            return _contents (index);
+        double operator[](size_t index) const {
+            RW_ASSERT(index < size());
+            return _contents(index);
         }
 #else
-        ARRAYOPERATOR (double);
+        ARRAYOPERATOR(double);
 #endif
       private:
-        QState (const math::Q& contents, rw::core::Ptr< StateSetup > setup) :
-            _contents (contents), _setup (setup)
-        {}
+        QState(const math::Q& contents, rw::core::Ptr<StateSetup> setup) :
+            _contents(contents), _setup(setup) {}
 
       private:
         rw::math::Q _contents;
-        rw::core::Ptr< rw::kinematics::StateSetup > _setup;
+        rw::core::Ptr<rw::kinematics::StateSetup> _setup;
     };
 
     /*@}*/

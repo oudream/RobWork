@@ -20,9 +20,8 @@
 
 #if !defined(SWIG)
 #include <rw/graspplanning/GraspQualityMeasure3D.hpp>
-
 #include <rw/math/Vector3D.hpp>
-#endif 
+#endif
 namespace rw { namespace graspplanning {
 
     /**
@@ -39,20 +38,19 @@ namespace rw { namespace graspplanning {
          * @param CM [in] The center of mass of the object described in the grasp frame.
          * @param maxDist [in] The max dist between CM and CCP that is allowed.
          */
-        CMDistCCPMeasure3D (const rw::math::Vector3D<>& CM, double maxDist) :
-            _CM (CM), _maxDist (maxDist)
-        {}
+        CMDistCCPMeasure3D(const rw::math::Vector3D<>& CM, double maxDist) :
+            _CM(CM), _maxDist(maxDist) {}
 
         /**
          * @brief destructor
          */
-        virtual ~CMDistCCPMeasure3D (){};
+        virtual ~CMDistCCPMeasure3D(){};
 
         /**
          * @brief computes the quality of the grasp such that the quality
          * is in the interval [0;1] with 1 being the highest quality.
          */
-        virtual double quality (const Grasp3D& grasp) const;
+        virtual double quality(const Grasp3D& grasp) const;
 
       private:
         rw::math::Vector3D<> _CM;

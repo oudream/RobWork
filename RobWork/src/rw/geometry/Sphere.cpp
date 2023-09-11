@@ -29,25 +29,24 @@ using namespace rw::math;
 namespace {
 // this is a helper function for createsphere
 // if you just want to make a sphere, just call createsphere
-void spherehelper (const std::vector< Triangle<> >& triangles,
-                   std::vector< Triangle<> >& newtriangles, double radius)
-{
-    newtriangles.clear ();
-    std::vector< Triangle<> >::const_iterator i = triangles.begin ();
-    while (i != triangles.end ()) {
+void spherehelper(const std::vector<Triangle<>>& triangles, std::vector<Triangle<>>& newtriangles,
+                  double radius) {
+    newtriangles.clear();
+    std::vector<Triangle<>>::const_iterator i = triangles.begin();
+    while(i != triangles.end()) {
         const Triangle<>& t = *i++;
         Vector3D<> a = t[0], b = t[1], c = t[2];
-        Vector3D<> v1 (a[0] + b[0], a[1] + b[1], a[2] + b[2]);
-        Vector3D<> v2 (a[0] + c[0], a[1] + c[1], a[2] + c[2]);
-        Vector3D<> v3 (b[0] + c[0], b[1] + c[1], b[2] + c[2]);
-        v1 = normalize (v1) * radius;
-        v2 = normalize (v2) * radius;
-        v3 = normalize (v3) * radius;
+        Vector3D<> v1(a[0] + b[0], a[1] + b[1], a[2] + b[2]);
+        Vector3D<> v2(a[0] + c[0], a[1] + c[1], a[2] + c[2]);
+        Vector3D<> v3(b[0] + c[0], b[1] + c[1], b[2] + c[2]);
+        v1 = normalize(v1) * radius;
+        v2 = normalize(v2) * radius;
+        v3 = normalize(v3) * radius;
 
-        newtriangles.push_back (Triangle<> (a, v1, v2));
-        newtriangles.push_back (Triangle<> (c, v2, v3));
-        newtriangles.push_back (Triangle<> (b, v3, v1));
-        newtriangles.push_back (Triangle<> (v1, v3, v2));
+        newtriangles.push_back(Triangle<>(a, v1, v2));
+        newtriangles.push_back(Triangle<>(c, v2, v3));
+        newtriangles.push_back(Triangle<>(b, v3, v1));
+        newtriangles.push_back(Triangle<>(v1, v3, v2));
     }
 }
 }    // namespace
@@ -57,9 +56,8 @@ void spherehelper (const std::vector< Triangle<> >& triangles,
 // there will be 4^(levels+1) faces in there sphere
 // std::vector<Triangle> createsphere(int levels)
 
-TriMesh::Ptr Sphere::createMesh (int resolution) const
-{
-    std::vector< Triangle<> > triangles, triangles_dst, *trimesh_dst, *trimesh_src;
+TriMesh::Ptr Sphere::createMesh(int resolution) const {
+    std::vector<Triangle<>> triangles, triangles_dst, *trimesh_dst, *trimesh_src;
 
     /* Let's find the helper granulation value of the sphere generator.
      * Old version of this code used value 6 for granulation, which was
@@ -75,35 +73,32 @@ TriMesh::Ptr Sphere::createMesh (int resolution) const
      *      -> granulation = log_4(faces)-1
      */
     double faces       = resolution / 20.0 * 16384;
-    double granulation = log (faces) / log (4) - 1;
+    double granulation = log(faces) / log(4) - 1;
 
     // build a tetrahedron
-    Vector3D<> v0 (0.0, 0.0, 1.0);
-    Vector3D<> v1 (2.0 * sqrt (2.0) / 3.0, 0.0, -1.0 / 3.0);
-    Vector3D<> v2 (-sqrt (2.0) / 3.0, sqrt (6.0) / 3.0, -1.0 / 3.0);
-    Vector3D<> v3 (-sqrt (2.0) / 3.0, -sqrt (6.0) / 3.0, -1.0 / 3.0);
+    Vector3D<> v0(0.0, 0.0, 1.0);
+    Vector3D<> v1(2.0 * sqrt(2.0) / 3.0, 0.0, -1.0 / 3.0);
+    Vector3D<> v2(-sqrt(2.0) / 3.0, sqrt(6.0) / 3.0, -1.0 / 3.0);
+    Vector3D<> v3(-sqrt(2.0) / 3.0, -sqrt(6.0) / 3.0, -1.0 / 3.0);
 
-    triangles.push_back (Triangle<> (v0 * _radius, v1 * _radius, v2 * _radius));
-    triangles.push_back (Triangle<> (v0 * _radius, v2 * _radius, v3 * _radius));
-    triangles.push_back (Triangle<> (v0 * _radius, v3 * _radius, v1 * _radius));
-    triangles.push_back (Triangle<> (v1 * _radius, v3 * _radius, v2 * _radius));
+    triangles.push_back(Triangle<>(v0 * _radius, v1 * _radius, v2 * _radius));
+    triangles.push_back(Triangle<>(v0 * _radius, v2 * _radius, v3 * _radius));
+    triangles.push_back(Triangle<>(v0 * _radius, v3 * _radius, v1 * _radius));
+    triangles.push_back(Triangle<>(v1 * _radius, v3 * _radius, v2 * _radius));
 
     trimesh_dst = &triangles_dst;
     trimesh_src = &triangles;
-    for (int ctr = 0; ctr < granulation; ctr++) {
-        spherehelper (*trimesh_src, *trimesh_dst, _radius);
-        std::swap (trimesh_src, trimesh_dst);
-        trimesh_dst->clear ();
+    for(int ctr = 0; ctr < granulation; ctr++) {
+        spherehelper(*trimesh_src, *trimesh_dst, _radius);
+        std::swap(trimesh_src, trimesh_dst);
+        trimesh_dst->clear();
     }
-    PlainTriMeshD* mesh = new PlainTriMeshD (*trimesh_src);
-    return ownedPtr (mesh);
+    PlainTriMeshD* mesh = new PlainTriMeshD(*trimesh_src);
+    return ownedPtr(mesh);
 }
 
-void Sphere::setParameters (const rw::math::Q& q)
-{
-    if (q.size () != 1) {
-        RW_THROW ("Size of parameter list must equal 1!");
-    }
+void Sphere::setParameters(const rw::math::Q& q) {
+    if(q.size() != 1) { RW_THROW("Size of parameter list must equal 1!"); }
 
-    _radius = q (0);
+    _radius = q(0);
 }

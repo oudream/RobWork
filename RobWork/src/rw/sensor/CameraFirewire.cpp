@@ -20,9 +20,7 @@
 using namespace rw::sensor;
 using namespace rw::kinematics;
 
-CameraFirewire::CameraFirewire (const std::string& name, const std::string& modelInfo) :
-    Camera (name, modelInfo)
-{}
+CameraFirewire::CameraFirewire(const std::string& name, const std::string& modelInfo) :
+    Camera(name, modelInfo) {}
 
-CameraFirewire::~CameraFirewire ()
-{}
+CameraFirewire::~CameraFirewire() {}

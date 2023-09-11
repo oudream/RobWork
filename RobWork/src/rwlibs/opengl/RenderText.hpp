@@ -24,16 +24,17 @@ namespace rwlibs { namespace opengl {
          * @param text [in] the text to be rendered
          * @param frame [in] frame to render text in.
          */
-        RenderText (std::string text, rw::core::Ptr< rw::kinematics::Frame > frame);
+        RenderText(std::string text, rw::core::Ptr<rw::kinematics::Frame> frame);
 
-        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info, DrawableNode::DrawType type, double alpha) const
-        void draw (const rw::graphics::DrawableNode::RenderInfo& info,
-                   rw::graphics::DrawableNode::DrawType type, double alpha) const;
+        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info,
+        //! DrawableNode::DrawType type, double alpha) const
+        void draw(const rw::graphics::DrawableNode::RenderInfo& info,
+                  rw::graphics::DrawableNode::DrawType type, double alpha) const;
 
       protected:
       private:
         std::string _text;
-        rw::core::Ptr< rw::kinematics::Frame > _frame;
+        rw::core::Ptr<rw::kinematics::Frame> _frame;
         bool _haveGlut;
 
         // Text width and text height in pixels
@@ -42,11 +43,11 @@ namespace rwlibs { namespace opengl {
 
         void* _font;
 
-        void findTextDimensions ();
-        std::vector< rw::math::Vector3D<> > getLabelCorners (rw::math::Transform3D<> fTc,
-                                                             rw::math::Vector3D<> pos,
-                                                             double scale_x, double scale_y,
-                                                             int move_x, int move_y) const;
+        void findTextDimensions();
+        std::vector<rw::math::Vector3D<>> getLabelCorners(rw::math::Transform3D<> fTc,
+                                                          rw::math::Vector3D<> pos, double scale_x,
+                                                          double scale_y, int move_x,
+                                                          int move_y) const;
     };
 
 }}        // namespace rwlibs::opengl

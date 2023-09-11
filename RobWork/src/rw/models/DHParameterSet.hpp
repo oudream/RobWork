@@ -23,7 +23,7 @@
 
 #include <string>
 #include <vector>
-#endif 
+#endif
 
 namespace rw { namespace core {
     class PropertyMap;
@@ -47,9 +47,8 @@ namespace rw { namespace models {
         /**
          * @brief Constructor for DHParameters initialized to zero.
          */
-        DHParameterSet () :
-            _alpha (0), _a (0), _d (0), _theta (0), _beta (0), _b (0), _isParallel (false)
-        {}
+        DHParameterSet() :
+            _alpha(0), _a(0), _d(0), _theta(0), _beta(0), _b(0), _isParallel(false) {}
 
         /**
          * @brief Constructor
@@ -58,9 +57,8 @@ namespace rw { namespace models {
          * @param d [in] \f$ d_{i}\f$
          * @param theta [in] \f$ \theta_{i-1}\f$
          */
-        DHParameterSet (double alpha, double a, double d, double theta) :
-            _alpha (alpha), _a (a), _d (d), _theta (theta), _beta (0), _b (0), _isParallel (false)
-        {}
+        DHParameterSet(double alpha, double a, double d, double theta) :
+            _alpha(alpha), _a(a), _d(d), _theta(theta), _beta(0), _b(0), _isParallel(false) {}
 
         /**
          * @brief Constructor
@@ -71,10 +69,9 @@ namespace rw { namespace models {
          * @param type documentation missing !
          *
          */
-        DHParameterSet (double alpha, double a, double d, double theta, const std::string& type) :
-            _alpha (alpha), _a (a), _d (d), _theta (theta), _beta (0), _b (0), _isParallel (false),
-            _type (type)
-        {}
+        DHParameterSet(double alpha, double a, double d, double theta, const std::string& type) :
+            _alpha(alpha), _a(a), _d(d), _theta(theta), _beta(0), _b(0), _isParallel(false),
+            _type(type) {}
 
         /**
          * @brief Constructor
@@ -84,33 +81,32 @@ namespace rw { namespace models {
          * @param b [in] documentation missing !
          * @param parallel [in] documentation missing !
          */
-        DHParameterSet (double alpha, double a, double beta, double b, bool parallel) :
-            _alpha (alpha), _a (a), _d (0), _theta (0), _beta (beta), _b (b),
-            _isParallel (parallel), _type ("HGP")
-        {}
+        DHParameterSet(double alpha, double a, double beta, double b, bool parallel) :
+            _alpha(alpha), _a(a), _d(0), _theta(0), _beta(beta), _b(b), _isParallel(parallel),
+            _type("HGP") {}
 
         /** @brief \f$ \alpha_{i-1}\f$ **/
-        double alpha () const { return _alpha; }
+        double alpha() const { return _alpha; }
 
         /** @brief \f$ a_{i-1}\f$ **/
-        double a () const { return _a; }
+        double a() const { return _a; }
 
         /** @brief \f$ d_{i} \f$ **/
-        double d () const { return _d; }
+        double d() const { return _d; }
 
         /** $brief \f$ \theta_{i} \f$ **/
-        double theta () const { return _theta; }
+        double theta() const { return _theta; }
 
-        double b () const { return _b; }
+        double b() const { return _b; }
 
-        double beta () const { return _beta; }
+        double beta() const { return _beta; }
 
-        bool isParallel () const { return _isParallel; }
+        bool isParallel() const { return _isParallel; }
 
         /**
          * @brief the DH-convention type
          */
-        std::string getType () const { return _type; }
+        std::string getType() const { return _type; }
 
         /**
          * @brief Returns the DH-Parameters for a SerialDevice.
@@ -121,15 +117,16 @@ namespace rw { namespace models {
          * @param device [in] SerialDevice for which to get the DH parameters
          * @return The set of DH parameters
          */
-        static std::vector< DHParameterSet > getDHParameters (rw::core::Ptr< rw::models::SerialDevice > device);
+        static std::vector<DHParameterSet>
+        getDHParameters(rw::core::Ptr<rw::models::SerialDevice> device);
 
-        static const DHParameterSet* get (const rw::core::PropertyMap& pmap);
+        static const DHParameterSet* get(const rw::core::PropertyMap& pmap);
 
-        static const DHParameterSet* get (const rw::models::Joint* joint);
+        static const DHParameterSet* get(const rw::models::Joint* joint);
 
-        static void set (const DHParameterSet& dhset, rw::core::PropertyMap& pmap);
+        static void set(const DHParameterSet& dhset, rw::core::PropertyMap& pmap);
 
-        static void set (const DHParameterSet& dhset, rw::core::Ptr<rw::kinematics::Frame> joint);
+        static void set(const DHParameterSet& dhset, rw::core::Ptr<rw::kinematics::Frame> joint);
 
       private:
         /** @brief \f$ \alpha_{i-1}\f$ **/

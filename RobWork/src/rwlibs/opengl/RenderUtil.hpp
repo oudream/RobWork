@@ -20,9 +20,8 @@
 
 //! @file RenderUtil.hpp
 
-#include <rwlibs/opengl/RenderLines.hpp>
-
 #include <rw/core/Ptr.hpp>
+#include <rwlibs/opengl/RenderLines.hpp>
 
 namespace rwlibs { namespace opengl {
     //! @addtogroup opengl
@@ -45,8 +44,8 @@ namespace rwlibs { namespace opengl {
          * @param far [in] far clipping plane
          * @return render that renders the camera view with lines
          */
-        static rw::core::Ptr< RenderLines >
-        makeCameraViewRender (double w, double h, double fovy, double near = 0, double far = 2.0);
+        static rw::core::Ptr<RenderLines> makeCameraViewRender(double w, double h, double fovy,
+                                                               double near = 0, double far = 2.0);
 
         /**
          * @brief creates a rectangular grid of size \b size with
@@ -55,7 +54,7 @@ namespace rwlibs { namespace opengl {
          * @param resolution
          * @return render that renders a rectangular grid
          */
-        static rw::core::Ptr< RenderLines > makeWorldGridRender (float size, float resolution);
+        static rw::core::Ptr<RenderLines> makeWorldGridRender(float size, float resolution);
     };
     //! @}
 }}     // namespace rwlibs::opengl

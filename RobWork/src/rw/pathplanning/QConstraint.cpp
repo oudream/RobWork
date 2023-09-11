@@ -37,26 +37,22 @@ namespace {
 class StateConstraintWrapper : public QConstraint
 {
   public:
-    StateConstraintWrapper (StateConstraint::Ptr detector, Device::CPtr device,
-                            const State& state) :
-        _detector (detector),
-        _device (device), _state (state)
-    {
-        RW_ASSERT (device);
-        RW_ASSERT (detector);
+    StateConstraintWrapper(StateConstraint::Ptr detector, Device::CPtr device, const State& state) :
+        _detector(detector), _device(device), _state(state) {
+        RW_ASSERT(device);
+        RW_ASSERT(detector);
     }
 
   private:
-    bool doInCollision (const Q& q) const
-    {
+    bool doInCollision(const Q& q) const {
         State state = _state;
-        _device->setQ (q, state);
-        return _detector->inCollision (state);
+        _device->setQ(q, state);
+        return _detector->inCollision(state);
     }
 
-    void doUpdate (const State& state) { _state = state; }
+    void doUpdate(const State& state) { _state = state; }
 
-    void doSetLog (Log::Ptr log) { _detector->setLog (log); }
+    void doSetLog(Log::Ptr log) { _detector->setLog(log); }
 
   private:
     StateConstraint::Ptr _detector;
@@ -67,54 +63,43 @@ class StateConstraintWrapper : public QConstraint
 class MergedConstraints : public QConstraint
 {
   public:
-    MergedConstraints (const std::vector< QConstraint::Ptr >& constraints) :
-        _constraints (constraints)
-    {}
+    MergedConstraints(const std::vector<QConstraint::Ptr>& constraints) :
+        _constraints(constraints) {}
 
   private:
-    bool doInCollision (const Q& q) const
-    {
-        for (const QConstraint::Ptr& sc : _constraints) {
-            if (sc->inCollision (q))
-                return true;
+    bool doInCollision(const Q& q) const {
+        for(const QConstraint::Ptr& sc : _constraints) {
+            if(sc->inCollision(q)) return true;
         }
         return false;
     }
 
-    void doUpdate (const rw::kinematics::State& state)
-    {
-        for (const QConstraint::Ptr& sc : _constraints) {
-            sc->update (state);
-        }
+    void doUpdate(const rw::kinematics::State& state) {
+        for(const QConstraint::Ptr& sc : _constraints) { sc->update(state); }
     }
 
-    void doSetLog (Log::Ptr log)
-    {
-        for (const QConstraint::Ptr& sc : _constraints) {
-            sc->setLog (log);
-        }
+    void doSetLog(Log::Ptr log) {
+        for(const QConstraint::Ptr& sc : _constraints) { sc->setLog(log); }
     }
 
   private:
-    std::vector< QConstraint::Ptr > _constraints;
+    std::vector<QConstraint::Ptr> _constraints;
 };
 
 class NormalizedConstraint : public QConstraint
 {
   public:
-    NormalizedConstraint (QConstraint::Ptr constraint, const QNormalizer& normalizer) :
-        _constraint (constraint), _normalizer (normalizer)
-    {}
+    NormalizedConstraint(QConstraint::Ptr constraint, const QNormalizer& normalizer) :
+        _constraint(constraint), _normalizer(normalizer) {}
 
   private:
-    bool doInCollision (const Q& raw_q) const
-    {
+    bool doInCollision(const Q& raw_q) const {
         Q q = raw_q;
-        _normalizer.setFromNormalized (q);
-        return _constraint->inCollision (q);
+        _normalizer.setFromNormalized(q);
+        return _constraint->inCollision(q);
     }
 
-    void doSetLog (Log::Ptr log) { _constraint->setLog (log); }
+    void doSetLog(Log::Ptr log) { _constraint->setLog(log); }
 
   private:
     QConstraint::Ptr _constraint;
@@ -124,17 +109,15 @@ class NormalizedConstraint : public QConstraint
 class FixedConstraint : public QConstraint
 {
   public:
-    FixedConstraint (bool value) : _value (value) {}
+    FixedConstraint(bool value) : _value(value) {}
 
   private:
-    bool doInCollision (const Q&) const
-    {
-        if (_log != NULL)
-            _log->debug () << "FixedConstraint returns " << _value;
+    bool doInCollision(const Q&) const {
+        if(_log != NULL) _log->debug() << "FixedConstraint returns " << _value;
         return _value;
     }
 
-    void doSetLog (Log::Ptr log) { _log = log; }
+    void doSetLog(Log::Ptr log) { _log = log; }
 
   private:
     bool _value;
@@ -144,25 +127,23 @@ class FixedConstraint : public QConstraint
 class BoundsConstraint : public QConstraint
 {
   public:
-    BoundsConstraint (const Device::QBox& bounds) : _bounds (bounds) {}
+    BoundsConstraint(const Device::QBox& bounds) : _bounds(bounds) {}
 
   private:
-    bool doInCollision (const Q& q) const
-    {
-        if (_log != NULL) {
-            bool res = !Models::inBounds (q, _bounds);
-            if (res) {
-                _log->debug () << "The configuration: " << q
-                               << " is outside bounds: Min=" << _bounds.first
-                               << " Max=" << _bounds.second << std::endl;
+    bool doInCollision(const Q& q) const {
+        if(_log != NULL) {
+            bool res = !Models::inBounds(q, _bounds);
+            if(res) {
+                _log->debug() << "The configuration: " << q
+                              << " is outside bounds: Min=" << _bounds.first
+                              << " Max=" << _bounds.second << std::endl;
             }
             return res;
         }
-        else
-            return !Models::inBounds (q, _bounds);
+        else return !Models::inBounds(q, _bounds);
     }
 
-    void doSetLog (Log::Ptr log) { _log = log; }
+    void doSetLog(Log::Ptr log) { _log = log; }
 
   private:
     Device::QBox _bounds;
@@ -170,70 +151,58 @@ class BoundsConstraint : public QConstraint
 };
 }    // namespace
 
-bool QConstraint::inCollision (const rw::math::Q& q) const
-{
-    return doInCollision (q);
+bool QConstraint::inCollision(const rw::math::Q& q) const {
+    return doInCollision(q);
 }
 
-void QConstraint::setLog (rw::core::Log::Ptr log)
-{
-    doSetLog (log);
+void QConstraint::setLog(rw::core::Log::Ptr log) {
+    doSetLog(log);
 }
 
-void QConstraint::update (const rw::kinematics::State& state)
-{
-    doUpdate (state);
+void QConstraint::update(const rw::kinematics::State& state) {
+    doUpdate(state);
 }
 
-QConstraint::Ptr QConstraint::makeFixed (bool value)
-{
-    return ownedPtr (new FixedConstraint (value));
+QConstraint::Ptr QConstraint::makeFixed(bool value) {
+    return ownedPtr(new FixedConstraint(value));
 }
 
-QConstraint::Ptr QConstraint::make (StateConstraint::Ptr detector, Device::CPtr device,
-                                    const State& state)
-{
-    return ownedPtr (new StateConstraintWrapper (detector, device, state));
+QConstraint::Ptr QConstraint::make(StateConstraint::Ptr detector, Device::CPtr device,
+                                   const State& state) {
+    return ownedPtr(new StateConstraintWrapper(detector, device, state));
 }
 
-QConstraint::Ptr QConstraint::make (rw::core::Ptr< CollisionDetector > detector,
-                                    Device::CPtr device, const State& state)
-{
-    return make (StateConstraint::make (detector), device, state);
+QConstraint::Ptr QConstraint::make(rw::core::Ptr<CollisionDetector> detector, Device::CPtr device,
+                                   const State& state) {
+    return make(StateConstraint::make(detector), device, state);
 }
 
-QConstraint::Ptr QConstraint::makeMerged (const std::vector< QConstraint::Ptr >& constraints)
-{
-    return ownedPtr (new MergedConstraints (constraints));
+QConstraint::Ptr QConstraint::makeMerged(const std::vector<QConstraint::Ptr>& constraints) {
+    return ownedPtr(new MergedConstraints(constraints));
 }
 
-QConstraint::Ptr QConstraint::makeMerged (const QConstraint::Ptr& ca, const QConstraint::Ptr& cb)
-{
-    std::vector< QConstraint::Ptr > cs;
-    cs.push_back (ca);
-    cs.push_back (cb);
-    return makeMerged (cs);
+QConstraint::Ptr QConstraint::makeMerged(const QConstraint::Ptr& ca, const QConstraint::Ptr& cb) {
+    std::vector<QConstraint::Ptr> cs;
+    cs.push_back(ca);
+    cs.push_back(cb);
+    return makeMerged(cs);
 }
 
-QConstraint::Ptr QConstraint::makeNormalized (const QConstraint::Ptr& constraint,
-                                              const QNormalizer& normalizer)
-{
-    return ownedPtr (new NormalizedConstraint (constraint, normalizer));
+QConstraint::Ptr QConstraint::makeNormalized(const QConstraint::Ptr& constraint,
+                                             const QNormalizer& normalizer) {
+    return ownedPtr(new NormalizedConstraint(constraint, normalizer));
 }
 
-QConstraint::Ptr QConstraint::makeNormalized (const QConstraint::Ptr& constraint,
-                                              const std::pair< Q, Q >& bounds)
-{
-    return makeNormalized (constraint, QNormalizer (bounds));
+QConstraint::Ptr QConstraint::makeNormalized(const QConstraint::Ptr& constraint,
+                                             const std::pair<Q, Q>& bounds) {
+    return makeNormalized(constraint, QNormalizer(bounds));
 }
 
-QConstraint::Ptr QConstraint::makeNormalized (const QConstraint::Ptr& constraint,
-                                              const Device& device)
-{
-    return makeNormalized (constraint, QNormalizer (device.getBounds ()));
+QConstraint::Ptr QConstraint::makeNormalized(const QConstraint::Ptr& constraint,
+                                             const Device& device) {
+    return makeNormalized(constraint, QNormalizer(device.getBounds()));
 }
 
-QConstraint::Ptr QConstraint::makeBounds (const Device::QBox& bounds)
-{
-    return ownedPtr (new BoundsConstraint (bounds));
+QConstraint::Ptr QConstraint::makeBounds(const Device::QBox& bounds) {
+    return ownedPtr(new BoundsConstraint(bounds));
 }

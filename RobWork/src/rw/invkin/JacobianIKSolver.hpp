@@ -102,9 +102,9 @@ namespace rw { namespace invkin {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< JacobianIKSolver > Ptr;
+        typedef rw::core::Ptr<JacobianIKSolver> Ptr;
         //! @brief smart pointer type to this const class
-        typedef rw::core::Ptr< const JacobianIKSolver > CPtr;
+        typedef rw::core::Ptr<const JacobianIKSolver> CPtr;
 
         //! @brief the type of jacobian solver
         typedef enum { Transpose, SVD, DLS, Weighted } JacobianSolverType;
@@ -114,8 +114,8 @@ namespace rw { namespace invkin {
          * @param device [in] the device to do inverse kinematics for.
          * @param state [in] the initial state.
          */
-        JacobianIKSolver (rw::core::Ptr< const rw::models::Device > device,
-                          const rw::kinematics::State& state);
+        JacobianIKSolver(rw::core::Ptr<const rw::models::Device> device,
+                         const rw::kinematics::State& state);
 
         /**
          * @brief Constructs JacobianIKSolver for device, where the frame \b foi will
@@ -124,25 +124,22 @@ namespace rw { namespace invkin {
          * @param foi [in] end effector frame.
          * @param state [in] the initial state.
          */
-        JacobianIKSolver (rw::core::Ptr< const rw::models::Device > device,
-                          rw::core::Ptr< const rw::kinematics::Frame > foi,
-                          const kinematics::State& state);
+        JacobianIKSolver(rw::core::Ptr<const rw::models::Device> device,
+                         rw::core::Ptr<const rw::kinematics::Frame> foi,
+                         const kinematics::State& state);
 
         /**
          * @copydoc IterativeIK::solve
          */
-        std::vector< math::Q > solve (const rw::math::Transform3D<double>& baseTend,
-                                      const rw::kinematics::State& state) const;
+        std::vector<math::Q> solve(const rw::math::Transform3D<double>& baseTend,
+                                   const rw::kinematics::State& state) const;
 
         /**
          * @brief sets the maximal step length that is allowed on the
          * local search towards the solution.
          * @param interpolatorStep [in] the interpolation step.
          */
-        void setInterpolatorStep (double interpolatorStep)
-        {
-            _interpolationStep = interpolatorStep;
-        }
+        void setInterpolatorStep(double interpolatorStep) { _interpolationStep = interpolatorStep; }
 
         /**
          * @brief the solver may fail or be very slow if the the solution is too far from the
@@ -150,8 +147,7 @@ namespace rw { namespace invkin {
          * an interpolation from initial end effector configuration to the goal target.
          * @param enableInterpolation [in] set true to enable interpolation, false otherwise
          */
-        void setEnableInterpolation (bool enableInterpolation)
-        {
+        void setEnableInterpolation(bool enableInterpolation) {
             _useInterpolation = enableInterpolation;
         };
 
@@ -166,52 +162,52 @@ namespace rw { namespace invkin {
          * @return true if error is below max error
          * @note the result will be saved in state
          */
-        bool solveLocal (const rw::math::Transform3D<double>& bTed, double maxError, rw::kinematics::State& state,
-                         int maxIter) const;
+        bool solveLocal(const rw::math::Transform3D<double>& bTed, double maxError,
+                        rw::kinematics::State& state, int maxIter) const;
 
         /**
          * @brief enables clamping of the solution such that solution always is within joint limits
          * @param enableClamping [in] true to enable clamping, false otherwise
          */
-        void setClampToBounds (bool enableClamping) { _useJointClamping = enableClamping; };
+        void setClampToBounds(bool enableClamping) { _useJointClamping = enableClamping; };
 
         /**
          * @brief set the type of solver to use for stepping toward a solution
          * @param type [in] the type of jacobian solver
          */
-        void setSolverType (JacobianSolverType type) { _solverType = type; };
+        void setSolverType(JacobianSolverType type) { _solverType = type; };
 
         /**
          * @brief setWeightVector sets the weight vector used for solver type "Weighted"
          * @param weights a vector of weights for each degree of freedom, ie weights.size() == DOF
          */
-        void setWeightVector (Eigen::VectorXd weights);
+        void setWeightVector(Eigen::VectorXd weights);
 
         /**
          * @brief setWeightVector sets the weight vector used for solver type "Weighted"
          * @param weights a vector of weights for each degree of freedom, ie weights.size() == DOF
          */
-        void setWeightVector (std::vector<double> weights);
+        void setWeightVector(std::vector<double> weights);
 
         /**
          * @brief setJointLimitTolerance set the tolerance used for bound-checking the solution
          * @param tolerance for joint bounds checking
          */
-        void setJointLimitTolerance (double tolerance);
+        void setJointLimitTolerance(double tolerance);
 
         //! @copydoc InvKinSolver::setCheckJointLimits
-        void setCheckJointLimits (bool check) { _checkJointLimits = check; }
+        void setCheckJointLimits(bool check) { _checkJointLimits = check; }
 
         /**
          * @copydoc InvKinSolver::getTCP
          */
-        virtual rw::core::Ptr< const rw::kinematics::Frame > getTCP () const;
+        virtual rw::core::Ptr<const rw::kinematics::Frame> getTCP() const;
 
       private:
-        rw::core::Ptr< const rw::models::Device > _device;
+        rw::core::Ptr<const rw::models::Device> _device;
         double _interpolationStep;
         kinematics::FKRange _fkrange;
-        rw::core::Ptr< models::JacobianCalculator > _devJac;
+        rw::core::Ptr<models::JacobianCalculator> _devJac;
         bool _useJointClamping, _useInterpolation, _checkJointLimits;
         JacobianSolverType _solverType;
         Eigen::MatrixXd _w;

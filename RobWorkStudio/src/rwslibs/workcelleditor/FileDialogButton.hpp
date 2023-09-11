@@ -25,13 +25,13 @@ class FileDialogButton : public QPushButton
     Q_OBJECT
 
   public:
-    FileDialogButton (QString path);
+    FileDialogButton(QString path);
 
-    const QString& getFilename () const;
+    const QString& getFilename() const;
 
   public Q_SLOTS:
 
-    void selectFile ();
+    void selectFile();
 
   private:
     QString _filename;

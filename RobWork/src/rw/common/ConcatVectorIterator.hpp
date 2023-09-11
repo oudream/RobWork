@@ -33,22 +33,22 @@ namespace rw { namespace common {
     /** @addtogroup common */
     /*@{*/
 
-    template< typename T > class ConstConcatVectorIterator;
+    template<typename T> class ConstConcatVectorIterator;
 
     /**
      * @brief Forward iterator for the concatenation of a pair of vectors of
      * pointers to T
      */
-    template< typename T > class ConcatVectorIterator
+    template<typename T> class ConcatVectorIterator
     {
-        typedef std::vector< T* > PtrTVector;
+        typedef std::vector<T*> PtrTVector;
         typedef typename PtrTVector::const_iterator I;
 
         const PtrTVector* curr;
         I pos;
         const PtrTVector* next;
 
-        friend class ConstConcatVectorIterator< T >;
+        friend class ConstConcatVectorIterator<T>;
 
       public:
         /** Iterator category. */
@@ -82,30 +82,27 @@ const ConcatVectorIterator<T> end(next, next->end(), 0);
            You can use ConcatVectorIterator for iterating through a single
            sequence by letting \b next be NULL.
          */
-        ConcatVectorIterator (const PtrTVector* curr, I pos, const PtrTVector* next) :
-            curr (curr), pos (pos), next (next)
-        {
-            skipIfEndOfCurr ();
+        ConcatVectorIterator(const PtrTVector* curr, I pos, const PtrTVector* next) :
+            curr(curr), pos(pos), next(next) {
+            skipIfEndOfCurr();
         }
 
         /**
          * @brief Reference to the T element
          */
-        T& operator* () const { return **pos; }
+        T& operator*() const { return **pos; }
 
         /**
          * @brief Pointer to the T element
          */
-        T* operator-> () const { return *pos.operator-> (); }
-
+        T* operator->() const { return *pos.operator->(); }
 
         /**
          * @brief Increments the position of the iterator
          * @return Reference to the incremented iterator
          */
-        ConcatVectorIterator& operator++ ()
-        {
-            inc ();
+        ConcatVectorIterator& operator++() {
+            inc();
             return *this;
         }
 
@@ -113,10 +110,9 @@ const ConcatVectorIterator<T> end(next, next->end(), 0);
          * @brief Increments the position of the iterator
          * @return the ConcatVectorIterator with the value before the incrementation
          */
-        ConcatVectorIterator operator++ (int)
-        {
+        ConcatVectorIterator operator++(int) {
             ConcatVectorIterator before = *this;
-            inc ();
+            inc();
             return before;
         }
 
@@ -125,8 +121,7 @@ const ConcatVectorIterator<T> end(next, next->end(), 0);
          * @param other [in] ConcatVectorIterator to compare with
          * @return true if equal
          */
-        bool operator== (const ConcatVectorIterator& other) const
-        {
+        bool operator==(const ConcatVectorIterator& other) const {
             return curr == other.curr && pos == other.pos && next == other.next;
         }
 
@@ -135,8 +130,7 @@ const ConcatVectorIterator<T> end(next, next->end(), 0);
          * @param other [in] ConcatVectorIterator to compare with
          * @return true if unequal
          */
-        bool operator!= (const ConcatVectorIterator& other) const
-        {
+        bool operator!=(const ConcatVectorIterator& other) const {
             // If only comparing pos and other.pos Visual Studio will generate
             // an error message when pos and other.pos does not come from the
             // same vector. A test curr != other.curr has thus been added
@@ -144,16 +138,14 @@ const ConcatVectorIterator<T> end(next, next->end(), 0);
         }
 
       private:
-        void inc ()
-        {
+        void inc() {
             ++pos;
-            skipIfEndOfCurr ();
+            skipIfEndOfCurr();
         }
 
-        void skipIfEndOfCurr ()
-        {
-            if (next && pos == curr->end ()) {
-                pos  = next->begin ();
+        void skipIfEndOfCurr() {
+            if(next && pos == curr->end()) {
+                pos  = next->begin();
                 curr = next;
                 next = 0;
             }
@@ -164,7 +156,7 @@ const ConcatVectorIterator<T> end(next, next->end(), 0);
      * @brief Forward iterator for the concatenation of a pair of vectors of
      * pointers to T
      */
-    template< typename T > class ConstConcatVectorIterator
+    template<typename T> class ConstConcatVectorIterator
     {
       public:
         /** Iterator category. */
@@ -188,25 +180,23 @@ const ConcatVectorIterator<T> end(next, next->end(), 0);
          * All ConstConcatVectorIterator are constructed via
          * ConcatVectorIterator values or copy construction.
          */
-        ConstConcatVectorIterator (ConcatVectorIterator< T > pos) : pos (pos) {}
+        ConstConcatVectorIterator(ConcatVectorIterator<T> pos) : pos(pos) {}
 
         /**
          * @brief Reference to the T element
          */
-        const T& operator* () const { return *pos; }
+        const T& operator*() const { return *pos; }
 
         /**
          * @brief Pointer to the T element
          */
-        const T* operator-> () const { return pos.operator-> (); }
-
+        const T* operator->() const { return pos.operator->(); }
 
         /**
          * @brief Increments the position of the iterator
          * @return Reference to the incremented iterator
          */
-        ConstConcatVectorIterator& operator++ ()
-        {
+        ConstConcatVectorIterator& operator++() {
             ++pos;
             return *this;
         }
@@ -215,25 +205,25 @@ const ConcatVectorIterator<T> end(next, next->end(), 0);
          * @brief Increments the position of the iterator
          * @return the ConstConcatVectorIterator with the value before the incrementation
          */
-        ConstConcatVectorIterator operator++ (int) { return ConstConcatVectorIterator (pos++); }
+        ConstConcatVectorIterator operator++(int) { return ConstConcatVectorIterator(pos++); }
 
         /**
          * @brief Tests whether the positions of two iterators are equal
          * @param other [in] ConstConcatVectorIterator to compare with
          * @return true if equal
          */
-        bool operator== (const ConstConcatVectorIterator& other) const { return pos == other.pos; }
+        bool operator==(const ConstConcatVectorIterator& other) const { return pos == other.pos; }
 
         /**
          * @brief Tests whether the positions of two iterators are unequal
          * @param other [in] ConstConcatVectorIterator to compare with
          * @return true if unequal
          */
-        bool operator!= (const ConstConcatVectorIterator& other) const { return pos != other.pos; }
+        bool operator!=(const ConstConcatVectorIterator& other) const { return pos != other.pos; }
 
       private:
         // We simply forward to the non-const iterator.
-        ConcatVectorIterator< T > pos;
+        ConcatVectorIterator<T> pos;
     };
 
     /* @} */

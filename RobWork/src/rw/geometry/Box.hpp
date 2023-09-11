@@ -21,8 +21,8 @@
 #if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
 #include <rw/geometry/Primitive.hpp>
-#include <rw/math/Q.hpp>
 #include <rw/geometry/TriMesh.hpp>
+#include <rw/math/Q.hpp>
 #endif
 namespace rw { namespace geometry {
     //! @addtogroup geometry
@@ -34,11 +34,11 @@ namespace rw { namespace geometry {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< Box > Ptr;
+        typedef rw::core::Ptr<Box> Ptr;
         /**
          * @brief constructor - creates a 1x1x1 sided box
          */
-        Box () : _dx (1), _dy (1), _dz (1){};
+        Box() : _dx(1), _dy(1), _dz(1){};
 
         /**
          * @brief constructor
@@ -46,30 +46,30 @@ namespace rw { namespace geometry {
          * @param y [in] width in y axis
          * @param z [in] width in z axis
          */
-        Box (double x, double y, double z);
+        Box(double x, double y, double z);
 
         /**
          * @brief constructor
          * @param initQ [in] vector with (x,y,z)
          */
-        Box (const rw::math::Q& initQ);
+        Box(const rw::math::Q& initQ);
 
         //! @brief destructor
-        virtual ~Box ();
+        virtual ~Box();
 
         // inherited from Primitive
 
         //! @copydoc Primitive::createMesh
-        TriMesh::Ptr createMesh (int resolution) const;
+        TriMesh::Ptr createMesh(int resolution) const;
 
         //! @copydoc Primitive::getParameters
-        virtual rw::math::Q getParameters () const;
+        virtual rw::math::Q getParameters() const;
 
         //! @copydoc Primitive::setParameters
-        virtual void setParameters (const rw::math::Q& q);
+        virtual void setParameters(const rw::math::Q& q);
 
         //! @copydoc GeometryData::getType
-        GeometryType getType () const { return BoxPrim; }
+        GeometryType getType() const { return BoxPrim; }
 
       protected:
         /**
@@ -77,7 +77,7 @@ namespace rw { namespace geometry {
          * @param point [in] point to check.
          * @return true if inside geometry, false otherwise.
          */
-        bool doIsInside (const rw::math::Vector3D<double>& point);
+        bool doIsInside(const rw::math::Vector3D<double>& point);
 
       private:
         double _dx, _dy, _dz;

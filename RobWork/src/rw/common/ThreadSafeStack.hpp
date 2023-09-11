@@ -22,7 +22,7 @@
 #include <boost/thread/condition.hpp>
 #include <boost/thread/mutex.hpp>
 #include <stack>
-#endif 
+#endif
 
 namespace rw { namespace common {
 
@@ -30,32 +30,30 @@ namespace rw { namespace common {
      * @brief Concurrent queue of WorkPiles
      *
      */
-    template< class T > class ThreadSafeStack
+    template<class T> class ThreadSafeStack
     {
       public:
-        ThreadSafeStack () : _size (0) {}
+        ThreadSafeStack() : _size(0) {}
 
         /**
          * @brief Check if stack is empty.
          * @return true if empty.
          */
-        inline bool empty ()
-        {
+        inline bool empty() {
             // boost::mutex::scoped_lock lock(_mutex);
-            return _stack.empty ();
+            return _stack.empty();
         }
 
         /**
          * @brief Push a new element to the stack.
          * @param wp [in] the element to add to stack.
          */
-        inline void push (T wp)
-        {
-            boost::mutex::scoped_lock lock (_mutex);
-            _stack.push (wp);
+        inline void push(T wp) {
+            boost::mutex::scoped_lock lock(_mutex);
+            _stack.push(wp);
             _size++;
             // lock.unlock();
-            _cond.notify_one ();
+            _cond.notify_one();
         }
 
         /**
@@ -63,14 +61,12 @@ namespace rw { namespace common {
          * @param wp [out] the element.
          * @return true.
          */
-        inline bool try_pop (T* wp)
-        {
-            boost::mutex::scoped_lock lock (_mutex);
-            if (_stack.empty ())
-                return false;
+        inline bool try_pop(T* wp) {
+            boost::mutex::scoped_lock lock(_mutex);
+            if(_stack.empty()) return false;
 
-            *wp = _stack.top ();
-            _stack.pop ();
+            *wp = _stack.top();
+            _stack.pop();
             _size--;
             /*
                             std::stack<T> tmpQ = _stack;
@@ -88,14 +84,11 @@ namespace rw { namespace common {
          * @param wp [out] the element.
          * @return true.
          */
-        inline bool pop (T* wp)
-        {
-            boost::mutex::scoped_lock lock (_mutex);
-            while (_stack.empty ()) {
-                _cond.wait (lock);
-            }
-            *wp = _stack.top ();
-            _stack.pop ();
+        inline bool pop(T* wp) {
+            boost::mutex::scoped_lock lock(_mutex);
+            while(_stack.empty()) { _cond.wait(lock); }
+            *wp = _stack.top();
+            _stack.pop();
             _size--;
             /*
                             std::stack<T> tmpQ = _stack;
@@ -113,15 +106,13 @@ namespace rw { namespace common {
          * @param value [in] the value to look for.
          * @return true if found, false otherwise.
          */
-        bool has (T value)
-        {
-            boost::mutex::scoped_lock lock (_mutex);
-            std::stack< T > tmpQ = _stack;
-            while (!tmpQ.empty ()) {
-                T val = tmpQ.top ();
-                tmpQ.pop ();
-                if (value == val)
-                    return true;
+        bool has(T value) {
+            boost::mutex::scoped_lock lock(_mutex);
+            std::stack<T> tmpQ = _stack;
+            while(!tmpQ.empty()) {
+                T val = tmpQ.top();
+                tmpQ.pop();
+                if(value == val) return true;
             }
             return false;
         }
@@ -130,10 +121,10 @@ namespace rw { namespace common {
          * @brief Get size of stack.
          * @return the current size.
          */
-        inline size_t size () { return _size; }
+        inline size_t size() { return _size; }
 
       private:
-        std::stack< T > _stack;
+        std::stack<T> _stack;
 
         mutable boost::mutex _mutex;
         boost::condition _cond;

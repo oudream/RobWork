@@ -31,8 +31,6 @@
 #include <rwlibs/control/JointController.hpp>
 #include <rwlibs/drawable/WorkCellGLDrawer.hpp>
 
-#include <memory>
-
 #include <QObject>
 #include <QTimer>
 #include <QtGui>
@@ -40,6 +38,7 @@
 #include <drawable/RenderGhost.hpp>
 #include <dynamics/DynamicWorkCell.hpp>
 #include <dynamics/FixedDevice.hpp>
+#include <memory>
 #include <simulator/Simulator.hpp>
 #include <simulator/ThreadSimulator.hpp>
 #include <simulator/rwphysics/ConstantForceManipulator.hpp>
@@ -47,36 +46,36 @@
 class SupportPosePlugin : public RobWorkStudioPlugin
 {
     Q_OBJECT
-    Q_INTERFACES (RobWorkStudioPlugin)
+    Q_INTERFACES(RobWorkStudioPlugin)
   public:
-    SupportPosePlugin ();
+    SupportPosePlugin();
 
-    virtual ~SupportPosePlugin ();
+    virtual ~SupportPosePlugin();
 
-    void open (rw::models::WorkCell* workcell);
+    void open(rw::models::WorkCell* workcell);
 
-    void close ();
+    void close();
 
-    void initialize ();
+    void initialize();
 
-    void genericEventListener (const std::string& event);
+    void genericEventListener(const std::string& event);
 
   protected:
-    virtual void stateChangedHandler (RobWorkStudioPlugin* sender);
+    virtual void stateChangedHandler(RobWorkStudioPlugin* sender);
 
   private slots:
-    void update ();
-    void startSimulation ();
-    void stopSimulation ();
-    void resetSimulation ();
-    void printContactGraph ();
-    void setSave ();
-    void updateCfgInfo ();
-    void saveState ();
-    void createSimulator ();
-    void destroySimulator ();
-    void startRestingPoseSim ();
-    void updateViewEvent ();
+    void update();
+    void startSimulation();
+    void stopSimulation();
+    void resetSimulation();
+    void printContactGraph();
+    void setSave();
+    void updateCfgInfo();
+    void saveState();
+    void createSimulator();
+    void destroySimulator();
+    void startRestingPoseSim();
+    void updateViewEvent();
 
   private:    // qt stuff
     QCheckBox *_checkBox, *_debugDrawBox, *_forceUpdateBox;
@@ -85,32 +84,32 @@ class SupportPosePlugin : public RobWorkStudioPlugin
 
   private:
     std::string _previousOpenDirectory;
-    std::shared_ptr< dynamics::DynamicWorkCell > _dwc;
+    std::shared_ptr<dynamics::DynamicWorkCell> _dwc;
     //    rw::kinematics::State *_state;
     rw::kinematics::State _dState, _jointState, _defState;
     ConstantForceManipulator* _gravity;
     QTimer* _timer;
 
-    std::vector< RenderForce* > _miscForces;
-    std::vector< RenderForce* > _bodyForces;
+    std::vector<RenderForce*> _miscForces;
+    std::vector<RenderForce*> _bodyForces;
 
     double _timeStep;
     double _nextTime;
     bool _save;
     RenderGhost* _ghost;
 
-    std::vector< dynamics::FixedDevice* > _fdevs;
+    std::vector<dynamics::FixedDevice*> _fdevs;
     QLabel *_timeLabel, *_nrOfSimsLabel;
     rw::trajectory::TimedStatePath _statePath;
 
     ThreadSimulator* _simulator;
 
-    std::vector< JointController* > _controllers;
+    std::vector<JointController*> _controllers;
     rwlibs::drawable::Drawable* _dBtWorld;
 
-    std::vector< dynamics::RigidBody* > _bodies;
+    std::vector<dynamics::RigidBody*> _bodies;
 
-    std::vector< rw::kinematics::State > _supportPoses;
+    std::vector<rw::kinematics::State> _supportPoses;
 
     double _simStartTime;
     int _nrOfSims;

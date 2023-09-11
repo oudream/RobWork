@@ -18,11 +18,10 @@
 #ifndef RWLIBS_TASK_DOMTASKLOADER_HPP
 #define RWLIBS_TASK_DOMTASKLOADER_HPP
 
-#include <rwlibs/task/loader/TaskLoader.hpp>
-
 #include <rw/core/Ptr.hpp>
 #include <rwlibs/task/Entity.hpp>
 #include <rwlibs/task/Task.hpp>
+#include <rwlibs/task/loader/TaskLoader.hpp>
 
 #include <string>
 
@@ -41,62 +40,60 @@ namespace rwlibs { namespace task {
     {
       public:
         //! @brief Constructor.
-        DOMTaskLoader () {}
+        DOMTaskLoader() {}
 
         //! @brief Destructor.
-        ~DOMTaskLoader () {}
+        ~DOMTaskLoader() {}
 
         //! @copydoc TaskLoader::load(const std::string&, const std::string&)
-        void load (const std::string& filename, const std::string& schemaFileName = "");
+        void load(const std::string& filename, const std::string& schemaFileName = "");
 
         //! @copydoc TaskLoader::load(std::istream&, const std::string&)
-        void load (std::istream& instream, const std::string& schemaFileName = "");
+        void load(std::istream& instream, const std::string& schemaFileName = "");
 
         //! @copydoc TaskLoader::getQTask
-        rwlibs::task::QTask::Ptr getQTask ();
+        rwlibs::task::QTask::Ptr getQTask();
 
         //! @copydoc TaskLoader::getCartesianTask
-        rwlibs::task::CartesianTask::Ptr getCartesianTask ();
+        rwlibs::task::CartesianTask::Ptr getCartesianTask();
 
         //! @copydoc TaskLoader::getTask
-        rwlibs::task::TaskBase::Ptr getTask ();
+        rwlibs::task::TaskBase::Ptr getTask();
 
         //! @copydoc TaskLoader::clone
-        rwlibs::task::TaskLoader::Ptr clone () const;
+        rwlibs::task::TaskLoader::Ptr clone() const;
 
       private:
-        rwlibs::task::TaskBase::Ptr readTask (rw::core::Ptr< rw::core::DOMElem > element);
+        rwlibs::task::TaskBase::Ptr readTask(rw::core::Ptr<rw::core::DOMElem> element);
 
-        void readEntityData (rw::core::Ptr< rw::core::DOMElem > element,
-                             rw::core::Ptr< rwlibs::task::Entity > entity);
+        void readEntityData(rw::core::Ptr<rw::core::DOMElem> element,
+                            rw::core::Ptr<rwlibs::task::Entity> entity);
 
-        rwlibs::task::Action::Ptr readAction (rw::core::Ptr< rw::core::DOMElem > element);
+        rwlibs::task::Action::Ptr readAction(rw::core::Ptr<rw::core::DOMElem> element);
 
-        template< class T >
-        typename rwlibs::task::Motion< T >::Ptr
-        readMotion (rw::core::Ptr< rw::core::DOMElem > element);
+        template<class T>
+        typename rwlibs::task::Motion<T>::Ptr readMotion(rw::core::Ptr<rw::core::DOMElem> element);
 
-        template< class T >
-        typename rwlibs::task::Target< T >::Ptr
-        readTarget (rw::core::Ptr< rw::core::DOMElem > element);
+        template<class T>
+        typename rwlibs::task::Target<T>::Ptr readTarget(rw::core::Ptr<rw::core::DOMElem> element);
 
-        template< class T >
-        void readTargets (rw::core::Ptr< rw::core::DOMElem > element,
-                          typename rwlibs::task::Task< T >::Ptr task);
+        template<class T>
+        void readTargets(rw::core::Ptr<rw::core::DOMElem> element,
+                         typename rwlibs::task::Task<T>::Ptr task);
 
-        template< class T >
-        void readEntities (rw::core::Ptr< rw::core::DOMElem > element,
-                           typename rwlibs::task::Task< T >::Ptr task);
+        template<class T>
+        void readEntities(rw::core::Ptr<rw::core::DOMElem> element,
+                          typename rwlibs::task::Task<T>::Ptr task);
 
-        void readAugmentations (rw::core::Ptr< rw::core::DOMElem > element,
-                                rwlibs::task::TaskBase::Ptr task);
+        void readAugmentations(rw::core::Ptr<rw::core::DOMElem> element,
+                               rwlibs::task::TaskBase::Ptr task);
 
-        template< class T >
-        typename rwlibs::task::Task< T >::Ptr
-        readTemplateTask (rw::core::Ptr< rw::core::DOMElem > element);
+        template<class T>
+        typename rwlibs::task::Task<T>::Ptr
+        readTemplateTask(rw::core::Ptr<rw::core::DOMElem> element);
 
       private:
-        typedef std::map< std::string, rwlibs::task::TargetBase::Ptr > TargetMap;
+        typedef std::map<std::string, rwlibs::task::TargetBase::Ptr> TargetMap;
         TargetMap _targetMap;
 
         rwlibs::task::QTask::Ptr _qTask;

@@ -27,130 +27,119 @@ using namespace rw::geometry;
 using namespace rw::math;
 using namespace rw::core;
 
-Cone::Cone (const rw::math::Q& initQ, int levels) : Primitive (levels)
-{
-    setParameters (initQ);
+Cone::Cone(const rw::math::Q& initQ, int levels) : Primitive(levels) {
+    setParameters(initQ);
 }
 
-Cone::Cone (double height, double radiusTop, double radiusBot, int levels) :
-    Primitive (levels), _radiusTop (radiusTop), _radiusBottom (radiusBot), _height (height)
-{}
+Cone::Cone(double height, double radiusTop, double radiusBot, int levels) :
+    Primitive(levels), _radiusTop(radiusTop), _radiusBottom(radiusBot), _height(height) {}
 
-rw::math::Q Cone::getParameters () const
-{
-    return Q::zero (3);
+rw::math::Q Cone::getParameters() const {
+    return Q::zero(3);
 }
 
-void Cone::setParameters (const rw::math::Q& q)
-{
-    if (q.size () != 3) {
-        RW_THROW ("Size of parameter list must equal 3!");
-    }
+void Cone::setParameters(const rw::math::Q& q) {
+    if(q.size() != 3) { RW_THROW("Size of parameter list must equal 3!"); }
 
-    _height       = q (0);
-    _radiusTop    = q (1);
-    _radiusBottom = q (2);
+    _height       = q(0);
+    _radiusTop    = q(1);
+    _radiusBottom = q(2);
 }
 
-Cone::~Cone ()
-{}
+Cone::~Cone() {}
 
-TriMesh::Ptr Cone::createMesh (int resolution) const
-{
+TriMesh::Ptr Cone::createMesh(int resolution) const {
     int level = resolution;
-    if (resolution < 0)
-        level = 16;    // default
+    if(resolution < 0) level = 16;    // default
 
     float z = (float) (_height / 2.0f);
 
-    if (_radiusTop <= 0 || _radiusBottom <= 0) {
-        PlainTriMeshF* mesh = new PlainTriMeshF (2 * level);
-        if (_radiusTop <= 0) {
-            for (int i = 0; i < level; i++) {
+    if(_radiusTop <= 0 || _radiusBottom <= 0) {
+        PlainTriMeshF* mesh = new PlainTriMeshF(2 * level);
+        if(_radiusTop <= 0) {
+            for(int i = 0; i < level; i++) {
                 // Construct Triangles for curved surface
-                float x3 = (float) (_radiusBottom * cos (i * 2 * Pi / level));
-                float y3 = (float) (_radiusBottom * sin (i * 2 * Pi / level));
+                float x3 = (float) (_radiusBottom * cos(i * 2 * Pi / level));
+                float y3 = (float) (_radiusBottom * sin(i * 2 * Pi / level));
 
-                float x4 = (float) (_radiusBottom * cos ((i + 1) * 2 * Pi / level));
-                float y4 = (float) (_radiusBottom * sin ((i + 1) * 2 * Pi / level));
+                float x4 = (float) (_radiusBottom * cos((i + 1) * 2 * Pi / level));
+                float y4 = (float) (_radiusBottom * sin((i + 1) * 2 * Pi / level));
 
-                Vector3D< float > p1 (0, 0, z);
-                Vector3D< float > p3 (x3, y3, -z);
-                Vector3D< float > p4 (x4, y4, -z);
+                Vector3D<float> p1(0, 0, z);
+                Vector3D<float> p3(x3, y3, -z);
+                Vector3D<float> p4(x4, y4, -z);
 
-                (*mesh)[i * 2 + 0] = Triangle< float > (p1, p3, p4);
+                (*mesh)[i * 2 + 0] = Triangle<float>(p1, p3, p4);
 
                 // Construct triangles for the end-plates
-                Vector3D< float > p6 (0, 0, -z);
-                (*mesh)[i * 2 + 1] = Triangle< float > (p3, p6, p4);
+                Vector3D<float> p6(0, 0, -z);
+                (*mesh)[i * 2 + 1] = Triangle<float>(p3, p6, p4);
             }
         }
         else {
-            for (int i = 0; i < level; i++) {
+            for(int i = 0; i < level; i++) {
                 // Construct Triangles for curved surface
-                float x1 = (float) (_radiusTop * cos (i * 2 * Pi / level));
-                float y1 = (float) (_radiusTop * sin (i * 2 * Pi / level));
+                float x1 = (float) (_radiusTop * cos(i * 2 * Pi / level));
+                float y1 = (float) (_radiusTop * sin(i * 2 * Pi / level));
 
-                float x2 = (float) (_radiusTop * cos ((i + 1) * 2 * Pi / level));
-                float y2 = (float) (_radiusTop * sin ((i + 1) * 2 * Pi / level));
+                float x2 = (float) (_radiusTop * cos((i + 1) * 2 * Pi / level));
+                float y2 = (float) (_radiusTop * sin((i + 1) * 2 * Pi / level));
 
-                Vector3D< float > p1 (x1, y1, z);
-                Vector3D< float > p2 (x2, y2, z);
-                Vector3D< float > p3 (0, 0, -z);
+                Vector3D<float> p1(x1, y1, z);
+                Vector3D<float> p2(x2, y2, z);
+                Vector3D<float> p3(0, 0, -z);
 
-                (*mesh)[i * 2 + 0] = Triangle< float > (p1, p3, p2);
+                (*mesh)[i * 2 + 0] = Triangle<float>(p1, p3, p2);
 
                 // Construct triangles for the end-plates
-                Vector3D< float > p5 (0, 0, z);
-                (*mesh)[i * 2 + 1] = Triangle< float > (p1, p2, p5);
+                Vector3D<float> p5(0, 0, z);
+                (*mesh)[i * 2 + 1] = Triangle<float>(p1, p2, p5);
             }
         }
-        return ownedPtr (mesh);
+        return ownedPtr(mesh);
     }
     else {
-        PlainTriMeshF* mesh = new PlainTriMeshF (4 * level);
-        for (int i = 0; i < level; i++) {
+        PlainTriMeshF* mesh = new PlainTriMeshF(4 * level);
+        for(int i = 0; i < level; i++) {
             // Construct Triangles for curved surface
-            float x1 = (float) (_radiusTop * cos (i * 2 * Pi / level));
-            float y1 = (float) (_radiusTop * sin (i * 2 * Pi / level));
+            float x1 = (float) (_radiusTop * cos(i * 2 * Pi / level));
+            float y1 = (float) (_radiusTop * sin(i * 2 * Pi / level));
 
-            float x2 = (float) (_radiusTop * cos ((i + 1) * 2 * Pi / level));
-            float y2 = (float) (_radiusTop * sin ((i + 1) * 2 * Pi / level));
+            float x2 = (float) (_radiusTop * cos((i + 1) * 2 * Pi / level));
+            float y2 = (float) (_radiusTop * sin((i + 1) * 2 * Pi / level));
 
-            float x3 = (float) (_radiusBottom * cos (i * 2 * Pi / level));
-            float y3 = (float) (_radiusBottom * sin (i * 2 * Pi / level));
+            float x3 = (float) (_radiusBottom * cos(i * 2 * Pi / level));
+            float y3 = (float) (_radiusBottom * sin(i * 2 * Pi / level));
 
-            float x4 = (float) (_radiusBottom * cos ((i + 1) * 2 * Pi / level));
-            float y4 = (float) (_radiusBottom * sin ((i + 1) * 2 * Pi / level));
+            float x4 = (float) (_radiusBottom * cos((i + 1) * 2 * Pi / level));
+            float y4 = (float) (_radiusBottom * sin((i + 1) * 2 * Pi / level));
 
-            Vector3D< float > p1 (x1, y1, z);
-            Vector3D< float > p2 (x2, y2, z);
-            Vector3D< float > p3 (x3, y3, -z);
-            Vector3D< float > p4 (x4, y4, -z);
+            Vector3D<float> p1(x1, y1, z);
+            Vector3D<float> p2(x2, y2, z);
+            Vector3D<float> p3(x3, y3, -z);
+            Vector3D<float> p4(x4, y4, -z);
 
-            (*mesh)[i * 4 + 0] = Triangle< float > (p1, p3, p4);
-            (*mesh)[i * 4 + 1] = Triangle< float > (p1, p4, p2);
+            (*mesh)[i * 4 + 0] = Triangle<float>(p1, p3, p4);
+            (*mesh)[i * 4 + 1] = Triangle<float>(p1, p4, p2);
 
             // Construct triangles for the end-plates
-            Vector3D< float > p5 (0, 0, z);
-            Vector3D< float > p6 (0, 0, -z);
-            (*mesh)[i * 4 + 2] = Triangle< float > (p1, p2, p5);
-            (*mesh)[i * 4 + 3] = Triangle< float > (p3, p6, p4);
+            Vector3D<float> p5(0, 0, z);
+            Vector3D<float> p6(0, 0, -z);
+            (*mesh)[i * 4 + 2] = Triangle<float>(p1, p2, p5);
+            (*mesh)[i * 4 + 3] = Triangle<float>(p3, p6, p4);
         }
-        return ownedPtr (mesh);
+        return ownedPtr(mesh);
     }
 }
 
-bool Cone::doIsInside (const rw::math::Vector3D<>& point)
-{
+bool Cone::doIsInside(const rw::math::Vector3D<>& point) {
     // first test if the point z is within cone
-    if (point[2] < -_height / 2 || point[2] > _height / 2)
-        return false;
+    if(point[2] < -_height / 2 || point[2] > _height / 2) return false;
     // next calculate distance to z-axis (center of cone) and compare to distance
     // from cone surface to z-axis
-    double distToZaxis = Vector2D<> (point[0], point[1]).norm2 ();
+    double distToZaxis = Vector2D<>(point[0], point[1]).norm2();
     double maxdistToZaxis;
-    if (_radiusTop < _radiusBottom) {
+    if(_radiusTop < _radiusBottom) {
         maxdistToZaxis =
             _radiusTop + (_height - (point[2] + _height / 2)) * (_radiusBottom - _radiusTop);
     }

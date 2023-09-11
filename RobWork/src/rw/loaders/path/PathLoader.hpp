@@ -27,7 +27,7 @@
 #include <rw/trajectory/Timed.hpp>
 
 #include <string>
-#endif 
+#endif
 // Forward declarations
 namespace rw { namespace models {
     class WorkCell;
@@ -54,16 +54,16 @@ namespace rw { namespace loaders {
          * @param path
          * @param file
          */
-        static void storePath (const rw::trajectory::QPath& path, const std::string& file);
+        static void storePath(const rw::trajectory::QPath& path, const std::string& file);
 
         /**
          * @brief Store the sequence \b path of \b workcell to the file named \b file.
          *
          *  See also loadTimedStatePath().
          */
-        static void storeTimedStatePath (const rw::models::WorkCell& workcell,
-                                         const rw::trajectory::TimedStatePath& path,
-                                         const std::string& file);
+        static void storeTimedStatePath(const rw::models::WorkCell& workcell,
+                                        const rw::trajectory::TimedStatePath& path,
+                                        const std::string& file);
 
         /**
          * @brief Time stamp the sequence \b path of \b workcell and store it to
@@ -75,9 +75,9 @@ namespace rw { namespace loaders {
          * The time stamped sequence can be loaded again with
          * loadTimedStatePath().
          */
-        static void storeVelocityTimedStatePath (const models::WorkCell& workcell,
-                                                 const rw::trajectory::StatePath& path,
-                                                 const std::string& file);
+        static void storeVelocityTimedStatePath(const models::WorkCell& workcell,
+                                                const rw::trajectory::StatePath& path,
+                                                const std::string& file);
 
         /**
          * @brief Loads a Path of robot configuration
@@ -88,7 +88,7 @@ namespace rw { namespace loaders {
          * @param file [in] file name
          * @return the path
          */
-        static rw::trajectory::QPath loadPath (const std::string& file);
+        static rw::trajectory::QPath loadPath(const std::string& file);
 
         /**
            @brief Load a sequence of states for \b workcell from the file named \b
@@ -100,19 +100,19 @@ namespace rw { namespace loaders {
            See also storeTimedStatePath().
         */
         static rw::trajectory::TimedStatePath
-        loadTimedStatePath (const rw::models::WorkCell& workcell, const std::string& file);
+        loadTimedStatePath(const rw::models::WorkCell& workcell, const std::string& file);
 
-         //! @copydoc rw::loaders::PathLoader::loadTimedStatePath
+        //! @copydoc rw::loaders::PathLoader::loadTimedStatePath
         static rw::trajectory::TimedStatePath
-        loadTimedStatePath (rw::core::Ptr<rw::models::WorkCell> workcell, const std::string& file);
+        loadTimedStatePath(rw::core::Ptr<rw::models::WorkCell> workcell, const std::string& file);
 
         /**
          * @brief Store the sequence \b path of \b workcell to the file named \b file.
          *
          *  See also loadStatePath().
          */
-        static void storeStatePath (const models::WorkCell& workcell,
-                                    const rw::trajectory::StatePath& path, const std::string& file);
+        static void storeStatePath(const models::WorkCell& workcell,
+                                   const rw::trajectory::StatePath& path, const std::string& file);
 
         /**
            @brief Load a sequence of states for \b workcell from the file named \b
@@ -123,8 +123,8 @@ namespace rw { namespace loaders {
 
            See also storeStatePath().
         */
-        static rw::trajectory::StatePath loadStatePath (const models::WorkCell& workcell,
-                                                        const std::string& file);
+        static rw::trajectory::StatePath loadStatePath(const models::WorkCell& workcell,
+                                                       const std::string& file);
     };
 
     /* @} */

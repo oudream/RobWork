@@ -27,82 +27,69 @@
 using namespace rw::common;
 using namespace rw::math;
 
-template< class T > Quaternion< T > Quaternion< T >::exp () const
-{
-    T a = getQw ();
-    Vector3D< T > v (getQx (), getQy (), getQz ());
-    T w = std::exp (a) * cos (v.norm2 ());
+template<class T> Quaternion<T> Quaternion<T>::exp() const {
+    T a = getQw();
+    Vector3D<T> v(getQx(), getQy(), getQz());
+    T w = std::exp(a) * cos(v.norm2());
 
-    v = (v / v.norm2 ()) * sin (v.norm2 ()) * T(std::exp (a));
+    v = (v / v.norm2()) * sin(v.norm2()) * T(std::exp(a));
 
-    return Quaternion< T > (v[0], v[1], v[2], w);
+    return Quaternion<T>(v[0], v[1], v[2], w);
 }
 
-template< class T > Quaternion< T > Quaternion< T >::inverse () const
-{
-    Quaternion< T > ret;
+template<class T> Quaternion<T> Quaternion<T>::inverse() const {
+    Quaternion<T> ret;
 
-    ret = (*this) * (T(-1.0) / getLengthSquared ());
+    ret = (*this) * (T(-1.0) / getLengthSquared());
     ret[3] *= T(-1.0);
     return ret;
 }
 
-template< class T > Quaternion< T > Quaternion< T >::ln () const
-{
-    T a = acos (getQw ());
-    T x = getQx () / sin (a);
-    T y = getQy () / sin (a);
-    T z = getQz () / sin (a);
+template<class T> Quaternion<T> Quaternion<T>::ln() const {
+    T a = acos(getQw());
+    T x = getQx() / sin(a);
+    T y = getQy() / sin(a);
+    T z = getQz() / sin(a);
 
-    return Quaternion< T > (a * x, a * y, a * z, T(0));
+    return Quaternion<T>(a * x, a * y, a * z, T(0));
 }
 
-template< class T > Quaternion< T > Quaternion< T >::pow (double power) const
-{
-    Quaternion< T > ret = *this;
-    for (int i = 0; i < 4; i++) {
-        ret[i] = std::pow (ret[i], power);
-    }
+template<class T> Quaternion<T> Quaternion<T>::pow(double power) const {
+    Quaternion<T> ret = *this;
+    for(int i = 0; i < 4; i++) { ret[i] = std::pow(ret[i], power); }
     return ret;
 }
 
-template< class T > Quaternion< T > Quaternion< T >::elemDivide (const T& lhs) const
-{
-    Quaternion< T > ret;
-    for (size_t i = 0; i < this->size (); i++) {
-        ret[i] = (*this)[i] / lhs;
-    }
+template<class T> Quaternion<T> Quaternion<T>::elemDivide(const T& lhs) const {
+    Quaternion<T> ret;
+    for(size_t i = 0; i < this->size(); i++) { ret[i] = (*this)[i] / lhs; }
     return ret;
 }
 
-template class rw::math::Quaternion< double >;
-template class rw::math::Quaternion< float >;
+template class rw::math::Quaternion<double>;
+template class rw::math::Quaternion<float>;
 
 template<>
-void rw::common::serialization::write (const Quaternion< double >& tmp, OutputArchive& oar,
-                                       const std::string& id)
-{
-    oar.write (Math::toStdVector (tmp, (int) tmp.size ()), id, "Quaternion");
+void rw::common::serialization::write(const Quaternion<double>& tmp, OutputArchive& oar,
+                                      const std::string& id) {
+    oar.write(Math::toStdVector(tmp, (int) tmp.size()), id, "Quaternion");
 }
 template<>
-void rw::common::serialization::read (Quaternion< double >& tmp, InputArchive& iar,
-                                      const std::string& id)
-{
-    std::vector< double > arr;
-    iar.read (arr, id, "Quaternion");
-    Math::fromStdVector (arr, tmp);
+void rw::common::serialization::read(Quaternion<double>& tmp, InputArchive& iar,
+                                     const std::string& id) {
+    std::vector<double> arr;
+    iar.read(arr, id, "Quaternion");
+    Math::fromStdVector(arr, tmp);
 }
 template<>
-void rw::common::serialization::write (const Quaternion< float >& tmp, OutputArchive& oar,
-                                       const std::string& id)
-{
-    oar.write (Math::toStdVector (tmp, (int) tmp.size ()), id, "Quaternion");
+void rw::common::serialization::write(const Quaternion<float>& tmp, OutputArchive& oar,
+                                      const std::string& id) {
+    oar.write(Math::toStdVector(tmp, (int) tmp.size()), id, "Quaternion");
 }
 template<>
-void rw::common::serialization::read (Quaternion< float >& tmp, InputArchive& iar,
-                                      const std::string& id)
-{
-    std::vector< float > arr;
-    iar.read (arr, id, "Quaternion");
-    Math::fromStdVector (arr, tmp);
+void rw::common::serialization::read(Quaternion<float>& tmp, InputArchive& iar,
+                                     const std::string& id) {
+    std::vector<float> arr;
+    iar.read(arr, id, "Quaternion");
+    Math::fromStdVector(arr, tmp);
 }

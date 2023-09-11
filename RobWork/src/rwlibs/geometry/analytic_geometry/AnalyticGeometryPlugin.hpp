@@ -45,16 +45,16 @@ namespace rwlibs { namespace geometry {
     {
       public:
         //! @brief Construct new plugin
-        AnalyticGeometryPlugin ();
+        AnalyticGeometryPlugin();
 
         //! @brief Destructor
-        virtual ~AnalyticGeometryPlugin ();
+        virtual ~AnalyticGeometryPlugin();
 
         //! @copydoc rw::core::Plugin::getExtensionDescriptors
-        std::vector< rw::core::Extension::Descriptor > getExtensionDescriptors ();
+        std::vector<rw::core::Extension::Descriptor> getExtensionDescriptors();
 
         //! @copydoc rw::core::Plugin::makeExtension
-        rw::core::Ptr< rw::core::Extension > makeExtension (const std::string& id);
+        rw::core::Ptr<rw::core::Extension> makeExtension(const std::string& id);
     };
     //! @}
 

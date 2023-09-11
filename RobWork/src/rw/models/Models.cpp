@@ -31,116 +31,103 @@ using namespace rw::core;
 using namespace rw::kinematics;
 using namespace rw::trajectory;
 
-std::vector< Frame* > Models::findAllFrames (const WorkCell& workcell)
-{
-    return Kinematics::findAllFrames (workcell.getWorldFrame (), workcell.getDefaultState ());
+std::vector<Frame*> Models::findAllFrames(const WorkCell& workcell) {
+    return Kinematics::findAllFrames(workcell.getWorldFrame(), workcell.getDefaultState());
 }
 
-Frame& Models::getFrame (const WorkCell& workcell, const std::string& name)
-{
-    rw::core::Ptr<Frame> frame = workcell.findFrame (name);
-    if (!frame)
-        RW_THROW ("No frame named " << StringUtil::quote (name) << " in workcell " << workcell);
+Frame& Models::getFrame(const WorkCell& workcell, const std::string& name) {
+    rw::core::Ptr<Frame> frame = workcell.findFrame(name);
+    if(!frame)
+        RW_THROW("No frame named " << StringUtil::quote(name) << " in workcell " << workcell);
     return *frame;
 }
 
-Device::Ptr Models::getDevice (const WorkCell& workcell, const std::string& name)
-{
-    Device::Ptr device = workcell.findDevice (name);
-    if (!device)
-        RW_THROW ("No device named " << StringUtil::quote (name) << " in workcell " << workcell);
+Device::Ptr Models::getDevice(const WorkCell& workcell, const std::string& name) {
+    Device::Ptr device = workcell.findDevice(name);
+    if(!device)
+        RW_THROW("No device named " << StringUtil::quote(name) << " in workcell " << workcell);
     return device;
 }
 
 namespace {
-bool inOrder (double a, double b, double c, double tolerance)
-{
+bool inOrder(double a, double b, double c, double tolerance) {
     return a - tolerance < b && b < c + tolerance;
 }
 }    // namespace
 
-bool Models::inBounds (const Q& val, const Joint& joint, double tolerance)
-{
-    return inBounds (val, joint.getBounds (), tolerance);
+bool Models::inBounds(const Q& val, const Joint& joint, double tolerance) {
+    return inBounds(val, joint.getBounds(), tolerance);
     /*for (size_t i = 0; i<val.size(); i++)
         if (!inOrder(joint.getBounds().first(i), val(i), joint.getBounds().second(i), tolerance))
             return false;
     return true;*/
 }
 
-bool Models::inBounds (const Q& q, const Device::QBox& bounds, double tolerance)
-{
-    RW_ASSERT (tolerance >= 0);
+bool Models::inBounds(const Q& q, const Device::QBox& bounds, double tolerance) {
+    RW_ASSERT(tolerance >= 0);
 
     const Q& a = bounds.first;
     const Q& b = bounds.second;
 
-    const int len = (int) a.size ();
-    for (int i = 0; i < len; i++) {
+    const int len = (int) a.size();
+    for(int i = 0; i < len; i++) {
         const double val = q[i];
-        if (!inOrder (a[i], val, b[i], tolerance))
-            return false;
+        if(!inOrder(a[i], val, b[i], tolerance)) return false;
     }
     return true;
 }
 
-bool Models::inBounds (const Q& q, const Device& device, double tolerance)
-{
-    return inBounds (q, device.getBounds (), tolerance);
+bool Models::inBounds(const Q& q, const Device& device, double tolerance) {
+    return inBounds(q, device.getBounds(), tolerance);
 }
 
-bool Models::inBounds (const State& state, const WorkCell& workcell, double tolerance)
-{
-    const std::vector< Frame* >& frames = findAllFrames (workcell);
+bool Models::inBounds(const State& state, const WorkCell& workcell, double tolerance) {
+    const std::vector<Frame*>& frames = findAllFrames(workcell);
 
-    typedef std::vector< Frame* >::const_iterator I;
-    for (I p = frames.begin (); p != frames.end (); ++p) {
-        const Joint* joint = dynamic_cast< const Joint* > (*p);
-        if (joint) {
-            const Q val = Q (joint->getDOF (), joint->getData (state));
-            if (!inBounds (val, *joint, tolerance))
-                return false;
+    typedef std::vector<Frame*>::const_iterator I;
+    for(I p = frames.begin(); p != frames.end(); ++p) {
+        const Joint* joint = dynamic_cast<const Joint*>(*p);
+        if(joint) {
+            const Q val = Q(joint->getDOF(), joint->getData(state));
+            if(!inBounds(val, *joint, tolerance)) return false;
         }
     }
 
     return true;
 }
 
-void Models::getStatePath (const Device& device, const std::vector< rw::math::Q >& path, const State& common_state,
-                           std::vector< rw::kinematics::State >& result)
-{
+void Models::getStatePath(const Device& device, const std::vector<rw::math::Q>& path,
+                          const State& common_state, std::vector<rw::kinematics::State>& result) {
     State state = common_state;
-    for (const Q& q : path) {
-        device.setQ (q, state);
-        result.push_back (state);
+    for(const Q& q : path) {
+        device.setQ(q, state);
+        result.push_back(state);
     }
 }
 
-std::vector< rw::kinematics::State > Models::getStatePath (const Device& device, const std::vector< rw::math::Q >& path, const State& common_state)
-{
-    std::vector< rw::kinematics::State > result;
-    getStatePath (device, path, common_state, result);
+std::vector<rw::kinematics::State> Models::getStatePath(const Device& device,
+                                                        const std::vector<rw::math::Q>& path,
+                                                        const State& common_state) {
+    std::vector<rw::kinematics::State> result;
+    getStatePath(device, path, common_state, result);
     return result;
 }
 
-rw::models::Device::Ptr Models::makeDevice (rw::models::Device::Ptr device, const State& state,
-                                            rw::core::Ptr<rw::kinematics::Frame> base, rw::core::Ptr<rw::kinematics::Frame> end)
-{
-    RW_ASSERT (device);
+rw::models::Device::Ptr Models::makeDevice(rw::models::Device::Ptr device, const State& state,
+                                           rw::core::Ptr<rw::kinematics::Frame> base,
+                                           rw::core::Ptr<rw::kinematics::Frame> end) {
+    RW_ASSERT(device);
 
     // Set the defaults.
-    if (!base)
-        base = device->getBase ();
-    if (!end)
-        end = device->getEnd ();
+    if(!base) base = device->getBase();
+    if(!end) end = device->getEnd();
 
     // Wrap the device if base or end differs.
-    if (base != device->getBase () || end != device->getEnd ())
-        return ownedPtr (new CompositeDevice (base,
-                                              std::vector< Device::Ptr > (1, device),
-                                              end,
-                                              "Models::makeDevice(" + device->getName () + ")",
-                                              state));
-    else
-        return device;
+    if(base != device->getBase() || end != device->getEnd())
+        return ownedPtr(new CompositeDevice(base,
+                                            std::vector<Device::Ptr>(1, device),
+                                            end,
+                                            "Models::makeDevice(" + device->getName() + ")",
+                                            state));
+    else return device;
 }

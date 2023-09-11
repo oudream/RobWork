@@ -15,13 +15,13 @@ namespace rws {
 class RWSImageLoaderPlugin : public rw::core::Plugin
 {
   public:
-    RWSImageLoaderPlugin ();
+    RWSImageLoaderPlugin();
 
-    virtual ~RWSImageLoaderPlugin ();
+    virtual ~RWSImageLoaderPlugin();
 
-    std::vector< rw::core::Extension::Descriptor > getExtensionDescriptors ();
+    std::vector<rw::core::Extension::Descriptor> getExtensionDescriptors();
 
-    rw::core::Ptr< rw::core::Extension > makeExtension (const std::string& str);
+    rw::core::Ptr<rw::core::Extension> makeExtension(const std::string& str);
 
   private:
     rw::core::PropertyMap _map;

@@ -23,7 +23,6 @@
  */
 
 #include <rw/loaders/ImageLoader.hpp>
-
 #include <rw/sensor/Image.hpp>
 
 namespace rw { namespace loaders {
@@ -41,16 +40,16 @@ namespace rw { namespace loaders {
     {
       public:
         //! @copydoc ImageLoader::loadImage
-        rw::sensor::Image::Ptr loadImage (const std::string& filename);
+        rw::sensor::Image::Ptr loadImage(const std::string& filename);
 
         //! @copydoc ImageLoader::getImageFormats
-        std::vector< std::string > getImageFormats ();
+        std::vector<std::string> getImageFormats();
 
         /**
          * @param filename [in] name of the file that is to be loaded.
          * @return if loaded successfully a pointer to the image is returned else NULL
          */
-        static rw::sensor::Image::Ptr load (const std::string& filename);
+        static rw::sensor::Image::Ptr load(const std::string& filename);
     };
     /*@}*/
 }}    // namespace rw::loaders

@@ -56,89 +56,89 @@ namespace rwsim { namespace contacts {
         /**
          * @brief Create new non-initialized contact.
          */
-        Contact ();
+        Contact();
 
         /**
          * @brief Destruct contact.
          */
-        virtual ~Contact ();
+        virtual ~Contact();
 
         /**
          * @brief Get the contact model for the first object.
          *
          * @return contact model specific to the strategy that created the contact.
          */
-        rw::core::Ptr< ContactModel > getModelA () const;
+        rw::core::Ptr<ContactModel> getModelA() const;
 
         /**
          * @brief Get the contact model for the second object.
          *
          * @return contact model specific to the strategy that created the contact.
          */
-        rw::core::Ptr< ContactModel > getModelB () const;
+        rw::core::Ptr<ContactModel> getModelB() const;
 
         /**
          * @brief Get the frame for the first object.
          *
          * @return pointer to the frame.
          */
-        const rw::kinematics::Frame* getFrameA () const;
+        const rw::kinematics::Frame* getFrameA() const;
 
         /**
          * @brief Get the frame for the second object.
          *
          * @return pointer to the frame.
          */
-        const rw::kinematics::Frame* getFrameB () const;
+        const rw::kinematics::Frame* getFrameB() const;
 
         /**
          * @brief Get the name of the first object.
          *
          * @return the name.
          */
-        const std::string& getNameA () const;
+        const std::string& getNameA() const;
 
         /**
          * @brief Get the name of the second object.
          *
          * @return the name.
          */
-        const std::string& getNameB () const;
+        const std::string& getNameB() const;
 
         /**
          * @brief The relative transform between the two contact models.
          *
          * @return the relative transform.
          */
-        rw::math::Transform3D<> aTb () const;
+        rw::math::Transform3D<> aTb() const;
 
         /**
          * @brief The contact point on the first object.
          *
          * @return the contact point.
          */
-        rw::math::Vector3D<> getPointA () const;
+        rw::math::Vector3D<> getPointA() const;
 
         /**
          * @brief The contact point on the second object.
          *
          * @return the contact point.
          */
-        rw::math::Vector3D<> getPointB () const;
+        rw::math::Vector3D<> getPointB() const;
 
         /**
          * @brief The contact normal from the first object towards the second object.
          *
          * @return the contact normal.
          */
-        rw::math::Vector3D<> getNormal () const;
+        rw::math::Vector3D<> getNormal() const;
 
         /**
          * @brief The penetration depth between the two objects.
          *
          * @return the penetration depth, positive if penetrating, negative if separated.
          */
-        double getDepth () const;
+        double getDepth() const;
 
         /**
          * @brief Set the contact model for the first object.
@@ -146,7 +146,7 @@ namespace rwsim { namespace contacts {
          * @param modelA [in] contact model specific for the contact strategy that generates the
          * contact.
          */
-        void setModelA (rw::core::Ptr< ContactModel > modelA);
+        void setModelA(rw::core::Ptr<ContactModel> modelA);
 
         /**
          * @brief Set the contact model for the second object.
@@ -154,35 +154,35 @@ namespace rwsim { namespace contacts {
          * @param modelB [in] contact model specific for the contact strategy that generates the
          * contact.
          */
-        void setModelB (rw::core::Ptr< ContactModel > modelB);
+        void setModelB(rw::core::Ptr<ContactModel> modelB);
 
         /**
          * @brief Set the frame for the first object.
          *
          * @param frame [in] a pointer to the frame.
          */
-        void setFrameA (rw::core::Ptr<const rw::kinematics::Frame> frame);
+        void setFrameA(rw::core::Ptr<const rw::kinematics::Frame> frame);
 
         /**
          * @brief Set the frame for the second object.
          *
          * @param frame [in] a pointer to the frame.
          */
-        void setFrameB (rw::core::Ptr<const rw::kinematics::Frame> frame);
+        void setFrameB(rw::core::Ptr<const rw::kinematics::Frame> frame);
 
         /**
          * @brief Set the name of the first object.
          * @note This will remove the pointer to frame A.
          * @param name [in] the name.
          */
-        void setNameA (const std::string& name);
+        void setNameA(const std::string& name);
 
         /**
          * @brief Set the name of the second object.
          * @note This will remove the pointer to frame B.
          * @param name [in] the name.
          */
-        void setNameB (const std::string& name);
+        void setNameB(const std::string& name);
 
         /**
          * @brief Try to set the frame pointers by looking up names in workcell.
@@ -193,28 +193,28 @@ namespace rwsim { namespace contacts {
          * @param wc [in] the workcell.
          * @return true if both frames found, or false otherwise.
          */
-        bool setFrames (const rw::models::WorkCell& wc);
+        bool setFrames(const rw::models::WorkCell& wc);
 
         /**
          * @brief Set the relative transform from the first object to the second object.
          *
          * @param aTb [in] the relative transform.
          */
-        void setTransform (rw::math::Transform3D<> aTb);
+        void setTransform(rw::math::Transform3D<> aTb);
 
         /**
          * @brief Set the contact point on the first object.
          *
          * @param pointA [in] contact point.
          */
-        void setPointA (rw::math::Vector3D<> pointA);
+        void setPointA(rw::math::Vector3D<> pointA);
 
         /**
          * @brief Set the contact point on the second object.
          *
          * @param pointB [in] contact point.
          */
-        void setPointB (rw::math::Vector3D<> pointB);
+        void setPointB(rw::math::Vector3D<> pointB);
 
         /**
          * @brief Set the contact points on both objects at the same time.
@@ -222,51 +222,51 @@ namespace rwsim { namespace contacts {
          * @param pointA [in] contact point on A.
          * @param pointB [in] contact point on B.
          */
-        void setPoints (rw::math::Vector3D<> pointA, rw::math::Vector3D<> pointB);
+        void setPoints(rw::math::Vector3D<> pointA, rw::math::Vector3D<> pointB);
 
         /**
          * @brief Set the normal from the first object to the second.
          *
          * @param normal [in] contact normal.
          */
-        void setNormal (rw::math::Vector3D<> normal);
+        void setNormal(rw::math::Vector3D<> normal);
 
         /**
          * @brief Calculate penetration depth automatically.
          *
          * Will calculate the penetration depth from the contact points and the normal.
          */
-        void setDepth ();
+        void setDepth();
 
         /**
          * @brief Set the penetation depth.
          *
          * @param depth [in] penetration depth. Positive if penetrating, negative if separated.
          */
-        void setDepth (double depth);
+        void setDepth(double depth);
 
         /**
          * @brief Check if the contact is exactly the same as other contact.
          * @param b [in] the contact to compare with.
          * @return true if equal, false if not.
          */
-        bool operator== (const Contact& b) const;
+        bool operator==(const Contact& b) const;
 
         /**
          * @brief Check if the contact is different from other contact.
          * @param b [in] the contact to compare with.
          * @return true if different, false if equal.
          */
-        bool operator!= (const Contact& b) const;
+        bool operator!=(const Contact& b) const;
 
         //! @copydoc rw::common::Serializable::read
-        virtual void read (class rw::common::InputArchive& iarchive, const std::string& id);
+        virtual void read(class rw::common::InputArchive& iarchive, const std::string& id);
 
         //! @copydoc rw::common::Serializable::write
-        virtual void write (class rw::common::OutputArchive& oarchive, const std::string& id) const;
+        virtual void write(class rw::common::OutputArchive& oarchive, const std::string& id) const;
 
       private:
-        rw::core::Ptr< ContactModel > _a, _b;
+        rw::core::Ptr<ContactModel> _a, _b;
         rw::core::Ptr<const rw::kinematics::Frame> _frameA;
         rw::core::Ptr<const rw::kinematics::Frame> _frameB;
         std::string _nameA;
@@ -283,7 +283,7 @@ namespace rwsim { namespace contacts {
      * @param contact [in] the contact to print.
      * @return the same ostream as out parameter.
      */
-    std::ostream& operator<< (std::ostream& out, const Contact& contact);
+    std::ostream& operator<<(std::ostream& out, const Contact& contact);
 
     //! @}
 }}     // namespace rwsim::contacts

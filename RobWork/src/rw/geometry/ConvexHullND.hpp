@@ -33,24 +33,24 @@ namespace rw { namespace geometry {
     /**
      * @brief interface for convexhull calculators on 3d point sets
      */
-    template< size_t N > class ConvexHullND
+    template<size_t N> class ConvexHullND
     {
       public:
         //! smart pointer type of this class
-        typedef rw::core::Ptr< ConvexHullND< N > > Ptr;
+        typedef rw::core::Ptr<ConvexHullND<N>> Ptr;
 
         /**
          * @brief rebuilts the hull
          * @param vertices
          */
-        virtual void rebuild (const std::vector< rw::math::VectorND< N > >& vertices) = 0;
+        virtual void rebuild(const std::vector<rw::math::VectorND<N>>& vertices) = 0;
 
         /**
          * @brief test if the given vertex is inside the convex hull
          */
         // virtual bool isInside(const rw::math::VectorND<N>& vertex, const
         // std::vector<rw::math::VectorND<N> >& vertices) = 0;
-        virtual bool isInside (const rw::math::VectorND< N >& vertex) = 0;
+        virtual bool isInside(const rw::math::VectorND<N>& vertex) = 0;
 
         /**
          * @brief If the vertex is inside the convex hull the minimum distance
@@ -61,14 +61,14 @@ namespace rw { namespace geometry {
          */
         // virtual double getMinDistInside(const rw::math::VectorND<N>& vertex, const
         // std::vector<rw::math::VectorND<N> >& vertices) = 0;
-        virtual double getMinDistInside (const rw::math::VectorND< N >& vertex) = 0;
+        virtual double getMinDistInside(const rw::math::VectorND<N>& vertex) = 0;
 
         /**
          * @brief Calculate average distance from point inside the convex hull to its walls.
          *
          * Each distance is weighted according to the wall's volume.'
          */
-        virtual double getAvgDistInside (const rw::math::VectorND< N >& vertex) = 0;
+        virtual double getAvgDistInside(const rw::math::VectorND<N>& vertex) = 0;
 
         /**
          * @brief If the vertex is outside the convex hull the minimum distance
@@ -76,21 +76,21 @@ namespace rw { namespace geometry {
          * @param vertex
          * @return minimum distance to vertex
          */
-        virtual double getMinDistOutside (const rw::math::VectorND< N >& vertex) = 0;
+        virtual double getMinDistOutside(const rw::math::VectorND<N>& vertex) = 0;
 
         /**
          * @brief Return centroid of the convex hull.
          *
          * Centroid is calculated as an average of face centroids weighted by face area.
          */
-        virtual rw::math::VectorND< N > getCentroid () = 0;
+        virtual rw::math::VectorND<N> getCentroid() = 0;
 
         /**
          * @brief Returns the point on the convex hull closest to the \b vertex .
          * @param vertex [in] the vertex.
          * @return the closest point.
          */
-        virtual rw::math::VectorND< N > getClosestPoint (const rw::math::VectorND< N >& vertex) = 0;
+        virtual rw::math::VectorND<N> getClosestPoint(const rw::math::VectorND<N>& vertex) = 0;
     };
 
     //! @}

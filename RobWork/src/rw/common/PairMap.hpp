@@ -36,42 +36,38 @@ namespace rw { namespace common {
      *
      * @note A requirement is that all pairs must be registered in the same StateStructure.
      */
-    template< class T1, class T2 > class PairMap
+    template<class T1, class T2> class PairMap
     {
-        typedef std::pair< T1, T1 > Pair;
+        typedef std::pair<T1, T1> Pair;
 
       public:
         /**
          * @brief creates a map
          */
-        PairMap () : _defaultVal (T2 ()) {}
+        PairMap() : _defaultVal(T2()) {}
 
         /**
          * @brief creates a map with an initial size of s
          * @param defaultVal [in] the default value of new instances of T
          */
-        PairMap (const T2& defaultVal) : _defaultVal (defaultVal) {}
+        PairMap(const T2& defaultVal) : _defaultVal(defaultVal) {}
 
         /**
          * @brief inserts a value into the map
          * @param pair [in] the pair for which the value is to be associated
          * @param value [in] the value that is to be associated to the pair
          */
-        void insert (const Pair& pair, const T2& value) { operator[] (pair) = value; }
+        void insert(const Pair& pair, const T2& value) { operator[](pair) = value; }
 
         /**
            @brief True iff a value for \b frame has been inserted in the map (or
            accessed using non-const operator[]).
         */
-        bool has (const Pair& pair) const
-        {
+        bool has(const Pair& pair) const {
             Pair p = pair;
-            if (p.first > p.second)
-                std::swap (p.first, p.second);
-            if (_map.find (p) != _map.end ())
-                return true;
-            else
-                return false;
+            if(p.first > p.second) std::swap(p.first, p.second);
+            if(_map.find(p) != _map.end()) return true;
+            else return false;
         }
 
         /**
@@ -80,7 +76,7 @@ namespace rw { namespace common {
            @param f1 [in] the first in the pair for which to find its associated values.
            @param f2 [in] the second in the pair for which to find its associated values.
         */
-        bool has (const T1 f1, const T1 f2) const { return has (Pair (f1, f2)); }
+        bool has(const T1 f1, const T1 f2) const { return has(Pair(f1, f2)); }
 
 #if !defined(SWIG)
         /**
@@ -94,17 +90,13 @@ namespace rw { namespace common {
            @param pair [in] the pair for which to find its associated values.
            @return reference to the value associated to the pair.
         */
-        const T2& operator[] (const Pair& pair) const
-        {
-            typedef typename std::map< Pair, T2 >::const_iterator it_type;
+        const T2& operator[](const Pair& pair) const {
+            typedef typename std::map<Pair, T2>::const_iterator it_type;
             Pair p = pair;
-            if (p.first > p.second)
-                std::swap (p.first, p.second);
-            const it_type it = _map.find (p);
-            if (it != _map.end ())
-                return it->second;
-            else
-                return _defaultVal;
+            if(p.first > p.second) std::swap(p.first, p.second);
+            const it_type it = _map.find(p);
+            if(it != _map.end()) return it->second;
+            else return _defaultVal;
         }
 #endif
 
@@ -120,7 +112,9 @@ namespace rw { namespace common {
            @param f2 [in] the second in the pair for which to find its associated values.
            @return reference to the value associated to the pair.
         */
-        const T2& operator() (T1 f1, T1 f2) const { return operator[] (Pair (f1, f2)); }
+        const T2& operator()(T1 f1, T1 f2) const {
+            return operator[](Pair(f1, f2));
+        }
 
 #if !defined(SWIG)
         /**
@@ -133,19 +127,16 @@ namespace rw { namespace common {
            @param pair [in] the pair for which to find its associated values.
            @return reference to the value associated to pair.
         */
-        T2& operator[] (const Pair& pair)
-        {
-            typedef typename std::map< Pair, T2 >::const_iterator it_type;
+        T2& operator[](const Pair& pair) {
+            typedef typename std::map<Pair, T2>::const_iterator it_type;
             Pair p = pair;
-            if (p.first > p.second)
-                std::swap (p.first, p.second);
-            const it_type it = _map.find (p);
-            if (it == _map.end ())
-                _map[p] = _defaultVal;
+            if(p.first > p.second) std::swap(p.first, p.second);
+            const it_type it = _map.find(p);
+            if(it == _map.end()) _map[p] = _defaultVal;
             return _map[p];
         }
 #else
-        MAPOPERATOR (T2&, const Pair&);
+        MAPOPERATOR(T2&, const Pair&);
 #endif
         /**
           @brief return a reference to the value that is associated with the
@@ -159,53 +150,63 @@ namespace rw { namespace common {
           @param f2 [in] the second frame in the pair for which to find its associated values.
           @return reference to the value associated to pair.
        */
-        T2& operator() (T1 f1, T1 f2) { return operator[] (Pair (f1, f2)); }
+        T2& operator()(T1 f1, T1 f2) {
+            return operator[](Pair(f1, f2));
+        }
 
         /**
           @brief Erase a pair from the map
           @param pair [in] the pair for which to erase from the map.
          */
-        void erase (const Pair& pair)
-        {
+        void erase(const Pair& pair) {
             Pair p = pair;
-            if (p.first > p.second)
-                std::swap (p.first, p.second);
-            _map.erase (p);
+            if(p.first > p.second) std::swap(p.first, p.second);
+            _map.erase(p);
         }
 
         /**
-          * @brief Erase a pair from the map
-          * @param f1 [in] the first frame in the pair for which to erase from the map.
-          * @param f2 [in] the second frame in the pair for which to erase from the map.
-          */
-        void erase (T1 f1, T1 f2) { erase (Pair (f1, f2)); }
+         * @brief Erase a pair from the map
+         * @param f1 [in] the first frame in the pair for which to erase from the map.
+         * @param f2 [in] the second frame in the pair for which to erase from the map.
+         */
+        void erase(T1 f1, T1 f2) {
+            erase(Pair(f1, f2));
+        }
 
         /**
            @brief Clear the map.
         */
-        void clear () { _map.clear (); }
+        void clear() {
+            _map.clear();
+        }
 
         /**
                    @brief Return the map size.
                    @return the number of elements in the map.
                 */
-        std::size_t size () const { return _map.size (); }
+        std::size_t size() const {
+            return _map.size();
+        }
 
         /**
                    @brief Return maximum size.
                    @return the maximum number of elements that the map object can hold.
                 */
-        std::size_t max_size () const { return _map.max_size (); }
+        std::size_t max_size() const {
+            return _map.max_size();
+        }
 
         /**
                    @brief Test whether map is empty.
                    @return whether the map container is empty, i.e. whether its size is 0.
                 */
-        bool empty () const { return _map.empty (); }
+        bool empty() const {
+            return _map.empty();
+        }
 
       private:
         T2 _defaultVal;
-        std::map< Pair, T2 > _map;
+        std::map<Pair, T2> _map;
     };
     /* @} */
 }}    // namespace rw::common

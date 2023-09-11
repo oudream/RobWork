@@ -33,92 +33,81 @@ using namespace rwlibs::simulation;
 using namespace rwlibs::opengl;
 using namespace rw::graphics;
 
-void SensorView::closeEvent (QCloseEvent* event)
-{
-    Q_EMIT viewClosed (this);
+void SensorView::closeEvent(QCloseEvent* event) {
+    Q_EMIT viewClosed(this);
 }
 
-CameraView::CameraView (Camera::Ptr camera, QWidget* parent) : SensorView (parent), _camera (camera)
-{
-    _pImageView = new ImageView ();
+CameraView::CameraView(Camera::Ptr camera, QWidget* parent) : SensorView(parent), _camera(camera) {
+    _pImageView = new ImageView();
 
-    QVBoxLayout* layout = new QVBoxLayout (this);
-    setLayout (layout);
+    QVBoxLayout* layout = new QVBoxLayout(this);
+    setLayout(layout);
     // layout->addWidget(new QLabel("Test Label"));
-    layout->addWidget (_pImageView);
+    layout->addWidget(_pImageView);
 }
 
-void CameraView::update ()
-{
-    const Image* img = _camera->getImage ();
-    _pImageView->display (*img);
-    _camera->acquire ();
+void CameraView::update() {
+    const Image* img = _camera->getImage();
+    _pImageView->display(*img);
+    _camera->acquire();
 }
 
-Scan25DView::Scan25DView (QWidget* parent) : SensorView (parent), _scanner (NULL)
-{
-    _pImageView = new ImageView ();
+Scan25DView::Scan25DView(QWidget* parent) : SensorView(parent), _scanner(NULL) {
+    _pImageView = new ImageView();
 
-    QVBoxLayout* layout = new QVBoxLayout (this);
-    setLayout (layout);
+    QVBoxLayout* layout = new QVBoxLayout(this);
+    setLayout(layout);
     // layout->addWidget(new QLabel("Test Label"));
-    layout->addWidget (_pImageView);
+    layout->addWidget(_pImageView);
 }
 
-void Scan25DView::initialize (rwlibs::simulation::SimulatedScanner25D::Ptr scanner)
-{
+void Scan25DView::initialize(rwlibs::simulation::SimulatedScanner25D::Ptr scanner) {
     _scanner = scanner;
 }
 
-void Scan25DView::makeCurrent ()
-{}
+void Scan25DView::makeCurrent() {}
 
-void Scan25DView::update ()
-{
-    if (_scanner != NULL) {
-        if (_scanner->isScanReady ()) {
+void Scan25DView::update() {
+    if(_scanner != NULL) {
+        if(_scanner->isScanReady()) {
             // Image::Ptr img = _scanner->getImage().asImage(_scanner->getRange().first,
             // _scanner->getRange().second);
-            Image::Ptr img = ImageUtil::makeDepthImage (_scanner->getScan ());
+            Image::Ptr img = ImageUtil::makeDepthImage(_scanner->getScan());
 
             //_scanRender->setScan(img);
             // convert to depth image
-            _pImageView->display (*img);
+            _pImageView->display(*img);
         }
-        _scanner->acquire ();
+        _scanner->acquire();
     }
 }
 
-Scan2DView::Scan2DView (QWidget* parent) : SensorView (parent), _scanner (NULL)
-{
-    _pImageView = new ImageView ();
+Scan2DView::Scan2DView(QWidget* parent) : SensorView(parent), _scanner(NULL) {
+    _pImageView = new ImageView();
 
-    QVBoxLayout* layout = new QVBoxLayout (this);
-    setLayout (layout);
+    QVBoxLayout* layout = new QVBoxLayout(this);
+    setLayout(layout);
     // layout->addWidget(new QLabel("Test Label"));
-    layout->addWidget (_pImageView);
+    layout->addWidget(_pImageView);
 }
 
-void Scan2DView::initialize (rw::core::Ptr< SimulatedScanner2D > scanner)
-{
+void Scan2DView::initialize(rw::core::Ptr<SimulatedScanner2D> scanner) {
     _scanner = scanner;
 }
 
-void Scan2DView::makeCurrent ()
-{}
+void Scan2DView::makeCurrent() {}
 
-void Scan2DView::update ()
-{
-    if (_scanner != NULL) {
-        if (_scanner->isScanReady ()) {
+void Scan2DView::update() {
+    if(_scanner != NULL) {
+        if(_scanner->isScanReady()) {
             // Image::Ptr img = _scanner->getImage().asImage(_scanner->getRange().first,
             // _scanner->getRange().second);
-            Image::Ptr img = ImageUtil::makeDepthImage (_scanner->getScan ());
+            Image::Ptr img = ImageUtil::makeDepthImage(_scanner->getScan());
 
             //_scanRender->setScan(img);
             // convert to depth image
-            _pImageView->display (*img);
+            _pImageView->display(*img);
         }
-        _scanner->acquire ();
+        _scanner->acquire();
     }
 }

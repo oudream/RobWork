@@ -30,12 +30,11 @@ namespace {
 class RegionPlanner : public QToQPlanner
 {
   public:
-    RegionPlanner (QToQSamplerPlanner::Ptr planner) : _planner (planner) {}
+    RegionPlanner(QToQSamplerPlanner::Ptr planner) : _planner(planner) {}
 
   private:
-    bool doQuery (const Q& from, const Q& to, QPath& path, const StopCriteria& stop)
-    {
-        return _planner->query (from, *QSampler::makeSingle (to), path, stop);
+    bool doQuery(const Q& from, const Q& to, QPath& path, const StopCriteria& stop) {
+        return _planner->query(from, *QSampler::makeSingle(to), path, stop);
     }
 
   private:
@@ -45,19 +44,18 @@ class RegionPlanner : public QToQPlanner
 class EdgePlanner : public QToQPlanner
 {
   public:
-    EdgePlanner (const PlannerConstraint& constraint) : _constraint (constraint) {}
+    EdgePlanner(const PlannerConstraint& constraint) : _constraint(constraint) {}
 
   private:
-    bool doQuery (const Q& from, const Q& to, QPath& path, const StopCriteria& stop)
-    {
-        if (_constraint.getQConstraint ().inCollision (from) ||
-            _constraint.getQConstraint ().inCollision (to) ||
-            _constraint.getQEdgeConstraint ().inCollision (from, to)) {
+    bool doQuery(const Q& from, const Q& to, QPath& path, const StopCriteria& stop) {
+        if(_constraint.getQConstraint().inCollision(from) ||
+           _constraint.getQConstraint().inCollision(to) ||
+           _constraint.getQEdgeConstraint().inCollision(from, to)) {
             return false;
         }
         else {
-            path.push_back (from);
-            path.push_back (to);
+            path.push_back(from);
+            path.push_back(to);
             return true;
         }
     }
@@ -67,12 +65,10 @@ class EdgePlanner : public QToQPlanner
 };
 }    // namespace
 
-QToQPlanner::Ptr QToQPlanner::make (QToQSamplerPlanner::Ptr planner)
-{
-    return ownedPtr (new RegionPlanner (planner));
+QToQPlanner::Ptr QToQPlanner::make(QToQSamplerPlanner::Ptr planner) {
+    return ownedPtr(new RegionPlanner(planner));
 }
 
-QToQPlanner::Ptr QToQPlanner::make (const PlannerConstraint& constraint)
-{
-    return ownedPtr (new EdgePlanner (constraint));
+QToQPlanner::Ptr QToQPlanner::make(const PlannerConstraint& constraint) {
+    return ownedPtr(new EdgePlanner(constraint));
 }

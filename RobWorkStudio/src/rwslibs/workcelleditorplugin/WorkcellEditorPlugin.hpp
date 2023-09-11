@@ -30,35 +30,35 @@ class WorkcellEditorPlugin : public RobWorkStudioPlugin
 {
     Q_OBJECT
 #ifndef RWS_USE_STATIC_LINK_PLUGINS
-    Q_INTERFACES (rws::RobWorkStudioPlugin)
-    Q_PLUGIN_METADATA (IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "plugin.json")
+    Q_INTERFACES(rws::RobWorkStudioPlugin)
+    Q_PLUGIN_METADATA(IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "plugin.json")
 #endif
   public:
     //! @brief constructor
-    WorkcellEditorPlugin ();
+    WorkcellEditorPlugin();
 
     //! @brief destructor
-    virtual ~WorkcellEditorPlugin ();
+    virtual ~WorkcellEditorPlugin();
 
     //! @copydoc RobWorkStudioPlugin::initialize
-    void initialize ();
+    void initialize();
 
     //! @copydoc RobWorkStudioPlugin::open
-    void open (rw::models::WorkCell* workcell);
+    void open(rw::models::WorkCell* workcell);
 
     //! @copydoc RobWorkStudioPlugin::close
-    void close ();
+    void close();
 
     //! @copydoc RobWorkStudioPlugin::setupMenu
-    void setupMenu (QMenu* menu);
+    void setupMenu(QMenu* menu);
 
   private Q_SLOTS:
 
-    void startEditor ();
+    void startEditor();
 
   private:
     // This listens for changes to the state of RobWorkStudio.
-    void stateChangedListener (const rw::kinematics::State& state);
+    void stateChangedListener(const rw::kinematics::State& state);
 
   private:
     rw::kinematics::State _state;

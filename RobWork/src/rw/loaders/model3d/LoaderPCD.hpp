@@ -35,20 +35,20 @@ namespace rw { namespace loaders {
         /**
          * @brief constructor
          */
-        LoaderPCD (){};
+        LoaderPCD(){};
 
         /**
          * @brief destructor
          */
-        virtual ~LoaderPCD (){};
+        virtual ~LoaderPCD(){};
 
         //! @copydoc Model3DLoader::load
-        rw::graphics::Model3D::Ptr load (const std::string& filename);
+        rw::graphics::Model3D::Ptr load(const std::string& filename);
 
         //! @copydoc Model3DLoader::getModelFormats
-        std::vector< std::string > getModelFormats () { return {".PCD"}; }
+        std::vector<std::string> getModelFormats() { return {".PCD"}; }
     };
     // @}
 }}    // namespace rw::loaders
 
-#endif 
+#endif

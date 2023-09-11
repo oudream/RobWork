@@ -42,29 +42,29 @@ namespace rwsim { namespace drawable {
          * @param angleResolution [in] the resolution of the circle line segments
          * in degree. The circle is approximated using line segments.
          */
-        RenderCircles (float angleResolution = 10.0);
+        RenderCircles(float angleResolution = 10.0);
 
         /**
          * @brief destructor
          */
-        virtual ~RenderCircles ();
+        virtual ~RenderCircles();
 
         /**
          * @brief adds circle to the circles that are allready drawn
          * @param circle [in] circle to draw
          */
-        void addCircle (const util::CircleModel& circle);
+        void addCircle(const util::CircleModel& circle);
 
         /**
          * @brief adds circles to the circles that are allready drawn
          */
-        void addCircles (const std::vector< util::CircleModel >& circles);
+        void addCircles(const std::vector<util::CircleModel>& circles);
 
         /**
          * @brief set the circles that is to be rendered
          * @param circles [in] the vector of circles
          */
-        void setCircles (const std::vector< util::CircleModel >& circles);
+        void setCircles(const std::vector<util::CircleModel>& circles);
 
         /**
          * @brief set the color used for the model
@@ -72,20 +72,21 @@ namespace rwsim { namespace drawable {
          * @param g [in] green color value
          * @param b [in] blue color value
          */
-        void setColor (double r, double g, double b);
+        void setColor(double r, double g, double b);
 
         /**
          * @brief clear the list of circles
          */
-        void clear ();
+        void clear();
 
-        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info, DrawableNode::DrawType type, double alpha) const
-        void draw (const rw::graphics::DrawableNode::RenderInfo& info,
-                   rw::graphics::DrawableNode::DrawType type, double alpha) const;
+        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info,
+        //! DrawableNode::DrawType type, double alpha) const
+        void draw(const rw::graphics::DrawableNode::RenderInfo& info,
+                  rw::graphics::DrawableNode::DrawType type, double alpha) const;
 
       private:
         float _stepSize;
-        std::vector< util::CircleModel > _circles;
+        std::vector<util::CircleModel> _circles;
         float _color[3];
     };
 

@@ -23,16 +23,16 @@ class BodyControlDialog : public QDialog
     Q_OBJECT
 
   public:
-    BodyControlDialog (    // rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> dwc,
-        rw::core::Ptr< rwsim::control::BodyController > bodycontroller, QWidget* parent = 0);
+    BodyControlDialog(    // rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> dwc,
+        rw::core::Ptr<rwsim::control::BodyController> bodycontroller, QWidget* parent = 0);
 
-    BodyControlDialog (    // rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> dwc,
-        rw::core::Ptr< rwsim::simulator::DynamicSimulator > simulator, QWidget* parent = 0);
+    BodyControlDialog(    // rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> dwc,
+        rw::core::Ptr<rwsim::simulator::DynamicSimulator> simulator, QWidget* parent = 0);
 
-    virtual ~BodyControlDialog () {}
+    virtual ~BodyControlDialog() {}
 
   private:
-    rw::core::Ptr< rwsim::control::BodyController > _bodyctrl;
+    rw::core::Ptr<rwsim::control::BodyController> _bodyctrl;
     // rw::core::Ptr<rwsim::simulator::DynamicSimulator> _sim;
     JogGroup* _jogGroup;
 };

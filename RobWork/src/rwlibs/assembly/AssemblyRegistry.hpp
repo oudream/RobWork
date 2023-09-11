@@ -47,17 +47,17 @@ namespace rwlibs { namespace assembly {
      * must be registered, or the user must create an AssemblyRegistry and add the strategy
      * to this registry manually.
      */
-    class AssemblyRegistry : public rw::core::ExtensionPoint< AssemblyControlStrategy >
+    class AssemblyRegistry : public rw::core::ExtensionPoint<AssemblyControlStrategy>
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< AssemblyRegistry > Ptr;
+        typedef rw::core::Ptr<AssemblyRegistry> Ptr;
 
         //! @brief Constructor of initial registry (RobWork strategies are added)
-        AssemblyRegistry ();
+        AssemblyRegistry();
 
         //! @brief Destructor
-        virtual ~AssemblyRegistry ();
+        virtual ~AssemblyRegistry();
 
         /**
          * @brief Add a new strategy.
@@ -65,30 +65,30 @@ namespace rwlibs { namespace assembly {
          * serialization).
          * @param strategy [in] a pointer to the AssemblyControlStrategy.
          */
-        void addStrategy (const std::string id, rw::core::Ptr< AssemblyControlStrategy > strategy);
+        void addStrategy(const std::string id, rw::core::Ptr<AssemblyControlStrategy> strategy);
 
         /**
          * @brief Get the available strategies.
          * @return a vector of identifiers for strategies.
          */
-        std::vector< std::string > getStrategies () const;
+        std::vector<std::string> getStrategies() const;
 
         /**
          * @brief Check if strategy is available.
          * @param id [in] the name of the strategy.
          * @return true if available, false otherwise.
          */
-        bool hasStrategy (const std::string& id) const;
+        bool hasStrategy(const std::string& id) const;
 
         /**
          * @brief Get the strategy with a specific identifier.
          * @param id [in] the identifier.
          * @return a pointer to the strategy.
          */
-        rw::core::Ptr< AssemblyControlStrategy > getStrategy (const std::string& id) const;
+        rw::core::Ptr<AssemblyControlStrategy> getStrategy(const std::string& id) const;
 
       private:
-        std::map< std::string, rw::core::Ptr< AssemblyControlStrategy > > _map;
+        std::map<std::string, rw::core::Ptr<AssemblyControlStrategy>> _map;
     };
     //! @}
 }}     // namespace rwlibs::assembly

@@ -38,24 +38,24 @@ namespace rwlibs { namespace opengl {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< RenderLines > Ptr;
+        typedef rw::core::Ptr<RenderLines> Ptr;
 
         /**
          * @brief Constructs RenderLine with no lines
          */
-        RenderLines ();
+        RenderLines();
 
         /**
          * @brief Construct RenderLine adding the lines specified
          *
          * @param lines [in] Lines to draw
          */
-        RenderLines (const std::vector< rw::geometry::Line >& lines);
+        RenderLines(const std::vector<rw::geometry::Line>& lines);
 
         /**
          * @brief Descructor
          */
-        virtual ~RenderLines ();
+        virtual ~RenderLines();
 
         /**
          * @brief Adds a single line to the drawable
@@ -63,14 +63,14 @@ namespace rwlibs { namespace opengl {
          * @param v1 [in] Start point for line
          * @param v2 [in] End point for line
          */
-        void addLine (const rw::math::Vector3D<>& v1, const rw::math::Vector3D<>& v2);
+        void addLine(const rw::math::Vector3D<>& v1, const rw::math::Vector3D<>& v2);
 
         /**
          * @brief Adds a collection of lines
          *
          * @param lines [in] List of lines
          */
-        void addLines (const std::vector< rw::geometry::Line >& lines);
+        void addLines(const std::vector<rw::geometry::Line>& lines);
 
         /**
          * @brief Sets the color of the lines.
@@ -82,7 +82,7 @@ namespace rwlibs { namespace opengl {
          * @param b [in] blue [0;1]
          * @param alpha [in] alpha [0;1]
          */
-        void setColor (float r, float g, float b, float alpha);
+        void setColor(float r, float g, float b, float alpha);
 
         /**
          * @brief Sets thickness of the line.
@@ -90,25 +90,26 @@ namespace rwlibs { namespace opengl {
          * The thickness is forwarded to glLineWidth. Default 1.0.
          * @param thickness [in] Thickness of the lines
          */
-        void setThickness (float thickness);
+        void setThickness(float thickness);
 
         /**
          * @brief Clears all lines
          *
          * When clearing the lines a new display list without lines will be generated.
          */
-        void clear ();
+        void clear();
 
-        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info, DrawableNode::DrawType type, double alpha) const
-        void draw (const rw::graphics::DrawableNode::RenderInfo& info,
-                   rw::graphics::DrawableNode::DrawType type, double alpha) const;
+        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info,
+        //! DrawableNode::DrawType type, double alpha) const
+        void draw(const rw::graphics::DrawableNode::RenderInfo& info,
+                  rw::graphics::DrawableNode::DrawType type, double alpha) const;
 
       private:
         // Initilized the color and thickness parameters
-        void rerender ();
+        void rerender();
 
         std::string _id;
-        std::vector< rw::geometry::Line > _lines;
+        std::vector<rw::geometry::Line> _lines;
 
         float _r;
         float _g;
@@ -118,7 +119,7 @@ namespace rwlibs { namespace opengl {
     };
 
     //! smart pointer to renderlines
-    typedef rw::core::Ptr< RenderLines > RenderLinesPtr;
+    typedef rw::core::Ptr<RenderLines> RenderLinesPtr;
     //! @}
 }}    // namespace rwlibs::opengl
 

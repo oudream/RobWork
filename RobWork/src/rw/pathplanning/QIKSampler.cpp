@@ -35,44 +35,38 @@ namespace {
 class IterativeQIKSampler : public QIKSampler
 {
   public:
-    IterativeQIKSampler (Device::Ptr device, const State& state, IterativeIK::Ptr solver,
-                         QSampler::Ptr seed, int maxAttempts) :
-        _device (device),
-        _state (state), _solver (solver), _seed (seed), _maxAttempts (maxAttempts)
-    {
-        if (!_solver)
-            _solver = IterativeIK::makeDefault (device, state);
-        if (!_seed)
-            _seed = QSampler::makeUniform (device);
-        if (_maxAttempts < 0)
-            _maxAttempts = 15;
+    IterativeQIKSampler(Device::Ptr device, const State& state, IterativeIK::Ptr solver,
+                        QSampler::Ptr seed, int maxAttempts) :
+        _device(device),
+        _state(state), _solver(solver), _seed(seed), _maxAttempts(maxAttempts) {
+        if(!_solver) _solver = IterativeIK::makeDefault(device, state);
+        if(!_seed) _seed = QSampler::makeUniform(device);
+        if(_maxAttempts < 0) _maxAttempts = 15;
     }
 
   private:
-    Q doSample (const Transform3D<>& target)
-    {
-        if (!_available.empty ()) {
-            const Q result = _available.back ();
-            _available.pop_back ();
+    Q doSample(const Transform3D<>& target) {
+        if(!_available.empty()) {
+            const Q result = _available.back();
+            _available.pop_back();
             return result;
         }
         else {
             Q result;
 
-            for (int cnt = 0; cnt < _maxAttempts && result.empty () && !_seed->empty (); ++cnt) {
-                const Q q = _seed->sample ();
-                if (!q.empty ()) {
-                    _device->setQ (q, _state);
+            for(int cnt = 0; cnt < _maxAttempts && result.empty() && !_seed->empty(); ++cnt) {
+                const Q q = _seed->sample();
+                if(!q.empty()) {
+                    _device->setQ(q, _state);
 
-                    const std::vector< Q > qs = _solver->solve (target, _state);
+                    const std::vector<Q> qs = _solver->solve(target, _state);
 
-                    for (const Q& q : qs) {
-                        if (Models::inBounds (q, *_device)) {
-                            if (result.empty ())
-                                result = q;
+                    for(const Q& q : qs) {
+                        if(Models::inBounds(q, *_device)) {
+                            if(result.empty()) result = q;
                             else {
                                 // Save this solution for later.
-                                _available.push_back (q);
+                                _available.push_back(q);
                             }
                         }
                     }
@@ -88,29 +82,26 @@ class IterativeQIKSampler : public QIKSampler
     IterativeIK::Ptr _solver;
     QSampler::Ptr _seed;
     int _maxAttempts;
-    std::vector< Q > _available;
+    std::vector<Q> _available;
 };
 
 class ConstrainedQIKSampler : public QIKSampler
 {
   public:
-    ConstrainedQIKSampler (QIKSampler::Ptr sampler, QConstraint::Ptr constraint, int maxAttempts) :
-        _sampler (sampler), _constraint (constraint), _maxAttempts (maxAttempts)
-    {}
+    ConstrainedQIKSampler(QIKSampler::Ptr sampler, QConstraint::Ptr constraint, int maxAttempts) :
+        _sampler(sampler), _constraint(constraint), _maxAttempts(maxAttempts) {}
 
   private:
-    Q doSample (const Transform3D<>& target)
-    {
-        for (int cnt = 0; !_sampler->empty () && (_maxAttempts < 0 || cnt < _maxAttempts); ++cnt) {
-            const Q q = _sampler->sample (target);
-            if (!q.empty () && !_constraint->inCollision (q))
-                return q;
+    Q doSample(const Transform3D<>& target) {
+        for(int cnt = 0; !_sampler->empty() && (_maxAttempts < 0 || cnt < _maxAttempts); ++cnt) {
+            const Q q = _sampler->sample(target);
+            if(!q.empty() && !_constraint->inCollision(q)) return q;
         }
 
-        return Q ();
+        return Q();
     }
 
-    bool doEmpty () const { return _sampler->empty (); }
+    bool doEmpty() const { return _sampler->empty(); }
 
   private:
     QIKSampler::Ptr _sampler;
@@ -119,23 +110,19 @@ class ConstrainedQIKSampler : public QIKSampler
 };
 }    // namespace
 
-bool QIKSampler::empty () const
-{
-    return doEmpty ();
+bool QIKSampler::empty() const {
+    return doEmpty();
 }
-bool QIKSampler::doEmpty () const
-{
+bool QIKSampler::doEmpty() const {
     return false;
 }
 
-QIKSampler::Ptr QIKSampler::make (Device::Ptr device, const State& state, IterativeIK::Ptr solver,
-                                  QSampler::Ptr seed, int maxAttempts)
-{
-    return ownedPtr (new IterativeQIKSampler (device, state, solver, seed, maxAttempts));
+QIKSampler::Ptr QIKSampler::make(Device::Ptr device, const State& state, IterativeIK::Ptr solver,
+                                 QSampler::Ptr seed, int maxAttempts) {
+    return ownedPtr(new IterativeQIKSampler(device, state, solver, seed, maxAttempts));
 }
 
-QIKSampler::Ptr QIKSampler::makeConstrained (QIKSampler::Ptr sampler, QConstraint::Ptr constraint,
-                                             int maxAttempts)
-{
-    return ownedPtr (new ConstrainedQIKSampler (sampler, constraint, maxAttempts));
+QIKSampler::Ptr QIKSampler::makeConstrained(QIKSampler::Ptr sampler, QConstraint::Ptr constraint,
+                                            int maxAttempts) {
+    return ownedPtr(new ConstrainedQIKSampler(sampler, constraint, maxAttempts));
 }

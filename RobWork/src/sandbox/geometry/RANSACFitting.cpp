@@ -18,4 +18,3 @@
 #include "RANSACFitting.hpp"
 
 using namespace rw::geometry;
-

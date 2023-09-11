@@ -24,74 +24,60 @@
 using namespace rw::core;
 using namespace rwlibs::assembly;
 
-AssemblyRegistry::AssemblyRegistry () :
-    ExtensionPoint< AssemblyControlStrategy > ("rwlibs.assembly.AssemblyControlStrategy",
-                                               "AssemblyControlStrategy extension point.")
-{
+AssemblyRegistry::AssemblyRegistry() :
+    ExtensionPoint<AssemblyControlStrategy>("rwlibs.assembly.AssemblyControlStrategy",
+                                            "AssemblyControlStrategy extension point.") {
     {
-        AssemblyControlStrategy::Ptr strategy = ownedPtr (new CircularPiHControlStrategy ());
-        _map[strategy->getID ()]              = strategy;
+        AssemblyControlStrategy::Ptr strategy = ownedPtr(new CircularPiHControlStrategy());
+        _map[strategy->getID()]               = strategy;
     }
     {
         AssemblyControlStrategy::Ptr strategy =
-            ownedPtr (new PiHStrategy (rw::math::Transform3D<>::identity ()));
-        _map[strategy->getID ()] = strategy;
+            ownedPtr(new PiHStrategy(rw::math::Transform3D<>::identity()));
+        _map[strategy->getID()] = strategy;
     }
     {
-        AssemblyControlStrategy::Ptr strategy = ownedPtr (new SpiralStrategy ());
-        _map[strategy->getID ()]              = strategy;
+        AssemblyControlStrategy::Ptr strategy = ownedPtr(new SpiralStrategy());
+        _map[strategy->getID()]               = strategy;
     }
 }
 
-AssemblyRegistry::~AssemblyRegistry ()
-{}
+AssemblyRegistry::~AssemblyRegistry() {}
 
-void AssemblyRegistry::addStrategy (const std::string id,
-                                    rw::core::Ptr< AssemblyControlStrategy > strategy)
-{
+void AssemblyRegistry::addStrategy(const std::string id,
+                                   rw::core::Ptr<AssemblyControlStrategy> strategy) {
     _map[id] = strategy;
 }
 
-std::vector< std::string > AssemblyRegistry::getStrategies () const
-{
-    std::vector< std::string > ids;
-    const std::vector< Extension::Descriptor > exts = getExtensionDescriptors ();
-    for (const Extension::Descriptor& ext : exts) {
-        ids.push_back (ext.getProperties ().get ("strategyID", ext.name));
+std::vector<std::string> AssemblyRegistry::getStrategies() const {
+    std::vector<std::string> ids;
+    const std::vector<Extension::Descriptor> exts = getExtensionDescriptors();
+    for(const Extension::Descriptor& ext : exts) {
+        ids.push_back(ext.getProperties().get("strategyID", ext.name));
     }
-    std::map< std::string, AssemblyControlStrategy::Ptr >::const_iterator it;
-    for (it = _map.begin (); it != _map.end (); it++) {
-        ids.push_back (it->first);
-    }
+    std::map<std::string, AssemblyControlStrategy::Ptr>::const_iterator it;
+    for(it = _map.begin(); it != _map.end(); it++) { ids.push_back(it->first); }
     return ids;
 }
 
-bool AssemblyRegistry::hasStrategy (const std::string& id) const
-{
-    const std::vector< Extension::Descriptor > exts = getExtensionDescriptors ();
-    for (const Extension::Descriptor& ext : exts) {
-        if (ext.getProperties ().get ("strategyID", ext.name) == id)
-            return true;
+bool AssemblyRegistry::hasStrategy(const std::string& id) const {
+    const std::vector<Extension::Descriptor> exts = getExtensionDescriptors();
+    for(const Extension::Descriptor& ext : exts) {
+        if(ext.getProperties().get("strategyID", ext.name) == id) return true;
     }
-    if (_map.find (id) == _map.end ())
-        return false;
-    else
-        return true;
+    if(_map.find(id) == _map.end()) return false;
+    else return true;
 }
 
-AssemblyControlStrategy::Ptr AssemblyRegistry::getStrategy (const std::string& id) const
-{
-    const std::vector< Extension::Ptr > exts = getExtensions ();
-    for (const Extension::Ptr& ext : exts) {
-        if (ext == NULL)
-            continue;
-        if (ext->getProperties ().get ("strategyID", ext->getName ()) == id) {
-            return ext->getObject ().cast< AssemblyControlStrategy > ();
+AssemblyControlStrategy::Ptr AssemblyRegistry::getStrategy(const std::string& id) const {
+    const std::vector<Extension::Ptr> exts = getExtensions();
+    for(const Extension::Ptr& ext : exts) {
+        if(ext == NULL) continue;
+        if(ext->getProperties().get("strategyID", ext->getName()) == id) {
+            return ext->getObject().cast<AssemblyControlStrategy>();
         }
     }
-    const std::map< std::string, AssemblyControlStrategy::Ptr >::const_iterator it = _map.find (id);
-    if (it == _map.end ())
-        return NULL;
-    else
-        return it->second;
+    const std::map<std::string, AssemblyControlStrategy::Ptr>::const_iterator it = _map.find(id);
+    if(it == _map.end()) return NULL;
+    else return it->second;
 }

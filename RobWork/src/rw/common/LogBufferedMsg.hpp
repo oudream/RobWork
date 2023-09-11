@@ -45,34 +45,34 @@ namespace rw { namespace common {
          *
          * @param stream [in] Stream to write to
          */
-        LogBufferedMsg (std::ostream* stream);
+        LogBufferedMsg(std::ostream* stream);
 
         /**
          * @brief Destructor
          *
          * Calls flush before destruction
          */
-        virtual ~LogBufferedMsg ();
+        virtual ~LogBufferedMsg();
 
       protected:
         /**
          * @brief Writes str to the buffer
          * @param str [in] str to write
          */
-        virtual void doWrite (const std::string& str);
+        virtual void doWrite(const std::string& str);
 
         /**
          * @brief Write content of buffer to output stream and flush it
          */
-        virtual void doFlush ();
+        virtual void doFlush();
 
         /**
          * @copydoc LogWriter::setTabLevel
          */
-        virtual void doSetTabLevel (int tablevel);
+        virtual void doSetTabLevel(int tablevel);
 
       private:
-        std::vector< std::pair< std::string, int > > _buffer;
+        std::vector<std::pair<std::string, int>> _buffer;
         std::ostream* _stream;
         int _tabLevel;
     };

@@ -46,24 +46,25 @@ namespace rwlibs { namespace opengl {
 
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< RenderFrame > Ptr;
+        typedef rw::core::Ptr<RenderFrame> Ptr;
 
         /**
          * @brief Constructs a RenderFrame
          * @param size [in] size of the frame coordinate system
          */
-        RenderFrame (float size = 1);
+        RenderFrame(float size = 1);
 
         /**
          * @brief Destructor
          */
-        virtual ~RenderFrame ();
+        virtual ~RenderFrame();
 
         /* Functions inherited from Render */
 
-        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info, DrawableNode::DrawType type, double alpha) const
-        void draw (const rw::graphics::DrawableNode::RenderInfo& info,
-                   rw::graphics::DrawableNode::DrawType type, double alpha) const;
+        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info,
+        //! DrawableNode::DrawType type, double alpha) const
+        void draw(const rw::graphics::DrawableNode::RenderInfo& info,
+                  rw::graphics::DrawableNode::DrawType type, double alpha) const;
     };
 
     /*@}*/

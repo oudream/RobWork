@@ -29,8 +29,8 @@
 #include <rw/math/Vector3D.hpp>
 #include <rws/ArcBallController.hpp>
 
-#include <QOpenGLWidget>
 #include <QObject>
+#include <QOpenGLWidget>
 #include <vector>
 
 namespace rw { namespace graphics {
@@ -63,22 +63,22 @@ class GLViewRW : public QOpenGLWidget
      * @brief Constructs an OpenGL based QT Widget
      * @param parent [in] Parent widget
      */
-    GLViewRW (QWidget* parent = 0);
+    GLViewRW(QWidget* parent = 0);
 
     /**
      * @brief destructor
      */
-    ~GLViewRW ();
+    ~GLViewRW();
 
     /**
      * @brief sets up the toolbar
      */
-    void setupToolBar (QToolBar* toolbar);
+    void setupToolBar(QToolBar* toolbar);
 
     /**
      * @brief sets up menu
      */
-    void setupMenu (QMenu* menu);
+    void setupMenu(QMenu* menu);
 
     /**
      * @brief Adds a Drawable to the view component.
@@ -92,12 +92,12 @@ class GLViewRW : public QOpenGLWidget
      *
      * @param drawable [in] Pointer to drawable to be visualized
      */
-    void addDrawable (rwlibs::opengl::Drawable* drawable);
+    void addDrawable(rwlibs::opengl::Drawable* drawable);
 
     /**
      * @brief Clears the list of Drawables
      */
-    void clear ();
+    void clear();
 
     /**
      * @brief Saves the current 3D view to disk as either jpg, bmp or png.
@@ -108,59 +108,59 @@ class GLViewRW : public QOpenGLWidget
      * @param filename [in] Path and name of the file. The filename extension
      * should be either ".jpg", ".bmp" or ".png" to specify which format to use.
      */
-    void saveBufferToFile (const QString& filename);
+    void saveBufferToFile(const QString& filename);
 
     /**
      * @brief Specified whether to visualize the pivot point
      * @param visible [in] True for showing pivot point, false otherwise.
      */
-    void showPivotPoint (bool visible);
+    void showPivotPoint(bool visible);
 
     /**
      * @brief Sets whether to visualize as SOLID, WIRE or BOTH.
      * @param drawType [in] The drawtype to use
      */
-    void setDrawType (rw::graphics::Render::DrawType drawType);
+    void setDrawType(rw::graphics::Render::DrawType drawType);
 
     /**
      * @brief
      */
-    void keyPressEvent (QKeyEvent* e);
+    void keyPressEvent(QKeyEvent* e);
 
   protected:
     /* Overridden methods from QGLWidget
      */
-    void initializeGL ();
-    void paintGL ();
-    void resizeGL (int width, int height);
+    void initializeGL();
+    void paintGL();
+    void resizeGL(int width, int height);
 
-    void mouseDoubleClickEvent (QMouseEvent* event);
-    void mousePressEvent (QMouseEvent* event);
-    void mouseMoveEvent (QMouseEvent* event);
-    void wheelEvent (QWheelEvent* event);
+    void mouseDoubleClickEvent(QMouseEvent* event);
+    void mousePressEvent(QMouseEvent* event);
+    void mouseMoveEvent(QMouseEvent* event);
+    void wheelEvent(QWheelEvent* event);
 
   private slots:
-    void setDrawTypeSlot ();
-    void setTransparentSlot ();
-    void showPivotPointSlot ();
+    void setDrawTypeSlot();
+    void setTransparentSlot();
+    void showPivotPointSlot();
 
     // Save buffer dialog.
-    void saveBufferToFileQuery ();
+    void saveBufferToFileQuery();
 
   private:
-    void drawGLBackground ();
-    void setupCameraView (int camNr, bool setupViewport = true);
-    void drawGLStuff (bool showPivot);
+    void drawGLBackground();
+    void setupCameraView(int camNr, bool setupViewport = true);
+    void drawGLStuff(bool showPivot);
 
-    rw::kinematics::Frame* pickFrame (int x, int y);
+    rw::kinematics::Frame* pickFrame(int x, int y);
 
-    std::vector< rwlibs::opengl::Drawable* > _drawables;
+    std::vector<rwlibs::opengl::Drawable*> _drawables;
 
-    rw::math::Rotation3D< float > _viewRotation;
-    rw::math::Vector3D< float > _viewPos;
-    rw::math::Vector3D< float > _lastViewPos;
-    rw::math::Vector3D< float > _pivotPoint;
-    rw::math::Vector3D< float > _lastPos;
+    rw::math::Rotation3D<float> _viewRotation;
+    rw::math::Vector3D<float> _viewPos;
+    rw::math::Vector3D<float> _lastViewPos;
+    rw::math::Vector3D<float> _pivotPoint;
+    rw::math::Vector3D<float> _lastPos;
 
     rw::graphics::Render::DrawType _drawType;
     float _alpha;

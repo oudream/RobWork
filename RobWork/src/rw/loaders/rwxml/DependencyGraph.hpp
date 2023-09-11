@@ -39,47 +39,44 @@ namespace rw { namespace loaders {
         /**
          * @brief Constructor
          */
-        DependencyGraph (){};
+        DependencyGraph(){};
 
         /**
          * @brief Destructor
          */
-        virtual ~DependencyGraph (){};
+        virtual ~DependencyGraph(){};
 
         /**
          * @brief Add dependency from node "fromA" to node "toB"
          * @param fromA [in] name of first node
          * @param toB [in] name of second node
          */
-        void addDependency (const std::string& fromA, const std::string& toB);
+        void addDependency(const std::string& fromA, const std::string& toB);
 
         /**
          * @brief checks if there are any cycles in the dependency graph
          *
          * @return true if there are any cycles
          */
-        bool hasCycleDependency ();
+        bool hasCycleDependency();
 
       private:
         struct cycle_detector : public boost::dfs_visitor<>
         {
-            cycle_detector (bool& has_cycle) : m_has_cycle (has_cycle) {}
+            cycle_detector(bool& has_cycle) : m_has_cycle(has_cycle) {}
 
-            template< class Edge, class Graph > void back_edge (Edge, Graph&)
-            {
-                m_has_cycle = true;
-            }
+            template<class Edge, class Graph> void back_edge(Edge, Graph&) { m_has_cycle = true; }
 
           protected:
             bool& m_has_cycle;
         };
 
       private:
-        typedef std::pair< std::string, std::string > Edge;
-        typedef boost::adjacency_list< boost::listS, boost::vecS, boost::directedS, std::string >
+        typedef std::pair<std::string, std::string> Edge;
+        typedef boost::adjacency_list<boost::listS, boost::vecS, boost::directedS, std::string>
             DGraph;
         DGraph _g;
-        std::map< std::string, int > _map;
+        std::map<std::string, int> _map;
     };
     /*@}*/
 }}     // namespace rw::loaders

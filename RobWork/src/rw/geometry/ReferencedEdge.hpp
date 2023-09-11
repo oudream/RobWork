@@ -27,28 +27,28 @@ namespace rw { namespace geometry {
     class ReferencedEdge
     {
       public:
-        ReferencedEdge (TriMeshData::Ptr ref, uint32_t vertice1, uint32_t vertice2);
+        ReferencedEdge(TriMeshData::Ptr ref, uint32_t vertice1, uint32_t vertice2);
 
         /**
          * @brief get the referencedvertexes belonging to the edge.
          * @param i [in] index of the wanted vertex
          * @return ReferencedVertice
          */
-        ReferencedVertice operator[] (size_t i) const;
+        ReferencedVertice operator[](size_t i) const;
 
         /**
          * @brief get the mesh index of the vertexes belonging to this edge
          * @param i [in] index of the wanted mesh index
          * @return uint32_t&
          */
-        uint32_t idx (size_t i) const;
+        uint32_t idx(size_t i) const;
 
         /**
          * @brief get the mesh index of the vertexes belonging to this edge
          * @param i [in] index of the wanted mesh index
          * @return uint32_t&
          */
-        uint32_t& idx (size_t i);
+        uint32_t& idx(size_t i);
 
         /**
          * @brief check if the vertice is part of the edge
@@ -56,7 +56,7 @@ namespace rw { namespace geometry {
          * @return true if vertice is part of the edge
          * @return false if vertice is not part of the edge or the mesh
          */
-        bool has (const ReferencedVertice& v) const;
+        bool has(const ReferencedVertice& v) const;
 
         /**
          * @brief check if the vertices is part of the edge
@@ -65,11 +65,11 @@ namespace rw { namespace geometry {
          * @return true if both vertices is part of the edge
          * @return false if both vertices is not part of the edge or the mesh
          */
-        bool has (const ReferencedVertice& v1, const ReferencedVertice& v2) const;
+        bool has(const ReferencedVertice& v1, const ReferencedVertice& v2) const;
 
       private:
         friend class ReferencedTriangle;
-        ReferencedEdge ();
+        ReferencedEdge();
         TriMeshData::Ptr _mesh;
         uint32_t _edgeIdx1, _edgeIdx2;
     };

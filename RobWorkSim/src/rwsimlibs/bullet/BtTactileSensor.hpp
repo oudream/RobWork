@@ -59,18 +59,18 @@ namespace rwsimlibs { namespace bullet {
          * @brief Create new tactile sensor.
          * @param sensor [in] the RobWork sensor.
          */
-        BtTactileSensor (rw::core::Ptr< rwsim::sensor::SimulatedTactileSensor > sensor);
+        BtTactileSensor(rw::core::Ptr<rwsim::sensor::SimulatedTactileSensor> sensor);
 
         //! @brief Destructor.
-        virtual ~BtTactileSensor ();
+        virtual ~BtTactileSensor();
 
         /**
          * @brief Add the feedbacks from constraints that have been added in addFeedback.
          * @param info [in] information about the simulation update (not used currently).
          * @param state [in/out] the state to update with new sensor information.
          */
-        void addConstraintsFeedback (const rwlibs::simulation::Simulator::UpdateInfo& info,
-                                     rw::kinematics::State& state) const;
+        void addConstraintsFeedback(const rwlibs::simulation::Simulator::UpdateInfo& info,
+                                    rw::kinematics::State& state) const;
 
         /**
          * @brief Add feedback from contacts.
@@ -80,19 +80,19 @@ namespace rwsimlibs { namespace bullet {
          * @param bodyA [in] the first BtBody.
          * @param bodyB [in] the second BtBody.
          */
-        void addContactManifold (const rwlibs::simulation::Simulator::UpdateInfo& info,
-                                 rw::kinematics::State& state, const btPersistentManifold* manifold,
-                                 const BtBody* bodyA, const BtBody* bodyB) const;
+        void addContactManifold(const rwlibs::simulation::Simulator::UpdateInfo& info,
+                                rw::kinematics::State& state, const btPersistentManifold* manifold,
+                                const BtBody* bodyA, const BtBody* bodyB) const;
 
         /**
          * @brief Add a constraint that should be measured by the sensor.
          * @param constraint [in] the constraint to get feedback from.
          */
-        void addFeedback (BtConstraint* constraint);
+        void addFeedback(BtConstraint* constraint);
 
       private:
-        rw::core::Ptr< rwsim::sensor::SimulatedTactileSensor > _rwSensor;
-        std::vector< BtConstraint* > _constraints;
+        rw::core::Ptr<rwsim::sensor::SimulatedTactileSensor> _rwSensor;
+        std::vector<BtConstraint*> _constraints;
     };
     //! @}
 }}     // namespace rwsimlibs::bullet

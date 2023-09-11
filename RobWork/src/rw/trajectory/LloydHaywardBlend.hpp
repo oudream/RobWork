@@ -22,12 +22,11 @@
  * @file LloydHaywardBlend.hpp
  */
 #if !defined(SWIG)
+#include <rw/math/Rotation3D.hpp>
+#include <rw/math/Transform3D.hpp>
 #include <rw/trajectory/Blend.hpp>
 #include <rw/trajectory/Interpolator.hpp>
 #include <rw/trajectory/InterpolatorUtil.hpp>
-
-#include <rw/math/Rotation3D.hpp>
-#include <rw/math/Transform3D.hpp>
 #endif
 namespace rw { namespace trajectory {
 
@@ -43,7 +42,7 @@ namespace rw { namespace trajectory {
      * [1]: J. Lloyd, V. Hayward. Real-Time Trajectory Generation Using Blend Functions,
      *      Proc. Int. Conf. on Robotics and Automation, 1991, pp. 784-798.
      */
-    template< class T > class LloydHaywardBlend : public Blend< T >
+    template<class T> class LloydHaywardBlend : public Blend<T>
     {
       public:
         /**
@@ -59,9 +58,8 @@ namespace rw { namespace trajectory {
          * @param kappa [in] Blend characteristic (default 15/2 for acceleration minimal blend
          * between linie segments)
          */
-        LloydHaywardBlend (Interpolator< T >* interpolator1, Interpolator< T >* interpolator2,
-                           double tau, double kappa = 15 / 2)
-        {
+        LloydHaywardBlend(Interpolator<T>* interpolator1, Interpolator<T>* interpolator2,
+                          double tau, double kappa = 15 / 2) {
             _x1    = interpolator1;
             _x2    = interpolator2;
             _tau   = tau;
@@ -71,13 +69,12 @@ namespace rw { namespace trajectory {
         /**
          * @brief Destructor
          */
-        virtual ~LloydHaywardBlend () {}
+        virtual ~LloydHaywardBlend() {}
 
         /**
          * @copydoc rw::trajectory::Blend<T>::x
          */
-        virtual T x (double t) const
-        {
+        virtual T x(double t) const {
             double s     = t / (2 * _tau);
             double s3    = s * s * s;
             double s4    = s3 * s;
@@ -86,11 +83,11 @@ namespace rw { namespace trajectory {
             double s6    = s5 * s;
             double beta  = s6 - 3 * s5 + 3 * s4 - s3;
             // Get position of blended path segments
-            T x1 = _x1->x (_x1->duration () - _tau + t);
-            T x2 = _x2->x (t - _tau);
+            T x1 = _x1->x(_x1->duration() - _tau + t);
+            T x2 = _x2->x(t - _tau);
             // Get velocity of the path segments
-            T v1 = _x1->dx (_x1->duration () - _tau + t);
-            T v2 = _x2->dx (t - _tau);
+            T v1 = _x1->dx(_x1->duration() - _tau + t);
+            T v2 = _x2->dx(t - _tau);
             T vd = (v2 - v1) * _tau / 0.5;
             return x1 + alpha * (x2 - x1) - vd * _kappa * beta;
         }
@@ -98,8 +95,7 @@ namespace rw { namespace trajectory {
         /**
          * @copydoc rw::trajectory::Blend::dx
          */
-        virtual T dx (double t) const
-        {
+        virtual T dx(double t) const {
             double s      = t / (2 * _tau);
             double s2     = s * s;
             double s3     = s2 * s;
@@ -110,15 +106,15 @@ namespace rw { namespace trajectory {
 
             double alpha = 6 * s5 - 15 * s4 + 10 * s3;
 
-            double index_x1 = _x1->duration () - _tau + t;
+            double index_x1 = _x1->duration() - _tau + t;
             double index_x2 = t - _tau;
 
             // Get position of path segments
-            T x1 = _x1->x (index_x1);
-            T x2 = _x2->x (index_x2);
+            T x1 = _x1->x(index_x1);
+            T x2 = _x2->x(index_x2);
             // Get velocity of path segments
-            T v1 = _x1->dx (index_x1) * _tau / 0.5;
-            T v2 = _x2->dx (index_x2) * _tau / 0.5;
+            T v1 = _x1->dx(index_x1) * _tau / 0.5;
+            T v2 = _x2->dx(index_x2) * _tau / 0.5;
 
             T dv = (v2 - v1);
             return (v1 + dalpha * (x2 - x1) + alpha * (dv) -_kappa * dv * dbeta) * 0.5 / _tau;
@@ -127,8 +123,7 @@ namespace rw { namespace trajectory {
         /**
          * @copydoc rw::trajectory::Blend::ddx
          */
-        virtual T ddx (double t) const
-        {
+        virtual T ddx(double t) const {
             double s       = t / (2 * _tau);
             double s2      = s * s;
             double s3      = s2 * s;
@@ -139,17 +134,17 @@ namespace rw { namespace trajectory {
             double ddalpha = 120 * s3 - 180 * s2 + 60 * s;
             double ddbeta  = 30 * s4 - 60 * s3 + 36 * s2 - 6 * s;
 
-            double index_x1 = _x1->duration () - _tau + t;
+            double index_x1 = _x1->duration() - _tau + t;
             double index_x2 = t - _tau;
-            T x1            = _x1->x (index_x1);
-            T x2            = _x2->x (index_x2);
+            T x1            = _x1->x(index_x1);
+            T x2            = _x2->x(index_x2);
 
             double scale = _tau / 0.5;
-            T v1         = _x1->dx (index_x1) * scale;
-            T v2         = _x2->dx (index_x2) * scale;
+            T v1         = _x1->dx(index_x1) * scale;
+            T v2         = _x2->dx(index_x2) * scale;
 
-            T a1 = _x1->ddx (index_x1) * scale * scale;
-            T a2 = _x2->ddx (index_x2) * scale * scale;
+            T a1 = _x1->ddx(index_x1) * scale * scale;
+            T a2 = _x2->ddx(index_x2) * scale * scale;
 
             T dv  = (v2 - v1);
             T ddv = (a2 - a1);
@@ -164,23 +159,23 @@ namespace rw { namespace trajectory {
          *
          * @note For ParabolicBlend getTau1()==getTau2()
          */
-        virtual double tau1 () const { return _tau; }
+        virtual double tau1() const { return _tau; }
 
         /**
          * @copydoc rw::trajectory::Blend::tau2()
          *
          * @note For ParabolicBlend getTau1()==getTau2()
          */
-        virtual double tau2 () const { return _tau; }
+        virtual double tau2() const { return _tau; }
 
         /**
          * @brief Returns the kappa value used in the blend
          */
-        double kappa () const { return _kappa; }
+        double kappa() const { return _kappa; }
 
       private:
-        Interpolator< T >* _x1;
-        Interpolator< T >* _x2;
+        Interpolator<T>* _x1;
+        Interpolator<T>* _x2;
         double _tau;
         double _kappa;
     };
@@ -191,8 +186,8 @@ namespace rw { namespace trajectory {
      * The transform is encoded as a vector storing the position and the orientation as a
      * quaternion.
      */
-    template< class T >
-    class LloydHaywardBlend< rw::math::Rotation3D< T > > : public Blend< rw::math::Rotation3D< T > >
+    template<class T>
+    class LloydHaywardBlend<rw::math::Rotation3D<T>> : public Blend<rw::math::Rotation3D<T>>
     {
       public:
         /**
@@ -208,44 +203,37 @@ namespace rw { namespace trajectory {
          * @param kappa [in] Blend characteristic (default 15/2 for acceleration minimal blend
          * between linie segments)
          */
-        LloydHaywardBlend (Interpolator< rw::math::Rotation3D< T > >* inter1,
-                           Interpolator< rw::math::Rotation3D< T > >* inter2, double tau,
-                           double kappa  = 15 / 2)
-        {
-            RW_THROW ("Rotation3D not supported in LloydHaywardBlend");
+        LloydHaywardBlend(Interpolator<rw::math::Rotation3D<T>>* inter1,
+                          Interpolator<rw::math::Rotation3D<T>>* inter2, double tau,
+                          double kappa = 15 / 2) {
+            RW_THROW("Rotation3D not supported in LloydHaywardBlend");
         }
 
         /**
          * @brief Destructor
          */
-        virtual ~LloydHaywardBlend () {}
+        virtual ~LloydHaywardBlend() {}
 
         /**
          * @cond
          * @copydoc Blend::x
          * @endcond
          */
-        rw::math::Rotation3D< T > x (double t) const { return rw::math::Rotation3D<T>::identity (); }
+        rw::math::Rotation3D<T> x(double t) const { return rw::math::Rotation3D<T>::identity(); }
 
         /**
          * @cond
          * @copydoc Blend::dx
          * @endcond
          */
-        rw::math::Rotation3D< T > dx (double t) const
-        {
-            return rw::math::Rotation3D<T>::identity ();
-        }
+        rw::math::Rotation3D<T> dx(double t) const { return rw::math::Rotation3D<T>::identity(); }
 
         /**
          * @cond
          * @copydoc Blend::ddx
          * @endcond
          */
-        rw::math::Rotation3D< T > ddx (double t) const
-        {
-            return rw::math::Rotation3D<T>::identity ();
-        }
+        rw::math::Rotation3D<T> ddx(double t) const { return rw::math::Rotation3D<T>::identity(); }
 
         /**
          * @cond
@@ -254,7 +242,7 @@ namespace rw { namespace trajectory {
          *
          * @note For ParabolicBlend getTau1()==getTau2()
          */
-        double tau1 () const { return 0; }
+        double tau1() const { return 0; }
 
         /**
          * @cond
@@ -263,12 +251,12 @@ namespace rw { namespace trajectory {
          *
          * @note For ParabolicBlend getTau1()==getTau2()
          */
-        double tau2 () const { return 0; }
+        double tau2() const { return 0; }
 
         /**
          * @brief Returns the kappa value used in the blend
          */
-        double kappa () const { return 0; }
+        double kappa() const { return 0; }
     };
 
     /**
@@ -277,9 +265,8 @@ namespace rw { namespace trajectory {
      * The transform is encoded as a vector storing the position and the orientation as a
      * quaternion.
      */
-    template< class T >
-    class LloydHaywardBlend< rw::math::Transform3D< T > >
-        : public Blend< rw::math::Transform3D< T > >
+    template<class T>
+    class LloydHaywardBlend<rw::math::Transform3D<T>> : public Blend<rw::math::Transform3D<T>>
     {
       public:
         /**
@@ -295,26 +282,24 @@ namespace rw { namespace trajectory {
          * @param kappa [in] Blend characteristic (default 15/2 for acceleration minimal blend
          * between linie segments)
          */
-        LloydHaywardBlend (Interpolator< rw::math::Transform3D< T > >* inter1,
-                           Interpolator< rw::math::Transform3D< T > >* inter2, double tau,
-                           double kappa = 15 / 2) :
-            _wrap1 (inter1),
-            _wrap2 (inter2), _blend (&_wrap1, &_wrap2, tau, kappa)
-        {}
+        LloydHaywardBlend(Interpolator<rw::math::Transform3D<T>>* inter1,
+                          Interpolator<rw::math::Transform3D<T>>* inter2, double tau,
+                          double kappa = 15 / 2) :
+            _wrap1(inter1),
+            _wrap2(inter2), _blend(&_wrap1, &_wrap2, tau, kappa) {}
 
         /**
          * @brief Destructor
          */
-        virtual ~LloydHaywardBlend () {}
+        virtual ~LloydHaywardBlend() {}
 
         /**
          * @cond
          * @copydoc Blend::x
          * @endcond
          */
-        rw::math::Transform3D< T > x (double t) const
-        {
-            return InterpolatorUtil::vecToTrans< V, T > (_blend.x (t));
+        rw::math::Transform3D<T> x(double t) const {
+            return InterpolatorUtil::vecToTrans<V, T>(_blend.x(t));
         }
 
         /**
@@ -322,9 +307,8 @@ namespace rw { namespace trajectory {
          * @copydoc Blend::dx
          * @endcond
          */
-        rw::math::Transform3D< T > dx (double t) const
-        {
-            return InterpolatorUtil::vecToTrans< V, T > (_blend.dx (t));
+        rw::math::Transform3D<T> dx(double t) const {
+            return InterpolatorUtil::vecToTrans<V, T>(_blend.dx(t));
         }
 
         /**
@@ -332,9 +316,8 @@ namespace rw { namespace trajectory {
          * @copydoc Blend::ddx
          * @endcond
          */
-        rw::math::Transform3D< T > ddx (double t) const
-        {
-            return InterpolatorUtil::vecToTrans< V, T > (_blend.ddx (t));
+        rw::math::Transform3D<T> ddx(double t) const {
+            return InterpolatorUtil::vecToTrans<V, T>(_blend.ddx(t));
         }
 
         /**
@@ -344,7 +327,7 @@ namespace rw { namespace trajectory {
          *
          * @note For ParabolicBlend getTau1()==getTau2()
          */
-        double tau1 () const { return _blend.tau1 (); }
+        double tau1() const { return _blend.tau1(); }
 
         /**
          * @cond
@@ -353,18 +336,18 @@ namespace rw { namespace trajectory {
          *
          * @note For ParabolicBlend getTau1()==getTau2()
          */
-        double tau2 () const { return _blend.tau2 (); }
+        double tau2() const { return _blend.tau2(); }
 
         /**
          * @brief Returns the kappa value used in the blend
          */
-        double kappa () const { return _blend.kappa (); }
+        double kappa() const { return _blend.kappa(); }
 
       private:
-        typedef Eigen::Matrix< T, 7, 1 > V;
-        InterpolatorUtil::Transform2VectorWrapper< V, T > _wrap1;
-        InterpolatorUtil::Transform2VectorWrapper< V, T > _wrap2;
-        LloydHaywardBlend< V > _blend;
+        typedef Eigen::Matrix<T, 7, 1> V;
+        InterpolatorUtil::Transform2VectorWrapper<V, T> _wrap1;
+        InterpolatorUtil::Transform2VectorWrapper<V, T> _wrap2;
+        LloydHaywardBlend<V> _blend;
     };
 
     /* @} */

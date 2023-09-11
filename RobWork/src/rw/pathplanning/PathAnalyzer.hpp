@@ -52,9 +52,9 @@ namespace rw { namespace pathplanning {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< PathAnalyzer > Ptr;
+        typedef rw::core::Ptr<PathAnalyzer> Ptr;
         //! @brief smart pointer type to this const class
-        typedef rw::core::Ptr< const PathAnalyzer > CPtr;
+        typedef rw::core::Ptr<const PathAnalyzer> CPtr;
 
         /**
          * @brief Result struct for joint space analysis
@@ -67,8 +67,7 @@ namespace rw { namespace pathplanning {
             double length;
 
             /** Constructs JointSpaceAnalysis struct initialized to zero. */
-            JointSpaceAnalysis ()
-            {
+            JointSpaceAnalysis() {
                 nodecount = 0;
                 length    = 0;
             }
@@ -91,7 +90,7 @@ namespace rw { namespace pathplanning {
             rw::math::Vector3D<> upper;
 
             /** Construct CartesianAnalysis struct with length initialized to 0*/
-            CartesianAnalysis () { length = 0; }
+            CartesianAnalysis() { length = 0; }
         };
 
         /**
@@ -108,8 +107,7 @@ namespace rw { namespace pathplanning {
             double time2;
 
             /** Construct TimeAnalysis struct with times initialized to 0 */
-            TimeAnalysis ()
-            {
+            TimeAnalysis() {
                 time1 = 0;
                 time2 = 0;
             }
@@ -126,8 +124,7 @@ namespace rw { namespace pathplanning {
             double min;
 
             /** Construct ClearanceAnalysis struct with distances initialized to 0 */
-            ClearanceAnalysis ()
-            {
+            ClearanceAnalysis() {
                 average = 0;
                 min     = 0;
             }
@@ -140,13 +137,13 @@ namespace rw { namespace pathplanning {
          * @param device [in] Device to be associated with the path
          * @param state [in] State of the workcell
          */
-        PathAnalyzer (const rw::core::Ptr< const rw::models::Device >& device,
-                      const rw::kinematics::State& state);
+        PathAnalyzer(const rw::core::Ptr<const rw::models::Device>& device,
+                     const rw::kinematics::State& state);
 
         /**
          * @brief Destructor
          */
-        virtual ~PathAnalyzer ();
+        virtual ~PathAnalyzer();
 
         /**
          * @brief Performs joint space analysis of path.
@@ -155,8 +152,8 @@ namespace rw { namespace pathplanning {
          * @param metric [in] Metric to use for calculating the distance in joint space.
          * @return Result of the joint space analysis
          */
-        JointSpaceAnalysis analyzeJointSpace (const rw::trajectory::QPath& path,
-                                              rw::math::QMetric::Ptr metric = NULL) const;
+        JointSpaceAnalysis analyzeJointSpace(const rw::trajectory::QPath& path,
+                                             rw::math::QMetric::Ptr metric = NULL) const;
 
         /**
          * @brief Performs analysis in Cartesian space.
@@ -169,8 +166,8 @@ namespace rw { namespace pathplanning {
          * @param frame [in] Frame for which to analyze the path.
          * @return Result of the analysis.
          */
-        CartesianAnalysis analyzeCartesian (const rw::trajectory::QPath& path,
-                                            const rw::core::Ptr< rw::kinematics::Frame > frame);
+        CartesianAnalysis analyzeCartesian(const rw::trajectory::QPath& path,
+                                           const rw::core::Ptr<rw::kinematics::Frame> frame);
 
         /**
          * @brief Peforms analysis of the time
@@ -179,7 +176,7 @@ namespace rw { namespace pathplanning {
          *
          * @param path [in] Path to analyze.
          */
-        TimeAnalysis analyzeTime (const rw::trajectory::QPath& path) const;
+        TimeAnalysis analyzeTime(const rw::trajectory::QPath& path) const;
 
         /**
          * @brief Performs an analysis of the clearance
@@ -192,9 +189,9 @@ namespace rw { namespace pathplanning {
          * @param distanceCalculator [in] DistanceCalculator to be used in the analysis
          * @return Result of the analysis.
          */
-        ClearanceAnalysis analyzeClearance (
+        ClearanceAnalysis analyzeClearance(
             const rw::trajectory::QPath& path,
-            const rw::core::Ptr< const rw::proximity::DistanceCalculator >& distanceCalculator);
+            const rw::core::Ptr<const rw::proximity::DistanceCalculator>& distanceCalculator);
 
         // TODO: Move to path statistics
         /**
@@ -210,26 +207,23 @@ namespace rw { namespace pathplanning {
 
                 The distance between adjacent element is measured by \b metric.
         */
-        template< class It >
-        static double pathLength (It begin, It end,
-                                  const rw::math::Metric< typename It::value_type >& metric)
-        {
+        template<class It>
+        static double pathLength(It begin, It end,
+                                 const rw::math::Metric<typename It::value_type>& metric) {
             // If the sequence is empty:
-            if (begin == end)
-                return 0;
+            if(begin == end) return 0;
 
             It p = begin;
             It q = p;
             ++q;
 
             double result = 0;
-            for (; q != end; ++p, ++q)
-                result += metric.distance (*p, *q);
+            for(; q != end; ++p, ++q) result += metric.distance(*p, *q);
             return result;
         }
 
       private:
-        rw::core::Ptr< const rw::models::Device > _device;
+        rw::core::Ptr<const rw::models::Device> _device;
         rw::kinematics::State _state;
     };
 

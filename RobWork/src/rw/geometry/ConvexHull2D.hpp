@@ -42,12 +42,12 @@ namespace rw { namespace geometry {
          * @brief rebuilts the hull
          * @param vertices
          */
-        virtual void rebuild (const std::vector< rw::math::Vector2D<> >& vertices) = 0;
+        virtual void rebuild(const std::vector<rw::math::Vector2D<>>& vertices) = 0;
 
         /**
          * @brief test if the given vertex is inside the convex hull
          */
-        virtual bool isInside (const rw::math::Vector2D<>& vertex) = 0;
+        virtual bool isInside(const rw::math::Vector2D<>& vertex) = 0;
 
         /**
          * @brief if the vertex is inside the convex hull the minimum distance
@@ -56,13 +56,13 @@ namespace rw { namespace geometry {
          * @param vertex
          * @return minimum distance to vertex
          */
-        virtual double getMinDist (const rw::math::Vector2D<>& vertex) = 0;
+        virtual double getMinDist(const rw::math::Vector2D<>& vertex) = 0;
 
         /**
          * @brief create a plain trimesh from the hull facets
          * @return the hull facets as a plain triangle mesh with normal information
          */
-        virtual std::vector< rw::math::Vector2D<> >* toContour () = 0;
+        virtual std::vector<rw::math::Vector2D<>>* toContour() = 0;
     };
     //! @}
 }}    // namespace rw::geometry

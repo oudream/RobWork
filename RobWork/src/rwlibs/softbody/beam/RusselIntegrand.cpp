@@ -21,53 +21,47 @@ Copyright 2013 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
 
 using namespace rwlibs::softbody;
 
-RusselIntegrand::RusselIntegrand (const BeamGeometry& geom, const Eigen::VectorXd& a,
-                                  const Eigen::VectorXd& da) :
-    _geom (geom),
-    _a (a), _da (da)
-{}
+RusselIntegrand::RusselIntegrand(const BeamGeometry& geom, const Eigen::VectorXd& a,
+                                 const Eigen::VectorXd& da) :
+    _geom(geom),
+    _a(a), _da(da) {}
 
-double RusselIntegrand::eg (const int i) const
-{
-    RW_ASSERT (i < (int) _a.size ());
+double RusselIntegrand::eg(const int i) const {
+    RW_ASSERT(i < (int) _a.size());
     const double& ax = _a[i];
 
-    const double& g1 = _geom.g1 ();
-    const double& g2 = _geom.g2 ();
-    const double b0  = _geom.b0 (i);
-    const double b1  = _geom.b1 (i);
-    const double B0  = _geom.B0 (i);
-    const double x   = i * _geom.get_h ();
+    const double& g1 = _geom.g1();
+    const double& g2 = _geom.g2();
+    const double b0  = _geom.b0(i);
+    const double b1  = _geom.b1(i);
+    const double B0  = _geom.B0(i);
+    const double x   = i * _geom.get_h();
 
     const double Eg =
-        (g1 * B0 + g2 * b1) * cos (ax) + (g2 * B0 - g1 * b1) * sin (ax) - g1 * b0 * x - g2 * b1;
+        (g1 * B0 + g2 * b1) * cos(ax) + (g2 * B0 - g1 * b1) * sin(ax) - g1 * b0 * x - g2 * b1;
     return Eg;
 }
 
-double RusselIntegrand::ee (const int i) const
-{
-    RW_ASSERT (i < (int) _da.size ());
+double RusselIntegrand::ee(const int i) const {
+    RW_ASSERT(i < (int) _da.size());
     const double& dax = _da[i];
 
-    const double c2 = _geom.c2 (i);
-    const double c3 = _geom.c3 (i);
-    const double c4 = _geom.c4 (i);
+    const double c2 = _geom.c2(i);
+    const double c3 = _geom.c3(i);
+    const double c4 = _geom.c4(i);
 
-    const double Ee = 4 * c2 * pow (dax, 2.0) + 4 * c3 * pow (dax, 3.0) + c4 * pow (dax, 4.0);
+    const double Ee = 4 * c2 * pow(dax, 2.0) + 4 * c3 * pow(dax, 3.0) + c4 * pow(dax, 4.0);
     return Ee;
 }
 
-double RusselIntegrand::operator() (const int i) const
-{
-    return eg (i) + ee (i);
+double RusselIntegrand::operator()(const int i) const {
+    return eg(i) + ee(i);
 }
 
-RusselIntegrandEonly::RusselIntegrandEonly (const BeamGeometry& geom, const Eigen::VectorXd& a,
-                                            const Eigen::VectorXd& da) :
-    RusselIntegrand (geom, a, da)
-{}
+RusselIntegrandEonly::RusselIntegrandEonly(const BeamGeometry& geom, const Eigen::VectorXd& a,
+                                           const Eigen::VectorXd& da) :
+    RusselIntegrand(geom, a, da) {}
 
-double RusselIntegrandEonly::operator() (const int i) const
-{
-    return ee (i);
+double RusselIntegrandEonly::operator()(const int i) const {
+    return ee(i);
 }

@@ -16,69 +16,55 @@
  *****************************************************************************/
 
 #include "PlotView.hpp"
+
 #include "PlotSimpleView.hpp"
 
 using namespace rw::core;
 using rws::PlotView;
 
-PlotView::PlotView()
-{
-}
+PlotView::PlotView() {}
 
-PlotView::~PlotView()
-{
-}
+PlotView::~PlotView() {}
 
-PlotView::Dispatcher::Dispatcher()
-{
-}
+PlotView::Dispatcher::Dispatcher() {}
 
-PlotView::Dispatcher::~Dispatcher()
-{
-}
+PlotView::Dispatcher::~Dispatcher() {}
 
-PlotView::Factory::Factory ():
-    ExtensionPoint< Dispatcher > ("rws.PlotView", "Plugin that provides GUI elements for visualization of plots.")
-{
-}
+PlotView::Factory::Factory() :
+    ExtensionPoint<Dispatcher>("rws.PlotView",
+                               "Plugin that provides GUI elements for visualization of plots.") {}
 
-PlotView::Ptr PlotView::Factory::makePlotView (const std::string& identifier)
-{
+PlotView::Ptr PlotView::Factory::makePlotView(const std::string& identifier) {
     PlotView::Factory ep;
-    const std::vector< Extension::Ptr > exts = ep.getExtensions ();
-    for (const Extension::Ptr& ext : exts) {
-        if (ext == nullptr)
-            continue;
-        if (ext->getProperties ().get ("identifier", ext->getName ()) == identifier) {
-            const PlotView::Dispatcher::Ptr dispatcher = ext->getObject ().cast< const PlotView::Dispatcher > ();
+    const std::vector<Extension::Ptr> exts = ep.getExtensions();
+    for(const Extension::Ptr& ext : exts) {
+        if(ext == nullptr) continue;
+        if(ext->getProperties().get("identifier", ext->getName()) == identifier) {
+            const PlotView::Dispatcher::Ptr dispatcher =
+                ext->getObject().cast<const PlotView::Dispatcher>();
             return dispatcher->makePlotView();
         }
     }
-    if (identifier == "rws.PlotSimpleView")
-        return ownedPtr(new PlotSimpleView());
+    if(identifier == "rws.PlotSimpleView") return ownedPtr(new PlotSimpleView());
     return nullptr;
 }
 
-bool PlotView::Factory::hasPlotViewDispatcher (const std::string& identifier)
-{
+bool PlotView::Factory::hasPlotViewDispatcher(const std::string& identifier) {
     PlotView::Factory ep;
-    const std::vector< Extension::Descriptor > exts = ep.getExtensionDescriptors ();
-    for (const Extension::Descriptor& ext : exts) {
-        if (ext.getProperties ().get ("identifier", ext.name) == identifier)
-            return true;
+    const std::vector<Extension::Descriptor> exts = ep.getExtensionDescriptors();
+    for(const Extension::Descriptor& ext : exts) {
+        if(ext.getProperties().get("identifier", ext.name) == identifier) return true;
     }
-    if (identifier == "rws.PlotSimpleView")
-        return true;
+    if(identifier == "rws.PlotSimpleView") return true;
     return false;
 }
 
-std::vector< std::string > PlotView::Factory::getIdentifiers()
-{
+std::vector<std::string> PlotView::Factory::getIdentifiers() {
     PlotView::Factory ep;
-    std::vector< std::string > ids;
-    const std::vector< Extension::Descriptor > exts = ep.getExtensionDescriptors ();
-    for (const Extension::Descriptor& ext : exts) {
-        ids.push_back (ext.getProperties ().get ("identifier", ext.name));
+    std::vector<std::string> ids;
+    const std::vector<Extension::Descriptor> exts = ep.getExtensionDescriptors();
+    for(const Extension::Descriptor& ext : exts) {
+        ids.push_back(ext.getProperties().get("identifier", ext.name));
     }
     ids.push_back("rws.PlotSimpleView");
     return ids;

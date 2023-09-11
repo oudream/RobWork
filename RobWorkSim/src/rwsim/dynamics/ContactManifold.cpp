@@ -60,19 +60,17 @@ namespace {
 
 }
 */
-void ContactManifold::genThresContactManifolds (std::vector< ContactPoint >& src,
-                                                std::vector< ContactManifold* >& manifolds,
-                                                double thres)
-{
+void ContactManifold::genThresContactManifolds(std::vector<ContactPoint>& src,
+                                               std::vector<ContactManifold*>& manifolds,
+                                               double thres) {
     // 1. clustering locate the deepest penetrating point
-    std::vector< ContactPoint > dst (src.size ());
-    std::vector< int > srcIdx (src.size ());
-    std::vector< int > dstIdx (src.size ());
+    std::vector<ContactPoint> dst(src.size());
+    std::vector<int> srcIdx(src.size());
+    std::vector<int> dstIdx(src.size());
 }
 
-void ContactManifold::generateContactManifolds (std::vector< ContactPoint* >& points,
-                                                std::vector< ContactManifold* >& manifolds)
-{
+void ContactManifold::generateContactManifolds(std::vector<ContactPoint*>& points,
+                                               std::vector<ContactManifold*>& manifolds) {
     /*    std::vector<int> validBuckets(64);
         int nrOfValidBuckets = 0;
 

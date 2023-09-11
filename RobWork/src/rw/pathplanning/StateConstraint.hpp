@@ -25,7 +25,7 @@
 #include <rw/core/Ptr.hpp>
 
 #include <vector>
-#endif 
+#endif
 namespace rw { namespace core {
     class Log;
 }}    // namespace rw::core
@@ -47,61 +47,60 @@ namespace rw { namespace pathplanning {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< StateConstraint > Ptr;
+        typedef rw::core::Ptr<StateConstraint> Ptr;
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< const StateConstraint > CPtr;
+        typedef rw::core::Ptr<const StateConstraint> CPtr;
 
         /**
          * @brief Set the log to be used for writing debug info
          * @param log [in] Log to which debug information is to be written
          */
-        virtual void setLog (rw::core::Ptr< rw::core::Log > log);
+        virtual void setLog(rw::core::Ptr<rw::core::Log> log);
 
         /**
            @brief True if the work cell is considered to be in collision for the
            work cell state \b state.
          */
-        bool inCollision (const rw::kinematics::State& state) const;
+        bool inCollision(const rw::kinematics::State& state) const;
 
         /**
            Destructor
         */
-        virtual ~StateConstraint () {}
+        virtual ~StateConstraint() {}
 
         // Factory functions follow below.
 
         /**
            @brief Map a collision detector to a state constraint.
         */
-        static StateConstraint::Ptr
-        make (rw::core::Ptr< rw::proximity::CollisionDetector > detector);
+        static StateConstraint::Ptr make(rw::core::Ptr<rw::proximity::CollisionDetector> detector);
 
         /**
            @brief Combine a set of state constraints into a single state
            constraint.
         */
-        static StateConstraint::Ptr make (const std::vector< StateConstraint::Ptr >& constraints);
+        static StateConstraint::Ptr make(const std::vector<StateConstraint::Ptr>& constraints);
 
       protected:
         /**
            @brief Subclass implementation of the inCollision() method.
         */
-        virtual bool doInCollision (const rw::kinematics::State& state) const = 0;
+        virtual bool doInCollision(const rw::kinematics::State& state) const = 0;
 
         /**
          * @brief Set a log.
          * @param log [in] the log.
          */
-        virtual void doSetLog (rw::core::Ptr< rw::core::Log > log) = 0;
+        virtual void doSetLog(rw::core::Ptr<rw::core::Log> log) = 0;
 
         /**
            @brief Constructor
         */
-        StateConstraint () {}
+        StateConstraint() {}
 
       private:
-        StateConstraint (const StateConstraint&);
-        StateConstraint& operator= (const StateConstraint&);
+        StateConstraint(const StateConstraint&);
+        StateConstraint& operator=(const StateConstraint&);
     };
 
     /* @} */

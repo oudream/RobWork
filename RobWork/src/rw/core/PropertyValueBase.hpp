@@ -44,46 +44,46 @@ namespace rw { namespace core {
     {
       public:
         //! @brief Smart pointer type to this class
-        typedef rw::core::Ptr< PropertyValueBase > Ptr;
+        typedef rw::core::Ptr<PropertyValueBase> Ptr;
 
         /**
          * @brief Constructor.
          */
-        PropertyValueBase ();
+        PropertyValueBase();
 
         /**
          * @brief Constructor
          *
          * @param type [in] type of the property
          */
-        PropertyValueBase (const PropertyType& type);
+        PropertyValueBase(const PropertyType& type);
 
         /**
          * @brief Destroys PropertyValueBase
          */
-        virtual ~PropertyValueBase ();
+        virtual ~PropertyValueBase();
 
         /**
          * @brief Construct a clone of the property value.
          *
          * @return a clone.
          */
-        virtual PropertyValueBase* clone () const = 0;
+        virtual PropertyValueBase* clone() const = 0;
 
         /**
          * @brief Returns the PropertyType
          * @return the PropertyType
          */
-        const rw::core::PropertyType& getType () const;
+        const rw::core::PropertyType& getType() const;
 
 #if !defined(SWIGJAVA)
         /**
          * @brief Method signature for a callback function
          */
-        typedef std::function< void (PropertyValueBase*) > PropertyListener;
+        typedef std::function<void(PropertyValueBase*)> PropertyListener;
 
         //! @brief Type for changed property events.
-        typedef rw::core::Event< PropertyListener, PropertyValueBase* > ChangedEvent;
+        typedef rw::core::Event<PropertyListener, PropertyValueBase*> ChangedEvent;
 
         /**
          * @brief get changed event
@@ -92,7 +92,9 @@ namespace rw { namespace core {
          * changedEvent().add(...)
          *
          */
-        ChangedEvent& changedEvent () { return _changedEvent; }
+        ChangedEvent& changedEvent() {
+            return _changedEvent;
+        }
 #endif
 
       private:
@@ -106,8 +108,8 @@ namespace rw { namespace core {
 #endif
 
       private:
-        PropertyValueBase (const PropertyValueBase&);
-        PropertyValueBase& operator= (const PropertyValueBase&);
+        PropertyValueBase(const PropertyValueBase&);
+        PropertyValueBase& operator=(const PropertyValueBase&);
     };
 #if !defined(SWIG)
 //! @}

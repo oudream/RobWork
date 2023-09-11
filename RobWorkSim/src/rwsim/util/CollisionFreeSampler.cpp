@@ -22,32 +22,26 @@
 using namespace rw::proximity;
 using namespace rwsim::util;
 
-CollisionFreeSampler::CollisionFreeSampler (StateSampler::Ptr sampler,
-                                            CollisionDetector::Ptr detector, int n) :
-    _sampler (sampler),
-    _detector (detector), _n (n)
-{}
+CollisionFreeSampler::CollisionFreeSampler(StateSampler::Ptr sampler,
+                                           CollisionDetector::Ptr detector, int n) :
+    _sampler(sampler),
+    _detector(detector), _n(n) {}
 
-CollisionFreeSampler::~CollisionFreeSampler ()
-{}
+CollisionFreeSampler::~CollisionFreeSampler() {}
 
-bool CollisionFreeSampler::sample (rw::kinematics::State& state)
-{
+bool CollisionFreeSampler::sample(rw::kinematics::State& state) {
     bool colfree = false;
     int maxTries = _n;
     do {
-        if (!_sampler->sample (state))
-            return false;
+        if(!_sampler->sample(state)) return false;
 
-        colfree = _detector->inCollision (state, NULL, true);
+        colfree = _detector->inCollision(state, NULL, true);
 
-        if (maxTries > 0)
-            maxTries--;
+        if(maxTries > 0) maxTries--;
 
-    } while (colfree && maxTries != 0);
+    } while(colfree && maxTries != 0);
 
-    if (maxTries == 0)
-        return false;
+    if(maxTries == 0) return false;
 
     return true;
 }

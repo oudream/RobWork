@@ -48,22 +48,22 @@ namespace rw { namespace invkin {
     {
       public:
         //! @brief Smart pointer type to ClosedFormIKSolverKukaIIWA
-        typedef rw::core::Ptr< ClosedFormIKSolverKukaIIWA > Ptr;
+        typedef rw::core::Ptr<ClosedFormIKSolverKukaIIWA> Ptr;
 
         /**
          * @brief Construct new closed form solver for a Kuka 7 DOF IIWA robot.
          * @param device [in] the device.
          * @param state [in] the state to get the frame structure and extract the dimensions from.
          */
-        ClosedFormIKSolverKukaIIWA (const rw::core::Ptr< const rw::models::SerialDevice > device,
-                                    const rw::kinematics::State& state);
+        ClosedFormIKSolverKukaIIWA(const rw::core::Ptr<const rw::models::SerialDevice> device,
+                                   const rw::kinematics::State& state);
 
         //! @brief Destructor.
-        virtual ~ClosedFormIKSolverKukaIIWA ();
+        virtual ~ClosedFormIKSolverKukaIIWA();
 
         //! @copydoc InvKinSolver::solve
-        std::vector< rw::math::Q > solve (const rw::math::Transform3D<double>& baseTend,
-                                          const rw::kinematics::State& state) const;
+        std::vector<rw::math::Q> solve(const rw::math::Transform3D<double>& baseTend,
+                                       const rw::kinematics::State& state) const;
 
         /**
          * @brief Find inverse kinematic solutions deterministically by pulling joint 4 as much in
@@ -75,44 +75,44 @@ namespace rw { namespace invkin {
          * coordinate system).
          * @return List of up to 8 solutions. Notice that the list may be empty.
          */
-        std::vector< rw::math::Q > solve (const rw::math::Transform3D<double>& baseTend,
-                                          const rw::kinematics::State& state,
-                                          const rw::math::Vector3D<double>& dir4) const;
+        std::vector<rw::math::Q> solve(const rw::math::Transform3D<double>& baseTend,
+                                       const rw::kinematics::State& state,
+                                       const rw::math::Vector3D<double>& dir4) const;
 
         //! @copydoc InvKinSolver::setCheckJointLimits
-        void setCheckJointLimits (bool check);
+        void setCheckJointLimits(bool check);
 
         /**
          * @copydoc InvKinSolver::getTCP
          */
-        virtual rw::core::Ptr< const rw::kinematics::Frame > getTCP () const;
+        virtual rw::core::Ptr<const rw::kinematics::Frame> getTCP() const;
 
       private:
-        std::pair< double, double > findBaseAngles (const rw::math::Vector2D<double>& pos,
-                                                    const rw::kinematics::State& state) const;
+        std::pair<double, double> findBaseAngles(const rw::math::Vector2D<double>& pos,
+                                                 const rw::kinematics::State& state) const;
 
-        void addBaseAngleSolutions (const rw::math::Rotation3D<double>& baseRend,
-                                    const rw::math::Vector3D<double>& baseP6,
-                                    const rw::math::Vector3D<double>& basePtarget4,
-                                    rw::kinematics::State& state, double angle,
-                                    std::vector< rw::math::Q >& res) const;
-                                    
-        void addOuterSolutions (const rw::math::Rotation3D<double>& baseRend,
-                                const rw::math::Vector3D<double>& baseP6, rw::kinematics::State& state,
-                                double angle1, double angle2, double angle3,
-                                std::vector< rw::math::Q >& res) const;
+        void addBaseAngleSolutions(const rw::math::Rotation3D<double>& baseRend,
+                                   const rw::math::Vector3D<double>& baseP6,
+                                   const rw::math::Vector3D<double>& basePtarget4,
+                                   rw::kinematics::State& state, double angle,
+                                   std::vector<rw::math::Q>& res) const;
 
-        void addRotationSolutions (const rw::math::Rotation3D<double>& baseRend,
-                                   rw::kinematics::State& state, double angle1, double angle2,
-                                   double angle3, double angle4, double angle5,
-                                   std::vector< rw::math::Q >& res) const;
+        void addOuterSolutions(const rw::math::Rotation3D<double>& baseRend,
+                               const rw::math::Vector3D<double>& baseP6,
+                               rw::kinematics::State& state, double angle1, double angle2,
+                               double angle3, std::vector<rw::math::Q>& res) const;
 
-        static rw::math::Vector3D<> randomPerpendicularVector (const rw::math::Vector3D<>& v);
+        void addRotationSolutions(const rw::math::Rotation3D<double>& baseRend,
+                                  rw::kinematics::State& state, double angle1, double angle2,
+                                  double angle3, double angle4, double angle5,
+                                  std::vector<rw::math::Q>& res) const;
+
+        static rw::math::Vector3D<> randomPerpendicularVector(const rw::math::Vector3D<>& v);
 
       private:
-        const rw::core::Ptr< const rw::models::SerialDevice > _device;
+        const rw::core::Ptr<const rw::models::SerialDevice> _device;
         bool _checkJointLimits;
-        std::vector< const rw::kinematics::Frame* > _frames;
+        std::vector<const rw::kinematics::Frame*> _frames;
         const rw::math::Q _qLow;
         const rw::math::Q _qHigh;
 

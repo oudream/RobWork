@@ -18,16 +18,15 @@ using namespace rwsim::dynamics;
 
 namespace {
 
-std::pair< double, double > impulseCalcFixed (const Vector3D<>& pAdot, const Vector3D<>& pBdot,
-                                              double restCoeff, double staticFriction,
-                                              ContactPoint& contact)
-{
+std::pair<double, double> impulseCalcFixed(const Vector3D<>& pAdot, const Vector3D<>& pBdot,
+                                           double restCoeff, double staticFriction,
+                                           ContactPoint& contact) {
     // get the current relative velocity of point posA
     Vector3D<> relVel = pBdot - pAdot;
 
     // calculate the normal component of the relative velocity
     // and the tangential component of the relative velocity
-    double relVelN = dot (relVel, contact.n);
+    double relVelN = dot(relVel, contact.n);
     // double relVelT = dot( relVel , contact.t );
 
 #ifdef DYNAMIC_TEST
@@ -42,67 +41,62 @@ std::pair< double, double > impulseCalcFixed (const Vector3D<>& pAdot, const Vec
     // Vector3D<> J = contact.KInv * (-(restCoeff)*relVelN*contact.n - relVel );
 
     // get the normal and tangential components
-    double jn = dot (J, contact.n);
-    double jt = dot (J, contact.t);
+    double jn = dot(J, contact.n);
+    double jt = dot(J, contact.t);
 
 #ifdef DYNAMIC_TEST
     std::cout << "* Normal impulse size      : " << jn << std::endl;
     std::cout << "* Tangential impulse size  : " << jt << std::endl;
 #endif
     // If the bodies are moving away from each other then dont use SLiding
-    if (relVelN > 0)
-        return std::pair< double, double > (jn, jt);
+    if(relVelN > 0) return std::pair<double, double>(jn, jt);
 
     // is J outside the friction cone ?
-    if (fabs (jt) > staticFriction * jn) {
+    if(fabs(jt) > staticFriction * jn) {
         // then use sliding friction instead
         double numerator = -(restCoeff + 1) * relVelN - contact.bias;
         Vector3D<> nut   = contact.n - staticFriction * contact.t;
-        double term1     = dot (contact.n, contact.K * nut);
+        double term1     = dot(contact.n, contact.K * nut);
         jn               = numerator / term1;
         J                = nut * jn;
-        jn               = dot (J, contact.n);
-        jt               = dot (J, contact.t);
+        jn               = dot(J, contact.n);
+        jt               = dot(J, contact.t);
     }
-    return std::pair< double, double > (jn, jt);
+    return std::pair<double, double>(jn, jt);
 }
 
-std::pair< double, double > impulseCalcFixed (RWBody& bodyA, RWBody& bodyB, double cu, double mu,
-                                              ContactPoint& c)
-{
-    Vector3D<> pAdot = bodyA.getPointVelW (c.p);
-    Vector3D<> pBdot = bodyB.getPointVelW (c.p);
-    return impulseCalcFixed (pAdot, pBdot, cu, mu, c);
+std::pair<double, double> impulseCalcFixed(RWBody& bodyA, RWBody& bodyB, double cu, double mu,
+                                           ContactPoint& c) {
+    Vector3D<> pAdot = bodyA.getPointVelW(c.p);
+    Vector3D<> pBdot = bodyB.getPointVelW(c.p);
+    return impulseCalcFixed(pAdot, pBdot, cu, mu, c);
 }
 
-std::pair< double, double > impulseCalcRigidFixed (RWBody& bodyA, double cu, double mu,
-                                                   ContactPoint& c)
-{
-    Vector3D<> pAdot = bodyA.getPointVelW (c.p);
-    return impulseCalcFixed (pAdot, Vector3D<> (0, 0, 0), cu, mu, c);
+std::pair<double, double> impulseCalcRigidFixed(RWBody& bodyA, double cu, double mu,
+                                                ContactPoint& c) {
+    Vector3D<> pAdot = bodyA.getPointVelW(c.p);
+    return impulseCalcFixed(pAdot, Vector3D<>(0, 0, 0), cu, mu, c);
 }
 
-std::pair< double, double > impulseCalcFixedRigid (RWBody& bodyB, double cu, double mu,
-                                                   ContactPoint& c)
-{
-    Vector3D<> pBdot = bodyB.getPointVelW (c.p);
-    return impulseCalcFixed (Vector3D<> (0, 0, 0), pBdot, cu, mu, c);
+std::pair<double, double> impulseCalcFixedRigid(RWBody& bodyB, double cu, double mu,
+                                                ContactPoint& c) {
+    Vector3D<> pBdot = bodyB.getPointVelW(c.p);
+    return impulseCalcFixed(Vector3D<>(0, 0, 0), pBdot, cu, mu, c);
 }
 
-std::pair< double, double > impulseCalc (RWBody& bodyA, RWBody& bodyB, double restCoeff,
-                                         double staticFriction, ContactPoint& contact)
-{
-    RW_THROW ("DONT GO HERE");
+std::pair<double, double> impulseCalc(RWBody& bodyA, RWBody& bodyB, double restCoeff,
+                                      double staticFriction, ContactPoint& contact) {
+    RW_THROW("DONT GO HERE");
     // double restCoeff = 0.1;
     // get the current relative velocity of point posA
-    Vector3D<> pAdot  = bodyA.getPointVelW (contact.p);
-    Vector3D<> pBdot  = bodyB.getPointVelW (contact.p);
+    Vector3D<> pAdot  = bodyA.getPointVelW(contact.p);
+    Vector3D<> pBdot  = bodyB.getPointVelW(contact.p);
     Vector3D<> relVel = pBdot - pAdot;
 
     // calculate the normal component of the relative velocity
     // and the tangential component of the relative velocity
-    double relVelN = dot (relVel, contact.n);
-    double relVelT = dot (relVel, contact.t);
+    double relVelN = dot(relVel, contact.n);
+    double relVelT = dot(relVel, contact.t);
 
 #ifdef DYNAMIC_TEST
     std::cout << "* RELVEL NORMAL  SIZE  : " << relVelN << std::endl;
@@ -112,38 +106,36 @@ std::pair< double, double > impulseCalc (RWBody& bodyA, RWBody& bodyB, double re
     Vector3D<> J = contact.KInv * (-(restCoeff) *relVelN * contact.n - relVel);
 
     // get the normal and tangential components
-    double jn = dot (J, contact.n);
-    double jt = dot (J, contact.t);
-    if (relVelN > 0)
-        return std::pair< double, double > (jn, jt);
+    double jn = dot(J, contact.n);
+    double jt = dot(J, contact.t);
+    if(relVelN > 0) return std::pair<double, double>(jn, jt);
 
 #ifdef DYNAMIC_TEST
     std::cout << "* Normal impulse size      : " << jn << std::endl;
     std::cout << "* Tangential impulse size  : " << jt << std::endl;
 #endif
     // is J outside the friction cone ?
-    if (fabs (jt) > staticFriction * jn) {
+    if(fabs(jt) > staticFriction * jn) {
         // then use sliding friction instead
         double numerator = -(restCoeff + 1) * relVelN - contact.bias;
         Vector3D<> nut   = contact.n - staticFriction * contact.t;
-        double term1     = dot (contact.K * nut, contact.n);
+        double term1     = dot(contact.K * nut, contact.n);
         jn               = numerator / term1;
         J                = nut * jn;
-        jn               = dot (J, contact.n);
-        jt               = dot (J, contact.t);
+        jn               = dot(J, contact.n);
+        jt               = dot(J, contact.t);
     }
-    return std::pair< double, double > (jn, jt);
+    return std::pair<double, double>(jn, jt);
 }
 
-void preImpulseCalcFixed (RWBody& body, const Vector3D<>& pAdot, const Vector3D<>& pBdot,
-                          ContactPoint& contact, double dtInv, ContactModelFactory* fact)
-{
+void preImpulseCalcFixed(RWBody& body, const Vector3D<>& pAdot, const Vector3D<>& pBdot,
+                         ContactPoint& contact, double dtInv, ContactModelFactory* fact) {
     // compute the tangent direction velocity component
     std::cout << "Pre impulse calc" << std::endl;
     Vector3D<> relVel = pBdot - pAdot;
-    double relVelN    = dot (relVel, contact.n);
+    double relVelN    = dot(relVel, contact.n);
     contact.t         = relVel - relVelN * contact.n;
-    double relVelT    = contact.t.norm2 ();
+    double relVelT    = contact.t.norm2();
 
 #ifdef DYNAMIC_TEST
     std::cout << "* relVel : " << relVel << std::endl;
@@ -153,18 +145,14 @@ void preImpulseCalcFixed (RWBody& body, const Vector3D<>& pAdot, const Vector3D<
     std::cout << "* RELVEL TANGENT SIZE  : " << relVelT << std::endl;
 #endif
     // make sure to handle situations where tangential velocity is very small
-    if (fabs (relVelT) < 0.000001) {
-        contact.t = Vector3D<> (0, 0, 0);
-    }
-    else {
-        contact.t /= relVelT;
-    }
+    if(fabs(relVelT) < 0.000001) { contact.t = Vector3D<>(0, 0, 0); }
+    else { contact.t /= relVelT; }
 #ifdef DYNAMIC_TEST
     std::cout << "* RELVEL NORMAL  SIZE  : " << relVelN << std::endl;
     std::cout << "* RELVEL TANGENT SIZE  : " << relVelT << std::endl;
 #endif
-    contact.K    = body.getEffectiveMassW (contact.p);
-    contact.KInv = inverse (contact.K);
+    contact.K    = body.getEffectiveMassW(contact.p);
+    contact.KInv = inverse(contact.K);
 
     // calculate the vector from center of mass (bodyA) to contact point posA
     /*        Vector3D<> ra = contact.p - body.getWTBody().P();
@@ -203,62 +191,53 @@ void preImpulseCalcFixed (RWBody& body, const Vector3D<>& pAdot, const Vector3D<
 #endif
 }
 
-void preImpulseCalcRigidLink (RWBody& body, RWBody& link, ContactPoint& contact, double dtInv,
-                              ContactModelFactory* fact)
-{
-    Vector3D<> pAdot = body.getPointVelW (contact.p);
-    Vector3D<> pBdot = link.getPointVelW (contact.p);
-    preImpulseCalcFixed (body, pAdot, pBdot, contact, dtInv, fact);
+void preImpulseCalcRigidLink(RWBody& body, RWBody& link, ContactPoint& contact, double dtInv,
+                             ContactModelFactory* fact) {
+    Vector3D<> pAdot = body.getPointVelW(contact.p);
+    Vector3D<> pBdot = link.getPointVelW(contact.p);
+    preImpulseCalcFixed(body, pAdot, pBdot, contact, dtInv, fact);
 }
 
-void preImpulseCalcLinkRigid (RWBody& link, RWBody& body, ContactPoint& contact, double dtInv,
-                              ContactModelFactory* fact)
-{
-    Vector3D<> pAdot = link.getPointVelW (contact.p);
-    Vector3D<> pBdot = body.getPointVelW (contact.p);
-    preImpulseCalcFixed (body, pAdot, pBdot, contact, dtInv, fact);
+void preImpulseCalcLinkRigid(RWBody& link, RWBody& body, ContactPoint& contact, double dtInv,
+                             ContactModelFactory* fact) {
+    Vector3D<> pAdot = link.getPointVelW(contact.p);
+    Vector3D<> pBdot = body.getPointVelW(contact.p);
+    preImpulseCalcFixed(body, pAdot, pBdot, contact, dtInv, fact);
 }
 
-void preImpulseCalcRigidFixed (RWBody& body, ContactPoint& contact, double dtInv,
-                               ContactModelFactory* fact)
-{
-    Vector3D<> pAdot = body.getPointVelW (contact.p);
-    preImpulseCalcFixed (body, pAdot, Vector3D<> (0, 0, 0), contact, dtInv, fact);
+void preImpulseCalcRigidFixed(RWBody& body, ContactPoint& contact, double dtInv,
+                              ContactModelFactory* fact) {
+    Vector3D<> pAdot = body.getPointVelW(contact.p);
+    preImpulseCalcFixed(body, pAdot, Vector3D<>(0, 0, 0), contact, dtInv, fact);
 }
 
-void preImpulseCalcFixedRigid (RWBody& body, ContactPoint& contact, double dtInv,
-                               ContactModelFactory* fact)
-{
+void preImpulseCalcFixedRigid(RWBody& body, ContactPoint& contact, double dtInv,
+                              ContactModelFactory* fact) {
     std::cout << "Velocity" << std::endl;
-    std::cout << body.getLinVelW () << std::endl;
-    std::cout << body.getAngVelW () << std::endl;
+    std::cout << body.getLinVelW() << std::endl;
+    std::cout << body.getAngVelW() << std::endl;
 
-    Vector3D<> pBdot = body.getPointVelW (contact.p);
-    preImpulseCalcFixed (body, Vector3D<> (0, 0, 0), pBdot, contact, dtInv, fact);
+    Vector3D<> pBdot = body.getPointVelW(contact.p);
+    preImpulseCalcFixed(body, Vector3D<>(0, 0, 0), pBdot, contact, dtInv, fact);
 }
 
-void preImpulseCalcImpl (RWBody& bodyA, RWBody& bodyB, ContactPoint& contact, double dtInv)
-{
+void preImpulseCalcImpl(RWBody& bodyA, RWBody& bodyB, ContactPoint& contact, double dtInv) {
     // compute the tangent direction velocity component
-    Vector3D<> pAdot = bodyA.getPointVelW (contact.p);
-    Vector3D<> pBdot = bodyB.getPointVelW (contact.p);
+    Vector3D<> pAdot = bodyA.getPointVelW(contact.p);
+    Vector3D<> pBdot = bodyB.getPointVelW(contact.p);
 
     // double relVelNA = dot(pAdot, contact.n);
     // double relVelNB = dot(pBdot, contact.n);
     Vector3D<> relVel = pBdot - pAdot;
-    double relVelN    = dot (relVel, contact.n);
+    double relVelN    = dot(relVel, contact.n);
     contact.t         = relVel - relVelN * contact.n;
-    double relVelT    = contact.t.norm2 ();
+    double relVelT    = contact.t.norm2();
 
     double epsilon = 0.0000001;
 
     // make sure to handle situations where tangential velocity is very small
-    if (fabs (relVelT) < epsilon) {
-        contact.t = Vector3D<> (0, 0, 0);
-    }
-    else {
-        contact.t /= relVelT;
-    }
+    if(fabs(relVelT) < epsilon) { contact.t = Vector3D<>(0, 0, 0); }
+    else { contact.t /= relVelT; }
     /*
     // calculate K_A
     // calculate the vector from center of mass (bodyA) to contact point posA
@@ -293,139 +272,119 @@ void preImpulseCalcImpl (RWBody& bodyA, RWBody& bodyB, ContactPoint& contact, do
 
     */
 
-    contact.K    = bodyA.getEffectiveMassW (contact.p) + bodyB.getEffectiveMassW (contact.p);
-    contact.KInv = inverse (contact.K);
+    contact.K    = bodyA.getEffectiveMassW(contact.p) + bodyB.getEffectiveMassW(contact.p);
+    contact.KInv = inverse(contact.K);
 }
 }    // namespace
 
-ContactModel::ContactModel (ConstraintNode& bodyA, ConstraintNode& bodyB,
-                            ContactModelFactory* fact) :
-    _factory (fact)
-{
-    switch (bodyA.getNodeType ()) {
-        case (ConstraintNode::Fixed):
+ContactModel::ContactModel(ConstraintNode& bodyA, ConstraintNode& bodyB,
+                           ContactModelFactory* fact) :
+    _factory(fact) {
+    switch(bodyA.getNodeType()) {
+        case(ConstraintNode::Fixed):
             // FixedRigid, FixedLink
-            if (bodyB.getNodeType () == ConstraintNode::Link) {
-                _type = FixedLink;
-            }
-            else {
-                _type = FixedRigid;
-            }
+            if(bodyB.getNodeType() == ConstraintNode::Link) { _type = FixedLink; }
+            else { _type = FixedRigid; }
             break;
-        case (ConstraintNode::Rigid):
+        case(ConstraintNode::Rigid):
             // RigidFixed, RigidLink, RigidRigid
-            if (bodyB.getNodeType () == ConstraintNode::Fixed) {
-                _type = RigidFixed;
-            }
-            else if (bodyB.getNodeType () == ConstraintNode::Link) {
-                _type = RigidLink;
-            }
-            else {
-                _type = RigidRigid;
-            }
+            if(bodyB.getNodeType() == ConstraintNode::Fixed) { _type = RigidFixed; }
+            else if(bodyB.getNodeType() == ConstraintNode::Link) { _type = RigidLink; }
+            else { _type = RigidRigid; }
             break;
-        case (ConstraintNode::Link):
+        case(ConstraintNode::Link):
             // RigidFixed, RigidLink, RigidRigid
-            if (bodyB.getNodeType () == ConstraintNode::Fixed) {
-                _type = LinkFixed;
-            }
-            else if (bodyB.getNodeType () == ConstraintNode::Link) {
-                _type = LinkLink;
-            }
-            else {
-                _type = LinkRigid;
-            }
+            if(bodyB.getNodeType() == ConstraintNode::Fixed) { _type = LinkFixed; }
+            else if(bodyB.getNodeType() == ConstraintNode::Link) { _type = LinkLink; }
+            else { _type = LinkRigid; }
             break;
         default: _type = Unknown;
     }
 }
 
-void ContactModel::addForce (Contact& contact, ContactPoint& point, double nforce, double tforce)
-{
+void ContactModel::addForce(Contact& contact, ContactPoint& point, double nforce, double tforce) {
     RWBody* bodyA          = contact.bodyA;
     RWBody* bodyB          = contact.bodyB;
     rw::math::Vector3D<> F = /*point.t*tforce +*/ point.n * nforce;
     // std::cout << "Adding force F: " << F << std::endl;
-    switch (_type) {
-        case (LinkRigid):
-            ((dynamics::FixedLink*) bodyA)->addForceWToPosW (-F, point.p);
+    switch(_type) {
+        case(LinkRigid):
+            ((dynamics::FixedLink*) bodyA)->addForceWToPosW(-F, point.p);
             //((RWBody*)bodyB)->addForceWToPosW( F, point.p);
             break;
-        case (FixedRigid):
+        case(FixedRigid):
             //((RWBody*)bodyB)->addForceWToPosW( F, point.p);
             break;
-        case (RigidLink):
+        case(RigidLink):
             //((RWBody*)bodyA)->addForceWToPosW( -F, point.p);
-            ((dynamics::FixedLink*) bodyB)->addForceWToPosW (F, point.p);
+            ((dynamics::FixedLink*) bodyB)->addForceWToPosW(F, point.p);
             break;
-        case (RigidFixed):
+        case(RigidFixed):
             //((RWBody*)bodyA)->addForceWToPosW( -F, point.p);
             break;
-        case (RigidRigid):
+        case(RigidRigid):
             //((RWBody*)bodyA)->addForceWToPosW(-F, point.p);
             //((RWBody*)bodyB)->addForceWToPosW( F, point.p);
             break;
-        case (FixedLink):    // not supported
-            ((dynamics::FixedLink*) bodyB)->addForceWToPosW (F, point.p);
+        case(FixedLink):    // not supported
+            ((dynamics::FixedLink*) bodyB)->addForceWToPosW(F, point.p);
             break;
-        case (LinkFixed):
+        case(LinkFixed):
             //((dynamics::FixedLink*)bodyA)->addForceWToPosW(-F, point.p);
             break;
-        case (LinkLink):
-            ((dynamics::FixedLink*) bodyA)->addForceWToPosW (-F, point.p);
-            ((dynamics::FixedLink*) bodyB)->addForceWToPosW (F, point.p);
+        case(LinkLink):
+            ((dynamics::FixedLink*) bodyA)->addForceWToPosW(-F, point.p);
+            ((dynamics::FixedLink*) bodyB)->addForceWToPosW(F, point.p);
             break;
-        case (Unknown):
-        default: RW_WARN ("addForce: unsupported contact type");
+        case(Unknown):
+        default: RW_WARN("addForce: unsupported contact type");
     }
 }
 
-void ContactModel::preImpulseCalc (Contact& contact, ContactPoint& point, double dtInv)
-{
+void ContactModel::preImpulseCalc(Contact& contact, ContactPoint& point, double dtInv) {
     // calculate aux variables used in the impulse calculation
     RWBody* bodyA = contact.bodyA;
     RWBody* bodyB = contact.bodyB;
-    if (bodyA == NULL || bodyB == NULL) {
-        RW_WARN ("Invalid body!");
+    if(bodyA == NULL || bodyB == NULL) {
+        RW_WARN("Invalid body!");
         return;
     }
 
-    switch (_type) {
-        case (LinkRigid):
+    switch(_type) {
+        case(LinkRigid):
             std::cout << " LR " << std::endl;
-            preImpulseCalcLinkRigid (*bodyA, *bodyB, point, dtInv, _factory);
+            preImpulseCalcLinkRigid(*bodyA, *bodyB, point, dtInv, _factory);
             break;
-        case (FixedRigid):
+        case(FixedRigid):
             std::cout << " FR " << std::endl;
-            preImpulseCalcFixedRigid (*bodyB, point, dtInv, _factory);
+            preImpulseCalcFixedRigid(*bodyB, point, dtInv, _factory);
             break;
-        case (RigidLink):
+        case(RigidLink):
             std::cout << " RL " << std::endl;
-            preImpulseCalcRigidLink (*bodyA, *bodyB, point, dtInv, _factory);
+            preImpulseCalcRigidLink(*bodyA, *bodyB, point, dtInv, _factory);
             break;
-        case (RigidFixed):
+        case(RigidFixed):
             std::cout << " RF " << std::endl;
-            preImpulseCalcRigidFixed (*bodyA, point, dtInv, _factory);
+            preImpulseCalcRigidFixed(*bodyA, point, dtInv, _factory);
             break;
-        case (RigidRigid):
+        case(RigidRigid):
             std::cout << " RR " << std::endl;
-            preImpulseCalcImpl (*(RWBody*) bodyA, *(RWBody*) bodyB, point, dtInv);
+            preImpulseCalcImpl(*(RWBody*) bodyA, *(RWBody*) bodyB, point, dtInv);
             break;
-        case (FixedLink):
-        case (LinkFixed):
-        case (LinkLink): break;
-        case (Unknown):
-        default: RW_WARN ("unsupported contact type!!");
+        case(FixedLink):
+        case(LinkFixed):
+        case(LinkLink): break;
+        case(Unknown):
+        default: RW_WARN("unsupported contact type!!");
     }
 }
 
-void ContactModel::calcContactForce (Contact& contact, ContactPoint& point, double& nforce,
-                                     double& tforce)
-{
+void ContactModel::calcContactForce(Contact& contact, ContactPoint& point, double& nforce,
+                                    double& tforce) {
     // calculate a force that is dependant on position alone
     double shellThickness = 0.0001;
-    double pen            = std::max (shellThickness - point.dist, 0.0);
-    if (pen == 0.0) {
+    double pen            = std::max(shellThickness - point.dist, 0.0);
+    if(pen == 0.0) {
         // no penetration exist
         nforce = 0.0;
         tforce = 0.0;
@@ -437,59 +396,53 @@ void ContactModel::calcContactForce (Contact& contact, ContactPoint& point, doub
     tforce = 0.0;
 }
 
-void ContactModel::calcCollisionImpulse (Contact& contact, ContactPoint& point, double& nimpulse,
-                                         double& timpulse, int iter)
-{
+void ContactModel::calcCollisionImpulse(Contact& contact, ContactPoint& point, double& nimpulse,
+                                        double& timpulse, int iter) {
     RWBody* bodyA = contact.bodyA;
     RWBody* bodyB = contact.bodyB;
-    std::pair< double, double > res (0.0, 0.0);
+    std::pair<double, double> res(0.0, 0.0);
     // test if one of the bodies are fixed
     double cu = contact.nColRestCoeff;
 
-    if (iter < 4) {
-        cu = (iter * 1 / 4) - 1;
-    }
+    if(iter < 4) { cu = (iter * 1 / 4) - 1; }
     cu        = 0;
     double mu = contact.staticFriction;
-    switch (_type) {
-        case (LinkRigid): res = impulseCalcFixed (*bodyA, *bodyB, cu, mu, point); break;
-        case (FixedRigid): res = impulseCalcFixedRigid (*bodyB, cu, mu, point); break;
-        case (RigidLink): res = impulseCalcFixed (*bodyA, *bodyB, cu, mu, point); break;
-        case (RigidFixed): res = impulseCalcRigidFixed (*bodyA, cu, mu, point); break;
-        case (RigidRigid): res = impulseCalc (*bodyA, *bodyB, cu, mu, point); break;
-        case (LinkLink):
-        case (LinkFixed):
-        case (FixedLink): res.first = 1000; break;
-        case (Unknown):
-        default: RW_WARN ("unsupported contact type!!");
+    switch(_type) {
+        case(LinkRigid): res = impulseCalcFixed(*bodyA, *bodyB, cu, mu, point); break;
+        case(FixedRigid): res = impulseCalcFixedRigid(*bodyB, cu, mu, point); break;
+        case(RigidLink): res = impulseCalcFixed(*bodyA, *bodyB, cu, mu, point); break;
+        case(RigidFixed): res = impulseCalcRigidFixed(*bodyA, cu, mu, point); break;
+        case(RigidRigid): res = impulseCalc(*bodyA, *bodyB, cu, mu, point); break;
+        case(LinkLink):
+        case(LinkFixed):
+        case(FixedLink): res.first = 1000; break;
+        case(Unknown):
+        default: RW_WARN("unsupported contact type!!");
     }
     nimpulse = res.first;
     timpulse = res.second;
 }
 
-void ContactModel::calcContactImpulse (Contact& contact, ContactPoint& point, double& nimpulse,
-                                       double& timpulse)
-{
+void ContactModel::calcContactImpulse(Contact& contact, ContactPoint& point, double& nimpulse,
+                                      double& timpulse) {
     return;
 }
 
-void ContactModel::addImpulse (Contact& contact, ContactPoint& point, double nimpulse,
-                               double timpulse)
-{
+void ContactModel::addImpulse(Contact& contact, ContactPoint& point, double nimpulse,
+                              double timpulse) {
     RWBody* bodyA = contact.bodyA;
     RWBody* bodyB = contact.bodyB;
 
     // calculate the impulse vector
     rw::math::Vector3D<> J = point.t * timpulse + point.n * nimpulse;
 
-    bodyA->addImpulseWToPosW (-J, point.p);
-    bodyB->addImpulseWToPosW (J, point.p);
+    bodyA->addImpulseWToPosW(-J, point.p);
+    bodyB->addImpulseWToPosW(J, point.p);
 }
 
-void ContactModel::updateVelocity (Contact& contact)
-{
+void ContactModel::updateVelocity(Contact& contact) {
     RWBody* bodyA = contact.bodyA;
     RWBody* bodyB = contact.bodyB;
-    bodyA->updateImpulse ();
-    bodyB->updateImpulse ();
+    bodyA->updateImpulse();
+    bodyB->updateImpulse();
 }

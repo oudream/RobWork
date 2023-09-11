@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,13 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ********************************************************************************/
- 
- 
 
 #ifndef RW_ALGORITHMS_ConstraintSandbox_HPP
 #define RW_ALGORITHMS_ConstraintSandbox_HPP
-
-
 
 /**
  * @file ConstraintSandbox.hpp
@@ -28,37 +24,30 @@
 
 #include "ConstraintModel.hpp"
 
-
-
 namespace rwlibs { namespace algorithms {
 
+    /**
+     * @brief A class for testing out constraint generation methods.
+     */
+    class ConstraintSandbox
+    {
+      public:
+        //! @brief Smart pointer type to this class.
+        typedef rw::core::Ptr<ConstraintSandbox> Ptr;
 
+      public:    // constructors
+        /**
+         * @brief Constructor.
+         */
+        ConstraintSandbox(){};
 
-/**
- * @brief A class for testing out constraint generation methods.
- */
-class ConstraintSandbox {
-	public:
-		//! @brief Smart pointer type to this class.
-		typedef rw::core::Ptr<ConstraintSandbox> Ptr;
-		
-	public: // constructors
-		/**
-		 * @brief Constructor.
-		 */
-		ConstraintSandbox() {};
-		
-		//! @brief Destructor.
-		virtual ~ConstraintSandbox() {};
+        //! @brief Destructor.
+        virtual ~ConstraintSandbox(){};
 
-	public: // methods
-		
-	
-	protected: // body
-};
+      public:       // methods
+      protected:    // body
+    };
 
+}}    // namespace rwlibs::algorithms
 
-
-}} // /namespaces
-
-#endif // include guard
+#endif    // include guard

@@ -34,16 +34,16 @@ namespace rw { namespace trajectory {
     /**
      * @brief Interface for Trajectories in RobWork
      */
-    template< class T > class Trajectory
+    template<class T> class Trajectory
     {
       public:
         //! @brief smart pointer type
-        typedef rw::core::Ptr< Trajectory< T > > Ptr;
+        typedef rw::core::Ptr<Trajectory<T>> Ptr;
 
         /**
          * @brief Destructor
          */
-        virtual ~Trajectory () {}
+        virtual ~Trajectory() {}
         /**
          * @brief Position of trajectory at time \b t
          *
@@ -52,7 +52,7 @@ namespace rw { namespace trajectory {
          * @param t [in] time between startTime() and endTime()
          * @return Position
          */
-        virtual T x (double t) const = 0;
+        virtual T x(double t) const = 0;
 
         /**
          * @brief Velocity of trajectory at time \b t
@@ -62,7 +62,7 @@ namespace rw { namespace trajectory {
          * @param t [in] time between startTime() and endTime()
          * @return Velocity
          */
-        virtual T dx (double t) const = 0;
+        virtual T dx(double t) const = 0;
 
         /**
          * @brief Acceleration of trajectory at time \b t
@@ -73,7 +73,7 @@ namespace rw { namespace trajectory {
          * @param t [in] time between startTime() and endTime()
          * @return Acceleration
          */
-        virtual T ddx (double t) const = 0;
+        virtual T ddx(double t) const = 0;
 
         /**
          * @brief Total duration of the trajectory.
@@ -83,14 +83,14 @@ namespace rw { namespace trajectory {
          *
          *  If the trajectory is empty, then -1 is returned.
          */
-        virtual double duration () const = 0;
+        virtual double duration() const = 0;
 
         /**
          * @brief Returns the startTime of the trajectory
          *
          * @return Start time
          */
-        virtual double startTime () const = 0;
+        virtual double startTime() const = 0;
 
         /**
          * @brief Returns the endTime of the trajectory.
@@ -99,7 +99,7 @@ namespace rw { namespace trajectory {
          *
          * @return The end time
          */
-        virtual double endTime () const { return startTime () + duration (); }
+        virtual double endTime() const { return startTime() + duration(); }
 
         /**
          * @brief Constructs a discrete path based on the trajectory.
@@ -114,21 +114,16 @@ namespace rw { namespace trajectory {
          * @param uniform [in] Whether to sample the path uniformly
          * @return The discrete path.
          */
-        std::vector< T > getPath (double dt, bool uniform = true)
-        {
-            std::vector< T > path;
-            if (uniform) {
-                int steps    = (int) std::ceil (duration () / dt);
-                double delta = duration () / steps;
-                for (double t = 0; t <= duration (); t += delta) {
-                    path.push_back (x (t));
-                }
+        std::vector<T> getPath(double dt, bool uniform = true) {
+            std::vector<T> path;
+            if(uniform) {
+                int steps    = (int) std::ceil(duration() / dt);
+                double delta = duration() / steps;
+                for(double t = 0; t <= duration(); t += delta) { path.push_back(x(t)); }
             }
             else {
-                for (double t = 0; t < duration (); t += dt) {
-                    path.push_back (x (t));
-                }
-                path.push_back (x (duration ()));
+                for(double t = 0; t < duration(); t += dt) { path.push_back(x(t)); }
+                path.push_back(x(duration()));
             }
 
             return path;
@@ -144,29 +139,30 @@ namespace rw { namespace trajectory {
          * iterator
          * @brief Pointer to the iterator. The pointer has ownership.
          */
-        virtual typename rw::trajectory::TrajectoryIterator< T >::Ptr getIterator (double dt = 1) const = 0;
+        virtual typename rw::trajectory::TrajectoryIterator<T>::Ptr
+        getIterator(double dt = 1) const = 0;
 
       protected:
         /**
          * @brief Construct an empty trajectory
          */
-        Trajectory (){};
+        Trajectory(){};
     };
 
     //! A trajectory on rw::kinematics::State.
-    typedef Trajectory< rw::kinematics::State > StateTrajectory;
+    typedef Trajectory<rw::kinematics::State> StateTrajectory;
 
     //! A trajectory on rw::math::Q
-    typedef Trajectory< math::Q > QTrajectory;
+    typedef Trajectory<math::Q> QTrajectory;
 
     //! A trajectory on a Vector3D
-    typedef Trajectory< math::Vector3D<> > Vector3DTrajectory;
+    typedef Trajectory<math::Vector3D<>> Vector3DTrajectory;
 
     //! A trajectory on rw::math;:Rotation3D
-    typedef Trajectory< math::Rotation3D<> > Rotation3DTrajectory;
+    typedef Trajectory<math::Rotation3D<>> Rotation3DTrajectory;
 
     //! A trajectory on a rw::math::Transform3D
-    typedef Trajectory< math::Transform3D<> > Transform3DTrajectory;
+    typedef Trajectory<math::Transform3D<>> Transform3DTrajectory;
 
     /* @} */
 

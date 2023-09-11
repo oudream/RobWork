@@ -23,7 +23,7 @@
 #include <rw/math/Vector3D.hpp>
 
 #include <vector>
-#endif 
+#endif
 
 namespace rw { namespace geometry {
     class TriMesh;
@@ -59,16 +59,16 @@ namespace rw { namespace graspplanning {
         /**
          * @brief
          */
-        DiceContactG3D ();
+        DiceContactG3D();
 
         /**
          * @brief destructor
          */
-        virtual ~DiceContactG3D (){};
+        virtual ~DiceContactG3D(){};
 
-        void setContactFilter (ContactValidateFilter* filter);
+        void setContactFilter(ContactValidateFilter* filter);
 
-        ContactValidateFilter* getContactFilter () { return _cfilter; };
+        ContactValidateFilter* getContactFilter() { return _cfilter; };
 
         /**
          * @brief initializes the contact generator on some object.
@@ -76,27 +76,27 @@ namespace rw { namespace graspplanning {
          * @param nrOfContacts [in] the nr of contacts that are allowed in a grasp
          * @param mu documentation missing !
          */
-        void initialize (const rw::geometry::TriMesh& obj, int nrOfContacts, double mu);
+        void initialize(const rw::geometry::TriMesh& obj, int nrOfContacts, double mu);
 
         /**
          * @brief generates a contact set from some heuristic
          */
-        std::vector< Grasp3D > generateContactSet (int maxNrOfContacts, double timeout);
+        std::vector<Grasp3D> generateContactSet(int maxNrOfContacts, double timeout);
 
         /**
          * @brief generates one contact and returns it
          * @return
          */
-        Grasp3D generateNext ();
+        Grasp3D generateNext();
 
-        void setTransform (rw::math::Transform3D<>& t3d) { _transform = t3d; };
+        void setTransform(rw::math::Transform3D<>& t3d) { _transform = t3d; };
 
       private:
         const rw::geometry::TriMesh* _obj;
         double _mu;
         int _nrOfContacts;
 
-        std::vector< rw::math::Vector3D<> > _surfNormals;
+        std::vector<rw::math::Vector3D<>> _surfNormals;
         rw::math::Transform3D<> _transform;
         ContactValidateFilter* _cfilter;
     };

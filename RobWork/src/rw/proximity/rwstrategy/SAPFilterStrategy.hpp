@@ -21,7 +21,7 @@
 #if !defined(SWIG)
 #include <rw/proximity/rwstrategy/ProximityFilterStrategy.hpp>
 #include <rw/proximity/rwstrategy/ProximitySetup.hpp>
-#endif 
+#endif
 namespace rw { namespace models {
     class WorkCell;
 }}    // namespace rw::models
@@ -36,7 +36,7 @@ namespace rw { namespace proximity {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< SAPFilterStrategy > Ptr;
+        typedef rw::core::Ptr<SAPFilterStrategy> Ptr;
 
       private:
         /**
@@ -45,32 +45,30 @@ namespace rw { namespace proximity {
         struct Cache : public ProximityCache
         {
           public:
-            Cache (void* owner) : ProximityCache (owner){};
-            size_t size () const { return 0; };
-            void clear (){};
+            Cache(void* owner) : ProximityCache(owner){};
+            size_t size() const { return 0; };
+            void clear(){};
         };
 
         struct Filter : public ProximityFilter
         {
           public:
-            Filter (kinematics::FramePairSet::iterator front,
-                    kinematics::FramePairSet::iterator end) :
-                _front (front),
-                _end (end)
-            {}
+            Filter(kinematics::FramePairSet::iterator front,
+                   kinematics::FramePairSet::iterator end) :
+                _front(front),
+                _end(end) {}
 
-            void pop () { ++_front; };
+            void pop() { ++_front; };
 
-            kinematics::FramePair frontAndPop ()
-            {
+            kinematics::FramePair frontAndPop() {
                 kinematics::FramePair res = *_front;
-                pop ();
+                pop();
                 return (res);
             }
 
-            rw::kinematics::FramePair front () { return *_front; };
+            rw::kinematics::FramePair front() { return *_front; };
 
-            bool isEmpty () { return _front == _end; };
+            bool isEmpty() { return _front == _end; };
 
           private:
             kinematics::FramePairSet::iterator _front, _end;
@@ -83,47 +81,49 @@ namespace rw { namespace proximity {
          *
          * @param workcell [in] the workcell.
          */
-        SAPFilterStrategy (rw::core::Ptr< rw::models::WorkCell > workcell);
+        SAPFilterStrategy(rw::core::Ptr<rw::models::WorkCell> workcell);
 
         /**
          * @brief constructor - constructs frame pairs based on the \b setup
          * @param workcell [in] the workcell
          * @param setup [in] the ProximitySetup describing exclude/include relations
          */
-        SAPFilterStrategy (rw::core::Ptr< rw::models::WorkCell > workcell,
-                           const ProximitySetup& setup);
+        SAPFilterStrategy(rw::core::Ptr<rw::models::WorkCell> workcell,
+                          const ProximitySetup& setup);
 
         //! @brief destructor
-        virtual ~SAPFilterStrategy (){};
+        virtual ~SAPFilterStrategy(){};
 
         //////// interface inherited from BroadPhaseStrategy
 
         //! @copydoc ProximityFilterStrategy::reset
-        virtual void reset (const rw::kinematics::State& state);
+        virtual void reset(const rw::kinematics::State& state);
 
         //! @copydoc ProximityFilterStrategy::createProximityCache
-        virtual rw::core::Ptr<rw::proximity::ProximityCache> createProximityCache ()
-        {
-            return rw::core::ownedPtr (new Cache (this));
+        virtual rw::core::Ptr<rw::proximity::ProximityCache> createProximityCache() {
+            return rw::core::ownedPtr(new Cache(this));
         }
 
         //! @copydoc ProximityFilterStrategy::update
-        virtual rw::core::Ptr<rw::proximity::ProximityFilter> update (const rw::kinematics::State& state);
+        virtual rw::core::Ptr<rw::proximity::ProximityFilter>
+        update(const rw::kinematics::State& state);
 
         //! @copydoc ProximityFilterStrategy::createProximityCache
-        virtual rw::core::Ptr<rw::proximity::ProximityFilter> update (const rw::kinematics::State& state,
-                                             rw::core::Ptr<rw::proximity::ProximityCache> data);
+        virtual rw::core::Ptr<rw::proximity::ProximityFilter>
+        update(const rw::kinematics::State& state,
+               rw::core::Ptr<rw::proximity::ProximityCache> data);
 
         /**
          * @copydoc ProximityFilterStrategy::getProximitySetup
          */
-        ProximitySetup& getProximitySetup ();
+        ProximitySetup& getProximitySetup();
 
         /**
          * @brief Adds geometry associated to frame
          * @param frame [in] Frame which has the geometry associated
          */
-        virtual void addGeometry (rw::core::Ptr<rw::kinematics::Frame> frame, const rw::geometry::Geometry::Ptr);
+        virtual void addGeometry(rw::core::Ptr<rw::kinematics::Frame> frame,
+                                 const rw::geometry::Geometry::Ptr);
 
         /**
          * @brief Removes the geometric model with name \b rw::geometry::Geometry::Ptr and which is
@@ -131,8 +131,8 @@ namespace rw { namespace proximity {
          *
          * @param frame [in] Frame which has the geometry associated
          */
-        virtual void removeGeometry (rw::core::Ptr<rw::kinematics::Frame> frame,
-                                     const rw::geometry::Geometry::Ptr);
+        virtual void removeGeometry(rw::core::Ptr<rw::kinematics::Frame> frame,
+                                    const rw::geometry::Geometry::Ptr);
 
         /**
          * @brief Removes the geometric model with name \b geometryId and which is associated with
@@ -141,34 +141,34 @@ namespace rw { namespace proximity {
          * @param frame [in] Frame which has the geometry associated
          * @param geometryId [in] Name of geometry
          */
-        virtual void removeGeometry (rw::core::Ptr<rw::kinematics::Frame> frame, const std::string& geometryId);
+        virtual void removeGeometry(rw::core::Ptr<rw::kinematics::Frame> frame,
+                                    const std::string& geometryId);
 
         /**
          * @copydoc ProximityFilterStrategy::addRule
          */
-        virtual void addRule (const ProximitySetupRule& rule);
+        virtual void addRule(const ProximitySetupRule& rule);
 
         /**
          * @copydoc ProximityFilterStrategy::removeRule
          */
-        virtual void removeRule (const ProximitySetupRule& rule);
+        virtual void removeRule(const ProximitySetupRule& rule);
 
       private:
-        rw::core::Ptr< rw::models::WorkCell > _workcell;
+        rw::core::Ptr<rw::models::WorkCell> _workcell;
         ProximitySetup _psetup;
         kinematics::FramePairSet _collisionPairs;
 
-        kinematics::FrameMap< std::vector< std::string > > _frameToGeoIdMap;
+        kinematics::FrameMap<std::vector<std::string>> _frameToGeoIdMap;
 
-        void applyRule (const ProximitySetupRule& rule,
-                        rw::core::Ptr< rw::models::WorkCell > workcell,
-                        rw::kinematics::FramePairSet& result);
-        void initialize ();
-        void initializeCollisionFramePairs (const rw::kinematics::State& state);
+        void applyRule(const ProximitySetupRule& rule, rw::core::Ptr<rw::models::WorkCell> workcell,
+                       rw::kinematics::FramePairSet& result);
+        void initialize();
+        void initializeCollisionFramePairs(const rw::kinematics::State& state);
     };
 
 #ifdef RW_USE_DEPREACTED
-    typedef rw::core::Ptr< SAPFilterStrategy > SAPFilterStrategyPtr;
+    typedef rw::core::Ptr<SAPFilterStrategy> SAPFilterStrategyPtr;
 #endif
 }}    // namespace rw::proximity
 

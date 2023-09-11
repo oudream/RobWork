@@ -22,7 +22,7 @@
 #include <rw/core/LogWriter.hpp>
 
 #include <fstream>
-#endif 
+#endif
 namespace rw { namespace common {
 
     /** @addtogroup common */
@@ -41,28 +41,28 @@ namespace rw { namespace common {
          *
          * @param filename [in] Name of file
          */
-        LogFileWriter (const std::string& filename);
+        LogFileWriter(const std::string& filename);
 
         /**
          * @brief Destructor
          */
-        ~LogFileWriter ();
+        ~LogFileWriter();
 
       protected:
         /**
          * @copydoc LogWriter::write(const std::string&)
          */
-        void doWrite (const std::string& str);
+        void doWrite(const std::string& str);
 
         /**
          * @brief Calls flush on the ostream
          */
-        void doFlush ();
+        void doFlush();
 
         /**
          * @copydoc LogWriter::setTabLevel(int)
          */
-        void doSetTabLevel (int tabLevel);
+        void doSetTabLevel(int tabLevel);
 
       private:
         std::ofstream _stream;

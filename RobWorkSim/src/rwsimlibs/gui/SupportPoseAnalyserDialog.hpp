@@ -73,38 +73,38 @@ class SupportPoseAnalyserDialog : public QDialog
     /**
      * @brief
      */
-    SupportPoseAnalyserDialog (const rw::kinematics::State& state,
-                               rwsim::dynamics::DynamicWorkCell* dwc,
-                               rw::proximity::CollisionDetector* detector,
-                               rws::RobWorkStudio* _rwstudio, QWidget* parent = 0);
+    SupportPoseAnalyserDialog(const rw::kinematics::State& state,
+                              rwsim::dynamics::DynamicWorkCell* dwc,
+                              rw::proximity::CollisionDetector* detector,
+                              rws::RobWorkStudio* _rwstudio, QWidget* parent = 0);
 
-    virtual ~SupportPoseAnalyserDialog (){};
+    virtual ~SupportPoseAnalyserDialog(){};
 
-    void initializeStart ();
+    void initializeStart();
 
   signals:
-    void stateChanged (const rw::kinematics::State& state);
+    void stateChanged(const rw::kinematics::State& state);
 
   private slots:
-    void btnPressed ();
-    void changedEvent ();
-    void addRestingPose (const rw::kinematics::State& startstate,
-                         const rw::kinematics::State& reststate);
+    void btnPressed();
+    void changedEvent();
+    void addRestingPose(const rw::kinematics::State& startstate,
+                        const rw::kinematics::State& reststate);
 
   private:
-    void updateStatus ();
-    void addStatePath (rw::trajectory::TimedStatePath::Ptr path);
-    void addStateStartPath (rw::trajectory::TimedStatePath::Ptr path);
-    void process ();
-    void updateRenderView ();
-    void updateResultView ();
+    void updateStatus();
+    void addStatePath(rw::trajectory::TimedStatePath::Ptr path);
+    void addStateStartPath(rw::trajectory::TimedStatePath::Ptr path);
+    void process();
+    void updateRenderView();
+    void updateResultView();
 
-    void showPlanarDistribution ();
-    void saveDistribution ();
+    void showPlanarDistribution();
+    void saveDistribution();
 
-    void updateHoughThres ();
+    void updateHoughThres();
 
-    rwsim::dynamics::RigidBody::Ptr getSelectedBody ();
+    rwsim::dynamics::RigidBody::Ptr getSelectedBody();
 
   private:
     Ui::SupportPoseAnalyserDialog* _ui;
@@ -118,39 +118,39 @@ class SupportPoseAnalyserDialog : public QDialog
     rw::trajectory::TimedStatePath::Ptr _path, _startPath;
     GLViewRW* _view;
 
-    rw::core::Ptr< rwlibs::opengl::RenderFrame > _frameRender;
+    rw::core::Ptr<rwlibs::opengl::RenderFrame> _frameRender;
     rwlibs::opengl::Drawable *_fDraw, *_fDraw1, *_fDraw2, *_fDraw3, *_fDraw4, *_fDraw5;
 
-    rw::core::Ptr< rwsim::drawable::RenderPoints > _xRender, _yRender, _zRender;
+    rw::core::Ptr<rwsim::drawable::RenderPoints> _xRender, _yRender, _zRender;
     rwlibs::opengl::Drawable *_xDraw, *_yDraw, *_zDraw;
 
-    rw::core::Ptr< rwsim::drawable::RenderPoints > _selPosePntRenderX, _selPosePntRenderY,
+    rw::core::Ptr<rwsim::drawable::RenderPoints> _selPosePntRenderX, _selPosePntRenderY,
         _selPosePntRenderZ;
     rwlibs::opengl::Drawable *_selPoseDrawX, *_selPoseDrawY, *_selPoseDrawZ;
 
-    rw::core::Ptr< rwsim::drawable::RenderPoints > _selxRender, _selyRender, _selzRender;
+    rw::core::Ptr<rwsim::drawable::RenderPoints> _selxRender, _selyRender, _selzRender;
     rwlibs::opengl::Drawable *_selxDraw, *_selyDraw, *_selzDraw;
 
-    rw::core::Ptr< rwsim::drawable::RenderCircles > _xcRender, _ycRender, _zcRender;
+    rw::core::Ptr<rwsim::drawable::RenderCircles> _xcRender, _ycRender, _zcRender;
     rwlibs::opengl::Drawable *_xcDraw, *_ycDraw, *_zcDraw;
 
-    std::vector< rwsim::dynamics::RigidBody::Ptr > _bodies;
-    std::vector< std::vector< rw::math::Vector3D<> > > _xaxis, _yaxis, _zaxis;
-    std::vector< std::vector< rw::math::Transform3D<> > > _endTransforms, _startTransforms;
+    std::vector<rwsim::dynamics::RigidBody::Ptr> _bodies;
+    std::vector<std::vector<rw::math::Vector3D<>>> _xaxis, _yaxis, _zaxis;
+    std::vector<std::vector<rw::math::Transform3D<>>> _endTransforms, _startTransforms;
 
-    std::map< rwsim::dynamics::RigidBody*, std::vector< rw::math::Vector3D<> > > _xaxisS, _yaxisS,
+    std::map<rwsim::dynamics::RigidBody*, std::vector<rw::math::Vector3D<>>> _xaxisS, _yaxisS,
         _zaxisS;
 
-    std::map< rwsim::dynamics::RigidBody*, std::vector< rwsim::util::SupportPose > > _supportPoses;
-    std::map< rwsim::dynamics::RigidBody*, std::vector< rwsim::util::CircleModel > > _xcircBodyMap,
+    std::map<rwsim::dynamics::RigidBody*, std::vector<rwsim::util::SupportPose>> _supportPoses;
+    std::map<rwsim::dynamics::RigidBody*, std::vector<rwsim::util::CircleModel>> _xcircBodyMap,
         _ycircBodyMap, _zcircBodyMap;
-    std::map< rwsim::util::SupportPose*, std::vector< rwsim::util::CircleModel > > _xcirclesMap,
+    std::map<rwsim::util::SupportPose*, std::vector<rwsim::util::CircleModel>> _xcirclesMap,
         _ycirclesMap, _zcirclesMap;
-    std::map< std::pair< int, int >, std::vector< int > > _supportToPose;
+    std::map<std::pair<int, int>, std::vector<int>> _supportToPose;
 
-    typedef std::vector< rw::math::Transform3D<> > PoseDistribution;
-    std::map< rwsim::dynamics::RigidBody*, std::vector< PoseDistribution > >
-        _supportPoseDistributions, _supportPoseDistributionsMisses;
+    typedef std::vector<rw::math::Transform3D<>> PoseDistribution;
+    std::map<rwsim::dynamics::RigidBody*, std::vector<PoseDistribution>> _supportPoseDistributions,
+        _supportPoseDistributionsMisses;
 
     QGraphicsPixmapItem* _pitem;
     RestingPoseDialog* _restPoseDialog;

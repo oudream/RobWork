@@ -20,7 +20,7 @@
 
 #if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
-#endif 
+#endif
 /**
  * @file rw/math/Math.hpp
  */
@@ -33,41 +33,41 @@ namespace rw { namespace math {
     /**
      *  @brief Interface for functions
      */
-    template< class RES_T = double, class ARG_T = double > class Function
+    template<class RES_T = double, class ARG_T = double> class Function
     {
       public:
         //! Smart pointer to this type of class.
-        typedef rw::core::Ptr< Function > Ptr;
+        typedef rw::core::Ptr<Function> Ptr;
 
         /**
          * @brief Returns function value for arguments q.
          */
-        virtual RES_T f (ARG_T q) = 0;
+        virtual RES_T f(ARG_T q) = 0;
 
-        virtual ~Function (){};
+        virtual ~Function(){};
 
         /**
          * @brief Wraps the evaluation of x() with operator().
          */
-        RES_T operator() (ARG_T q) { return f (q); }
+        RES_T operator()(ARG_T q) { return f(q); }
     };
 
     /**
      * @brief Interface for functions which are 1 time differentiable
      */
-    template< class RES_T = double, class ARG_T = double, class GRAD_T = double >
-    class Function1Diff : virtual public Function< RES_T, ARG_T >
+    template<class RES_T = double, class ARG_T = double, class GRAD_T = double>
+    class Function1Diff : virtual public Function<RES_T, ARG_T>
     {
       public:
         //! Smart pointer to this type of class.
-        typedef rw::core::Ptr< Function1Diff > Ptr;
+        typedef rw::core::Ptr<Function1Diff> Ptr;
 
         /**
          * @brief Returns gradient(derivative) of the function
          */
-        virtual GRAD_T df (ARG_T q) = 0;
+        virtual GRAD_T df(ARG_T q) = 0;
 
-        virtual ~Function1Diff (){};
+        virtual ~Function1Diff(){};
     };
 
     /*@}*/

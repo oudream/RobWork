@@ -19,14 +19,13 @@
 #define RW_SENSOR_TACTILEARRAYMODEL_HPP
 
 #if !defined(SWIG)
-#include <rw/sensor/SensorModel.hpp>
-
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/Vector2D.hpp>
 #include <rw/math/Vector3D.hpp>
+#include <rw/sensor/SensorModel.hpp>
 
 #include <boost/multi_array.hpp>
-#endif 
+#endif
 namespace rw { namespace sensor {
 
     /**
@@ -41,12 +40,12 @@ namespace rw { namespace sensor {
     {
       public:
         //! smart pointer type
-        typedef rw::core::Ptr< TactileArrayModel > Ptr;
+        typedef rw::core::Ptr<TactileArrayModel> Ptr;
 
         //! type of tactile array readings
         typedef Eigen::MatrixXf ValueMatrix;
         //! type of vertices describing geometry of sensor
-        typedef boost::multi_array< rw::math::Vector3D<>, 2 > VertexMatrix;
+        typedef boost::multi_array<rw::math::Vector3D<>, 2> VertexMatrix;
 
         /**
          * @brief constructor
@@ -58,14 +57,14 @@ namespace rw { namespace sensor {
          * @param cell_width [in] width of cell
          * @param cell_height [in] height of cell
          */
-        TactileArrayModel (const std::string& name, rw::core::Ptr<rw::kinematics::Frame> sensorframe,
-                           const rw::math::Transform3D<>& fThmap, const ValueMatrix& heightMap,
-                           double cell_width, double cell_height);
+        TactileArrayModel(const std::string& name, rw::core::Ptr<rw::kinematics::Frame> sensorframe,
+                          const rw::math::Transform3D<>& fThmap, const ValueMatrix& heightMap,
+                          double cell_width, double cell_height);
 
         /**
          * @brief destructor
          */
-        virtual ~TactileArrayModel ();
+        virtual ~TactileArrayModel();
 
         /**
          * @brief gets the size of an individual tactile cell with coordinates (x,y)
@@ -73,24 +72,23 @@ namespace rw { namespace sensor {
          * @param y
          * @return the dimensions of the tactile cell in meters
          */
-        rw::math::Vector2D<> getTexelSize (int x, int y) const;
+        rw::math::Vector2D<> getTexelSize(int x, int y) const;
 
         /**
          * @brief get the minimum and maximum pressure capability of any tactile
          * cell in the TactileArray
          * @return min and max pressure in Pa
          */
-        std::pair< double, double > getPressureLimit () const;
+        std::pair<double, double> getPressureLimit() const;
 
         /**
          * @brief set pressure limits. should define min max of any tactile cell in array
          * @param min [in] min pressure in Pa
          * @param max [in] max pressure in Pa
          */
-        void setPressureLimit (double min, double max);
-        void setPressureLimit (std::pair< double, double > range)
-        {
-            setPressureLimit (range.first, range.second);
+        void setPressureLimit(double min, double max);
+        void setPressureLimit(std::pair<double, double> range) {
+            setPressureLimit(range.first, range.second);
         };
 
         /**
@@ -98,34 +96,34 @@ namespace rw { namespace sensor {
          * realtive to the transform.
          * @return
          */
-        const VertexMatrix& getVertexGrid () const;
+        const VertexMatrix& getVertexGrid() const;
 
         /**
          * @brief a transformation from the sensor frame to the geometric data of
          * the tactile array.
          * @return
          */
-        const rw::math::Transform3D<>& getTransform () const;
+        const rw::math::Transform3D<>& getTransform() const;
 
         /**
          * @brief a matrix with position of each tactile cell center. The coordinates
          * are described relative to the TactileArray transform (see getTransform())
          * @return a matrix describing the center of each tactile cell.
          */
-        const VertexMatrix& getCenters () const;
+        const VertexMatrix& getCenters() const;
 
         /**
          * @brief a matrix of normals that are described relative to each tactile
          * cell center.
          * @return
          */
-        const VertexMatrix& getNormals () const;
+        const VertexMatrix& getNormals() const;
 
         //! get width of tactile array
-        int getWidth () const;
+        int getWidth() const;
 
         //! get height of tactile array
-        int getHeight () const;
+        int getHeight() const;
 
         //************** the statefull interface (dynamic states) ***************
         /**
@@ -134,8 +132,8 @@ namespace rw { namespace sensor {
          * @param state [in] state to get the values from
          * @return matrix of texel pressure values
          */
-        ValueMatrix& getTexelData (rw::kinematics::State& state) const;
-        const ValueMatrix& getTexelData (const rw::kinematics::State& state) const;
+        ValueMatrix& getTexelData(rw::kinematics::State& state) const;
+        const ValueMatrix& getTexelData(const rw::kinematics::State& state) const;
 
         /**
          * @brief set the pressure on each texel of the TactileArray in
@@ -143,32 +141,28 @@ namespace rw { namespace sensor {
          * @param data [in] pressure values
          * @param state [in] state to set the values in
          */
-        void setTexelData (const ValueMatrix& data, rw::kinematics::State& state) const;
+        void setTexelData(const ValueMatrix& data, rw::kinematics::State& state) const;
 
       protected:
         //! cache to store state information
         class TactileModelCache : public rw::kinematics::StateCache
         {
           public:
-            typedef rw::core::Ptr< TactileModelCache > Ptr;
-            rw::core::Ptr< ValueMatrix > _data;
+            typedef rw::core::Ptr<TactileModelCache> Ptr;
+            rw::core::Ptr<ValueMatrix> _data;
 
             //! constructor
-            TactileModelCache (){};
+            TactileModelCache(){};
 
-            size_t size () const
-            {
+            size_t size() const {
                 size_t stmp = 0;
-                if (_data != NULL)
-                    stmp += _data->cols () * _data->rows () * sizeof (float);
+                if(_data != NULL) stmp += _data->cols() * _data->rows() * sizeof(float);
                 return stmp;
             };
 
-            virtual rw::core::Ptr< StateCache > clone () const
-            {
-                TactileModelCache::Ptr cache = rw::core::ownedPtr (new TactileModelCache (*this));
-                if (_data != NULL)
-                    cache->_data = rw::core::ownedPtr (new ValueMatrix (*_data));
+            virtual rw::core::Ptr<StateCache> clone() const {
+                TactileModelCache::Ptr cache = rw::core::ownedPtr(new TactileModelCache(*this));
+                if(_data != NULL) cache->_data = rw::core::ownedPtr(new ValueMatrix(*_data));
                 return cache;
             };
         };
@@ -179,7 +173,7 @@ namespace rw { namespace sensor {
         double _cellWidth, _cellHeight;
         double _minPressure, _maxPressure;
 
-        rw::kinematics::StatelessData< int > _sdata;
+        rw::kinematics::StatelessData<int> _sdata;
 
         VertexMatrix _vertexGrid, _cellCenters, _cellNormals;
     };

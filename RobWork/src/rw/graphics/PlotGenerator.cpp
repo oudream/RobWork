@@ -20,44 +20,36 @@
 using namespace rw::core;
 using rw::graphics::PlotGenerator;
 
-PlotGenerator::Factory::Factory():
-    ExtensionPoint< PlotGenerator > ("rw.graphics.PlotGenerator", "Generator that creates plots.")
-{
-}
+PlotGenerator::Factory::Factory() :
+    ExtensionPoint<PlotGenerator>("rw.graphics.PlotGenerator", "Generator that creates plots.") {}
 
-PlotGenerator::Ptr
-PlotGenerator::Factory::getPlotGenerator (const std::string& implementation)
-{
+PlotGenerator::Ptr PlotGenerator::Factory::getPlotGenerator(const std::string& implementation) {
     PlotGenerator::Factory ep;
-    const std::vector< Extension::Ptr > exts = ep.getExtensions ();
-    for (const Extension::Ptr& ext : exts) {
-        if (ext == nullptr)
-            continue;
-        if (ext->getProperties ().get ("generator", ext->getName ()) == implementation) {
-            return ext->getObject ().cast< PlotGenerator > ();
+    const std::vector<Extension::Ptr> exts = ep.getExtensions();
+    for(const Extension::Ptr& ext : exts) {
+        if(ext == nullptr) continue;
+        if(ext->getProperties().get("generator", ext->getName()) == implementation) {
+            return ext->getObject().cast<PlotGenerator>();
         }
     }
     return nullptr;
 }
 
-bool PlotGenerator::Factory::hasPlotGenerator (const std::string& implementation)
-{
+bool PlotGenerator::Factory::hasPlotGenerator(const std::string& implementation) {
     PlotGenerator::Factory ep;
-    const std::vector< Extension::Descriptor > exts = ep.getExtensionDescriptors ();
-    for (const Extension::Descriptor& ext : exts) {
-        if (ext.getProperties ().get ("generator", ext.name) == implementation)
-            return true;
+    const std::vector<Extension::Descriptor> exts = ep.getExtensionDescriptors();
+    for(const Extension::Descriptor& ext : exts) {
+        if(ext.getProperties().get("generator", ext.name) == implementation) return true;
     }
     return false;
 }
 
-std::vector< std::string > PlotGenerator::Factory::getPlotGenerators ()
-{
+std::vector<std::string> PlotGenerator::Factory::getPlotGenerators() {
     PlotGenerator::Factory ep;
-    std::vector< std::string > ids;
-    const std::vector< Extension::Descriptor > exts = ep.getExtensionDescriptors ();
-    for (const Extension::Descriptor& ext : exts) {
-        ids.push_back (ext.getProperties ().get ("generator", ext.name));
+    std::vector<std::string> ids;
+    const std::vector<Extension::Descriptor> exts = ep.getExtensionDescriptors();
+    for(const Extension::Descriptor& ext : exts) {
+        ids.push_back(ext.getProperties().get("generator", ext.name));
     }
     return ids;
 }

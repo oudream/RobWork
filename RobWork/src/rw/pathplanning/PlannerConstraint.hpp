@@ -64,63 +64,62 @@ namespace rw { namespace pathplanning {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< PlannerConstraint > Ptr;
+        typedef rw::core::Ptr<PlannerConstraint> Ptr;
         //! @brief smart pointer type to this const class
-        typedef rw::core::Ptr< const PlannerConstraint > CPtr;
+        typedef rw::core::Ptr<const PlannerConstraint> CPtr;
 
         /**
          * @brief Default constructed without constraints initialized
          */
-        PlannerConstraint ();
+        PlannerConstraint();
 
         /**
            @brief A (QConstraintPtr, QEdgeConstraintPtr) tuple.
 
            The constraints must be non-null.
         */
-        PlannerConstraint (rw::core::Ptr< rw::pathplanning::QConstraint > constraint,
-                           QEdgeConstraint::Ptr edge);
+        PlannerConstraint(rw::core::Ptr<rw::pathplanning::QConstraint> constraint,
+                          QEdgeConstraint::Ptr edge);
 
         /**
          * @brief Forwards call to the QConstraint wrapped by the PlannerConstraint
          */
-        bool inCollision (const rw::math::Q& q);
+        bool inCollision(const rw::math::Q& q);
 
         /**
          * @brief Forwards call to the QEdgeConstraint wrapped by the PlannerConstraint
          */
-        bool inCollision (const rw::math::Q& q1, const rw::math::Q& q2);
+        bool inCollision(const rw::math::Q& q1, const rw::math::Q& q2);
 
         /**
            @brief The configuration constraint.
         */
-        QConstraint& getQConstraint () const { return *_constraint; }
+        QConstraint& getQConstraint() const { return *_constraint; }
 
         /**
            @brief The edge constraint.
         */
-        QEdgeConstraint& getQEdgeConstraint () const { return *_edge; }
+        QEdgeConstraint& getQEdgeConstraint() const { return *_edge; }
 
         /**
            @brief The configuration constraint pointer.
         */
-        const rw::core::Ptr< rw::pathplanning::QConstraint >& getQConstraintPtr () const
-        {
+        const rw::core::Ptr<rw::pathplanning::QConstraint>& getQConstraintPtr() const {
             return _constraint;
         }
 
         /**
            @brief The edge constraint pointer.
         */
-        const QEdgeConstraint::Ptr& getQEdgeConstraintPtr () const { return _edge; }
+        const QEdgeConstraint::Ptr& getQEdgeConstraintPtr() const { return _edge; }
 
         /**
            @brief A (QConstraintPtr, QEdgeConstraintPtr) tuple.
 
            This is equivalent to the standard constructor.
         */
-        static PlannerConstraint make (rw::core::Ptr< rw::pathplanning::QConstraint > constraint,
-                                       QEdgeConstraint::Ptr edge);
+        static PlannerConstraint make(rw::core::Ptr<rw::pathplanning::QConstraint> constraint,
+                                      QEdgeConstraint::Ptr edge);
 
         /**
          * @brief Planner constraint for a collision detector.
@@ -128,9 +127,9 @@ namespace rw { namespace pathplanning {
          * Path are checked discretely for a default device dependent
          * resolution.
          */
-        static PlannerConstraint make (rw::core::Ptr< rw::proximity::CollisionDetector > detector,
-                                       rw::core::Ptr< const rw::models::Device > device,
-                                       const rw::kinematics::State& state);
+        static PlannerConstraint make(rw::core::Ptr<rw::proximity::CollisionDetector> detector,
+                                      rw::core::Ptr<const rw::models::Device> device,
+                                      const rw::kinematics::State& state);
 
         /**
          * @brief Planner constraint for a collision strategy.
@@ -140,10 +139,10 @@ namespace rw { namespace pathplanning {
          *
          * The default collision setup of the workcell is used.
          */
-        static PlannerConstraint make (rw::core::Ptr< rw::proximity::CollisionStrategy > strategy,
-                                       rw::core::Ptr< rw::models::WorkCell > workcell,
-                                       rw::core::Ptr< const rw::models::Device > device,
-                                       const rw::kinematics::State& state);
+        static PlannerConstraint make(rw::core::Ptr<rw::proximity::CollisionStrategy> strategy,
+                                      rw::core::Ptr<rw::models::WorkCell> workcell,
+                                      rw::core::Ptr<const rw::models::Device> device,
+                                      const rw::kinematics::State& state);
 
         /**
          * @brief Planner constraint for a collision strategy and collision
@@ -152,14 +151,14 @@ namespace rw { namespace pathplanning {
          * Path are checked discretely for a default device dependent
          * resolution.
          */
-        static PlannerConstraint make (rw::core::Ptr< rw::proximity::CollisionStrategy > strategy,
-                                       const rw::proximity::CollisionSetup& setup,
-                                       rw::core::Ptr< rw::models::WorkCell > workcell,
-                                       rw::core::Ptr< const rw::models::Device > device,
-                                       const rw::kinematics::State& state);
+        static PlannerConstraint make(rw::core::Ptr<rw::proximity::CollisionStrategy> strategy,
+                                      const rw::proximity::CollisionSetup& setup,
+                                      rw::core::Ptr<rw::models::WorkCell> workcell,
+                                      rw::core::Ptr<const rw::models::Device> device,
+                                      const rw::kinematics::State& state);
 
       private:
-        rw::core::Ptr< rw::pathplanning::QConstraint > _constraint;
+        rw::core::Ptr<rw::pathplanning::QConstraint> _constraint;
         QEdgeConstraint::Ptr _edge;
     };
 

@@ -61,15 +61,15 @@ namespace rwlibs { namespace algorithms {
          *
          * @param device [in] Device to solve for         * @param state [in] State of the workcell
          */
-        IKQPSolver (rw::models::SerialDevice* device, const rw::kinematics::State& state);
+        IKQPSolver(rw::models::SerialDevice* device, const rw::kinematics::State& state);
 
         /**
          * @copydoc rw::invkin::IterativeIK::solve
          */
-        std::vector< rw::math::Q > solve (const rw::math::Transform3D<>& baseTend,
-                                          const rw::kinematics::State& state) const;
+        std::vector<rw::math::Q> solve(const rw::math::Transform3D<>& baseTend,
+                                       const rw::kinematics::State& state) const;
 
-        void setCheckJointLimits (bool limit){};
+        void setCheckJointLimits(bool limit){};
 
       private:
         QPController _qpcontroller;
@@ -78,9 +78,9 @@ namespace rwlibs { namespace algorithms {
         rw::kinematics::State _state;
         double _maxQuatStep;
 
-        bool performLocalSearch (const rw::models::SerialDevice* device,
-                                 const rw::math::Transform3D<>& bTed, double maxError,
-                                 rw::kinematics::State& state, unsigned int maxIter) const;
+        bool performLocalSearch(const rw::models::SerialDevice* device,
+                                const rw::math::Transform3D<>& bTed, double maxError,
+                                rw::kinematics::State& state, unsigned int maxIter) const;
     };
 
 }}    // namespace rwlibs::algorithms

@@ -18,11 +18,10 @@
 #ifndef RWLIBS_CALIBRATION_WORKCELLCALIBRATION_HPP
 #define RWLIBS_CALIBRATION_WORKCELLCALIBRATION_HPP
 
-#include <vector>
-
+#include <rw/core/Ptr.hpp>
 #include <rwlibs/calibration/Calibration.hpp>
 
-#include <rw/core/Ptr.hpp>
+#include <vector>
 
 namespace rwlibs { namespace calibration {
 
@@ -37,42 +36,42 @@ namespace rwlibs { namespace calibration {
     {
       public:
         /** @brief Declaration of smart pointer */
-        typedef rw::core::Ptr< WorkCellCalibration > Ptr;
+        typedef rw::core::Ptr<WorkCellCalibration> Ptr;
 
         /**
          * @brief Construct an empty work cell calibration
          */
-        WorkCellCalibration ();
+        WorkCellCalibration();
 
         /**
          * @brief Destructor
          */
-        virtual ~WorkCellCalibration ();
+        virtual ~WorkCellCalibration();
 
         /**
          * @brief Adds a calibration
          * @param calibration [in] Calibration to add
          */
-        void addCalibration (Calibration::Ptr calibration);
+        void addCalibration(Calibration::Ptr calibration);
 
         /**
          * @brief Returns all calibrations
          * @return List with all calibrations
          */
-        const std::vector< Calibration::Ptr >& getCalibrations () const;
+        const std::vector<Calibration::Ptr>& getCalibrations() const;
 
       protected:
         /**
          * @brief Implementation of the apply method
          */
-        virtual void doApply ();
+        virtual void doApply();
         /**
          * @brief Implementation of the revert method
          */
-        virtual void doRevert ();
+        virtual void doRevert();
 
       private:
-        std::vector< Calibration::Ptr > _calibrations;
+        std::vector<Calibration::Ptr> _calibrations;
     };
 
     /* @} */

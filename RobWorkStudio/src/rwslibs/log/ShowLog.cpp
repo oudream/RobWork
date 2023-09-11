@@ -41,36 +41,35 @@ using namespace rws;
 class WriterWrapper : public LogWriter
 {
   public:
-    typedef std::pair< std::string, QColor > Message;
-    WriterWrapper (ShowLog* slog, QColor color) : _slog (slog), _color (color), _tabLevel (4) {}
+    typedef std::pair<std::string, QColor> Message;
+    WriterWrapper(ShowLog* slog, QColor color) : _slog(slog), _color(color), _tabLevel(4) {}
 
-    virtual ~WriterWrapper () {}
+    virtual ~WriterWrapper() {}
 
-    std::vector< std::pair< std::string, QColor > > _msgQueue;
+    std::vector<std::pair<std::string, QColor>> _msgQueue;
 
   protected:
     /**
      * @copydoc LogWriter::doFlush
      */
-    virtual void doFlush () {}
+    virtual void doFlush() {}
 
     /**
      * @copydoc LogWriter::doWrite
      */
-    virtual void doWrite (const std::string& input)
-    {
+    virtual void doWrite(const std::string& input) {
         std::stringstream sstr;
-        sstr << std::setw (_tabLevel) << std::setfill (' ');
+        sstr << std::setw(_tabLevel) << std::setfill(' ');
         sstr << input;
 
-        _msgQueue.push_back (Message (sstr.str ().c_str (), _color));
-        QApplication::postEvent (_slog, new QEvent ((QEvent::Type) MESSAGE_ADDED_EVENT));
+        _msgQueue.push_back(Message(sstr.str().c_str(), _color));
+        QApplication::postEvent(_slog, new QEvent((QEvent::Type) MESSAGE_ADDED_EVENT));
     }
 
     /**
      * @copydoc LogWriter::doSetTabLevel
      */
-    void doSetTabLevel (int tabLevel) { _tabLevel = tabLevel; }
+    void doSetTabLevel(int tabLevel) { _tabLevel = tabLevel; }
 
   private:
     ShowLog* _slog;
@@ -78,100 +77,85 @@ class WriterWrapper : public LogWriter
     int _tabLevel;
 };
 
-QIcon ShowLog::getIcon ()
-{
+QIcon ShowLog::getIcon() {
     //  Q_INIT_RESOURCE(resources);
-    return QIcon (":/log.png");
+    return QIcon(":/log.png");
 }
 
-ShowLog::ShowLog () : RobWorkStudioPlugin ("Log", getIcon ())
-{
-    _editor = new QTextEdit (this);
-    _editor->setReadOnly (true);
-    _editor->setCurrentFont (QFont ("Courier New", 10));
+ShowLog::ShowLog() : RobWorkStudioPlugin("Log", getIcon()) {
+    _editor = new QTextEdit(this);
+    _editor->setReadOnly(true);
+    _editor->setCurrentFont(QFont("Courier New", 10));
 
-    _endCursor  = new QTextCursor ();
-    *_endCursor = _editor->textCursor ();
+    _endCursor  = new QTextCursor();
+    *_endCursor = _editor->textCursor();
 
-    setWidget (_editor);    // Sets the widget on the QDockWidget
+    setWidget(_editor);    // Sets the widget on the QDockWidget
 
-    _writers.push_back (ownedPtr (new WriterWrapper (this, Qt::black)));
-    _writers.push_back (ownedPtr (new WriterWrapper (this, Qt::darkYellow)));
-    _writers.push_back (ownedPtr (new WriterWrapper (this, Qt::darkRed)));
+    _writers.push_back(ownedPtr(new WriterWrapper(this, Qt::black)));
+    _writers.push_back(ownedPtr(new WriterWrapper(this, Qt::darkYellow)));
+    _writers.push_back(ownedPtr(new WriterWrapper(this, Qt::darkRed)));
 }
 
-ShowLog::~ShowLog ()
-{
+ShowLog::~ShowLog() {
     delete _endCursor;
 }
 
-bool ShowLog::event (QEvent* event)
-{
-    if (event->type () == MESSAGE_ADDED_EVENT) {
-        for (rw::core::Ptr< WriterWrapper > writer : _writers) {
-            for (unsigned int i = 0; i < writer->_msgQueue.size (); i++) {
-                write (writer->_msgQueue[i].first, writer->_msgQueue[i].second);
+bool ShowLog::event(QEvent* event) {
+    if(event->type() == MESSAGE_ADDED_EVENT) {
+        for(rw::core::Ptr<WriterWrapper> writer : _writers) {
+            for(unsigned int i = 0; i < writer->_msgQueue.size(); i++) {
+                write(writer->_msgQueue[i].first, writer->_msgQueue[i].second);
             }
-            writer->_msgQueue.clear ();
+            writer->_msgQueue.clear();
         }
         return true;
     }
-    else {
-        event->ignore ();
-    }
+    else { event->ignore(); }
 
-    return RobWorkStudioPlugin::event (event);
+    return RobWorkStudioPlugin::event(event);
 }
 
-void ShowLog::open (rw::models::WorkCell* workcell)
-{
-    if (workcell == NULL)
-        return;
+void ShowLog::open(rw::models::WorkCell* workcell) {
+    if(workcell == NULL) return;
 
-    log ().info () << "WorkCell opened: " << StringUtil::quote (workcell->getName ()) << std::endl;
+    log().info() << "WorkCell opened: " << StringUtil::quote(workcell->getName()) << std::endl;
 }
 
-void ShowLog::close ()
-{
-    log ().info () << "WorkCell closed!" << std::endl;
+void ShowLog::close() {
+    log().info() << "WorkCell closed!" << std::endl;
 }
 
-void ShowLog::receiveMessage (const std::string& plugin, const std::string& id,
-                              const rw::core::Message& msg)
-{
-    RW_WARN ("Deprecated function, use log().info() << \"your string\" instead");
+void ShowLog::receiveMessage(const std::string& plugin, const std::string& id,
+                             const rw::core::Message& msg) {
+    RW_WARN("Deprecated function, use log().info() << \"your string\" instead");
 }
 
-void ShowLog::write (const std::string& str, const QColor& color)
-{
-    _editor->setTextCursor (*_endCursor);
-    _editor->setTextColor (color);
+void ShowLog::write(const std::string& str, const QColor& color) {
+    _editor->setTextCursor(*_endCursor);
+    _editor->setTextColor(color);
 
-    _editor->insertPlainText (str.c_str ());
-    *_endCursor = _editor->textCursor ();
+    _editor->insertPlainText(str.c_str());
+    *_endCursor = _editor->textCursor();
 }
 
-void ShowLog::frameSelectedListener (rw::kinematics::Frame* frame)
-{
-    if (frame == NULL)
-        return;
-    log ().info () << "Frame selected: " << frame->getName () << std::endl;
+void ShowLog::frameSelectedListener(rw::kinematics::Frame* frame) {
+    if(frame == NULL) return;
+    log().info() << "Frame selected: " << frame->getName() << std::endl;
 }
 
-void ShowLog::initialize ()
-{
-    setParent (getRobWorkStudio ());
-    getRobWorkStudio ()->frameSelectedEvent ().add (
-        boost::bind (&ShowLog::frameSelectedListener, this, boost::arg< 1 > ()), this);
+void ShowLog::initialize() {
+    setParent(getRobWorkStudio());
+    getRobWorkStudio()->frameSelectedEvent().add(
+        boost::bind(&ShowLog::frameSelectedListener, this, boost::arg<1>()), this);
 
-    log ().setWriterForMask (((Log::AllMask) ^ (Log::WarningMask | Log::DebugMask | Log::FatalMask |
-                                                Log::CriticalMask | Log::ErrorMask)),
-                             _writers[0]);
-    log ().setWriterForMask ((Log::WarningMask | Log::DebugMask), _writers[1]);
-    log ().setWriterForMask ((Log::FatalMask | Log::CriticalMask | Log::ErrorMask), _writers[2]);
+    log().setWriterForMask(((Log::AllMask) ^ (Log::WarningMask | Log::DebugMask | Log::FatalMask |
+                                              Log::CriticalMask | Log::ErrorMask)),
+                           _writers[0]);
+    log().setWriterForMask((Log::WarningMask | Log::DebugMask), _writers[1]);
+    log().setWriterForMask((Log::FatalMask | Log::CriticalMask | Log::ErrorMask), _writers[2]);
 }
 
-void ShowLog::flush ()
-{
-    _editor->clear ();
+void ShowLog::flush() {
+    _editor->clear();
 }

@@ -19,7 +19,7 @@
 #define RWLIBS_PATHOPTIMIZATION_CLEARANCECALCULATOR_HPP
 #if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
-#endif 
+#endif
 
 namespace rw { namespace kinematics {
     class State;
@@ -44,14 +44,14 @@ namespace rwlibs { namespace pathoptimization {
     {
       public:
         //! A pointer to a ClearanceCalculator.
-        typedef typename rw::core::Ptr< ClearanceCalculator > Ptr;
+        typedef typename rw::core::Ptr<ClearanceCalculator> Ptr;
         //! A pointer to a const ClearanceCalculator.
-        typedef typename rw::core::Ptr< const ClearanceCalculator > CPtr;
+        typedef typename rw::core::Ptr<const ClearanceCalculator> CPtr;
 
         /**
          * @brief Destructor
          */
-        virtual ~ClearanceCalculator ();
+        virtual ~ClearanceCalculator();
 
         /**
          * @brief Calculates Clearance for the state
@@ -59,13 +59,13 @@ namespace rwlibs { namespace pathoptimization {
          * @param state [in] State for which to calculate the clearance
          * @return The clearance.
          */
-        virtual double clearance (const rw::kinematics::State& state) const = 0;
+        virtual double clearance(const rw::kinematics::State& state) const = 0;
     };
 
     /**
      * @brief Pointer to a ClearanceCalculator
      */
-    typedef rw::core::Ptr< ClearanceCalculator > ClearanceCalculatorPtr;
+    typedef rw::core::Ptr<ClearanceCalculator> ClearanceCalculatorPtr;
 
     /* @} */
 

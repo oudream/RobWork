@@ -12,7 +12,7 @@ namespace rw { namespace kinematics {
 namespace rwsim { namespace simulator {
 
     //! @brief a group of constraint edges
-    typedef std::vector< ConstraintEdge* > CEdgeGroup;
+    typedef std::vector<ConstraintEdge*> CEdgeGroup;
 
     /**
      * @brief parameters for the constraint solver
@@ -20,7 +20,7 @@ namespace rwsim { namespace simulator {
     struct SolverInfo
     {
       public:
-        SolverInfo (double timestep) : dt (timestep) {}
+        SolverInfo(double timestep) : dt(timestep) {}
         double dt;
     };
 
@@ -36,25 +36,25 @@ namespace rwsim { namespace simulator {
     {
       protected:
         //! @brief constructor
-        ConstraintSolver (){};
+        ConstraintSolver(){};
 
       public:
         //! @brief destructor
-        virtual ~ConstraintSolver (){};
+        virtual ~ConstraintSolver(){};
 
         /**
          * @brief solves the constraints forces of multiple groups of constraints
          * @return true if all constraints where solved satisfactory
          */
-        virtual bool solve (std::vector< CEdgeGroup >& groups, SolverInfo& info,
-                            rw::kinematics::State& state);
+        virtual bool solve(std::vector<CEdgeGroup>& groups, SolverInfo& info,
+                           rw::kinematics::State& state);
 
         /**
          * @brief solves the constraints forces of a group of constraints
          * @return true if all constraints where solved satisfactory
          */
-        virtual bool solveGroup (CEdgeGroup& group, SolverInfo& info,
-                                 rw::kinematics::State& state) = 0;
+        virtual bool solveGroup(CEdgeGroup& group, SolverInfo& info,
+                                rw::kinematics::State& state) = 0;
     };
 
 }}    // namespace rwsim::simulator

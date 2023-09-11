@@ -20,81 +20,61 @@
 using namespace rw::geometry;
 using namespace rw::math;
 
-ImplicitFace::ImplicitFace ()
-{}
+ImplicitFace::ImplicitFace() {}
 
-ImplicitFace::ImplicitFace (const ImplicitSurface::CPtr surface,
-                            const std::vector< Vector3D<> >& vertices) :
-    _surface (surface),
-    _curves (vertices.size ()), _vertices (vertices)
-{}
+ImplicitFace::ImplicitFace(const ImplicitSurface::CPtr surface,
+                           const std::vector<Vector3D<>>& vertices) :
+    _surface(surface),
+    _curves(vertices.size()), _vertices(vertices) {}
 
-ImplicitFace::~ImplicitFace ()
-{}
+ImplicitFace::~ImplicitFace() {}
 
-const ImplicitSurface& ImplicitFace::surface () const
-{
+const ImplicitSurface& ImplicitFace::surface() const {
     return *_surface;
 }
 
-const ParametricCurve& ImplicitFace::getCurve (std::size_t i) const
-{
+const ParametricCurve& ImplicitFace::getCurve(std::size_t i) const {
     return *_curves[i];
 }
 
-void ImplicitFace::transform (const Vector3D<>& P)
-{
-    _surface = _surface->transform (P);
-    for (std::size_t i = 0; i < _vertices.size (); i++) {
-        _vertices[i] += P;
-    }
-    for (std::size_t i = 0; i < _curves.size (); i++) {
-        _curves[i] = _curves[i]->transform (P);
-    }
+void ImplicitFace::transform(const Vector3D<>& P) {
+    _surface = _surface->transform(P);
+    for(std::size_t i = 0; i < _vertices.size(); i++) { _vertices[i] += P; }
+    for(std::size_t i = 0; i < _curves.size(); i++) { _curves[i] = _curves[i]->transform(P); }
 }
 
-void ImplicitFace::transform (const Transform3D<>& T)
-{
-    _surface = _surface->transform (T);
-    for (std::size_t i = 0; i < _vertices.size (); i++) {
-        _vertices[i] = T * _vertices[i];
-    }
-    for (std::size_t i = 0; i < _curves.size (); i++) {
-        _curves[i] = _curves[i]->transform (T);
-    }
+void ImplicitFace::transform(const Transform3D<>& T) {
+    _surface = _surface->transform(T);
+    for(std::size_t i = 0; i < _vertices.size(); i++) { _vertices[i] = T * _vertices[i]; }
+    for(std::size_t i = 0; i < _curves.size(); i++) { _curves[i] = _curves[i]->transform(T); }
 }
 
-void ImplicitFace::setSurface (const ImplicitSurface& surface)
-{
-    _surface = surface.clone ();
+void ImplicitFace::setSurface(const ImplicitSurface& surface) {
+    _surface = surface.clone();
 }
 
-void ImplicitFace::setCurve (const std::size_t vertex, const ParametricCurve::CPtr curve)
-{
-    if (vertex >= _vertices.size ()) {
-        _vertices.resize (vertex + 1);
-        _curves.resize (vertex + 1);
+void ImplicitFace::setCurve(const std::size_t vertex, const ParametricCurve::CPtr curve) {
+    if(vertex >= _vertices.size()) {
+        _vertices.resize(vertex + 1);
+        _curves.resize(vertex + 1);
     }
     _curves[vertex] = curve;
 }
 
-void ImplicitFace::setCurves (const std::vector< ParametricCurve::CPtr >& curves)
-{
+void ImplicitFace::setCurves(const std::vector<ParametricCurve::CPtr>& curves) {
     _curves = curves;
-    _vertices.resize (curves.size ());
+    _vertices.resize(curves.size());
 }
 
-void ImplicitFace::setVertex (std::size_t index, const Vector3D<>& vertex)
-{
-    if (index >= _vertices.size ()) {
-        _vertices.resize (index + 1);
-        _curves.resize (index + 1);
+void ImplicitFace::setVertex(std::size_t index, const Vector3D<>& vertex) {
+    if(index >= _vertices.size()) {
+        _vertices.resize(index + 1);
+        _curves.resize(index + 1);
     }
     _vertices[index] = vertex;
 }
 
-void ImplicitFace::setVertices (const std::vector< Vector3D<> >& vertices)
-{
+void ImplicitFace::setVertices(const std::vector<Vector3D<>>& vertices) {
     _vertices = vertices;
-    _curves.resize (vertices.size ());
+    _curves.resize(vertices.size());
 }

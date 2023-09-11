@@ -20,7 +20,7 @@
 
 #if !defined(SWIG)
 #include <rw/models/JacobianCalculator.hpp>
-#endif 
+#endif
 
 namespace rw { namespace kinematics {
     class Frame;
@@ -57,30 +57,30 @@ namespace rw { namespace models {
          * @param tcps [in] List of tool end-effectors for which to calculate the Jacobian.
          * @param state [in] State giving how frame are connected
          */
-        JointDeviceJacobianCalculator (rw::core::Ptr< rw::models::JointDevice > device,
-                                       rw::core::Ptr<const rw::kinematics::Frame> base,
-                                       const std::vector< rw::kinematics::Frame* >& tcps,
-                                       const rw::kinematics::State& state);
+        JointDeviceJacobianCalculator(rw::core::Ptr<rw::models::JointDevice> device,
+                                      rw::core::Ptr<const rw::kinematics::Frame> base,
+                                      const std::vector<rw::kinematics::Frame*>& tcps,
+                                      const rw::kinematics::State& state);
 
         /**
          * @brief Destructor
          */
-        virtual ~JointDeviceJacobianCalculator ();
+        virtual ~JointDeviceJacobianCalculator();
 
         /**
          * @copydoc JacobianCalculator::get(const rw::kinematics::State& state) const
          */
         // virtual rw::math::Jacobian get(const rw::kinematics::FKTable& fk) const;
-        virtual rw::math::Jacobian get (const rw::kinematics::State& state) const;
+        virtual rw::math::Jacobian get(const rw::kinematics::State& state) const;
 
       private:
         rw::core::Ptr<const rw::kinematics::Frame> _base;
-        std::vector< rw::kinematics::Frame* > _tcps;
+        std::vector<rw::kinematics::Frame*> _tcps;
         size_t _dof;
-        std::vector< rw::models::Joint* > _joints;    // Ordered list with the joints to include
-        typedef std::vector< std::pair< const rw::models::Joint*, size_t > > JacobianSetup;
+        std::vector<rw::models::Joint*> _joints;    // Ordered list with the joints to include
+        typedef std::vector<std::pair<const rw::models::Joint*, size_t>> JacobianSetup;
 
-        std::vector< JacobianSetup > _jacobianSetups;
+        std::vector<JacobianSetup> _jacobianSetups;
     };
 
 }}    // namespace rw::models

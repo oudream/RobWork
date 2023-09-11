@@ -33,104 +33,90 @@ using namespace rw::math;
 using namespace rw::core;
 
 namespace {
-template< class X >
-Ptr< Trajectory< X > > makeLinearXTrajectory (const std::vector< Timed< X > >& path)
-{
-    Ptr< InterpolatorTrajectory< X > > trajectory = ownedPtr (new InterpolatorTrajectory< X >);
-    if (path.size () == 1) {
-        return TrajectoryFactory::makeFixedTrajectory (path.front ().getValue (), 0);
+template<class X> Ptr<Trajectory<X>> makeLinearXTrajectory(const std::vector<Timed<X>>& path) {
+    Ptr<InterpolatorTrajectory<X>> trajectory = ownedPtr(new InterpolatorTrajectory<X>);
+    if(path.size() == 1) {
+        return TrajectoryFactory::makeFixedTrajectory(path.front().getValue(), 0);
     }
-    if (!path.empty ()) {
+    if(!path.empty()) {
         double dt = 0;
-        for (size_t i = 1; i < path.size (); i++) {
-            dt = path[i].getTime () - path[i - 1].getTime ();
-            if (!(dt > 0)) {
-                RW_WARN ("dt must be greater than 0. dt=" << dt << ". dt is force to 1e-15.");
+        for(size_t i = 1; i < path.size(); i++) {
+            dt = path[i].getTime() - path[i - 1].getTime();
+            if(!(dt > 0)) {
+                RW_WARN("dt must be greater than 0. dt=" << dt << ". dt is force to 1e-15.");
                 dt = 1e-15;
             }
-            trajectory->add (ownedPtr (
-                new LinearInterpolator< X > (path[i - 1].getValue (), path[i].getValue (), dt)));
+            trajectory->add(ownedPtr(
+                new LinearInterpolator<X>(path[i - 1].getValue(), path[i].getValue(), dt)));
         }
     }
     return trajectory;
 }
 }    // namespace
 
-StateTrajectory::Ptr TrajectoryFactory::makeFixedTrajectory (const State& state, double duration)
-{
-    Ptr< InterpolatorTrajectory< State > > trajectory =
-        ownedPtr (new InterpolatorTrajectory< State > ());
-    trajectory->add (ownedPtr (new FixedInterpolator< State > (state, duration)));
+StateTrajectory::Ptr TrajectoryFactory::makeFixedTrajectory(const State& state, double duration) {
+    Ptr<InterpolatorTrajectory<State>> trajectory = ownedPtr(new InterpolatorTrajectory<State>());
+    trajectory->add(ownedPtr(new FixedInterpolator<State>(state, duration)));
     return trajectory;
 }
 
-QTrajectory::Ptr TrajectoryFactory::makeFixedTrajectory (const rw::math::Q& q, double duration)
-{
-    Ptr< InterpolatorTrajectory< Q > > trajectory = ownedPtr (new InterpolatorTrajectory< Q > ());
-    trajectory->add (ownedPtr (new FixedInterpolator< Q > (q, duration)));
+QTrajectory::Ptr TrajectoryFactory::makeFixedTrajectory(const rw::math::Q& q, double duration) {
+    Ptr<InterpolatorTrajectory<Q>> trajectory = ownedPtr(new InterpolatorTrajectory<Q>());
+    trajectory->add(ownedPtr(new FixedInterpolator<Q>(q, duration)));
     return trajectory;
 }
 
-StateTrajectory::Ptr TrajectoryFactory::makeLinearTrajectory (const TimedStatePath& path)
-{
-    return makeLinearXTrajectory (path);
+StateTrajectory::Ptr TrajectoryFactory::makeLinearTrajectory(const TimedStatePath& path) {
+    return makeLinearXTrajectory(path);
 }
 
-StateTrajectory::Ptr TrajectoryFactory::makeLinearTrajectory (const StatePath& path,
-                                                              const WorkCell& workcell)
-{
-    return makeLinearTrajectory (TimedUtil::makeTimedStatePath (workcell, path));
+StateTrajectory::Ptr TrajectoryFactory::makeLinearTrajectory(const StatePath& path,
+                                                             const WorkCell& workcell) {
+    return makeLinearTrajectory(TimedUtil::makeTimedStatePath(workcell, path));
 }
 
-StateTrajectory::Ptr TrajectoryFactory::makeLinearTrajectoryUnitStep (const StatePath& path)
-{
+StateTrajectory::Ptr TrajectoryFactory::makeLinearTrajectoryUnitStep(const StatePath& path) {
     TimedStatePath timed;
     double time = 0;
-    for (const State& state : path) {
-        timed.push_back (Timed< State > (time, state));
+    for(const State& state : path) {
+        timed.push_back(Timed<State>(time, state));
         ++time;
     }
-    return makeLinearTrajectory (timed);
+    return makeLinearTrajectory(timed);
 }
 
-StateTrajectory::Ptr TrajectoryFactory::makeEmptyStateTrajectory ()
-{
-    return makeLinearTrajectory (TimedStatePath ());
+StateTrajectory::Ptr TrajectoryFactory::makeEmptyStateTrajectory() {
+    return makeLinearTrajectory(TimedStatePath());
 }
 
-QTrajectory::Ptr TrajectoryFactory::makeLinearTrajectory (const TimedQPath& path)
-{
-    return makeLinearXTrajectory (path);
+QTrajectory::Ptr TrajectoryFactory::makeLinearTrajectory(const TimedQPath& path) {
+    return makeLinearXTrajectory(path);
 }
 
-QTrajectory::Ptr TrajectoryFactory::makeLinearTrajectory (const QPath& path, const Q& speed)
-{
-    return makeLinearTrajectory (TimedUtil::makeTimedQPath (speed, path));
+QTrajectory::Ptr TrajectoryFactory::makeLinearTrajectory(const QPath& path, const Q& speed) {
+    return makeLinearTrajectory(TimedUtil::makeTimedQPath(speed, path));
 }
 
-QTrajectory::Ptr TrajectoryFactory::makeLinearTrajectory (const QPath& path, const Device& device)
-{
-    return makeLinearTrajectory (path, device.getVelocityLimits ());
+QTrajectory::Ptr TrajectoryFactory::makeLinearTrajectory(const QPath& path, const Device& device) {
+    return makeLinearTrajectory(path, device.getVelocityLimits());
 }
 
-QTrajectory::Ptr TrajectoryFactory::makeLinearTrajectory (const QPath& path, QMetric::Ptr metric)
-{
-    Ptr< InterpolatorTrajectory< Q > > trajectory = ownedPtr (new InterpolatorTrajectory< Q > ());
-    QPath::const_iterator it1                     = path.begin ();
-    QPath::const_iterator it2                     = path.begin ();
+QTrajectory::Ptr TrajectoryFactory::makeLinearTrajectory(const QPath& path, QMetric::Ptr metric) {
+    Ptr<InterpolatorTrajectory<Q>> trajectory = ownedPtr(new InterpolatorTrajectory<Q>());
+    QPath::const_iterator it1                 = path.begin();
+    QPath::const_iterator it2                 = path.begin();
     it2++;
-    for (; it2 != path.end (); ++it1, ++it2) {
-        double d = metric->distance (*it1, *it2);
-        Ptr< LinearInterpolator< Q > > interpolator =
-            ownedPtr (new LinearInterpolator< Q > (*it1, *it2, d));
-        trajectory->add (interpolator);
+    for(; it2 != path.end(); ++it1, ++it2) {
+        double d = metric->distance(*it1, *it2);
+        Ptr<LinearInterpolator<Q>> interpolator =
+            ownedPtr(new LinearInterpolator<Q>(*it1, *it2, d));
+        trajectory->add(interpolator);
     }
     return trajectory;
 }
 
-QTrajectory::Ptr TrajectoryFactory::makeEmptyQTrajectory ()
-{
-    return makeLinearTrajectory (TimedQPath ());
+QTrajectory::Ptr TrajectoryFactory::makeEmptyQTrajectory() {
+    return makeLinearTrajectory(TimedQPath());
 }
 
 /**
@@ -141,39 +127,37 @@ QTrajectory::Ptr TrajectoryFactory::makeEmptyQTrajectory ()
  * @param times [in] times for each segment
  */
 Transform3DTrajectory::Ptr
-TrajectoryFactory::makeLinearTrajectory (const Transform3DPath& path,
-                                         const std::vector< double >& times)
-{
-    RW_ASSERT (path.size () > 1);
-    RW_ASSERT (times.size () == path.size () - 1);
-    InterpolatorTrajectory< Transform3D<> >::Ptr trajectory =
-        ownedPtr (new InterpolatorTrajectory< Transform3D<> > ());
-    Transform3DPath::const_iterator it1 = path.begin ();
-    Transform3DPath::const_iterator it2 = path.begin ();
+TrajectoryFactory::makeLinearTrajectory(const Transform3DPath& path,
+                                        const std::vector<double>& times) {
+    RW_ASSERT(path.size() > 1);
+    RW_ASSERT(times.size() == path.size() - 1);
+    InterpolatorTrajectory<Transform3D<>>::Ptr trajectory =
+        ownedPtr(new InterpolatorTrajectory<Transform3D<>>());
+    Transform3DPath::const_iterator it1 = path.begin();
+    Transform3DPath::const_iterator it2 = path.begin();
     it2++;
-    std::vector< double >::const_iterator it3 = times.begin ();
-    for (; it2 != path.end (); ++it1, ++it2, ++it3) {
-        LinearInterpolator< Transform3D<> >::Ptr interpolator =
-            ownedPtr (new LinearInterpolator< Transform3D<> > (*it1, *it2, *it3));
-        trajectory->add (interpolator);
+    std::vector<double>::const_iterator it3 = times.begin();
+    for(; it2 != path.end(); ++it1, ++it2, ++it3) {
+        LinearInterpolator<Transform3D<>>::Ptr interpolator =
+            ownedPtr(new LinearInterpolator<Transform3D<>>(*it1, *it2, *it3));
+        trajectory->add(interpolator);
     }
     return trajectory;
 }
 
 Transform3DTrajectory::Ptr
-TrajectoryFactory::makeLinearTrajectory (const Transform3DPath& path,
-                                         const rw::math::Transform3DMetric::Ptr metric)
-{
-    InterpolatorTrajectory< Transform3D<> >::Ptr trajectory =
-        ownedPtr (new InterpolatorTrajectory< Transform3D<> > ());
-    Transform3DPath::const_iterator it1 = path.begin ();
-    Transform3DPath::const_iterator it2 = path.begin ();
+TrajectoryFactory::makeLinearTrajectory(const Transform3DPath& path,
+                                        const rw::math::Transform3DMetric::Ptr metric) {
+    InterpolatorTrajectory<Transform3D<>>::Ptr trajectory =
+        ownedPtr(new InterpolatorTrajectory<Transform3D<>>());
+    Transform3DPath::const_iterator it1 = path.begin();
+    Transform3DPath::const_iterator it2 = path.begin();
     it2++;
-    for (; it2 != path.end (); ++it1, ++it2) {
-        double duration = metric->distance (*it1, *it2);
-        LinearInterpolator< Transform3D<> >::Ptr interpolator =
-            ownedPtr (new LinearInterpolator< Transform3D<> > (*it1, *it2, duration));
-        trajectory->add (interpolator);
+    for(; it2 != path.end(); ++it1, ++it2) {
+        double duration = metric->distance(*it1, *it2);
+        LinearInterpolator<Transform3D<>>::Ptr interpolator =
+            ownedPtr(new LinearInterpolator<Transform3D<>>(*it1, *it2, duration));
+        trajectory->add(interpolator);
     }
     return trajectory;
 }

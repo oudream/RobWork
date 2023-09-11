@@ -48,42 +48,39 @@ namespace rwsim { namespace simulator {
          * @param bodyId [in] the bodyId of the ode body
          * @param t3d [in] the rw transform
          */
-        static void setODEBodyT3D (dBodyID bodyId, const rw::math::Transform3D<>& t3d);
+        static void setODEBodyT3D(dBodyID bodyId, const rw::math::Transform3D<>& t3d);
 
-        static void setODEGeomT3D (dGeomID geoId, const rw::math::Transform3D<>& t3d);
+        static void setODEGeomT3D(dGeomID geoId, const rw::math::Transform3D<>& t3d);
 
-        static rw::math::Transform3D<> getODEGeomT3D (dGeomID geomId);
+        static rw::math::Transform3D<> getODEGeomT3D(dGeomID geomId);
 
-        static rw::math::Transform3D<> getODEBodyT3D (dBodyID bodyId);
+        static rw::math::Transform3D<> getODEBodyT3D(dBodyID bodyId);
 
-        static void toODEVector (const rw::math::Vector3D<>& v, dVector3 dst)
-        {
-            dst[0] = v (0);
-            dst[1] = v (1);
-            dst[2] = v (2);
+        static void toODEVector(const rw::math::Vector3D<>& v, dVector3 dst) {
+            dst[0] = v(0);
+            dst[1] = v(1);
+            dst[2] = v(2);
         }
 
-        static inline rw::math::Vector3D<double> toVector3D (const dReal* v)
-        {
-            return rw::math::Vector3D<double> (v[0], v[1], v[2]);
+        static inline rw::math::Vector3D<double> toVector3D(const dReal* v) {
+            return rw::math::Vector3D<double>(v[0], v[1], v[2]);
         }
 
-        static void toODERotation (const rw::math::Rotation3D<>& rwR, dMatrix3 R);
+        static void toODERotation(const rw::math::Rotation3D<>& rwR, dMatrix3 R);
 
-        static void toODETransform (const rw::math::Transform3D<>& t3d, dVector3 p, dQuaternion q)
-        {
-            p[0] = t3d.P ()[0];
-            p[1] = t3d.P ()[1];
-            p[2] = t3d.P ()[2];
-            rw::math::Quaternion<> rwQuat (t3d.R ());
-            q[0] = rwQuat.getQw ();
-            q[1] = rwQuat.getQx ();
-            q[2] = rwQuat.getQy ();
-            q[3] = rwQuat.getQz ();
+        static void toODETransform(const rw::math::Transform3D<>& t3d, dVector3 p, dQuaternion q) {
+            p[0] = t3d.P()[0];
+            p[1] = t3d.P()[1];
+            p[2] = t3d.P()[2];
+            rw::math::Quaternion<> rwQuat(t3d.R());
+            q[0] = rwQuat.getQw();
+            q[1] = rwQuat.getQx();
+            q[2] = rwQuat.getQy();
+            q[3] = rwQuat.getQz();
         }
 
-        static void setODEBodyMass (dBodyID body, double mass, const rw::math::Vector3D<>& c,
-                                    const rw::math::InertiaMatrix<>& I);
+        static void setODEBodyMass(dBodyID body, double mass, const rw::math::Vector3D<>& c,
+                                   const rw::math::InertiaMatrix<>& I);
 
         /**
          * @brief calculate the ERP to use in an elastic (spring-and-damper system)
@@ -95,7 +92,7 @@ namespace rwsim { namespace simulator {
          *
          * @note this needs to be used together with a correctly calculated CFM constant
          */
-        static double calcElasticERP (double Kp, double Kd, double dt);
+        static double calcElasticERP(double Kp, double Kd, double dt);
 
         /**
          * @brief calculate the CFM to use in an elastic (spring-and-damper system)
@@ -105,37 +102,33 @@ namespace rwsim { namespace simulator {
          * @param dt [in] the timestep
          * @return the ERP to use in an elastic contact
          */
-        static double calcElasticCFM (double Kp, double Kd, double dt);
+        static double calcElasticCFM(double Kp, double Kd, double dt);
 
         struct TriMeshData
         {
           public:
-            typedef rw::core::Ptr< TriMeshData > Ptr;
+            typedef rw::core::Ptr<TriMeshData> Ptr;
 
-            TriMeshData (int sizeI, int sizeV) :
-                indices (sizeI * 2, 0), vertices (sizeV * 2, 0), triMeshID (0)
-            {
-                indices.resize (sizeI);
-                vertices.resize (sizeV);
+            TriMeshData(int sizeI, int sizeV) :
+                indices(sizeI * 2, 0), vertices(sizeV * 2, 0), triMeshID(0) {
+                indices.resize(sizeI);
+                vertices.resize(sizeV);
             }
-            ~TriMeshData ()
-            {
-                if (triMeshID != 0)
-                    dGeomTriMeshDataDestroy (triMeshID);
+            ~TriMeshData() {
+                if(triMeshID != 0) dGeomTriMeshDataDestroy(triMeshID);
             }
 
-            std::vector< dTriIndex > indices;
-            std::vector< float > vertices;
+            std::vector<dTriIndex> indices;
+            std::vector<float> vertices;
             dTriMeshDataID triMeshID;
         };
 
         struct TriGeomData
         {
           public:
-            TriGeomData (TriMeshData::Ptr triData) :
-                refframe (NULL), tridata (triData), mBuffIdx (0), isPlaceable (true)
-            {
-                for (int j = 0; j < 16; j++) {
+            TriGeomData(TriMeshData::Ptr triData) :
+                refframe(NULL), tridata(triData), mBuffIdx(0), isPlaceable(true) {
+                for(int j = 0; j < 16; j++) {
                     mBuff[0][j] = 0.0f;
                     mBuff[1][j] = 0.0f;
                 }
@@ -153,13 +146,13 @@ namespace rwsim { namespace simulator {
             bool isPlaceable;
         };
 
-        static TriMeshData::Ptr buildTriMesh (rw::core::Ptr< rw::geometry::GeometryData > gdata,
-                                              bool invert = false);
+        static TriMeshData::Ptr buildTriMesh(rw::core::Ptr<rw::geometry::GeometryData> gdata,
+                                             bool invert = false);
 
-        static std::vector< TriGeomData* >
-        buildTriGeom (std::vector< rw::core::Ptr< rw::geometry::Geometry > > geoms,
-                      dSpaceID spaceid, rw::kinematics::Frame* ref,
-                      const rw::kinematics::State& state, bool invert = false);
+        static std::vector<TriGeomData*>
+        buildTriGeom(std::vector<rw::core::Ptr<rw::geometry::Geometry>> geoms, dSpaceID spaceid,
+                     rw::kinematics::Frame* ref, const rw::kinematics::State& state,
+                     bool invert = false);
     };
 }}     // namespace rwsim::simulator
 #endif /* ODEUTIL_HPP_ */

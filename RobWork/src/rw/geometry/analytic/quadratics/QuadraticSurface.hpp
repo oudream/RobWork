@@ -24,10 +24,9 @@
  * \copydoc rw::geometry::QuadraticSurface
  */
 #if !defined(SWIG)
-#include <rw/geometry/analytic/quadratics/QuadraticCurve.hpp>
-
 #include <rw/geometry/PlainTriMesh.hpp>
 #include <rw/geometry/analytic/ImplicitSurface.hpp>
+#include <rw/geometry/analytic/quadratics/QuadraticCurve.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/Vector3D.hpp>
 
@@ -54,18 +53,18 @@ namespace rw { namespace geometry {
      * \in \mathbb{R}\f$
      */
 
-    #if !defined(SWIGJAVA)
+#if !defined(SWIGJAVA)
     class QuadraticSurface : public ImplicitSurface
-    #else 
+#else
     class QuadraticSurface
-    #endif 
+#endif
     {
       public:
         //! @brief Smart pointer type for QuadraticSurface
-        typedef rw::core::Ptr< QuadraticSurface > Ptr;
+        typedef rw::core::Ptr<QuadraticSurface> Ptr;
 
         //! @brief Smart pointer type for const QuadraticSurface
-        typedef rw::core::Ptr< const QuadraticSurface > CPtr;
+        typedef rw::core::Ptr<const QuadraticSurface> CPtr;
 
         /**
          * @brief A trimming region is defined using an ImplicitSurface.
@@ -91,14 +90,15 @@ namespace rw { namespace geometry {
          * @param u [in] the scalar offset \f$ u \in \mathbb{R} \f$ .
          * @param conditions [in] (optional) list of trimming conditions.
          */
-        QuadraticSurface (
-            const Eigen::Diagonal< Eigen::Matrix3d >& A, const Eigen::Vector3d& a, double u,
-            const std::vector< TrimmingRegion >& conditions = std::vector< TrimmingRegion > ());
+        QuadraticSurface(
+            const Eigen::Diagonal<Eigen::Matrix3d>& A, const Eigen::Vector3d& a, double u,
+            const std::vector<TrimmingRegion>& conditions = std::vector<TrimmingRegion>());
 
-        //! @copydoc QuadraticSurface(const Eigen::Diagonal<Eigen::Matrix3d>&, const Eigen::Vector3d&, double, const std::vector<TrimmingRegion>&)
-        QuadraticSurface (
-            const Eigen::DiagonalMatrix< double, 3, 3 >& A, const Eigen::Vector3d& a, double u,
-            const std::vector< TrimmingRegion >& conditions = std::vector< TrimmingRegion > ());
+        //! @copydoc QuadraticSurface(const Eigen::Diagonal<Eigen::Matrix3d>&, const
+        //! Eigen::Vector3d&, double, const std::vector<TrimmingRegion>&)
+        QuadraticSurface(
+            const Eigen::DiagonalMatrix<double, 3, 3>& A, const Eigen::Vector3d& a, double u,
+            const std::vector<TrimmingRegion>& conditions = std::vector<TrimmingRegion>());
 
         /**
          * @brief Construct new quadratic surface of the implicit form \f$ x^T A x + 2 a^T x + u =
@@ -110,16 +110,17 @@ namespace rw { namespace geometry {
          * @param u [in] the scalar offset \f$ u \in \mathbb{R} \f$ .
          * @param conditions [in] (optional) list of trimming conditions.
          */
-        QuadraticSurface (
-            const Eigen::SelfAdjointView< const Eigen::Matrix3d, Eigen::Upper >& A,
+        QuadraticSurface(
+            const Eigen::SelfAdjointView<const Eigen::Matrix3d, Eigen::Upper>& A,
             const Eigen::Vector3d& a, double u,
-            const std::vector< TrimmingRegion >& conditions = std::vector< TrimmingRegion > ());
+            const std::vector<TrimmingRegion>& conditions = std::vector<TrimmingRegion>());
 
-        //! @copydoc QuadraticSurface(const Eigen::SelfAdjointView<const Eigen::Matrix3d, Eigen::Upper>&, const Eigen::Vector3d&, double, const std::vector<TrimmingRegion>&)
-        QuadraticSurface (
-            const Eigen::SelfAdjointView< Eigen::Matrix3d, Eigen::Upper >& A,
+        //! @copydoc QuadraticSurface(const Eigen::SelfAdjointView<const Eigen::Matrix3d,
+        //! Eigen::Upper>&, const Eigen::Vector3d&, double, const std::vector<TrimmingRegion>&)
+        QuadraticSurface(
+            const Eigen::SelfAdjointView<Eigen::Matrix3d, Eigen::Upper>& A,
             const Eigen::Vector3d& a, double u,
-            const std::vector< TrimmingRegion >& conditions = std::vector< TrimmingRegion > ());
+            const std::vector<TrimmingRegion>& conditions = std::vector<TrimmingRegion>());
 
         /**
          * @brief Construct new quadratic surface of the implicit form \f$ x^T A x + 2 a^T x + u =
@@ -131,84 +132,93 @@ namespace rw { namespace geometry {
          * @param u [in] the scalar offset \f$ u \in \mathbb{R} \f$ .
          * @param conditions [in] (optional) list of trimming conditions.
          */
-        QuadraticSurface (
-            const Eigen::SelfAdjointView< const Eigen::Matrix3d, Eigen::Lower >& A,
+        QuadraticSurface(
+            const Eigen::SelfAdjointView<const Eigen::Matrix3d, Eigen::Lower>& A,
             const Eigen::Vector3d& a, double u,
-            const std::vector< TrimmingRegion >& conditions = std::vector< TrimmingRegion > ());
+            const std::vector<TrimmingRegion>& conditions = std::vector<TrimmingRegion>());
 
-        //! @copydoc QuadraticSurface(const Eigen::SelfAdjointView<const Eigen::Matrix3d, Eigen::Lower>&, const Eigen::Vector3d&, double, const std::vector<TrimmingRegion>&)
-        QuadraticSurface (
-            const Eigen::SelfAdjointView< Eigen::Matrix3d, Eigen::Lower >& A,
+        //! @copydoc QuadraticSurface(const Eigen::SelfAdjointView<const Eigen::Matrix3d,
+        //! Eigen::Lower>&, const Eigen::Vector3d&, double, const std::vector<TrimmingRegion>&)
+        QuadraticSurface(
+            const Eigen::SelfAdjointView<Eigen::Matrix3d, Eigen::Lower>& A,
             const Eigen::Vector3d& a, double u,
-            const std::vector< TrimmingRegion >& conditions = std::vector< TrimmingRegion > ());
+            const std::vector<TrimmingRegion>& conditions = std::vector<TrimmingRegion>());
 
         //! @brief Destructor.
-        virtual ~QuadraticSurface ();
+        virtual ~QuadraticSurface();
 
         // From ImplicitSurface
         //! @copydoc ImplicitSurface::transform(const rw::math::Transform3D<double>&) const
-        QuadraticSurface::Ptr transform (const rw::math::Transform3D<double>& T) const;
+        QuadraticSurface::Ptr transform(const rw::math::Transform3D<double>& T) const;
 
         //! @copydoc ImplicitSurface::transform(const rw::math::Vector3D<double>&) const
-        QuadraticSurface::Ptr transform (const rw::math::Vector3D<double>& P) const;
+        QuadraticSurface::Ptr transform(const rw::math::Vector3D<double>& P) const;
 
         //! @copydoc ImplicitSurface::scale
-        QuadraticSurface::Ptr scale (double factor) const;
+        QuadraticSurface::Ptr scale(double factor) const;
 
         //! @copydoc ImplicitSurface::clone
-        QuadraticSurface::Ptr clone () const;
+        QuadraticSurface::Ptr clone() const;
 
         //! @copydoc ImplicitSurface::extremums
-        virtual std::pair< double, double > extremums (const rw::math::Vector3D<double>& direction) const;
+        virtual std::pair<double, double>
+        extremums(const rw::math::Vector3D<double>& direction) const;
 
         //! @copydoc ImplicitSurface::getTriMesh
-        virtual rw::core::Ptr< TriMesh >
-        getTriMesh (const std::vector< rw::math::Vector3D<double> >& border =
-                        std::vector< rw::math::Vector3D<double> > ()) const;
+        virtual rw::core::Ptr<TriMesh>
+        getTriMesh(const std::vector<rw::math::Vector3D<double>>& border =
+                       std::vector<rw::math::Vector3D<double>>()) const;
 
         //! @copydoc ImplicitSurface::setDiscretizationResolution
-        virtual void setDiscretizationResolution (double resolution)
-        {
+        virtual void setDiscretizationResolution(double resolution) {
             _stepsPerRevolution = resolution;
         }
 
         //! @copydoc ImplicitSurface::equals
-        virtual bool equals (const Surface& surface, double threshold) const;
+        virtual bool equals(const Surface& surface, double threshold) const;
 
 #if !defined(SWIG)
         //! @copydoc ImplicitSurface::operator()(const rw::math::Vector3D<double>&) const
-        virtual double operator() (const rw::math::Vector3D<double>& x) const;
-#else 
-        CALLOPERATOR(double,const rw::math::Vector3D<double>& );
-#endif 
+        virtual double operator()(const rw::math::Vector3D<double>& x) const;
+#else
+        CALLOPERATOR(double, const rw::math::Vector3D<double>&);
+#endif
 
         //! @copydoc ImplicitSurface::insideTrimmingRegion
-        virtual bool insideTrimmingRegion (const rw::math::Vector3D<double>& P) const;
+        virtual bool insideTrimmingRegion(const rw::math::Vector3D<double>& P) const;
 
         //! @copydoc ImplicitSurface::normal
-        virtual rw::math::Vector3D<double> normal (const rw::math::Vector3D<double>& x) const;
+        virtual rw::math::Vector3D<double> normal(const rw::math::Vector3D<double>& x) const;
 
         //! @copydoc ImplicitSurface::gradient
-        virtual rw::math::Vector3D<double> gradient (const rw::math::Vector3D<double>& x) const;
+        virtual rw::math::Vector3D<double> gradient(const rw::math::Vector3D<double>& x) const;
 
         //! @copydoc ImplicitSurface::reuseTrimmingRegions
-        virtual void reuseTrimmingRegions (rw::geometry::ImplicitSurface::Ptr surface) const;
+        virtual void reuseTrimmingRegions(rw::geometry::ImplicitSurface::Ptr surface) const;
 
         //! @brief Get the 3 x 3 symmetric matrix for the second order term in the implicit
         //! formulation.
-        const Eigen::Matrix3d& A () const { return _A; }
+        const Eigen::Matrix3d& A() const {
+            return _A;
+        }
 
         //! @brief Get the 3d vector for the first order term in the implicit formulation.
-        const Eigen::Vector3d& a () const { return _a; }
+        const Eigen::Vector3d& a() const {
+            return _a;
+        }
 
         //! @brief Get the scalar for the zero order term in the implicit formulation.
-        double u () const { return _u; }
+        double u() const {
+            return _u;
+        }
 
         /**
          * @brief Get the determinant of the \f$ \mathbf{A} \f$ matrix.
          * @return the determinant.
          */
-        double determinantA () const { return _determinantA; }
+        double determinantA() const {
+            return _determinantA;
+        }
 
         /**
          * @brief Normalize the implicit expression such that the largest coefficient becomes one.
@@ -221,21 +231,22 @@ namespace rw { namespace geometry {
          * @return a mathematically identical surface, where the coefficients of the defining
          * equation is normalized.
          */
-        QuadraticSurface::Ptr normalize () const;
+        QuadraticSurface::Ptr normalize() const;
 
         /**
          * @brief Get the trimming conditions for the surface.
          * @return ImplicitSurface vector specifying the boundary of the surface. If surface is
          * unbounded, the length of the vector is zero.
          */
-        const std::vector< TrimmingRegion >& getTrimmingConditions () const { return _conditions; }
+        const std::vector<TrimmingRegion>& getTrimmingConditions() const {
+            return _conditions;
+        }
 
         /**
          * @brief Set the trimming conditions of this surface.
          * @param conditions [in] a vector of conditions.
          */
-        void setTrimmingConditions (const std::vector< TrimmingRegion >& conditions)
-        {
+        void setTrimmingConditions(const std::vector<TrimmingRegion>& conditions) {
             _conditions = conditions;
         }
 
@@ -243,9 +254,8 @@ namespace rw { namespace geometry {
          * @brief Add a trimming condition to this surface.
          * @param condition [in] the condition to add.
          */
-        void addTrimmingCondition (const TrimmingRegion& condition)
-        {
-            _conditions.push_back (condition);
+        void addTrimmingCondition(const TrimmingRegion& condition) {
+            _conditions.push_back(condition);
         }
 
         /**
@@ -253,13 +263,15 @@ namespace rw { namespace geometry {
          * @return the diagonalized surface, and the rotation transforming this surface into the
          * diagonalized surface.
          */
-        std::pair< QuadraticSurface, rw::math::Rotation3D<> > diagonalize () const;
+        std::pair<QuadraticSurface, rw::math::Rotation3D<>> diagonalize() const;
 
         /**
          * @brief Check if this surface is diagonalized.
          * @return true if A is digaonalized, false otherwise.
          */
-        bool diagonalized () const { return _diagonal; }
+        bool diagonalized() const {
+            return _diagonal;
+        }
 
 /** @name Normal forms of Quadratic Surfaces
  * Functions for creation of standard Quadratic Surfaces.
@@ -281,9 +293,8 @@ namespace rw { namespace geometry {
          * @return a QuadraticSurface representation of an ellipsoid.
          */
 
-         #endif 
-        static QuadraticSurface::Ptr makeEllipsoid (double a, double b, double c);
-
+#endif
+        static QuadraticSurface::Ptr makeEllipsoid(double a, double b, double c);
 
 #if !defined(SWIGJAVA)
         /**
@@ -297,9 +308,8 @@ namespace rw { namespace geometry {
          * @return a QuadraticSurface representation of a spheroid.
          */
 
-         #endif 
-        static QuadraticSurface::Ptr makeSpheroid (double a, double b);
-
+#endif
+        static QuadraticSurface::Ptr makeSpheroid(double a, double b);
 
 #if !defined(SWIGJAVA)
         /**
@@ -312,8 +322,8 @@ namespace rw { namespace geometry {
          * @return a QuadraticSurface representation of a sphere.
          */
 
-         #endif 
-        static QuadraticSurface::Ptr makeSphere (double radius);
+#endif
+        static QuadraticSurface::Ptr makeSphere(double radius);
 
 #if !defined(SWIGJAVA)
         /**
@@ -327,9 +337,8 @@ namespace rw { namespace geometry {
          * @return a QuadraticSurface representation of an elliptic paraboloid.
          */
 
-         #endif 
-        static QuadraticSurface::Ptr makeEllipticParaboloid (double a, double b);
-
+#endif
+        static QuadraticSurface::Ptr makeEllipticParaboloid(double a, double b);
 
 #if !defined(SWIGJAVA)
         /**
@@ -342,8 +351,8 @@ namespace rw { namespace geometry {
          * @return a QuadraticSurface representation of a circular paraboloid.
          */
 
-         #endif 
-        static QuadraticSurface::Ptr makeCircularParaboloid (double a);
+#endif
+        static QuadraticSurface::Ptr makeCircularParaboloid(double a);
 
 #if !defined(SWIGJAVA)
         /**
@@ -357,8 +366,8 @@ namespace rw { namespace geometry {
          * @return a QuadraticSurface representation of a hyperbolic paraboloid.
          */
 
-         #endif 
-        static QuadraticSurface::Ptr makeHyperbolicParaboloid (double a, double b);
+#endif
+        static QuadraticSurface::Ptr makeHyperbolicParaboloid(double a, double b);
 
 #if !defined(SWIGJAVA)
         /**
@@ -373,8 +382,8 @@ namespace rw { namespace geometry {
          * @return a QuadraticSurface representation of an elliptic hyperboloid of one sheet.
          */
 
-         #endif 
-        static QuadraticSurface::Ptr makeEllipticHyperboloidOneSheet (double a, double b, double c);
+#endif
+        static QuadraticSurface::Ptr makeEllipticHyperboloidOneSheet(double a, double b, double c);
 
 #if !defined(SWIGJAVA)
         /**
@@ -391,9 +400,8 @@ namespace rw { namespace geometry {
          * @return a QuadraticSurface representation of a circular hyperboloid of one sheet.
          */
 
-         #endif 
-        static QuadraticSurface::Ptr makeCircularHyperboloidOneSheet (double a, double b);
-
+#endif
+        static QuadraticSurface::Ptr makeCircularHyperboloidOneSheet(double a, double b);
 
 #if !defined(SWIGJAVA)
         /**
@@ -410,10 +418,8 @@ namespace rw { namespace geometry {
          * @return a QuadraticSurface representation of an elliptic hyperboloid of two sheets.
          */
 
-         #endif 
-        static QuadraticSurface::Ptr makeEllipticHyperboloidTwoSheets (double a, double b,
-                                                                       double c);
-
+#endif
+        static QuadraticSurface::Ptr makeEllipticHyperboloidTwoSheets(double a, double b, double c);
 
 #if !defined(SWIGJAVA)
         /**
@@ -430,9 +436,8 @@ namespace rw { namespace geometry {
          * @return a QuadraticSurface representation of a circular hyperboloid of two sheets.
          */
 
-         #endif 
-        static QuadraticSurface::Ptr makeCircularHyperboloidTwoSheets (double a, double b);
-
+#endif
+        static QuadraticSurface::Ptr makeCircularHyperboloidTwoSheets(double a, double b);
 
 #if !defined(SWIGJAVA)
         /**
@@ -450,8 +455,8 @@ namespace rw { namespace geometry {
          * @return a QuadraticSurface representation of an elliptic cone.
          */
 
-         #endif 
-        static QuadraticSurface::Ptr makeEllipticCone (double a, double b, double c);
+#endif
+        static QuadraticSurface::Ptr makeEllipticCone(double a, double b, double c);
 
 #if !defined(SWIGJAVA)
         /**
@@ -466,9 +471,8 @@ namespace rw { namespace geometry {
          * @return a QuadraticSurface representation of a circular cone.
          */
 
-         #endif 
-        static QuadraticSurface::Ptr makeCircularCone (double a, double b);
-
+#endif
+        static QuadraticSurface::Ptr makeCircularCone(double a, double b);
 
 #if !defined(SWIGJAVA)
         /**
@@ -482,9 +486,8 @@ namespace rw { namespace geometry {
          * @return a QuadraticSurface representation of an elliptic cylinder.
          */
 
-         #endif 
-        static QuadraticSurface::Ptr makeEllipticCylinder (double a, double b);
-
+#endif
+        static QuadraticSurface::Ptr makeEllipticCylinder(double a, double b);
 
 #if !defined(SWIGJAVA)
         /**
@@ -499,8 +502,8 @@ namespace rw { namespace geometry {
          * @return a QuadraticSurface representation of a circular cylinder.
          */
 
-         #endif 
-        static QuadraticSurface::Ptr makeCircularCylinder (double radius, bool outward = true);
+#endif
+        static QuadraticSurface::Ptr makeCircularCylinder(double radius, bool outward = true);
 
 #if !defined(SWIGJAVA)
         /**
@@ -514,8 +517,8 @@ namespace rw { namespace geometry {
          * @return a QuadraticSurface representation of a hyperbolic cylinder.
          */
 
-         #endif 
-        static QuadraticSurface::Ptr makeHyperbolicCylinder (double a, double b);
+#endif
+        static QuadraticSurface::Ptr makeHyperbolicCylinder(double a, double b);
 
 #if !defined(SWIGJAVA)
         /**
@@ -528,8 +531,8 @@ namespace rw { namespace geometry {
          * @return a QuadraticSurface representation of a parabolic cylinder.
          */
 
-         #endif 
-        static QuadraticSurface::Ptr makeParabolicCylinder (double a);
+#endif
+        static QuadraticSurface::Ptr makeParabolicCylinder(double a);
 #if !defined(SWIG)
 ///@}
 #endif
@@ -547,48 +550,47 @@ namespace rw { namespace geometry {
          * @param d [in] the distance from the plane to the origo.
          * @return a QuadraticSurface representing a plane.
          */
-        static QuadraticSurface::Ptr makePlane (const rw::math::Vector3D<double>& n, double d);
+        static QuadraticSurface::Ptr makePlane(const rw::math::Vector3D<double>& n, double d);
 
       private:
-        QuadraticSurface (const Eigen::Matrix3d& A, bool diagonal, double determinantA,
-                          const Eigen::Vector3d& a, double u,
-                          const std::vector< TrimmingRegion >& conditions,
-                          double stepsPerRevolution);
-        #if !defined(SWIGJAVA)
+        QuadraticSurface(const Eigen::Matrix3d& A, bool diagonal, double determinantA,
+                         const Eigen::Vector3d& a, double u,
+                         const std::vector<TrimmingRegion>& conditions, double stepsPerRevolution);
+#if !defined(SWIGJAVA)
         // From ImplicitSurface
         inline rw::geometry::ImplicitSurface::Ptr
-        doTransformImplicitSurface (const rw::math::Transform3D<>& T) const
-        {
-            return transform (T);
+        doTransformImplicitSurface(const rw::math::Transform3D<>& T) const {
+            return transform(T);
         }
-        inline rw::geometry::ImplicitSurface::Ptr doTransformImplicitSurface (const rw::math::Vector3D<double>& P) const
-        {
-            return transform (P);
+        inline rw::geometry::ImplicitSurface::Ptr
+        doTransformImplicitSurface(const rw::math::Vector3D<double>& P) const {
+            return transform(P);
         }
-        inline rw::geometry::ImplicitSurface::Ptr doScaleImplicitSurface (double factor) const
-        {
-            return scale (factor);
+        inline rw::geometry::ImplicitSurface::Ptr doScaleImplicitSurface(double factor) const {
+            return scale(factor);
         }
-        inline rw::geometry::ImplicitSurface::Ptr doCloneImplicitSurface () const { return clone (); }
-        #endif 
-        rw::core::Ptr< TriMesh > getTriMeshDiagonal (
-            const std::vector< rw::math::Vector3D<double> >& border,
-            const rw::math::Rotation3D<>& R = rw::math::Rotation3D<>::identity ()) const;
-        std::pair< double, double > extremumsDiagonal (const rw::math::Vector3D<double>& dir) const;
-        std::vector< rw::geometry::QuadraticCurve > findSilhouette (std::size_t u, std::size_t v, std::size_t e,
-                                                      double eSplit) const;
+        inline rw::geometry::ImplicitSurface::Ptr doCloneImplicitSurface() const {
+            return clone();
+        }
+#endif
+        rw::core::Ptr<TriMesh> getTriMeshDiagonal(
+            const std::vector<rw::math::Vector3D<double>>& border,
+            const rw::math::Rotation3D<>& R = rw::math::Rotation3D<>::identity()) const;
+        std::pair<double, double> extremumsDiagonal(const rw::math::Vector3D<double>& dir) const;
+        std::vector<rw::geometry::QuadraticCurve>
+        findSilhouette(std::size_t u, std::size_t v, std::size_t e, double eSplit) const;
         typedef enum Place { FRONT, BACK, BOTH } Place;
-        void makeSurface (const std::vector< rw::math::Vector3D<double> > fullPolygon, std::size_t u,
-                          std::size_t v, std::size_t e, double eSplit, Place place,
-                          const rw::math::Rotation3D<>& R,
-                          rw::geometry::PlainTriMeshN1D::Ptr mesh) const;
+        void makeSurface(const std::vector<rw::math::Vector3D<double>> fullPolygon, std::size_t u,
+                         std::size_t v, std::size_t e, double eSplit, Place place,
+                         const rw::math::Rotation3D<>& R,
+                         rw::geometry::PlainTriMeshN1D::Ptr mesh) const;
 
         const Eigen::Matrix3d _A;
         const Eigen::Vector3d _a;
         const double _u;
         const double _determinantA;
         const bool _diagonal;
-        std::vector< TrimmingRegion > _conditions;
+        std::vector<TrimmingRegion> _conditions;
 
         double _stepsPerRevolution;
     };

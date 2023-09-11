@@ -42,10 +42,10 @@ namespace rwsim { namespace log {
     {
       public:
         //! Smart pointer type of SimulatorStatistics
-        typedef rw::core::Ptr< SimulatorStatistics > Ptr;
+        typedef rw::core::Ptr<SimulatorStatistics> Ptr;
 
         //! Type of a DataSeries collection (each series is a name and a list of numbers)
-        typedef std::map< std::string, std::vector< double > > DataSeries;
+        typedef std::map<std::string, std::vector<double>> DataSeries;
 
         /**
          * @brief Create a new statistics on the given SimulatorLogScope.
@@ -53,25 +53,25 @@ namespace rwsim { namespace log {
          * @note All children log scopes will have their statistics updated or added.
          * @param log [in/out] the log to create statistics based on.
          */
-        SimulatorStatistics (const class SimulatorLogScope* log);
+        SimulatorStatistics(const class SimulatorLogScope* log);
 
         //! @brief Destructor.
-        virtual ~SimulatorStatistics ();
+        virtual ~SimulatorStatistics();
 
         //! @brief Generate statistics.
-        void update ();
+        void update();
 
         //! @brief Check if any statistics was generated.
-        bool hasData () const;
+        bool hasData() const;
 
         /**
          * @brief Get the found statistics.
          * @return a collection of data series.
          */
-        const DataSeries& getSeries () const;
+        const DataSeries& getSeries() const;
 
       private:
-        const DataSeries& getPropagated () const;
+        const DataSeries& getPropagated() const;
 
       private:
         const class SimulatorLogScope* _log;

@@ -17,5 +17,5 @@
 
 #include "TriTriIntersectMoller.hpp"
 
-template class rw::geometry::TriTriIntersectMoller< double >;
-template class rw::geometry::TriTriIntersectMoller< float >;
+template class rw::geometry::TriTriIntersectMoller<double>;
+template class rw::geometry::TriTriIntersectMoller<float>;

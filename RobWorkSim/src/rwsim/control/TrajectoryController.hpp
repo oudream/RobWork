@@ -26,39 +26,38 @@ namespace rwsim { namespace control {
          * @param rdev
          * @param state
          */
-        TrajectoryController (rwsim::dynamics::RigidDevice* rdev,
-                              const rw::kinematics::State& state) :
-            JointController (&rdev->getModel ()),
-            _ddev (rdev), _time (0.0), _target (rdev->getModel ().getQ (state)),
-            _lastError (rw::math::Q::zero (rdev->getModel ().getDOF ())),
-            _velramp (&(rdev->getModel ())), _currentQ (_target)
-        {
-            _velramp.setTarget (_target, _target);
+        TrajectoryController(rwsim::dynamics::RigidDevice* rdev,
+                             const rw::kinematics::State& state) :
+            JointController(&rdev->getModel()),
+            _ddev(rdev), _time(0.0), _target(rdev->getModel().getQ(state)),
+            _lastError(rw::math::Q::zero(rdev->getModel().getDOF())), _velramp(&(rdev->getModel())),
+            _currentQ(_target) {
+            _velramp.setTarget(_target, _target);
         }
 
         //! @brief destructor
-        virtual ~TrajectoryController (){};
+        virtual ~TrajectoryController(){};
 
         /**
          * @brief the time between samples
          * @return the sample time in seconds
          */
-        double getSampleTime ();
+        double getSampleTime();
 
         /**
          * @brief set the time between samples in seconds
          * @param stime [in] sample time
          */
-        void setSampleTime (double stime);
+        void setSampleTime(double stime);
 
         //! @copydoc rwlibs::simulation::SimulatedController::update
-        void update (const rwlibs::simulation::Simulator::UpdateInfo& info,
-                     rw::kinematics::State& state);
+        void update(const rwlibs::simulation::Simulator::UpdateInfo& info,
+                    rw::kinematics::State& state);
 
         //! @copydoc rwlibs::simulation::SimulatedController::reset
-        void reset (const rw::kinematics::State& state);
+        void reset(const rw::kinematics::State& state);
 
-        Controller* getController () { return this; };
+        Controller* getController() { return this; };
 
         ////// inherited from JointController
 
@@ -67,33 +66,32 @@ namespace rwsim { namespace control {
          *
          * This controller supports both position and velocity control.
          */
-        unsigned int getControlModes () { return _mode; }
+        unsigned int getControlModes() { return _mode; }
 
         //! @copydoc rwlibs::control::JointController::setControlMode
-        void setControlMode (ControlMode mode);
+        void setControlMode(ControlMode mode);
 
         //! @copydoc rwlibs::control::JointController::setTargetPos
-        void setTargetPos (const rw::math::Q& target) { _target = target; }
+        void setTargetPos(const rw::math::Q& target) { _target = target; }
 
         //! @copydoc rwlibs::control::JointController::setTargetVel
-        void setTargetVel (const rw::math::Q& vals) { _targetVel = vals; }
+        void setTargetVel(const rw::math::Q& vals) { _targetVel = vals; }
 
         //! @copydoc rwlibs::control::JointController::setTargetAcc
-        void setTargetAcc (const rw::math::Q& vals){};
+        void setTargetAcc(const rw::math::Q& vals){};
 
         //! @copydoc rwlibs::control::JointController::getQ
-        rw::math::Q getQ () { return _currentQ; }
+        rw::math::Q getQ() { return _currentQ; }
 
         //! @copydoc rwlibs::control::JointController::getQd
-        rw::math::Q getQd () { return _currentVel; }
+        rw::math::Q getQd() { return _currentVel; }
 
-        void setEnabled (bool enabled) { _enabled = enabled; };
+        void setEnabled(bool enabled) { _enabled = enabled; };
 
-        bool isEnabled () const { return _enabled; };
+        bool isEnabled() const { return _enabled; };
 
         rwlibs::control::Controller::Ptr
-        getControllerHandle (rwlibs::simulation::Simulator::Ptr sim)
-        {
+        getControllerHandle(rwlibs::simulation::Simulator::Ptr sim) {
             return this;
         }
 

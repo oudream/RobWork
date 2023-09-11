@@ -85,16 +85,16 @@ namespace rw { namespace geometry {
     {
       public:
         //! @brief Smart pointer type to BREP
-        typedef rw::core::Ptr< BREP > Ptr;
+        typedef rw::core::Ptr<BREP> Ptr;
 
         //! @brief Smart pointer type to const BREP
-        typedef rw::core::Ptr< const BREP > CPtr;
+        typedef rw::core::Ptr<const BREP> CPtr;
 
         //! @brief Destructor.
-        virtual ~BREP ();
+        virtual ~BREP();
 
         //! @copydoc GeometryData::getType
-        virtual GeometryType getType () const = 0;
+        virtual GeometryType getType() const = 0;
 
         /**
          * @brief Create a TriMesh representation from this boundary representation.
@@ -107,13 +107,13 @@ namespace rw { namespace geometry {
          * @return a new TriMesh if \b forceCopy is true, or a shared cached TriMesh if \b forceCopy
          * is false.
          */
-        virtual rw::core::Ptr< TriMesh > getTriMesh (bool forceCopy = true);
+        virtual rw::core::Ptr<TriMesh> getTriMesh(bool forceCopy = true);
 
         //! @copydoc GeometryData::isConvex
-        virtual bool isConvex ();
+        virtual bool isConvex();
 
         //! @copydoc GeometryData::isConvex
-        virtual bool isConvex () const;
+        virtual bool isConvex() const;
 
         // Pure virtual interface
         /**
@@ -122,7 +122,7 @@ namespace rw { namespace geometry {
          * returned by size().
          * @return a reference to the surface.
          */
-        virtual const rw::geometry::Surface& getSurface (std::size_t surfaceIndex) const = 0;
+        virtual const rw::geometry::Surface& getSurface(std::size_t surfaceIndex) const = 0;
 
         /**
          * @brief Get curve.
@@ -130,13 +130,13 @@ namespace rw { namespace geometry {
          * edgeCount().
          * @return a reference to the curve.
          */
-        virtual const rw::geometry::Curve& getCurve (std::size_t curveIndex) const = 0;
+        virtual const rw::geometry::Curve& getCurve(std::size_t curveIndex) const = 0;
 
         /**
          * @brief Scale the object.
          * @param factor [in] the factor to scale with.
          */
-        virtual void scale (double factor) = 0;
+        virtual void scale(double factor) = 0;
 
         // Functions that should be overwritten by more concrete functions in subclasses
 
@@ -144,13 +144,15 @@ namespace rw { namespace geometry {
          * @brief Make a deep copy of the BREP.
          * @return a copy of the BREP.
          */
-        BREP::Ptr clone () const { return doClone (); }
+        BREP::Ptr clone() const { return doClone(); }
 
         /**
          * @brief Get a Shell representation as a proxy to the BREP.
          * @return smart pointer to a Shell proxy object.
          */
-        inline rw::core::Ptr< const rw::geometry::Shell > shellProxy () const { return doShellProxyBREP (); }
+        inline rw::core::Ptr<const rw::geometry::Shell> shellProxy() const {
+            return doShellProxyBREP();
+        }
 
         /**
          * @brief Get the curves in a given loop.
@@ -161,47 +163,47 @@ namespace rw { namespace geometry {
          * @param loopIdx [in] the loop index.
          * @return an ordered vector of curves.
          */
-        std::vector< rw::core::Ptr< rw::geometry::Curve > > getCurves (std::size_t loopIdx) const;
+        std::vector<rw::core::Ptr<rw::geometry::Curve>> getCurves(std::size_t loopIdx) const;
 
         //! @brief Convenience type for a set of curves in a BREP.
         class CommonCurveSet
         {
           public:
             //! @brief Smart pointer type to CommonCurveSet
-            typedef rw::core::Ptr< const CommonCurveSet > CPtr;
+            typedef rw::core::Ptr<const CommonCurveSet> CPtr;
 
             //! @brief Constructor.
-            CommonCurveSet () {}
+            CommonCurveSet() {}
 
             //! @brief Destructor.
-            virtual ~CommonCurveSet () {}
+            virtual ~CommonCurveSet() {}
 
             /**
              * @brief Get the number of curves in the set.
              * @return the number of curves.
              */
-            virtual std::size_t size () const = 0;
+            virtual std::size_t size() const = 0;
 
             /**
              * @brief Get a curve in the set.
              * @param index [in] the curve index, which should be less than size().
              * @return a reference to the curve data.
              */
-            virtual const Curve& curve (std::size_t index) const = 0;
+            virtual const Curve& curve(std::size_t index) const = 0;
 
             /**
              * @brief Get one of the neighbour surfaces to the curve.
              * @param index [in] the curve index, which should be less than size().
              * @return a reference to the surface.
              */
-            virtual const Surface& surfaceLeft (std::size_t index) const = 0;
+            virtual const Surface& surfaceLeft(std::size_t index) const = 0;
 
             /**
              * @brief Get the other neighbour surfaces to the curve.
              * @param index [in] the curve index, which should be less than size().
              * @return a reference to the surface.
              */
-            virtual const Surface& surfaceRight (std::size_t index) const = 0;
+            virtual const Surface& surfaceRight(std::size_t index) const = 0;
         };
 
         /**
@@ -209,7 +211,7 @@ namespace rw { namespace geometry {
          * @param faces [in] loop indexes for the faces to consider.
          * @return set of common curves as a CommonCurveSet.
          */
-        CommonCurveSet::CPtr getCommonCurves (const std::set< std::size_t >& faces) const;
+        CommonCurveSet::CPtr getCommonCurves(const std::set<std::size_t>& faces) const;
 
         // Functions common to all BREPs
         /**
@@ -219,25 +221,25 @@ namespace rw { namespace geometry {
          *
          * @return the number of faces.
          */
-        std::size_t faceCount () const;
+        std::size_t faceCount() const;
 
         /**
          * @brief The number of loops.
          * @return the number of loops.
          */
-        std::size_t loopCount () const { return _faces.size (); }
+        std::size_t loopCount() const { return _faces.size(); }
 
         /**
          * @brief The number of edges.
          * @return the number of edges.
          */
-        std::size_t edgeCount () const { return _edges.size (); }
+        std::size_t edgeCount() const { return _edges.size(); }
 
         /**
          * @brief The number of vertices.
          * @return the number of vertices.
          */
-        std::size_t verticeCount () const { return _vertices.size (); }
+        std::size_t verticeCount() const { return _vertices.size(); }
 
         /**
          * @brief Get vertex.
@@ -245,8 +247,7 @@ namespace rw { namespace geometry {
          * vertices().
          * @return reference to the vertex.
          */
-        const rw::math::Vector3D<double>& getVertex (std::size_t vertexIndex) const
-        {
+        const rw::math::Vector3D<double>& getVertex(std::size_t vertexIndex) const {
             return _vertices[vertexIndex]->point;
         }
 
@@ -258,28 +259,28 @@ namespace rw { namespace geometry {
          * @param loopIdx [in] the loop index.
          * @return a collection of vertices.
          */
-        std::vector< rw::math::Vector3D<double> > getVertices (std::size_t loopIdx) const;
+        std::vector<rw::math::Vector3D<double>> getVertices(std::size_t loopIdx) const;
 
         /**
          * @brief Check if a certain loop has a surface set.
          * @param loop [in] index of the loop, which should be less than loopCount().
          * @return true if a surface is set, false otherwise.
          */
-        bool hasSurfaceSet (std::size_t loop) { return _faces[loop]->surfaceSet; }
+        bool hasSurfaceSet(std::size_t loop) { return _faces[loop]->surfaceSet; }
 
         /**
          * @brief Get the surface index of a loop.
          * @param loop [in] the loop index.
          * @return the corresponding surface index.
          */
-        std::size_t getSurfaceIndex (std::size_t loop);
+        std::size_t getSurfaceIndex(std::size_t loop);
 
         /**
          * @brief Create Oriented Bounding Box with certain principal directions.
          * @param R [in] the directions for the bounding box.
          * @return an OBB around the BREP.
          */
-        rw::geometry::OBB<> obb (const rw::math::Rotation3D<>& R);
+        rw::geometry::OBB<> obb(const rw::math::Rotation3D<>& R);
 
         /**
          * @brief Create Oriented Bounding Box where the directions are estimated.
@@ -289,13 +290,13 @@ namespace rw { namespace geometry {
          *
          * @return an OBB around the BREP.
          */
-        rw::geometry::OBB<> obb ();
+        rw::geometry::OBB<> obb();
 
         /**
          * @brief Add a vertex to the BREP.
          * @param point [in] the vertex to add.
          */
-        void addVertex (const rw::math::Vector3D<double>& point);
+        void addVertex(const rw::math::Vector3D<double>& point);
 
         /**
          * @brief Create a loop containing a single edge (typically for circles and ellipses and
@@ -310,7 +311,7 @@ namespace rw { namespace geometry {
          * @param singleEdgeId [in] id of the edge to create loop for. 1-indexing is expected, with
          * a sign that indicates the edge direction.
          */
-        void makeLoop (int singleEdgeId);
+        void makeLoop(int singleEdgeId);
 
         /**
          * @brief Create a loop containing two edges.
@@ -320,10 +321,9 @@ namespace rw { namespace geometry {
          * indicates the edge direction.
          * @return the first index, \b first.
          */
-        template< typename T > int makeLoop (T first, T second)
-        {
-            setEdgeOrder (static_cast< int > (first), static_cast< int > (second));
-            return static_cast< int > (first);
+        template<typename T> int makeLoop(T first, T second) {
+            setEdgeOrder(static_cast<int>(first), static_cast<int>(second));
+            return static_cast<int>(first);
         }
 
         /**
@@ -333,10 +333,9 @@ namespace rw { namespace geometry {
          * @param args [in] id of the following edges. Any number of arguments can be given.
          * @return the first index, \b first.
          */
-        template< typename T, typename... Args > int makeLoop (T first, Args... args)
-        {
-            setEdgeOrder (static_cast< int > (first), makeLoop (args...));
-            return static_cast< int > (first);
+        template<typename T, typename... Args> int makeLoop(T first, Args... args) {
+            setEdgeOrder(static_cast<int>(first), makeLoop(args...));
+            return static_cast<int>(first);
         }
 
 #if !defined(SWIGJAVA)
@@ -353,28 +352,28 @@ namespace rw { namespace geometry {
          * another half-edge.
          */
 
-         #endif 
-        void stitchEdges (std::size_t first, std::size_t second);
+#endif
+        void stitchEdges(std::size_t first, std::size_t second);
 
         /**
          * @brief Try to stitch edges automatically.
          * @param eps [in] distance threshold for vertices and curves.
          */
-        void stitchAuto (double eps);
+        void stitchAuto(double eps);
 
         /**
          * @brief Create Oriented Bounding Box for a face.
          * @param faceIndex [in] the face index, which should be less than loopCount().
          * @return OBB for the given face.
          */
-        rw::geometry::OBB<> faceOBB (std::size_t faceIndex);
+        rw::geometry::OBB<> faceOBB(std::size_t faceIndex);
 
         /**
          * @brief Create Oriented Bounding Rectangle for an edge.
          * @param edge [in] the edge index, which should be less than edgeCount().
          * @return OBB for the given edge (with third half-length set to zero).
          */
-        rw::geometry::OBB<> edgeOBR (std::size_t edge) const;
+        rw::geometry::OBB<> edgeOBR(std::size_t edge) const;
 
         /**
          * @brief Find the extent of the surface along a specific direction.
@@ -391,15 +390,15 @@ namespace rw { namespace geometry {
          * @param dir [in] a normalized direction vector.
          * @return the minimum and maximum values along the given direction.
          */
-        std::pair< double, double > faceExtremums (std::size_t faceIndex,
-                                                   const rw::math::Vector3D<double>& dir) const;
+        std::pair<double, double> faceExtremums(std::size_t faceIndex,
+                                                const rw::math::Vector3D<double>& dir) const;
 
         /**
          * @brief Construct a Triangle Mesh for a face.
          * @param faceIndex [in] the face index, which should be less than loopCount().
          * @return a triangle mesh.
          */
-        rw::core::Ptr< rw::geometry::TriMesh > faceTriMesh (std::size_t faceIndex);
+        rw::core::Ptr<rw::geometry::TriMesh> faceTriMesh(std::size_t faceIndex);
 
         /**
          * @brief Set the resolution used for discretization in the getTriMesh and faceTriMesh
@@ -409,13 +408,14 @@ namespace rw { namespace geometry {
          *
          * @param resolution [in] the resolution parameter.
          */
-        void setMeshResolution (double resolution = 10) { _resolution = resolution; }
+        void setMeshResolution(double resolution = 10) {
+            _resolution = resolution;
+        }
 
         //! @brief Print the structure of the BREP for debugging purposes.
-        virtual void print ();
+        virtual void print();
 
       protected:
-
         struct HalfEdge;
 
         /**
@@ -430,10 +430,10 @@ namespace rw { namespace geometry {
              * @brief Construct new vertex in the given \b point.
              * @param point [in] the points to construct vertex for.
              */
-            Vertex (const rw::math::Vector3D<double>& point) : point (point), nextEdge (NULL) {}
+            Vertex(const rw::math::Vector3D<double>& point) : point(point), nextEdge(NULL) {}
 
             //! @brief Destructor.
-            ~Vertex () {}
+            ~Vertex() {}
 
             //! @brief Vertex point.
             rw::math::Vector3D<double> point;
@@ -449,10 +449,10 @@ namespace rw { namespace geometry {
         struct Face
         {
             //! @brief Constructor.
-            Face () : surfaceSet (false), surfaceIndex (0), edge (NULL) {}
+            Face() : surfaceSet(false), surfaceIndex(0), edge(NULL) {}
 
             //! @brief Destructor.
-            ~Face () {}
+            ~Face() {}
 
             //! @brief Variable to indicate if a surface is assigned to the Face. Otherwise it is
             //! considered an empty loop.
@@ -477,13 +477,12 @@ namespace rw { namespace geometry {
              * @param curveIndex [in] the curve index (a pair of half-edges will point to the same
              * curve).
              */
-            HalfEdge (std::size_t curveIndex) :
-                curveIndex (curveIndex), previousVertex (NULL), nextVertex (NULL), face (NULL),
-                nextEdge (NULL), previousEdge (NULL), oppositeEdge (NULL), reversed (false)
-            {}
+            HalfEdge(std::size_t curveIndex) :
+                curveIndex(curveIndex), previousVertex(NULL), nextVertex(NULL), face(NULL),
+                nextEdge(NULL), previousEdge(NULL), oppositeEdge(NULL), reversed(false) {}
 
             //! @brief Destructor.
-            ~HalfEdge () {}
+            ~HalfEdge() {}
 
             //! @brief Index of the geometric curve data.
             std::size_t curveIndex;
@@ -509,12 +508,12 @@ namespace rw { namespace geometry {
 
       protected:
         //! @brief Constructor.
-        BREP ();
+        BREP();
         /**
          * @brief Copy the topology of this BREP to another \b brep.
          * @param brep [in/out] the other brep to copy data to.
          */
-        void copyTopologyTo (BREP::Ptr brep) const;
+        void copyTopologyTo(BREP::Ptr brep) const;
 
         /**
          * @brief Add a edge (will insert a pair of half-edges).
@@ -526,42 +525,42 @@ namespace rw { namespace geometry {
          * @param vertex1 [in] the first vertex.
          * @param vertex2 [in] the end vertex.
          */
-        void addBREPEdge (std::size_t curveIndex, std::size_t vertex1, std::size_t vertex2);
+        void addBREPEdge(std::size_t curveIndex, std::size_t vertex1, std::size_t vertex2);
 
         /**
          * @brief Attach a surface to a loop.
          * @param surfaceIndex [in] index of the surface data for the loop.
          * @param loop [in] the loop index.
          */
-        void setBREPFace (std::size_t surfaceIndex, std::size_t loop);
+        void setBREPFace(std::size_t surfaceIndex, std::size_t loop);
 
       private:
         class CommonCurveSetGeneric;
-        virtual rw::core::Ptr< const Shell > doShellProxyBREP () const;
-        virtual BREP::Ptr doClone () const                  = 0;
-        virtual void doRemoveCurve (std::size_t curveIndex) = 0;
+        virtual rw::core::Ptr<const Shell> doShellProxyBREP() const;
+        virtual BREP::Ptr doClone() const                  = 0;
+        virtual void doRemoveCurve(std::size_t curveIndex) = 0;
 
-        void setEdgeOrder (int before, int after);
-        void setHalfEdgeOrder (HalfEdge* before, HalfEdge* after);
-        HalfEdge* freeHalfEdge (const Vertex& endVertex, const HalfEdge* from = NULL,
-                                const HalfEdge* to = NULL) const;
+        void setEdgeOrder(int before, int after);
+        void setHalfEdgeOrder(HalfEdge* before, HalfEdge* after);
+        HalfEdge* freeHalfEdge(const Vertex& endVertex, const HalfEdge* from = NULL,
+                               const HalfEdge* to = NULL) const;
 
       protected:
         // Topology
         //! @brief The vertices in the BREP.
-        std::vector< Vertex* > _vertices;
+        std::vector<Vertex*> _vertices;
         //! @brief The half-edges in the BREP.
-        std::vector< std::pair< HalfEdge*, HalfEdge* > > _edges;
+        std::vector<std::pair<HalfEdge*, HalfEdge*>> _edges;
         //! @brief The faces in the BREP. A face is added for each loop constructed.
-        std::vector< Face* > _faces;
+        std::vector<Face*> _faces;
 
         // Resolution
         //! @brief Resolution used for discretization functions.
         double _resolution;
     };
-    #if !defined(SWIG)
-    //! @}
-    #endif
+#if !defined(SWIG)
+//! @}
+#endif
 }}    // namespace rw::geometry
 
 #endif /* RW_GEOMETRY_ANALYTIC_BREP_HPP_ */

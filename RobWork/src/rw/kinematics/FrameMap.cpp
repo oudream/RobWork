@@ -21,4 +21,4 @@
 
 using namespace rw::math;
 
-template class rw::kinematics::FrameMap< Transform3D<> >;
+template class rw::kinematics::FrameMap<Transform3D<>>;

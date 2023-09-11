@@ -65,47 +65,47 @@ namespace rwsim { namespace simulator {
          * @param child [in] the child ODEBody.
          * @param simulator [in] the ODESimulator that creates this constraint.
          */
-        ODEConstraint (rw::core::Ptr< const rwsim::dynamics::Constraint > constraint,
-                       const ODEBody* const parent, const ODEBody* const child,
-                       const ODESimulator* const simulator);
+        ODEConstraint(rw::core::Ptr<const rwsim::dynamics::Constraint> constraint,
+                      const ODEBody* const parent, const ODEBody* const child,
+                      const ODESimulator* const simulator);
 
         //! @brief Destructor.
-        virtual ~ODEConstraint ();
+        virtual ~ODEConstraint();
 
         /**
          * @brief Called before collision checking and time stepping
          * @param dt [in] info related to the timestep.
          * @param state [in/out] the state is updated with new values.
          */
-        void update (const rwlibs::simulation::Simulator::UpdateInfo& dt,
-                     rw::kinematics::State& state);
+        void update(const rwlibs::simulation::Simulator::UpdateInfo& dt,
+                    rw::kinematics::State& state);
 
         /**
          * Set or change a lower limit for a constraint.
          * @param dof [in] the degree of freedom to set (0 or 1).
          * @param limit [in] the limit to set.
          */
-        void setLoStop (std::size_t dof, double limit) const;
+        void setLoStop(std::size_t dof, double limit) const;
 
         /**
          * Set or change a higher limit for a constraint.
          * @param dof [in] the degree of freedom to set (0 or 1).
          * @param limit [in] the limit to set.
          */
-        void setHiStop (std::size_t dof, double limit) const;
+        void setHiStop(std::size_t dof, double limit) const;
 
       private:
-        void createJoint ();
-        void setLimits () const;
-        void destroyJoint ();
+        void createJoint();
+        void setLimits() const;
+        void destroyJoint();
 
         struct ComplianceDecomposition
         {
             Eigen::MatrixXd cachedCompliance;
             Eigen::MatrixXd inverse;
-            std::vector< rw::math::Vector3D<> > linFixedDirs;
-            std::vector< rw::math::Vector3D<> > angFixedDirs;
-            std::vector< rw::math::VectorND< 6 > > freeDirs;
+            std::vector<rw::math::Vector3D<>> linFixedDirs;
+            std::vector<rw::math::Vector3D<>> angFixedDirs;
+            std::vector<rw::math::VectorND<6>> freeDirs;
         };
 
         struct Spring
@@ -113,7 +113,7 @@ namespace rwsim { namespace simulator {
             // Constraint based settings (static)
             dJointID motorLin;
             dJointID motorAng;
-            std::vector< rw::math::Vector3D<> > rowToDir;
+            std::vector<rw::math::Vector3D<>> rowToDir;
             bool comp[6];
             unsigned int linComp;
             unsigned int angComp;
@@ -121,22 +121,22 @@ namespace rwsim { namespace simulator {
             ComplianceDecomposition cDec;
         };
 
-        void createSpring ();
-        void deleteSpring ();
-        static void decomposeCompliance (const Eigen::MatrixXd& compliance, const Spring& spring,
-                                         ComplianceDecomposition& dec, double tolerance = 1e-6);
-        Eigen::VectorXd getX (const rw::math::Transform3D<>& wTchild,
+        void createSpring();
+        void deleteSpring();
+        static void decomposeCompliance(const Eigen::MatrixXd& compliance, const Spring& spring,
+                                        ComplianceDecomposition& dec, double tolerance = 1e-6);
+        Eigen::VectorXd getX(const rw::math::Transform3D<>& wTchild,
+                             const rw::math::Transform3D<>& wTconstraint,
+                             const rw::kinematics::State& state) const;
+        Eigen::VectorXd getXd(const rw::math::Transform3D<>& wTparent,
                               const rw::math::Transform3D<>& wTconstraint,
                               const rw::kinematics::State& state) const;
-        Eigen::VectorXd getXd (const rw::math::Transform3D<>& wTparent,
-                               const rw::math::Transform3D<>& wTconstraint,
-                               const rw::kinematics::State& state) const;
-        std::pair< rw::math::Vector3D<>, rw::math::Vector3D<> >
-        toCartesian (const Eigen::VectorXd& reduced) const;
-        void setMotorDirLin (const rw::math::Vector3D<> axis, unsigned int dirNumber) const;
-        void setMotorDirAng (const rw::math::Vector3D<> axis, unsigned int dirNumber) const;
+        std::pair<rw::math::Vector3D<>, rw::math::Vector3D<>>
+        toCartesian(const Eigen::VectorXd& reduced) const;
+        void setMotorDirLin(const rw::math::Vector3D<> axis, unsigned int dirNumber) const;
+        void setMotorDirAng(const rw::math::Vector3D<> axis, unsigned int dirNumber) const;
 
-        const rw::core::Ptr< const rwsim::dynamics::Constraint > _rwConstraint;
+        const rw::core::Ptr<const rwsim::dynamics::Constraint> _rwConstraint;
         const ODEBody* const _parent;
         const ODEBody* const _child;
         const dWorldID _world;

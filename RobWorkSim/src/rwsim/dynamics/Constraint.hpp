@@ -54,7 +54,7 @@ namespace rwsim { namespace dynamics {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< Constraint > Ptr;
+        typedef rw::core::Ptr<Constraint> Ptr;
 
         //! @brief The different constraint types.
         typedef enum {
@@ -80,59 +80,59 @@ namespace rwsim { namespace dynamics {
          * @param b1 [in] the parent body to attach the constraint to.
          * @param b2 [in] the child body to attach the constraint to.
          */
-        Constraint (const std::string& name, const ConstraintType& type, Body* b1, Body* b2);
+        Constraint(const std::string& name, const ConstraintType& type, Body* b1, Body* b2);
 
         //! @brief Destructor
-        virtual ~Constraint ();
+        virtual ~Constraint();
 
         /**
          * @brief Get the type of constraint.
          * @return the ConstraintType
          */
-        ConstraintType getType () const;
+        ConstraintType getType() const;
 
         /**
          * @brief Get a pointer to Body 1.
          * @return pointer to body 1.
          */
-        Body* getBody1 () const;
+        Body* getBody1() const;
 
         /**
          * @brief Get a pointer to Body 2.
          * @return pointer to body 2.
          */
-        Body* getBody2 () const;
+        Body* getBody2() const;
 
         /**
          * @brief Get the degrees of freedom of the constraint.
          * @return the degrees of freedom.
          */
-        size_t getDOF () const;
+        size_t getDOF() const;
 
         /**
          * @brief Get the linear degrees of freedom of the constraint.
          * @return the linear degrees of freedom.
          */
-        size_t getDOFLinear () const;
+        size_t getDOFLinear() const;
 
         /**
          * @brief Get the angular degrees of freedom of the constraint.
          * @return the angular degrees of freedom.
          */
-        size_t getDOFAngular () const;
+        size_t getDOFAngular() const;
 
         /**
          * @brief Get the transform of the constraint, relative to the parents body frame.
          * @return the transform relative to the parent, \f$\bf{T}_{parent}^{constraint}\f$.
          */
-        rw::math::Transform3D<> getTransform () const;
+        rw::math::Transform3D<> getTransform() const;
 
         /**
          * @brief Set the transform of the constraint, relative to the parents body frame.
          * @param parentTconstraint [in] the transform relative to the parent,
          * \f$\bf{T}_{parent}^{constraint}\f$.
          */
-        void setTransform (const rw::math::Transform3D<>& parentTconstraint);
+        void setTransform(const rw::math::Transform3D<>& parentTconstraint);
 
         /**
          * @brief Parameters for a spring.
@@ -148,7 +148,7 @@ namespace rwsim { namespace dynamics {
         struct SpringParams
         {
             //! @brief Constructor
-            SpringParams () : enabled (false){};
+            SpringParams() : enabled(false){};
             //! @brief Enable or disable the spring.
             bool enabled;
             //! @brief The compliance of the spring as a n x n matrix, where n is the DOF of the
@@ -163,19 +163,19 @@ namespace rwsim { namespace dynamics {
          * @brief Get the spring parameters.
          * @return SpringParams structure.
          */
-        SpringParams getSpringParams () const;
+        SpringParams getSpringParams() const;
 
         /**
          * @brief Set spring parameters.
          * @param params [in] SpringParams structure.
          */
-        void setSpringParams (const SpringParams& params);
+        void setSpringParams(const SpringParams& params);
 
         //! @brief Definition of a limit for one single degree of freedom.
         struct Limit
         {
             //! @brief Constructor.
-            Limit () : lowOn (false), highOn (false), low (0), high (0) {}
+            Limit() : lowOn(false), highOn(false), low(0), high(0) {}
             //! @brief Enable low limit.
             bool lowOn;
             //! @brief Enable high limit.
@@ -191,14 +191,14 @@ namespace rwsim { namespace dynamics {
          * @param i [in] the degree of freedom to get limit information for.
          * @return the limit.
          */
-        Limit getLimit (std::size_t i) const;
+        Limit getLimit(std::size_t i) const;
 
         /**
          * @brief Set limit.
          * @param i [in] the degree of freedom to set limit information for.
          * @param limit [in] the limit information.
          */
-        void setLimit (std::size_t i, const Limit& limit);
+        void setLimit(std::size_t i, const Limit& limit);
 
         /**
          * @brief Convert a string to a ConstraintType.
@@ -206,12 +206,12 @@ namespace rwsim { namespace dynamics {
          * @param type [in/out] the result of the convertion.
          * @return true if string was converted, false otherwise.
          */
-        static bool toConstraintType (const std::string& string, ConstraintType& type);
+        static bool toConstraintType(const std::string& string, ConstraintType& type);
 
       private:
-        static size_t getDOF (ConstraintType type);
-        static size_t getDOFLinear (ConstraintType type);
-        static size_t getDOFAngular (ConstraintType type);
+        static size_t getDOF(ConstraintType type);
+        static size_t getDOFLinear(ConstraintType type);
+        static size_t getDOFAngular(ConstraintType type);
 
         const ConstraintType _type;
         Body* const _body1;
@@ -223,7 +223,7 @@ namespace rwsim { namespace dynamics {
         SpringParams _springParams;
         mutable boost::mutex _springParams_mutex;
 
-        std::vector< Limit > _limits;
+        std::vector<Limit> _limits;
         mutable boost::mutex _limits_mutex;
     };
     //! @}

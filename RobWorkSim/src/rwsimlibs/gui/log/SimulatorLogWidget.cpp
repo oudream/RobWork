@@ -47,124 +47,113 @@ using namespace rwsim::log;
 using namespace rwsimlibs::gui;
 using namespace rws;
 
-SimulatorLogWidget::SimulatorLogWidget (QWidget* parent) :
-    QWidget (parent), _ui (new Ui::SimulatorLogWidget ()), _dwc (NULL),
-    _glview (new SceneOpenGLViewer (_ui->_viewFrame)), _log (NULL),
-    _model (new SimulatorLogModel (this)), _root (rw::core::ownedPtr (new GroupNode ("World"))),
-    _properties (rw::core::ownedPtr (new rw::core::PropertyMap ()))
-{
-    _ui->setupUi (this);
+SimulatorLogWidget::SimulatorLogWidget(QWidget* parent) :
+    QWidget(parent), _ui(new Ui::SimulatorLogWidget()), _dwc(NULL),
+    _glview(new SceneOpenGLViewer(_ui->_viewFrame)), _log(NULL),
+    _model(new SimulatorLogModel(this)), _root(rw::core::ownedPtr(new GroupNode("World"))),
+    _properties(rw::core::ownedPtr(new rw::core::PropertyMap())) {
+    _ui->setupUi(this);
 
-    QGridLayout* lay = new QGridLayout (_ui->_viewFrame);
-    _ui->_viewFrame->setLayout (lay);
-    lay->addWidget (_glview);
-    _glview->setWorldNode (_root);
+    QGridLayout* lay = new QGridLayout(_ui->_viewFrame);
+    _ui->_viewFrame->setLayout(lay);
+    lay->addWidget(_glview);
+    _glview->setWorldNode(_root);
 
     // No background
-    _glview->getPropertyMap ().set< bool > ("DrawBackGround", false);
-    const rw::core::Property< bool >::Ptr bgProp =
-        _glview->getPropertyMap ().findProperty< bool > ("DrawBackGround");
-    bgProp->setValue (false);
-    bgProp->changedEvent ().fire (bgProp.get ());
+    _glview->getPropertyMap().set<bool>("DrawBackGround", false);
+    const rw::core::Property<bool>::Ptr bgProp =
+        _glview->getPropertyMap().findProperty<bool>("DrawBackGround");
+    bgProp->setValue(false);
+    bgProp->changedEvent().fire(bgProp.get());
 
     // Make floor grid
-    const SceneGraph::Ptr scene = _glview->getScene ();
+    const SceneGraph::Ptr scene = _glview->getScene();
     const DrawableGeometryNode::Ptr grid =
-        scene->makeDrawable ("FloorGrid", Line::makeGrid (10, 10, 0.5, 0.5), DrawableNode::Virtual);
-    grid->setColor (Vector3D<> (0.8f, 0.8f, 0.8f));
-    GroupNode::addChild (grid, _root);
-    grid->setVisible (true);
+        scene->makeDrawable("FloorGrid", Line::makeGrid(10, 10, 0.5, 0.5), DrawableNode::Virtual);
+    grid->setColor(Vector3D<>(0.8f, 0.8f, 0.8f));
+    GroupNode::addChild(grid, _root);
+    grid->setVisible(true);
 
     // No pivot point
-    _glview->getPivotDrawable ()->setVisible (false);
+    _glview->getPivotDrawable()->setVisible(false);
 
-    _glview->updateView ();
+    _glview->updateView();
 
     // Left Tree Selector
-    _ui->_tree->setModel (_model);
-    _ui->_tree->header ()->setSectionResizeMode (QHeaderView::ResizeToContents);
-    connect (_ui->_tree->selectionModel (),
-             SIGNAL (selectionChanged (const QItemSelection&, const QItemSelection&)),
-             this,
-             SLOT (selectionChanged (const QItemSelection&, const QItemSelection&)));
-    connect (_ui->_tree->selectionModel (),
-             SIGNAL (currentRowChanged (const QModelIndex&, const QModelIndex&)),
-             this,
-             SLOT (currentChanged (const QModelIndex&, const QModelIndex&)));
-    connect (_ui->_tree,
-             SIGNAL (collapsed (const QModelIndex&)),
-             this,
-             SLOT (collapsed (const QModelIndex&)));
+    _ui->_tree->setModel(_model);
+    _ui->_tree->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    connect(_ui->_tree->selectionModel(),
+            SIGNAL(selectionChanged(const QItemSelection&, const QItemSelection&)),
+            this,
+            SLOT(selectionChanged(const QItemSelection&, const QItemSelection&)));
+    connect(_ui->_tree->selectionModel(),
+            SIGNAL(currentRowChanged(const QModelIndex&, const QModelIndex&)),
+            this,
+            SLOT(currentChanged(const QModelIndex&, const QModelIndex&)));
+    connect(_ui->_tree,
+            SIGNAL(collapsed(const QModelIndex&)),
+            this,
+            SLOT(collapsed(const QModelIndex&)));
 
     // Tabs
-    _ui->_pageStack->clear ();
-    _ui->_pageStack->addTab (_ui->_noPage, "Instructions");
-    _ui->_pageStack->setCurrentWidget (_ui->_noPage);
+    _ui->_pageStack->clear();
+    _ui->_pageStack->addTab(_ui->_noPage, "Instructions");
+    _ui->_pageStack->setCurrentWidget(_ui->_noPage);
 
-    connect (
-        _ui->_pageStack, SIGNAL (tabCloseRequested (int)), this, SLOT (tabCloseRequested (int)));
+    connect(_ui->_pageStack, SIGNAL(tabCloseRequested(int)), this, SLOT(tabCloseRequested(int)));
 }
 
-SimulatorLogWidget::~SimulatorLogWidget ()
-{
+SimulatorLogWidget::~SimulatorLogWidget() {
     delete _glview;
     delete _model;
 }
 
-void SimulatorLogWidget::setDWC (rw::core::Ptr< const DynamicWorkCell > dwc)
-{
-    _ui->_tree->selectionModel ()->clearSelection ();
+void SimulatorLogWidget::setDWC(rw::core::Ptr<const DynamicWorkCell> dwc) {
+    _ui->_tree->selectionModel()->clearSelection();
     _dwc = dwc;
 }
 
-void SimulatorLogWidget::setLog (rw::core::Ptr< SimulatorLogScope > log)
-{
-    _ui->_tree->selectionModel ()->clearSelection ();
+void SimulatorLogWidget::setLog(rw::core::Ptr<SimulatorLogScope> log) {
+    _ui->_tree->selectionModel()->clearSelection();
     _log = log;
-    _model->setRoot (_log);
+    _model->setRoot(_log);
 }
 
-void SimulatorLogWidget::compare (rw::core::Ptr< const rwsim::log::SimulatorLogScope > info)
-{
-    _model->compare (info);
+void SimulatorLogWidget::compare(rw::core::Ptr<const rwsim::log::SimulatorLogScope> info) {
+    _model->compare(info);
 }
 
-void SimulatorLogWidget::setSelectedTime (double time)
-{
-    if (isVisible ()) {
+void SimulatorLogWidget::setSelectedTime(double time) {
+    if(isVisible()) {
         int row = 0;
-        for (SimulatorLog::Ptr const& entry : _log->getChildren ()) {
-            const LogStep::Ptr step = entry.cast< LogStep > ();
-            if (step != NULL) {
-                if (time >= step->timeBegin () && time < step->timeEnd ())
-                    break;
+        for(SimulatorLog::Ptr const& entry : _log->getChildren()) {
+            const LogStep::Ptr step = entry.cast<LogStep>();
+            if(step != NULL) {
+                if(time >= step->timeBegin() && time < step->timeEnd()) break;
             }
             row++;
         }
-        if (row >= (int) _log->children ())
-            row = (int) _log->children () - 1;
-        _ui->_tree->selectionModel ()->select (_model->index (row, 0, QModelIndex ()),
-                                               QItemSelectionModel::ClearAndSelect |
-                                                   QItemSelectionModel::Current |
-                                                   QItemSelectionModel::Rows);
-        _ui->_tree->scrollTo (_model->index (row, 0, QModelIndex ()));
+        if(row >= (int) _log->children()) row = (int) _log->children() - 1;
+        _ui->_tree->selectionModel()->select(_model->index(row, 0, QModelIndex()),
+                                             QItemSelectionModel::ClearAndSelect |
+                                                 QItemSelectionModel::Current |
+                                                 QItemSelectionModel::Rows);
+        _ui->_tree->scrollTo(_model->index(row, 0, QModelIndex()));
     }
 }
 
-void SimulatorLogWidget::updateInfo ()
-{
-    _model->update ();
+void SimulatorLogWidget::updateInfo() {
+    _model->update();
 }
 
-void SimulatorLogWidget::setProperties (const rw::core::PropertyMap::Ptr properties)
-{
+void SimulatorLogWidget::setProperties(const rw::core::PropertyMap::Ptr properties) {
     _properties = properties;
-    for (const std::pair< const rwsim::log::SimulatorLog*, std::list< QWidget* > > widgets :
-         _entryToWidgets) {
-        for (QWidget* const widget : widgets.second) {
-            if (SimulatorLogEntryWidget* const logentry =
-                    dynamic_cast< SimulatorLogEntryWidget* > (widget)) {
-                logentry->setProperties (_properties);
+    for(const std::pair<const rwsim::log::SimulatorLog*, std::list<QWidget*>> widgets :
+        _entryToWidgets) {
+        for(QWidget* const widget : widgets.second) {
+            if(SimulatorLogEntryWidget* const logentry =
+                   dynamic_cast<SimulatorLogEntryWidget*>(widget)) {
+                logentry->setProperties(_properties);
             }
         }
     }
@@ -173,34 +162,30 @@ void SimulatorLogWidget::setProperties (const rw::core::PropertyMap::Ptr propert
 #include <rwlibs/opengl/DrawableGeometry.hpp>
 #include <rwlibs/opengl/RenderGeometry.hpp>
 using namespace rwlibs::opengl;
-void SimulatorLogWidget::updateOpenGLView ()
-{
-    const CameraController::Ptr controller = _glview->getCameraController ();
-    std::list< DrawableGeometry::Ptr > nodes;
-    std::queue< GroupNode::Ptr > groups;
-    groups.push (_root);
-    while (groups.size () > 0) {
-        const GroupNode::Ptr group = groups.front ();
-        groups.pop ();
-        for (const SceneNode::Ptr& node : group->_childNodes) {
-            const GroupNode::Ptr groupNode = node.cast< GroupNode > ();
-            if (!groupNode.isNull ()) {
-                groups.push (groupNode);
-            }
+void SimulatorLogWidget::updateOpenGLView() {
+    const CameraController::Ptr controller = _glview->getCameraController();
+    std::list<DrawableGeometry::Ptr> nodes;
+    std::queue<GroupNode::Ptr> groups;
+    groups.push(_root);
+    while(groups.size() > 0) {
+        const GroupNode::Ptr group = groups.front();
+        groups.pop();
+        for(const SceneNode::Ptr& node : group->_childNodes) {
+            const GroupNode::Ptr groupNode = node.cast<GroupNode>();
+            if(!groupNode.isNull()) { groups.push(groupNode); }
             else {
-                const DrawableGeometry::Ptr realNode = node.cast< DrawableGeometry > ();
-                if (!realNode.isNull ()) {
+                const DrawableGeometry::Ptr realNode = node.cast<DrawableGeometry>();
+                if(!realNode.isNull()) {
                     // if (realNode->getType() == DrawableNode::Physical)
-                    nodes.push_back (realNode);
+                    nodes.push_back(realNode);
                 }
             }
         }
     }
-    std::list< RenderGeometry::Ptr > renders;
-    for (const DrawableGeometry::Ptr& node : nodes) {
-        for (const Render::Ptr& render : node->getRenders ()) {
-            if (const RenderGeometry::Ptr rg = render.cast< RenderGeometry > ())
-                renders.push_back (rg);
+    std::list<RenderGeometry::Ptr> renders;
+    for(const DrawableGeometry::Ptr& node : nodes) {
+        for(const Render::Ptr& render : node->getRenders()) {
+            if(const RenderGeometry::Ptr rg = render.cast<RenderGeometry>()) renders.push_back(rg);
         }
     }
     // const ProjectionMatrix proj = _glview->getViewCamera()->getProjectionMatrix();
@@ -219,87 +204,78 @@ void SimulatorLogWidget::updateOpenGLView ()
     // Vector3D<> translateVector(0, 0, event->delta()/(240.0) );
     // T.P() -= T.R()*translateVector;
     // controller->setTransform(T);
-    _glview->updateView ();
+    _glview->updateView();
 }
 
-void SimulatorLogWidget::selectionChanged (const QItemSelection& selected,
-                                           const QItemSelection& deselected)
-{
-    _ui->_pageStack->removeTab (_ui->_pageStack->indexOf (_ui->_noPage));
+void SimulatorLogWidget::selectionChanged(const QItemSelection& selected,
+                                          const QItemSelection& deselected) {
+    _ui->_pageStack->removeTab(_ui->_pageStack->indexOf(_ui->_noPage));
     // If deselected entries has an associated widget, this is deleted.
-    foreach (const QModelIndex& index, deselected.indexes ())
-    {
-        const SimulatorLog* const entry =
-            static_cast< const SimulatorLog* > (index.internalPointer ());
-        if (entry == NULL)
-            continue;
-        std::map< const SimulatorLog*, std::list< QWidget* > >::iterator it =
-            _entryToWidgets.find (entry);
-        if (it != _entryToWidgets.end ()) {
-            for (QWidget* const widget : it->second) {
-                _ui->_pageStack->removeTab (_ui->_pageStack->indexOf (widget));
+    foreach(const QModelIndex& index, deselected.indexes()) {
+        const SimulatorLog* const entry = static_cast<const SimulatorLog*>(index.internalPointer());
+        if(entry == NULL) continue;
+        std::map<const SimulatorLog*, std::list<QWidget*>>::iterator it =
+            _entryToWidgets.find(entry);
+        if(it != _entryToWidgets.end()) {
+            for(QWidget* const widget : it->second) {
+                _ui->_pageStack->removeTab(_ui->_pageStack->indexOf(widget));
                 delete widget;
             }
-            _entryToWidgets.erase (it);
+            _entryToWidgets.erase(it);
         }
         // Remove color from dependent entries
-        if (const SimulatorLogEntry* const leaf =
-                dynamic_cast< const SimulatorLogEntry* > (entry)) {
-            for (const SimulatorLogEntry::Ptr& dep : leaf->getLinkedEntries ()) {
+        if(const SimulatorLogEntry* const leaf = dynamic_cast<const SimulatorLogEntry*>(entry)) {
+            for(const SimulatorLogEntry::Ptr& dep : leaf->getLinkedEntries()) {
                 QModelIndex search = index;
                 bool found         = false;
-                while (search.isValid () && !found) {
-                    search = _ui->_tree->indexAbove (search);
-                    if (search.isValid ()) {
+                while(search.isValid() && !found) {
+                    search = _ui->_tree->indexAbove(search);
+                    if(search.isValid()) {
                         const SimulatorLog* const searchEntry =
-                            static_cast< const SimulatorLog* > (search.internalPointer ());
-                        if (searchEntry == dep.get ())
-                            found = true;
+                            static_cast<const SimulatorLog*>(search.internalPointer());
+                        if(searchEntry == dep.get()) found = true;
                     }
                 }
-                if (found) {
-                    _model->setData (search, QVariant (), Qt::BackgroundRole);
-                    _ui->_tree->update (search);
-                    _ui->_tree->update (
-                        _model->index (search.row (), search.column () + 1, search.parent ()));
+                if(found) {
+                    _model->setData(search, QVariant(), Qt::BackgroundRole);
+                    _ui->_tree->update(search);
+                    _ui->_tree->update(
+                        _model->index(search.row(), search.column() + 1, search.parent()));
                 }
             }
         }
     }
     bool added = false;
     // Now create new widgets for the selected entries
-    foreach (const QModelIndex& index, selected.indexes ())
-    {
-        if (index.column () != 0)
-            continue;
-        SimulatorLog* const entry = static_cast< SimulatorLog* > (index.internalPointer ());
-        if (entry == NULL)
-            continue;
-        RW_ASSERT (_entryToWidgets.find (entry) == _entryToWidgets.end ());
-        SimulatorLogScope* const scope = dynamic_cast< SimulatorLogScope* > (entry);
-        if (scope) {
-            const rw::core::Ptr< const SimulatorStatistics > stats = scope->getStatistics ();
-            if (!stats.isNull ()) {
-                if (stats->getSeries ().size () > 0) {
+    foreach(const QModelIndex& index, selected.indexes()) {
+        if(index.column() != 0) continue;
+        SimulatorLog* const entry = static_cast<SimulatorLog*>(index.internalPointer());
+        if(entry == NULL) continue;
+        RW_ASSERT(_entryToWidgets.find(entry) == _entryToWidgets.end());
+        SimulatorLogScope* const scope = dynamic_cast<SimulatorLogScope*>(entry);
+        if(scope) {
+            const rw::core::Ptr<const SimulatorStatistics> stats = scope->getStatistics();
+            if(!stats.isNull()) {
+                if(stats->getSeries().size() > 0) {
                     SimulatorStatisticsWidget* const widget =
-                        new SimulatorStatisticsWidget (stats, _ui->_pageStack);
-                    _ui->_pageStack->addTab (widget, QString::fromStdString (widget->getName ()));
-                    _entryToWidgets[entry].push_back (widget);
+                        new SimulatorStatisticsWidget(stats, _ui->_pageStack);
+                    _ui->_pageStack->addTab(widget, QString::fromStdString(widget->getName()));
+                    _entryToWidgets[entry].push_back(widget);
                     added = true;
                 }
             }
         }
         else {
-            const std::list< SimulatorLogEntryWidget* > widgets =
-                SimulatorLogEntryWidget::Factory::makeWidgets (entry, _ui->_pageStack);
-            for (SimulatorLogEntryWidget* const widget : widgets) {
-                widget->setDWC (_dwc);
-                widget->setProperties (_properties);
-                widget->showGraphics (_root, _glview->getScene ());
-                widget->updateEntryWidget ();
-                _ui->_pageStack->addTab (widget, QString::fromStdString (widget->getName ()));
-                _entryToWidgets[entry].push_back (widget);
-                connect (widget, SIGNAL (graphicsUpdated ()), this, SLOT (updateOpenGLView ()));
+            const std::list<SimulatorLogEntryWidget*> widgets =
+                SimulatorLogEntryWidget::Factory::makeWidgets(entry, _ui->_pageStack);
+            for(SimulatorLogEntryWidget* const widget : widgets) {
+                widget->setDWC(_dwc);
+                widget->setProperties(_properties);
+                widget->showGraphics(_root, _glview->getScene());
+                widget->updateEntryWidget();
+                _ui->_pageStack->addTab(widget, QString::fromStdString(widget->getName()));
+                _entryToWidgets[entry].push_back(widget);
+                connect(widget, SIGNAL(graphicsUpdated()), this, SLOT(updateOpenGLView()));
                 added = true;
             }
         }
@@ -344,150 +320,134 @@ void SimulatorLogWidget::selectionChanged (const QItemSelection& selected,
            + QString::number(composite->line.second));
                         }*/
     }
-    if (added)
-        _ui->_pageStack->setCurrentIndex (_ui->_pageStack->count () - 1);
+    if(added) _ui->_pageStack->setCurrentIndex(_ui->_pageStack->count() - 1);
     // Color dependent entries
-    foreach (const QModelIndex& index, _ui->_tree->selectionModel ()->selectedIndexes ())
-    {
-        const SimulatorLog* const entry =
-            static_cast< const SimulatorLog* > (index.internalPointer ());
-        if (const SimulatorLogEntry* const leaf =
-                dynamic_cast< const SimulatorLogEntry* > (entry)) {
-            for (const SimulatorLogEntry::Ptr& dep : leaf->getLinkedEntries ()) {
+    foreach(const QModelIndex& index, _ui->_tree->selectionModel()->selectedIndexes()) {
+        const SimulatorLog* const entry = static_cast<const SimulatorLog*>(index.internalPointer());
+        if(const SimulatorLogEntry* const leaf = dynamic_cast<const SimulatorLogEntry*>(entry)) {
+            for(const SimulatorLogEntry::Ptr& dep : leaf->getLinkedEntries()) {
                 QModelIndex search = index;
                 bool found         = false;
-                while (search.isValid () && !found) {
-                    search = _ui->_tree->indexAbove (search);
-                    if (search.isValid ()) {
+                while(search.isValid() && !found) {
+                    search = _ui->_tree->indexAbove(search);
+                    if(search.isValid()) {
                         const SimulatorLog* const searchEntry =
-                            static_cast< const SimulatorLog* > (search.internalPointer ());
-                        if (searchEntry == dep.get ())
-                            found = true;
+                            static_cast<const SimulatorLog*>(search.internalPointer());
+                        if(searchEntry == dep.get()) found = true;
                     }
                 }
-                if (found) {
-                    _model->setData (search, QColor (240, 240, 255), Qt::BackgroundRole);
-                    _ui->_tree->update (search);
-                    _ui->_tree->update (
-                        _model->index (search.row (), search.column () + 1, search.parent ()));
+                if(found) {
+                    _model->setData(search, QColor(240, 240, 255), Qt::BackgroundRole);
+                    _ui->_tree->update(search);
+                    _ui->_tree->update(
+                        _model->index(search.row(), search.column() + 1, search.parent()));
                 }
             }
         }
     }
 
-    if (_entryToWidgets.size () == 0) {
-        bool showNoPage                                        = true;
-        const rw::core::Ptr< const SimulatorStatistics > stats = _log->getStatistics ();
-        if (!stats.isNull ()) {
-            if (stats->getSeries ().size () > 0) {
+    if(_entryToWidgets.size() == 0) {
+        bool showNoPage                                      = true;
+        const rw::core::Ptr<const SimulatorStatistics> stats = _log->getStatistics();
+        if(!stats.isNull()) {
+            if(stats->getSeries().size() > 0) {
                 SimulatorStatisticsWidget* const widget =
-                    new SimulatorStatisticsWidget (stats, _ui->_pageStack);
-                _ui->_pageStack->addTab (widget, QString::fromStdString (widget->getName ()));
-                _entryToWidgets[_log.get ()].push_back (widget);
+                    new SimulatorStatisticsWidget(stats, _ui->_pageStack);
+                _ui->_pageStack->addTab(widget, QString::fromStdString(widget->getName()));
+                _entryToWidgets[_log.get()].push_back(widget);
                 showNoPage = false;
             }
         }
-        if (showNoPage) {
-            _ui->_pageStack->addTab (_ui->_noPage, "Instructions");
-            _ui->_pageStack->setCurrentWidget (_ui->_noPage);
+        if(showNoPage) {
+            _ui->_pageStack->addTab(_ui->_noPage, "Instructions");
+            _ui->_pageStack->setCurrentWidget(_ui->_noPage);
         }
     }
 
-    updateOpenGLView ();
+    updateOpenGLView();
 }
 
-void SimulatorLogWidget::currentChanged (const QModelIndex& newSelection,
-                                         const QModelIndex& oldSelection)
-{
+void SimulatorLogWidget::currentChanged(const QModelIndex& newSelection,
+                                        const QModelIndex& oldSelection) {
     bool failed = true;
-    if (newSelection.isValid ()) {
-        SimulatorLog* const entry = static_cast< SimulatorLog* > (newSelection.internalPointer ());
-        if (entry == NULL)
-            return;
-        RW_ASSERT (_entryToWidgets.find (entry) == _entryToWidgets.end ());
-        boost::filesystem::path p (entry->getFilename ());
-        _ui->_file->setText (p.filename ().string ().c_str ());
-        _ui->_file->setToolTip (QString::fromStdString (entry->getFilename ()));
+    if(newSelection.isValid()) {
+        SimulatorLog* const entry = static_cast<SimulatorLog*>(newSelection.internalPointer());
+        if(entry == NULL) return;
+        RW_ASSERT(_entryToWidgets.find(entry) == _entryToWidgets.end());
+        boost::filesystem::path p(entry->getFilename());
+        _ui->_file->setText(p.filename().string().c_str());
+        _ui->_file->setToolTip(QString::fromStdString(entry->getFilename()));
 
-        const SimulatorLogScope* const scope = dynamic_cast< const SimulatorLogScope* > (entry);
-        const SimulatorLogEntry* const leaf  = dynamic_cast< const SimulatorLogEntry* > (entry);
-        if (leaf)
-            _ui->_lines->setText (QString::number (leaf->line ()));
+        const SimulatorLogScope* const scope = dynamic_cast<const SimulatorLogScope*>(entry);
+        const SimulatorLogEntry* const leaf  = dynamic_cast<const SimulatorLogEntry*>(entry);
+        if(leaf) _ui->_lines->setText(QString::number(leaf->line()));
         else
-            _ui->_lines->setText (QString::number (scope->lineBegin ()) + " to " +
-                                  QString::number (scope->lineEnd ()));
+            _ui->_lines->setText(QString::number(scope->lineBegin()) + " to " +
+                                 QString::number(scope->lineEnd()));
 
         failed = false;
     }
-    if (failed) {
-        _ui->_file->setText ("N/A");
-        _ui->_file->setToolTip ("");
-        _ui->_lines->setText ("N/A");
+    if(failed) {
+        _ui->_file->setText("N/A");
+        _ui->_file->setToolTip("");
+        _ui->_lines->setText("N/A");
     }
 }
 
-void SimulatorLogWidget::collapsed (const QModelIndex& index)
-{
+void SimulatorLogWidget::collapsed(const QModelIndex& index) {
     const SimulatorLogScope* const scope =
-        static_cast< const SimulatorLogScope* > (index.internalPointer ());
+        static_cast<const SimulatorLogScope*>(index.internalPointer());
     QItemSelection deselection;
-    foreach (const QModelIndex& selIndex, _ui->_tree->selectionModel ()->selectedIndexes ())
-    {
+    foreach(const QModelIndex& selIndex, _ui->_tree->selectionModel()->selectedIndexes()) {
         const SimulatorLog* const selectedEntry =
-            static_cast< const SimulatorLog* > (selIndex.internalPointer ());
-        SimulatorLogScope::Ptr selScope = selectedEntry->getParent ();
-        while (!selScope.isNull ()) {
-            if (selScope.get () == scope) {
-                deselection.append (QItemSelectionRange (selIndex));
+            static_cast<const SimulatorLog*>(selIndex.internalPointer());
+        SimulatorLogScope::Ptr selScope = selectedEntry->getParent();
+        while(!selScope.isNull()) {
+            if(selScope.get() == scope) {
+                deselection.append(QItemSelectionRange(selIndex));
                 break;
             }
-            selScope = selScope->getParent ();
+            selScope = selScope->getParent();
         }
     }
-    _ui->_tree->selectionModel ()->select (
-        deselection, QItemSelectionModel::Deselect | QItemSelectionModel::Rows);
+    _ui->_tree->selectionModel()->select(deselection,
+                                         QItemSelectionModel::Deselect | QItemSelectionModel::Rows);
     // Remove color from subitems
-    std::queue< QModelIndex > scopeIndices;
-    scopeIndices.push (index);
-    while (scopeIndices.size () > 0) {
-        const QModelIndex& scopeIndex = scopeIndices.front ();
-        for (int i = 0; i < _model->rowCount (scopeIndex); i++) {
-            const QModelIndex child = _model->index (i, 0, scopeIndex);
-            _model->setData (child, QVariant (), Qt::BackgroundRole);
-            if (_model->rowCount (child) > 0)
-                scopeIndices.push (child);
+    std::queue<QModelIndex> scopeIndices;
+    scopeIndices.push(index);
+    while(scopeIndices.size() > 0) {
+        const QModelIndex& scopeIndex = scopeIndices.front();
+        for(int i = 0; i < _model->rowCount(scopeIndex); i++) {
+            const QModelIndex child = _model->index(i, 0, scopeIndex);
+            _model->setData(child, QVariant(), Qt::BackgroundRole);
+            if(_model->rowCount(child) > 0) scopeIndices.push(child);
         }
-        scopeIndices.pop ();
+        scopeIndices.pop();
     }
 }
 
-void SimulatorLogWidget::btnPressed ()
-{
+void SimulatorLogWidget::btnPressed() {
     // const QObject* const obj = sender();
     // if(obj == _ui->_contactRenderBtn){
     //}
 }
 
-void SimulatorLogWidget::tabCloseRequested (int index)
-{
-    const QWidget* const widget = _ui->_pageStack->widget (index);
+void SimulatorLogWidget::tabCloseRequested(int index) {
+    const QWidget* const widget = _ui->_pageStack->widget(index);
     const SimulatorLogEntryWidget* const ewidget =
-        dynamic_cast< const SimulatorLogEntryWidget* > (widget);
-    if (ewidget == NULL)
-        return;
-    const rw::core::Ptr< const SimulatorLog > entry = ewidget->getEntry ();
-    if (entry == NULL)
-        return;
+        dynamic_cast<const SimulatorLogEntryWidget*>(widget);
+    if(ewidget == NULL) return;
+    const rw::core::Ptr<const SimulatorLog> entry = ewidget->getEntry();
+    if(entry == NULL) return;
     QItemSelection deselection;
-    foreach (const QModelIndex& index, _ui->_tree->selectionModel ()->selectedIndexes ())
-    {
+    foreach(const QModelIndex& index, _ui->_tree->selectionModel()->selectedIndexes()) {
         const SimulatorLog* const selectedEntry =
-            static_cast< const SimulatorLog* > (index.internalPointer ());
-        if (entry.get () == selectedEntry) {
-            deselection.append (QItemSelectionRange (index));
+            static_cast<const SimulatorLog*>(index.internalPointer());
+        if(entry.get() == selectedEntry) {
+            deselection.append(QItemSelectionRange(index));
             break;
         }
     }
-    _ui->_tree->selectionModel ()->select (
-        deselection, QItemSelectionModel::Deselect | QItemSelectionModel::Rows);
+    _ui->_tree->selectionModel()->select(deselection,
+                                         QItemSelectionModel::Deselect | QItemSelectionModel::Rows);
 }

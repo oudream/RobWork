@@ -33,16 +33,16 @@ namespace rw { namespace loaders {
     {
       public:
         //! @brief default constructor
-        XMLRWLoader (){};
+        XMLRWLoader(){};
 
         //! @brief constructor
         // XMLRWLoader(rw::graphics::WorkCellScene::Ptr scene):WorkCellLoader(scene){};
 
         //! @brief destructor
-        virtual ~XMLRWLoader () {}
+        virtual ~XMLRWLoader() {}
 
         //! @copydoc WorkCellLoader::loadWorkCell(const std::string&)
-        models::WorkCell::Ptr loadWorkCell (const std::string& filename);
+        models::WorkCell::Ptr loadWorkCell(const std::string& filename);
 
         /**
          * @brief Loads/imports robwork workcell in XML file format
@@ -51,14 +51,14 @@ namespace rw { namespace loaders {
          *
          * @param filename [in] filename of XML file
          */
-        static rw::models::WorkCell::Ptr load (const std::string& filename);
+        static rw::models::WorkCell::Ptr load(const std::string& filename);
 
         /**
          * @brief Returns the WorkCellFileName ID, to be used for getting the workcell filename
          *
          * @returns WorkCell filename ID
          */
-        static std::string getWorkCellFileNameId ();
+        static std::string getWorkCellFileNameId();
     };
 
     /*@}*/

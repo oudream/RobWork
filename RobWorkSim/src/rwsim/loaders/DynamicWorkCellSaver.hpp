@@ -26,7 +26,7 @@
 
 namespace rwsim { namespace dynamics {
     class DynamicWorkCell;
-}}    // namespace rw::models
+}}    // namespace rwsim::dynamics
 namespace rw { namespace kinematics {
     class State;
 }}    // namespace rw::kinematics
@@ -51,8 +51,8 @@ namespace rwsim { namespace loaders {
          * @param state the state of the system to save
          * @param fileName [in] Name of the file to which to write.
          */
-        static void save (rw::core::Ptr< const rwsim::dynamics::DynamicWorkCell> workcell,
-                          const rw::kinematics::State& state, std::string fileName);
+        static void save(rw::core::Ptr<const rwsim::dynamics::DynamicWorkCell> workcell,
+                         const rw::kinematics::State& state, std::string fileName);
 
         /**
          * @brief Writes \b workcellCalibration to stream.
@@ -60,12 +60,12 @@ namespace rwsim { namespace loaders {
          * @param state the state of the system to save
          * @param ostream [in] Stream to write to
          */
-        static void save (rw::core::Ptr< const rwsim::dynamics::DynamicWorkCell > workcell,
-                          const rw::kinematics::State& state, std::ostream& ostream);
+        static void save(rw::core::Ptr<const rwsim::dynamics::DynamicWorkCell> workcell,
+                         const rw::kinematics::State& state, std::ostream& ostream);
     };
 
     /* @} */
 
-}}    // namespace rw::loaders
+}}    // namespace rwsim::loaders
 
 #endif    // RWSIM_LOADERS_DYNAMICWORKCELLSAVER_HPP

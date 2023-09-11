@@ -66,41 +66,41 @@ namespace rw { namespace common {
          * @param stream [in] Stream to write to
          * @param policy [in] Overflow policy. Default is REMOVE_FIRST
          */
-        LogBufferedChar (size_t size, std::ostream* stream, OverflowPolicy policy = REMOVE_FIRST);
+        LogBufferedChar(size_t size, std::ostream* stream, OverflowPolicy policy = REMOVE_FIRST);
 
         /**
          * @brief Destructor
          *
          * Calls flush before destroying the object
          */
-        virtual ~LogBufferedChar ();
+        virtual ~LogBufferedChar();
 
       protected:
         /**
          * @brief Writes str to the buffer
          * @param str [in] String to write
          */
-        void doWrite (const std::string& str);
+        void doWrite(const std::string& str);
 
         /**
          * @brief Flushes the buffer to the output stream
          */
-        void doFlush ();
+        void doFlush();
 
         /**
          * @copydoc LogWriter::setTabLevel
          */
-        void doSetTabLevel (int tablevel);
+        void doSetTabLevel(int tablevel);
 
       private:
         std::ostream* _stream;
-        std::vector< char > _buffer;
+        std::vector<char> _buffer;
         size_t _size;
         int _index;
         OverflowPolicy _policy;
         bool _overflow;
 
-        char* get (int index) { return &_buffer[0] + index; }
+        char* get(int index) { return &_buffer[0] + index; }
         int _tabLevel;
     };
 

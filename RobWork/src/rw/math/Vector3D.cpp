@@ -26,41 +26,35 @@ using namespace rw::common;
 using namespace rw::math;
 
 // Explicit template specifications.
-template class rw::math::Vector3D< double >;
-template class rw::math::Vector3D< float >;
+template class rw::math::Vector3D<double>;
+template class rw::math::Vector3D<float>;
 
 namespace rw { namespace common { namespace serialization {
 
-    template< class T >
-    void writeImpl (const Vector3D< T >& tmp, OutputArchive& oar, const std::string& id)
-    {
-        std::vector< double > data = Math::toStdVector (tmp, 3);
-        oar.write (data, id);
+    template<class T>
+    void writeImpl(const Vector3D<T>& tmp, OutputArchive& oar, const std::string& id) {
+        std::vector<double> data = Math::toStdVector(tmp, 3);
+        oar.write(data, id);
     }
 
-    template< class T > void readImpl (Vector3D< T >& tmp, InputArchive& iar, const std::string& id)
-    {
-        std::vector< T > data;
-        iar.read (data, id);
-        Math::fromStdVector (data, tmp);
+    template<class T> void readImpl(Vector3D<T>& tmp, InputArchive& iar, const std::string& id) {
+        std::vector<T> data;
+        iar.read(data, id);
+        Math::fromStdVector(data, tmp);
     }
 
     // we need these to explicitly instantiate these functions
-    template<> void write (const Vector3D< double >& tmp, OutputArchive& oar, const std::string& id)
-    {
-        writeImpl (tmp, oar, id);
+    template<> void write(const Vector3D<double>& tmp, OutputArchive& oar, const std::string& id) {
+        writeImpl(tmp, oar, id);
     }
-    template<> void write (const Vector3D< float >& tmp, OutputArchive& oar, const std::string& id)
-    {
-        writeImpl (tmp, oar, id);
+    template<> void write(const Vector3D<float>& tmp, OutputArchive& oar, const std::string& id) {
+        writeImpl(tmp, oar, id);
     }
-    template<> void read (Vector3D< double >& tmp, InputArchive& iar, const std::string& id)
-    {
-        readImpl (tmp, iar, id);
+    template<> void read(Vector3D<double>& tmp, InputArchive& iar, const std::string& id) {
+        readImpl(tmp, iar, id);
     }
-    template<> void read (Vector3D< float >& tmp, InputArchive& iar, const std::string& id)
-    {
-        readImpl (tmp, iar, id);
+    template<> void read(Vector3D<float>& tmp, InputArchive& iar, const std::string& id) {
+        readImpl(tmp, iar, id);
     }
 
 }}}    // namespace rw::common::serialization

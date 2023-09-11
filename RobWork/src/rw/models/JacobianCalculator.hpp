@@ -21,7 +21,7 @@
 #if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Jacobian.hpp>
-#endif 
+#endif
 
 namespace rw { namespace kinematics {
     class State;
@@ -37,19 +37,19 @@ namespace rw { namespace models {
     {
       public:
         //! smart pointer type
-        typedef rw::core::Ptr< JacobianCalculator > Ptr;
+        typedef rw::core::Ptr<JacobianCalculator> Ptr;
 
         /**
          * @brief Destructor
          */
-        virtual ~JacobianCalculator ();
+        virtual ~JacobianCalculator();
 
         /**
          * @brief Returns the Jacobian associated to \b state
          * @param state [in] State for which to calculate the Jacobian
          * @return Jacobian for \b state
          */
-        virtual rw::math::Jacobian get (const rw::kinematics::State& state) const = 0;
+        virtual rw::math::Jacobian get(const rw::kinematics::State& state) const = 0;
 
         /*
          * @brief Returns the Jacobian calculated based on the content of \b fk

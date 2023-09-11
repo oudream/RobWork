@@ -48,14 +48,13 @@ namespace rw { namespace loaders {
         /**
          * @brief Constructs from char array.
          */
-        XMLStr (const char* const str) { _uniCodeForm = xercesc::XMLString::transcode (str); }
+        XMLStr(const char* const str) { _uniCodeForm = xercesc::XMLString::transcode(str); }
 
         /**
          * @brief Constructs from std::string
          */
-        XMLStr (const std::string& str)
-        {
-            _uniCodeForm = xercesc::XMLString::transcode (str.c_str ());
+        XMLStr(const std::string& str) {
+            _uniCodeForm = xercesc::XMLString::transcode(str.c_str());
         }
 
         /**
@@ -64,11 +63,10 @@ namespace rw { namespace loaders {
          * The methods uses an ordinary sprintf to convert into ch*, which
          * are then converted to unicode.
          */
-        XMLStr (double value)
-        {
+        XMLStr(double value) {
             char buffer[512];
-            sprintf (buffer, "%f", value);
-            _uniCodeForm = xercesc::XMLString::transcode (buffer);
+            sprintf(buffer, "%f", value);
+            _uniCodeForm = xercesc::XMLString::transcode(buffer);
         }
 
         /**
@@ -77,11 +75,10 @@ namespace rw { namespace loaders {
          * The methods uses an ordinary sprintf to convert into ch*, which
          * are then converted to unicode.
          */
-        XMLStr (int value)
-        {
+        XMLStr(int value) {
             char buffer[128];
-            sprintf (buffer, "%i", value);
-            _uniCodeForm = xercesc::XMLString::transcode (buffer);
+            sprintf(buffer, "%i", value);
+            _uniCodeForm = xercesc::XMLString::transcode(buffer);
         }
 
         /**
@@ -89,30 +86,25 @@ namespace rw { namespace loaders {
          *
          * The methods convert true into the text "true" and false into "false"
          */
-        XMLStr (bool value)
-        {
-            if (value)
-                _uniCodeForm = xercesc::XMLString::transcode ("true");
-            else
-                _uniCodeForm = xercesc::XMLString::transcode ("false");
+        XMLStr(bool value) {
+            if(value) _uniCodeForm = xercesc::XMLString::transcode("true");
+            else _uniCodeForm = xercesc::XMLString::transcode("false");
         }
 
         /**
          * @brief Constructs from unicode string
          */
-        XMLStr (const XMLCh* ch)
-        {
+        XMLStr(const XMLCh* ch) {
             _uniCodeForm = NULL;
-            char* buf    = xercesc::XMLString::transcode (ch);
-            if (ch != NULL)
-                _str = std::string (buf);
-            xercesc::XMLString::release (&buf);
+            char* buf    = xercesc::XMLString::transcode(ch);
+            if(ch != NULL) _str = std::string(buf);
+            xercesc::XMLString::release(&buf);
         }
 
         /**
          * @brief Destructor
          */
-        ~XMLStr () { xercesc::XMLString::release (&_uniCodeForm); }
+        ~XMLStr() { xercesc::XMLString::release(&_uniCodeForm); }
 
         /**
          * @brief Returns the unicode value
@@ -120,19 +112,18 @@ namespace rw { namespace loaders {
          * If constructed with XMLStr(const XMLCh* ch) no conversion has appeared and the method
          * returns NULL
          */
-        const XMLCh* uni () const { return _uniCodeForm; }
+        const XMLCh* uni() const { return _uniCodeForm; }
 
         /**
          * @brief Returns std::string from unicode
          *
          * Only defined when the object is constructed using XMLStr(const XMLCh* ch).
          */
-        std::string str () const { return _str; }
+        std::string str() const { return _str; }
 
         // we have to handle the unicode specifically
-        XMLStr (const XMLStr& xmlstr)
-        {
-            _uniCodeForm = xercesc::XMLString::replicate (xmlstr._uniCodeForm);
+        XMLStr(const XMLStr& xmlstr) {
+            _uniCodeForm = xercesc::XMLString::replicate(xmlstr._uniCodeForm);
             _str         = xmlstr._str;
         }
 
@@ -152,19 +143,18 @@ namespace rw { namespace loaders {
          *
          * The method may throw an exception if not able to initialize
          */
-        XercesInitializer ()
-        {
+        XercesInitializer() {
             try {
-                xercesc::XMLPlatformUtils::Initialize ();    // Initialize Xerces infrastructure
+                xercesc::XMLPlatformUtils::Initialize();    // Initialize Xerces infrastructure
             }
-            catch (xercesc::XMLException& e) {
-                RW_THROW ("Unable to initialize Xerces used for parsing XML-files. Error Msg: "
-                          << XMLStr (e.getMessage ()).str ());
+            catch(xercesc::XMLException& e) {
+                RW_THROW("Unable to initialize Xerces used for parsing XML-files. Error Msg: "
+                         << XMLStr(e.getMessage()).str());
             }
         }
 
         //! @brief Terminate Xerces when destructed.
-        ~XercesInitializer () { xercesc::XMLPlatformUtils::Terminate (); }
+        ~XercesInitializer() { xercesc::XMLPlatformUtils::Terminate(); }
     };
 
 #if XERCES_VERSION_MAJOR == 3
@@ -183,15 +173,14 @@ namespace rw { namespace loaders {
     class OutStreamFormatTarget : public xercesc::XMLFormatTarget
     {
       public:
-        OutStreamFormatTarget (std::ostream& out) : _out (out) {}
+        OutStreamFormatTarget(std::ostream& out) : _out(out) {}
 
-        virtual void writeChars (const XMLByte* const data, const XERCES_XMLSIZE_T count,
-                                 xercesc::XMLFormatter* const formatter)
-        {
+        virtual void writeChars(const XMLByte* const data, const XERCES_XMLSIZE_T count,
+                                xercesc::XMLFormatter* const formatter) {
             _out << data;
         }
 
-        virtual void flush () { _out.flush (); }
+        virtual void flush() { _out.flush(); }
 
       private:
         std::ostream& _out;
@@ -209,21 +198,20 @@ namespace rw { namespace loaders {
         XERCES_XMLFILEPOS _pos;
 
       public:
-        XMLInputStream (std::istream* in) : _in (in), _pos (0) {}
-        virtual XERCES_XMLFILEPOS curPos () const { return _pos; }
+        XMLInputStream(std::istream* in) : _in(in), _pos(0) {}
+        virtual XERCES_XMLFILEPOS curPos() const { return _pos; }
 
-        virtual XERCES_XMLSIZE_T readBytes (XMLByte* const toFill, const XERCES_XMLSIZE_T maxToRead)
-        {
+        virtual XERCES_XMLSIZE_T readBytes(XMLByte* const toFill,
+                                           const XERCES_XMLSIZE_T maxToRead) {
             //		XERCES_XMLSIZE_T s =
             //_in->rdbuf()->sgetn(stdext::checked_array_iterator<char*>((char*)toFill,
             //_countof((char*)toFill)), maxToRead);
 
-            XERCES_XMLSIZE_T s =
-                (XERCES_XMLSIZE_T) _in->rdbuf ()->sgetn ((char*) toFill, maxToRead);
+            XERCES_XMLSIZE_T s = (XERCES_XMLSIZE_T) _in->rdbuf()->sgetn((char*) toFill, maxToRead);
             _pos += s;
             return s;
         }
-        virtual const XMLCh* getContentType () const { return 0; }
+        virtual const XMLCh* getContentType() const { return 0; }
     };
 
     /**
@@ -237,9 +225,9 @@ namespace rw { namespace loaders {
         std::istream& _in;
 
       public:
-        InputStreamSource (std::istream& in) : InputSource (), _in (in) {}
+        InputStreamSource(std::istream& in) : InputSource(), _in(in) {}
 
-        virtual XMLInputStream* makeStream () const { return new XMLInputStream (&_in); }
+        virtual XMLInputStream* makeStream() const { return new XMLInputStream(&_in); }
     };
 
     /**
@@ -260,9 +248,9 @@ namespace rw { namespace loaders {
          * @param schemaFileName [in] Optional schema which can be used when parsing
          * @return The DOMDocument created
          */
-        static xercesc::DOMDocument* readDocument (xercesc::XercesDOMParser& parser,
-                                                   const std::string& filename,
-                                                   const std::string& schemaFileName);
+        static xercesc::DOMDocument* readDocument(xercesc::XercesDOMParser& parser,
+                                                  const std::string& filename,
+                                                  const std::string& schemaFileName);
 
         /**
          * @brief Read in DOMDocument from std::istream
@@ -276,9 +264,9 @@ namespace rw { namespace loaders {
          * @param schemaFileName [in] Optional schema which can be used when parsing
          * @return The DOMDocument created
          */
-        static xercesc::DOMDocument* readDocument (xercesc::XercesDOMParser& parser,
-                                                   std::istream& instream,
-                                                   const std::string& schemaFileName);
+        static xercesc::DOMDocument* readDocument(xercesc::XercesDOMParser& parser,
+                                                  std::istream& instream,
+                                                  const std::string& schemaFileName);
 
         /**
          * @brief Read in DOMDocument from xercesc::InputSource
@@ -295,9 +283,9 @@ namespace rw { namespace loaders {
          * @param schemaFileName [in] Optional schema which can be used when parsing
          * @return The DOMDocument created
          */
-        static xercesc::DOMDocument* readDocument (xercesc::XercesDOMParser& parser,
-                                                   const xercesc::InputSource& source,
-                                                   const std::string& schemaFileName);
+        static xercesc::DOMDocument* readDocument(xercesc::XercesDOMParser& parser,
+                                                  const xercesc::InputSource& source,
+                                                  const std::string& schemaFileName);
     };
 
     /**
@@ -306,7 +294,7 @@ namespace rw { namespace loaders {
     class XercesDocumentWriter
     {
       public:
-        static xercesc::DOMDocument* createDocument (const XMLCh* rootName);
+        static xercesc::DOMDocument* createDocument(const XMLCh* rootName);
 
         /**
          * @brief Writes the content of \b doc to file named \b filename
@@ -316,7 +304,7 @@ namespace rw { namespace loaders {
          * @param doc [in] DOMDocument to write
          * @param filename [in] Desired filename
          */
-        static void writeDocument (xercesc::DOMDocument* doc, const std::string& filename);
+        static void writeDocument(xercesc::DOMDocument* doc, const std::string& filename);
 
         /**
          * @brief Writes the content of \b doc to std::ostream \b out
@@ -326,7 +314,7 @@ namespace rw { namespace loaders {
          * @param doc [in] DOMDocument to write
          * @param out [in] The output stream to write to
          */
-        static void writeDocument (xercesc::DOMDocument* doc, std::ostream& out);
+        static void writeDocument(xercesc::DOMDocument* doc, std::ostream& out);
 
         /**
          * @brief Writes the content of \b doc to \b formatTarget
@@ -339,8 +327,8 @@ namespace rw { namespace loaders {
          * @param doc [in] DOMDocument to write
          * @param formatTarget [in] The target to write to
          */
-        static void writeDocument (xercesc::DOMDocument* doc,
-                                   xercesc::XMLFormatTarget* formatTarget);
+        static void writeDocument(xercesc::DOMDocument* doc,
+                                  xercesc::XMLFormatTarget* formatTarget);
     };
 
     /* @} */

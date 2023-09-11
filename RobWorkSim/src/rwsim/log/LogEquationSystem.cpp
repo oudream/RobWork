@@ -25,88 +25,70 @@ using namespace rw::common;
 using namespace rw::core;
 using namespace rwsim::log;
 
-LogEquationSystem::LogEquationSystem (SimulatorLogScope* parent) : SimulatorLogEntry (parent)
-{}
+LogEquationSystem::LogEquationSystem(SimulatorLogScope* parent) : SimulatorLogEntry(parent) {}
 
-LogEquationSystem::~LogEquationSystem ()
-{}
+LogEquationSystem::~LogEquationSystem() {}
 
-void LogEquationSystem::read (InputArchive& iarchive, const std::string& id)
-{
-    iarchive.read (_A, "A");
-    iarchive.read (_b, "b");
-    iarchive.read (_x, "x");
-    SimulatorLogEntry::read (iarchive, id);
+void LogEquationSystem::read(InputArchive& iarchive, const std::string& id) {
+    iarchive.read(_A, "A");
+    iarchive.read(_b, "b");
+    iarchive.read(_x, "x");
+    SimulatorLogEntry::read(iarchive, id);
 }
 
-void LogEquationSystem::write (OutputArchive& oarchive, const std::string& id) const
-{
-    oarchive.write (_A, "A");
-    oarchive.write (_b, "b");
-    oarchive.write (_x, "x");
-    SimulatorLogEntry::write (oarchive, id);
+void LogEquationSystem::write(OutputArchive& oarchive, const std::string& id) const {
+    oarchive.write(_A, "A");
+    oarchive.write(_b, "b");
+    oarchive.write(_x, "x");
+    SimulatorLogEntry::write(oarchive, id);
 }
 
-std::string LogEquationSystem::getType () const
-{
-    return getTypeID ();
+std::string LogEquationSystem::getType() const {
+    return getTypeID();
 }
 
-bool LogEquationSystem::operator== (const SimulatorLog& b) const
-{
-    if (const LogEquationSystem* const entry = dynamic_cast< const LogEquationSystem* > (&b)) {
-        if (_A != entry->_A)
-            return false;
-        if (_x != entry->_x)
-            return false;
-        if (_b != entry->_b)
-            return false;
+bool LogEquationSystem::operator==(const SimulatorLog& b) const {
+    if(const LogEquationSystem* const entry = dynamic_cast<const LogEquationSystem*>(&b)) {
+        if(_A != entry->_A) return false;
+        if(_x != entry->_x) return false;
+        if(_b != entry->_b) return false;
     }
-    return SimulatorLogEntry::operator== (b);
+    return SimulatorLogEntry::operator==(b);
 }
 
-std::list< SimulatorLogEntry::Ptr > LogEquationSystem::getLinkedEntries () const
-{
-    return std::list< SimulatorLogEntry::Ptr > ();
+std::list<SimulatorLogEntry::Ptr> LogEquationSystem::getLinkedEntries() const {
+    return std::list<SimulatorLogEntry::Ptr>();
 }
 
-bool LogEquationSystem::autoLink ()
-{
+bool LogEquationSystem::autoLink() {
     return true;
 }
 
-SimulatorLogEntry::Ptr LogEquationSystem::createNew (SimulatorLogScope* parent) const
-{
-    return ownedPtr (new LogEquationSystem (parent));
+SimulatorLogEntry::Ptr LogEquationSystem::createNew(SimulatorLogScope* parent) const {
+    return ownedPtr(new LogEquationSystem(parent));
 }
 
-std::string LogEquationSystem::getTypeID ()
-{
+std::string LogEquationSystem::getTypeID() {
     return "LogEquationSystem";
 }
 
-void LogEquationSystem::set (const Eigen::MatrixXd& A, const Eigen::VectorXd& b)
-{
+void LogEquationSystem::set(const Eigen::MatrixXd& A, const Eigen::VectorXd& b) {
     _A = A;
     _b = b;
 }
 
-void LogEquationSystem::setSolution (const Eigen::VectorXd& x)
-{
+void LogEquationSystem::setSolution(const Eigen::VectorXd& x) {
     _x = x;
 }
 
-const Eigen::MatrixXd& LogEquationSystem::A () const
-{
+const Eigen::MatrixXd& LogEquationSystem::A() const {
     return _A;
 }
 
-const Eigen::VectorXd& LogEquationSystem::b () const
-{
+const Eigen::VectorXd& LogEquationSystem::b() const {
     return _b;
 }
 
-const Eigen::VectorXd& LogEquationSystem::x () const
-{
+const Eigen::VectorXd& LogEquationSystem::x() const {
     return _x;
 }

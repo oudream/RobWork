@@ -29,23 +29,22 @@
 
 namespace rw { namespace sensor {
     class Image;
-}}
+}}    // namespace rw::sensor
 
-namespace rw {
-namespace graphics {
-//! @addtogroup graphics
+namespace rw { namespace graphics {
+    //! @addtogroup graphics
 
-//! @{
-//! @brief Interface for generation of plot images.
-class Plot
-{
-    protected:
+    //! @{
+    //! @brief Interface for generation of plot images.
+    class Plot
+    {
+      protected:
         //! @brief Constructor.
         Plot() {}
 
-    public:
+      public:
         //! @brief Smart pointer type.
-        typedef rw::core::Ptr< Plot > Ptr;
+        typedef rw::core::Ptr<Plot> Ptr;
 
         //! @brief Destructor.
         virtual ~Plot() {}
@@ -59,9 +58,9 @@ class Plot
          * @param xlabel [in] (optional) x axis label.
          * @param ylabel [in] (optional) y axis label.
          */
-        virtual void listPlot (const std::vector< double >& x, const std::vector< double >& y,
-                       const std::string& title = "", const std::string& xlabel = "",
-                       const std::string& ylabel = "") = 0;
+        virtual void listPlot(const std::vector<double>& x, const std::vector<double>& y,
+                              const std::string& title = "", const std::string& xlabel = "",
+                              const std::string& ylabel = "") = 0;
 
         /**
          * @brief Render the plot as an image.
@@ -70,11 +69,11 @@ class Plot
          * @param height [in] desired height.
          * @return image with the rendered plot.
          */
-        virtual rw::core::Ptr<rw::sensor::Image> render(unsigned int width, unsigned int height) = 0;
-};
-//! @}
+        virtual rw::core::Ptr<rw::sensor::Image> render(unsigned int width,
+                                                        unsigned int height) = 0;
+    };
+    //! @}
 
-} /* namespace graphics */
-} /* namespace rw */
+}}    // namespace rw::graphics
 
 #endif /* RW_GRAPHICS_PLOT_HPP_ */

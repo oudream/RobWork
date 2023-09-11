@@ -41,8 +41,7 @@ namespace rwlibs { namespace softbody {
          * @param df vector to put the derivatives in
          * @param h stepsize
          **/
-        static void vectorDerivative (const Eigen::VectorXd& f, Eigen::VectorXd& df,
-                                      const double h);
+        static void vectorDerivative(const Eigen::VectorXd& f, Eigen::VectorXd& df, const double h);
     };
     /*@}*/
 }}    // namespace rwlibs::softbody

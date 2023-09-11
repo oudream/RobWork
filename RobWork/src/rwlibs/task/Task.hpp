@@ -18,12 +18,11 @@
 #ifndef RWLIBS_TASK_TASK_HPP
 #define RWLIBS_TASK_TASK_HPP
 
+#include <rw/core/Ptr.hpp>
 #include <rwlibs/task/Action.hpp>
 #include <rwlibs/task/Entity.hpp>
 #include <rwlibs/task/Motion.hpp>
 #include <rwlibs/task/Target.hpp>
-
-#include <rw/core/Ptr.hpp>
 
 #include <map>
 #include <string>
@@ -42,38 +41,36 @@ namespace rwlibs { namespace task {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< TaskBase > Ptr;
+        typedef rw::core::Ptr<TaskBase> Ptr;
         /**
          * Convenience definition of pointer to Action
          */
-        typedef rw::core::Ptr< Action > ActionPtr;
+        typedef rw::core::Ptr<Action> ActionPtr;
 
         /**
          * @brief Constructs a task with a given type
          * @param type [in] Type of task
          * @param id [in] optional identifier
          */
-        TaskBase (Type type, const std::string& id = "") :
-            Entity (EntityType::Task, id), _type (type)
-        {}
+        TaskBase(Type type, const std::string& id = "") :
+            Entity(EntityType::Task, id), _type(type) {}
 
         /**
          * @brief Destructor
          */
-        virtual ~TaskBase () {}
+        virtual ~TaskBase() {}
 
         /**
          * @brief Returns the type of the task
          */
-        Type type () const { return _type; }
+        Type type() const { return _type; }
 
         /**
          * @brief Add an augmentation of the task
          * @param task [in] Task representing the augmentation
          * @param id [in] Id associated to augmentation
          */
-        void addAugmentation (TaskBase::Ptr task, const std::string& id)
-        {
+        void addAugmentation(TaskBase::Ptr task, const std::string& id) {
             _augmentations[id] = task;
         }
 
@@ -82,9 +79,8 @@ namespace rwlibs { namespace task {
          * @param id [in] id of augmentation to look for
          * @return True if augmentation exists. False otherwise
          */
-        bool hasAugmentation (const std::string& id)
-        {
-            return _augmentations.find (id) != _augmentations.end ();
+        bool hasAugmentation(const std::string& id) {
+            return _augmentations.find(id) != _augmentations.end();
         }
 
         /**
@@ -94,11 +90,9 @@ namespace rwlibs { namespace task {
          * @param id [in] id of task
          * @return Pointer to the augmenting task
          */
-        TaskBase::Ptr getAugmentation (const std::string& id)
-        {
-            std::map< std::string, TaskBase::Ptr >::iterator it = _augmentations.find (id);
-            if (it == _augmentations.end ())
-                RW_THROW ("Unable to find augmentation named \"" << id);
+        TaskBase::Ptr getAugmentation(const std::string& id) {
+            std::map<std::string, TaskBase::Ptr>::iterator it = _augmentations.find(id);
+            if(it == _augmentations.end()) RW_THROW("Unable to find augmentation named \"" << id);
 
             return (*it).second;
         }
@@ -107,14 +101,13 @@ namespace rwlibs { namespace task {
          * @brief Returns map with ids and augmentations
          * @return Reference to map with ids and augmentations
          */
-        std::map< std::string, TaskBase::Ptr >& getAugmentations () { return _augmentations; }
+        std::map<std::string, TaskBase::Ptr>& getAugmentations() { return _augmentations; }
 
         /**
          * @brief Returns map with ids and augmentations
          * @return Reference to map with ids and augmentations
          */
-        const std::map< std::string, TaskBase::Ptr >& getAugmentations () const
-        {
+        const std::map<std::string, TaskBase::Ptr>& getAugmentations() const {
             return _augmentations;
         }
 
@@ -127,19 +120,15 @@ namespace rwlibs { namespace task {
          *
          * @param entity [in] Entity to add
          */
-        void addEntity (rw::core::Ptr< Entity > entity)
-        {
-            entity->setIndex ((int) _entities.size ());
-            _entities.push_back (entity);
+        void addEntity(rw::core::Ptr<Entity> entity) {
+            entity->setIndex((int) _entities.size());
+            _entities.push_back(entity);
         }
 
-        void addEntityToFront (rw::core::Ptr< Entity > entity)
-        {
-            for (rw::core::Ptr< Entity > ent : _entities) {
-                ent->setIndex (ent->getIndex () + 1);
-            }
-            _entities.insert (_entities.begin (), entity);
-            entity->setIndex (0);
+        void addEntityToFront(rw::core::Ptr<Entity> entity) {
+            for(rw::core::Ptr<Entity> ent : _entities) { ent->setIndex(ent->getIndex() + 1); }
+            _entities.insert(_entities.begin(), entity);
+            entity->setIndex(0);
         }
 
         /**
@@ -148,7 +137,7 @@ namespace rwlibs { namespace task {
          * The order of the entities corresponds to the expected order of execution.
          * @return Reference to list of entities
          */
-        std::vector< rw::core::Ptr< Entity > >& getEntities () { return _entities; }
+        std::vector<rw::core::Ptr<Entity>>& getEntities() { return _entities; }
 
         /**
          * @brief Returns list of entities
@@ -156,128 +145,117 @@ namespace rwlibs { namespace task {
          * The order of the entities corresponds to the expected order of execution.
          * @return Reference to list of entities
          */
-        const std::vector< rw::core::Ptr< Entity > >& getEntities () const { return _entities; }
+        const std::vector<rw::core::Ptr<Entity>>& getEntities() const { return _entities; }
 
         /**
          * @brief Adds \b action to the task
          * @param action [in] Action to add
          */
-        void addAction (ActionPtr action)
-        {
-            addEntity (action);
-            _actions.push_back (action);
+        void addAction(ActionPtr action) {
+            addEntity(action);
+            _actions.push_back(action);
         }
 
-        void addActionToFront (ActionPtr action)
-        {
-            addEntityToFront (action);
-            _actions.insert (_actions.begin (), action);
+        void addActionToFront(ActionPtr action) {
+            addEntityToFront(action);
+            _actions.insert(_actions.begin(), action);
         }
 
         /**
          * @brief Returns list of actions
          * @return Reference to list of actions
          */
-        std::vector< ActionPtr >& getActions () { return _actions; }
+        std::vector<ActionPtr>& getActions() { return _actions; }
 
         /**
          * @brief Returns list of actions
          * @return Reference to list of actions
          */
-        const std::vector< ActionPtr >& getActions () const { return _actions; }
+        const std::vector<ActionPtr>& getActions() const { return _actions; }
 
         /**
          * @brief Sets name of device associated to the task
          * @param name [in] Device name
          */
-        void setDeviceName (const std::string& name) { _deviceName = name; }
+        void setDeviceName(const std::string& name) { _deviceName = name; }
 
         /**
          * @brief Returns name of device associated to the task
          * @return Name of the device
          */
-        const std::string& getDeviceName () const { return _deviceName; }
+        const std::string& getDeviceName() const { return _deviceName; }
 
         /**
          * @brief Removes a specific action
          */
-        bool removeAction (Action::Ptr action)
-        {
-            std::vector< Action::Ptr >::iterator it =
-                std::find (_actions.begin (), _actions.end (), action);
-            if (it != _actions.end ()) {
-                _actions.erase (it);
-                return removeEntity (action);
+        bool removeAction(Action::Ptr action) {
+            std::vector<Action::Ptr>::iterator it =
+                std::find(_actions.begin(), _actions.end(), action);
+            if(it != _actions.end()) {
+                _actions.erase(it);
+                return removeEntity(action);
             }
-            else {
-                return false;
-            }
+            else { return false; }
         }
 
         /**
          * @brief Reverse the order of the task
          */
-        virtual void reverse () = 0;
+        virtual void reverse() = 0;
 
       protected:
         Type _type;
 
-        std::map< std::string, TaskBase::Ptr > _augmentations;
+        std::map<std::string, TaskBase::Ptr> _augmentations;
 
-        std::vector< ActionPtr > _actions;
+        std::vector<ActionPtr> _actions;
 
-        std::vector< rw::core::Ptr< Entity > > _entities;
+        std::vector<rw::core::Ptr<Entity>> _entities;
 
         std::string _deviceName;
 
-        void doReverseBase ()
-        {
-            std::vector< ActionPtr >& actions = getActions ();
-            std::vector< ActionPtr > tmp      = actions;
-            actions.clear ();
-            for (std::vector< ActionPtr >::reverse_iterator it = tmp.rbegin (); it != tmp.rend ();
-                 ++it)
-                actions.push_back (*it);
+        void doReverseBase() {
+            std::vector<ActionPtr>& actions = getActions();
+            std::vector<ActionPtr> tmp      = actions;
+            actions.clear();
+            for(std::vector<ActionPtr>::reverse_iterator it = tmp.rbegin(); it != tmp.rend(); ++it)
+                actions.push_back(*it);
 
-            for (std::map< std::string, TaskBase::Ptr >::iterator it = _augmentations.begin ();
-                 it != _augmentations.end ();
-                 ++it)
-                (*it).second->reverse ();
+            for(std::map<std::string, TaskBase::Ptr>::iterator it = _augmentations.begin();
+                it != _augmentations.end();
+                ++it)
+                (*it).second->reverse();
 
-            typedef std::vector< rw::core::Ptr< Entity > > EntityVector;
+            typedef std::vector<rw::core::Ptr<Entity>> EntityVector;
             EntityVector entities = _entities;
-            _entities.clear ();
-            for (EntityVector::reverse_iterator it = entities.rbegin (); it != entities.rend ();
-                 ++it) {
-                addEntity (*it);
+            _entities.clear();
+            for(EntityVector::reverse_iterator it = entities.rbegin(); it != entities.rend();
+                ++it) {
+                addEntity(*it);
             }
         }
 
-        void copyBase (TaskBase::Ptr target)
-        {
+        void copyBase(TaskBase::Ptr target) {
             target->_type       = _type;
             target->_deviceName = _deviceName;
 
-            for (std::map< std::string, TaskBase::Ptr >::iterator it = _augmentations.begin ();
-                 it != _augmentations.end ();
-                 ++it) {
+            for(std::map<std::string, TaskBase::Ptr>::iterator it = _augmentations.begin();
+                it != _augmentations.end();
+                ++it) {
                 target->_augmentations[(*it).first] = NULL;    //(*it).second->doClone();
             }
         }
 
-        virtual TaskBase::Ptr doClone () { return NULL; }
+        virtual TaskBase::Ptr doClone() { return NULL; }
 
-        bool removeEntity (Entity::Ptr entity)
-        {
-            std::vector< Entity::Ptr >::iterator it =
-                std::find (_entities.begin (), _entities.end (), entity);
-            if (it != _entities.end ()) {
-                _entities.erase (it);
+        bool removeEntity(Entity::Ptr entity) {
+            std::vector<Entity::Ptr>::iterator it =
+                std::find(_entities.begin(), _entities.end(), entity);
+            if(it != _entities.end()) {
+                _entities.erase(it);
                 return true;
             }
-            else {
-                return false;
-            }
+            else { return false; }
         }
     };
 
@@ -287,17 +265,17 @@ namespace rwlibs { namespace task {
      * The template arguments \b TASK, \b TARGET and \b MOTION represents
      * specifies which kind of task, target and motion to use.
      */
-    template< class TASK, class TARGET, class MOTION > class GenericTask : public TaskBase
+    template<class TASK, class TARGET, class MOTION> class GenericTask : public TaskBase
     {
       public:
         /** Convenience definition of pointer to task */
-        typedef rw::core::Ptr< TASK > TaskPtr;
+        typedef rw::core::Ptr<TASK> TaskPtr;
 
         /** Convenience definition of pointer to target */
-        typedef rw::core::Ptr< TARGET > TargetPtr;
+        typedef rw::core::Ptr<TARGET> TargetPtr;
 
         /** Convenience definition of pointer to motion */
-        typedef rw::core::Ptr< MOTION > MotionPtr;
+        typedef rw::core::Ptr<MOTION> MotionPtr;
 
         /**
          * @brief Constrcts Task
@@ -305,181 +283,168 @@ namespace rwlibs { namespace task {
          * When constructing a task the type T is automatically added to the TypeRepository
          * and the the associated value is set as the type.
          */
-        GenericTask (Type type = -1, const std::string& id = "") : TaskBase (type, id) {}
+        GenericTask(Type type = -1, const std::string& id = "") : TaskBase(type, id) {}
 
         /**
          * @brief Destructor
          */
-        virtual ~GenericTask () {}
+        virtual ~GenericTask() {}
 
         /**
          * @brief Adds \b target to the task
          * @param target [in] Target to add
          */
-        void addTarget (TargetPtr target)
-        {
-            addEntity (target);
-            _targets.push_back (target);
+        void addTarget(TargetPtr target) {
+            addEntity(target);
+            _targets.push_back(target);
         }
 
-        void addTargetToFront (TargetPtr target)
-        {
-            addEntityToFront (target);
-            _targets.insert (_targets.begin (), target);
+        void addTargetToFront(TargetPtr target) {
+            addEntityToFront(target);
+            _targets.insert(_targets.begin(), target);
         }
 
         /**
          * @brief Removes a specific target
          */
-        bool removeTarget (TargetPtr target)
-        {
-            typename std::vector< TargetPtr >::iterator it =
-                std::find (_targets.begin (), _targets.end (), target);
-            if (it != _targets.end ()) {
-                _targets.erase (it);
-                return removeEntity (target);
+        bool removeTarget(TargetPtr target) {
+            typename std::vector<TargetPtr>::iterator it =
+                std::find(_targets.begin(), _targets.end(), target);
+            if(it != _targets.end()) {
+                _targets.erase(it);
+                return removeEntity(target);
             }
-            else {
-                return false;
-            }
+            else { return false; }
         }
 
         /**
          * @brief Returns list of targets
          * @return Reference to list of targets
          */
-        std::vector< TargetPtr >& getTargets () { return _targets; }
+        std::vector<TargetPtr>& getTargets() { return _targets; }
 
         /**
          * @brief Returns list of targets
          * @return Reference to list of targets
          */
-        const std::vector< TargetPtr >& getTargets () const { return _targets; }
+        const std::vector<TargetPtr>& getTargets() const { return _targets; }
 
         /**
          * @brief Adds \b motion to the task
          * @param motion [in] Motion to add
          */
-        void addMotion (MotionPtr motion)
-        {
-            addEntity (motion);
-            _motions.push_back (motion);
+        void addMotion(MotionPtr motion) {
+            addEntity(motion);
+            _motions.push_back(motion);
         }
 
         /**
          * @brief Adds \b motion to the front of the task
          * @param motion [in] Motion to add
          */
-        void addMotionToFront (MotionPtr motion)
-        {
-            addEntityToFront (motion);
-            _motions.insert (_motions.begin (), motion);
+        void addMotionToFront(MotionPtr motion) {
+            addEntityToFront(motion);
+            _motions.insert(_motions.begin(), motion);
         }
 
         /**
          * @brief Removes a specific motion
          */
-        bool removeMotion (MotionPtr motion)
-        {
-            typename std::vector< MotionPtr >::iterator it =
-                std::find (_motions.begin (), _motions.end (), motion);
-            if (it != _motions.end ()) {
-                _motions.erase (it);
-                return removeEntity (motion);
+        bool removeMotion(MotionPtr motion) {
+            typename std::vector<MotionPtr>::iterator it =
+                std::find(_motions.begin(), _motions.end(), motion);
+            if(it != _motions.end()) {
+                _motions.erase(it);
+                return removeEntity(motion);
             }
-            else {
-                return false;
-            }
+            else { return false; }
         }
 
         /**
          * @brief Returns list of motions
          * @return Reference to list of motions
          */
-        std::vector< MotionPtr >& getMotions () { return _motions; }
+        std::vector<MotionPtr>& getMotions() { return _motions; }
 
         /**
          * @brief Returns list of motions
          * @return Reference to list of motions
          */
-        const std::vector< MotionPtr >& getMotions () const { return _motions; }
+        const std::vector<MotionPtr>& getMotions() const { return _motions; }
 
         /**
          * @brief Adds \b task as a subtask
          * @param task [in] Task to add
          */
-        void addTask (TaskPtr task)
-        {
-            addEntity (task);
-            _tasks.push_back (task);
+        void addTask(TaskPtr task) {
+            addEntity(task);
+            _tasks.push_back(task);
         }
 
-        void addTaskToFront (TaskPtr task)
-        {
-            addEntityToFront (task);
-            _tasks.insert (_tasks.begin (), task);
+        void addTaskToFront(TaskPtr task) {
+            addEntityToFront(task);
+            _tasks.insert(_tasks.begin(), task);
         }
 
         /**
          * @brief Returns list of tasks
          * @return Reference to list of tasks
          */
-        std::vector< TaskPtr >& getTasks () { return _tasks; }
+        std::vector<TaskPtr>& getTasks() { return _tasks; }
 
         /**
          * @brief Returns list of tasks
          * @return Reference to list of tasks
          */
-        const std::vector< TaskPtr >& getTasks () const { return _tasks; }
+        const std::vector<TaskPtr>& getTasks() const { return _tasks; }
 
-        void reverse ()
-        {
-            std::vector< TargetPtr > targets = _targets;
-            _targets.clear ();
-            for (typename std::vector< TargetPtr >::reverse_iterator it = targets.rbegin ();
-                 it != targets.rend ();
-                 ++it)
-                _targets.push_back (*it);
+        void reverse() {
+            std::vector<TargetPtr> targets = _targets;
+            _targets.clear();
+            for(typename std::vector<TargetPtr>::reverse_iterator it = targets.rbegin();
+                it != targets.rend();
+                ++it)
+                _targets.push_back(*it);
 
-            std::vector< MotionPtr > motions = _motions;
-            _motions.clear ();
-            for (typename std::vector< MotionPtr >::reverse_iterator it = motions.rbegin ();
-                 it != motions.rend ();
-                 ++it) {
+            std::vector<MotionPtr> motions = _motions;
+            _motions.clear();
+            for(typename std::vector<MotionPtr>::reverse_iterator it = motions.rbegin();
+                it != motions.rend();
+                ++it) {
                 MotionPtr motion = *it;
-                motion->reverse ();
-                _motions.push_back (motion);
+                motion->reverse();
+                _motions.push_back(motion);
             }
 
-            std::vector< TaskPtr > tasks = _tasks;
-            _tasks.clear ();
-            for (typename std::vector< TaskPtr >::reverse_iterator it = tasks.rbegin ();
-                 it != tasks.rend ();
-                 ++it) {
+            std::vector<TaskPtr> tasks = _tasks;
+            _tasks.clear();
+            for(typename std::vector<TaskPtr>::reverse_iterator it = tasks.rbegin();
+                it != tasks.rend();
+                ++it) {
                 TaskPtr task = *it;
-                task->reverse ();
-                _tasks.push_back (task);
+                task->reverse();
+                _tasks.push_back(task);
             }
 
-            doReverseBase ();
+            doReverseBase();
         }
 
       protected:
-        std::vector< TargetPtr > _targets;
+        std::vector<TargetPtr> _targets;
 
-        std::vector< MotionPtr > _motions;
+        std::vector<MotionPtr> _motions;
 
-        std::vector< TaskPtr > _tasks;
+        std::vector<TaskPtr> _tasks;
     };
 
     /**
      * @brief Template based implementation of Task
      */
-    template< class T > class Task : public GenericTask< Task< T >, Target< T >, Motion< T > >
+    template<class T> class Task : public GenericTask<Task<T>, Target<T>, Motion<T>>
     {
       public:
         //! @brief smart pointer type to this class
-        typedef typename rw::core::Ptr< Task< T > > Ptr;
+        typedef typename rw::core::Ptr<Task<T>> Ptr;
 
         typedef int INT;
 
@@ -489,31 +454,28 @@ namespace rwlibs { namespace task {
          * When constructing a task the type T is automatically added to the TypeRepository
          * and the their associated value is set as the type.
          */
-        Task (const std::string& id = "") :
-            GenericTask< Task< T >, Target< T >, Motion< T > > (
-                TypeRepository::instance ().get< T > (true /*Add if it does not exist*/), id)
-        {}
+        Task(const std::string& id = "") :
+            GenericTask<Task<T>, Target<T>, Motion<T>>(
+                TypeRepository::instance().get<T>(true /*Add if it does not exist*/), id) {}
 
         /**
          * @brief Destructor
          */
-        virtual ~Task () {}
+        virtual ~Task() {}
 
         /**
          * @brief Adds target to task based on \b value
          * @param value [in] Value of the target.
          * @return Pointer to the target object constructed and added.
          */
-        typename Target< T >::Ptr addTargetByValue (const T& value)
-        {
-            this->addTarget (rw::core::ownedPtr (new Target< T > (value)));
-            return this->_targets.back ();
+        typename Target<T>::Ptr addTargetByValue(const T& value) {
+            this->addTarget(rw::core::ownedPtr(new Target<T>(value)));
+            return this->_targets.back();
         }
 
-        typename Target< T >::Ptr addTargetByValueToFront (const T& value)
-        {
-            this->addTargetToFront (rw::core::ownedPtr (new Target< T > (value)));
-            return this->_targets.front ();
+        typename Target<T>::Ptr addTargetByValueToFront(const T& value) {
+            this->addTargetToFront(rw::core::ownedPtr(new Target<T>(value)));
+            return this->_targets.front();
         }
 
         /**
@@ -527,48 +489,40 @@ namespace rwlibs { namespace task {
          * @param task [in] Task to run through
          * @param result [in] Vector into which targets pointer should be placed
          */
-        void addToPath (typename Task< T >::Ptr task, std::vector< T >& result)
-        {
-            std::vector< Entity::Ptr >& entities = this->getEntities ();
+        void addToPath(typename Task<T>::Ptr task, std::vector<T>& result) {
+            std::vector<Entity::Ptr>& entities = this->getEntities();
 
-            for (std::vector< Entity::Ptr >::const_iterator it = entities.begin ();
-                 it != entities.end ();
-                 ++it) {
-                switch ((*it)->entityType ()) {
-                    case EntityType::Task: addToPath ((*it)->cast< Task< T >* > (), result); break;
+            for(std::vector<Entity::Ptr>::const_iterator it = entities.begin();
+                it != entities.end();
+                ++it) {
+                switch((*it)->entityType()) {
+                    case EntityType::Task: addToPath((*it)->cast<Task<T>*>(), result); break;
                     case EntityType::Motion: {
-                        Motion< T >* motion = (*it)->cast< Motion< T >* > ();
-                        result.push_back (motion->start ());
+                        Motion<T>* motion = (*it)->cast<Motion<T>*>();
+                        result.push_back(motion->start());
                         break;
                     }
                 }    // end switch ((*it)->entityType())
             }
-            if (this->_motions.size () > 0) {
-                result.push_back (this->_motions.back ()->end ());
-            }
+            if(this->_motions.size() > 0) { result.push_back(this->_motions.back()->end()); }
         }
 
-        void addToTargetPath (typename Task< T >::Ptr task,
-                              std::vector< typename Target< T >::Ptr >& result)
-        {
-            std::vector< Entity::Ptr >& entities = this->getEntities ();
-            for (std::vector< Entity::Ptr >::const_iterator it = entities.begin ();
-                 it != entities.end ();
-                 ++it) {
-                switch ((*it)->entityType ()) {
-                    case EntityType::Task:
-                        addToTargetPath ((*it)->cast< Task< T >* > (), result);
-                        break;
+        void addToTargetPath(typename Task<T>::Ptr task,
+                             std::vector<typename Target<T>::Ptr>& result) {
+            std::vector<Entity::Ptr>& entities = this->getEntities();
+            for(std::vector<Entity::Ptr>::const_iterator it = entities.begin();
+                it != entities.end();
+                ++it) {
+                switch((*it)->entityType()) {
+                    case EntityType::Task: addToTargetPath((*it)->cast<Task<T>*>(), result); break;
                     case EntityType::Motion: {
-                        Motion< T >* motion = (*it)->cast< Motion< T >* > ();
-                        result.push_back (motion->startTarget ());
+                        Motion<T>* motion = (*it)->cast<Motion<T>*>();
+                        result.push_back(motion->startTarget());
                         break;
                     }
                 }    // end switch ((*it)->entityType())
             }
-            if (this->_motions.size () > 0) {
-                result.push_back (this->_motions.back ()->endTarget ());
-            }
+            if(this->_motions.size() > 0) { result.push_back(this->_motions.back()->endTarget()); }
         }
 
         /**
@@ -578,56 +532,50 @@ namespace rwlibs { namespace task {
          * This function can be used to make a simple path from a task.
          * @return Vector with target values visited.
          */
-        std::vector< T > getPath ()
-        {
-            std::vector< T > result;
-            addToPath (this, result);
+        std::vector<T> getPath() {
+            std::vector<T> result;
+            addToPath(this, result);
             return result;
         }
 
-        std::vector< typename Target< T >::Ptr > getTargetPath ()
-        {
-            std::vector< typename Target< T >::Ptr > result;
-            addToTargetPath (this, result);
+        std::vector<typename Target<T>::Ptr> getTargetPath() {
+            std::vector<typename Target<T>::Ptr> result;
+            addToTargetPath(this, result);
             return result;
         }
 
-        virtual typename Task< T >::Ptr clone ()
-        {
-            TaskBase::Ptr base           = doClone ();
-            typename Task< T >::Ptr task = base.cast< Task< T > > ();
+        virtual typename Task<T>::Ptr clone() {
+            TaskBase::Ptr base         = doClone();
+            typename Task<T>::Ptr task = base.cast<Task<T>>();
             return task;
         }
 
       protected:
-        virtual TaskBase::Ptr doClone ()
-        {
-            typename Task< T >::Ptr result = rw::core::ownedPtr (new Task< T > (this->getId ()));
+        virtual TaskBase::Ptr doClone() {
+            typename Task<T>::Ptr result = rw::core::ownedPtr(new Task<T>(this->getId()));
 
-            std::vector< typename Target< T >::Ptr > newTargets;
-            for (typename Target< T >::Ptr target : this->getTargets ()) {
-                newTargets.push_back (target->clone ());
+            std::vector<typename Target<T>::Ptr> newTargets;
+            for(typename Target<T>::Ptr target : this->getTargets()) {
+                newTargets.push_back(target->clone());
             }
 
-            for (Entity::Ptr entity : this->getEntities ()) {
-                switch (entity->entityType ()) {
+            for(Entity::Ptr entity : this->getEntities()) {
+                switch(entity->entityType()) {
                     case EntityType::Target:
-                        for (typename Target< T >::Ptr target : newTargets) {
-                            if (target->getIndex () == entity->getIndex ()) {
-                                result->addTarget (target);
+                        for(typename Target<T>::Ptr target : newTargets) {
+                            if(target->getIndex() == entity->getIndex()) {
+                                result->addTarget(target);
                                 break;
                             }
                         }
                         break;
                     case EntityType::Motion:
-                        result->addMotion (entity.cast< Motion< T > > ()->clone (newTargets));
+                        result->addMotion(entity.cast<Motion<T>>()->clone(newTargets));
                         break;
                     case EntityType::Action:
-                        result->addAction (entity.cast< Action > ()->clone ());
+                        result->addAction(entity.cast<Action>()->clone());
                         break;
-                    case EntityType::Task:
-                        result->addTask (entity.cast< Task > ()->clone ());
-                        break;
+                    case EntityType::Task: result->addTask(entity.cast<Task>()->clone()); break;
                 }
             }
             return result;
@@ -637,15 +585,15 @@ namespace rwlibs { namespace task {
     /**
      * Definition of task with type rw::math::Q
      */
-    typedef Task< rw::math::Q > QTask;
+    typedef Task<rw::math::Q> QTask;
 
     /**
      * Definition of task with type rw::math::Transform3D
      */
-    typedef Task< rw::math::Transform3D<> > CartesianTask;
+    typedef Task<rw::math::Transform3D<>> CartesianTask;
 
-    extern template class Task< rw::math::Q >;
-    extern template class Task< rw::math::Transform3D<> >;
+    extern template class Task<rw::math::Q>;
+    extern template class Task<rw::math::Transform3D<>>;
 
     /* @} */
 

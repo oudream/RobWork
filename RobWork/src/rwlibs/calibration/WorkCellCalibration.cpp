@@ -19,32 +19,22 @@
 
 using namespace rwlibs::calibration;
 
-WorkCellCalibration::WorkCellCalibration ()
-{}
+WorkCellCalibration::WorkCellCalibration() {}
 
-WorkCellCalibration::~WorkCellCalibration ()
-{}
+WorkCellCalibration::~WorkCellCalibration() {}
 
-void WorkCellCalibration::addCalibration (Calibration::Ptr calibration)
-{
-    _calibrations.push_back (calibration);
+void WorkCellCalibration::addCalibration(Calibration::Ptr calibration) {
+    _calibrations.push_back(calibration);
 }
 
-void WorkCellCalibration::doApply ()
-{
-    for (Calibration::Ptr calib : _calibrations) {
-        calib->apply ();
-    }
+void WorkCellCalibration::doApply() {
+    for(Calibration::Ptr calib : _calibrations) { calib->apply(); }
 }
 
-void WorkCellCalibration::doRevert ()
-{
-    for (Calibration::Ptr calib : _calibrations) {
-        calib->revert ();
-    }
+void WorkCellCalibration::doRevert() {
+    for(Calibration::Ptr calib : _calibrations) { calib->revert(); }
 }
 
-const std::vector< Calibration::Ptr >& WorkCellCalibration::getCalibrations () const
-{
+const std::vector<Calibration::Ptr>& WorkCellCalibration::getCalibrations() const {
     return _calibrations;
 }

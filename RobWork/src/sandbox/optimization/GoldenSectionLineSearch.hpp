@@ -10,61 +10,58 @@
 
 #include "LineSearch.hpp"
 
-namespace rwlibs {
-namespace optimization {
+namespace rwlibs { namespace optimization {
 
-/** @addtogroup optimization */
-/*@{*/
+    /** @addtogroup optimization */
+    /*@{*/
 
-/**
- * Implements line search using golden-section ratio method.
- */
-class GoldenSectionLineSearch: public LineSearch {
-public:
-	//! Smart pointer.
-	typedef rw::core::Ptr<GoldenSectionLineSearch> Ptr;
+    /**
+     * Implements line search using golden-section ratio method.
+     */
+    class GoldenSectionLineSearch : public LineSearch
+    {
+      public:
+        //! Smart pointer.
+        typedef rw::core::Ptr<GoldenSectionLineSearch> Ptr;
 
-public:
-	/**
-	 * @brief Constructor.
-	 *
-	 * Default constructor for passing as a strategy argument.
-	 */
-	GoldenSectionLineSearch();
+      public:
+        /**
+         * @brief Constructor.
+         *
+         * Default constructor for passing as a strategy argument.
+         */
+        GoldenSectionLineSearch();
 
-	/**
-	 * @brief Constructor.
-	 */
-	GoldenSectionLineSearch(typename FunctionType::Ptr function,
-			VectorType direction, double leftBracket = -1.0,
-			double rightBracket = 1.0);
+        /**
+         * @brief Constructor.
+         */
+        GoldenSectionLineSearch(typename FunctionType::Ptr function, VectorType direction,
+                                double leftBracket = -1.0, double rightBracket = 1.0);
 
-protected:
-	//! @copydoc Optimizer::newOptimization
-	virtual void newOptimization(const VectorType& initialGuess,
-			ResultType& initialValue, double& initialError);
+      protected:
+        //! @copydoc Optimizer::newOptimization
+        virtual void newOptimization(const VectorType& initialGuess, ResultType& initialValue,
+                                     double& initialError);
 
-	//! @copydoc Optimizer::step
-	virtual void step(VectorType& currentGuess, ResultType& currentValue,
-			double& currentError);
+        //! @copydoc Optimizer::step
+        virtual void step(VectorType& currentGuess, ResultType& currentValue, double& currentError);
 
-private:
-	// current bracket values
-	double _a;
-	double _b;
+      private:
+        // current bracket values
+        double _a;
+        double _b;
 
-	// values of function at the bracket points
-	double _leftValue;
-	double _rightValue;
+        // values of function at the bracket points
+        double _leftValue;
+        double _rightValue;
 
-	// for calculating tolerance
-	VectorType _previousGuess;
-	ResultType _previousValue;
-};
+        // for calculating tolerance
+        VectorType _previousGuess;
+        ResultType _previousValue;
+    };
 
-/*@}*/
+    /*@}*/
 
-} /* namespace optimization */
-} /* namespace rwlibs */
+}}    // namespace rwlibs::optimization
 
 #endif /* SRC_RWLIBS_OPTIMIZATION_GOLDENSECTIONLINESEARCH_HPP_ */

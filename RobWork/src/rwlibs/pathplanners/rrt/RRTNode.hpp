@@ -27,16 +27,16 @@ namespace rwlibs { namespace pathplanners {
     /** @addtogroup pathplanners */
     /*@{*/
 
-    template< class X > class RRTTree;
+    template<class X> class RRTTree;
 
     /**
        @brief Node type for trees of RRT based planners.
     */
-    template< class X > class RRTNode
+    template<class X> class RRTNode
     {
       public:
         //! @brief The type of the node.
-        typedef RRTNode< X > node_type;
+        typedef RRTNode<X> node_type;
 
         //! @brief The type of the value.
         typedef X value_type;
@@ -45,24 +45,24 @@ namespace rwlibs { namespace pathplanners {
          * @brief Get the parent node.
          * @return the parent node.
          */
-        node_type* getParent () const { return _parent; }
+        node_type* getParent() const { return _parent; }
 
         /**
          * @brief Get the value of the node.
          * @return the value.
          */
-        const value_type& getValue () const { return _value; }
+        const value_type& getValue() const { return _value; }
 
       private:
-        friend class RRTTree< X >;
+        friend class RRTTree<X>;
 
-        RRTNode (const value_type& value, node_type* parent) : _value (value), _parent (parent) {}
+        RRTNode(const value_type& value, node_type* parent) : _value(value), _parent(parent) {}
 
         value_type _value;
         node_type* _parent;
 
-        RRTNode (const RRTNode&);
-        RRTNode& operator= (const RRTNode&);
+        RRTNode(const RRTNode&);
+        RRTNode& operator=(const RRTNode&);
     };
 
     /*\}*/

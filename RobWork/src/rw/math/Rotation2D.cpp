@@ -26,60 +26,48 @@ using namespace rw::common;
 using namespace rw::math;
 
 namespace rw { namespace math {
-    template<> const Rotation2D< float > Rotation2DIdentity ()
-    {
-        return Rotation2D< float > (1, 0, 0, 1);
+    template<> const Rotation2D<float> Rotation2DIdentity() {
+        return Rotation2D<float>(1, 0, 0, 1);
     }
-    template<> const Rotation2D< double > Rotation2DIdentity ()
-    {
-        return Rotation2D< double > (1, 0, 0, 1);
+    template<> const Rotation2D<double> Rotation2DIdentity() {
+        return Rotation2D<double>(1, 0, 0, 1);
     }
-    template<> const Rotation2D< int > Rotation2DIdentity ()
-    {
-        return Rotation2D< int > (1, 0, 0, 1);
+    template<> const Rotation2D<int> Rotation2DIdentity() {
+        return Rotation2D<int>(1, 0, 0, 1);
     }
 }};    // namespace rw::math
 
-
 // Explicit template specifications.
-template class rw::math::Rotation2D< double >;
-template class rw::math::Rotation2D< float >;
+template class rw::math::Rotation2D<double>;
+template class rw::math::Rotation2D<float>;
 
 namespace rw { namespace common { namespace serialization {
 
-    template< class T >
-    void writeImpl (const Rotation2D< T >& tmp, OutputArchive& oar, const std::string& id)
-    {
-        std::vector< double > data = Math::toStdVector (tmp, 2, 2);
-        oar.write (data, id, "Rotation2D");
+    template<class T>
+    void writeImpl(const Rotation2D<T>& tmp, OutputArchive& oar, const std::string& id) {
+        std::vector<double> data = Math::toStdVector(tmp, 2, 2);
+        oar.write(data, id, "Rotation2D");
     }
 
-    template< class T >
-    void readImpl (Rotation2D< T >& tmp, InputArchive& iar, const std::string& id)
-    {
-        std::vector< T > data;
-        iar.read (data, id, "Rotation2D");
-        Math::fromStdVectorToMat (data, tmp, 2, 2);
+    template<class T> void readImpl(Rotation2D<T>& tmp, InputArchive& iar, const std::string& id) {
+        std::vector<T> data;
+        iar.read(data, id, "Rotation2D");
+        Math::fromStdVectorToMat(data, tmp, 2, 2);
     }
 
     // we need these to explicitly instantiate these functions
     template<>
-    void write (const Rotation2D< double >& tmp, OutputArchive& oar, const std::string& id)
-    {
-        writeImpl (tmp, oar, id);
+    void write(const Rotation2D<double>& tmp, OutputArchive& oar, const std::string& id) {
+        writeImpl(tmp, oar, id);
     }
-    template<>
-    void write (const Rotation2D< float >& tmp, OutputArchive& oar, const std::string& id)
-    {
-        writeImpl (tmp, oar, id);
+    template<> void write(const Rotation2D<float>& tmp, OutputArchive& oar, const std::string& id) {
+        writeImpl(tmp, oar, id);
     }
-    template<> void read (Rotation2D< double >& tmp, InputArchive& iar, const std::string& id)
-    {
-        readImpl (tmp, iar, id);
+    template<> void read(Rotation2D<double>& tmp, InputArchive& iar, const std::string& id) {
+        readImpl(tmp, iar, id);
     }
-    template<> void read (Rotation2D< float >& tmp, InputArchive& iar, const std::string& id)
-    {
-        readImpl (tmp, iar, id);
+    template<> void read(Rotation2D<float>& tmp, InputArchive& iar, const std::string& id) {
+        readImpl(tmp, iar, id);
     }
 
 }}}    // namespace rw::common::serialization

@@ -20,7 +20,7 @@
 
 #if !defined(SWIG)
 #include <rw/math/InertiaMatrix.hpp>
-#endif 
+#endif
 
 namespace rw { namespace models {
 
@@ -37,23 +37,23 @@ namespace rw { namespace models {
          * @brief constructs a RigidBodyInfo with a mass, inertia matrix, initial
          * pose and velocity.
          */
-        RigidBodyInfo (double mass, const rw::math::InertiaMatrix<>& Ibody);
+        RigidBodyInfo(double mass, const rw::math::InertiaMatrix<>& Ibody);
 
         /**
          * @brief destructor
          */
-        virtual ~RigidBodyInfo ();
+        virtual ~RigidBodyInfo();
 
         /**
          * @brief returns the mass of this RigidBodyInfo
          * @return the mass
          */
-        double getMass () { return _mass; };
+        double getMass() { return _mass; };
 
         /**
          * @brief returns the inertia matrix of this rigid body
          */
-        rw::math::InertiaMatrix<> getInertia () { return _Ibody; };
+        rw::math::InertiaMatrix<> getInertia() { return _Ibody; };
 
       private:
         /* Constant quantities */

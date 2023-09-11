@@ -28,7 +28,7 @@ namespace rw { namespace graspplanning {
         /**
          * @brief  compute the quality of a 2d grasp
          */
-        virtual double computeQuality (const Grasp2D& grasp) const = 0;
+        virtual double computeQuality(const Grasp2D& grasp) const = 0;
     };
 
 }}    // namespace rw::graspplanning

@@ -22,17 +22,14 @@
 using namespace rw::graspplanning;
 using namespace rw::math;
 
-double ApproachMeasure3D::quality (const Grasp3D& grasp) const
-{
+double ApproachMeasure3D::quality(const Grasp3D& grasp) const {
     double quality = 0;
-    for (size_t i = 0; i < grasp.approach.size (); i++) {
+    for(size_t i = 0; i < grasp.approach.size(); i++) {
         const Vector3D<>& v1 = grasp.approach[i];
         const Vector3D<>& v2 = grasp.contacts[i].n;
-        double ang           = fabs (acos (dot (normalize (v1), normalize (v2))));
-        if (ang > _maxAngle) {
-            return 0;
-        }
+        double ang           = fabs(acos(dot(normalize(v1), normalize(v2))));
+        if(ang > _maxAngle) { return 0; }
         quality += 1 - ang / _maxAngle;
     }
-    return quality / grasp.approach.size ();
+    return quality / grasp.approach.size();
 }

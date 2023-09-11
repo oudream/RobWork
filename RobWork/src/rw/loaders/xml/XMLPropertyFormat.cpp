@@ -29,62 +29,54 @@
 using namespace rw::loaders;
 using namespace xercesc;
 
-XMLPropertyFormat::Initializer::Initializer ()
-{
+XMLPropertyFormat::Initializer::Initializer() {
     static bool done = false;
-    if (!done) {
+    if(!done) {
         static XercesInitializer initializer;
-        idPropertyMap ();
-        idProperty ();
-        idPropertyName ();
-        idPropertyDescription ();
-        idPropertyType ();
-        idPropertyValue ();
-        idPropertyValueList ();
+        idPropertyMap();
+        idProperty();
+        idPropertyName();
+        idPropertyDescription();
+        idPropertyType();
+        idPropertyValue();
+        idPropertyValueList();
         done = true;
     }
 }
 
 const XMLPropertyFormat::Initializer XMLPropertyFormat::initializer;
 
-const XMLCh* XMLPropertyFormat::idPropertyMap ()
-{
-    static const XMLStr id ("PropertyMap");
-    return id.uni ();
+const XMLCh* XMLPropertyFormat::idPropertyMap() {
+    static const XMLStr id("PropertyMap");
+    return id.uni();
 }
 
-const XMLCh* XMLPropertyFormat::idProperty ()
-{
-    static const XMLStr id ("Property");
-    return id.uni ();
+const XMLCh* XMLPropertyFormat::idProperty() {
+    static const XMLStr id("Property");
+    return id.uni();
 }
 
-const XMLCh* XMLPropertyFormat::idPropertyName ()
-{
-    static const XMLStr id ("Name");
-    return id.uni ();
+const XMLCh* XMLPropertyFormat::idPropertyName() {
+    static const XMLStr id("Name");
+    return id.uni();
 }
 
-const XMLCh* XMLPropertyFormat::idPropertyDescription ()
-{
-    static const XMLStr id ("Description");
-    return id.uni ();
+const XMLCh* XMLPropertyFormat::idPropertyDescription() {
+    static const XMLStr id("Description");
+    return id.uni();
 }
 
-const XMLCh* XMLPropertyFormat::idPropertyType ()
-{
-    static const XMLStr id ("Type");
-    return id.uni ();
+const XMLCh* XMLPropertyFormat::idPropertyType() {
+    static const XMLStr id("Type");
+    return id.uni();
 }
 
-const XMLCh* XMLPropertyFormat::idPropertyValue ()
-{
-    static const XMLStr id ("Value");
-    return id.uni ();
+const XMLCh* XMLPropertyFormat::idPropertyValue() {
+    static const XMLStr id("Value");
+    return id.uni();
 }
 
-const XMLCh* XMLPropertyFormat::idPropertyValueList ()
-{
-    static const XMLStr id ("ValueList");
-    return id.uni ();
+const XMLCh* XMLPropertyFormat::idPropertyValueList() {
+    static const XMLStr id("ValueList");
+    return id.uni();
 }

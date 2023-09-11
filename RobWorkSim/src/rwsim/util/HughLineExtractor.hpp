@@ -31,7 +31,7 @@ namespace rwsim { namespace util {
     class HughLineExtractor
     {
       public:
-        static std::vector< rw::math::Line2D > extractLines (rw::sensor::Image& img);
+        static std::vector<rw::math::Line2D> extractLines(rw::sensor::Image& img);
     };
 }}     // namespace rwsim::util
 #endif /* HUGHLINEEXTRACTOR_HPP_ */

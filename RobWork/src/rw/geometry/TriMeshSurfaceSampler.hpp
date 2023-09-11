@@ -6,7 +6,7 @@
 #include <rw/geometry/Geometry.hpp>
 #include <rw/geometry/TriMesh.hpp>
 #include <rw/math/Vector3D.hpp>
-#endif 
+#endif
 
 namespace rw { namespace geometry {
 
@@ -24,43 +24,43 @@ namespace rw { namespace geometry {
     class TriMeshSurfaceSampler
     {
       public:
-        typedef rw::core::Ptr< TriMeshSurfaceSampler > Ptr;
+        typedef rw::core::Ptr<TriMeshSurfaceSampler> Ptr;
 
         //! constructor
-        TriMeshSurfaceSampler ();
+        TriMeshSurfaceSampler();
 
         /**
          * @brief constructor
          * @param geom [in] geometry representing the surface that should be sampled.
          */
-        TriMeshSurfaceSampler (rw::geometry::Geometry::Ptr geom);
+        TriMeshSurfaceSampler(rw::geometry::Geometry::Ptr geom);
 
         /**
          * @brief constructor
          * @param geoms [in] list of geometries representing the surface that should be sampled.
          */
-        TriMeshSurfaceSampler (const std::vector< rw::geometry::Geometry::Ptr >& geoms);
+        TriMeshSurfaceSampler(const std::vector<rw::geometry::Geometry::Ptr>& geoms);
 
         //! destructor
-        virtual ~TriMeshSurfaceSampler ();
+        virtual ~TriMeshSurfaceSampler();
 
         /**
          * @brief add surface representing geometry to this sampler
          * @param geom [in] geometry representing surface to be sampled
          */
-        void add (rw::geometry::Geometry::Ptr geom);
+        void add(rw::geometry::Geometry::Ptr geom);
 
         /**
          * @brief add surface mesh.
          * @param mesh [in] mesh to add to sampler.
          */
-        void add (rw::geometry::TriMesh::Ptr mesh);
+        void add(rw::geometry::TriMesh::Ptr mesh);
 
         /**
          * @brief sample a pose on the surface of the object.
          * @return transform3d of the sampled pose
          */
-        rw::math::Transform3D<> sample ();
+        rw::math::Transform3D<> sample();
 
         /**
          * @brief sample point on surface of object
@@ -68,7 +68,7 @@ namespace rw { namespace geometry {
          * @param point_dst [out] point on surface
          * @endcond
          */
-        rw::math::Vector3D<double> samplePoint ();
+        rw::math::Vector3D<double> samplePoint();
 
         ///// configuration options
 
@@ -78,14 +78,14 @@ namespace rw { namespace geometry {
          * @param minD [in]  minimum distance
          * @param maxD [in] maximum distance.
          */
-        void setBoundsD (double minD, double maxD);
+        void setBoundsD(double minD, double maxD);
 
         /**
          * @brief enable the generation of a random rotation instead of a rotation with
          * the z-axis pointing in the surface normal direction.
          * @param enabled [in]
          */
-        void setRandomRotationEnabled (bool enabled);
+        void setRandomRotationEnabled(bool enabled);
 
         /**
          * @brief enables generation of a random position within the sampled surface position.
@@ -94,7 +94,7 @@ namespace rw { namespace geometry {
          * @param enabled [in] true to enable local random generation around sampled surface point.
          * False otherwise.
          */
-        void setRandomPositionEnabled (bool enabled);
+        void setRandomPositionEnabled(bool enabled);
 
         /**
          * @brief enable z-axis direction filtering. See setZAxisDirection for information
@@ -102,7 +102,7 @@ namespace rw { namespace geometry {
          *
          * @param enabled
          */
-        void setZAxisDirectionEnabled (bool enabled);
+        void setZAxisDirectionEnabled(bool enabled);
 
         /**
          * @brief sets the direction that the z-axis must point into. this is equal
@@ -113,39 +113,35 @@ namespace rw { namespace geometry {
          *
          * @param dir [in]
          */
-        void setZAxisDirection (const rw::math::Vector3D<double>& dir);
+        void setZAxisDirection(const rw::math::Vector3D<double>& dir);
 
         /**
          * @brief return the mesh that is being sampled
          * @return mesh
          */
-        rw::geometry::TriMesh::Ptr getMesh ();
+        rw::geometry::TriMesh::Ptr getMesh();
 
       private:
         //! recursive search for finding value in list
-        int binSearchRec (const double value, size_t start, size_t end)
-        {
-            if (start == end)
-                return (int) start;
+        int binSearchRec(const double value, size_t start, size_t end) {
+            if(start == end) return (int) start;
             // choose a int between start and end
             size_t split = (end - start) / 2 + start;
-            if (value < _surfaceArea[split])
-                return binSearchRec (value, start, split);
-            else
-                return binSearchRec (value, split + 1, end);
+            if(value < _surfaceArea[split]) return binSearchRec(value, start, split);
+            else return binSearchRec(value, split + 1, end);
         }
 
         //! recursive search for finding value in list
-        rw::geometry::Triangle < double > getTriangle (const int value);
+        rw::geometry::Triangle<double> getTriangle(const int value);
 
       private:
         double _sAreaSum, _minD, _maxD;
         bool _genRandomRotation, _filterByDirection, _genRandomPostion;
-        std::vector< double > _surfaceArea;
+        std::vector<double> _surfaceArea;
         rw::geometry::TriMesh::Ptr _mesh;
 
-        std::vector< rw::geometry::TriMesh::Ptr > _meshes;
-        std::vector< int > _surfaceAreaMesh;
+        std::vector<rw::geometry::TriMesh::Ptr> _meshes;
+        std::vector<int> _surfaceAreaMesh;
 
         rw::math::Vector3D<double> _direction;
     };

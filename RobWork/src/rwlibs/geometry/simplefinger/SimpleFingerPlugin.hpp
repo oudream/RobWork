@@ -29,15 +29,15 @@ namespace rwlibs { namespace geometry { namespace simplefinger {
     class SimpleFingerPlugin : public rw::core::Plugin
     {
       public:
-        SimpleFingerPlugin ();
+        SimpleFingerPlugin();
 
-        ~SimpleFingerPlugin ();
+        ~SimpleFingerPlugin();
 
         //! @copydoc rw::core::Plugin::getExtensionDescriptors
-        std::vector< rw::core::Extension::Descriptor > getExtensionDescriptors ();
+        std::vector<rw::core::Extension::Descriptor> getExtensionDescriptors();
 
         //! @copydoc rw::core::Plugin::makeExtension
-        rw::core::Ptr< rw::core::Extension > makeExtension (const std::string& str);
+        rw::core::Ptr<rw::core::Extension> makeExtension(const std::string& str);
     };
 
 }}}    // namespace rwlibs::geometry::simplefinger

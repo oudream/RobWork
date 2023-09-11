@@ -19,9 +19,11 @@
  ********************************************************************************/
 
 #include "InputFormDialog.hpp"
-#include <rws/RWSSpinBox.hpp>
+
 #include "FileDialogButton.hpp"
 #include "SetColorButton.hpp"
+
+#include <rws/RWSSpinBox.hpp>
 
 #include <QCheckBox>
 #include <QColor>
@@ -43,207 +45,198 @@
 
 namespace InputFormDialog {
 
-QVariant& FormData::operator[] (const QString& key)
-{
-    for (auto& pair : data_) {
-        if (pair.first == key) {
-            return pair.second;
-        }
+QVariant& FormData::operator[](const QString& key) {
+    for(auto& pair : data_) {
+        if(pair.first == key) { return pair.second; }
     }
 
-    data_.emplace_back (std::make_pair (key, QVariant ()));
-    return data_.back ().second;
+    data_.emplace_back(std::make_pair(key, QVariant()));
+    return data_.back().second;
 }
 
-std::vector< std::pair< QString, QVariant > >::iterator FormData::begin ()
-{
-    return data_.begin ();
+std::vector<std::pair<QString, QVariant>>::iterator FormData::begin() {
+    return data_.begin();
 }
 
-std::vector< std::pair< QString, QVariant > >::iterator FormData::end ()
-{
-    return data_.end ();
+std::vector<std::pair<QString, QVariant>>::iterator FormData::end() {
+    return data_.end();
 }
 
-QVariant FormData::getValue (const QString& key) const
-{
+QVariant FormData::getValue(const QString& key) const {
     QVariant result;
 
-    for (auto& pair : data_) {
-        if (pair.first == key) {
-            result = pair.second;
-        }
+    for(auto& pair : data_) {
+        if(pair.first == key) { result = pair.second; }
     }
 
     return result;
 }
 
-bool getInput (const QString& title, FormData& data, const FormOptions& options)
-{
-    auto dialog = new QDialog ();
-    dialog->setWindowTitle (title);
+bool getInput(const QString& title, FormData& data, const FormOptions& options) {
+    auto dialog = new QDialog();
+    dialog->setWindowTitle(title);
 
-    auto layout = new QGridLayout (dialog);
+    auto layout = new QGridLayout(dialog);
     layout->setContentsMargins(2, 2, 2, 2);
-    layout->setSpacing (4);
+    layout->setSpacing(4);
 
-    QMap< QString, QWidget* > widgetMap;
+    QMap<QString, QWidget*> widgetMap;
 
     auto row = 0;
-    for (const auto& pair : data) {
-        auto label = new QLabel (pair.first + ":");
-        layout->addWidget (label, row, 0);
+    for(const auto& pair : data) {
+        auto label = new QLabel(pair.first + ":");
+        layout->addWidget(label, row, 0);
 
 #if QT_VERSION >= 0x060000
-        switch (pair.second.typeId ()) {
+        switch(pair.second.typeId()) {
 #else
-        switch (pair.second.userType ()) {
+        switch(pair.second.userType()) {
 #endif
             case QMetaType::Bool: {
-                auto widget = new QCheckBox ();
-                widget->setChecked (pair.second.toBool ());
-                layout->addWidget (widget, row, 1);
+                auto widget = new QCheckBox();
+                widget->setChecked(pair.second.toBool());
+                layout->addWidget(widget, row, 1);
                 widgetMap[pair.first] = widget;
                 break;
             }
             case QMetaType::QColor: {
-                auto widget = new SetColorButton ();
-                widget->setColor (pair.second.value< QColor > ());
-                layout->addWidget (widget, row, 1);
+                auto widget = new SetColorButton();
+                widget->setColor(pair.second.value<QColor>());
+                layout->addWidget(widget, row, 1);
                 widgetMap[pair.first] = widget;
                 break;
             }
             case QMetaType::Double: {
-                auto widget = new rws::RWSSpinBox ();
-                widget->setButtonSymbols (QAbstractSpinBox::NoButtons);
-                widget->setMaximum (double (options.numericMax));
-                widget->setMinimum (double (options.numericMin));
-                widget->setDecimals (options.numericPrecision);
-                widget->setValue (pair.second.toDouble ());
-                layout->addWidget (widget, row, 1);
+                auto widget = new rws::RWSSpinBox();
+                widget->setButtonSymbols(QAbstractSpinBox::NoButtons);
+                widget->setMaximum(double(options.numericMax));
+                widget->setMinimum(double(options.numericMin));
+                widget->setDecimals(options.numericPrecision);
+                widget->setValue(pair.second.toDouble());
+                layout->addWidget(widget, row, 1);
                 widgetMap[pair.first] = widget;
                 break;
             }
             case QMetaType::Int: {
-                auto widget = new QSpinBox ();
-                widget->setButtonSymbols (QAbstractSpinBox::NoButtons);
-                widget->setMaximum (options.numericMax);
-                widget->setMinimum (options.numericMin);
-                widget->setValue (pair.second.toInt ());
-                layout->addWidget (widget, row, 1);
+                auto widget = new QSpinBox();
+                widget->setButtonSymbols(QAbstractSpinBox::NoButtons);
+                widget->setMaximum(options.numericMax);
+                widget->setMinimum(options.numericMin);
+                widget->setValue(pair.second.toInt());
+                layout->addWidget(widget, row, 1);
                 widgetMap[pair.first] = widget;
                 break;
             }
             case QMetaType::QString: {
                 std::size_t cad_string_found =
-                    pair.second.toString ().toStdString ().find ("cad_file");
-                if (cad_string_found != std::string::npos) {
-                    std::string tmp_str     = pair.second.toString ().toStdString ();
-                    std::size_t found       = tmp_str.find_last_of (',');
-                    std::string search_path = tmp_str.substr (found + 1);
-                    auto widget = new FileDialogButton (QString::fromStdString (search_path));
-                    layout->addWidget (widget, row, 1);
+                    pair.second.toString().toStdString().find("cad_file");
+                if(cad_string_found != std::string::npos) {
+                    std::string tmp_str     = pair.second.toString().toStdString();
+                    std::size_t found       = tmp_str.find_last_of(',');
+                    std::string search_path = tmp_str.substr(found + 1);
+                    auto widget = new FileDialogButton(QString::fromStdString(search_path));
+                    layout->addWidget(widget, row, 1);
                     widgetMap[pair.first] = widget;
                 }
                 else {
-                    auto widget = new QLineEdit (pair.second.toString ());
-                    layout->addWidget (widget, row, 1);
+                    auto widget = new QLineEdit(pair.second.toString());
+                    layout->addWidget(widget, row, 1);
                     widgetMap[pair.first] = widget;
                 }
                 break;
             }
             case QMetaType::QStringList: {
-                if (options.listDisplaysAsRadios) {
-                    auto values = pair.second.toStringList ();
+                if(options.listDisplaysAsRadios) {
+                    auto values = pair.second.toStringList();
 
-                    auto widget  = new QWidget ();
-                    auto wlayout = new QHBoxLayout (widget);
-                    wlayout->setContentsMargins (2, 2, 2, 2);
-                    wlayout->setSpacing (2);
+                    auto widget  = new QWidget();
+                    auto wlayout = new QHBoxLayout(widget);
+                    wlayout->setContentsMargins(2, 2, 2, 2);
+                    wlayout->setSpacing(2);
 
                     auto isChecked = false;
-                    for (const auto& value : values) {
-                        auto button = new QRadioButton (value);
-                        wlayout->addWidget (button);
+                    for(const auto& value : values) {
+                        auto button = new QRadioButton(value);
+                        wlayout->addWidget(button);
 
-                        if (!isChecked) {
-                            button->setChecked (true);
+                        if(!isChecked) {
+                            button->setChecked(true);
                             isChecked = true;
                         }
                     }
 
-                    layout->addWidget (widget, row, 1);
+                    layout->addWidget(widget, row, 1);
                     widgetMap[pair.first] = widget;
                 }
                 else {
-                    auto widget = new QComboBox ();
-                    widget->addItems (pair.second.toStringList ());
-                    layout->addWidget (widget, row, 1);
+                    auto widget = new QComboBox();
+                    widget->addItems(pair.second.toStringList());
+                    layout->addWidget(widget, row, 1);
                     widgetMap[pair.first] = widget;
                 }
                 break;
             }
             case QMetaType::QVector2D: {
-                auto value = pair.second.value< QVector2D > ();
+                auto value = pair.second.value<QVector2D>();
 
-                auto widget  = new QWidget ();
-                auto wlayout = new QHBoxLayout (widget);
-                wlayout->setContentsMargins (2, 2, 2, 2);
-                wlayout->setSpacing (2);
+                auto widget  = new QWidget();
+                auto wlayout = new QHBoxLayout(widget);
+                wlayout->setContentsMargins(2, 2, 2, 2);
+                wlayout->setSpacing(2);
 
-                auto xwidget = new rws::RWSSpinBox ();
-                xwidget->setButtonSymbols (QAbstractSpinBox::NoButtons);
-                xwidget->setMaximum (double (options.numericMax));
-                xwidget->setMinimum (double (options.numericMin));
-                xwidget->setDecimals (options.numericPrecision);
-                xwidget->setValue (value.x ());
-                wlayout->addWidget (xwidget);
+                auto xwidget = new rws::RWSSpinBox();
+                xwidget->setButtonSymbols(QAbstractSpinBox::NoButtons);
+                xwidget->setMaximum(double(options.numericMax));
+                xwidget->setMinimum(double(options.numericMin));
+                xwidget->setDecimals(options.numericPrecision);
+                xwidget->setValue(value.x());
+                wlayout->addWidget(xwidget);
 
-                auto ywidget = new rws::RWSSpinBox ();
-                ywidget->setButtonSymbols (QAbstractSpinBox::NoButtons);
-                ywidget->setMaximum (double (options.numericMax));
-                ywidget->setMinimum (double (options.numericMin));
-                ywidget->setDecimals (options.numericPrecision);
-                ywidget->setValue (value.y ());
-                wlayout->addWidget (ywidget);
+                auto ywidget = new rws::RWSSpinBox();
+                ywidget->setButtonSymbols(QAbstractSpinBox::NoButtons);
+                ywidget->setMaximum(double(options.numericMax));
+                ywidget->setMinimum(double(options.numericMin));
+                ywidget->setDecimals(options.numericPrecision);
+                ywidget->setValue(value.y());
+                wlayout->addWidget(ywidget);
 
-                layout->addWidget (widget, row, 1);
+                layout->addWidget(widget, row, 1);
                 widgetMap[pair.first] = widget;
                 break;
             }
             case QMetaType::QVector3D: {
-                auto value = pair.second.value< QVector3D > ();
+                auto value = pair.second.value<QVector3D>();
 
-                auto widget  = new QWidget ();
-                auto wlayout = new QHBoxLayout (widget);
-                wlayout->setContentsMargins (2, 2, 2, 2);
-                wlayout->setSpacing (2);
+                auto widget  = new QWidget();
+                auto wlayout = new QHBoxLayout(widget);
+                wlayout->setContentsMargins(2, 2, 2, 2);
+                wlayout->setSpacing(2);
 
-                auto xwidget = new rws::RWSSpinBox ();
-                xwidget->setButtonSymbols (QAbstractSpinBox::NoButtons);
-                xwidget->setMaximum (double (options.numericMax));
-                xwidget->setMinimum (double (options.numericMin));
-                xwidget->setDecimals (options.numericPrecision);
-                xwidget->setValue (value.x ());
-                wlayout->addWidget (xwidget);
+                auto xwidget = new rws::RWSSpinBox();
+                xwidget->setButtonSymbols(QAbstractSpinBox::NoButtons);
+                xwidget->setMaximum(double(options.numericMax));
+                xwidget->setMinimum(double(options.numericMin));
+                xwidget->setDecimals(options.numericPrecision);
+                xwidget->setValue(value.x());
+                wlayout->addWidget(xwidget);
 
-                auto ywidget = new rws::RWSSpinBox ();
-                ywidget->setButtonSymbols (QAbstractSpinBox::NoButtons);
-                ywidget->setMaximum (double (options.numericMax));
-                ywidget->setMinimum (double (options.numericMin));
-                ywidget->setDecimals (options.numericPrecision);
-                ywidget->setValue (value.y ());
-                wlayout->addWidget (ywidget);
+                auto ywidget = new rws::RWSSpinBox();
+                ywidget->setButtonSymbols(QAbstractSpinBox::NoButtons);
+                ywidget->setMaximum(double(options.numericMax));
+                ywidget->setMinimum(double(options.numericMin));
+                ywidget->setDecimals(options.numericPrecision);
+                ywidget->setValue(value.y());
+                wlayout->addWidget(ywidget);
 
-                auto zwidget = new rws::RWSSpinBox ();
-                zwidget->setButtonSymbols (QAbstractSpinBox::NoButtons);
-                zwidget->setMaximum (double (options.numericMax));
-                zwidget->setMinimum (double (options.numericMin));
-                zwidget->setDecimals (options.numericPrecision);
-                zwidget->setValue (value.z ());
-                wlayout->addWidget (zwidget);
+                auto zwidget = new rws::RWSSpinBox();
+                zwidget->setButtonSymbols(QAbstractSpinBox::NoButtons);
+                zwidget->setMaximum(double(options.numericMax));
+                zwidget->setMinimum(double(options.numericMin));
+                zwidget->setDecimals(options.numericPrecision);
+                zwidget->setValue(value.z());
+                wlayout->addWidget(zwidget);
 
-                layout->addWidget (widget, row, 1);
+                layout->addWidget(widget, row, 1);
                 widgetMap[pair.first] = widget;
                 break;
             }
@@ -253,118 +246,109 @@ bool getInput (const QString& title, FormData& data, const FormOptions& options)
         row++;
     }
 
-    auto btnLayout = new QHBoxLayout ();
+    auto btnLayout = new QHBoxLayout();
     btnLayout->setContentsMargins(2, 2, 2, 2);
-    btnLayout->setSpacing (4);
-    layout->addLayout (btnLayout, row, 0, 1, 2);
+    btnLayout->setSpacing(4);
+    layout->addLayout(btnLayout, row, 0, 1, 2);
 
-    auto ok = new QPushButton ("Ok", dialog);
-    ok->setDefault (true);
-    QObject::connect (ok, &QPushButton::clicked, dialog, &QDialog::accept);
-    btnLayout->addWidget (ok);
+    auto ok = new QPushButton("Ok", dialog);
+    ok->setDefault(true);
+    QObject::connect(ok, &QPushButton::clicked, dialog, &QDialog::accept);
+    btnLayout->addWidget(ok);
 
-    auto cancel = new QPushButton ("Cancel", dialog);
-    QObject::connect (cancel, &QPushButton::clicked, dialog, &QDialog::reject);
-    btnLayout->addWidget (cancel);
+    auto cancel = new QPushButton("Cancel", dialog);
+    QObject::connect(cancel, &QPushButton::clicked, dialog, &QDialog::reject);
+    btnLayout->addWidget(cancel);
 
-    if (dialog->exec () != QDialog::Accepted) {
-        dialog->deleteLater ();
+    if(dialog->exec() != QDialog::Accepted) {
+        dialog->deleteLater();
         return false;
     }
 
-    for (auto& pair : data) {
+    for(auto& pair : data) {
 #if QT_VERSION >= 0x060000
-        switch (pair.second.typeId ()) {
+        switch(pair.second.typeId()) {
 #else
-        switch (pair.second.userType ()) {
+        switch(pair.second.userType()) {
 #endif
             case QVariant::Bool: {
-                const auto widget = qobject_cast< QCheckBox* > (widgetMap[pair.first]);
-                pair.second       = widget->isChecked ();
+                const auto widget = qobject_cast<QCheckBox*>(widgetMap[pair.first]);
+                pair.second       = widget->isChecked();
                 break;
             }
             case QVariant::Color: {
-                const auto widget = qobject_cast< SetColorButton* > (widgetMap[pair.first]);
-                pair.second       = widget->color ();
+                const auto widget = qobject_cast<SetColorButton*>(widgetMap[pair.first]);
+                pair.second       = widget->color();
                 break;
             }
             case QVariant::Double: {
-                const auto widget = qobject_cast< QDoubleSpinBox* > (widgetMap[pair.first]);
-                pair.second       = widget->value ();
+                const auto widget = qobject_cast<QDoubleSpinBox*>(widgetMap[pair.first]);
+                pair.second       = widget->value();
                 break;
             }
             case QVariant::Int: {
-                const auto widget = qobject_cast< QSpinBox* > (widgetMap[pair.first]);
-                pair.second       = widget->value ();
+                const auto widget = qobject_cast<QSpinBox*>(widgetMap[pair.first]);
+                pair.second       = widget->value();
                 break;
             }
             case QVariant::String: {
                 std::size_t cad_string_found =
-                    pair.second.toString ().toStdString ().find ("cad_file");
-                if (cad_string_found != std::string::npos) {
-                    const auto widget = qobject_cast< FileDialogButton* > (widgetMap[pair.first]);
-                    pair.second       = widget->getFilename ();
+                    pair.second.toString().toStdString().find("cad_file");
+                if(cad_string_found != std::string::npos) {
+                    const auto widget = qobject_cast<FileDialogButton*>(widgetMap[pair.first]);
+                    pair.second       = widget->getFilename();
                 }
                 else {
-                    const auto widget = qobject_cast< QLineEdit* > (widgetMap[pair.first]);
-                    pair.second       = widget->text ();
+                    const auto widget = qobject_cast<QLineEdit*>(widgetMap[pair.first]);
+                    pair.second       = widget->text();
                 }
 
                 break;
             }
             case QVariant::StringList: {
-                if (options.listDisplaysAsRadios) {
-                    const auto children = widgetMap[pair.first]->children ();
+                if(options.listDisplaysAsRadios) {
+                    const auto children = widgetMap[pair.first]->children();
 
                     auto index = 0;
-                    for (const auto& child : children) {
-                        const auto widget = qobject_cast< QRadioButton* > (child);
-                        if (!widget)
-                            continue;
+                    for(const auto& child : children) {
+                        const auto widget = qobject_cast<QRadioButton*>(child);
+                        if(!widget) continue;
 
-                        if (widget->isChecked ()) {
-                            if (options.listReturnsIndex) {
-                                pair.second = index;
-                            }
-                            else {
-                                pair.second = widget->text ();
-                            }
+                        if(widget->isChecked()) {
+                            if(options.listReturnsIndex) { pair.second = index; }
+                            else { pair.second = widget->text(); }
                         }
 
                         index++;
                     }
                 }
                 else {
-                    const auto widget = qobject_cast< QComboBox* > (widgetMap[pair.first]);
-                    if (options.listReturnsIndex) {
-                        pair.second = widget->currentIndex ();
-                    }
-                    else {
-                        pair.second = widget->currentText ();
-                    }
+                    const auto widget = qobject_cast<QComboBox*>(widgetMap[pair.first]);
+                    if(options.listReturnsIndex) { pair.second = widget->currentIndex(); }
+                    else { pair.second = widget->currentText(); }
                 }
                 break;
             }
             case QVariant::Vector2D: {
-                const auto children = widgetMap[pair.first]->children ();
-                const auto xwidget  = qobject_cast< QDoubleSpinBox* > (children.at (1));
-                const auto ywidget  = qobject_cast< QDoubleSpinBox* > (children.at (2));
-                pair.second         = QVector2D (xwidget->value (), ywidget->value ());
+                const auto children = widgetMap[pair.first]->children();
+                const auto xwidget  = qobject_cast<QDoubleSpinBox*>(children.at(1));
+                const auto ywidget  = qobject_cast<QDoubleSpinBox*>(children.at(2));
+                pair.second         = QVector2D(xwidget->value(), ywidget->value());
                 break;
             }
             case QVariant::Vector3D: {
-                const auto children = widgetMap[pair.first]->children ();
-                const auto xwidget  = qobject_cast< QDoubleSpinBox* > (children.at (1));
-                const auto ywidget  = qobject_cast< QDoubleSpinBox* > (children.at (2));
-                const auto zwidget  = qobject_cast< QDoubleSpinBox* > (children.at (3));
-                pair.second = QVector3D (xwidget->value (), ywidget->value (), zwidget->value ());
+                const auto children = widgetMap[pair.first]->children();
+                const auto xwidget  = qobject_cast<QDoubleSpinBox*>(children.at(1));
+                const auto ywidget  = qobject_cast<QDoubleSpinBox*>(children.at(2));
+                const auto zwidget  = qobject_cast<QDoubleSpinBox*>(children.at(3));
+                pair.second = QVector3D(xwidget->value(), ywidget->value(), zwidget->value());
                 break;
             }
             default: break;
         }
     }
 
-    dialog->deleteLater ();
+    dialog->deleteLater();
     return true;
 }
 

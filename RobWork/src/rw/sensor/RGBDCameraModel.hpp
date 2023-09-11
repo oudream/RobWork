@@ -22,10 +22,9 @@
  * @file RGBDCameraModel.hpp
  */
 #if !defined(SWIG)
-#include <rw/sensor/SensorModel.hpp>
-
 #include <rw/core/Ptr.hpp>
-#endif 
+#include <rw/sensor/SensorModel.hpp>
+#endif
 namespace rw { namespace sensor {
 
     /** @addtogroup sensor */
@@ -39,7 +38,7 @@ namespace rw { namespace sensor {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< RGBDCameraModel > Ptr;
+        typedef rw::core::Ptr<RGBDCameraModel> Ptr;
 
         /**
          * @brief constructor
@@ -47,13 +46,13 @@ namespace rw { namespace sensor {
          * @param frame documentation missing !
          * @param modelInfo [in] info string
          */
-        RGBDCameraModel (const std::string& name, rw::core::Ptr<rw::kinematics::Frame> frame,
-                         const std::string& modelInfo);
+        RGBDCameraModel(const std::string& name, rw::core::Ptr<rw::kinematics::Frame> frame,
+                        const std::string& modelInfo);
 
         /**
          * @brief destructor
          */
-        virtual ~RGBDCameraModel ();
+        virtual ~RGBDCameraModel();
     };
 
     /* @} */

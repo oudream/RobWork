@@ -438,7 +438,8 @@ void OBJReader::parse_mtl_map_Kd(char** next_token) {
                 _textures.push_back(
                     TextureData(token, ImageLoader::Factory::load(_dirName + token)).clone());
                 _materials.back().texId = short(_textures.size() - 1);
-            }else{
+            }
+            else {
                 boost::filesystem::path token_p = token;
                 std::cout << token_p << " got parent: " << token_p.has_parent_path() << std::endl;
             }

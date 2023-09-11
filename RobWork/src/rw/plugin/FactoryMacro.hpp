@@ -40,7 +40,9 @@
  *
  * @param name [in] Name of class to provide factory method for.
  */
-#define DLL_FACTORY_METHOD(name) \
-    DLL_EXPORT void* factory0 (void) { return new name (); }
+#define DLL_FACTORY_METHOD(name)      \
+    DLL_EXPORT void* factory0(void) { \
+        return new name();            \
+    }
 
 #endif /*RW_PLUGIN_FACTORYMACRO_HPP*/

@@ -48,58 +48,58 @@ namespace rwsim { namespace contacts {
     {
       public:
         //! @brief Smart pointer type.
-        typedef rw::core::Ptr< ContactStrategyData > Ptr;
+        typedef rw::core::Ptr<ContactStrategyData> Ptr;
 
         //! @brief Constructor.
-        ContactStrategyData ();
+        ContactStrategyData();
 
         //! @brief Copy data to new container.
-        ContactStrategyData (const ContactStrategyData& data);
+        ContactStrategyData(const ContactStrategyData& data);
 
         //! @brief Destructor.
-        virtual ~ContactStrategyData ();
+        virtual ~ContactStrategyData();
 
         /**
          * @brief Assign data from other container to this container.
          * @param data [in] the data to copy.
          * @return reference to this container.
          */
-        ContactStrategyData& operator= (const ContactStrategyData& data);
+        ContactStrategyData& operator=(const ContactStrategyData& data);
 
         //! @brief Base class that can be extended to implement strategy-specific data.
         class SpecificData
         {
           public:
             //! @brief Constructor.
-            SpecificData () {}
+            SpecificData() {}
 
             //! @brief Destructor.
-            virtual ~SpecificData () {}
+            virtual ~SpecificData() {}
 
             /**
              * @brief Do a copy of the data.
              * @return a new copy of the data owned by the caller.
              */
-            virtual SpecificData* copy () const = 0;
+            virtual SpecificData* copy() const = 0;
         };
 
         /**
          * @brief Get the current strategy-specific data.
          * @return a pointer to the data or NULL if none has been set.
          */
-        virtual SpecificData* getSpecificData () const;
+        virtual SpecificData* getSpecificData() const;
 
         /**
          * @brief Set the strategy-specific data.
          * @param data [in] a pointer to the data to store.
          */
-        virtual void setSpecificData (SpecificData* data);
+        virtual void setSpecificData(SpecificData* data);
 
         /**
          * @brief Check whether data container has been initialized with specific data.
          * @return true if initialized.
          */
-        bool isInitialized () const;
+        bool isInitialized() const;
 
       private:
         SpecificData* _data;

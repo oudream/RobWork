@@ -22,7 +22,7 @@
 #include <rw/graspplanning/GraspValidateFilter.hpp>
 
 #include <cstddef>
-#endif 
+#endif
 
 namespace rw { namespace graspplanning {
 
@@ -35,12 +35,12 @@ namespace rw { namespace graspplanning {
     class SemiForceClosureFilter : public GraspValidateFilter
     {
       public:
-        SemiForceClosureFilter (size_t nrContacts) :
-            _nrContacts (nrContacts), _avgScale (1.0 / nrContacts){};
+        SemiForceClosureFilter(size_t nrContacts) :
+            _nrContacts(nrContacts), _avgScale(1.0 / nrContacts){};
 
-        virtual ~SemiForceClosureFilter (){};
+        virtual ~SemiForceClosureFilter(){};
 
-        bool isValid (const Grasp3D& grasp);
+        bool isValid(const Grasp3D& grasp);
 
       private:
         size_t _nrContacts;

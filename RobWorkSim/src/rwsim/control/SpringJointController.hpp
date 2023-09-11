@@ -31,7 +31,7 @@ namespace rwsim { namespace control {
             double offset;
         };
 
-        typedef rw::core::Ptr< SpringJointController > Ptr;
+        typedef rw::core::Ptr<SpringJointController> Ptr;
 
         /**
          * @brief constructor
@@ -46,42 +46,42 @@ namespace rwsim { namespace control {
          * @param dt [in] the sampletime (time between samples in seconds) used in the control
          * loop, this should be larger than the expected update sample time.
          */
-        SpringJointController (const std::string& name,
-                               rw::core::Ptr< rwsim::dynamics::RigidDevice > rdev,
-                               const std::vector< SpringParam >& springParam, double dt);
+        SpringJointController(const std::string& name,
+                              rw::core::Ptr<rwsim::dynamics::RigidDevice> rdev,
+                              const std::vector<SpringParam>& springParam, double dt);
 
         /**
          * @brief destructor
          */
-        virtual ~SpringJointController (){};
+        virtual ~SpringJointController(){};
 
         /**
          * @brief the time between samples
          * @return the sample time in seconds
          */
-        double getSampleTime ();
+        double getSampleTime();
 
         /**
          * @brief set the time between samples in seconds
          * @param stime [in] sample time
          */
-        void setSampleTime (double stime);
+        void setSampleTime(double stime);
 
         //! @copydoc rwlibs::simulation::SimulatedController::update
-        void update (const rwlibs::simulation::Simulator::UpdateInfo& info,
-                     rw::kinematics::State& state);
+        void update(const rwlibs::simulation::Simulator::UpdateInfo& info,
+                    rw::kinematics::State& state);
 
         //! @copydoc rwlibs::simulation::SimulatedController::reset
-        void reset (const rw::kinematics::State& state);
+        void reset(const rw::kinematics::State& state);
 
         //! @copydoc rwlibs::simulation::SimulatedController::getControllerName
-        Controller* getController () { return this; };
+        Controller* getController() { return this; };
 
-        std::string getControllerName () { return getName (); };
+        std::string getControllerName() { return getName(); };
 
-        void setEnabled (bool enabled) { _enabled = enabled; };
+        void setEnabled(bool enabled) { _enabled = enabled; };
 
-        bool isEnabled () const { return _enabled; };
+        bool isEnabled() const { return _enabled; };
 
         ////// inherited from JointController
 
@@ -90,48 +90,47 @@ namespace rwsim { namespace control {
          *
          * This controller supports both position and velocity control.
          */
-        unsigned int getControlModes () { return _mode; }
+        unsigned int getControlModes() { return _mode; }
 
         //! @copydoc rwlibs::control::JointController::setControlMode
-        void setControlMode (ControlMode mode);
+        void setControlMode(ControlMode mode);
 
         //! @copydoc rwlibs::control::JointController::setTargetPos
-        void setTargetPos (const rw::math::Q& target);
+        void setTargetPos(const rw::math::Q& target);
 
         //! @copydoc rwlibs::control::JointController::setTargetVel
-        void setTargetVel (const rw::math::Q& vals);
+        void setTargetVel(const rw::math::Q& vals);
 
         //! @copydoc rwlibs::control::JointController::setTargetAcc
-        void setTargetAcc (const rw::math::Q& vals);
+        void setTargetAcc(const rw::math::Q& vals);
 
         //! @copydoc rwlibs::control::JointController::getQ
-        rw::math::Q getQ () { return _currentQ; }
+        rw::math::Q getQ() { return _currentQ; }
 
         //! @copydoc rwlibs::control::JointController::getQd
-        rw::math::Q getQd () { return _currentVel; }
+        rw::math::Q getQd() { return _currentVel; }
 
         rwlibs::control::Controller::Ptr
-        getControllerHandle (rwlibs::simulation::Simulator::Ptr sim)
-        {
+        getControllerHandle(rwlibs::simulation::Simulator::Ptr sim) {
             return this;
         }
 
-        std::vector< SpringParam > getParameters () const { return _springParams; }
+        std::vector<SpringParam> getParameters() const { return _springParams; }
 
       private:
-        SpringJointController ();
+        SpringJointController();
 
       private:
         // std::vector<rw::models::BeamJoint*> _beamJoints;
 
-        rw::core::Ptr< rwsim::dynamics::RigidDevice > _ddev;
+        rw::core::Ptr<rwsim::dynamics::RigidDevice> _ddev;
         rw::math::Q _maxVel;
         rw::math::Q _lastError, _target, _currentQ, _currentVel;
         rw::math::Q _targetVel;
         ControlMode _mode;
         double _stime, _accTime;    // sample time
         rw::math::Q _P, _D, _qError;
-        std::vector< SpringParam > _springParams;
+        std::vector<SpringParam> _springParams;
         bool _enabled;
     };
 

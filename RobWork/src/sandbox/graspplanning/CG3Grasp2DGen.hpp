@@ -18,171 +18,141 @@
 #ifndef RW_GRASPPLANNING_CG3GRASP2DGEN_HPP_
 #define RW_GRASPPLANNING_CG3GRASP2DGEN_HPP_
 
+#include "Contour2DInfoMap.hpp"
+#include "Grasp2D.hpp"
+#include "QualityMeasure2D.hpp"
+
+#include <rw/kinematics/State.hpp>
 #include <rw/math/Vector2D.hpp>
 #include <rw/models/TreeDevice.hpp>
-#include <rw/kinematics/State.hpp>
 
-#include "Grasp2D.hpp"
-
-#include "QualityMeasure2D.hpp"
-#include "Contour2DInfoMap.hpp"
-
-namespace rw {
-namespace graspplanning {
-
-/**
- * @brief generates good grasp contacts for a 3 finger schunk hand
- */
-class CG3Grasp2DGen {
-
-public:
-    /**
-     * @brief constructor
-     * @param hand [in] model of the hand used for grasping
-     * @param thetaRes [in] resolution of the discretization
-     * @param
-     */
-    CG3Grasp2DGen(
-        const rw::models::TreeDevice& hand,
-        const rw::kinematics::State& state,
-        int thetaRes=100, bool counterclock=true);
-
-    //! @brief destructor
-    virtual ~CG3Grasp2DGen() {};
+namespace rw { namespace graspplanning {
 
     /**
-     * @brief initialize this contact generator using a 2d contour
+     * @brief generates good grasp contacts for a 3 finger schunk hand
      */
-    void init(
-        const rw::geometry::Contour2D& contour,
-        int psiRes, int phiRes);
+    class CG3Grasp2DGen
+    {
+      public:
+        /**
+         * @brief constructor
+         * @param hand [in] model of the hand used for grasping
+         * @param thetaRes [in] resolution of the discretization
+         * @param
+         */
+        CG3Grasp2DGen(const rw::models::TreeDevice& hand, const rw::kinematics::State& state,
+                      int thetaRes = 100, bool counterclock = true);
 
-    /**
-     * @brief computes a list of the best grasps in the grasp candidate list.
-     */
-    std::vector<Grasp2D>
-        computeGrasps(const QualityMeasure2D& measure, double minQuality, const unsigned int nrOfGrasps);
+        //! @brief destructor
+        virtual ~CG3Grasp2DGen(){};
 
-    /**
-     * @brief gets grasp candidate at idx
-     */
-    Grasp2D getGrasp(int idx);
+        /**
+         * @brief initialize this contact generator using a 2d contour
+         */
+        void init(const rw::geometry::Contour2D& contour, int psiRes, int phiRes);
 
-    /**
-     * @brief sets the maximum allowed distance that the projection of thumb
-     * contact onto the vector between the other two fingers can deviate from
-     * the center of the vector. [0;0.5]
-     *
-     */
-    void setUniformFilter(double acceptUniform){
-        _acceptUniform = acceptUniform;
-    }
+        /**
+         * @brief computes a list of the best grasps in the grasp candidate list.
+         */
+        std::vector<Grasp2D> computeGrasps(const QualityMeasure2D& measure, double minQuality,
+                                           const unsigned int nrOfGrasps);
 
-    /**
-     * @brief return the uniform filter threshold
-     */
-    double getUniformFilter(){
-        return _acceptUniform;
-    }
+        /**
+         * @brief gets grasp candidate at idx
+         */
+        Grasp2D getGrasp(int idx);
 
-    /**
-     * @brief set max curvature threshold filter
-     * @param curvThres
-     */
-    void setMaxCurvature(double curvThres){
-        _sqrCurvThres = curvThres*curvThres;
-    }
+        /**
+         * @brief sets the maximum allowed distance that the projection of thumb
+         * contact onto the vector between the other two fingers can deviate from
+         * the center of the vector. [0;0.5]
+         *
+         */
+        void setUniformFilter(double acceptUniform) { _acceptUniform = acceptUniform; }
 
-    /**
-     * @brief get the max curvature threshold filter
-     * @return
-     */
-    double getMaxCurvature() const {
-        return sqrt(_sqrCurvThres);
-    }
+        /**
+         * @brief return the uniform filter threshold
+         */
+        double getUniformFilter() { return _acceptUniform; }
 
-    /**
-     * @brief sets the maximum allowed angle
-     */
-    void setPerpFilter(double acceptPerp){
-        _acceptPerp = acceptPerp;
-    }
+        /**
+         * @brief set max curvature threshold filter
+         * @param curvThres
+         */
+        void setMaxCurvature(double curvThres) { _sqrCurvThres = curvThres * curvThres; }
 
-    /**
-     * @brief
-     * @return
-     */
-    double getPerpFilter() const{
-        return _acceptPerp;
-    }
+        /**
+         * @brief get the max curvature threshold filter
+         * @return
+         */
+        double getMaxCurvature() const { return sqrt(_sqrCurvThres); }
 
-    /**
-     * @brief set the maximum allowed angle between thumb approach and the vector between
-     * the two other fingers. [0;Pi/2]
-     */
-    void setDirFilter(double direction){
-        _acceptDirs = cos(direction);
-    }
+        /**
+         * @brief sets the maximum allowed angle
+         */
+        void setPerpFilter(double acceptPerp) { _acceptPerp = acceptPerp; }
 
-    /**
-     * @brief get the direction filter threshold
-     * @return
-     */
-    double getDirFilter() const{
-        return _acceptDirs;
-    }
+        /**
+         * @brief
+         * @return
+         */
+        double getPerpFilter() const { return _acceptPerp; }
 
-    /**
-     * @brief sets the maximum allowed distance between any fingers
-     * in meters.
-     */
-    void setMaxGraspWidth(double maxWidth){
-        _maxGraspWidth = maxWidth;
-    }
+        /**
+         * @brief set the maximum allowed angle between thumb approach and the vector between
+         * the two other fingers. [0;Pi/2]
+         */
+        void setDirFilter(double direction) { _acceptDirs = cos(direction); }
 
-    /**
-     * @brief get the maximum grasp width
-     * @return max grasp width
-     */
-    double getMaxGraspWidth() const{
-        return _maxGraspWidth;
-    }
+        /**
+         * @brief get the direction filter threshold
+         * @return
+         */
+        double getDirFilter() const { return _acceptDirs; }
 
-    /**
-     * @brief get the contour on which the grasp is planned
-     * @return 2d contour
-     */
-    const rw::geometry::Contour2D& getContour(){
-        return _infoMap.getContour();
-    }
+        /**
+         * @brief sets the maximum allowed distance between any fingers
+         * in meters.
+         */
+        void setMaxGraspWidth(double maxWidth) { _maxGraspWidth = maxWidth; }
 
-private:
-    const rw::models::TreeDevice& _hand;
-    rw::kinematics::State _state;
-    bool _counterClock;
-    int _thetaRes,_psiRes,_phiRes;
-    double _thetaStep,_psiStep,_phiStep;
-    double  _sqrCurvThres;
-    double _acceptUniform;
-    double _acceptPerp;
-    double _acceptDirs;
-    double _maxGraspWidth;
+        /**
+         * @brief get the maximum grasp width
+         * @return max grasp width
+         */
+        double getMaxGraspWidth() const { return _maxGraspWidth; }
 
-    double _L, _sqrL;
-    double _h, _w;
+        /**
+         * @brief get the contour on which the grasp is planned
+         * @return 2d contour
+         */
+        const rw::geometry::Contour2D& getContour() { return _infoMap.getContour(); }
 
-    // params for filter rules
+      private:
+        const rw::models::TreeDevice& _hand;
+        rw::kinematics::State _state;
+        bool _counterClock;
+        int _thetaRes, _psiRes, _phiRes;
+        double _thetaStep, _psiStep, _phiStep;
+        double _sqrCurvThres;
+        double _acceptUniform;
+        double _acceptPerp;
+        double _acceptDirs;
+        double _maxGraspWidth;
 
+        double _L, _sqrL;
+        double _h, _w;
 
-    rw::math::Vector2D<> _center;
-    rw::math::Vector2D<> _f1Dir,_f2Dir,_thumDir;
+        // params for filter rules
 
-    Contour2DInfoMap _infoMap;
+        rw::math::Vector2D<> _center;
+        rw::math::Vector2D<> _f1Dir, _f2Dir, _thumDir;
 
-    std::vector<Grasp2D> _graspCandidates;
-};
+        Contour2DInfoMap _infoMap;
 
-}
-}
+        std::vector<Grasp2D> _graspCandidates;
+    };
+
+}}    // namespace rw::graspplanning
 
 #endif /*CG3Grasp2DGen_HPP_*/

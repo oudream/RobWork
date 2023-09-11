@@ -28,7 +28,7 @@
 #include <rw/math/Transform3D.hpp>
 
 #include <vector>
-#endif 
+#endif
 namespace rw { namespace kinematics {
     class State;
 }}    // namespace rw::kinematics
@@ -56,12 +56,12 @@ namespace rw { namespace invkin {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< IterativeMultiIK > Ptr;
+        typedef rw::core::Ptr<IterativeMultiIK> Ptr;
 
         /**
          * @brief Destructor
          */
-        virtual ~IterativeMultiIK () {}
+        virtual ~IterativeMultiIK() {}
 
         /**
          * @brief Calculates the inverse kinematics
@@ -84,9 +84,9 @@ namespace rw { namespace invkin {
          *
          * @return List of solutions. Notice that the list may be empty.
          */
-        virtual std::vector< rw::math::Q >
-        solve (const std::vector< rw::math::Transform3D<double> >& baseTend,
-               const kinematics::State& state) const = 0;
+        virtual std::vector<rw::math::Q>
+        solve(const std::vector<rw::math::Transform3D<double>>& baseTend,
+              const kinematics::State& state) const = 0;
 
         /**
          * @brief Sets the maximal error for a solution
@@ -96,44 +96,44 @@ namespace rw { namespace invkin {
          *
          * @param maxError [in] the maxError. It will be assumed that maxError > 0
          */
-        virtual void setMaxError (const std::vector< double >& maxError);
+        virtual void setMaxError(const std::vector<double>& maxError);
 
         /**
          * @brief Returns the maximal error for a solution
          *
          * @return Maximal error
          */
-        virtual std::vector< double > getMaxError () const;
+        virtual std::vector<double> getMaxError() const;
 
         /**
          * @brief Sets the maximal number of iterations allowed
          *
          * @param maxIterations [in] maximal number of iterations
          */
-        virtual void setMaxIterations (int maxIterations);
+        virtual void setMaxIterations(int maxIterations);
 
         /**
          * @brief Returns the maximal number of iterations
          */
-        virtual int getMaxIterations () const;
+        virtual int getMaxIterations() const;
 
         /**
          * @brief Returns the PropertyMap
          * @return Reference to the PropertyMap
          */
-        virtual rw::core::PropertyMap& getProperties ();
+        virtual rw::core::PropertyMap& getProperties();
 
         /**
          * @brief Returns the PropertyMap
          * return Reference to the PropertyMap
          */
-        virtual const rw::core::PropertyMap& getProperties () const;
+        virtual const rw::core::PropertyMap& getProperties() const;
 
       protected:
         /**
          * @brief Constructor
          */
-        IterativeMultiIK (size_t nrOfEndEff);
+        IterativeMultiIK(size_t nrOfEndEff);
 
       private:
         /**
@@ -147,8 +147,8 @@ namespace rw { namespace invkin {
         size_t _nrOfEndEff;
 
       private:
-        IterativeMultiIK (const IterativeMultiIK&);
-        IterativeMultiIK& operator= (const IterativeMultiIK&);
+        IterativeMultiIK(const IterativeMultiIK&);
+        IterativeMultiIK& operator=(const IterativeMultiIK&);
     };
 
     /*@}*/

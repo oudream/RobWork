@@ -38,52 +38,52 @@ namespace rwsim { namespace log {
     {
       public:
         //! Smart pointer type of LogMessage
-        typedef rw::core::Ptr< LogMessage > Ptr;
+        typedef rw::core::Ptr<LogMessage> Ptr;
 
         //! @copydoc SimulatorLogEntry::SimulatorLogEntry
-        LogMessage (SimulatorLogScope* parent);
+        LogMessage(SimulatorLogScope* parent);
 
         //! @brief Destructor.
-        virtual ~LogMessage ();
+        virtual ~LogMessage();
 
         //! @copydoc SimulatorLogEntry::read
-        virtual void read (class rw::common::InputArchive& iarchive, const std::string& id);
+        virtual void read(class rw::common::InputArchive& iarchive, const std::string& id);
 
         //! @copydoc SimulatorLogEntry::write
-        virtual void write (class rw::common::OutputArchive& oarchive, const std::string& id) const;
+        virtual void write(class rw::common::OutputArchive& oarchive, const std::string& id) const;
 
         //! @copydoc SimulatorLogEntry::getType
-        virtual std::string getType () const;
+        virtual std::string getType() const;
 
         //! @copydoc SimulatorLogEntry::operator==
-        virtual bool operator== (const SimulatorLog& b) const;
+        virtual bool operator==(const SimulatorLog& b) const;
 
         //! @copydoc SimulatorLogEntry::getLinkedEntries
-        virtual std::list< SimulatorLogEntry::Ptr > getLinkedEntries () const;
+        virtual std::list<SimulatorLogEntry::Ptr> getLinkedEntries() const;
 
         //! @copydoc SimulatorLogEntry::autoLink
-        virtual bool autoLink ();
+        virtual bool autoLink();
 
         //! @copydoc SimulatorLogEntry::createNew
-        virtual SimulatorLogEntry::Ptr createNew (SimulatorLogScope* parent) const;
+        virtual SimulatorLogEntry::Ptr createNew(SimulatorLogScope* parent) const;
 
         /**
          * @brief Get the stream to output to.
          * @return the stream.
          */
-        std::ostream& stream ();
+        std::ostream& stream();
 
         /**
          * @brief Get the message.
          * @return the message.
          */
-        std::string getMessage () const;
+        std::string getMessage() const;
 
         /**
          * @brief Get the type id of this entry type.
          * @return the type id.
          */
-        static std::string getTypeID ();
+        static std::string getTypeID();
 
       private:
         std::stringstream _message;

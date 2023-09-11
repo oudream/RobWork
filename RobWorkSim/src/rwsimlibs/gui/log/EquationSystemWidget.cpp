@@ -28,304 +28,257 @@
 using namespace rwsim::log;
 using namespace rwsimlibs::gui;
 
-EquationSystemWidget::EquationSystemWidget (rw::core::Ptr< const LogEquationSystem > entry,
-                                            QWidget* parent) :
-    SimulatorLogEntryWidget (parent),
-    _ui (new Ui::EquationSystemWidget ()), _system (entry)
-{
-    _ui->setupUi (this);
+EquationSystemWidget::EquationSystemWidget(rw::core::Ptr<const LogEquationSystem> entry,
+                                           QWidget* parent) :
+    SimulatorLogEntryWidget(parent),
+    _ui(new Ui::EquationSystemWidget()), _system(entry) {
+    _ui->setupUi(this);
 
-    _ui->_A->verticalHeader ()->setSectionResizeMode (QHeaderView::Stretch);
-    _ui->_A->horizontalHeader ()->setSectionResizeMode (QHeaderView::Stretch);
-    _ui->_b->verticalHeader ()->setSectionResizeMode (QHeaderView::Stretch);
-    _ui->_b->horizontalHeader ()->setSectionResizeMode (QHeaderView::Stretch);
-    _ui->_x->verticalHeader ()->setSectionResizeMode (QHeaderView::Stretch);
-    _ui->_x->horizontalHeader ()->setSectionResizeMode (QHeaderView::Stretch);
+    _ui->_A->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    _ui->_A->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    _ui->_b->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    _ui->_b->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    _ui->_x->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    _ui->_x->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
-    _ui->_A->setContextMenuPolicy (Qt::CustomContextMenu);
-    _ui->_b->setContextMenuPolicy (Qt::CustomContextMenu);
-    _ui->_A->setContextMenuPolicy (Qt::CustomContextMenu);
-    connect (_ui->_A,
-             SIGNAL (customContextMenuRequested (const QPoint&)),
-             this,
-             SLOT (showContextMenu (const QPoint&)));
-    connect (_ui->_b,
-             SIGNAL (customContextMenuRequested (const QPoint&)),
-             this,
-             SLOT (showContextMenu (const QPoint&)));
-    connect (_ui->_x,
-             SIGNAL (customContextMenuRequested (const QPoint&)),
-             this,
-             SLOT (showContextMenu (const QPoint&)));
+    _ui->_A->setContextMenuPolicy(Qt::CustomContextMenu);
+    _ui->_b->setContextMenuPolicy(Qt::CustomContextMenu);
+    _ui->_A->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(_ui->_A,
+            SIGNAL(customContextMenuRequested(const QPoint&)),
+            this,
+            SLOT(showContextMenu(const QPoint&)));
+    connect(_ui->_b,
+            SIGNAL(customContextMenuRequested(const QPoint&)),
+            this,
+            SLOT(showContextMenu(const QPoint&)));
+    connect(_ui->_x,
+            SIGNAL(customContextMenuRequested(const QPoint&)),
+            this,
+            SLOT(showContextMenu(const QPoint&)));
 }
 
-EquationSystemWidget::~EquationSystemWidget ()
-{}
+EquationSystemWidget::~EquationSystemWidget() {}
 
-void EquationSystemWidget::setDWC (rw::core::Ptr< const rwsim::dynamics::DynamicWorkCell > dwc)
-{
+void EquationSystemWidget::setDWC(rw::core::Ptr<const rwsim::dynamics::DynamicWorkCell> dwc) {
     // we do not use any DWC in this widget
 }
 
-void EquationSystemWidget::setEntry (rw::core::Ptr< const SimulatorLog > entry)
-{
-    const rw::core::Ptr< const LogEquationSystem > system =
-        entry.cast< const LogEquationSystem > ();
-    if (!(system == NULL)) {
-        _system = system;
-    }
-    else {
-        RW_THROW ("EquationSystemWidget (setEntry): invalid entry!");
-    }
+void EquationSystemWidget::setEntry(rw::core::Ptr<const SimulatorLog> entry) {
+    const rw::core::Ptr<const LogEquationSystem> system = entry.cast<const LogEquationSystem>();
+    if(!(system == NULL)) { _system = system; }
+    else { RW_THROW("EquationSystemWidget (setEntry): invalid entry!"); }
 }
 
-rw::core::Ptr< const SimulatorLog > EquationSystemWidget::getEntry () const
-{
+rw::core::Ptr<const SimulatorLog> EquationSystemWidget::getEntry() const {
     return _system;
 }
 
-void EquationSystemWidget::updateEntryWidget ()
-{
-    const Eigen::MatrixXd& A = _system->A ();
-    const Eigen::VectorXd& x = _system->x ();
-    const Eigen::VectorXd& b = _system->b ();
+void EquationSystemWidget::updateEntryWidget() {
+    const Eigen::MatrixXd& A = _system->A();
+    const Eigen::VectorXd& x = _system->x();
+    const Eigen::VectorXd& b = _system->b();
 
     // Set dimension labels
-    _ui->_Adim->setText (QString::number (A.rows ()) + " x " + QString::number (A.cols ()));
-    _ui->_bDim->setText (QString::number (b.rows ()) + " x 1");
-    if (x.rows () == 0)
-        _ui->_xDim->setText ("x");
-    else
-        _ui->_xDim->setText (QString::number (x.rows ()) + " x 1");
+    _ui->_Adim->setText(QString::number(A.rows()) + " x " + QString::number(A.cols()));
+    _ui->_bDim->setText(QString::number(b.rows()) + " x 1");
+    if(x.rows() == 0) _ui->_xDim->setText("x");
+    else _ui->_xDim->setText(QString::number(x.rows()) + " x 1");
 
     // Populate tables with data
-    _ui->_A->setRowCount (A.rows ());
-    _ui->_A->setColumnCount (A.cols ());
-    _ui->_x->setRowCount (x.rows ());
-    _ui->_b->setRowCount (b.rows ());
-    for (Eigen::MatrixXd::Index i = 0; i < A.rows (); i++) {
-        for (Eigen::MatrixXd::Index j = 0; j < A.cols (); j++) {
-            QTableWidgetItem* item = new QTableWidgetItem (QString::number (A (i, j)));
-            item->setData (Qt::ToolTipRole, QString::number (A (i, j)));
-            _ui->_A->setItem (i, j, item);
+    _ui->_A->setRowCount(A.rows());
+    _ui->_A->setColumnCount(A.cols());
+    _ui->_x->setRowCount(x.rows());
+    _ui->_b->setRowCount(b.rows());
+    for(Eigen::MatrixXd::Index i = 0; i < A.rows(); i++) {
+        for(Eigen::MatrixXd::Index j = 0; j < A.cols(); j++) {
+            QTableWidgetItem* item = new QTableWidgetItem(QString::number(A(i, j)));
+            item->setData(Qt::ToolTipRole, QString::number(A(i, j)));
+            _ui->_A->setItem(i, j, item);
         }
     }
-    for (Eigen::VectorXd::Index i = 0; i < x.rows (); i++) {
-        QTableWidgetItem* item = new QTableWidgetItem (QString::number (x[i]));
-        item->setData (Qt::ToolTipRole, QString::number (x[i]));
-        _ui->_x->setItem (i, 0, item);
+    for(Eigen::VectorXd::Index i = 0; i < x.rows(); i++) {
+        QTableWidgetItem* item = new QTableWidgetItem(QString::number(x[i]));
+        item->setData(Qt::ToolTipRole, QString::number(x[i]));
+        _ui->_x->setItem(i, 0, item);
     }
-    for (Eigen::VectorXd::Index i = 0; i < b.rows (); i++) {
-        QTableWidgetItem* item = new QTableWidgetItem (QString::number (b[i]));
-        item->setData (Qt::ToolTipRole, QString::number (b[i]));
-        _ui->_b->setItem (i, 0, item);
+    for(Eigen::VectorXd::Index i = 0; i < b.rows(); i++) {
+        QTableWidgetItem* item = new QTableWidgetItem(QString::number(b[i]));
+        item->setData(Qt::ToolTipRole, QString::number(b[i]));
+        _ui->_b->setItem(i, 0, item);
     }
 
     // Illustrate dimensions through scaling
     {
-        QSizePolicy policy = _ui->_AHor->sizePolicy ();
-        policy.setHorizontalStretch (A.cols ());
-        _ui->_AHor->setSizePolicy (policy);
+        QSizePolicy policy = _ui->_AHor->sizePolicy();
+        policy.setHorizontalStretch(A.cols());
+        _ui->_AHor->setSizePolicy(policy);
     }
     {
-        QSizePolicy policy = _ui->_A->sizePolicy ();
-        policy.setVerticalStretch (A.rows ());
-        _ui->_A->setSizePolicy (policy);
-        if (A.rows () >= A.cols ())
-            policy.setVerticalStretch (0);
-        else
-            policy.setVerticalStretch ((A.cols () - A.rows ()) / 2);
-        _ui->_AVertTop->setSizePolicy (policy);
-        _ui->_AVertBot->setSizePolicy (policy);
+        QSizePolicy policy = _ui->_A->sizePolicy();
+        policy.setVerticalStretch(A.rows());
+        _ui->_A->setSizePolicy(policy);
+        if(A.rows() >= A.cols()) policy.setVerticalStretch(0);
+        else policy.setVerticalStretch((A.cols() - A.rows()) / 2);
+        _ui->_AVertTop->setSizePolicy(policy);
+        _ui->_AVertBot->setSizePolicy(policy);
     }
     {
-        QSizePolicy policy = _ui->_b->sizePolicy ();
-        policy.setVerticalStretch (b.rows ());
-        _ui->_b->setSizePolicy (policy);
-        if (A.rows () >= A.cols ())
-            policy.setVerticalStretch (0);
-        else
-            policy.setVerticalStretch ((A.cols () - A.rows ()) / 2);
-        _ui->_bVertTop->setSizePolicy (policy);
-        _ui->_bVertBot->setSizePolicy (policy);
+        QSizePolicy policy = _ui->_b->sizePolicy();
+        policy.setVerticalStretch(b.rows());
+        _ui->_b->setSizePolicy(policy);
+        if(A.rows() >= A.cols()) policy.setVerticalStretch(0);
+        else policy.setVerticalStretch((A.cols() - A.rows()) / 2);
+        _ui->_bVertTop->setSizePolicy(policy);
+        _ui->_bVertBot->setSizePolicy(policy);
     }
     {
-        QSizePolicy policy = _ui->_x->sizePolicy ();
-        if (x.rows () == 0)
-            policy.setVerticalStretch (A.cols ());
-        else
-            policy.setVerticalStretch (x.rows ());
-        _ui->_x->setSizePolicy (policy);
-        if (A.rows () <= A.cols ())
-            policy.setVerticalStretch (0);
-        else
-            policy.setVerticalStretch ((A.rows () - A.cols ()) / 2);
-        _ui->_xVertTop->setSizePolicy (policy);
-        _ui->_xVertBot->setSizePolicy (policy);
+        QSizePolicy policy = _ui->_x->sizePolicy();
+        if(x.rows() == 0) policy.setVerticalStretch(A.cols());
+        else policy.setVerticalStretch(x.rows());
+        _ui->_x->setSizePolicy(policy);
+        if(A.rows() <= A.cols()) policy.setVerticalStretch(0);
+        else policy.setVerticalStretch((A.rows() - A.cols()) / 2);
+        _ui->_xVertTop->setSizePolicy(policy);
+        _ui->_xVertBot->setSizePolicy(policy);
     }
 }
 
-void EquationSystemWidget::showGraphics (rw::core::Ptr< rw::graphics::GroupNode > root,
-                                         rw::core::Ptr< rw::graphics::SceneGraph > graph)
-{
+void EquationSystemWidget::showGraphics(rw::core::Ptr<rw::graphics::GroupNode> root,
+                                        rw::core::Ptr<rw::graphics::SceneGraph> graph) {
     // no graphics in this widget
 }
 
-std::string EquationSystemWidget::getName () const
-{
+std::string EquationSystemWidget::getName() const {
     return "Equation System";
 }
 
-EquationSystemWidget::Dispatcher::Dispatcher ()
-{}
+EquationSystemWidget::Dispatcher::Dispatcher() {}
 
-EquationSystemWidget::Dispatcher::~Dispatcher ()
-{}
+EquationSystemWidget::Dispatcher::~Dispatcher() {}
 
 SimulatorLogEntryWidget*
-EquationSystemWidget::Dispatcher::makeWidget (rw::core::Ptr< const SimulatorLog > entry,
-                                              QWidget* parent) const
-{
-    rw::core::Ptr< const LogEquationSystem > const system =
-        entry.cast< const LogEquationSystem > ();
-    if (!(system == NULL))
-        return new EquationSystemWidget (system, parent);
-    RW_THROW ("EquationSystemWidget::Dispatcher (makeWidget): invalid entry!");
+EquationSystemWidget::Dispatcher::makeWidget(rw::core::Ptr<const SimulatorLog> entry,
+                                             QWidget* parent) const {
+    rw::core::Ptr<const LogEquationSystem> const system = entry.cast<const LogEquationSystem>();
+    if(!(system == NULL)) return new EquationSystemWidget(system, parent);
+    RW_THROW("EquationSystemWidget::Dispatcher (makeWidget): invalid entry!");
     return NULL;
 }
 
-bool EquationSystemWidget::Dispatcher::accepts (rw::core::Ptr< const SimulatorLog > entry) const
-{
-    if (!(entry.cast< const LogEquationSystem > () == NULL))
-        return true;
+bool EquationSystemWidget::Dispatcher::accepts(rw::core::Ptr<const SimulatorLog> entry) const {
+    if(!(entry.cast<const LogEquationSystem>() == NULL)) return true;
     return false;
 }
 
-void EquationSystemWidget::showContextMenu (const QPoint& pos)
-{
-    const QTableWidget* const widget = dynamic_cast< const QTableWidget* > (QObject::sender ());
-    RW_ASSERT (widget);
-    const QPoint globalPos = widget->mapToGlobal (pos);
+void EquationSystemWidget::showContextMenu(const QPoint& pos) {
+    const QTableWidget* const widget = dynamic_cast<const QTableWidget*>(QObject::sender());
+    RW_ASSERT(widget);
+    const QPoint globalPos = widget->mapToGlobal(pos);
     QMenu myMenu;
-    if (_ui->_A->verticalHeader ()->sectionResizeMode (0) == QHeaderView::Stretch)
-        myMenu.addAction ("&Expanded Mode");
-    else
-        myMenu.addAction ("&Compact Mode");
-    myMenu.addAction ("Copy as &Mathematica");
-    myMenu.addAction ("Copy as MAT&LAB");
+    if(_ui->_A->verticalHeader()->sectionResizeMode(0) == QHeaderView::Stretch)
+        myMenu.addAction("&Expanded Mode");
+    else myMenu.addAction("&Compact Mode");
+    myMenu.addAction("Copy as &Mathematica");
+    myMenu.addAction("Copy as MAT&LAB");
 
-    const QAction* const selectedItem = myMenu.exec (globalPos);
-    if (selectedItem == myMenu.actions ()[0]) {
-        if (_ui->_A->verticalHeader ()->sectionResizeMode (0) == QHeaderView::Stretch) {
+    const QAction* const selectedItem = myMenu.exec(globalPos);
+    if(selectedItem == myMenu.actions()[0]) {
+        if(_ui->_A->verticalHeader()->sectionResizeMode(0) == QHeaderView::Stretch) {
             // To expanded mode
-            _ui->_A->verticalHeader ()->setSectionResizeMode (QHeaderView::ResizeToContents);
-            _ui->_A->horizontalHeader ()->setSectionResizeMode (QHeaderView::ResizeToContents);
-            _ui->_b->verticalHeader ()->setSectionResizeMode (QHeaderView::ResizeToContents);
-            _ui->_b->horizontalHeader ()->setSectionResizeMode (QHeaderView::ResizeToContents);
-            _ui->_x->verticalHeader ()->setSectionResizeMode (QHeaderView::ResizeToContents);
-            _ui->_x->horizontalHeader ()->setSectionResizeMode (QHeaderView::ResizeToContents);
+            _ui->_A->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+            _ui->_A->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+            _ui->_b->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+            _ui->_b->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+            _ui->_x->verticalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
+            _ui->_x->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
         }
         else {
             // To compact mode
-            _ui->_A->verticalHeader ()->setSectionResizeMode (QHeaderView::Stretch);
-            _ui->_A->horizontalHeader ()->setSectionResizeMode (QHeaderView::Stretch);
-            _ui->_b->verticalHeader ()->setSectionResizeMode (QHeaderView::Stretch);
-            _ui->_b->horizontalHeader ()->setSectionResizeMode (QHeaderView::Stretch);
-            _ui->_x->verticalHeader ()->setSectionResizeMode (QHeaderView::Stretch);
-            _ui->_x->horizontalHeader ()->setSectionResizeMode (QHeaderView::Stretch);
+            _ui->_A->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+            _ui->_A->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+            _ui->_b->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+            _ui->_b->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+            _ui->_x->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+            _ui->_x->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
         }
     }
-    else if (selectedItem == myMenu.actions ()[1]) {
+    else if(selectedItem == myMenu.actions()[1]) {
         // Output the equation system in Mathematica format to clipboard
-        const Eigen::MatrixXd& A = _system->A ();
-        const Eigen::VectorXd& x = _system->x ();
-        const Eigen::VectorXd& b = _system->b ();
+        const Eigen::MatrixXd& A = _system->A();
+        const Eigen::VectorXd& x = _system->x();
+        const Eigen::VectorXd& b = _system->b();
         std::stringstream fmt;
         fmt << "A={";
-        for (Eigen::MatrixXd::Index i = 0; i < A.rows (); i++) {
+        for(Eigen::MatrixXd::Index i = 0; i < A.rows(); i++) {
             fmt << "{";
-            for (Eigen::MatrixXd::Index j = 0; j < A.cols (); j++) {
-                if (j == A.cols () - 1)
-                    fmt << A (i, j);
-                else
-                    fmt << A (i, j) << ",";
+            for(Eigen::MatrixXd::Index j = 0; j < A.cols(); j++) {
+                if(j == A.cols() - 1) fmt << A(i, j);
+                else fmt << A(i, j) << ",";
             }
-            if (i != A.rows () - 1)
-                fmt << "}," << std::endl;
-            else
-                fmt << "}";
+            if(i != A.rows() - 1) fmt << "}," << std::endl;
+            else fmt << "}";
         }
         fmt << "};" << std::endl;
         fmt << "b={";
-        for (Eigen::MatrixXd::Index i = 0; i < b.rows (); i++) {
-            if (i == b.rows () - 1)
-                fmt << b[i];
-            else
-                fmt << b[i] << ",";
+        for(Eigen::MatrixXd::Index i = 0; i < b.rows(); i++) {
+            if(i == b.rows() - 1) fmt << b[i];
+            else fmt << b[i] << ",";
         }
         fmt << "};" << std::endl;
-        if (x.size () > 0) {
+        if(x.size() > 0) {
             fmt << "x={";
-            for (Eigen::MatrixXd::Index i = 0; i < x.rows (); i++) {
-                if (i == x.rows () - 1)
-                    fmt << x[i];
-                else
-                    fmt << x[i] << ",";
+            for(Eigen::MatrixXd::Index i = 0; i < x.rows(); i++) {
+                if(i == x.rows() - 1) fmt << x[i];
+                else fmt << x[i] << ",";
             }
             fmt << "};" << std::endl;
         }
-        std::string mstr = fmt.str ();
-        size_t pos       = mstr.find ("e");
-        while (pos != std::string::npos) {
-            mstr.replace (pos, 1, "*^");
-            pos = mstr.find ("e");
+        std::string mstr = fmt.str();
+        size_t pos       = mstr.find("e");
+        while(pos != std::string::npos) {
+            mstr.replace(pos, 1, "*^");
+            pos = mstr.find("e");
         }
-        QClipboard* clip = QApplication::clipboard ();
-        clip->setText (QString::fromStdString (mstr));
+        QClipboard* clip = QApplication::clipboard();
+        clip->setText(QString::fromStdString(mstr));
     }
-    else if (selectedItem == myMenu.actions ()[2]) {
+    else if(selectedItem == myMenu.actions()[2]) {
         // Output the equation system in MATLAB format to clipboard
-        const Eigen::MatrixXd& A = _system->A ();
-        const Eigen::VectorXd& x = _system->x ();
-        const Eigen::VectorXd& b = _system->b ();
+        const Eigen::MatrixXd& A = _system->A();
+        const Eigen::VectorXd& x = _system->x();
+        const Eigen::VectorXd& b = _system->b();
         std::stringstream fmt;
         fmt << "A=[";
-        for (Eigen::MatrixXd::Index i = 0; i < A.rows (); i++) {
-            for (Eigen::MatrixXd::Index j = 0; j < A.cols (); j++) {
-                if (j == A.cols () - 1)
-                    fmt << A (i, j);
-                else
-                    fmt << A (i, j) << " ";
+        for(Eigen::MatrixXd::Index i = 0; i < A.rows(); i++) {
+            for(Eigen::MatrixXd::Index j = 0; j < A.cols(); j++) {
+                if(j == A.cols() - 1) fmt << A(i, j);
+                else fmt << A(i, j) << " ";
             }
-            if (i != A.rows () - 1)
-                fmt << ";" << std::endl;
+            if(i != A.rows() - 1) fmt << ";" << std::endl;
         }
         fmt << "];" << std::endl;
         fmt << "b=[";
-        for (Eigen::MatrixXd::Index i = 0; i < b.rows (); i++) {
-            if (i == b.rows () - 1)
-                fmt << b[i];
-            else
-                fmt << b[i] << ";";
+        for(Eigen::MatrixXd::Index i = 0; i < b.rows(); i++) {
+            if(i == b.rows() - 1) fmt << b[i];
+            else fmt << b[i] << ";";
         }
         fmt << "];" << std::endl;
-        if (x.size () > 0) {
+        if(x.size() > 0) {
             fmt << "x=[";
-            for (Eigen::MatrixXd::Index i = 0; i < x.rows (); i++) {
-                if (i == x.rows () - 1)
-                    fmt << x[i];
-                else
-                    fmt << x[i] << ";";
+            for(Eigen::MatrixXd::Index i = 0; i < x.rows(); i++) {
+                if(i == x.rows() - 1) fmt << x[i];
+                else fmt << x[i] << ";";
             }
             fmt << "];" << std::endl;
         }
-        std::string mstr = fmt.str ();
+        std::string mstr = fmt.str();
         /*size_t pos = mstr.find("e");
         while (pos != std::string::npos) {
                 mstr.replace(pos, 1, "*^");
                 pos = mstr.find("e");
         }*/
-        QClipboard* clip = QApplication::clipboard ();
-        clip->setText (QString::fromStdString (mstr));
+        QClipboard* clip = QApplication::clipboard();
+        clip->setText(QString::fromStdString(mstr));
     }
 }

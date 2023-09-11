@@ -42,11 +42,9 @@ namespace {
 struct DataParser
 {
     typedef char result_t;
-    template< typename ScannerT >
-    std::ptrdiff_t operator() (ScannerT const& scan, result_t& result) const
-    {
-        if (scan.at_end ())
-            return -1;
+    template<typename ScannerT>
+    std::ptrdiff_t operator()(ScannerT const& scan, result_t& result) const {
+        if(scan.at_end()) return -1;
 
         result             = *scan;
         std::ptrdiff_t len = 1;
@@ -55,143 +53,131 @@ struct DataParser
     }
 };
 
-functor_parser< DataParser > DataParser_p;
+functor_parser<DataParser> DataParser_p;
 
 struct ResizeVector
 {
-    ResizeVector (std::vector< char >& v, int& width, int& height, int factor) :
-        _v (v), _width (width), _height (height), _factor (factor)
-    {}
+    ResizeVector(std::vector<char>& v, int& width, int& height, int factor) :
+        _v(v), _width(width), _height(height), _factor(factor) {}
 
-    template< typename IteratorT >
-    void operator() (IteratorT const& first, IteratorT const& last) const
-    {
+    template<typename IteratorT>
+    void operator()(IteratorT const& first, IteratorT const& last) const {
         // std::cout << "Resizeing to: " << _width*_height*_factor << " factor: " << _factor <<
         // std::endl;
-        _v.resize (_width * _height * _factor);
+        _v.resize(_width * _height * _factor);
     }
 
-    std::vector< char >& _v;
+    std::vector<char>& _v;
     int &_width, &_height, _factor;
 };
 
 struct InsertAtVector
 {
-    InsertAtVector (std::vector< char >& v, int& index) : _v (v), _index (index) {}
+    InsertAtVector(std::vector<char>& v, int& index) : _v(v), _index(index) {}
 
-    void operator() (char value) const { _v[_index] = value; }
+    void operator()(char value) const { _v[_index] = value; }
 
-    std::vector< char >& _v;
+    std::vector<char>& _v;
     int& _index;
 };
 
-struct PGMParser : grammar< PGMParser >
+struct PGMParser : grammar<PGMParser>
 {
   public:
-    std::vector< char >& _data;
+    std::vector<char>& _data;
     mutable int width, height, maxgrayval;
 
-    PGMParser (std::vector< char >& data) : _data (data), width (0), height (0), maxgrayval (0) {}
+    PGMParser(std::vector<char>& data) : _data(data), width(0), height(0), maxgrayval(0) {}
 
-    template< typename ScannerT > struct definition
+    template<typename ScannerT> struct definition
     {
       public:
         int index;
-        std::vector< char >& data;
+        std::vector<char>& data;
         int &width, &height, &maxgrayval;
 
-        definition (PGMParser const& self) :
-            data (self._data), width (self.width), height (self.height),
-            maxgrayval (self.maxgrayval)
-        {
+        definition(PGMParser const& self) :
+            data(self._data), width(self.width), height(self.height), maxgrayval(self.maxgrayval) {
             pgmfile_r = header_r >> dimension_r >> maxgrayval_r >> data_r >> end_p;
 
             // expect magic number identifier
-            header_r = str_p ("P5") >> *(ch_p ('#') >> lexeme_d[*(anychar_p - eol_p)]);
+            header_r = str_p("P5") >> *(ch_p('#') >> lexeme_d[*(anychar_p - eol_p)]);
 
             dimension_r =
-                int_p[var (width) = arg1]    //[var(std::cout) << "Width:" << arg1 << std::endl]
-                >>
-                int_p[var (height) = arg1]    //[var(std::cout) << "height:" << arg1 << std::endl]
+                int_p[var(width) = arg1]        //[var(std::cout) << "Width:" << arg1 << std::endl]
+                >> int_p[var(height) = arg1]    //[var(std::cout) << "height:" << arg1 << std::endl]
                 ;
 
-            maxgrayval_r = int_p[var (maxgrayval) = arg1];
+            maxgrayval_r = int_p[var(maxgrayval) = arg1];
 
-            data_r = if_p (var (maxgrayval) < 256)[data8bit_r].else_p[data16bit_r];
+            data_r = if_p(var(maxgrayval) < 256)[data8bit_r].else_p[data16bit_r];
 
-            data8bit_r = eps_p[ResizeVector (data, width, height, 1)] >>
-                         lexeme_d[for_p (
-                             var (index) = 0,
-                             var (index) < var (width) * var (height),
-                             var (index) +=
-                             1)[DataParser_p[InsertAtVector (data, index)]
+            data8bit_r = eps_p[ResizeVector(data, width, height, 1)] >>
+                         lexeme_d[for_p(
+                             var(index) = 0,
+                             var(index) < var(width) * var(height),
+                             var(index) +=
+                             1)[DataParser_p[InsertAtVector(data, index)]
                                 //[ anychar_p[ assign_key_a( var(data), var(index)) ]//[std::cout <<
                                 // var(index)<< " " << var(width)*var(height) << std::endl]
-                                | eps_p[var (std::cout) << "WARNING: PGM file is not well formed, "
-                                                           "missing data! Continues parsing"
-                                                        << std::endl]]];
+                                | eps_p[var(std::cout) << "WARNING: PGM file is not well formed, "
+                                                          "missing data! Continues parsing"
+                                                       << std::endl]]];
 
             data16bit_r =
-                eps_p[ResizeVector (data, height, width, 2)] >>
-                lexeme_d[for_p (
-                    var (index) = 0, var (index) < var (width) * var (height) * 2, var (index) += 1)
-                             [anychar_p[assign_key_a (var (data), var (index))]    //[std::cout <<
-                                                                                   // var(index)<<
-                                                                                   // std::endl]
-                              | eps_p[var (std::cout) << "WARNING: PGM file is not well formed, "
-                                                         "missing data! Continues parsing"
-                                                      << std::endl]]];
+                eps_p[ResizeVector(data, height, width, 2)] >>
+                lexeme_d[for_p(var(index) = 0,
+                               var(index) < var(width) * var(height) * 2,
+                               var(index) +=
+                               1)[anychar_p[assign_key_a(var(data), var(index))]    //[std::cout <<
+                                                                                    // var(index)<<
+                                                                                    // std::endl]
+                                  | eps_p[var(std::cout) << "WARNING: PGM file is not well formed, "
+                                                            "missing data! Continues parsing"
+                                                         << std::endl]]];
         }
 
-        rule< ScannerT > const start () const { return pgmfile_r; }
+        rule<ScannerT> const start() const { return pgmfile_r; }
 
       private:
-        rule< ScannerT > pgmfile_r, header_r, dimension_r, maxgrayval_r, data_r, data8bit_r,
+        rule<ScannerT> pgmfile_r, header_r, dimension_r, maxgrayval_r, data_r, data8bit_r,
             data16bit_r;
     };
 };
 }    // namespace
 
-rw::sensor::Image::Ptr PGMLoader::loadImage (const std::string& filename)
-{
-    return PGMLoader::load (filename);
+rw::sensor::Image::Ptr PGMLoader::loadImage(const std::string& filename) {
+    return PGMLoader::load(filename);
 }
 
-std::vector< std::string > PGMLoader::getImageFormats ()
-{
-    std::vector< std::string > formats;
-    formats.push_back ("PGM");
+std::vector<std::string> PGMLoader::getImageFormats() {
+    std::vector<std::string> formats;
+    formats.push_back("PGM");
     return formats;
 }
 
-rw::sensor::Image::Ptr PGMLoader::load (const std::string& filename)
-{
-    typedef std::vector< char > V;
+rw::sensor::Image::Ptr PGMLoader::load(const std::string& filename) {
+    typedef std::vector<char> V;
 
     V input;
-    IOUtil::readFile (filename, input);
+    IOUtil::readFile(filename, input);
     // std::cout << "Size of input: " << input.size() << std::endl;
 
-    typedef position_iterator< V::const_iterator > iterator_t;
-    iterator_t first (input.begin (), input.end ());
+    typedef position_iterator<V::const_iterator> iterator_t;
+    iterator_t first(input.begin(), input.end());
     iterator_t last;
-    rw::core::Ptr< V > output = rw::core::ownedPtr (new V ());
-    PGMParser p (*output);
+    rw::core::Ptr<V> output = rw::core::ownedPtr(new V());
+    PGMParser p(*output);
 
-    parse_info< iterator_t > info = parse (first, last, p, space_p);
+    parse_info<iterator_t> info = parse(first, last, p, space_p);
 
-    if (!info.hit) {
-        RW_THROW ("Error parsing file: " << filename);
-    }
+    if(!info.hit) { RW_THROW("Error parsing file: " << filename); }
     Image::ColorCode coding = Image::GRAY;
     Image::PixelDepth depth = Image::Depth16U;
-    if (p.maxgrayval < 256)
-        depth = Image::Depth8U;
+    if(p.maxgrayval < 256) depth = Image::Depth8U;
 
-    char* data = new char[output->size ()];
-    for (size_t i = 0; i < output->size (); i++) {
-        data[i] = (*output)[i];
-    }
+    char* data = new char[output->size()];
+    for(size_t i = 0; i < output->size(); i++) { data[i] = (*output)[i]; }
 
-    return ownedPtr (new Image (data, p.width, p.height, coding, depth));
+    return ownedPtr(new Image(data, p.width, p.height, coding, depth));
 }

@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,23 +15,22 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RW_LOADERS_IMAGE_BMPLOADER_HPP
 #define RW_LOADERS_IMAGE_BMPLOADER_HPP
 
 #include <rw/sensor/Image.hpp>
 
 namespace rw { namespace loaders {
-	/**
-	 * @brief
-	 */
-	class BMPLoader
-	{
-	public:
-		static rw::sensor::ImagePtr load(const std::string& filename);
+    /**
+     * @brief
+     */
+    class BMPLoader
+    {
+      public:
+        static rw::sensor::ImagePtr load(const std::string& filename);
 
-		static void save(rw::sensor::ImagePtr img, const std::string& filename);
-	};
-}}
+        static void save(rw::sensor::ImagePtr img, const std::string& filename);
+    };
+}}    // namespace rw::loaders
 
 #endif /*RW_LOADERS_PGMLOADER_HPP*/

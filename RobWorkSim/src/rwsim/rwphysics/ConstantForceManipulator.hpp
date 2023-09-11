@@ -21,43 +21,42 @@ namespace rwsim { namespace simulator {
          * @param force
          * @param bodies
          */
-        ConstantForceManipulator (const rw::math::Vector3D<>& force,
-                                  std::vector< RWBody* >& bodies);
+        ConstantForceManipulator(const rw::math::Vector3D<>& force, std::vector<RWBody*>& bodies);
 
         /**
          * @brief destructor
          */
-        virtual ~ConstantForceManipulator (){};
+        virtual ~ConstantForceManipulator(){};
 
         /**
          * @copydoc BodyController::addForces
          */
-        void addForces (rw::kinematics::State& state, double h);
+        void addForces(rw::kinematics::State& state, double h);
 
         /**
          * @copydoc BodyController::reset
          */
-        void reset (rw::kinematics::State& state) {}
+        void reset(rw::kinematics::State& state) {}
 
         /**
          * @brief returns the list of bodies that are controlled
          * @return
          */
-        std::vector< RWBody* >& getBodies () { return _bodies; }
+        std::vector<RWBody*>& getBodies() { return _bodies; }
 
         /**
          * @brief sets the force
          */
-        void setForce (const rw::math::Vector3D<>& f) { _force = f; }
+        void setForce(const rw::math::Vector3D<>& f) { _force = f; }
 
         /**
          * @brief gets the force
          */
-        const rw::math::Vector3D<>& getForce () { return _force; }
+        const rw::math::Vector3D<>& getForce() { return _force; }
 
       private:
         rw::math::Vector3D<> _force;
-        std::vector< RWBody* > _bodies;
+        std::vector<RWBody*> _bodies;
     };
 }}     // namespace rwsim::simulator
 #endif /*CONSTANTFORCEMANIPULATOR_HPP_*/

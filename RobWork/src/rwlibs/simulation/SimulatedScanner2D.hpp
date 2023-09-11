@@ -20,11 +20,10 @@
 
 //! @file SimulatedScanner2D.hpp
 #if !defined(SWIG)
-#include <rwlibs/simulation/SimulatedSensor.hpp>
-
 #include <rw/core/Ptr.hpp>
 #include <rw/sensor/Scanner2D.hpp>
 #include <rw/sensor/Scanner2DModel.hpp>
+#include <rwlibs/simulation/SimulatedSensor.hpp>
 #endif
 namespace rwlibs { namespace simulation {
     // forward declaration
@@ -40,7 +39,7 @@ namespace rwlibs { namespace simulation {
     {
       public:
         //! @brief smart pointer of this class
-        typedef rw::core::Ptr< SimulatedScanner2D > Ptr;
+        typedef rw::core::Ptr<SimulatedScanner2D> Ptr;
 
         /**
          * @brief constructor
@@ -48,8 +47,8 @@ namespace rwlibs { namespace simulation {
          * @param frame [in] the sensor frame.
          * @param framegrabber [in] the framegrabber used for grabbing 2.5D images
          */
-        SimulatedScanner2D (const std::string& name, rw::core::Ptr<rw::kinematics::Frame> frame,
-                            rw::core::Ptr< rwlibs::simulation::FrameGrabber25D > framegrabber);
+        SimulatedScanner2D(const std::string& name, rw::core::Ptr<rw::kinematics::Frame> frame,
+                           rw::core::Ptr<rwlibs::simulation::FrameGrabber25D> framegrabber);
 
         /**
          * @brief constructor
@@ -58,73 +57,75 @@ namespace rwlibs { namespace simulation {
          * @param frame [in] the sensor frame.
          * @param framegrabber [in] the framegrabber used for grabbing 2.5D images
          */
-        SimulatedScanner2D (const std::string& name, const std::string& desc,
-                            rw::core::Ptr<rw::kinematics::Frame> frame,
-                            rw::core::Ptr< rwlibs::simulation::FrameGrabber25D > framegrabber);
+        SimulatedScanner2D(const std::string& name, const std::string& desc,
+                           rw::core::Ptr<rw::kinematics::Frame> frame,
+                           rw::core::Ptr<rwlibs::simulation::FrameGrabber25D> framegrabber);
 
         /**
          * @brief destructor
          */
-        virtual ~SimulatedScanner2D ();
+        virtual ~SimulatedScanner2D();
 
         /**
          * @brief set the framerate in frames per sec.
          * @param rate [in] frames per sec
          */
-        void setFrameRate (double rate);
+        void setFrameRate(double rate);
 
         ///////////// below is inheritet functions form Scanner25D and Sensor
 
         //! @copydoc rw::sensor::Scanner2D::open
-        void open ();
+        void open();
 
         //! @copydoc rw::sensor::Scanner2D::isOpen
-        bool isOpen ();
+        bool isOpen();
 
         //! @copydoc rw::sensor::Scanner2D::close
-        void close ();
+        void close();
 
         //! @copydoc rw::sensor::Scanner2D::acquire
-        void acquire ();
+        void acquire();
 
         //! @copydoc rw::sensor::Scanner2D::isScanReady
-        bool isScanReady ();
+        bool isScanReady();
 
         //! @copydoc rw::sensor::Scanner2D::getRange
-        std::pair< double, double > getRange ();
+        std::pair<double, double> getRange();
 
         //! @copydoc rw::sensor::Scanner2D::getFrameRate
-        double getFrameRate ();
+        double getFrameRate();
 
         //! @copydoc rwlibs::simulation::SimulatedKinect::getScan
-        const rw::geometry::PointCloud& getScan () const;
+        const rw::geometry::PointCloud& getScan() const;
 
         //! @copydoc SimulatedSensor::update
-        void update (const rwlibs::simulation::Simulator::UpdateInfo& info, rw::kinematics::State& state);
+        void update(const rwlibs::simulation::Simulator::UpdateInfo& info,
+                    rw::kinematics::State& state);
 
         //! @copydoc SimulatedSensor::reset
-        void reset (const rw::kinematics::State& state);
+        void reset(const rw::kinematics::State& state);
 
         /**
          * @brief returns a handle to what represents a statefull interface.
          * The handle will be locked to the simulator
          * @return
          */
-        rw::core::Ptr<rw::sensor::Scanner2D> getScanner2DSensor (rwlibs::simulation::Simulator* instance);
+        rw::core::Ptr<rw::sensor::Scanner2D>
+        getScanner2DSensor(rwlibs::simulation::Simulator* instance);
 #if !defined(SWIGJAVA)
         /**
          * @brief Get a model of the sensor.
          * @return the model.
          */
-        rw::core::Ptr<rw::sensor::Scanner2DModel> getSensorModel ();
+        rw::core::Ptr<rw::sensor::Scanner2DModel> getSensorModel();
 #endif
         //! @copydoc rw::sensor::Scanner2DModel::getAngularRange
-        virtual double getAngularRange ();
+        virtual double getAngularRange();
 
-        virtual size_t getMeasurementCount () const;
+        virtual size_t getMeasurementCount() const;
 
       private:
-        rw::core::Ptr< FrameGrabber25D > _framegrabber;
+        rw::core::Ptr<FrameGrabber25D> _framegrabber;
         double _frameRate, _dtsum;
         bool _isAcquired, _isOpenned;
         rw::sensor::Scanner2DModel::Ptr _smodel;

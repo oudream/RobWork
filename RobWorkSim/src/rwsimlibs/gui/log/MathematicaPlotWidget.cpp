@@ -42,32 +42,27 @@ using namespace rwlibs::mathematica;
 
 struct MathematicaPlotWidget::Kernel
 {
-    Kernel () : mathematica (new Mathematica ()), initialized (false) {}
-    ~Kernel ()
-    {
+    Kernel() : mathematica(new Mathematica()), initialized(false) {}
+    ~Kernel() {
         link = NULL;
-        mathematica->finalize ();
+        mathematica->finalize();
         delete mathematica;
     }
-    bool isValid () const
-    {
-        if (!initialized)
-            return false;
-        else if (link.isNull ())
-            return false;
-        return link->isOpen ();
+    bool isValid() const {
+        if(!initialized) return false;
+        else if(link.isNull()) return false;
+        return link->isOpen();
     }
-    void prepare ()
-    {
-        if (!initialized) {
-            if (!mathematica->initialize ())
-                RW_THROW ("Could not initialize Mathematica environment.");
+    void prepare() {
+        if(!initialized) {
+            if(!mathematica->initialize())
+                RW_THROW("Could not initialize Mathematica environment.");
             initialized = true;
         }
-        if (!isValid ()) {
-            link = mathematica->launchKernel ();
-            RW_ASSERT (!link.isNull ());
-            RW_ASSERT (link->isOpen ());
+        if(!isValid()) {
+            link = mathematica->launchKernel();
+            RW_ASSERT(!link.isNull());
+            RW_ASSERT(link->isOpen());
             Mathematica::Packet::Ptr result;
             *link >> result;    // Ignore first In[1]:= prompt
         }
@@ -79,111 +74,100 @@ struct MathematicaPlotWidget::Kernel
 
 struct MathematicaPlotWidget::RenderInfo
 {
-    RenderInfo () : listPlot (NULL) {}
+    RenderInfo() : listPlot(NULL) {}
     ListPlot::Ptr listPlot;
     rw::sensor::Image::Ptr rwImg;
-    void reset ()
-    {
+    void reset() {
         listPlot = NULL;
         rwImg    = NULL;
     }
 };
 
-MathematicaPlotWidget::MathematicaPlotWidget (QWidget* parent) :
-    QLabel (parent), _kernel (new Kernel ()), _render (new RenderInfo ())
-{
+MathematicaPlotWidget::MathematicaPlotWidget(QWidget* parent) :
+    QLabel(parent), _kernel(new Kernel()), _render(new RenderInfo()) {
     try {
-        _kernel->prepare ();
-        setStyle ();
+        _kernel->prepare();
+        setStyle();
     }
-    catch (const Exception& e) {
-        setText (QString::fromStdString (e.getMessage ().getText ()));
+    catch(const Exception& e) {
+        setText(QString::fromStdString(e.getMessage().getText()));
     }
-    setStyleSheet ("QLabel { color : red; }");
-    setSizePolicy (QSizePolicy (QSizePolicy::Expanding, QSizePolicy::Expanding));
+    setStyleSheet("QLabel { color : red; }");
+    setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
 }
 
-MathematicaPlotWidget::~MathematicaPlotWidget ()
-{
+MathematicaPlotWidget::~MathematicaPlotWidget() {
     delete _kernel;
     delete _render;
 }
 
-void MathematicaPlotWidget::listPlot (const std::vector< double >& x,
-                                      const std::vector< double >& y, const std::string& title,
-                                      const std::string& xlabel, const std::string& ylabel)
-{
+void MathematicaPlotWidget::listPlot(const std::vector<double>& x, const std::vector<double>& y,
+                                     const std::string& title, const std::string& xlabel,
+                                     const std::string& ylabel) {
     // std::cout << "plot size: " << width() << " " << height() << std::endl;
     try {
-        _kernel->prepare ();
-        setStyle ();
+        _kernel->prepare();
+        setStyle();
     }
-    catch (const Exception& e) {
-        setText (QString::fromStdString (e.getMessage ().getText ()));
+    catch(const Exception& e) {
+        setText(QString::fromStdString(e.getMessage().getText()));
         return;
     }
-    std::list< Mathematica::Expression::Ptr > options;
-    if (!title.empty ())
-        options.push_back (
-            rw::core::ownedPtr (new Rule ("PlotLabel", ToExpression ("Style[\"" + title + "\", font]"))));
+    std::list<Mathematica::Expression::Ptr> options;
+    if(!title.empty())
+        options.push_back(rw::core::ownedPtr(
+            new Rule("PlotLabel", ToExpression("Style[\"" + title + "\", font]"))));
     List axes;
-    axes.add (ToExpression ("Style[\"" + xlabel + "\", font]"));
-    axes.add (ToExpression ("Style[\"" + ylabel + "\", font]"));
-    if (!xlabel.empty () || !ylabel.empty ())
-        options.push_back (ownedPtr (new Rule ("AxesLabel", axes)));
+    axes.add(ToExpression("Style[\"" + xlabel + "\", font]"));
+    axes.add(ToExpression("Style[\"" + ylabel + "\", font]"));
+    if(!xlabel.empty() || !ylabel.empty()) options.push_back(ownedPtr(new Rule("AxesLabel", axes)));
     // List legends;
     // legends.add(ToExpression("Style[\"Series A\", font]"));
     // legends.add(ToExpression("Style[\"Series B\", font]"));
     // options.push_back(rw::core::ownedPtr(new Rule("PlotLegends",legends)));
     _render->listPlot = rw::core::ownedPtr(new ListPlot(x, y, options));
-    _render->listPlot->setImageSize (width (), height ());
-    _render->listPlot->option ("AspectRatio", Mathematica::Real (((double) height ()) / width ()));
-    _render->listPlot->option ("PlotRange", Mathematica::Symbol ("All"));
-    render ();
+    _render->listPlot->setImageSize(width(), height());
+    _render->listPlot->option("AspectRatio", Mathematica::Real(((double) height()) / width()));
+    _render->listPlot->option("PlotRange", Mathematica::Symbol("All"));
+    render();
 }
 
-void MathematicaPlotWidget::resizeEvent (QResizeEvent* event)
-{
-    QLabel::resizeEvent (event);
-    if (_render->listPlot.isNull ())
-        return;
-    const int width  = event->size ().width ();
-    const int height = event->size ().height ();
-    _render->listPlot->setImageSize (width, height);
-    _render->listPlot->option ("AspectRatio", Mathematica::Real (((double) height) / width));
-    render ();
+void MathematicaPlotWidget::resizeEvent(QResizeEvent* event) {
+    QLabel::resizeEvent(event);
+    if(_render->listPlot.isNull()) return;
+    const int width  = event->size().width();
+    const int height = event->size().height();
+    _render->listPlot->setImageSize(width, height);
+    _render->listPlot->option("AspectRatio", Mathematica::Real(((double) height) / width));
+    render();
 }
 
-void MathematicaPlotWidget::render ()
-{
+void MathematicaPlotWidget::render() {
     const Mathematica::Link& link = *_kernel->link;
     Mathematica::Packet::Ptr result;
     try {
-        link << Image (*_render->listPlot);
+        link << Image(*_render->listPlot);
         link >> result;
-        while (result->packetType () != Mathematica::Return)
-            link >> result;
+        while(result->packetType() != Mathematica::Return) link >> result;
     }
-    catch (const Exception& e) {
-        setText (QString::fromStdString (e.getMessage ().getText ()));
+    catch(const Exception& e) {
+        setText(QString::fromStdString(e.getMessage().getText()));
         return;
     }
-    const ReturnPacket::Ptr imgRet = result.cast< ReturnPacket > ();
-    if (imgRet.isNull ())
-        RW_THROW ("Expected a return packet!");
-    _render->rwImg = Image::toRobWorkImage (*imgRet->expression ());
-    RW_ASSERT (_render->rwImg->getPixelDepth () == rw::sensor::Image::Depth8U);
-    RW_ASSERT (_render->rwImg->getColorEncoding () == rw::sensor::Image::RGB);
-    const QImage qImg ((const uchar*) _render->rwImg->getImageData (),
-                       _render->rwImg->getWidth (),
-                       _render->rwImg->getHeight (),
-                       3 * _render->rwImg->getWidth (),
-                       QImage::Format_RGB888);
-    setPixmap (QPixmap::fromImage (qImg));
+    const ReturnPacket::Ptr imgRet = result.cast<ReturnPacket>();
+    if(imgRet.isNull()) RW_THROW("Expected a return packet!");
+    _render->rwImg = Image::toRobWorkImage(*imgRet->expression());
+    RW_ASSERT(_render->rwImg->getPixelDepth() == rw::sensor::Image::Depth8U);
+    RW_ASSERT(_render->rwImg->getColorEncoding() == rw::sensor::Image::RGB);
+    const QImage qImg((const uchar*) _render->rwImg->getImageData(),
+                      _render->rwImg->getWidth(),
+                      _render->rwImg->getHeight(),
+                      3 * _render->rwImg->getWidth(),
+                      QImage::Format_RGB888);
+    setPixmap(QPixmap::fromImage(qImg));
 }
 
-void MathematicaPlotWidget::setStyle () const
-{
+void MathematicaPlotWidget::setStyle() const {
     const Mathematica::Link& link = *_kernel->link;
     Mathematica::Packet::Ptr result;
     std::stringstream style;
@@ -195,30 +179,25 @@ void MathematicaPlotWidget::setStyle () const
     style << "plotStyle = {PlotStyle -> {{Thickness[0.01], pahorange}, {Thickness[0.01], sdublue}, "
              "{Thickness[0.01], pahdarkgray}}, AxesStyle -> pahblue, ImageSize -> {width, "
              "Automatic}};";
-    link << style.str ();
+    link << style.str();
     link >> result;    // Ignore return packet
 }
 
 #else    // if !RW_HAVE_MATHEMATICA
 
-MathematicaPlotWidget::MathematicaPlotWidget (QWidget* parent) :
-    QLabel (parent), _kernel (NULL), _render (NULL)
-{}
+MathematicaPlotWidget::MathematicaPlotWidget(QWidget* parent) :
+    QLabel(parent), _kernel(NULL), _render(NULL) {}
 
-MathematicaPlotWidget::~MathematicaPlotWidget ()
-{}
+MathematicaPlotWidget::~MathematicaPlotWidget() {}
 
-void MathematicaPlotWidget::listPlot (const std::vector< double >& x,
-                                      const std::vector< double >& y, const std::string& title,
-                                      const std::string& xlabel, const std::string& ylabel)
-{
-    setText ("Compile with Mathematica support for rendering of data.");
+void MathematicaPlotWidget::listPlot(const std::vector<double>& x, const std::vector<double>& y,
+                                     const std::string& title, const std::string& xlabel,
+                                     const std::string& ylabel) {
+    setText("Compile with Mathematica support for rendering of data.");
 }
 
-void MathematicaPlotWidget::resizeEvent (QResizeEvent* event)
-{}
+void MathematicaPlotWidget::resizeEvent(QResizeEvent* event) {}
 
-void MathematicaPlotWidget::setStyle () const
-{}
+void MathematicaPlotWidget::setStyle() const {}
 
 #endif

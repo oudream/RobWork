@@ -39,17 +39,16 @@ using namespace rwsimlibs::test;
 
 #define EP_NAME "rwsimlibs.test.EngineTest"
 #define QUOTE(name) #name
-#define ADD_EXTENSION(vector, name)                                                            \
-    vector.push_back (Extension (                                                              \
-        QUOTE (name), EP_NAME, NULL, rw::core::ownedPtr (new name ()).cast< EngineTest > ())); \
-    vector.back ().getProperties ().set< std::string > ("testID", QUOTE (name))
+#define ADD_EXTENSION(vector, name)                                                                \
+    vector.push_back(                                                                              \
+        Extension(QUOTE(name), EP_NAME, NULL, rw::core::ownedPtr(new name()).cast<EngineTest>())); \
+    vector.back().getProperties().set<std::string>("testID", QUOTE(name))
 
 namespace {
-void makeInternalExtensions (std::vector< rw::core::Extension >& internal)
-{
-    ADD_EXTENSION (internal, IntegratorGravityTest);
-    ADD_EXTENSION (internal, IntegratorRotationTest);
-    ADD_EXTENSION (internal, IntegratorSpringTest);
+void makeInternalExtensions(std::vector<rw::core::Extension>& internal) {
+    ADD_EXTENSION(internal, IntegratorGravityTest);
+    ADD_EXTENSION(internal, IntegratorRotationTest);
+    ADD_EXTENSION(internal, IntegratorSpringTest);
 }
 
 class RunTask : public ThreadTask
@@ -58,353 +57,302 @@ class RunTask : public ThreadTask
     EngineTest* const _test;
     const std::string _engineID;
     const PropertyMap& _map;
-    rw::core::Ptr< rwsim::log::SimulatorLogScope > _verbose;
+    rw::core::Ptr<rwsim::log::SimulatorLogScope> _verbose;
     EngineTest::TestHandle::Ptr _handle;
 
   public:
-    RunTask (ThreadTask::Ptr parent, EngineTest* test, const std::string& engineID,
-             const PropertyMap& map, rw::core::Ptr< rwsim::log::SimulatorLogScope > verbose) :
-        ThreadTask (parent),
-        _test (test), _engineID (engineID), _map (map), _verbose (verbose),
-        _handle (rw::core::ownedPtr (new EngineTest::TestHandle ()))
-    {}
+    RunTask(ThreadTask::Ptr parent, EngineTest* test, const std::string& engineID,
+            const PropertyMap& map, rw::core::Ptr<rwsim::log::SimulatorLogScope> verbose) :
+        ThreadTask(parent),
+        _test(test), _engineID(engineID), _map(map), _verbose(verbose),
+        _handle(rw::core::ownedPtr(new EngineTest::TestHandle())) {}
 
-    virtual ~RunTask () {}
+    virtual ~RunTask() {}
 
-    void run ()
-    {
+    void run() {
         try {
-            _test->run (_handle, _engineID, _map, _verbose);
+            _test->run(_handle, _engineID, _map, _verbose);
         }
-        catch (const Exception& e) {
-            registerFailure (e);
+        catch(const Exception& e) {
+            registerFailure(e);
         }
     }
 
-    void abort () { _handle->abort (); }
+    void abort() { _handle->abort(); }
 
-    EngineTest::TestHandle::Ptr getHandle () const { return _handle; }
+    EngineTest::TestHandle::Ptr getHandle() const { return _handle; }
 };
 }    // namespace
 
-EngineTest::Failure::Failure (const double time, const std::string& description) :
-    time (time), description (description)
-{}
+EngineTest::Failure::Failure(const double time, const std::string& description) :
+    time(time), description(description) {}
 
-EngineTest::Result::Result (const std::string& name, const std::string& description) :
-    name (name), description (description)
-{}
+EngineTest::Result::Result(const std::string& name, const std::string& description) :
+    name(name), description(description) {}
 
-void EngineTest::Result::addValue (const double time, const double val)
-{
-    values.push_back (TimedQ (time, Q (1, val)));
+void EngineTest::Result::addValue(const double time, const double val) {
+    values.push_back(TimedQ(time, Q(1, val)));
 }
 
-void EngineTest::Result::addValues (const double time, const Q& vals)
-{
-    values.push_back (TimedQ (time, vals));
+void EngineTest::Result::addValues(const double time, const Q& vals) {
+    values.push_back(TimedQ(time, vals));
 }
 
-void EngineTest::Result::checkLastValues (const double expected, const double eps)
-{
-    const Q& val = values.back ().getValue ();
-    for (std::size_t i = 0; i < val.size (); i++) {
-        if (fabs (val[i] - expected) > eps) {
+void EngineTest::Result::checkLastValues(const double expected, const double eps) {
+    const Q& val = values.back().getValue();
+    for(std::size_t i = 0; i < val.size(); i++) {
+        if(fabs(val[i] - expected) > eps) {
             std::stringstream str;
             str << "Value (" << val[i] << ") was not as expected (" << expected
                 << ") - difference is " << val[i] - expected << ".";
-            failures.push_back (Failure (values.back ().getTime (), str.str ()));
+            failures.push_back(Failure(values.back().getTime(), str.str()));
             break;
         }
     }
 }
 
-void EngineTest::Result::checkLastValuesBetween (const double expectedLow,
-                                                 const double expectedHigh, const double eps)
-{
-    const Q& val = values.back ().getValue ();
-    for (std::size_t i = 0; i < val.size (); i++) {
-        if (val[i] - expectedLow < -eps || val[i] - expectedHigh > eps) {
+void EngineTest::Result::checkLastValuesBetween(const double expectedLow, const double expectedHigh,
+                                                const double eps) {
+    const Q& val = values.back().getValue();
+    for(std::size_t i = 0; i < val.size(); i++) {
+        if(val[i] - expectedLow < -eps || val[i] - expectedHigh > eps) {
             std::stringstream str;
             str << "Value (" << val[i] << ") was not between " << expectedLow << " and "
                 << expectedHigh << " as expected";
-            if (val[i] - expectedLow < -eps)
+            if(val[i] - expectedLow < -eps)
                 str << " - lower bound violated by " << val[i] - expectedLow;
-            if (val[i] - expectedHigh > eps)
+            if(val[i] - expectedHigh > eps)
                 str << " - higher bound violated by " << val[i] - expectedHigh;
             str << ".";
-            failures.push_back (Failure (values.back ().getTime (), str.str ()));
+            failures.push_back(Failure(values.back().getTime(), str.str()));
             break;
         }
     }
 }
 
-EngineTest::TestHandle::TestHandle () : _abort (new ThreadSafeVariable< bool > (false)), _cb (NULL)
-{}
+EngineTest::TestHandle::TestHandle() : _abort(new ThreadSafeVariable<bool>(false)), _cb(NULL) {}
 
-EngineTest::TestHandle::~TestHandle ()
-{
+EngineTest::TestHandle::~TestHandle() {
     delete _abort;
 }
 
-std::string EngineTest::TestHandle::getError () const
-{
+std::string EngineTest::TestHandle::getError() const {
     return _error;
 }
 
-TimedStatePath EngineTest::TestHandle::getTimedStatePath () const
-{
+TimedStatePath EngineTest::TestHandle::getTimedStatePath() const {
     return _path;
 }
 
-const std::vector< EngineTest::Result >& EngineTest::TestHandle::getResults () const
-{
+const std::vector<EngineTest::Result>& EngineTest::TestHandle::getResults() const {
     return _results;
 }
 
-EngineTest::Result& EngineTest::TestHandle::getResult (const std::string& name)
-{
-    for (Result& result : _results) {
-        if (result.name == name)
-            return result;
+EngineTest::Result& EngineTest::TestHandle::getResult(const std::string& name) {
+    for(Result& result : _results) {
+        if(result.name == name) return result;
     }
-    RW_THROW ("EngineTest::TestHandle::getResult: could not find result with that name!");
+    RW_THROW("EngineTest::TestHandle::getResult: could not find result with that name!");
 }
 
-void EngineTest::TestHandle::setError (const std::string& error)
-{
+void EngineTest::TestHandle::setError(const std::string& error) {
     _error = error;
 }
 
-void EngineTest::TestHandle::append (const TimedState& tstate)
-{
-    _path.push_back (tstate);
+void EngineTest::TestHandle::append(const TimedState& tstate) {
+    _path.push_back(tstate);
 }
 
-void EngineTest::TestHandle::append (const Result& result)
-{
-    _results.push_back (result);
+void EngineTest::TestHandle::append(const Result& result) {
+    _results.push_back(result);
 }
 
-void EngineTest::TestHandle::addResult (const std::string& name, const std::string& description)
-{
-    _results.push_back (Result (name, description));
+void EngineTest::TestHandle::addResult(const std::string& name, const std::string& description) {
+    _results.push_back(Result(name, description));
 }
 
-bool EngineTest::TestHandle::isAborted ()
-{
-    return _abort->getVariable ();
+bool EngineTest::TestHandle::isAborted() {
+    return _abort->getVariable();
 }
 
-void EngineTest::TestHandle::abort ()
-{
-    _abort->setVariable (true);
+void EngineTest::TestHandle::abort() {
+    _abort->setVariable(true);
 }
 
-bool EngineTest::TestHandle::success () const
-{
-    if (_error.size () > 0)
-        return false;
-    for (const Result& result : _results) {
-        if (result.failures.size () > 0)
-            return false;
+bool EngineTest::TestHandle::success() const {
+    if(_error.size() > 0) return false;
+    for(const Result& result : _results) {
+        if(result.failures.size() > 0) return false;
     }
     return true;
 }
 
-void EngineTest::TestHandle::setTimeCallback (const TimeCallback cb)
-{
+void EngineTest::TestHandle::setTimeCallback(const TimeCallback cb) {
     _cb = cb;
 }
 
-void EngineTest::TestHandle::callback (const double a, const bool b, const bool c)
-{
-    if (_cb)
-        _cb (a, b, c);
+void EngineTest::TestHandle::callback(const double a, const bool b, const bool c) {
+    if(_cb) _cb(a, b, c);
 }
 
-void EngineTest::TestHandle::setDynamicWorkCell (const DynamicWorkCell::Ptr& dwc)
-{
+void EngineTest::TestHandle::setDynamicWorkCell(const DynamicWorkCell::Ptr& dwc) {
     _dwc = dwc;
 }
 
-const DynamicWorkCell::Ptr& EngineTest::TestHandle::getDynamicWorkCell () const
-{
+const DynamicWorkCell::Ptr& EngineTest::TestHandle::getDynamicWorkCell() const {
     return _dwc;
 }
 
-EngineTest::EngineTest ()
-{}
+EngineTest::EngineTest() {}
 
-EngineTest::~EngineTest ()
-{}
+EngineTest::~EngineTest() {}
 
 EngineTest::TestHandle::Ptr
-EngineTest::runThread (const std::string& engineID, const PropertyMap& parameters,
-                       const rw::core::Ptr< rwsim::log::SimulatorLogScope > verbose,
-                       const ThreadTask::Ptr task)
-{
-    if (task == NULL) {
-        const TestHandle::Ptr handle = rw::core::ownedPtr (new TestHandle ());
-        run (handle, engineID, parameters, verbose);
+EngineTest::runThread(const std::string& engineID, const PropertyMap& parameters,
+                      const rw::core::Ptr<rwsim::log::SimulatorLogScope> verbose,
+                      const ThreadTask::Ptr task) {
+    if(task == NULL) {
+        const TestHandle::Ptr handle = rw::core::ownedPtr(new TestHandle());
+        run(handle, engineID, parameters, verbose);
         return handle;
     }
     else {
-        RunTask* const runTask = new RunTask (task, this, engineID, parameters, verbose);
-        task->addSubTask (rw::core::ownedPtr (runTask));
-        return runTask->getHandle ();
+        RunTask* const runTask = new RunTask(task, this, engineID, parameters, verbose);
+        task->addSubTask(rw::core::ownedPtr(runTask));
+        return runTask->getHandle();
     }
 }
 
-PropertyMap::Ptr EngineTest::getDefaultParameters () const
-{
-    return rw::core::ownedPtr (new PropertyMap ());
+PropertyMap::Ptr EngineTest::getDefaultParameters() const {
+    return rw::core::ownedPtr(new PropertyMap());
 }
 
-std::vector< PropertyMap::Ptr > EngineTest::getPredefinedParameters () const
-{
-    std::vector< PropertyMap::Ptr > parms;
+std::vector<PropertyMap::Ptr> EngineTest::getPredefinedParameters() const {
+    std::vector<PropertyMap::Ptr> parms;
     return parms;
 }
 
-EngineTest::Factory::Factory () :
-    ExtensionPoint< EngineTest > (EP_NAME, "EngineTest extension point.")
-{
-    if (internalExtensions ().size () == 0) {
-        makeInternalExtensions (internalExtensions ());
-    }
+EngineTest::Factory::Factory() :
+    ExtensionPoint<EngineTest>(EP_NAME, "EngineTest extension point.") {
+    if(internalExtensions().size() == 0) { makeInternalExtensions(internalExtensions()); }
 }
 
-std::vector< std::string > EngineTest::Factory::getTests ()
-{
+std::vector<std::string> EngineTest::Factory::getTests() {
     const EngineTest::Factory ep;
-    std::vector< std::string > ids;
-    for (const Extension& ext : ep.internalExtensions ()) {
-        ids.push_back (ext.getProperties ().get< std::string > ("testID"));
+    std::vector<std::string> ids;
+    for(const Extension& ext : ep.internalExtensions()) {
+        ids.push_back(ext.getProperties().get<std::string>("testID"));
     }
-    const std::vector< Extension::Descriptor > exts = ep.getExtensionDescriptors ();
-    for (const Extension::Descriptor& ext : exts) {
-        ids.push_back (ext.getProperties ().get ("testID", ext.name));
+    const std::vector<Extension::Descriptor> exts = ep.getExtensionDescriptors();
+    for(const Extension::Descriptor& ext : exts) {
+        ids.push_back(ext.getProperties().get("testID", ext.name));
     }
     return ids;
 }
 
-bool EngineTest::Factory::hasTest (const std::string& test)
-{
+bool EngineTest::Factory::hasTest(const std::string& test) {
     const EngineTest::Factory ep;
-    for (Extension& ext : internalExtensions ()) {
-        if (ext.getProperties ().get< std::string > ("testID") == test)
-            return true;
+    for(Extension& ext : internalExtensions()) {
+        if(ext.getProperties().get<std::string>("testID") == test) return true;
     }
-    const std::vector< Extension::Descriptor > exts = ep.getExtensionDescriptors ();
-    for (const Extension::Descriptor& ext : exts) {
-        if (ext.getProperties ().get ("testID", ext.name) == test)
-            return true;
+    const std::vector<Extension::Descriptor> exts = ep.getExtensionDescriptors();
+    for(const Extension::Descriptor& ext : exts) {
+        if(ext.getProperties().get("testID", ext.name) == test) return true;
     }
     return false;
 }
 
-EngineTest::Ptr EngineTest::Factory::getTest (const std::string& test)
-{
+EngineTest::Ptr EngineTest::Factory::getTest(const std::string& test) {
     const EngineTest::Factory ep;
-    for (Extension& ext : internalExtensions ()) {
-        if (ext.getProperties ().get< std::string > ("testID") == test) {
-            EngineTest::Ptr engineTest = ext.getObject ().cast< EngineTest > ();
-            if (engineTest.isNull ())
-                RW_THROW (
-                    "EngineTest::Factory::getTest: could not find object of type EngineTest.");
+    for(Extension& ext : internalExtensions()) {
+        if(ext.getProperties().get<std::string>("testID") == test) {
+            EngineTest::Ptr engineTest = ext.getObject().cast<EngineTest>();
+            if(engineTest.isNull())
+                RW_THROW("EngineTest::Factory::getTest: could not find object of type EngineTest.");
             return engineTest;
         }
     }
-    const std::vector< Extension::Ptr > exts = ep.getExtensions ();
-    for (const Extension::Ptr& ext : exts) {
-        const PropertyMap& props = ext->getProperties ();
-        if (props.get ("testID", ext->getName ()) == test) {
-            EngineTest::Ptr engineTest = ext->getObject ().cast< EngineTest > ();
-            if (engineTest.isNull ())
-                RW_THROW (
-                    "EngineTest::Factory::getTest: could not find object of type EngineTest.");
+    const std::vector<Extension::Ptr> exts = ep.getExtensions();
+    for(const Extension::Ptr& ext : exts) {
+        const PropertyMap& props = ext->getProperties();
+        if(props.get("testID", ext->getName()) == test) {
+            EngineTest::Ptr engineTest = ext->getObject().cast<EngineTest>();
+            if(engineTest.isNull())
+                RW_THROW("EngineTest::Factory::getTest: could not find object of type EngineTest.");
             return engineTest;
         }
     }
     return NULL;
 }
 
-std::vector< Extension >& EngineTest::Factory::internalExtensions ()
-{
-    static std::vector< Extension > _internal;
+std::vector<Extension>& EngineTest::Factory::internalExtensions() {
+    static std::vector<Extension> _internal;
     return _internal;
 }
 
-void EngineTest::runEngineLoop (const double dt, const TestHandle::Ptr handle,
-                                const std::string& engineID, const PropertyMap& parameters,
-                                const rw::core::Ptr< rwsim::log::SimulatorLogScope > verbose,
-                                const TestCallback callback, const InitCallback initialize)
-{
-    const DynamicWorkCell::Ptr dwc = getDWC (parameters);
-    if (dwc == NULL) {
-        handle->setError ("Could not make dynamic workcell.");
+void EngineTest::runEngineLoop(const double dt, const TestHandle::Ptr handle,
+                               const std::string& engineID, const PropertyMap& parameters,
+                               const rw::core::Ptr<rwsim::log::SimulatorLogScope> verbose,
+                               const TestCallback callback, const InitCallback initialize) {
+    const DynamicWorkCell::Ptr dwc = getDWC(parameters);
+    if(dwc == NULL) {
+        handle->setError("Could not make dynamic workcell.");
         return;
     }
-    else {
-        handle->setDynamicWorkCell (dwc);
-    }
-    const PhysicsEngine::Ptr engine = PhysicsEngine::Factory::makePhysicsEngine (engineID);
-    if (engine == NULL) {
-        handle->setError ("Could not make engine.");
+    else { handle->setDynamicWorkCell(dwc); }
+    const PhysicsEngine::Ptr engine = PhysicsEngine::Factory::makePhysicsEngine(engineID);
+    if(engine == NULL) {
+        handle->setError("Could not make engine.");
         return;
     }
-    engine->setSimulatorLog (verbose);
-    engine->load (dwc);
-    const State state = dwc->getWorkcell ()->getDefaultState ();
+    engine->setSimulatorLog(verbose);
+    engine->load(dwc);
+    const State state = dwc->getWorkcell()->getDefaultState();
 
     State runState = state;
-    if (initialize)
-        initialize (dwc, runState);
-    engine->initPhysics (runState);
+    if(initialize) initialize(dwc, runState);
+    engine->initPhysics(runState);
 
-    EngineLoopInfo info (handle, engineID, dwc, &runState, dt);
+    EngineLoopInfo info(handle, engineID, dwc, &runState, dt);
     info.time = 0;
 
-    if (callback)
-        callback (info);
+    if(callback) callback(info);
 
     double time     = 0;
     double failTime = -1;
     bool failed     = false;
     do {
         try {
-            engine->step (dt, runState);
+            engine->step(dt, runState);
         }
-        catch (const Exception& e) {
+        catch(const Exception& e) {
             failed   = true;
-            failTime = engine->getTime ();
-            handle->setError (e.what ());
+            failTime = engine->getTime();
+            handle->setError(e.what());
             break;
         }
-        catch (...) {
+        catch(...) {
             failed   = true;
-            failTime = engine->getTime ();
-            handle->setError ("unknown exception!");
+            failTime = engine->getTime();
+            handle->setError("unknown exception!");
             break;
         }
-        time = engine->getTime ();
+        time = engine->getTime();
 
         info.time = time;
-        if (callback)
-            callback (info);
-        failed = !handle->success ();
+        if(callback) callback(info);
+        failed = !handle->success();
 
-        handle->callback (time, failed, false);
-    } while (time <= getRunTime () && !handle->isAborted ());
+        handle->callback(time, failed, false);
+    } while(time <= getRunTime() && !handle->isAborted());
 
-    handle->callback (time, failed, true);
+    handle->callback(time, failed, true);
 
     std::stringstream errString;
-    if (failed) {
-        errString << "failed at time " << failTime << ": " << handle->getError ();
-        handle->setError (errString.str ());
+    if(failed) {
+        errString << "failed at time " << failTime << ": " << handle->getError();
+        handle->setError(errString.str());
     }
 
-    engine->exitPhysics ();
+    engine->exitPhysics();
 }

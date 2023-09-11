@@ -19,15 +19,14 @@
 #define RW_MATH_POLYNOMIAL_HPP_
 
 #if !defined(SWIG)
-#include <rw/math/PolynomialND.hpp>
-
 #include <rw/common/Serializable.hpp>
 #include <rw/core/macros.hpp>
+#include <rw/math/PolynomialND.hpp>
 
 #include <cmath>
 #include <limits>
 #include <vector>
-#endif 
+#endif
 /**
  * @file Polynomial.hpp
  *
@@ -51,16 +50,15 @@ namespace rw { namespace math {
      * The polynomial is represented as a list of coefficients ordered from lowest-order term to
      * highest-order term, \f${c_0,c_1,...,c_n}\f$.
      */
-    template< typename T = double > class Polynomial : public PolynomialND< T, T >
+    template<typename T = double> class Polynomial : public PolynomialND<T, T>
     {
       public:
         /**
          * @brief Create polynomial with coefficients initialized to zero.
          * @param order [in] the order of the polynomial.
          */
-        explicit Polynomial (std::size_t order) : PolynomialND< T, T > (order)
-        {
-            PolynomialND< T, T >::_coef = std::vector< T > (order + 1, 0);
+        explicit Polynomial(std::size_t order) : PolynomialND<T, T>(order) {
+            PolynomialND<T, T>::_coef = std::vector<T>(order + 1, 0);
         }
 
         /**
@@ -68,27 +66,27 @@ namespace rw { namespace math {
          * @param coefficients [in] the coefficients ordered from lowest-order term to highest-order
          * term.
          */
-        Polynomial (const std::vector< T >& coefficients) : PolynomialND< T, T > (coefficients) {}
+        Polynomial(const std::vector<T>& coefficients) : PolynomialND<T, T>(coefficients) {}
 
         /**
          * @brief Create polynomial from other polynomial.
          * @param p [in] the polynomial to copy.
          */
-        Polynomial (const Polynomial< T >& p) : PolynomialND< T, T > (p) {}
+        Polynomial(const Polynomial<T>& p) : PolynomialND<T, T>(p) {}
 
         /**
          * @brief Create polynomial from other polynomial.
          * @param p [in] the polynomial to copy.
          */
-        Polynomial (const PolynomialND< T, T >& p) : PolynomialND< T, T > (p) {}
+        Polynomial(const PolynomialND<T, T>& p) : PolynomialND<T, T>(p) {}
 
         /**
          * @brief Destructor
          */
-        virtual ~Polynomial () {}
+        virtual ~Polynomial() {}
 
         //! @copydoc rw::math::PolynomialND<T,T>::evaluate
-        T evaluate (const T& x) const { return PolynomialND< T, T >::evaluate (x); }
+        T evaluate(const T& x) const { return PolynomialND<T, T>::evaluate(x); }
 
         /**
          * @brief Evaluate the polynomial using Horner's Method.
@@ -104,23 +102,21 @@ namespace rw { namespace math {
          * @note Error is the absolute size of the interval where \f$f(x)\f$ can be, assuming
          * coefficients are exact.
          */
-        template< typename ErrT = T > T evaluate (const T& x, ErrT& err) const
-        {
-            const ErrT eps = std::numeric_limits< ErrT >::epsilon ();
+        template<typename ErrT = T> T evaluate(const T& x, ErrT& err) const {
+            const ErrT eps = std::numeric_limits<ErrT>::epsilon();
             // Horner's Method
-            T res        = PolynomialND< T, T >::_coef.back ();
+            T res        = PolynomialND<T, T>::_coef.back();
             ErrT errCoef = 0;    // Error due to finite precision coefficients
             ErrT errX    = 0;    // Error due to finite precision x value
             ErrT errComb = 0;    // Combinational error of error both in coefficients and x
                                  // (magnitude very small - eps*eps)
-            errCoef       = std::abs (res);
-            const ErrT dX = std::abs (x) * eps;
-            for (int i = static_cast< int > (PolynomialND< T, T >::_coef.size () - 2); i >= 0;
-                 i--) {
-                errX    = std::abs (res) * dX + errX * std::abs (x) + errX * dX;
-                res     = PolynomialND< T, T >::_coef[i] + res * x;
-                errComb = errComb * std::abs (x) + errComb * dX + errCoef * eps * dX;
-                errCoef = std::abs (PolynomialND< T, T >::_coef[i]) + std::abs (x) * errCoef;
+            errCoef       = std::abs(res);
+            const ErrT dX = std::abs(x) * eps;
+            for(int i = static_cast<int>(PolynomialND<T, T>::_coef.size() - 2); i >= 0; i--) {
+                errX    = std::abs(res) * dX + errX * std::abs(x) + errX * dX;
+                res     = PolynomialND<T, T>::_coef[i] + res * x;
+                errComb = errComb * std::abs(x) + errComb * dX + errCoef * eps * dX;
+                errCoef = std::abs(PolynomialND<T, T>::_coef[i]) + std::abs(x) * errCoef;
             }
             errCoef *= eps;
             err = errCoef + errX + errComb;
@@ -128,9 +124,8 @@ namespace rw { namespace math {
         }
 
         //! @copydoc rw::math::PolynomialND<T,T>::evaluateDerivatives
-        std::vector< T > evaluateDerivatives (const T& x, std::size_t n = 1) const
-        {
-            return PolynomialND< T, T >::evaluateDerivatives (x, n);
+        std::vector<T> evaluateDerivatives(const T& x, std::size_t n = 1) const {
+            return PolynomialND<T, T>::evaluateDerivatives(x, n);
         }
 
         /**
@@ -148,70 +143,60 @@ namespace rw { namespace math {
          * @note Error is the absolute size of the interval where \f$f(x)\f$ can be, assuming
          * coefficients are exact.
          */
-        template< typename ErrT = T >
-        std::vector< T > evaluateDerivatives (const T& x, std::vector< ErrT >& err,
-                                              std::size_t n = 1) const
-        {
-            const ErrT eps = std::numeric_limits< ErrT >::epsilon ();
+        template<typename ErrT = T>
+        std::vector<T> evaluateDerivatives(const T& x, std::vector<ErrT>& err,
+                                           std::size_t n = 1) const {
+            const ErrT eps = std::numeric_limits<ErrT>::epsilon();
             // Horner's Method
-            err.resize (n + 1);
-            for (std::size_t i = 0; i < err.size (); i++)
-                err[i] = 0;
-            std::vector< T > res (n + 1, 0);
-            res[0] = PolynomialND< T, T >::_coef.back ();
-            err[0] = std::abs (res[0]);
-            for (int i = static_cast< int > (PolynomialND< T, T >::_coef.size () - 2); i >= 0;
-                 i--) {
-                int minJ = static_cast< int > (
-                    std::min< std::size_t > (n, PolynomialND< T, T >::_coef.size () - 1 - i));
-                for (int j = minJ; j > 0; j--) {
+            err.resize(n + 1);
+            for(std::size_t i = 0; i < err.size(); i++) err[i] = 0;
+            std::vector<T> res(n + 1, 0);
+            res[0] = PolynomialND<T, T>::_coef.back();
+            err[0] = std::abs(res[0]);
+            for(int i = static_cast<int>(PolynomialND<T, T>::_coef.size() - 2); i >= 0; i--) {
+                int minJ = static_cast<int>(
+                    std::min<std::size_t>(n, PolynomialND<T, T>::_coef.size() - 1 - i));
+                for(int j = minJ; j > 0; j--) {
                     res[j] = res[j - 1] + res[j] * x;
-                    err[j] = std::abs (res[j - 1]) + std::abs (x) * err[j];
+                    err[j] = std::abs(res[j - 1]) + std::abs(x) * err[j];
                 }
-                res[0] = PolynomialND< T, T >::_coef[i] + res[0] * x;
-                err[0] = std::abs (PolynomialND< T, T >::_coef[i]) + std::abs (x) * err[0];
+                res[0] = PolynomialND<T, T>::_coef[i] + res[0] * x;
+                err[0] = std::abs(PolynomialND<T, T>::_coef[i]) + std::abs(x) * err[0];
             }
             T k = 1;
-            for (std::size_t i = 2; i <= n; i++) {
+            for(std::size_t i = 2; i <= n; i++) {
                 const T kInit = k;
-                for (std::size_t j = 0; j < i - 1; j++) {
-                    k += kInit;
-                }
+                for(std::size_t j = 0; j < i - 1; j++) { k += kInit; }
                 res[i] *= k;
-                err[i] *= std::abs (k);
+                err[i] *= std::abs(k);
             }
-            for (std::size_t i = 0; i <= n; i++) {
-                err[i] *= eps;
-            }
+            for(std::size_t i = 0; i <= n; i++) { err[i] *= eps; }
             return res;
         }
 
         //! @copydoc rw::math::PolynomialND<T,T>::deflate
-        Polynomial< T > deflate (const T& x) const
-        {
+        Polynomial<T> deflate(const T& x) const {
             // Horner Method
-            std::size_t no = PolynomialND< T, T >::order () - 1;
-            Polynomial< T > res (no);
-            res[no] = PolynomialND< T, T >::_coef.back ();
-            for (int i = (int) no - 1; i >= 0; i--) {
-                res[i] = x * res[i + 1] + PolynomialND< T, T >::_coef[i + 1];
+            std::size_t no = PolynomialND<T, T>::order() - 1;
+            Polynomial<T> res(no);
+            res[no] = PolynomialND<T, T>::_coef.back();
+            for(int i = (int) no - 1; i >= 0; i--) {
+                res[i] = x * res[i + 1] + PolynomialND<T, T>::_coef[i + 1];
             }
             return res;
         }
 
         //! @copydoc rw::math::PolynomialND<T,T>::derivative
-        Polynomial< T > derivative (std::size_t n = 1) const
-        {
-            if (n == 0)
-                return *this;
-            std::size_t no = PolynomialND< T, T >::order () - 1;
-            Polynomial< T > der (no);
+        Polynomial<T> derivative(std::size_t n = 1) const {
+            if(n == 0) return *this;
+            std::size_t no = PolynomialND<T, T>::order() - 1;
+            Polynomial<T> der(no);
             T factor = 0;
-            for (std::size_t i = 1; i <= PolynomialND< T, T >::order (); i++) {
+            for(std::size_t i = 1; i <= PolynomialND<T, T>::order(); i++) {
                 factor += 1;
-                der[i - 1] = PolynomialND< T, T >::_coef[i] * factor;
+                der[i - 1] = PolynomialND<T, T>::_coef[i] * factor;
             }
-            return der.derivative (n - 1);
+            return der.derivative(n - 1);
         }
 
         /**
@@ -225,9 +210,8 @@ namespace rw { namespace math {
          * @param s [in] scalar to add.
          * @return new polynomial after addition.
          */
-        const Polynomial< T > operator+ (T s) const
-        {
-            Polynomial< T > pol = *this;
+        const Polynomial<T> operator+(T s) const {
+            Polynomial<T> pol = *this;
             pol[0] += s;
             return pol;
         }
@@ -237,9 +221,8 @@ namespace rw { namespace math {
          * @param s [in] scalar to subtract.
          * @return new polynomial after subtraction.
          */
-        const Polynomial< T > operator- (T s) const
-        {
-            Polynomial< T > pol = *this;
+        const Polynomial<T> operator-(T s) const {
+            Polynomial<T> pol = *this;
             pol[0] -= s;
             return pol;
         }
@@ -249,11 +232,10 @@ namespace rw { namespace math {
          * @param s [in] scalar to multiply with.
          * @return new polynomial after multiplication.
          */
-        const Polynomial< T > operator* (T s) const
-        {
-            Polynomial< T > pol (PolynomialND< T, T >::order ());
-            for (std::size_t i = 0; i <= PolynomialND< T, T >::order (); i++) {
-                pol[i] = PolynomialND< T, T >::_coef[i] * s;
+        const Polynomial<T> operator*(T s) const {
+            Polynomial<T> pol(PolynomialND<T, T>::order());
+            for(std::size_t i = 0; i <= PolynomialND<T, T>::order(); i++) {
+                pol[i] = PolynomialND<T, T>::_coef[i] * s;
             }
             return pol;
         }
@@ -267,9 +249,8 @@ namespace rw { namespace math {
          * @param polynomial [in] polynomial to multiply with.
          * @return new polynomial after multiplication.
          */
-        const Polynomial< T > operator* (const Polynomial< T >& polynomial) const
-        {
-            return PolynomialND< T, T >::template multiply< T, T > (polynomial);
+        const Polynomial<T> operator*(const Polynomial<T>& polynomial) const {
+            return PolynomialND<T, T>::template multiply<T, T>(polynomial);
         }
 
         /**
@@ -277,10 +258,9 @@ namespace rw { namespace math {
          * @param polynomial [in] polynomial vector.
          * @return a 3D polynomial vector.
          */
-        PolynomialND< Eigen::Matrix< T, 3, 1 >, T >
-        operator* (const PolynomialND< Eigen::Matrix< T, 3, 1 >, T >& polynomial) const
-        {
-            return this->template multiply< Eigen::Matrix< T, 3, 1 >, Eigen::Matrix< T, 3, 1 > > (
+        PolynomialND<Eigen::Matrix<T, 3, 1>, T>
+        operator*(const PolynomialND<Eigen::Matrix<T, 3, 1>, T>& polynomial) const {
+            return this->template multiply<Eigen::Matrix<T, 3, 1>, Eigen::Matrix<T, 3, 1>>(
                 polynomial);
         }
 
@@ -289,10 +269,9 @@ namespace rw { namespace math {
          * @param polynomial [in] polynomial vector.
          * @return a 3D polynomial vector.
          */
-        PolynomialND< Eigen::Matrix< T, 1, 3 >, T >
-        operator* (const PolynomialND< Eigen::Matrix< T, 1, 3 >, T >& polynomial) const
-        {
-            return this->template multiply< Eigen::Matrix< T, 1, 3 >, Eigen::Matrix< T, 1, 3 > > (
+        PolynomialND<Eigen::Matrix<T, 1, 3>, T>
+        operator*(const PolynomialND<Eigen::Matrix<T, 1, 3>, T>& polynomial) const {
+            return this->template multiply<Eigen::Matrix<T, 1, 3>, Eigen::Matrix<T, 1, 3>>(
                 polynomial);
         }
 
@@ -301,10 +280,9 @@ namespace rw { namespace math {
          * @param polynomial [in] polynomial matrix.
          * @return a 3D polynomial matrix.
          */
-        PolynomialND< Eigen::Matrix< T, 3, 3 >, T >
-        operator* (const PolynomialND< Eigen::Matrix< T, 3, 3 >, T >& polynomial) const
-        {
-            return this->template multiply< Eigen::Matrix< T, 3, 3 >, Eigen::Matrix< T, 3, 3 > > (
+        PolynomialND<Eigen::Matrix<T, 3, 3>, T>
+        operator*(const PolynomialND<Eigen::Matrix<T, 3, 3>, T>& polynomial) const {
+            return this->template multiply<Eigen::Matrix<T, 3, 3>, Eigen::Matrix<T, 3, 3>>(
                 polynomial);
         }
 
@@ -313,11 +291,8 @@ namespace rw { namespace math {
          * @param a [in] vector to multiply with.
          * @return a 3D polynomial vector.
          */
-        PolynomialND< Eigen::Matrix< T, 3, 1 >, T >
-        operator* (const Eigen::Matrix< T, 3, 1 >& a) const
-        {
-            return this->template multiply< Eigen::Matrix< T, 3, 1 >, Eigen::Matrix< T, 3, 1 > > (
-                a);
+        PolynomialND<Eigen::Matrix<T, 3, 1>, T> operator*(const Eigen::Matrix<T, 3, 1>& a) const {
+            return this->template multiply<Eigen::Matrix<T, 3, 1>, Eigen::Matrix<T, 3, 1>>(a);
         }
 
         /**
@@ -325,11 +300,8 @@ namespace rw { namespace math {
          * @param a [in] vector to multiply with.
          * @return a 3D polynomial vector.
          */
-        PolynomialND< Eigen::Matrix< T, 1, 3 >, T >
-        operator* (const Eigen::Matrix< T, 1, 3 >& a) const
-        {
-            return this->template multiply< Eigen::Matrix< T, 1, 3 >, Eigen::Matrix< T, 1, 3 > > (
-                a);
+        PolynomialND<Eigen::Matrix<T, 1, 3>, T> operator*(const Eigen::Matrix<T, 1, 3>& a) const {
+            return this->template multiply<Eigen::Matrix<T, 1, 3>, Eigen::Matrix<T, 1, 3>>(a);
         }
 
         /**
@@ -337,11 +309,8 @@ namespace rw { namespace math {
          * @param A [in] matrix to multiply with.
          * @return a 3D polynomial matrix.
          */
-        PolynomialND< Eigen::Matrix< T, 3, 3 >, T >
-        operator* (const Eigen::Matrix< T, 3, 3 >& A) const
-        {
-            return this->template multiply< Eigen::Matrix< T, 3, 3 >, Eigen::Matrix< T, 3, 3 > > (
-                A);
+        PolynomialND<Eigen::Matrix<T, 3, 3>, T> operator*(const Eigen::Matrix<T, 3, 3>& A) const {
+            return this->template multiply<Eigen::Matrix<T, 3, 3>, Eigen::Matrix<T, 3, 3>>(A);
         }
 
         /**
@@ -349,11 +318,10 @@ namespace rw { namespace math {
          * @param s [in] scalar to divide with.
          * @return new polynomial after division.
          */
-        const Polynomial< T > operator/ (T s) const
-        {
-            Polynomial< T > pol (PolynomialND< T, T >::order ());
-            for (std::size_t i = 0; i <= PolynomialND< T, T >::order (); i++) {
-                pol[i] = PolynomialND< T, T >::_coef[i] / s;
+        const Polynomial<T> operator/(T s) const {
+            Polynomial<T> pol(PolynomialND<T, T>::order());
+            for(std::size_t i = 0; i <= PolynomialND<T, T>::order(); i++) {
+                pol[i] = PolynomialND<T, T>::_coef[i] / s;
             }
             return pol;
         }
@@ -363,9 +331,8 @@ namespace rw { namespace math {
          * @param s [in] scalar to add.
          * @return same polynomial with coefficients changed.
          */
-        Polynomial< T >& operator+= (T s)
-        {
-            PolynomialND< T, T >::_coef[0] += s;
+        Polynomial<T>& operator+=(T s) {
+            PolynomialND<T, T>::_coef[0] += s;
             return *this;
         }
 
@@ -374,9 +341,8 @@ namespace rw { namespace math {
          * @param s [in] scalar to subtract.
          * @return same polynomial with coefficients changed.
          */
-        Polynomial< T >& operator-= (T s)
-        {
-            PolynomialND< T, T >::_coef[0] -= s;
+        Polynomial<T>& operator-=(T s) {
+            PolynomialND<T, T>::_coef[0] -= s;
             return *this;
         }
 
@@ -385,10 +351,9 @@ namespace rw { namespace math {
          * @param s [in] the scalar to multiply with.
          * @return reference to same polynomial with changed coefficients.
          */
-        Polynomial< T >& operator*= (T s)
-        {
-            for (std::size_t i = 0; i <= PolynomialND< T, T >::order (); i++) {
-                PolynomialND< T, T >::_coef[i] *= s;
+        Polynomial<T>& operator*=(T s) {
+            for(std::size_t i = 0; i <= PolynomialND<T, T>::order(); i++) {
+                PolynomialND<T, T>::_coef[i] *= s;
             }
             return *this;
         }
@@ -398,10 +363,9 @@ namespace rw { namespace math {
          * @param s [in] the scalar to divide with.
          * @return reference to same polynomial with changed coefficients.
          */
-        Polynomial< T >& operator/= (T s)
-        {
-            for (std::size_t i = 0; i <= PolynomialND< T, T >::order (); i++) {
-                PolynomialND< T, T >::_coef[i] /= s;
+        Polynomial<T>& operator/=(T s) {
+            for(std::size_t i = 0; i <= PolynomialND<T, T>::order(); i++) {
+                PolynomialND<T, T>::_coef[i] /= s;
             }
             return *this;
         }
@@ -412,12 +376,9 @@ namespace rw { namespace math {
          * @param p [in] polynomial to multiply with.
          * @return new polynomial after multiplication.
          */
-        friend const Polynomial< T > operator* (T s, const Polynomial< T >& p)
-        {
-            Polynomial< T > pol (p.order ());
-            for (std::size_t i = 0; i <= p.order (); i++) {
-                pol[i] = p[i] * s;
-            }
+        friend const Polynomial<T> operator*(T s, const Polynomial<T>& p) {
+            Polynomial<T> pol(p.order());
+            for(std::size_t i = 0; i <= p.order(); i++) { pol[i] = p[i] * s; }
             return pol;
         }
 
@@ -434,28 +395,19 @@ namespace rw { namespace math {
          * @param b [in] polynomial of to subtract.
          * @return new polynomial after subtraction.
          */
-        const Polynomial< T > operator- (const Polynomial< T >& b) const
-        {
-            const std::size_t thisOrder = PolynomialND< T, T >::order ();
-            const std::size_t bOrder    = b.order ();
-            if (bOrder > thisOrder) {
-                Polynomial< T > pol (bOrder);
-                for (std::size_t i = 0; i <= thisOrder; i++) {
-                    pol[i] = (*this)[i] - b[i];
-                }
-                for (std::size_t i = thisOrder + 1; i <= bOrder; i++) {
-                    pol[i] = -b[i];
-                }
+        const Polynomial<T> operator-(const Polynomial<T>& b) const {
+            const std::size_t thisOrder = PolynomialND<T, T>::order();
+            const std::size_t bOrder    = b.order();
+            if(bOrder > thisOrder) {
+                Polynomial<T> pol(bOrder);
+                for(std::size_t i = 0; i <= thisOrder; i++) { pol[i] = (*this)[i] - b[i]; }
+                for(std::size_t i = thisOrder + 1; i <= bOrder; i++) { pol[i] = -b[i]; }
                 return pol;
             }
             else {
-                Polynomial< T > pol (thisOrder);
-                for (std::size_t i = 0; i <= bOrder; i++) {
-                    pol[i] = (*this)[i] - b[i];
-                }
-                for (std::size_t i = bOrder + 1; i <= thisOrder; i++) {
-                    pol[i] = (*this)[i];
-                }
+                Polynomial<T> pol(thisOrder);
+                for(std::size_t i = 0; i <= bOrder; i++) { pol[i] = (*this)[i] - b[i]; }
+                for(std::size_t i = bOrder + 1; i <= thisOrder; i++) { pol[i] = (*this)[i]; }
                 return pol;
             }
         }
@@ -465,23 +417,16 @@ namespace rw { namespace math {
          * @param b [in] polynomial to subtract.
          * @return same polynomial with different coefficients after subtraction.
          */
-        Polynomial< T >& operator-= (const Polynomial< T >& b)
-        {
-            const std::size_t thisOrder = PolynomialND< T, T >::order ();
-            const std::size_t bOrder    = b.order ();
-            if (bOrder > thisOrder) {
-                PolynomialND< T, T >::increaseOrder (bOrder - thisOrder);
-                for (std::size_t i = 0; i <= thisOrder; i++) {
-                    (*this)[i] -= b[i];
-                }
-                for (std::size_t i = thisOrder + 1; i <= bOrder; i++) {
-                    (*this)[i] = -b[i];
-                }
+        Polynomial<T>& operator-=(const Polynomial<T>& b) {
+            const std::size_t thisOrder = PolynomialND<T, T>::order();
+            const std::size_t bOrder    = b.order();
+            if(bOrder > thisOrder) {
+                PolynomialND<T, T>::increaseOrder(bOrder - thisOrder);
+                for(std::size_t i = 0; i <= thisOrder; i++) { (*this)[i] -= b[i]; }
+                for(std::size_t i = thisOrder + 1; i <= bOrder; i++) { (*this)[i] = -b[i]; }
             }
             else {
-                for (std::size_t i = 0; i <= bOrder; i++) {
-                    (*this)[i] -= b[i];
-                }
+                for(std::size_t i = 0; i <= bOrder; i++) { (*this)[i] -= b[i]; }
             }
             return *this;
         }
@@ -491,28 +436,19 @@ namespace rw { namespace math {
          * @param b [in] polynomial to add.
          * @return new polynomial after addition.
          */
-        const Polynomial< T > operator+ (const Polynomial< T >& b) const
-        {
-            const std::size_t thisOrder = PolynomialND< T, T >::order ();
-            const std::size_t bOrder    = b.order ();
-            if (bOrder > thisOrder) {
-                Polynomial< T > pol (bOrder);
-                for (std::size_t i = 0; i <= thisOrder; i++) {
-                    pol[i] = (*this)[i] + b[i];
-                }
-                for (std::size_t i = thisOrder + 1; i <= bOrder; i++) {
-                    pol[i] = b[i];
-                }
+        const Polynomial<T> operator+(const Polynomial<T>& b) const {
+            const std::size_t thisOrder = PolynomialND<T, T>::order();
+            const std::size_t bOrder    = b.order();
+            if(bOrder > thisOrder) {
+                Polynomial<T> pol(bOrder);
+                for(std::size_t i = 0; i <= thisOrder; i++) { pol[i] = (*this)[i] + b[i]; }
+                for(std::size_t i = thisOrder + 1; i <= bOrder; i++) { pol[i] = b[i]; }
                 return pol;
             }
             else {
-                Polynomial< T > pol (thisOrder);
-                for (std::size_t i = 0; i <= bOrder; i++) {
-                    pol[i] = (*this)[i] + b[i];
-                }
-                for (std::size_t i = bOrder + 1; i <= thisOrder; i++) {
-                    pol[i] = (*this)[i];
-                }
+                Polynomial<T> pol(thisOrder);
+                for(std::size_t i = 0; i <= bOrder; i++) { pol[i] = (*this)[i] + b[i]; }
+                for(std::size_t i = bOrder + 1; i <= thisOrder; i++) { pol[i] = (*this)[i]; }
                 return pol;
             }
         }
@@ -522,23 +458,16 @@ namespace rw { namespace math {
          * @param b [in] polynomial to add.
          * @return same polynomial with different coefficients after addition.
          */
-        Polynomial< T >& operator+= (const Polynomial< T >& b)
-        {
-            const std::size_t thisOrder = PolynomialND< T, T >::order ();
-            const std::size_t bOrder    = b.order ();
-            if (bOrder > thisOrder) {
-                PolynomialND< T, T >::increaseOrder (bOrder - thisOrder);
-                for (std::size_t i = 0; i <= thisOrder; i++) {
-                    (*this)[i] += b[i];
-                }
-                for (std::size_t i = thisOrder + 1; i <= bOrder; i++) {
-                    (*this)[i] = b[i];
-                }
+        Polynomial<T>& operator+=(const Polynomial<T>& b) {
+            const std::size_t thisOrder = PolynomialND<T, T>::order();
+            const std::size_t bOrder    = b.order();
+            if(bOrder > thisOrder) {
+                PolynomialND<T, T>::increaseOrder(bOrder - thisOrder);
+                for(std::size_t i = 0; i <= thisOrder; i++) { (*this)[i] += b[i]; }
+                for(std::size_t i = thisOrder + 1; i <= bOrder; i++) { (*this)[i] = b[i]; }
             }
             else {
-                for (std::size_t i = 0; i <= bOrder; i++) {
-                    (*this)[i] += b[i];
-                }
+                for(std::size_t i = 0; i <= bOrder; i++) { (*this)[i] += b[i]; }
             }
             return *this;
         }
@@ -548,11 +477,9 @@ namespace rw { namespace math {
          * @param b [in] the polynomial to take coefficients from.
          * @return true if equal, false if not.
          */
-        void operator= (const Polynomial< T >& b)
-        {
-            PolynomialND< T, T >::_coef.resize (b.order () + 1);
-            for (size_t i = 0; i <= b.order (); i++)
-                PolynomialND< T, T >::_coef[i] = b[i];
+        void operator=(const Polynomial<T>& b) {
+            PolynomialND<T, T>::_coef.resize(b.order() + 1);
+            for(size_t i = 0; i <= b.order(); i++) PolynomialND<T, T>::_coef[i] = b[i];
         }
 
         ///@}
@@ -561,11 +488,10 @@ namespace rw { namespace math {
          * @brief Negate coefficients.
          * @return new polynomial with coefficients negated.
          */
-        const Polynomial< T > operator- () const
-        {
-            Polynomial< T > pol (PolynomialND< T, T >::order ());
-            for (std::size_t i = 0; i <= PolynomialND< T, T >::order (); i++) {
-                pol[i] = -PolynomialND< T, T >::_coef[i];
+        const Polynomial<T> operator-() const {
+            Polynomial<T> pol(PolynomialND<T, T>::order());
+            for(std::size_t i = 0; i <= PolynomialND<T, T>::order(); i++) {
+                pol[i] = -PolynomialND<T, T>::_coef[i];
             }
             return pol;
         }
@@ -576,11 +502,9 @@ namespace rw { namespace math {
          * @param p [in] the polynomail to print.
          * @return the same ostream as out parameter.
          */
-        friend std::ostream& operator<< (std::ostream& out, const Polynomial< T >& p)
-        {
+        friend std::ostream& operator<<(std::ostream& out, const Polynomial<T>& p) {
             out << "Polynomial: ";
-            for (size_t i = p.order (); i > 0; i--)
-                out << p[i] << " x^" << i << " + ";
+            for(size_t i = p.order(); i > 0; i--) out << p[i] << " x^" << i << " + ";
             out << p[0];
             return out;
         }
@@ -590,11 +514,9 @@ namespace rw { namespace math {
          * @param b [in] the polynomial to compare with.
          * @return true if equal, false if not.
          */
-        bool operator== (const Polynomial< T >& b) const
-        {
-            for (size_t i = 0; i <= PolynomialND< T, T >::order (); i++)
-                if (PolynomialND< T, T >::_coef[i] != b[i])
-                    return false;
+        bool operator==(const Polynomial<T>& b) const {
+            for(size_t i = 0; i <= PolynomialND<T, T>::order(); i++)
+                if(PolynomialND<T, T>::_coef[i] != b[i]) return false;
             return true;
         }
 
@@ -602,11 +524,10 @@ namespace rw { namespace math {
          * @brief Cast to other type.
          * @return a new polynomial after cast to new type.
          */
-        template< class Q > const Polynomial< Q > cast ()
-        {
-            Polynomial< Q > pol (PolynomialND< T, T >::order ());
-            for (std::size_t i = 0; i <= PolynomialND< T, T >::order (); i++) {
-                pol[i] = static_cast< Q > (PolynomialND< T, T >::_coef[i]);
+        template<class Q> const Polynomial<Q> cast() {
+            Polynomial<Q> pol(PolynomialND<T, T>::order());
+            for(std::size_t i = 0; i <= PolynomialND<T, T>::order(); i++) {
+                pol[i] = static_cast<Q>(PolynomialND<T, T>::_coef[i]);
             }
             return pol;
         }
@@ -618,8 +539,8 @@ namespace rw { namespace math {
      * @param b [in] second polynomial vector (column vector).
      * @return a polynomial with scalar coefficients.
      */
-    Polynomial<> operator* (const PolynomialND< Eigen::Matrix< double, 1, 3 > >& a,
-                            const PolynomialND< Eigen::Matrix< double, 3, 1 > >& b);
+    Polynomial<> operator*(const PolynomialND<Eigen::Matrix<double, 1, 3>>& a,
+                           const PolynomialND<Eigen::Matrix<double, 3, 1>>& b);
 
     /**
      * @brief Multiply 3D polynomial vector with a polynomial with scalar coefficients.
@@ -627,16 +548,15 @@ namespace rw { namespace math {
      * @param p [in] polynomial with scalar coefficients.
      * @return a 3D polynomial vector.
      */
-    PolynomialND< Eigen::Vector3d > operator* (const PolynomialND< Eigen::Vector3d >& polynomial,
-                                               const Polynomial<>& p);
+    PolynomialND<Eigen::Vector3d> operator*(const PolynomialND<Eigen::Vector3d>& polynomial,
+                                            const Polynomial<>& p);
 
-# if !defined(SWIGJAVA)
+#if !defined(SWIGJAVA)
     //! @copydoc rw::math::operator*(const PolynomialND<Eigen::Vector3d>&, const Polynomial<>&)
 
-    #endif
-    PolynomialND< Eigen::Matrix< double, 1, 3 > >
-    operator* (const PolynomialND< Eigen::Matrix< double, 1, 3 > >& polynomial,
-               const Polynomial<>& p);
+#endif
+    PolynomialND<Eigen::Matrix<double, 1, 3>>
+    operator*(const PolynomialND<Eigen::Matrix<double, 1, 3>>& polynomial, const Polynomial<>& p);
 
     /**
      * @brief Multiply 3D polynomial matrix with a polynomial with scalar coefficients.
@@ -644,37 +564,37 @@ namespace rw { namespace math {
      * @param p [in] polynomial with scalar coefficients.
      * @return a 3D polynomial matrix.
      */
-    PolynomialND< Eigen::Matrix3d > operator* (const PolynomialND< Eigen::Matrix3d >& polynomial,
-                                               const Polynomial<>& p);
+    PolynomialND<Eigen::Matrix3d> operator*(const PolynomialND<Eigen::Matrix3d>& polynomial,
+                                            const Polynomial<>& p);
 
-# if !defined(SWIGJAVA)
-    //! @copydoc rw::math::operator*(const PolynomialND<Eigen::Matrix<double,1,3> >&, const PolynomialND<Eigen::Matrix<double,3,1> >&)
+#if !defined(SWIGJAVA)
+    //! @copydoc rw::math::operator*(const PolynomialND<Eigen::Matrix<double,1,3> >&, const
+    //! PolynomialND<Eigen::Matrix<double,3,1> >&)
 
-    #endif
-    Polynomial< float > operator* (const PolynomialND< Eigen::Matrix< float, 1, 3 >, float >& a,
-                                   const PolynomialND< Eigen::Matrix< float, 3, 1 >, float >& b);
-# if !defined(SWIGJAVA)
+#endif
+    Polynomial<float> operator*(const PolynomialND<Eigen::Matrix<float, 1, 3>, float>& a,
+                                const PolynomialND<Eigen::Matrix<float, 3, 1>, float>& b);
+#if !defined(SWIGJAVA)
     //! @copydoc rw::math::operator*(const PolynomialND<Eigen::Vector3d>&, const Polynomial<>&)
 
-    #endif
-    PolynomialND< Eigen::Vector3f, float >
-    operator* (const PolynomialND< Eigen::Vector3f, float >& polynomial,
-               const Polynomial< float >& p);
+#endif
+    PolynomialND<Eigen::Vector3f, float>
+    operator*(const PolynomialND<Eigen::Vector3f, float>& polynomial, const Polynomial<float>& p);
 
-# if !defined(SWIGJAVA)
-    //! @copydoc rw::math::operator*(const PolynomialND<Eigen::Matrix<double,1,3> >&, const Polynomial<>&)
+#if !defined(SWIGJAVA)
+    //! @copydoc rw::math::operator*(const PolynomialND<Eigen::Matrix<double,1,3> >&, const
+    //! Polynomial<>&)
 
-    #endif
-    PolynomialND< Eigen::Matrix< float, 1, 3 >, float >
-    operator* (const PolynomialND< Eigen::Matrix< float, 1, 3 >, float >& polynomial,
-               const Polynomial< float >& p);
-# if !defined(SWIGJAVA)
+#endif
+    PolynomialND<Eigen::Matrix<float, 1, 3>, float>
+    operator*(const PolynomialND<Eigen::Matrix<float, 1, 3>, float>& polynomial,
+              const Polynomial<float>& p);
+#if !defined(SWIGJAVA)
     //! @copydoc rw::math::operator*(const PolynomialND<Eigen::Matrix3d >&, const Polynomial<>&)
 
-    #endif
-    PolynomialND< Eigen::Matrix3f, float >
-    operator* (const PolynomialND< Eigen::Matrix3f, float >& polynomial,
-               const Polynomial< float >& p);
+#endif
+    PolynomialND<Eigen::Matrix3f, float>
+    operator*(const PolynomialND<Eigen::Matrix3f, float>& polynomial, const Polynomial<float>& p);
 
     //! @}
 }}    // namespace rw::math
@@ -688,23 +608,15 @@ namespace rw { namespace common {
          * @relatedalso rw::math::Polynomial
          */
         template<>
-        void write (const rw::math::Polynomial< double >& sobject,
-                    rw::common::OutputArchive& oarchive, const std::string& id);
+        void write(const rw::math::Polynomial<double>& sobject, rw::common::OutputArchive& oarchive,
+                   const std::string& id);
 
         /**
          * @copydoc rw::common::serialization::write
          * @relatedalso rw::math::Polynomial
          */
         template<>
-        void write (const rw::math::Polynomial< float >& sobject,
-                    rw::common::OutputArchive& oarchive, const std::string& id);
-
-        /**
-         * @copydoc rw::common::serialization::read
-         * @relatedalso rw::math::Polynomial
-         */
-        template<>
-        void read (rw::math::Polynomial< double >& sobject, rw::common::InputArchive& iarchive,
+        void write(const rw::math::Polynomial<float>& sobject, rw::common::OutputArchive& oarchive,
                    const std::string& id);
 
         /**
@@ -712,8 +624,16 @@ namespace rw { namespace common {
          * @relatedalso rw::math::Polynomial
          */
         template<>
-        void read (rw::math::Polynomial< float >& sobject, rw::common::InputArchive& iarchive,
-                   const std::string& id);
+        void read(rw::math::Polynomial<double>& sobject, rw::common::InputArchive& iarchive,
+                  const std::string& id);
+
+        /**
+         * @copydoc rw::common::serialization::read
+         * @relatedalso rw::math::Polynomial
+         */
+        template<>
+        void read(rw::math::Polynomial<float>& sobject, rw::common::InputArchive& iarchive,
+                  const std::string& id);
     }    // namespace serialization
 }}       // namespace rw::common
 

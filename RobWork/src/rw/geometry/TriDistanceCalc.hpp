@@ -32,31 +32,30 @@ namespace rw { namespace geometry {
      * @brief class for testing if two Oriented Bounding Boxes are overlapping
      */
 
-    template< class T = double >
+    template<class T = double>
     class TriDistanceCalc
-        : public rw::proximity::BVDistanceCalc< TriDistanceCalc< T >, rw::geometry::Triangle< T > >
+        : public rw::proximity::BVDistanceCalc<TriDistanceCalc<T>, rw::geometry::Triangle<T>>
     {
       public:
         typedef T value_type;
 
         //! @brief constructor
-        TriDistanceCalc (){};
+        TriDistanceCalc(){};
 
         //! @brief destructor
-        virtual ~TriDistanceCalc (){};
+        virtual ~TriDistanceCalc(){};
 
-        T distance (const rw::geometry::Triangle< T >& a, const rw::geometry::Triangle< T >& b);
+        T distance(const rw::geometry::Triangle<T>& a, const rw::geometry::Triangle<T>& b);
 
         /**
          * @brief test if obbA intersects obbB. The aTb transform describe
          * obbB relative to obbA's coordinate frame
          */
-        T distance (const rw::geometry::Triangle< T >& a, const rw::geometry::Triangle< T >& b,
-                    const rw::math::Transform3D< T >& aTb);
+        T distance(const rw::geometry::Triangle<T>& a, const rw::geometry::Triangle<T>& b,
+                   const rw::math::Transform3D<T>& aTb);
 
       private:
-        void toPQPTri (const rw::geometry::Triangle< T >& tri1, PQP::PQP_REAL dst[3][3])
-        {
+        void toPQPTri(const rw::geometry::Triangle<T>& tri1, PQP::PQP_REAL dst[3][3]) {
             dst[0][0] = (PQP::PQP_REAL) tri1[0][0];
             dst[0][1] = (PQP::PQP_REAL) tri1[0][1];
             dst[0][2] = (PQP::PQP_REAL) tri1[0][2];
@@ -71,23 +70,21 @@ namespace rw { namespace geometry {
         }
     };
 
-    template< class T >
-    T TriDistanceCalc< T >::distance (const rw::geometry::Triangle< T >& a,
-                                      const rw::geometry::Triangle< T >& b,
-                                      const rw::math::Transform3D< T >& aTb)
-    {
-        rw::geometry::Triangle< T > bInaT = b.transform (aTb);
-        return distance (a, bInaT);
+    template<class T>
+    T TriDistanceCalc<T>::distance(const rw::geometry::Triangle<T>& a,
+                                   const rw::geometry::Triangle<T>& b,
+                                   const rw::math::Transform3D<T>& aTb) {
+        rw::geometry::Triangle<T> bInaT = b.transform(aTb);
+        return distance(a, bInaT);
     }
 
-    template< class T >
-    T TriDistanceCalc< T >::distance (const rw::geometry::Triangle< T >& a,
-                                      const rw::geometry::Triangle< T >& b)
-    {
+    template<class T>
+    T TriDistanceCalc<T>::distance(const rw::geometry::Triangle<T>& a,
+                                   const rw::geometry::Triangle<T>& b) {
         T tri1[3][3], tri2[3][3], P1[3], P2[3];
-        toPQPTri (a, tri1);
-        toPQPTri (b, tri2);
-        return PQP::TriDist (P1, P2, tri1, tri2);
+        toPQPTri(a, tri1);
+        toPQPTri(b, tri2);
+        return PQP::TriDist(P1, P2, tri1, tri2);
     }
 
 }}    // namespace rw::geometry

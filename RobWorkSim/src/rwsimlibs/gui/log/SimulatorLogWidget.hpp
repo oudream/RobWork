@@ -79,68 +79,68 @@ namespace rwsimlibs { namespace gui {
          * @param parent [in] (optional) the parent Qt widget. Ownership is shared by the caller and
          * the parent widget if given.
          */
-        SimulatorLogWidget (QWidget* parent = 0);
+        SimulatorLogWidget(QWidget* parent = 0);
 
         //! @brief Destructor.
-        virtual ~SimulatorLogWidget ();
+        virtual ~SimulatorLogWidget();
 
         /**
          * @brief Set the dynamic workcell for visualisation.
          * @param dwc [in] the dynamic workcell.
          */
-        void setDWC (rw::core::Ptr< const rwsim::dynamics::DynamicWorkCell > dwc);
+        void setDWC(rw::core::Ptr<const rwsim::dynamics::DynamicWorkCell> dwc);
 
         /**
          * @brief Set the simulation log to show.
          * @param info [in/out] the simulation log (might be updated with statistics).
          */
-        void setLog (rw::core::Ptr< rwsim::log::SimulatorLogScope > info);
+        void setLog(rw::core::Ptr<rwsim::log::SimulatorLogScope> info);
 
         /**
          * @brief Compare with a different log.
          * @param info [in] the other simulation log.
          */
-        void compare (rw::core::Ptr< const rwsim::log::SimulatorLogScope > info);
+        void compare(rw::core::Ptr<const rwsim::log::SimulatorLogScope> info);
 
         /**
          * @brief Try to find a specific simulation time.
          * @param time [in] the time.
          */
-        void setSelectedTime (double time);
+        void setSelectedTime(double time);
 
         //! @brief Re-read the log and update.
-        void updateInfo ();
+        void updateInfo();
 
         /**
          * @brief Set properties for widget.
          * @param properties [in/out] properties, such as default values for scaling of graphical
          * elements.
          */
-        virtual void setProperties (rw::core::Ptr< rw::core::PropertyMap > properties);
+        virtual void setProperties(rw::core::Ptr<rw::core::PropertyMap> properties);
 
       public slots:
         //! @brief Update the graphical view.
-        void updateOpenGLView ();
+        void updateOpenGLView();
 
       private slots:
-        void selectionChanged (const QItemSelection& newSelection,
-                               const QItemSelection& oldSelection);
-        void currentChanged (const QModelIndex& newSelection, const QModelIndex& oldSelection);
-        void collapsed (const QModelIndex& index);
-        void btnPressed ();
-        void tabCloseRequested (int index);
+        void selectionChanged(const QItemSelection& newSelection,
+                              const QItemSelection& oldSelection);
+        void currentChanged(const QModelIndex& newSelection, const QModelIndex& oldSelection);
+        void collapsed(const QModelIndex& index);
+        void btnPressed();
+        void tabCloseRequested(int index);
 
       private:
         Ui::SimulatorLogWidget* const _ui;
-        rw::core::Ptr< const rwsim::dynamics::DynamicWorkCell > _dwc;
+        rw::core::Ptr<const rwsim::dynamics::DynamicWorkCell> _dwc;
         rws::SceneOpenGLViewer* const _glview;
-        rw::core::Ptr< rwsim::log::SimulatorLogScope > _log;
+        rw::core::Ptr<rwsim::log::SimulatorLogScope> _log;
         SimulatorLogModel* _model;
 
-        rw::core::Ptr< rw::graphics::GroupNode > _root;
+        rw::core::Ptr<rw::graphics::GroupNode> _root;
 
-        rw::core::Ptr< rw::core::PropertyMap > _properties;
-        std::map< const rwsim::log::SimulatorLog*, std::list< QWidget* > > _entryToWidgets;
+        rw::core::Ptr<rw::core::PropertyMap> _properties;
+        std::map<const rwsim::log::SimulatorLog*, std::list<QWidget*>> _entryToWidgets;
     };
     //! @}
 }}     // namespace rwsimlibs::gui

@@ -19,11 +19,10 @@
 #define RW_SENSOR_SCANNER25D_HPP
 
 #if !defined(SWIG)
-#include <rw/sensor/Scanner.hpp>
-
 #include <rw/core/Ptr.hpp>
 #include <rw/geometry/PointCloud.hpp>
-#endif 
+#include <rw/sensor/Scanner.hpp>
+#endif
 namespace rw { namespace sensor {
 
     /** @addtogroup sensor */
@@ -40,7 +39,7 @@ namespace rw { namespace sensor {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< Scanner25D > Ptr;
+        typedef rw::core::Ptr<Scanner25D> Ptr;
 
       protected:
         /**
@@ -53,19 +52,19 @@ namespace rw { namespace sensor {
          * @param name [in] name of scanner sensor
          * @param desc
          */
-        Scanner25D (const std::string& name, const std::string& desc = "") : Scanner (name, desc) {}
+        Scanner25D(const std::string& name, const std::string& desc = "") : Scanner(name, desc) {}
 
       public:
         /**
          * @brief Destructor. Closes scanner connection if not already closed.
          */
-        virtual ~Scanner25D ();
+        virtual ~Scanner25D();
 
         /**
          * @brief gets the last acquired image
          * @return the image that was last acquired.
          */
-        virtual const rw::geometry::PointCloud& getScan () = 0;
+        virtual const rw::geometry::PointCloud& getScan() = 0;
     };
 
     /*@}*/

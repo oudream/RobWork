@@ -29,35 +29,31 @@ namespace rwsim { namespace util {
     class DistModel
     {
       public:
-        DistModel () : _center (0, 0, 0), _invalid (true) {}
+        DistModel() : _center(0, 0, 0), _invalid(true) {}
 
-        DistModel (std::vector< rw::math::Vector3D<> >& data) { refit (data); }
+        DistModel(std::vector<rw::math::Vector3D<>>& data) { refit(data); }
 
-        double refit (std::vector< rw::math::Vector3D<> >& data);
+        double refit(std::vector<rw::math::Vector3D<>>& data);
 
-        bool invalid () { return _invalid; };
+        bool invalid() { return _invalid; };
 
         /**
          * @brief the
          */
-        double fitError (rw::math::Vector3D<>& p)
-        {
-            return rw::math::MetricUtil::dist2 (_center, p);
-        }
+        double fitError(rw::math::Vector3D<>& p) { return rw::math::MetricUtil::dist2(_center, p); }
 
-        void print () { std::cout << " " << _center << " " << std::endl; }
+        void print() { std::cout << " " << _center << " " << std::endl; }
 
-        rw::math::Vector3D<>& getCenter () { return _center; };
+        rw::math::Vector3D<>& getCenter() { return _center; };
 
-        bool same (DistModel& model, double thres)
-        {
-            if ((rw::math::MetricUtil::dist2 (_center, model.getCenter ()) > thres * 1.5))
+        bool same(DistModel& model, double thres) {
+            if((rw::math::MetricUtil::dist2(_center, model.getCenter()) > thres * 1.5))
                 return false;
 
             return true;
         }
 
-        static int getMinReqData () { return 1; };
+        static int getMinReqData() { return 1; };
 
       private:
         rw::math::Vector3D<> _center;    // unit vector of the plane

@@ -46,43 +46,43 @@ class LuaConsoleWidget : public QTextEdit
      * @brief constructor
      * @param parent [in] the Qt widget parent
      */
-    LuaConsoleWidget (QWidget* parent = 0);
+    LuaConsoleWidget(QWidget* parent = 0);
 
     //! @brief destructor
-    virtual ~LuaConsoleWidget () {}
+    virtual ~LuaConsoleWidget() {}
 
     // void setCompleter(QCompleter *c);
     // QCompleter *completer() const;
 
-    void reset ();
+    void reset();
 
-    void setLuaState (rwlibs::swig::LuaState* lstate);
+    void setLuaState(rwlibs::swig::LuaState* lstate);
 
-    bool event (QEvent* event);
+    bool event(QEvent* event);
 
   protected:
     // void resizeEvent(QResizeEvent *event);
 
-    void keyPressEvent (QKeyEvent* e);
+    void keyPressEvent(QKeyEvent* e);
 
-    virtual QString interpretCommand (QString str, int* res);
+    virtual QString interpretCommand(QString str, int* res);
 
     // void focusInEvent(QFocusEvent *e);
 
   private Q_SLOTS:
     // Correctly handle the cursor when moved
-    void moveCursor (QTextCursor::MoveOperation action,
-                     QTextCursor::MoveMode mode = QTextCursor::MoveAnchor);
-    void runFinished ();
+    void moveCursor(QTextCursor::MoveOperation action,
+                    QTextCursor::MoveMode mode = QTextCursor::MoveAnchor);
+    void runFinished();
 
   private:
-    bool isInEditionZone ();
+    bool isInEditionZone();
 
-    QString getCurrentCommand ();
-    void displayPrompt ();
-    bool isCommandComplete (QString command);
-    bool execCommand (QString command, bool b);
-    void setCommand (QString command);
+    QString getCurrentCommand();
+    void displayPrompt();
+    bool isCommandComplete(QString command);
+    bool execCommand(QString command, bool b);
+    void setCommand(QString command);
 
     QColor _cmdColor, _errColor, _outColor, _completionColor;
 
@@ -94,7 +94,7 @@ class LuaConsoleWidget : public QTextEdit
     int _histIdx;
     int _lastBlockNumber;
 
-    rw::core::Ptr< rw::core::LogWriter > _logWriter;
+    rw::core::Ptr<rw::core::LogWriter> _logWriter;
 
     rws::LuaExecutionThread* _luaRunner;
     rwlibs::swig::LuaState* _luastate;

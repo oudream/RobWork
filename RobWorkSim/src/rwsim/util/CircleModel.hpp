@@ -32,7 +32,7 @@ namespace rwsim { namespace util {
         /**
          * @brief constructor
          */
-        CircleModel () : _r (0){};
+        CircleModel() : _r(0){};
 
         /**
          * @brief contructor
@@ -41,7 +41,7 @@ namespace rwsim { namespace util {
          * @param radi [in] radius
          * @return
          */
-        CircleModel (const rw::math::Vector3D<>& c, const rw::math::Vector3D<>& n, double radi);
+        CircleModel(const rw::math::Vector3D<>& c, const rw::math::Vector3D<>& n, double radi);
 
         /**
          * @brief constructor from 3 unique points on circle
@@ -49,13 +49,13 @@ namespace rwsim { namespace util {
          * @param p2 [in] point on circle
          * @param p3 [in] point on circle
          */
-        CircleModel (rw::math::Vector3D<>& p1, rw::math::Vector3D<>& p2, rw::math::Vector3D<>& p3);
+        CircleModel(rw::math::Vector3D<>& p1, rw::math::Vector3D<>& p2, rw::math::Vector3D<>& p3);
 
         /**
          * @brief refit the circle from a number of points. Use a least square fit.
          * @param points [in] the vector of points that the circle is fitted to
          */
-        void refit (const std::vector< rw::math::Vector3D<> >& points);
+        void refit(const std::vector<rw::math::Vector3D<>>& points);
 
         /**
          * @brief tests if two circles are "equal" which is within some epsilon of
@@ -64,7 +64,7 @@ namespace rwsim { namespace util {
          * @param epsilon [in] how close they need to be.
          * @return
          */
-        bool isClose (const CircleModel& circ, double epsilon) const;
+        bool isClose(const CircleModel& circ, double epsilon) const;
 
         /**
          * @brief tests if a point \p is within a distance \b epsilon of
@@ -73,7 +73,7 @@ namespace rwsim { namespace util {
          * @param epsilon [in] max distance that \b p can be from this circle.
          * @return true if p is within \b epsilon of this circle
          */
-        bool isClose (const rw::math::Vector3D<>& p, double epsilon) const;
+        bool isClose(const rw::math::Vector3D<>& p, double epsilon) const;
 
         /**
          * @brief Ouputs CircleModel to stream
@@ -81,8 +81,7 @@ namespace rwsim { namespace util {
          * @param model [in] a CircleModel
          * @return the resulting stream
          */
-        friend std::ostream& operator<< (std::ostream& os, const CircleModel& model)
-        {
+        friend std::ostream& operator<<(std::ostream& os, const CircleModel& model) {
             return os << "Circle [" << model._center << "," << model._n << "," << model._r << "]";
         }
 
@@ -90,7 +89,7 @@ namespace rwsim { namespace util {
          * @brief create a circle from a number of points. Use a least square fit.
          * @param points [in] the vector of points that the circle is fitted to
          */
-        static CircleModel fitTo (const std::vector< rw::math::Vector3D<> >& points);
+        static CircleModel fitTo(const std::vector<rw::math::Vector3D<>>& points);
 
       public:
         rw::math::Vector3D<> _center, _n;

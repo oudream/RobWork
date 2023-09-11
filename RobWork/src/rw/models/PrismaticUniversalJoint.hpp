@@ -45,50 +45,49 @@ namespace rw { namespace models {
     {
       public:
         //! @brief Smart pointer type of PrismaticUniversalJoint
-        typedef rw::core::Ptr< PrismaticUniversalJoint > Ptr;
+        typedef rw::core::Ptr<PrismaticUniversalJoint> Ptr;
 
         /**
          * @brief Construct a prismatic universal joint.
          * @param name [in] name of the joint.
          * @param transform [in] static transform of the joint.
          */
-        PrismaticUniversalJoint (const std::string& name, const rw::math::Transform3D<>& transform);
+        PrismaticUniversalJoint(const std::string& name, const rw::math::Transform3D<>& transform);
 
         //! @brief Destructor.
-        virtual ~PrismaticUniversalJoint ();
+        virtual ~PrismaticUniversalJoint();
 
         // From Frame
         //! @brief Frame::doMultiplyTransform
-        virtual void doMultiplyTransform (const rw::math::Transform3D<>& parent,
-                                          const rw::kinematics::State& state,
-                                          rw::math::Transform3D<>& result) const;
+        virtual void doMultiplyTransform(const rw::math::Transform3D<>& parent,
+                                         const rw::kinematics::State& state,
+                                         rw::math::Transform3D<>& result) const;
 
         //! @brief Frame::doGetTransform
-        virtual rw::math::Transform3D<> doGetTransform (const rw::kinematics::State& state) const;
+        virtual rw::math::Transform3D<> doGetTransform(const rw::kinematics::State& state) const;
 
         // From Joint
         //! @copydoc rw::models::Joint::getJacobian
-        virtual void getJacobian (std::size_t row, std::size_t col,
-                                  const rw::math::Transform3D<>& joint,
-                                  const rw::math::Transform3D<>& tcp,
-                                  const rw::kinematics::State& state,
-                                  rw::math::Jacobian& jacobian) const;
+        virtual void getJacobian(std::size_t row, std::size_t col,
+                                 const rw::math::Transform3D<>& joint,
+                                 const rw::math::Transform3D<>& tcp,
+                                 const rw::kinematics::State& state,
+                                 rw::math::Jacobian& jacobian) const;
 
         //! @copydoc rw::models::Joint::getFixedTransform
-        virtual rw::math::Transform3D<> getFixedTransform () const;
+        virtual rw::math::Transform3D<> getFixedTransform() const;
 
         //! @copydoc rw::models::Joint::setFixedTransform
-        virtual void setFixedTransform (const rw::math::Transform3D<>& t3d);
+        virtual void setFixedTransform(const rw::math::Transform3D<>& t3d);
 
         //! @copydoc rw::models::Joint::getJointTransform
-        virtual rw::math::Transform3D<>
-        getJointTransform (const rw::kinematics::State& state) const;
+        virtual rw::math::Transform3D<> getJointTransform(const rw::kinematics::State& state) const;
 
         //! @copydoc rw::models::Joint::setJointMapping
-        virtual void setJointMapping (rw::math::Function1Diff<>::Ptr function);
+        virtual void setJointMapping(rw::math::Function1Diff<>::Ptr function);
 
         //! @copydoc rw::models::Joint::removeJointMapping
-        virtual void removeJointMapping ();
+        virtual void removeJointMapping();
 
       private:
         rw::math::Transform3D<> _T;

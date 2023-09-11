@@ -52,40 +52,40 @@ namespace rwsim { namespace log {
     {
       public:
         //! Smart pointer type of SimulatorLogEntry
-        typedef rw::core::Ptr< SimulatorLogEntry > Ptr;
+        typedef rw::core::Ptr<SimulatorLogEntry> Ptr;
 
         //! @copydoc SimulatorLog::SimulatorLog
-        SimulatorLogEntry (SimulatorLogScope* parent);
+        SimulatorLogEntry(SimulatorLogScope* parent);
 
         //! @brief Destructor.
-        virtual ~SimulatorLogEntry ();
+        virtual ~SimulatorLogEntry();
 
         //! @copydoc rw::common::Serializable::read
-        virtual void read (class rw::common::InputArchive& iarchive, const std::string& id);
+        virtual void read(class rw::common::InputArchive& iarchive, const std::string& id);
 
         //! @copydoc rw::common::Serializable::write
-        virtual void write (class rw::common::OutputArchive& oarchive, const std::string& id) const;
+        virtual void write(class rw::common::OutputArchive& oarchive, const std::string& id) const;
 
         //! @copydoc SimulatorLog::children
-        virtual std::size_t children () const;
+        virtual std::size_t children() const;
 
         //! @copydoc SimulatorLog::operator==
-        virtual bool operator== (const SimulatorLog& b) const;
+        virtual bool operator==(const SimulatorLog& b) const;
 
         /**
          * @brief Get the line number in the file where this entry was added.
          * @return the line number.
          */
-        virtual int line () const;
+        virtual int line() const;
 
         /**
          * @brief Set the line number where this entry was added.
          * @param line [in] the line number.
          */
-        virtual void setLine (int line);
+        virtual void setLine(int line);
 
         //! @copydoc SimulatorLog::getType
-        virtual std::string getType () const = 0;
+        virtual std::string getType() const = 0;
 
         /**
          * @brief Get a list of other entries that this entry is linked to.
@@ -93,20 +93,20 @@ namespace rwsim { namespace log {
          * Using linked entries makes it possible to avoid logging too much redundant information.
          * @return a list of linked entries.
          */
-        virtual std::list< SimulatorLogEntry::Ptr > getLinkedEntries () const = 0;
+        virtual std::list<SimulatorLogEntry::Ptr> getLinkedEntries() const = 0;
 
         /**
          * @brief Do automatic linking to other entries.
          * @return true if linking succeeded, false otherwise.
          */
-        virtual bool autoLink () = 0;
+        virtual bool autoLink() = 0;
 
         /**
          * @brief Create a new entry of the same type (no data is copied).
          * @param parent the parent of the new entry.
          * @return the new entry.
          */
-        virtual SimulatorLogEntry::Ptr createNew (SimulatorLogScope* parent) const = 0;
+        virtual SimulatorLogEntry::Ptr createNew(SimulatorLogScope* parent) const = 0;
 
         /**
          * @addtogroup extensionpoints
@@ -117,21 +117,21 @@ namespace rwsim { namespace log {
          * @brief A factory for a SimulatorLogEntry. This factory also defines an
          * extension point for SimulatorLogEntry.
          */
-        class Factory : public rw::core::ExtensionPoint< SimulatorLogEntry >
+        class Factory : public rw::core::ExtensionPoint<SimulatorLogEntry>
         {
           public:
             /**
              * @brief Get the available entry types.
              * @return a vector of entry types.
              */
-            static std::vector< std::string > getEntryTypes ();
+            static std::vector<std::string> getEntryTypes();
 
             /**
              * @brief Check if entry type is available.
              * @param entryType [in] the name of the entry type.
              * @return true if available, false otherwise.
              */
-            static bool hasEntryType (const std::string& entryType);
+            static bool hasEntryType(const std::string& entryType);
 
             /**
              * @brief Create a new entry.
@@ -139,11 +139,11 @@ namespace rwsim { namespace log {
              * @param parent [in] the parent scope.
              * @return a pointer to a new entry.
              */
-            static SimulatorLogEntry::Ptr makeEntry (const std::string& entryType,
-                                                     SimulatorLogScope* parent);
+            static SimulatorLogEntry::Ptr makeEntry(const std::string& entryType,
+                                                    SimulatorLogScope* parent);
 
           private:
-            Factory ();
+            Factory();
         };
 
       private:

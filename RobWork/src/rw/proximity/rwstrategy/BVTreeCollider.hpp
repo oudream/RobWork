@@ -22,7 +22,7 @@
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/proximity/CollisionStrategy.hpp>
-#endif 
+#endif
 namespace rw { namespace proximity {
 
     /**
@@ -34,17 +34,17 @@ namespace rw { namespace proximity {
      * multiple threads. The state is small so there is only little to no overhead
      * cloning the TreeCollider.
      */
-    template< class BVTREE > class BVTreeCollider
+    template<class BVTREE> class BVTreeCollider
     {
       private:
       public:
         //! @brief smart pointer for this class
-        typedef rw::core::Ptr< rw::proximity::BVTreeCollider< BVTREE > > Ptr;
+        typedef rw::core::Ptr<rw::proximity::BVTreeCollider<BVTREE>> Ptr;
 
         /**
          * @brief destructor
          */
-        virtual ~BVTreeCollider () {}
+        virtual ~BVTreeCollider() {}
 
         /**
          * @brief tests if two BV trees are colliding.
@@ -54,20 +54,23 @@ namespace rw { namespace proximity {
          * @param treeB [in] documentation missing !
          * @param collidingPrimitives documentation missing !
          */
-        virtual bool collides (
-            const rw::math::Transform3D< typename BVTREE::value_type >& fTA, const BVTREE& treeA,
-            const rw::math::Transform3D< typename BVTREE::value_type >& fTB, const BVTREE& treeB,
-            std::vector< std::pair< int, int > >* collidingPrimitives = NULL) = 0;
- 
+        virtual bool collides(const rw::math::Transform3D<typename BVTREE::value_type>& fTA,
+                              const BVTREE& treeA,
+                              const rw::math::Transform3D<typename BVTREE::value_type>& fTB,
+                              const BVTREE& treeB,
+                              std::vector<std::pair<int, int>>* collidingPrimitives = NULL) = 0;
+
         /**
          * @brief set the query type
          */
-        virtual void setQueryType (rw::proximity::CollisionStrategy::QueryType type) { _queryType = type; }
+        virtual void setQueryType(rw::proximity::CollisionStrategy::QueryType type) {
+            _queryType = type;
+        }
 
         /**
          * @brief get the collision query type
          */
-        virtual rw::proximity::CollisionStrategy::QueryType getQueryType () { return _queryType; }
+        virtual rw::proximity::CollisionStrategy::QueryType getQueryType() { return _queryType; }
 
         //! type of the primitive in collision callb ack function
         // typedef boost::function<void(int,int)> PrimitivesInCollisionCB;
@@ -77,13 +80,13 @@ namespace rw { namespace proximity {
          * @brief returns the amount of heap memmory used by the tree collider.
          * @return nr of bytes used
          */
-        virtual int getMemUsage () = 0;
+        virtual int getMemUsage() = 0;
 
-        virtual int getNrOfTestedBVs () { return -1; }
-        virtual int getNrOfCollidingBVs () { return -1; }
+        virtual int getNrOfTestedBVs() { return -1; }
+        virtual int getNrOfCollidingBVs() { return -1; }
 
-        virtual int getNrOfTestedPrimitives () { return -1; }
-        virtual int getNrOfCollidingPrimitives () { return -1; }
+        virtual int getNrOfTestedPrimitives() { return -1; }
+        virtual int getNrOfCollidingPrimitives() { return -1; }
 
       protected:
         rw::proximity::CollisionStrategy::QueryType _queryType;

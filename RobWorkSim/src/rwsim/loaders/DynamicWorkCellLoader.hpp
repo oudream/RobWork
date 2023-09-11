@@ -21,7 +21,7 @@
 #ifndef SWIG
 #include <rw/core/Ptr.hpp>
 #include <rwsim/dynamics/DynamicWorkCell.hpp>
-#endif 
+#endif
 namespace rwsim { namespace loaders {
 
     /**
@@ -34,7 +34,7 @@ namespace rwsim { namespace loaders {
          * @brief load a workcell
          * @param filename
          */
-        static rw::core::Ptr< rwsim::dynamics::DynamicWorkCell > load (const std::string& filename);
+        static rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> load(const std::string& filename);
     };
 
 }}    // namespace rwsim::loaders

@@ -22,12 +22,11 @@
    @file SBLPlanner.hpp
 */
 
-#include <rwlibs/pathplanners/sbl/SBLSetup.hpp>
-
 #include <rw/core/Ptr.hpp>
 #include <rw/pathplanning/QToQPlanner.hpp>
 #include <rw/pathplanning/QToQSamplerPlanner.hpp>
 #include <rw/pathplanning/QToTPlanner.hpp>
+#include <rwlibs/pathplanners/sbl/SBLSetup.hpp>
 
 namespace rwlibs { namespace pathplanners {
 
@@ -35,13 +34,13 @@ namespace rwlibs { namespace pathplanners {
     /*@{*/
 
     /**
-      * @brief SBL based planners.
-      */
+     * @brief SBL based planners.
+     */
     class SBLPlanner
     {
       public:
         //! @brief Smart pointer type for SBLPlanner.
-        typedef rw::core::Ptr< SBLPlanner > Ptr;
+        typedef rw::core::Ptr<SBLPlanner> Ptr;
 
         /**
            @brief An SBL based sampled region planner.
@@ -49,14 +48,14 @@ namespace rwlibs { namespace pathplanners {
            @param setup [in] Setup for the planner.
         */
         static rw::pathplanning::QToQSamplerPlanner::Ptr
-        makeQToQSamplerPlanner (const SBLSetup& setup);
+        makeQToQSamplerPlanner(const SBLSetup& setup);
 
         /**
            @brief An SBL based point-to-point planner.
 
            @param setup [in] Setup for the planner.
         */
-        static rw::pathplanning::QToQPlanner::Ptr makeQToQPlanner (const SBLSetup& setup);
+        static rw::pathplanning::QToQPlanner::Ptr makeQToQPlanner(const SBLSetup& setup);
 
         /**
            @brief An SBL based point-to-tool-position planner.
@@ -65,13 +64,13 @@ namespace rwlibs { namespace pathplanners {
            @param ikSampler [in] Sampler of IK solutions for the target transform.
         */
         static rw::pathplanning::QToTPlanner::Ptr
-        makeQToTPlanner (const SBLSetup& setup,
-                         rw::core::Ptr< rw::pathplanning::QIKSampler > ikSampler);
+        makeQToTPlanner(const SBLSetup& setup,
+                        rw::core::Ptr<rw::pathplanning::QIKSampler> ikSampler);
 
       private:
-        SBLPlanner ();
-        SBLPlanner (const SBLPlanner&);
-        SBLPlanner& operator= (const SBLPlanner&);
+        SBLPlanner();
+        SBLPlanner(const SBLPlanner&);
+        SBLPlanner& operator=(const SBLPlanner&);
     };
 
     /*@}*/

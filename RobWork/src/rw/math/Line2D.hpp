@@ -19,9 +19,8 @@
 #define RW_MATH_LINE2D_HPP
 
 #if !defined(SWIG)
-#include <rw/math/Vector2D.hpp>
-
 #include <rw/common/Serializable.hpp>
+#include <rw/math/Vector2D.hpp>
 #endif
 namespace rw { namespace math {
 
@@ -49,14 +48,14 @@ namespace rw { namespace math {
         /**
          * @brief Constructor
          */
-        Line2D (){};
+        Line2D(){};
 
         /**
          * @brief Creates a line between that intersect the two points p1 and p2.
          * @param p1 [in] point
          * @param p2 [in] point
          */
-        Line2D (const rw::math::Vector2D<>& p1, const rw::math::Vector2D<>& p2);
+        Line2D(const rw::math::Vector2D<>& p1, const rw::math::Vector2D<>& p2);
 
         /**
          * @brief Creates a line between that intersect the two points (x1,y1) and (x2,y2).
@@ -65,12 +64,12 @@ namespace rw { namespace math {
          * @param x2 [in] x coordinate of point 2
          * @param y2 [in] y coordinate of point 2
          */
-        Line2D (double x1, double y1, double x2, double y2);
+        Line2D(double x1, double y1, double x2, double y2);
 
         /**
          * @brief Destructor
          */
-        virtual ~Line2D ();
+        virtual ~Line2D();
 
         /**
          * @brief calculates the intersection between two lines. A intersection
@@ -80,62 +79,60 @@ namespace rw { namespace math {
          * @param res [out] the point of intersection
          * @return the intersection type
          */
-        IntersectResult getIntersect (const Line2D& line, rw::math::Vector2D<>& res) const;
+        IntersectResult getIntersect(const Line2D& line, rw::math::Vector2D<>& res) const;
 
         /**
          * @brief calculates the angle between this line and \b line
          * @param line [in] a line
          * @return the angle from this line to \b line
          */
-        double calcAngle (const Line2D& line) const;
+        double calcAngle(const Line2D& line) const;
 
         /**
          * @brief calculates the angle between the projection of this line onto
          * yz-plane and the x-axis
          * @return the angle
          */
-        double calcAngle () const;
+        double calcAngle() const;
 
         /**
          * @brief calculates the shortest distance between point v and the infinite
          * line.
          * @param v [in] Point to which to calculate distance
          */
-        double calcDist (const rw::math::Vector2D<>& v) const;
+        double calcDist(const rw::math::Vector2D<>& v) const;
 
         /**
          * @brief gets the length of thi line segment.
          * @return line segment length
          */
-        double getLength () const
-        {
+        double getLength() const {
             const rw::math::Vector2D<> diff = _p1 - _p2;
-            return diff.norm2 ();
+            return diff.norm2();
         }
 
         /**
          * @brief first point on the line
          */
-        rw::math::Vector2D<>& p1 () { return _p1; }
+        rw::math::Vector2D<>& p1() { return _p1; }
 
         //! @copydoc p1()
-        const rw::math::Vector2D<>& p1 () const { return _p1; }
+        const rw::math::Vector2D<>& p1() const { return _p1; }
 
         /**
          * @brief second point on the line
          */
-        rw::math::Vector2D<>& p2 () { return _p2; }
+        rw::math::Vector2D<>& p2() { return _p2; }
 
         //! @copydoc p2()
-        const rw::math::Vector2D<>& p2 () const { return _p2; }
+        const rw::math::Vector2D<>& p2() const { return _p2; }
 
         /**
          * @brief calculates the unit normal of the line
          */
-        rw::math::Vector2D<> calcUnitNormal () const
-        {
-            const rw::math::Vector2D<> u = (_p2 - _p1) / getLength ();
-            return rw::math::Vector2D<> (-u (1), u (0));
+        rw::math::Vector2D<> calcUnitNormal() const {
+            const rw::math::Vector2D<> u = (_p2 - _p1) / getLength();
+            return rw::math::Vector2D<>(-u(1), u(0));
         }
 
       private:
@@ -153,16 +150,16 @@ namespace rw { namespace common {
          * @relatedalso rw::math::Line2D
          */
         template<>
-        void write (const rw::math::Line2D& sobject, rw::common::OutputArchive& oarchive,
-                    const std::string& id);
+        void write(const rw::math::Line2D& sobject, rw::common::OutputArchive& oarchive,
+                   const std::string& id);
 
         /**
          * @copydoc rw::common::serialization::read
          * @relatedalso rw::math::Line2D
          */
         template<>
-        void read (rw::math::Line2D& sobject, rw::common::InputArchive& iarchive,
-                   const std::string& id);
+        void read(rw::math::Line2D& sobject, rw::common::InputArchive& iarchive,
+                  const std::string& id);
     }    // namespace serialization
 }}       // namespace rw::common
 

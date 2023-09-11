@@ -26,7 +26,7 @@
 
 #include <string>
 #include <vector>
-#endif 
+#endif
 
 namespace rw { namespace math {
     class Jacobian;
@@ -51,10 +51,10 @@ namespace rw { namespace models {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< ParallelDevice > Ptr;
+        typedef rw::core::Ptr<ParallelDevice> Ptr;
 
         //! @brief type for a set of legs.
-        typedef std::vector< rw::models::ParallelLeg* > Legs;
+        typedef std::vector<rw::models::ParallelLeg*> Legs;
 
         /**
          * @brief Constructor
@@ -66,7 +66,8 @@ namespace rw { namespace models {
          * @param name [in] name of device
          * @param state [in] the state for the assembly mode
          */
-        ParallelDevice (const Legs& legs, const std::string name, const rw::kinematics::State& state);
+        ParallelDevice(const Legs& legs, const std::string name,
+                       const rw::kinematics::State& state);
 
         /**
          * @brief Constructor for parallel device with multiple junctions.
@@ -78,12 +79,13 @@ namespace rw { namespace models {
          * @param junctions [in] a list of junctions.
          * Each junction is given by a list of legs that must begin and end in the same frame.
          */
-        ParallelDevice (const std::string name, rw::core::Ptr<rw::kinematics::Frame> base,
-                        rw::core::Ptr<rw::kinematics::Frame> end, const std::vector< rw::models::Joint* >& joints,
-                        const rw::kinematics::State& state, const std::vector< Legs >& junctions);
+        ParallelDevice(const std::string name, rw::core::Ptr<rw::kinematics::Frame> base,
+                       rw::core::Ptr<rw::kinematics::Frame> end,
+                       const std::vector<rw::models::Joint*>& joints,
+                       const rw::kinematics::State& state, const std::vector<Legs>& junctions);
 
         /** @brief Destructor */
-        ~ParallelDevice ();
+        ~ParallelDevice();
 
         /**
          * @copydoc Device::setQ
@@ -93,7 +95,7 @@ namespace rw { namespace models {
          * automatically computes the values for the unactuated (passive)
          * joints.
          */
-        virtual void setQ (const rw::math::Q& q, rw::kinematics::State& state) const;
+        virtual void setQ(const rw::math::Q& q, rw::kinematics::State& state) const;
 
         /**
          * @brief Set only some of the actuated joints.
@@ -113,50 +115,52 @@ namespace rw { namespace models {
          * The input state is expected to contain a valid and consistent configuration of the
          * device.
          */
-        virtual void setQ (const rw::math::Q& q, const std::vector< bool >& enabled,
-                           rw::kinematics::State& state) const;
+        virtual void setQ(const rw::math::Q& q, const std::vector<bool>& enabled,
+                          rw::kinematics::State& state) const;
 
         /** @copydoc Device::baseJframe */
-        rw::math::Jacobian baseJframe (const rw::core::Ptr<rw::kinematics::Frame> frame,
-                                   const rw::kinematics::State& state) const;
+        rw::math::Jacobian baseJframe(const rw::core::Ptr<rw::kinematics::Frame> frame,
+                                      const rw::kinematics::State& state) const;
 
         /** @copydoc Device::baseJend */
-        rw::math::Jacobian baseJend (const rw::kinematics::State& state) const;
+        rw::math::Jacobian baseJend(const rw::kinematics::State& state) const;
 
         /**
          * @brief The legs of the parallel device.
          */
-        virtual std::vector< rw::models::ParallelLeg* > getLegs () const { return _legs; }
+        virtual std::vector<rw::models::ParallelLeg*> getLegs() const { return _legs; }
 
         /**
          * @brief Get the junctions of the device.
          * @return a vector of junctions. Each junction is given by a two or more legs.
          */
-        virtual std::vector< std::vector< rw::models::ParallelLeg*> > getJunctions () const { return _junctions; }
+        virtual std::vector<std::vector<rw::models::ParallelLeg*>> getJunctions() const {
+            return _junctions;
+        }
 
         /**
          * @brief The active joints of the parallel device.
          */
-        virtual std::vector< models::Joint* > getActiveJoints () const { return _actuatedJoints; }
+        virtual std::vector<models::Joint*> getActiveJoints() const { return _actuatedJoints; }
 
         /**
          * @brief Get all joints (both active and passive).
          * @return a vector of all the joints.
          */
-        virtual std::vector< rw::models::Joint* > getAllJoints () const;
+        virtual std::vector<rw::models::Joint*> getAllJoints() const;
 
         /**
          * @brief Get the total degrees of freedom for all (active and passive) joints in the
          * device.
          * @return the total degrees of freedom.
          */
-        std::size_t getFullDOF () const;
+        std::size_t getFullDOF() const;
 
         /**
          * @brief Get bounds for all joints (includes both active and passive joints).
          * @return a pair with the lower and upper limits.
          */
-        std::pair< rw::math::Q, rw::math::Q > getAllBounds () const;
+        std::pair<rw::math::Q, rw::math::Q> getAllBounds() const;
 
         /**
          * @brief Get the full configuration vector of the device. This gives the complete state of
@@ -165,7 +169,7 @@ namespace rw { namespace models {
          * @return the configuration vector with the joint values for both active and passive
          * joints.
          */
-        rw::math::Q getFullQ (const rw::kinematics::State& state) const;
+        rw::math::Q getFullQ(const rw::kinematics::State& state) const;
 
         /**
          * @brief Set the full configuration of the device.
@@ -174,21 +178,21 @@ namespace rw { namespace models {
          * @param q [in] the configuration vector to set.
          * @param state [in/out] the state to update with a new configuration.
          */
-        void setFullQ (const rw::math::Q& q, rw::kinematics::State& state) const;
+        void setFullQ(const rw::math::Q& q, rw::kinematics::State& state) const;
 
       private:
-        static rw::math::Jacobian baseJend (const std::vector< rw::models::ParallelLeg* >& legs,
-                                            const rw::kinematics::State& state);
+        static rw::math::Jacobian baseJend(const std::vector<rw::models::ParallelLeg*>& legs,
+                                           const rw::kinematics::State& state);
 
-        void normalizeJoints (rw::kinematics::State& state) const;
+        void normalizeJoints(rw::kinematics::State& state) const;
 
-        std::vector< rw::models::ParallelLeg* > _legs;
-        std::vector< Legs > _junctions;
+        std::vector<rw::models::ParallelLeg*> _legs;
+        std::vector<Legs> _junctions;
         // std::vector<rw::kinematics::Frame*> _secondaryRef;
 
-        std::vector< models::Joint* > _actuatedJoints;      // list of actuated joints
-        std::vector< models::Joint* > _unActuatedJoints;    // list of unactuated joints
-        std::vector< models::Joint* > _joints;              // list of all joints
+        std::vector<models::Joint*> _actuatedJoints;      // list of actuated joints
+        std::vector<models::Joint*> _unActuatedJoints;    // list of unactuated joints
+        std::vector<models::Joint*> _joints;              // list of all joints
     };
 
     /*@}*/

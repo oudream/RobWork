@@ -48,8 +48,8 @@ namespace rw { namespace loaders {
          * @param schemaFileName [in] Optional name of schema file to be used for verification
          * @return The ProximitySetup
          */
-        static rw::proximity::ProximitySetup load (const std::string& filename,
-                                                   const std::string& schemaFileName = "");
+        static rw::proximity::ProximitySetup load(const std::string& filename,
+                                                  const std::string& schemaFileName = "");
 
         /**
          * @brief Loads ProximitySetup from \b instream
@@ -60,8 +60,8 @@ namespace rw { namespace loaders {
          * @param schemaFileName [in] Optional name of schema file to be used for verification
          * @return The ProximitySetup
          */
-        static rw::proximity::ProximitySetup load (std::istream& instream,
-                                                   const std::string& schemaFileName = "");
+        static rw::proximity::ProximitySetup load(std::istream& instream,
+                                                  const std::string& schemaFileName = "");
 
         /**
          * @brief Reads ProximitySetup from \b element
@@ -72,11 +72,11 @@ namespace rw { namespace loaders {
          * @return The ProximitySetup
          */
         static rw::proximity::ProximitySetup
-        readProximitySetup (rw::core::Ptr< rw::core::DOMElem > element);
+        readProximitySetup(rw::core::Ptr<rw::core::DOMElem> element);
 
       private:
-        static std::pair< std::string, std::string >
-        readFramePatternAttributes (rw::core::Ptr< rw::core::DOMElem > element);
+        static std::pair<std::string, std::string>
+        readFramePatternAttributes(rw::core::Ptr<rw::core::DOMElem> element);
     };
 
     /* @} */

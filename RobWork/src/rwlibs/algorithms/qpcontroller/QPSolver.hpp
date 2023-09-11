@@ -65,17 +65,17 @@ namespace rwlibs { namespace algorithms { namespace qpcontroller {
          *
          * \param status [out] Gives the status of the solving
          */
-        static Eigen::VectorXd inequalitySolve (const Eigen::MatrixXd& G, const Eigen::VectorXd& d,
-                                                Eigen::MatrixXd& A, const Eigen::VectorXd& b,
-                                                const Eigen::VectorXd& xstart, Status& status);
+        static Eigen::VectorXd inequalitySolve(const Eigen::MatrixXd& G, const Eigen::VectorXd& d,
+                                               Eigen::MatrixXd& A, const Eigen::VectorXd& b,
+                                               const Eigen::VectorXd& xstart, Status& status);
 
         // TODO Investigate the possibility of making a hot-start of the
         // algorithm for better performance
 
       private:
-        static Eigen::VectorXd getInitialConfig (Eigen::MatrixXd& A, const Eigen::VectorXd& b);
+        static Eigen::VectorXd getInitialConfig(Eigen::MatrixXd& A, const Eigen::VectorXd& b);
 
-        static Eigen::VectorXd safeApprox (Eigen::MatrixXd& A, const Eigen::VectorXd& b);
+        static Eigen::VectorXd safeApprox(Eigen::MatrixXd& A, const Eigen::VectorXd& b);
     };
 
 }}}    // namespace rwlibs::algorithms::qpcontroller

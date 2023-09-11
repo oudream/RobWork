@@ -19,5 +19,4 @@
 
 using namespace rw::sensor;
 
-Scanner2D::~Scanner2D ()
-{}
+Scanner2D::~Scanner2D() {}

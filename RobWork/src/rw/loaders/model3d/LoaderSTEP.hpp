@@ -20,8 +20,9 @@
 
 //! @file LoaderSTEP.hpp
 
-#include <RobWorkConfig.hpp>
 #include "../Model3DLoader.hpp"
+
+#include <RobWorkConfig.hpp>
 
 #include <string>
 
@@ -40,24 +41,27 @@ namespace rw { namespace loaders {
         /**
          * @brief constructor
          */
-        LoaderSTEP (){};
+        LoaderSTEP(){};
 
         /**
          * @brief destructor
          */
-        virtual ~LoaderSTEP (){};
+        virtual ~LoaderSTEP(){};
 
         //! @copydoc Model3DLoader::load
-        rw::graphics::Model3D::Ptr load (const std::string& filename);
-        
+        rw::graphics::Model3D::Ptr load(const std::string& filename);
+
 #if RW_HAVE_OCC
         //! @copydoc Model3DLoader::getModelFormats
-        std::vector< std::string > getModelFormats () { return {".STP", ".STEP", ".IGS", ".BREP"}; }
-#else 
+        std::vector<std::string> getModelFormats() {
+            return {".STP", ".STEP", ".IGS", ".BREP"};
+        }
+#else
         //! @copydoc Model3DLoader::getModelFormats
-        std::vector< std::string > getModelFormats () { return {}; }
-#endif 
-    
+        std::vector<std::string> getModelFormats() {
+            return {};
+        }
+#endif
     };
 
     //! @}

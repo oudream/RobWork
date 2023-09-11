@@ -43,12 +43,12 @@ namespace rwlibs { namespace pathplanners {
     {
       public:
         //! @brief Type of a motion.
-        typedef std::vector< rw::math::Q > Motion;
+        typedef std::vector<rw::math::Q> Motion;
 
         /**
            @brief The options stored within the setup.
         */
-        static SBLOptions getOptions (const SBLSetup& setup) { return setup.options; }
+        static SBLOptions getOptions(const SBLSetup& setup) { return setup.options; }
 
         /**
            A general path planner call that (depending on the arguments) can find
@@ -78,27 +78,25 @@ namespace rwlibs { namespace pathplanners {
 
            @param stop [in] Stop the planner when this function object returns true.
         */
-        static Motion findConnection (const rw::math::Q& from, const rw::math::Q& to,
-                                      const Motion& fromSamples, const Motion& toSamples,
-                                      rw::pathplanning::QSampler& fromSampler,
-                                      rw::pathplanning::QSampler& toSampler,
-                                      const SBLOptions& setup,
-                                      const rw::pathplanning::StopCriteria& stop);
+        static Motion findConnection(const rw::math::Q& from, const rw::math::Q& to,
+                                     const Motion& fromSamples, const Motion& toSamples,
+                                     rw::pathplanning::QSampler& fromSampler,
+                                     rw::pathplanning::QSampler& toSampler, const SBLOptions& setup,
+                                     const rw::pathplanning::StopCriteria& stop);
 
         /**
            Standard path planning.
         */
-        static Motion findPath (const rw::math::Q& from, const rw::math::Q& to,
-                                const SBLOptions& setup,
-                                const rw::pathplanning::StopCriteria& stop);
+        static Motion findPath(const rw::math::Q& from, const rw::math::Q& to,
+                               const SBLOptions& setup, const rw::pathplanning::StopCriteria& stop);
 
         /**
            Approach planning.
         */
-        static Motion findApproach (const rw::math::Q& from, const rw::math::Q& to,
-                                    const Motion& toSamples, rw::pathplanning::QSampler& toSampler,
-                                    const SBLOptions& setup,
-                                    const rw::pathplanning::StopCriteria& stop);
+        static Motion findApproach(const rw::math::Q& from, const rw::math::Q& to,
+                                   const Motion& toSamples, rw::pathplanning::QSampler& toSampler,
+                                   const SBLOptions& setup,
+                                   const rw::pathplanning::StopCriteria& stop);
     };
 
 }}    // namespace rwlibs::pathplanners

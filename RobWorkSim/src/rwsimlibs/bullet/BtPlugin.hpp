@@ -41,16 +41,16 @@ namespace rwsimlibs { namespace bullet {
     {
       public:
         //! @brief Construct new plugin
-        BtPlugin ();
+        BtPlugin();
 
         //! @brief Destructor
-        virtual ~BtPlugin ();
+        virtual ~BtPlugin();
 
         //! @copydoc rw::core::Plugin::getExtensionDescriptors
-        std::vector< rw::core::Extension::Descriptor > getExtensionDescriptors ();
+        std::vector<rw::core::Extension::Descriptor> getExtensionDescriptors();
 
         //! @copydoc rw::core::Plugin::makeExtension
-        rw::core::Ptr< rw::core::Extension > makeExtension (const std::string& str);
+        rw::core::Ptr<rw::core::Extension> makeExtension(const std::string& str);
     };
     //! @}
 }}     // namespace rwsimlibs::bullet

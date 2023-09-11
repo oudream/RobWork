@@ -1,35 +1,30 @@
 #ifndef POSEGENERATOR_HPP_
 #define POSEGENERATOR_HPP_
 
-namespace rw {
-namespace graspplanning {
+namespace rw { namespace graspplanning {
 
-
-/**
- * @brief generates poses for grasping some object 
- * 
- */
-class PoseGenerator {
-    
     /**
-     * @brief constructor
+     * @brief generates poses for grasping some object
+     *
      */
-    PoseGenerator(const IndexedTriMesh& obj);
-    
-    /**
-     * @brief destructor
-     */
-    virtual ~PoseGenerator();
-    
-    /**
-     * @brief
-     */
-    Pose generatePoses(int nrOfPoses);
-    
-};
+    class PoseGenerator
+    {
+        /**
+         * @brief constructor
+         */
+        PoseGenerator(const IndexedTriMesh& obj);
 
-}
-}
+        /**
+         * @brief destructor
+         */
+        virtual ~PoseGenerator();
 
+        /**
+         * @brief
+         */
+        Pose generatePoses(int nrOfPoses);
+    };
+
+}}    // namespace rw::graspplanning
 
 #endif /*POSEGENERATOR_HPP_*/

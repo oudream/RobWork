@@ -30,7 +30,7 @@ namespace rw { namespace sensor {
     {
       public:
         //! @brief constructor
-        Contact3D () : normalForce (0.0), _faceIdx (0), _faceIdx2 (0), curvature (0.0), mu (0.6) {}
+        Contact3D() : normalForce(0.0), _faceIdx(0), _faceIdx2(0), curvature(0.0), mu(0.6) {}
 
         /**
          * @brief constructor
@@ -38,10 +38,9 @@ namespace rw { namespace sensor {
          * @param tn [in] contact normal
          * @param normalf [in] normal force in the contact
          */
-        Contact3D (rw::math::Vector3D<> tp, rw::math::Vector3D<> tn, double normalf) :
-            p (tp), n (tn), f (n * normalf), normalForce (normalf), _faceIdx (0), _faceIdx2 (0),
-            curvature (0.0), mu (0.6)
-        {}
+        Contact3D(rw::math::Vector3D<> tp, rw::math::Vector3D<> tn, double normalf) :
+            p(tp), n(tn), f(n * normalf), normalForce(normalf), _faceIdx(0), _faceIdx2(0),
+            curvature(0.0), mu(0.6) {}
 
         /**
          * @brief constructor
@@ -49,20 +48,19 @@ namespace rw { namespace sensor {
          * @param tn [in] contact normal
          * @param tf [in] force in the contact
          */
-        Contact3D (rw::math::Vector3D<> tp, rw::math::Vector3D<> tn, rw::math::Vector3D<> tf) :
-            p (tp), n (tn), f (tf), _faceIdx (0), _faceIdx2 (0), curvature (0.0), mu (0.6)
-        {
-            normalForce = dot (f, n);
+        Contact3D(rw::math::Vector3D<> tp, rw::math::Vector3D<> tn, rw::math::Vector3D<> tf) :
+            p(tp), n(tn), f(tf), _faceIdx(0), _faceIdx2(0), curvature(0.0), mu(0.6) {
+            normalForce = dot(f, n);
         }
 
         //! @brief Contact position
-        rw::math::Vector3D< double > p;
+        rw::math::Vector3D<double> p;
 
         //! @brief Surface contact normal
-        rw::math::Vector3D< double > n;
+        rw::math::Vector3D<double> n;
 
         //! @brief the actual force
-        rw::math::Vector3D< double > f;
+        rw::math::Vector3D<double> f;
 
         //! @brief normal force
         double normalForce;

@@ -26,7 +26,7 @@
 #include <rw/kinematics/Stateless.hpp>
 
 #include <string>
-#endif 
+#endif
 namespace rw { namespace kinematics {
     class Frame;
 }}    // namespace rw::kinematics
@@ -46,14 +46,14 @@ namespace rw { namespace models {
     {
       public:
         //! smart pointer type
-        typedef rw::core::Ptr< ControllerModel > Ptr;
+        typedef rw::core::Ptr<ControllerModel> Ptr;
 
         /**
          * @brief constructor
          * @param name [in] the name of this controllermodel
          * @param frame [in] the frame to which this controller is attached/associated.
          */
-        ControllerModel (const std::string& name, rw::core::Ptr<rw::kinematics::Frame> frame);
+        ControllerModel(const std::string& name, rw::core::Ptr<rw::kinematics::Frame> frame);
 
         /**
          * @brief constructor
@@ -61,59 +61,59 @@ namespace rw { namespace models {
          * @param frame [in] the frame to which this controller is attached/associated.
          * @param description [in] description of the controller
          */
-        ControllerModel (const std::string& name, rw::core::Ptr<rw::kinematics::Frame> frame,
-                         const std::string& description);
+        ControllerModel(const std::string& name, rw::core::Ptr<rw::kinematics::Frame> frame,
+                        const std::string& description);
 
         //! destructor
-        virtual ~ControllerModel () {}
+        virtual ~ControllerModel() {}
 
         /**
          * @brief sets the name of this controllermodel
          * @param name [in] name of this controllermodel
          */
-        void setName (const std::string& name) { _name = name; }
+        void setName(const std::string& name) { _name = name; }
 
         /**
          * @brief sets the description of this controllermodel
          * @param description [in] description of this controllermodel
          */
-        void setDescription (const std::string& description) { _description = description; }
+        void setDescription(const std::string& description) { _description = description; }
 
         /**
          * @brief returns the name of this controllermodel
          * @return name of controllermodel
          */
-        const std::string& getName () const { return _name; }
+        const std::string& getName() const { return _name; }
 
         /**
          * @brief returns a description of this controllermodel
          * @return reference to this controllermodels description
          */
-        const std::string& getDescription () const { return _description; }
+        const std::string& getDescription() const { return _description; }
 
         /**
          * @brief The frame to which the controllermodel is attached.
          *
          * The frame can be NULL.
          */
-        rw::kinematics::Frame* getFrame () const { return _frame.get(); }
+        rw::kinematics::Frame* getFrame() const { return _frame.get(); }
 
         /**
          * @brief Sets the frame to which the controllermodel should be attached
          *
          * @param frame The frame, which can be NULL
          */
-        virtual void attachTo (rw::core::Ptr<rw::kinematics::Frame> frame) { _frame = frame; }
+        virtual void attachTo(rw::core::Ptr<rw::kinematics::Frame> frame) { _frame = frame; }
 
         /**
          * @brief gets the propertymap of this controllermodel
          */
-        rw::core::PropertyMap& getPropertyMap () { return _propertyMap; }
+        rw::core::PropertyMap& getPropertyMap() { return _propertyMap; }
 
         /**
          * @brief gets the propertymap of this controllermodel
          */
-        const rw::core::PropertyMap& getPropertyMap () const { return _propertyMap; }
+        const rw::core::PropertyMap& getPropertyMap() const { return _propertyMap; }
 
       private:
         std::string _name;

@@ -44,59 +44,59 @@ class QPushButton;
 class SimUtilityPlugin : public rws::RobWorkStudioPlugin
 {
     Q_OBJECT
-    Q_INTERFACES (rws::RobWorkStudioPlugin)
-    Q_PLUGIN_METADATA (IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE
-                           "SimUtilityPlugin.json");
+    Q_INTERFACES(rws::RobWorkStudioPlugin)
+    Q_PLUGIN_METADATA(IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE
+                          "SimUtilityPlugin.json");
 
   public:
     /**
      * @brief constructor
      */
-    SimUtilityPlugin ();
+    SimUtilityPlugin();
 
     /**
      * @brief destructor
      */
-    virtual ~SimUtilityPlugin ();
+    virtual ~SimUtilityPlugin();
 
     /**
      * @copydoc rws::RobWorkStudioPlugin::open
      */
-    void open (rw::models::WorkCell* workcell);
+    void open(rw::models::WorkCell* workcell);
 
     /**
      * @copydoc rws::RobWorkStudioPlugin::close
      */
-    void close ();
+    void close();
 
     /**
      * @copydoc rws::RobWorkStudioPlugin::initialize
      */
-    void initialize ();
+    void initialize();
 
     /**
      * @brief we listen for events regarding opening and closing of dynamic
      * workcell
      */
-    void genericEventListener (const std::string& event);
+    void genericEventListener(const std::string& event);
 
   protected:
-    virtual void stateChangedHandler (RobWorkStudioPlugin* sender);
+    virtual void stateChangedHandler(RobWorkStudioPlugin* sender);
 
   private slots:
     /**
      * @brief
      */
-    void updateViewEvent ();
-    void stateChangedEvent (const rw::kinematics::State& state);
-    void btnPressed ();
-    void restConfigEvent (const RestingConfig& state);
+    void updateViewEvent();
+    void stateChangedEvent(const rw::kinematics::State& state);
+    void btnPressed();
+    void restConfigEvent(const RestingConfig& state);
 
   private:    // qt stuff
     QPushButton *_restPoseBtn, *_poseAnalyserBtn, *_toolEvalBtn, *_graspSelectBtn;
 
   private:
-    rw::core::Ptr< rwsim::dynamics::DynamicWorkCell > _dwc;
+    rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> _dwc;
     RestingPoseDialog* _restPoseDialog;
 
     SupportPoseAnalyserDialog* _poseAnalyserDialog;

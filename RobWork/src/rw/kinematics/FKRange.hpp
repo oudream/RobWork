@@ -62,39 +62,40 @@ namespace rw { namespace kinematics {
          *
          * @param state [in] The path structure.
          */
-        FKRange (rw::core::Ptr<const rw::kinematics::Frame> from, rw::core::Ptr<const rw::kinematics::Frame> to, const rw::kinematics::State& state);
+        FKRange(rw::core::Ptr<const rw::kinematics::Frame> from,
+                rw::core::Ptr<const rw::kinematics::Frame> to, const rw::kinematics::State& state);
 
         /**
          * @brief Default constructor
          *
          * Will always return an identity matrix as the transform
          */
-        FKRange ();
+        FKRange();
 
         /**
          * @brief The relative transform between the frames.
          *
          * @param state [in] Configuration values for the frames of the tree.
          */
-        rw::math::Transform3D<> get (const rw::kinematics::State& state) const;
+        rw::math::Transform3D<> get(const rw::kinematics::State& state) const;
 
         /**
          * @brief Returns the last frame in the range.
          *
          * @return The end frame (to).
          */
-        rw::core::Ptr< const rw::kinematics::Frame > getEnd () const;
+        rw::core::Ptr<const rw::kinematics::Frame> getEnd() const;
 
         /**
          * @brief Returns the first frame in the range.
          *
          * @return The base frame (from).
          */
-        rw::core::Ptr< const rw::kinematics::Frame > getBase () const;
+        rw::core::Ptr<const rw::kinematics::Frame> getBase() const;
 
       private:
-        std::vector< const Frame* > _inverseBranch;
-        std::vector< const Frame* > _forwardBranch;
+        std::vector<const Frame*> _inverseBranch;
+        std::vector<const Frame*> _forwardBranch;
     };
 
     /*@}*/

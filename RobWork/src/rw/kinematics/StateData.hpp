@@ -24,7 +24,6 @@
 #if !defined(SWIG)
 #include <rw/kinematics/State.hpp>
 #include <rw/kinematics/StateCache.hpp>
-
 #include <rw/kinematics/StateStructure.hpp>
 
 #include <string>
@@ -48,7 +47,7 @@ namespace rw { namespace kinematics {
         /**
          * @brief destructor
          */
-        virtual ~StateData ();
+        virtual ~StateData();
 
         /**
          * @brief An integer ID for the StateData.
@@ -63,14 +62,14 @@ namespace rw { namespace kinematics {
          *
          * @return An integer ID for the frame.
          */
-        inline int getID () const { return _id; }
+        inline int getID() const { return _id; }
 
         /**
          * @brief The name of the state data.
          *
          * @return The name of the state data.
          */
-        const std::string& getName () const { return _name; }
+        const std::string& getName() const { return _name; }
 
         /**
          * @brief The number of doubles allocated by this StateData in
@@ -78,7 +77,7 @@ namespace rw { namespace kinematics {
          *
          * @return The number of doubles allocated by the StateData
          */
-        inline int size () const { return _size; };
+        inline int size() const { return _size; };
 #if !defined(SWIG)
         // The StateData values.
         /**
@@ -91,13 +90,10 @@ namespace rw { namespace kinematics {
          *
          * @return The values for the frame.
          */
-        inline const double* getData (const rw::kinematics::State& state) const
-        {
-            if (_size == 0)
-                return NULL;    // stop early if we know size is 0
-            if (_id < 0)
-                RW_THROW ("StateData \"" << _name << "\" NOT initialized!");
-            return state.getQState ().getQ (*this);
+        inline const double* getData(const rw::kinematics::State& state) const {
+            if(_size == 0) return NULL;    // stop early if we know size is 0
+            if(_id < 0) RW_THROW("StateData \"" << _name << "\" NOT initialized!");
+            return state.getQState().getQ(*this);
         }
 
         /**
@@ -110,13 +106,10 @@ namespace rw { namespace kinematics {
          *
          * @return The values for the frame.
          */
-        inline double* getData (rw::kinematics::State& state)
-        {
-            if (_size == 0)
-                return NULL;    // stop early if we know size is 0
-            if (_id < 0)
-                RW_THROW ("StateData \"" << _name << "\" NOT initialized!");
-            return state.getQState ().getQ (*this);
+        inline double* getData(rw::kinematics::State& state) {
+            if(_size == 0) return NULL;    // stop early if we know size is 0
+            if(_id < 0) RW_THROW("StateData \"" << _name << "\" NOT initialized!");
+            return state.getQState().getQ(*this);
         }
 
         /**
@@ -137,13 +130,10 @@ namespace rw { namespace kinematics {
          *   q_in[i] == q_out[i];
          * \endcode
          */
-        inline void setData (rw::kinematics::State& state, const double* vals) const
-        {
-            if (_size == 0)
-                return;    // stop early if we know size is 0
-            if (_id < 0)
-                RW_THROW ("StateData \"" << _name << "\" NOT initialized!");
-            state.getQState ().setQ (*this, vals);
+        inline void setData(rw::kinematics::State& state, const double* vals) const {
+            if(_size == 0) return;    // stop early if we know size is 0
+            if(_id < 0) RW_THROW("StateData \"" << _name << "\" NOT initialized!");
+            state.getQState().setQ(*this, vals);
         }
 #endif
 
@@ -165,13 +155,10 @@ namespace rw { namespace kinematics {
          *   q_in[i] == q_out[i];
          * \endcode
          */
-        inline void setData (rw::kinematics::State& state, const std::vector< double >& vals) const
-        {
-            if (_size == 0)
-                return;    // stop early if we know size is 0
-            if (_id < 0)
-                RW_THROW ("StateData \"" << _name << "\" NOT initialized!");
-            state.getQState ().setQ (*this, vals.data ());
+        inline void setData(rw::kinematics::State& state, const std::vector<double>& vals) const {
+            if(_size == 0) return;    // stop early if we know size is 0
+            if(_id < 0) RW_THROW("StateData \"" << _name << "\" NOT initialized!");
+            state.getQState().setQ(*this, vals.data());
         }
 
         /**
@@ -192,20 +179,19 @@ namespace rw { namespace kinematics {
          *   q_in[i] == q_out[i];
          * \endcode
          */
-        inline void setData (rw::kinematics::State& state, const double& val) const
-        {
-            if (_size == 0)
-                return;    // stop early if we know size is 0
-            if (_id < 0)
-                RW_THROW ("StateData \"" << _name << "\" NOT initialized!");
-            state.getQState ().setQ (*this, &val);
+        inline void setData(rw::kinematics::State& state, const double& val) const {
+            if(_size == 0) return;    // stop early if we know size is 0
+            if(_id < 0) RW_THROW("StateData \"" << _name << "\" NOT initialized!");
+            state.getQState().setQ(*this, &val);
         }
 
         /**
          * @brief Check is state data includes a cache.
          * @return true if cache, false otherwise.
          */
-        inline bool hasCache () const { return _hasCache; }
+        inline bool hasCache() const {
+            return _hasCache;
+        }
 
         // StateData(int size, StateCache::Ptr defaultCache, const std::string& name);
 
@@ -214,33 +200,38 @@ namespace rw { namespace kinematics {
          * @param state [in] the state.
          * @return the cache.
          */
-        rw::core::Ptr< rw::kinematics::StateCache >
-        getCache (const rw::kinematics::State& state) const;
+        rw::core::Ptr<rw::kinematics::StateCache>
+        getCache(const rw::kinematics::State& state) const;
 
 #if !defined(SWIGPYTHON)
         //! @copydoc getCache(const State&) const .
-        rw::core::Ptr< rw::kinematics::StateCache > getCache (rw::kinematics::State& state);
+        rw::core::Ptr<rw::kinematics::StateCache> getCache(rw::kinematics::State& state);
 #endif
 
         /**
          * @brief Get default cache.
          * @return the cache.
          */
-        rw::core::Ptr< rw::kinematics::StateCache > getDefaultCache () { return _cache; }
+        rw::core::Ptr<rw::kinematics::StateCache> getDefaultCache() {
+            return _cache;
+        }
 
         /**
          * @brief Set the cache values.
          * @param cache [in] the cache.
          * @param state [in/out] state updated with new cache.
          */
-        void setCache (rw::core::Ptr< rw::kinematics::StateCache > cache,
-                       rw::kinematics::State& state);
+        void setCache(rw::core::Ptr<rw::kinematics::StateCache> cache,
+                      rw::kinematics::State& state);
 
         /**
          * @brief Get the state structure.
          * @return the state structure.
          */
-        class rw::kinematics::StateStructure* getStateStructure () { return _sstructure; };
+        class rw::kinematics::StateStructure* getStateStructure()
+        {
+            return _sstructure;
+        };
 
         /**
          * @brief Compares the state data to see if they are the same
@@ -249,7 +240,7 @@ namespace rw { namespace kinematics {
          * @return true if equal
          * @return false if not equal
          */
-        bool operator== (const StateData& rhs);
+        bool operator==(const StateData& rhs);
 
         /**
          * @brief Check if not equal
@@ -257,7 +248,9 @@ namespace rw { namespace kinematics {
          * @return true if not equal
          * @return false if equal
          */
-        bool operator!= (const StateData& rhs) { return !(*this == rhs); }
+        bool operator!=(const StateData& rhs) {
+            return !(*this == rhs);
+        }
 
       public:
         /**
@@ -276,14 +269,14 @@ namespace rw { namespace kinematics {
          *
          * @param name [in] The name of the frame.
          */
-        StateData (int size, const std::string& name);
+        StateData(int size, const std::string& name);
 
         /**
          * @copydoc StateData(int, const std::string&)
          * @param cache [in] a cache.
          */
-        StateData (int size, const std::string& name,
-                   rw::core::Ptr< rw::kinematics::StateCache > cache);
+        StateData(int size, const std::string& name,
+                  rw::core::Ptr<rw::kinematics::StateCache> cache);
 
       private:
         // The tree is responsible for the assignment of the IDs that are later
@@ -294,8 +287,7 @@ namespace rw { namespace kinematics {
         // Doxygen documentation.
         friend class StateStructure;
 
-        void setID (int id, class StateStructure* sstructure)
-        {
+        void setID(int id, class StateStructure* sstructure) {
             _id         = id;
             _sstructure = sstructure;
         }
@@ -317,12 +309,12 @@ namespace rw { namespace kinematics {
 
         bool _hasCache;
 
-        rw::core::Ptr< StateCache > _cache;
+        rw::core::Ptr<StateCache> _cache;
 
       private:
         // StateData should not be copied.
-        StateData (const StateData&);
-        StateData& operator= (const StateData&);
+        StateData(const StateData&);
+        StateData& operator=(const StateData&);
     };
     /*@}*/
 }}    // namespace rw::kinematics

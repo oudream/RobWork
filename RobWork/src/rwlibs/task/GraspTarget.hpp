@@ -8,10 +8,9 @@
 #ifndef SRC_RWLIBS_TASK_GRASPTARGET_HPP_
 #define SRC_RWLIBS_TASK_GRASPTARGET_HPP_
 
-#include <rwlibs/task/GraspResult.hpp>
-
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Transform3D.hpp>
+#include <rwlibs/task/GraspResult.hpp>
 
 namespace rwlibs { namespace task {
 
@@ -23,14 +22,13 @@ namespace rwlibs { namespace task {
     {
       public:
         /// Default constructor
-        GraspTarget () {}
+        GraspTarget() {}
 
         /// Construct target from the pose
-        GraspTarget (const rw::math::Transform3D<>& p) : pose (p) {}
+        GraspTarget(const rw::math::Transform3D<>& p) : pose(p) {}
 
         /// Copy constructor
-        GraspTarget (const GraspTarget& target)
-        {
+        GraspTarget(const GraspTarget& target) {
             pose   = target.pose;
             result = target.result;
         }
@@ -40,11 +38,8 @@ namespace rwlibs { namespace task {
          * @brief Returns result of the target
          * If target has not been evaluated yet, returns a new UnInitialized result.
          */
-        GraspResult::Ptr getResult ()
-        {
-            if (result == NULL) {
-                result = rw::core::ownedPtr (new GraspResult ());
-            }
+        GraspResult::Ptr getResult() {
+            if(result == NULL) { result = rw::core::ownedPtr(new GraspResult()); }
 
             return result;
         }

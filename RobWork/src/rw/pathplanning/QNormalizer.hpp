@@ -41,54 +41,52 @@ namespace rw { namespace pathplanning {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< QNormalizer > Ptr;
+        typedef rw::core::Ptr<QNormalizer> Ptr;
 
         /**
            @brief Convert from a normalized configuration to a real
            configuration.
         */
-        rw::math::Q fromNormalized (const rw::math::Q& q) const;
+        rw::math::Q fromNormalized(const rw::math::Q& q) const;
 
         /**
            @brief Convert a real configuration to a normalized configuration.
         */
-        rw::math::Q toNormalized (const rw::math::Q& q) const;
+        rw::math::Q toNormalized(const rw::math::Q& q) const;
 
         /**
            @brief Convert from a normalized configuration to a real
            configuration and assign the real configuration to \b q.
         */
-        void setFromNormalized (rw::math::Q& q) const;
+        void setFromNormalized(rw::math::Q& q) const;
 
         /**
            @brief Convert a real configuration to a normalized configuration and
            write the normalized configuration to \b q.
         */
-        void setToNormalized (rw::math::Q& q) const;
+        void setToNormalized(rw::math::Q& q) const;
 
         /**
            @brief The box of the configuration space with respect to which
            normalization is done.
         */
-        const std::pair< rw::math::Q, rw::math::Q >& getBounds () const { return _bounds; }
+        const std::pair<rw::math::Q, rw::math::Q>& getBounds() const { return _bounds; }
 
         /**
            @brief Normalizer for the configuration space box given by \b bounds.
         */
-        explicit QNormalizer (const std::pair< rw::math::Q, rw::math::Q >& bounds) :
-            _bounds (bounds)
-        {}
+        explicit QNormalizer(const std::pair<rw::math::Q, rw::math::Q>& bounds) : _bounds(bounds) {}
 
         /**
            @brief Normalizer for the already normalized configuration space box.
         */
-        static QNormalizer identity () { return QNormalizer (); }
+        static QNormalizer identity() { return QNormalizer(); }
 
       private:
-        QNormalizer () {}
+        QNormalizer() {}
 
       private:
-        std::pair< rw::math::Q, rw::math::Q > _bounds;
+        std::pair<rw::math::Q, rw::math::Q> _bounds;
     };
 
     /* @} */

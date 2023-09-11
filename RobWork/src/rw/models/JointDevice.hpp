@@ -26,7 +26,7 @@
 #include <rw/models/JacobianCalculator.hpp>
 
 #include <vector>
-#endif 
+#endif
 namespace rw { namespace models {
 
     class Joint;
@@ -52,9 +52,9 @@ namespace rw { namespace models {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< JointDevice > Ptr;
+        typedef rw::core::Ptr<JointDevice> Ptr;
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< const JointDevice > CPtr;
+        typedef rw::core::Ptr<const JointDevice> CPtr;
 
         /**
          * @brief Construct the device for a sequence of joints.
@@ -65,8 +65,10 @@ namespace rw { namespace models {
          * @param state [in] the state that shows how frames are connected as
                 needed for the computation of Jacobians.
          */
-        JointDevice (const std::string& name, rw::core::Ptr<rw::kinematics::Frame> base, rw::core::Ptr<rw::kinematics::Frame> end,
-                     const std::vector< rw::models::Joint* >& joints, const rw::kinematics::State& state);
+        JointDevice(const std::string& name, rw::core::Ptr<rw::kinematics::Frame> base,
+                    rw::core::Ptr<rw::kinematics::Frame> end,
+                    const std::vector<rw::models::Joint*>& joints,
+                    const rw::kinematics::State& state);
 
         //! @brief destructor
         virtual ~JointDevice() {}
@@ -74,64 +76,65 @@ namespace rw { namespace models {
          * @brief Get all joints of this device
          * @return all joints
          */
-        const std::vector< rw::models::Joint* >& getJoints () const { return _joints; }
+        const std::vector<rw::models::Joint*>& getJoints() const { return _joints; }
 
         // Everything below are methods of Device.
 
         /** @copydoc Device::setQ */
-        void setQ (const rw::math::Q& q, rw::kinematics::State& state) const;
+        void setQ(const rw::math::Q& q, rw::kinematics::State& state) const;
 
         /** @copydoc Device::getQ */
-        rw::math::Q getQ (const rw::kinematics::State& state) const;
+        rw::math::Q getQ(const rw::kinematics::State& state) const;
 
         /** @copydoc Device::getDOF */
-        size_t getDOF () const;
+        size_t getDOF() const;
 
         /** @copydoc Device::getBounds */
-        std::pair< rw::math::Q, rw::math::Q > getBounds () const;
+        std::pair<rw::math::Q, rw::math::Q> getBounds() const;
 
         /** @copydoc Device::setBounds */
-        void setBounds (const std::pair< rw::math::Q, rw::math::Q >& bounds);
+        void setBounds(const std::pair<rw::math::Q, rw::math::Q>& bounds);
 
         /** @copydoc Device::getVelocityLimits */
-        rw::math::Q getVelocityLimits () const;
+        rw::math::Q getVelocityLimits() const;
 
         /** @copydoc Device::setVelocityLimits */
-        void setVelocityLimits (const rw::math::Q& vellimits);
+        void setVelocityLimits(const rw::math::Q& vellimits);
 
         /** @copydoc Device::getAccelerationLimits */
-        rw::math::Q getAccelerationLimits () const;
+        rw::math::Q getAccelerationLimits() const;
 
         /** @copydoc Device::setAccelerationLimits */
-        void setAccelerationLimits (const rw::math::Q& acclimits);
+        void setAccelerationLimits(const rw::math::Q& acclimits);
 
         /** @copydoc Device::baseJend */
-        rw::math::Jacobian baseJend (const rw::kinematics::State& state) const;
+        rw::math::Jacobian baseJend(const rw::kinematics::State& state) const;
 
         /** @copydoc Device::baseJCframes */
-       rw::core::Ptr< rw::models::JacobianCalculator > baseJCframes (const std::vector< rw::kinematics::Frame* >& frames,
-                                              const rw::kinematics::State& state) const;
+        rw::core::Ptr<rw::models::JacobianCalculator>
+        baseJCframes(const std::vector<rw::kinematics::Frame*>& frames,
+                     const rw::kinematics::State& state) const;
 
         /** @copydoc Device::getBase */
-        rw::kinematics::Frame* getBase () { return _base.get(); }
+        rw::kinematics::Frame* getBase() { return _base.get(); }
 
         /** @copydoc Device::getBase */
-        const rw::kinematics::Frame* getBase () const { return _base.get(); }
+        const rw::kinematics::Frame* getBase() const { return _base.get(); }
 
         /** @copydoc Device::getEnd() */
-        virtual rw::kinematics::Frame* getEnd () { return _end.get(); }
+        virtual rw::kinematics::Frame* getEnd() { return _end.get(); }
 
         /** @copydoc Device::getEnd */
-        virtual const rw::kinematics::Frame* getEnd () const { return _end.get(); }
+        virtual const rw::kinematics::Frame* getEnd() const { return _end.get(); }
 
       private:
         rw::core::Ptr<rw::kinematics::Frame> _base;
         rw::core::Ptr<rw::kinematics::Frame> _end;
 
-        std::vector< rw::models::Joint* > _joints;
+        std::vector<rw::models::Joint*> _joints;
         size_t _dof;
 
-       rw::core::Ptr< rw::models::JacobianCalculator >_baseJCend;
+        rw::core::Ptr<rw::models::JacobianCalculator> _baseJCend;
     };
 
     /*@}*/

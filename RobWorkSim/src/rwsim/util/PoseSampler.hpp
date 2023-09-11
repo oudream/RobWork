@@ -14,9 +14,9 @@
 class PoseSampler
 {
   public:
-    typedef rw::core::Ptr< PoseSampler > Ptr;
+    typedef rw::core::Ptr<PoseSampler> Ptr;
 
-    virtual rw::math::Transform3D<> sample () = 0;
+    virtual rw::math::Transform3D<> sample() = 0;
 };
 
 #endif /* POSESAMPLER_HPP_ */

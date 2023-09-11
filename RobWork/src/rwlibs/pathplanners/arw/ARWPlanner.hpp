@@ -22,11 +22,10 @@
    @file ARWPlanner.hpp
 */
 
-#include <rwlibs/pathplanners/arw/ARWExpand.hpp>
-
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Metric.hpp>
 #include <rw/pathplanning/QToQPlanner.hpp>
+#include <rwlibs/pathplanners/arw/ARWExpand.hpp>
 
 namespace rw { namespace models {
     class Device;
@@ -52,7 +51,7 @@ namespace rwlibs { namespace pathplanners {
     class ARWPlanner
     {
       public:
-        typedef rw::core::Ptr< ARWPlanner > Ptr;
+        typedef rw::core::Ptr<ARWPlanner> Ptr;
         /**
            @brief ARW based point-to-point planner.
 
@@ -71,8 +70,8 @@ namespace rwlibs { namespace pathplanners {
            @param nearDistance [in] Threshold for distance to goal node.
         */
         static rw::pathplanning::QToQPlanner::Ptr
-        makeQToQPlanner (const rw::pathplanning::PlannerConstraint& constraint,
-                         ARWExpand::Ptr expand, rw::math::QMetric::Ptr metric, double nearDistance);
+        makeQToQPlanner(const rw::pathplanning::PlannerConstraint& constraint,
+                        ARWExpand::Ptr expand, rw::math::QMetric::Ptr metric, double nearDistance);
 
         /**
            @brief ARW based point-to-point planner.
@@ -99,15 +98,15 @@ namespace rwlibs { namespace pathplanners {
            is negative, a default value for the parameter is chosen.
         */
         static rw::pathplanning::QToQPlanner::Ptr
-        makeQToQPlanner (const rw::pathplanning::PlannerConstraint& constraint,
-                         rw::core::Ptr< rw::models::Device > device,
-                         rw::math::QMetric::Ptr metric = NULL, double nearDistance = -1,
-                         int historySize = -1);
+        makeQToQPlanner(const rw::pathplanning::PlannerConstraint& constraint,
+                        rw::core::Ptr<rw::models::Device> device,
+                        rw::math::QMetric::Ptr metric = NULL, double nearDistance = -1,
+                        int historySize = -1);
 
       private:
-        ARWPlanner ();
-        ARWPlanner (const ARWPlanner&);
-        ARWPlanner& operator= (const ARWPlanner&);
+        ARWPlanner();
+        ARWPlanner(const ARWPlanner&);
+        ARWPlanner& operator=(const ARWPlanner&);
     };
 
     /*\}*/

@@ -58,61 +58,60 @@ namespace rwsimlibs { namespace gui {
          * @param parent [in] (optional) the parent Qt widget.
          * Ownership is shared by the caller and the parent widget if given.
          */
-        DistanceResultWidget (rw::core::Ptr< const rwsim::log::LogDistanceResult > entry,
-                              QWidget* parent = 0);
+        DistanceResultWidget(rw::core::Ptr<const rwsim::log::LogDistanceResult> entry,
+                             QWidget* parent = 0);
 
         //! @brief Destructor.
-        virtual ~DistanceResultWidget ();
+        virtual ~DistanceResultWidget();
 
         //! @copydoc SimulatorLogEntryWidget::setDWC
-        virtual void setDWC (rw::core::Ptr< const rwsim::dynamics::DynamicWorkCell > dwc);
+        virtual void setDWC(rw::core::Ptr<const rwsim::dynamics::DynamicWorkCell> dwc);
 
         //! @copydoc SimulatorLogEntryWidget::setEntry
-        virtual void setEntry (rw::core::Ptr< const rwsim::log::SimulatorLog > entry);
+        virtual void setEntry(rw::core::Ptr<const rwsim::log::SimulatorLog> entry);
 
         //! @copydoc SimulatorLogEntryWidget::getEntry
         virtual rw::core::Ptr<const rwsim::log::SimulatorLog> getEntry() const;
 
         //! @copydoc SimulatorLogEntryWidget::updateEntryWidget
-        virtual void updateEntryWidget ();
+        virtual void updateEntryWidget();
 
         //! @copydoc SimulatorLogEntryWidget::showGraphics
-        virtual void showGraphics (rw::core::Ptr< rw::graphics::GroupNode > root,
-                                   rw::core::Ptr< rw::graphics::SceneGraph > graph);
+        virtual void showGraphics(rw::core::Ptr<rw::graphics::GroupNode> root,
+                                  rw::core::Ptr<rw::graphics::SceneGraph> graph);
 
         //! @copydoc SimulatorLogEntryWidget::getName
-        virtual std::string getName () const;
+        virtual std::string getName() const;
 
         //! @copydoc SimulatorLogEntryWidget::Dispatcher
         class Dispatcher : public SimulatorLogEntryWidget::Dispatcher
         {
           public:
             //! @brief Constructor.
-            Dispatcher ();
+            Dispatcher();
 
             //! @brief Destructor.
-            virtual ~Dispatcher ();
+            virtual ~Dispatcher();
 
             //! @copydoc SimulatorLogEntryWidget::Dispatcher::makeWidget
-            SimulatorLogEntryWidget*
-            makeWidget (rw::core::Ptr< const rwsim::log::SimulatorLog > entry,
-                        QWidget* parent = 0) const;
+            SimulatorLogEntryWidget* makeWidget(rw::core::Ptr<const rwsim::log::SimulatorLog> entry,
+                                                QWidget* parent = 0) const;
 
             //! @copydoc SimulatorLogEntryWidget::Dispatcher::accepts
-            bool accepts (rw::core::Ptr< const rwsim::log::SimulatorLog > entry) const;
+            bool accepts(rw::core::Ptr<const rwsim::log::SimulatorLog> entry) const;
         };
 
       private slots:
-        void framePairsChanged (const QItemSelection& newSelection,
-                                const QItemSelection& oldSelection);
+        void framePairsChanged(const QItemSelection& newSelection,
+                               const QItemSelection& oldSelection);
 
       private:
         Ui::DistanceResultWidget* const _ui;
-        rw::core::Ptr< const rwsim::dynamics::DynamicWorkCell > _dwc;
-        rw::core::Ptr< const rwsim::log::LogPositions > _positions;
-        rw::core::Ptr< const rwsim::log::LogDistanceResult > _result;
-        rw::core::Ptr< rw::graphics::GroupNode > _root;
-        rw::core::Ptr< rw::graphics::SceneGraph > _graph;
+        rw::core::Ptr<const rwsim::dynamics::DynamicWorkCell> _dwc;
+        rw::core::Ptr<const rwsim::log::LogPositions> _positions;
+        rw::core::Ptr<const rwsim::log::LogDistanceResult> _result;
+        rw::core::Ptr<rw::graphics::GroupNode> _root;
+        rw::core::Ptr<rw::graphics::SceneGraph> _graph;
     };
     //! @}
 

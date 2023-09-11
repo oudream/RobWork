@@ -33,66 +33,59 @@ using namespace rw::trajectory;
 using namespace rw::proximity;
 using namespace rw::pathplanning;
 
-PathAnalyzer::PathAnalyzer (const Device::CPtr& device, const State& state) :
-    _device (device), _state (state)
-{}
+PathAnalyzer::PathAnalyzer(const Device::CPtr& device, const State& state) :
+    _device(device), _state(state) {}
 
-PathAnalyzer::~PathAnalyzer ()
-{}
+PathAnalyzer::~PathAnalyzer() {}
 
-PathAnalyzer::JointSpaceAnalysis PathAnalyzer::analyzeJointSpace (const QPath& path,
-                                                                  QMetric::Ptr metric) const
-{
+PathAnalyzer::JointSpaceAnalysis PathAnalyzer::analyzeJointSpace(const QPath& path,
+                                                                 QMetric::Ptr metric) const {
     JointSpaceAnalysis analysis;
-    analysis.nodecount = (double) path.size ();
+    analysis.nodecount = (double) path.size();
 
-    EuclideanMetric< Q > euMetric;
-    if (!metric)
-        metric = &euMetric;
+    EuclideanMetric<Q> euMetric;
+    if(!metric) metric = &euMetric;
 
-    analysis.length = pathLength (path.begin (), path.end (), *metric);
+    analysis.length = pathLength(path.begin(), path.end(), *metric);
 
     return analysis;
 }
 
-PathAnalyzer::CartesianAnalysis PathAnalyzer::analyzeCartesian (const QPath& path,
-                                                                const rw::core::Ptr<Frame> frame)
-{
+PathAnalyzer::CartesianAnalysis PathAnalyzer::analyzeCartesian(const QPath& path,
+                                                               const rw::core::Ptr<Frame> frame) {
     CartesianAnalysis analysis;
-    if (path.size () < 1)
-        return analysis;
+    if(path.size() < 1) return analysis;
 
-    FKRange fkrange (_device->getBase (), frame, _state);
-    _device->setQ (path.front (), _state);
-    Transform3D<> preTransform = fkrange.get (_state);
-    analysis.lower             = preTransform.P ();
-    analysis.upper             = preTransform.P ();
-    QPath::const_iterator it   = path.begin ();
-    for (++it; it != path.end (); ++it) {
-        _device->setQ (*it, _state);
-        Transform3D<> transform = fkrange.get (_state);
-        analysis.length += MetricUtil::dist2 (preTransform.P (), transform.P ());
-        analysis.distances += Math::abs (preTransform.P () - transform.P ());
-        analysis.lower = Math::min (analysis.lower, transform.P ());
-        analysis.upper = Math::max (analysis.upper, transform.P ());
+    FKRange fkrange(_device->getBase(), frame, _state);
+    _device->setQ(path.front(), _state);
+    Transform3D<> preTransform = fkrange.get(_state);
+    analysis.lower             = preTransform.P();
+    analysis.upper             = preTransform.P();
+    QPath::const_iterator it   = path.begin();
+    for(++it; it != path.end(); ++it) {
+        _device->setQ(*it, _state);
+        Transform3D<> transform = fkrange.get(_state);
+        analysis.length += MetricUtil::dist2(preTransform.P(), transform.P());
+        analysis.distances += Math::abs(preTransform.P() - transform.P());
+        analysis.lower = Math::min(analysis.lower, transform.P());
+        analysis.upper = Math::max(analysis.upper, transform.P());
         preTransform   = transform;
     }
     return analysis;
 }
 
-PathAnalyzer::TimeAnalysis PathAnalyzer::analyzeTime (const QPath& path) const
-{
+PathAnalyzer::TimeAnalysis PathAnalyzer::analyzeTime(const QPath& path) const {
     TimeAnalysis analysis;
-    Q vellimits = _device->getVelocityLimits ();
+    Q vellimits = _device->getVelocityLimits();
 
-    QPath::const_iterator it1 = path.begin ();
+    QPath::const_iterator it1 = path.begin();
     QPath::const_iterator it2 = it1;
     it2++;
-    for (; it2 != path.end (); ++it1, ++it2) {
+    for(; it2 != path.end(); ++it1, ++it2) {
         Q delta        = (*it2) - (*it1);
         double maxtime = 0;
-        for (size_t i = 0; i < delta.size (); i++) {
-            maxtime = std::max (maxtime, delta (i) / vellimits (i));
+        for(size_t i = 0; i < delta.size(); i++) {
+            maxtime = std::max(maxtime, delta(i) / vellimits(i));
         }
         analysis.time1 += maxtime;
     }
@@ -103,19 +96,18 @@ PathAnalyzer::TimeAnalysis PathAnalyzer::analyzeTime (const QPath& path) const
 }
 
 PathAnalyzer::ClearanceAnalysis
-PathAnalyzer::analyzeClearance (const QPath& path,
-                                const rw::proximity::DistanceCalculator::CPtr& distanceCalculator)
-{
+PathAnalyzer::analyzeClearance(const QPath& path,
+                               const rw::proximity::DistanceCalculator::CPtr& distanceCalculator) {
     ClearanceAnalysis analysis;
     analysis.average = 0;
-    analysis.min     = std::numeric_limits< double >::max ();
+    analysis.min     = std::numeric_limits<double>::max();
 
-    for (QPath::const_iterator it = path.begin ()++; it != path.end ()--; ++it) {
-        _device->setQ (*it, _state);
-        DistanceStrategy::Result result = distanceCalculator->distance (_state);
+    for(QPath::const_iterator it = path.begin()++; it != path.end()--; ++it) {
+        _device->setQ(*it, _state);
+        DistanceStrategy::Result result = distanceCalculator->distance(_state);
         analysis.average += result.distance;
-        analysis.min = std::min (analysis.min, result.distance);
+        analysis.min = std::min(analysis.min, result.distance);
     }
-    analysis.average /= path.size ();
+    analysis.average /= path.size();
     return analysis;
 }

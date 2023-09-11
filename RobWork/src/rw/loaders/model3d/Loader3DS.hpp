@@ -20,9 +20,8 @@
 
 //! @file Loader3DS.hpp
 
-#include <rw/loaders/Model3DLoader.hpp>
-
 #include <rw/graphics/Model3D.hpp>
+#include <rw/loaders/Model3DLoader.hpp>
 
 #include <string>
 
@@ -40,18 +39,18 @@ namespace rw { namespace loaders {
         /**
          * @brief constructor
          */
-        Loader3DS (){};
+        Loader3DS(){};
 
         /**
          * @brief destructor
          */
-        virtual ~Loader3DS (){};
+        virtual ~Loader3DS(){};
 
         //! @copydoc Model3DLoader::load
-        rw::graphics::Model3D::Ptr load (const std::string& filename);    // Loads a model
+        rw::graphics::Model3D::Ptr load(const std::string& filename);    // Loads a model
 
         //! @copydoc Model3DLoader::getModelFormats
-        std::vector< std::string > getModelFormats () {return {".3DS"};}
+        std::vector<std::string> getModelFormats() { return {".3DS"}; }
 
       private:
         std::string _path;    // The path of the model

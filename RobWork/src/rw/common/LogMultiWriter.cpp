@@ -20,36 +20,24 @@
 using namespace rw::common;
 using namespace rw::core;
 
-LogMultiWriter::LogMultiWriter ()
-{}
+LogMultiWriter::LogMultiWriter() {}
 
-LogMultiWriter::~LogMultiWriter ()
-{
-    flush ();
+LogMultiWriter::~LogMultiWriter() {
+    flush();
 }
 
-void LogMultiWriter::addWriter (LogWriter::Ptr writer)
-{
-    _writers.push_back (writer);
+void LogMultiWriter::addWriter(LogWriter::Ptr writer) {
+    _writers.push_back(writer);
 }
 
-void LogMultiWriter::doWrite (const std::string& str)
-{
-    for (LogWriter::Ptr writer : _writers) {
-        writer->write (str);
-    }
+void LogMultiWriter::doWrite(const std::string& str) {
+    for(LogWriter::Ptr writer : _writers) { writer->write(str); }
 }
 
-void LogMultiWriter::doFlush ()
-{
-    for (LogWriter::Ptr writer : _writers) {
-        writer->flush ();
-    }
+void LogMultiWriter::doFlush() {
+    for(LogWriter::Ptr writer : _writers) { writer->flush(); }
 }
 
-void LogMultiWriter::doSetTabLevel (int tabLevel)
-{
-    for (LogWriter::Ptr writer : _writers) {
-        writer->setTabLevel (tabLevel);
-    }
+void LogMultiWriter::doSetTabLevel(int tabLevel) {
+    for(LogWriter::Ptr writer : _writers) { writer->setTabLevel(tabLevel); }
 }

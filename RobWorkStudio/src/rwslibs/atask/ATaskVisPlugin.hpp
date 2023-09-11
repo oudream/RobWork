@@ -84,48 +84,48 @@ namespace rwslibs {
 class ATaskVisPlugin : public rws::RobWorkStudioPlugin, private Ui::ATaskVisPlugin
 {
     Q_OBJECT
-    Q_INTERFACES (rws::RobWorkStudioPlugin)
-    Q_PLUGIN_METADATA (IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "plugin.json")
+    Q_INTERFACES(rws::RobWorkStudioPlugin)
+    Q_PLUGIN_METADATA(IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "plugin.json")
   public:
     //! @brief Constructor
-    ATaskVisPlugin ();
+    ATaskVisPlugin();
 
     //! @brief Destructor
-    virtual ~ATaskVisPlugin ();
+    virtual ~ATaskVisPlugin();
 
     //! @copydoc rws::RobWorkStudioPlugin::open
-    virtual void open (rw::models::WorkCell* workcell);
+    virtual void open(rw::models::WorkCell* workcell);
 
     //! @brief When the RobWorkStudio instance is valid, the ATaskVisPlugin will subscribe to events
     //! received from the PlayBack plugin.
-    virtual void initialize ();
+    virtual void initialize();
 
   private:
-    void genericAnyEventListener (const std::string& event, boost::any data);
+    void genericAnyEventListener(const std::string& event, boost::any data);
 
   private Q_SLOTS:
-    void btnPressed ();
+    void btnPressed();
 
   private:
-    void loadTasks ();
-    void loadResults ();
-    void selectTask (std::size_t i);
-    void selectResult (std::size_t i);
-    void constructPlayback ();
-    rw::core::PropertyMap& settings ();
+    void loadTasks();
+    void loadResults();
+    void selectTask(std::size_t i);
+    void selectResult(std::size_t i);
+    void constructPlayback();
+    rw::core::PropertyMap& settings();
 
   private:
     rw::models::WorkCell* _wc;
     PropertyViewEditor* _editor;
-    std::vector< rw::core::Ptr< rwlibs::assembly::AssemblyTask > > _tasks;
-    std::vector< rw::core::Ptr< rwlibs::assembly::AssemblyResult > > _results;
-    rw::core::Ptr< rwlibs::assembly::AssemblyTask > _currentTask;
-    rw::core::Ptr< rwlibs::assembly::AssemblyResult > _currentResult;
+    std::vector<rw::core::Ptr<rwlibs::assembly::AssemblyTask>> _tasks;
+    std::vector<rw::core::Ptr<rwlibs::assembly::AssemblyResult>> _results;
+    rw::core::Ptr<rwlibs::assembly::AssemblyTask> _currentTask;
+    rw::core::Ptr<rwlibs::assembly::AssemblyResult> _currentResult;
     bool _showReal;
-    rw::core::Ptr< rwlibs::opengl::RenderForceTorque > _maleFTrender;
-    rw::core::Ptr< rwlibs::opengl::RenderForceTorque > _femaleFTrender;
-    rw::core::Ptr< rwlibs::opengl::RenderPointCloud > _contactPointRender;
-    rw::core::Ptr< rwlibs::opengl::RenderLines > _contactNormalRender;
+    rw::core::Ptr<rwlibs::opengl::RenderForceTorque> _maleFTrender;
+    rw::core::Ptr<rwlibs::opengl::RenderForceTorque> _femaleFTrender;
+    rw::core::Ptr<rwlibs::opengl::RenderPointCloud> _contactPointRender;
+    rw::core::Ptr<rwlibs::opengl::RenderLines> _contactNormalRender;
 };
 //! @}
 } /* namespace rwslibs */

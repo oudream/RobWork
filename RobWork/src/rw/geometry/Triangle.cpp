@@ -17,10 +17,10 @@
 
 #include "Triangle.hpp"
 
-template class rw::geometry::Triangle< double >;
-template class rw::geometry::TriangleN1< double >;
-template class rw::geometry::TriangleN3< double >;
+template class rw::geometry::Triangle<double>;
+template class rw::geometry::TriangleN1<double>;
+template class rw::geometry::TriangleN3<double>;
 
-template class rw::geometry::Triangle< float >;
-template class rw::geometry::TriangleN1< float >;
-template class rw::geometry::TriangleN3< float >;
+template class rw::geometry::Triangle<float>;
+template class rw::geometry::TriangleN1<float>;
+template class rw::geometry::TriangleN3<float>;

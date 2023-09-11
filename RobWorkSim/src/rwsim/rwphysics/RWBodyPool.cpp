@@ -9,41 +9,37 @@
 
 using namespace rwsim::simulator;
 
-RWBodyPool::RWBodyPool (int nrBodies) : _bodies (nrBodies)
-{
+RWBodyPool::RWBodyPool(int nrBodies) : _bodies(nrBodies) {
     // add all bodes to the free list
-    for (int i = nrBodies - 1; i >= 0; i--) {
-        _bodies[i] = new RWBody (i);
-        _freeBodyIDs.push (i);
+    for(int i = nrBodies - 1; i >= 0; i--) {
+        _bodies[i] = new RWBody(i);
+        _freeBodyIDs.push(i);
     }
 }
 
-RWBody* RWBodyPool::createBody (RWBody::BodyType type)
-{
+RWBody* RWBodyPool::createBody(RWBody::BodyType type) {
     RWBody* body;
-    if (_freeBodyIDs.empty ()) {
+    if(_freeBodyIDs.empty()) {
         // we need to add a new body to the body vector
-        body = new RWBody ((int) _bodies.size ());
-        _bodies.push_back (body);
+        body = new RWBody((int) _bodies.size());
+        _bodies.push_back(body);
         return body;
     }
     // else
-    int idx = _freeBodyIDs.top ();
-    _freeBodyIDs.pop ();
+    int idx = _freeBodyIDs.top();
+    _freeBodyIDs.pop();
     body = _bodies[idx];
-    body->setType (type);
+    body->setType(type);
     return body;
 }
 
-void RWBodyPool::deleteBody (RWBody* body)
-{
+void RWBodyPool::deleteBody(RWBody* body) {
     // todo: check if body is allready deleted
-    int bidx = body->getId ();
-    RW_ASSERT (0 <= bidx && bidx < (int) _bodies.size ());
-    _freeBodyIDs.push (bidx);
+    int bidx = body->getId();
+    RW_ASSERT(0 <= bidx && bidx < (int) _bodies.size());
+    _freeBodyIDs.push(bidx);
 }
 
-const RWBodyList& RWBodyPool::getBodies () const
-{
+const RWBodyList& RWBodyPool::getBodies() const {
     return _bodies;
 }

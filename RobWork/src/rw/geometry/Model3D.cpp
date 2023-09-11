@@ -123,7 +123,9 @@ rw::geometry::GeometryData::Ptr Model3D::toGeometryData() {
         Transform3D<double> t3d  = objects.front().second * cast<double>(obj->_transform);
         objects.pop_front();
 
-        for(Object3DGeneric::Ptr child : obj->_kids) { objects.push_back(std::make_pair(child, t3d)); }
+        for(Object3DGeneric::Ptr child : obj->_kids) {
+            objects.push_back(std::make_pair(child, t3d));
+        }
 
         SimpleTriMesh obj_s(obj.cast<TriMesh>());
         obj_s *= t3d;

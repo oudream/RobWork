@@ -50,49 +50,48 @@ namespace rwsim { namespace util {
          * @brief constructor
          * @return
          */
-        PlanarSupportPoseGenerator ();
+        PlanarSupportPoseGenerator();
 
         /**
          * @brief constructor - a convex hull generator can be supplied
          * @param hullGenerator
          * @return
          */
-        PlanarSupportPoseGenerator (rw::core::Ptr< rw::geometry::ConvexHull3D > hullGenerator);
+        PlanarSupportPoseGenerator(rw::core::Ptr<rw::geometry::ConvexHull3D> hullGenerator);
 
         /**
          * @brief calculates the hull and the support poses.
          * @param mesh
          */
-        void analyze (const rw::geometry::TriMesh& mesh);
+        void analyze(const rw::geometry::TriMesh& mesh);
 
-        void analyze (const std::vector< rw::core::Ptr< rw::geometry::Geometry > >& bodies,
-                      rw::kinematics::Frame* ref, const rw::kinematics::State& state);
+        void analyze(const std::vector<rw::core::Ptr<rw::geometry::Geometry>>& bodies,
+                     rw::kinematics::Frame* ref, const rw::kinematics::State& state);
 
-        void calculateDistribution (int i, std::vector< rw::math::Transform3D<> >& poses,
-                                    std::vector< rw::math::Transform3D<> >& posesMises);
+        void calculateDistribution(int i, std::vector<rw::math::Transform3D<>>& poses,
+                                   std::vector<rw::math::Transform3D<>>& posesMises);
         /**
          * @brief gets the previously calculated support poses.
          * @return
          */
-        std::vector< SupportPose > getSupportPoses ();
+        std::vector<SupportPose> getSupportPoses();
 
       private:
-        void doAnalysis ();
+        void doAnalysis();
 
-        bool isInside (const rw::math::Vector3D<>& v, size_t i);
+        bool isInside(const rw::math::Vector3D<>& v, size_t i);
 
-        void cleanup ()
-        {
-            _supportTriangles.clear ();
-            _supportPoses.clear ();
-            _supportPlanes.clear ();
+        void cleanup() {
+            _supportTriangles.clear();
+            _supportPoses.clear();
+            _supportPlanes.clear();
         }
 
       private:
-        rw::core::Ptr< rw::geometry::ConvexHull3D > _hullGenerator;
-        std::vector< SupportPose > _supportPoses;
-        std::vector< rw::geometry::Plane > _supportPlanes;
-        std::vector< std::vector< rw::geometry::TriangleN1<double> > > _supportTriangles;
+        rw::core::Ptr<rw::geometry::ConvexHull3D> _hullGenerator;
+        std::vector<SupportPose> _supportPoses;
+        std::vector<rw::geometry::Plane> _supportPlanes;
+        std::vector<std::vector<rw::geometry::TriangleN1<double>>> _supportTriangles;
         rw::math::Vector3D<> _com;
     };
 

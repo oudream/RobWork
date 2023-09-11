@@ -34,14 +34,12 @@ using namespace rwlibs::pathplanners;
 //----------------------------------------------------------------------
 // Methods on ARWExpand
 
-bool ARWExpand::expand ()
-{
-    return doExpand ();
+bool ARWExpand::expand() {
+    return doExpand();
 }
 
-ARWExpand::Ptr ARWExpand::duplicate (const Q& start) const
-{
-    return doDuplicate (start);
+ARWExpand::Ptr ARWExpand::duplicate(const Q& start) const {
+    return doDuplicate(start);
 }
 
 //----------------------------------------------------------------------
@@ -49,88 +47,73 @@ ARWExpand::Ptr ARWExpand::duplicate (const Q& start) const
 
 namespace {
 // The recommended variances to use for 'bounds'.
-Q makeMinVariances (const Device::QBox& bounds)
-{
+Q makeMinVariances(const Device::QBox& bounds) {
     const Q diff      = bounds.second - bounds.first;
     const Q deviation = (1.0 / 6) * diff;
-    return Math::sqr (deviation);
+    return Math::sqr(deviation);
 }
 
 // The sample variances for each dimension of the latest 'historySize'
 // samples.
-Q variance (const QPath& path, int historySize)
-{
-    RW_ASSERT (path.size () >= 2);
+Q variance(const QPath& path, int historySize) {
+    RW_ASSERT(path.size() >= 2);
 
-    Q sum_squares  = Q::zero (path.front ().size ());
+    Q sum_squares  = Q::zero(path.front().size());
     Q sum_elements = sum_squares;
     int cnt        = 0;
-    for (const Q& q : rw::core::make_iterPair (path.rbegin (), path.rend ())) {
-        if (cnt < historySize) {
-            sum_squares += Math::sqr (q);
+    for(const Q& q : rw::core::make_iterPair(path.rbegin(), path.rend())) {
+        if(cnt < historySize) {
+            sum_squares += Math::sqr(q);
             sum_elements += q;
 
             ++cnt;
         }
-        else {
-            break;
-        }
+        else { break; }
     }
 
-    return (1 / (cnt - 1.0)) * (sum_squares - (1.0 / cnt) * Math::sqr (sum_elements));
+    return (1 / (cnt - 1.0)) * (sum_squares - (1.0 / cnt) * Math::sqr(sum_elements));
 }
 
 // A random vector distributed according to 'variances'.
-Q gaussianStep (const Q& variances)
-{
-    const int dim = (int) variances.size ();
-    Q result (dim);
-    for (int i = 0; i < dim; i++)
-        result[i] = Math::ranNormalDist (0, sqrt (variances[i]));
+Q gaussianStep(const Q& variances) {
+    const int dim = (int) variances.size();
+    Q result(dim);
+    for(int i = 0; i < dim; i++) result[i] = Math::ranNormalDist(0, sqrt(variances[i]));
     return result;
 }
 
 class VarianceExpand : public ARWExpand
 {
   public:
-    VarianceExpand (const Device::QBox& bounds, const PlannerConstraint& constraint,
-                    const Q& minVariances, int historySize, const Q& start) :
-        _bounds (bounds),
-        _constraint (constraint), _minVariances (minVariances), _historySize (historySize)
-    {
-        if (!start.empty ())
-            _path.push_back (start);
+    VarianceExpand(const Device::QBox& bounds, const PlannerConstraint& constraint,
+                   const Q& minVariances, int historySize, const Q& start) :
+        _bounds(bounds),
+        _constraint(constraint), _minVariances(minVariances), _historySize(historySize) {
+        if(!start.empty()) _path.push_back(start);
     }
 
   private:
-    bool doExpand ()
-    {
-        RW_ASSERT (!_path.empty ());
+    bool doExpand() {
+        RW_ASSERT(!_path.empty());
 
-        const Q xn = _path.back () + gaussianStep (updateVariances ());
+        const Q xn = _path.back() + gaussianStep(updateVariances());
 
-        if (Models::inBounds (xn, _bounds) &&
-            !PlannerUtil::inCollision (_constraint, _path.back (), xn, false, true)) {
-            _path.push_back (xn);
+        if(Models::inBounds(xn, _bounds) &&
+           !PlannerUtil::inCollision(_constraint, _path.back(), xn, false, true)) {
+            _path.push_back(xn);
             return true;
         }
-        else
-            return false;
+        else return false;
     }
 
-    ARWExpand::Ptr doDuplicate (const rw::math::Q& start) const
-    {
-        return ownedPtr (
-            new VarianceExpand (_bounds, _constraint, _minVariances, _historySize, start));
+    ARWExpand::Ptr doDuplicate(const rw::math::Q& start) const {
+        return ownedPtr(
+            new VarianceExpand(_bounds, _constraint, _minVariances, _historySize, start));
     }
 
-    Q updateVariances ()
-    {
-        if (_path.size () == 1)
-            return _minVariances;
-        else {
-            return Math::max (variance (_path, _historySize), _minVariances);
-        }
+    Q updateVariances() {
+        if(_path.size() == 1) return _minVariances;
+        else { return Math::max(variance(_path, _historySize), _minVariances); }
     }
 
     Device::QBox _bounds;
@@ -140,17 +123,15 @@ class VarianceExpand : public ARWExpand
 };
 }    // namespace
 
-ARWExpand::Ptr ARWExpand::make (const rw::models::Device::QBox& bounds,
-                                const rw::pathplanning::PlannerConstraint& constraint,
-                                const rw::math::Q& minVariances, int historySize)
-{
-    if (historySize < 0)
-        historySize = 20;
+ARWExpand::Ptr ARWExpand::make(const rw::models::Device::QBox& bounds,
+                               const rw::pathplanning::PlannerConstraint& constraint,
+                               const rw::math::Q& minVariances, int historySize) {
+    if(historySize < 0) historySize = 20;
 
-    return ownedPtr (
-        new VarianceExpand (bounds,
-                            constraint,
-                            minVariances.empty () ? makeMinVariances (bounds) : minVariances,
-                            historySize,
-                            Q ()));
+    return ownedPtr(
+        new VarianceExpand(bounds,
+                           constraint,
+                           minVariances.empty() ? makeMinVariances(bounds) : minVariances,
+                           historySize,
+                           Q()));
 }

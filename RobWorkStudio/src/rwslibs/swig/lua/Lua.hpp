@@ -28,7 +28,7 @@ namespace rwslibs { namespace swig {
      * @param L
      * @return
      */
-    int openLuaLibRWS (lua_State* L);
+    int openLuaLibRWS(lua_State* L);
 
 }}     // namespace rwslibs::swig
 #endif /* LUA_HPP_ */

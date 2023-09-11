@@ -42,10 +42,10 @@ class CameraController
 {
   public:
     //! @brief smart pointer type of this class
-    typedef rw::core::Ptr< CameraController > Ptr;
+    typedef rw::core::Ptr<CameraController> Ptr;
 
     //! @brief destructor
-    virtual ~CameraController () {}
+    virtual ~CameraController() {}
 
     /**
      * @brief set the bounds that define the area where the 2d point
@@ -54,44 +54,44 @@ class CameraController
      * @param NewWidth [in] width
      * @param NewHeight [in] height
      */
-    virtual void setBounds (double NewWidth, double NewHeight) = 0;
+    virtual void setBounds(double NewWidth, double NewHeight) = 0;
 
     /**
      * @brief update the center of rotation and screen center
      * @param center [in] center of rotation in world coordinates
      * @param screenCenter [in] center of rotation in screen coordinates
      */
-    virtual void setCenter (const rw::math::Vector3D<>& center,
-                            const rw::math::Vector2D<>& screenCenter) = 0;
+    virtual void setCenter(const rw::math::Vector3D<>& center,
+                           const rw::math::Vector2D<>& screenCenter) = 0;
 
     /**
      * @brief event handler, typically mouse and keyboard
      * @param event [in] the specific event
      */
-    virtual void handleEvent (QEvent* event) = 0;
+    virtual void handleEvent(QEvent* event) = 0;
 
     /**
      * @brief set world to camera transformation
      * @param t3d [in] world to camera transformation
      */
-    virtual void setTransform (const rw::math::Transform3D<>& t3d) = 0;
+    virtual void setTransform(const rw::math::Transform3D<>& t3d) = 0;
 
     /**
      * @brief get the current world to camera transformation
      * @return world to camera transformation
      */
-    virtual rw::math::Transform3D<> getTransform () const = 0;
+    virtual rw::math::Transform3D<> getTransform() const = 0;
 
     /**
      * @brief get the current pivot point in world coordinates
      * @return current pivot point
      */
-    virtual rw::math::Vector3D<> getCenter () = 0;
+    virtual rw::math::Vector3D<> getCenter() = 0;
 
     /**
      * @brief draw the camera control.
      */
-    virtual void draw () = 0;
+    virtual void draw() = 0;
 
     /**
      * @brief Zoom by amount specified by amount.
@@ -99,7 +99,7 @@ class CameraController
      * Calling this method moves the camera along its Z-axis.
      * @param amount [in] Meters to zoom the camera
      */
-    virtual void zoom (double amount) = 0;
+    virtual void zoom(double amount) = 0;
 
     /**
      * @brief Zooms the camera to fit all devices into the camera view.
@@ -112,35 +112,35 @@ class CameraController
      * @param fovy [in] the field of view in the vertical direction (in radians).
      * @param aspectRatio [in] the aspect ratio of (width divided by height).
      */
-    virtual void autoZoom (rw::core::Ptr< rw::models::WorkCell > workcell,
-                           rw::core::Ptr< const rw::kinematics::State > state, double fovy,
-                           double aspectRatio) = 0;
+    virtual void autoZoom(rw::core::Ptr<rw::models::WorkCell> workcell,
+                          rw::core::Ptr<const rw::kinematics::State> state, double fovy,
+                          double aspectRatio) = 0;
 
     /**
      * @brief set the 3D coordinate that should be zoomed towards.
      * @param target [in] the target position to zoom towards.
      * @param enable [in] enable or disable zoom with zoomtarget.
      */
-    virtual void setZoomTarget (rw::math::Vector3D< double > target, bool enable = true){};
+    virtual void setZoomTarget(rw::math::Vector3D<double> target, bool enable = true){};
 
     /**
      * @brief set the 3D coordinate that should be moved.
      * @param target [in] the target position to move.
      * @param enable [in] enable or disable pan with pantarget.
      */
-    virtual void setPanTarget (rw::math::Vector3D< double > target, bool enable = true){};
+    virtual void setPanTarget(rw::math::Vector3D<double> target, bool enable = true){};
 
     /**
      * @brief get the 3D coordinate that should be moved.
      * @return the target position to move.
      */
-    virtual rw::math::Vector3D<> getPanTarget () { return rw::math::Vector3D<> (); };
+    virtual rw::math::Vector3D<> getPanTarget() { return rw::math::Vector3D<>(); };
 
     /**
      * @brief add a drawable to the camera controller
      * @param obj [in] a drawable to be controled by the camera controller
      */
-    virtual void setDrawable (rw::graphics::DrawableNode::Ptr obj){};
+    virtual void setDrawable(rw::graphics::DrawableNode::Ptr obj){};
 };
 
 }    // namespace rws

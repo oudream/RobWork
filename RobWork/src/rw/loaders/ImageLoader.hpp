@@ -35,30 +35,30 @@ namespace rw { namespace loaders {
     {
       public:
         //! smart pointer type
-        typedef rw::core::Ptr< ImageLoader > Ptr;
+        typedef rw::core::Ptr<ImageLoader> Ptr;
 
         //! destructor
-        virtual ~ImageLoader () {}
+        virtual ~ImageLoader() {}
 
         /**
          * @param filename [in] name of the file that is to be loaded.
          * @return if loaded successfully a pointer to the image is returned else NULL
          */
-        virtual rw::sensor::Image::Ptr loadImage (const std::string& filename) = 0;
+        virtual rw::sensor::Image::Ptr loadImage(const std::string& filename) = 0;
 
         /**
          * @brief get the list of supported image formats (as extensions)
          * example (PNG,PGM,GIF)
          * @return
          */
-        virtual std::vector< std::string > getImageFormats () = 0;
+        virtual std::vector<std::string> getImageFormats() = 0;
 
         /**
          *
          * @param format
          * @return
          */
-        virtual bool isImageSupported (const std::string& format);
+        virtual bool isImageSupported(const std::string& format);
 
         /**
          * @addtogroup extensionpoints
@@ -69,33 +69,33 @@ namespace rw { namespace loaders {
          * @brief a factory for ImageLoader. This factory also defines an
          * extension point for image loaders.
          */
-        class Factory : public rw::core::ExtensionPoint< ImageLoader >
+        class Factory : public rw::core::ExtensionPoint<ImageLoader>
         {
           public:
             //! constructor
-            Factory () :
-                rw::core::ExtensionPoint< ImageLoader > ("rw.loaders.ImageLoader",
-                                                         "Example extension point"){};
+            Factory() :
+                rw::core::ExtensionPoint<ImageLoader>("rw.loaders.ImageLoader",
+                                                      "Example extension point"){};
 
             /**
              * @brief get an image loader for a specific file format
              * @param format [in] image format eg. png, jpeg, ...
              * @return
              */
-            static rw::core::Ptr< ImageLoader > getImageLoader (const std::string& format);
+            static rw::core::Ptr<ImageLoader> getImageLoader(const std::string& format);
 
             /**
              * @brief test if a imageloader for a specific fileformat exists.
              * @param format [in] image format eg. png, jpeg ...
              * @return
              */
-            static bool hasImageLoader (const std::string& format);
+            static bool hasImageLoader(const std::string& format);
 
             /**
              * @brief get a list of supported formats
              * @return
              */
-            static std::vector< std::string > getSupportedFormats ();
+            static std::vector<std::string> getSupportedFormats();
 
             ///// FOR BACKWARD COMPATIBILITY
 
@@ -106,7 +106,7 @@ namespace rw { namespace loaders {
              *
              * @param filename [in] name of image file.
              */
-            static rw::sensor::Image::Ptr load (const std::string& filename);
+            static rw::sensor::Image::Ptr load(const std::string& filename);
         };
     };
 

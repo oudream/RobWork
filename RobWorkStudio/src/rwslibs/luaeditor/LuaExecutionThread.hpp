@@ -46,11 +46,10 @@ class LuaExecutionThread : public QThread
      * @param output
      * @param parent
      */
-    LuaExecutionThread (const std::string& cmd, rw::core::Ptr< rwlibs::swig::LuaState > lstate,
-                        rw::core::Ptr< rw::core::LogWriter > output, QObject* parent = NULL) :
-        QThread (parent),
-        _cmd (cmd), _lua (lstate), _output (output)
-    {}
+    LuaExecutionThread(const std::string& cmd, rw::core::Ptr<rwlibs::swig::LuaState> lstate,
+                       rw::core::Ptr<rw::core::LogWriter> output, QObject* parent = NULL) :
+        QThread(parent),
+        _cmd(cmd), _lua(lstate), _output(output) {}
 
     /**
      * @brief sets the command to execute, the lua state on which to execute and
@@ -59,38 +58,38 @@ class LuaExecutionThread : public QThread
      * @param lstate [in] the current lua state
      * @param output [in] the log in which to print result
      */
-    void set (const std::string& cmd, rw::core::Ptr< rwlibs::swig::LuaState > lstate,
-              rw::core::Ptr< rw::core::LogWriter > output);
+    void set(const std::string& cmd, rw::core::Ptr<rwlibs::swig::LuaState> lstate,
+             rw::core::Ptr<rw::core::LogWriter> output);
 
     //! @brief executes the command
-    void run ();
+    void run();
 
     //! @brief stop a running script
-    void stop ();
+    void stop();
 
     /**
      * @brief on error this returns the error message reported by the lua interpreter
      * @return
      */
-    std::string getReturnString () { return _resstring; };
+    std::string getReturnString() { return _resstring; };
 
     /**
      * @brief returns the value which lua reports upon completion of executing
      * the lua command string.
      */
-    int getReturnValue () { return _resVal; };
+    int getReturnValue() { return _resVal; };
 
     /**
      * @brief return the command that was executed.
      * @return command string that was executed.
      */
-    std::string getCommand () { return _cmd; };
+    std::string getCommand() { return _cmd; };
 
   private:
     std::string _cmd, _resstring;
     int _resVal;
-    rw::core::Ptr< rwlibs::swig::LuaState > _lua;
-    rw::core::Ptr< rw::core::LogWriter > _output;
+    rw::core::Ptr<rwlibs::swig::LuaState> _lua;
+    rw::core::Ptr<rw::core::LogWriter> _output;
 };
 
 }    // namespace rws

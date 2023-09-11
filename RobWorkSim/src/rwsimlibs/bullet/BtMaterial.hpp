@@ -53,37 +53,36 @@ namespace rwsimlibs { namespace bullet {
          * two objects in contact).
          * @param objectType [in] the type of collision object.
          */
-        BtMaterial (const rwsim::dynamics::MaterialDataMap* frictionMap,
-                    const std::string& material,
-                    const rwsim::dynamics::ContactDataMap* collisionMap,
-                    const std::string& objectType);
+        BtMaterial(const rwsim::dynamics::MaterialDataMap* frictionMap, const std::string& material,
+                   const rwsim::dynamics::ContactDataMap* collisionMap,
+                   const std::string& objectType);
 
         //! @brief Destructor.
-        virtual ~BtMaterial ();
+        virtual ~BtMaterial();
 
         /**
          * @brief Get the friction map.
          * @return a pointer to a read-only friction map.
          */
-        const rwsim::dynamics::MaterialDataMap* getFrictionMap () const;
+        const rwsim::dynamics::MaterialDataMap* getFrictionMap() const;
 
         /**
          * @brief Get the collision map.
          * @return a pointer to a read-only collision map.
          */
-        const rwsim::dynamics::ContactDataMap* getContactDataMap () const;
+        const rwsim::dynamics::ContactDataMap* getContactDataMap() const;
 
         /**
          * @brief Get the friction material.
          * @return the name of the material.
          */
-        const std::string& getMaterial () const;
+        const std::string& getMaterial() const;
 
         /**
          * @brief Get the type of object (for collisions).
          * @return the name of the object type.
          */
-        const std::string& getObjectType () const;
+        const std::string& getObjectType() const;
 
         /**
          * @brief Get Coulomb friction value between two materials.
@@ -93,7 +92,7 @@ namespace rwsimlibs { namespace bullet {
          * @throws Exception if materials does not refer to the same map or the pair of materials
          * did not exist in map.
          */
-        static double getFriction (const BtMaterial* a, const BtMaterial* b);
+        static double getFriction(const BtMaterial* a, const BtMaterial* b);
 
         /**
          * @brief Get Newton restitution value between two objects.
@@ -102,7 +101,7 @@ namespace rwsimlibs { namespace bullet {
          * @return the restitution value.
          * @throws Exception if materials does not refer to the same map.
          */
-        static double getRestitution (const BtMaterial* a, const BtMaterial* b);
+        static double getRestitution(const BtMaterial* a, const BtMaterial* b);
 
       private:
         const rwsim::dynamics::MaterialDataMap* const _frictionMap;

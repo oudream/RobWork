@@ -47,21 +47,21 @@ namespace rwlibs { namespace softbody {
          * @param wTb world to base of beam transform
          * @param G vector of gravity, m/s^2
          */
-        BeamGeometryCuboid (double dx, double dy, double dz, const std::vector< double >& Exvec,
-                            const std::vector< double >& vxvec, const std::vector< double >& rhovec,
-                            const rw::math::Transform3D<>& wTb, const rw::math::Vector3D<>& G);
+        BeamGeometryCuboid(double dx, double dy, double dz, const std::vector<double>& Exvec,
+                           const std::vector<double>& vxvec, const std::vector<double>& rhovec,
+                           const rw::math::Transform3D<>& wTb, const rw::math::Vector3D<>& G);
 
-        virtual ~BeamGeometryCuboid ();
+        virtual ~BeamGeometryCuboid();
 
       public:
-        virtual double b0 (const int i) const;
-        virtual double b1 (const int i) const;
+        virtual double b0(const int i) const;
+        virtual double b1(const int i) const;
 
-        virtual double c2 (const int i) const;
-        virtual double c3 (const int i) const;
-        virtual double c4 (const int i) const;
+        virtual double c2(const int i) const;
+        virtual double c3(const int i) const;
+        virtual double c4(const int i) const;
 
-        virtual double B0 (const int i) const;
+        virtual double B0(const int i) const;
 
       public:
         /**
@@ -69,14 +69,14 @@ namespace rwlibs { namespace softbody {
          *
          * @return thickness in z
          */
-        double getH (void) const { return _H; };
+        double getH(void) const { return _H; };
 
         /**
          * @brief Returns the thickness of the beam in the y-direction
          *
          * @return thickness in y
          */
-        double getK (void) const { return _K; };
+        double getK(void) const { return _K; };
 
         /**
          * @brief Outputs cuboid beam to stream
@@ -86,26 +86,25 @@ namespace rwlibs { namespace softbody {
          *
          * @return
          */
-        friend std::ostream& operator<< (std::ostream& out, const BeamGeometryCuboid& obj)
-        {
+        friend std::ostream& operator<<(std::ostream& out, const BeamGeometryCuboid& obj) {
             std::stringstream str;
 
-            const BeamGeometry& base (obj);
+            const BeamGeometry& base(obj);
 
-            str << "BeamGeometryCuboid {" << base << "  this: " << &obj << ", H:" << obj.getH ()
-                << ", K:" << obj.getK () << "}";
+            str << "BeamGeometryCuboid {" << base << "  this: " << &obj << ", H:" << obj.getH()
+                << ", K:" << obj.getK() << "}";
 
-            return out << str.str ();
+            return out << str.str();
         };
 
       private:
-        double B0_fnc (const int i) const;
-        double B0m (const int i) const;
+        double B0_fnc(const int i) const;
+        double B0m(const int i) const;
 
       private:
-        const double _H;                 // thickness in z
-        const double _K;                 // thickness in y
-        std::vector< double > _B0vec;    // vector holding the cached values of B0
+        const double _H;               // thickness in z
+        const double _K;               // thickness in y
+        std::vector<double> _B0vec;    // vector holding the cached values of B0
     };
     /*@}*/
 }}    // namespace rwlibs::softbody

@@ -28,7 +28,7 @@ namespace rwsim { namespace drawable {
     {
       public:
         //! @brief Smart pointer type for SimulatorDebugRender.
-        typedef rw::core::Ptr< SimulatorDebugRender > Ptr;
+        typedef rw::core::Ptr<SimulatorDebugRender> Ptr;
 
         // virtual ~SimulatorDebugRender(){};
 
@@ -49,11 +49,11 @@ namespace rwsim { namespace drawable {
          * @brief Set the draw mask.
          * @param mask [in] the draw mask.
          */
-        virtual void setDrawMask (unsigned int mask) = 0;
+        virtual void setDrawMask(unsigned int mask) = 0;
 
       protected:
         //! @brief Constructor.
-        SimulatorDebugRender () {}
+        SimulatorDebugRender() {}
     };
 
 }}     // namespace rwsim::drawable

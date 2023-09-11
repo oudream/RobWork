@@ -38,40 +38,38 @@ namespace rw { namespace core {
 }}    // namespace rw::core
 
 #if defined(RW_MACOS)
-typedef GLboolean (*PFNGLISRENDERBUFFEREXTPROC) (GLuint renderbuffer);
-typedef void (*PFNGLBINDRENDERBUFFEREXTPROC) (GLenum target, GLuint renderbuffer);
-typedef void (*PFNGLDELETERENDERBUFFERSEXTPROC) (GLsizei n, const GLuint* renderbuffers);
-typedef void (*PFNGLGENRENDERBUFFERSEXTPROC) (GLsizei n, GLuint* renderbuffers);
-typedef void (*PFNGLRENDERBUFFERSTORAGEEXTPROC) (GLenum target, GLenum internalformat,
-                                                 GLsizei width, GLsizei height);
-typedef void (*PFNGLGETRENDERBUFFERPARAMETERIVEXTPROC) (GLenum target, GLenum pname, GLint* params);
-typedef GLboolean (*PFNGLISFRAMEBUFFEREXTPROC) (GLuint framebuffer);
-typedef void (*PFNGLBINDFRAMEBUFFEREXTPROC) (GLenum target, GLuint framebuffer);
-typedef void (*PFNGLDELETEFRAMEBUFFERSEXTPROC) (GLsizei n, const GLuint* framebuffers);
-typedef void (*PFNGLGENFRAMEBUFFERSEXTPROC) (GLsizei n, GLuint* framebuffers);
-typedef GLenum (*PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC) (GLenum target);
-typedef void (*PFNGLFRAMEBUFFERTEXTURE1DEXTPROC) (GLenum target, GLenum attachment,
-                                                  GLenum textarget, GLuint texture, GLint level);
-typedef void (*PFNGLFRAMEBUFFERTEXTURE2DEXTPROC) (GLenum target, GLenum attachment,
-                                                  GLenum textarget, GLuint texture, GLint level);
-typedef void (*PFNGLFRAMEBUFFERTEXTURE3DEXTPROC) (GLenum target, GLenum attachment,
-                                                  GLenum textarget, GLuint texture, GLint level,
-                                                  GLint zoffset);
-typedef void (*PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC) (GLenum target, GLenum attachment,
-                                                     GLenum renderbuffertarget,
-                                                     GLuint renderbuffer);
-typedef void (*PFNGLGETFRAMEBUFFERATTACHMENTPARAMETERIVEXTPROC) (GLenum target, GLenum attachment,
-                                                                 GLenum pname, GLint* params);
-typedef void (*PFNGLGENERATEMIPMAPEXTPROC) (GLenum target);
-typedef void (*PFNGLBLITFRAMEBUFFEREXTPROC) (GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1,
-                                             GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1,
-                                             GLbitfield mask, GLenum filter);
-typedef void (*PFNGLRENDERBUFFERSTORAGEMULTISAMPLEEXTPROC) (GLenum target, GLsizei samples,
-                                                            GLenum internalformat, GLsizei width,
-                                                            GLsizei height);
-typedef void (*PFNGLTEXIMAGE2DMULTISAMPLEPROC) (GLenum target, GLsizei samples,
-                                                GLenum internalformat, GLsizei width,
-                                                GLsizei height, GLboolean fixedsamplelocations);
+typedef GLboolean (*PFNGLISRENDERBUFFEREXTPROC)(GLuint renderbuffer);
+typedef void (*PFNGLBINDRENDERBUFFEREXTPROC)(GLenum target, GLuint renderbuffer);
+typedef void (*PFNGLDELETERENDERBUFFERSEXTPROC)(GLsizei n, const GLuint* renderbuffers);
+typedef void (*PFNGLGENRENDERBUFFERSEXTPROC)(GLsizei n, GLuint* renderbuffers);
+typedef void (*PFNGLRENDERBUFFERSTORAGEEXTPROC)(GLenum target, GLenum internalformat, GLsizei width,
+                                                GLsizei height);
+typedef void (*PFNGLGETRENDERBUFFERPARAMETERIVEXTPROC)(GLenum target, GLenum pname, GLint* params);
+typedef GLboolean (*PFNGLISFRAMEBUFFEREXTPROC)(GLuint framebuffer);
+typedef void (*PFNGLBINDFRAMEBUFFEREXTPROC)(GLenum target, GLuint framebuffer);
+typedef void (*PFNGLDELETEFRAMEBUFFERSEXTPROC)(GLsizei n, const GLuint* framebuffers);
+typedef void (*PFNGLGENFRAMEBUFFERSEXTPROC)(GLsizei n, GLuint* framebuffers);
+typedef GLenum (*PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC)(GLenum target);
+typedef void (*PFNGLFRAMEBUFFERTEXTURE1DEXTPROC)(GLenum target, GLenum attachment, GLenum textarget,
+                                                 GLuint texture, GLint level);
+typedef void (*PFNGLFRAMEBUFFERTEXTURE2DEXTPROC)(GLenum target, GLenum attachment, GLenum textarget,
+                                                 GLuint texture, GLint level);
+typedef void (*PFNGLFRAMEBUFFERTEXTURE3DEXTPROC)(GLenum target, GLenum attachment, GLenum textarget,
+                                                 GLuint texture, GLint level, GLint zoffset);
+typedef void (*PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC)(GLenum target, GLenum attachment,
+                                                    GLenum renderbuffertarget, GLuint renderbuffer);
+typedef void (*PFNGLGETFRAMEBUFFERATTACHMENTPARAMETERIVEXTPROC)(GLenum target, GLenum attachment,
+                                                                GLenum pname, GLint* params);
+typedef void (*PFNGLGENERATEMIPMAPEXTPROC)(GLenum target);
+typedef void (*PFNGLBLITFRAMEBUFFEREXTPROC)(GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1,
+                                            GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1,
+                                            GLbitfield mask, GLenum filter);
+typedef void (*PFNGLRENDERBUFFERSTORAGEMULTISAMPLEEXTPROC)(GLenum target, GLsizei samples,
+                                                           GLenum internalformat, GLsizei width,
+                                                           GLsizei height);
+typedef void (*PFNGLTEXIMAGE2DMULTISAMPLEPROC)(GLenum target, GLsizei samples,
+                                               GLenum internalformat, GLsizei width, GLsizei height,
+                                               GLboolean fixedsamplelocations);
 #endif
 
 namespace rwlibs { namespace opengl {
@@ -90,13 +88,13 @@ namespace rwlibs { namespace opengl {
          * @brief Try to initialize frame buffers.
          * @return true if initialization succeeded.
          */
-        static bool initialize ();
+        static bool initialize();
 
         /**
          * @brief Print some information about the frame buffers to the log.
          * @param log [in/out] the log to write to.
          */
-        static void test (rw::core::LogWriter& log);
+        static void test(rw::core::LogWriter& log);
 
         /**
          * @brief Check if frame buffers are available.
@@ -105,19 +103,19 @@ namespace rwlibs { namespace opengl {
          *
          * @return true if frame buffers are available, false otherwise.
          */
-        static bool hasFrameBuffers ();
+        static bool hasFrameBuffers();
 
         /**
          * @brief Check if frame buffers has been initialized.
          * @return true if initialized, false otherwise.
          */
-        static bool isFrameBuffersInitialized ();
+        static bool isFrameBuffersInitialized();
 
         /**
          * @brief Check for framebuffer completeness. Only use the framebuffer if this succeeds.
          * @return true if framebuffer is complete.
          */
-        static bool testFrameBufferCompleteness ();
+        static bool testFrameBufferCompleteness();
 
         // Framebuffer object
         //! @brief Please refer to OpenGL documentation on framebuffers.
@@ -169,7 +167,7 @@ namespace rwlibs { namespace opengl {
         static PFNGLTEXIMAGE2DMULTISAMPLEPROC glTexImage2DMultisample;
 
       private:
-        RWGLFrameBuffer ();
+        RWGLFrameBuffer();
         static bool _hasFrameBuffers;
         static bool _frameBuffersInitialized;
     };

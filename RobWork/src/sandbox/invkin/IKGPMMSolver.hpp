@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RWLIBS_ALGORITHMS_QPCONTROLLER_IKGPMMSOLVER_HPP
 #define RWLIBS_ALGORITHMS_QPCONTROLLER_IKGPMMSOLVER_HPP
 
@@ -25,14 +24,15 @@
 
 #include "BasicGPMM.hpp"
 
+#include <rw/core/PropertyMap.hpp>
 #include <rw/invkin/IterativeMultiIK.hpp>
 #include <rw/kinematics/State.hpp>
-#include <rw/core/PropertyMap.hpp>
+
 #include <memory>
 
 namespace rw { namespace models {
     class SerialDevice;
-}} // end namespaces
+}}    // namespace rw::models
 
 namespace rwlibs { namespace algorithms {
 
@@ -54,19 +54,19 @@ namespace rwlibs { namespace algorithms {
      * Notice that the IKGPMMSolver is a local method. It there is thus no guarantee that
      * the solution returned will be the global least square.
      */
-    class IKGPMMSolver: public rw::invkin::IterativeMultiIK {
-    public:
-
+    class IKGPMMSolver : public rw::invkin::IterativeMultiIK
+    {
+      public:
         /**
          * @brief Constructs BasicGPMM for TreeDevice. Uses the default
          * end effectors of the treedevice
          * @param device [in] Device to work with
          * @param state [in] Default state
-         * @param qhome [in] Configuration somewhere between the lower and upper limit and towards which the joints should move
+         * @param qhome [in] Configuration somewhere between the lower and upper limit and towards
+         * which the joints should move
          * @param dt [in] Step size
          */
-        IKGPMMSolver(const rw::models::TreeDevice* device,
-                  const rw::kinematics::State& state);
+        IKGPMMSolver(const rw::models::TreeDevice* device, const rw::kinematics::State& state);
 
         /**
          * @brief Constructs IKGPMMSolver for device
@@ -77,14 +77,14 @@ namespace rwlibs { namespace algorithms {
          * @param device [in] Device to solve for         * @param state [in] State of the workcell
          */
         IKGPMMSolver(const rw::models::JointDevice* device,
-                  const std::vector<rw::kinematics::Frame*>& foi,
-                  const rw::kinematics::State& state);
+                     const std::vector<rw::kinematics::Frame*>& foi,
+                     const rw::kinematics::State& state);
 
         /**
          * @copydoc IterativeMultiIK::solve
          */
-        std::vector<rw::math::Q> solve(const std::vector<rw::math::Transform3D<> >& baseTend,
-                                   const rw::kinematics::State& state) const;
+        std::vector<rw::math::Q> solve(const std::vector<rw::math::Transform3D<>>& baseTend,
+                                       const rw::kinematics::State& state) const;
 
         /**
          * @brief performs a local search toward the the target bTed. No via points
@@ -100,33 +100,27 @@ namespace rwlibs { namespace algorithms {
          * @return true if error is below max error
          * @note the result will be saved in state
          */
-        bool solveLocal(const std::vector<rw::math::Transform3D<> > &bTed,
-                        std::vector<double>& maxError,
-                        rw::kinematics::State &state,
-                        int maxIter,
-                        bool untilSmallChange=false) const;
+        bool solveLocal(const std::vector<rw::math::Transform3D<>>& bTed,
+                        std::vector<double>& maxError, rw::kinematics::State& state, int maxIter,
+                        bool untilSmallChange = false) const;
 
+        void setMaxLocalStep(double qlength, double plength) { _maxQuatStep = qlength; };
 
-        void setMaxLocalStep(double qlength, double plength){_maxQuatStep=qlength;};
-
-    private:
+      private:
         mutable BasicGPMM _controller;
         const rw::models::JointDevice* _device;
         rw::core::PropertyMap _properties;
         rw::kinematics::State _state;
         double _maxQuatStep;
-        std::vector<rw::kinematics::Frame*> _foi; // frames of interest, end frames
-        std::vector<std::shared_ptr<rw::kinematics::FKRange> > _fkranges;
+        std::vector<rw::kinematics::Frame*> _foi;    // frames of interest, end frames
+        std::vector<std::shared_ptr<rw::kinematics::FKRange>> _fkranges;
         bool _returnBestFit;
 
-
-        bool performLocalSearch(const rw::models::SerialDevice *device,
-                       			const rw::math::Transform3D<> &bTed,
-                       			double maxError,
-                       			rw::kinematics::State &state,
-                       			unsigned int maxIter) const;
+        bool performLocalSearch(const rw::models::SerialDevice* device,
+                                const rw::math::Transform3D<>& bTed, double maxError,
+                                rw::kinematics::State& state, unsigned int maxIter) const;
     };
 
-}} // end namespaces
+}}    // namespace rwlibs::algorithms
 
-#endif // end include guard
+#endif    // end include guard

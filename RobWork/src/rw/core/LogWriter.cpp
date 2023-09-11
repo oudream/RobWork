@@ -21,43 +21,36 @@
 
 using namespace rw::core;
 
-void LogWriter::write (const std::string& message)
-{
+void LogWriter::write(const std::string& message) {
     std::lock_guard<std::mutex> guard(_mutex);
-    doWrite (message);
+    doWrite(message);
 }
 
-void LogWriter::setTabLevel (int tabLevel)
-{
+void LogWriter::setTabLevel(int tabLevel) {
     std::lock_guard<std::mutex> guard(_mutex);
-    doSetTabLevel (tabLevel);
+    doSetTabLevel(tabLevel);
 }
 
-void LogWriter::flush ()
-{
+void LogWriter::flush() {
     std::lock_guard<std::mutex> guard(_mutex);
-    doFlush ();
+    doFlush();
 }
 
-void LogWriter::write (const Message& msg)
-{
+void LogWriter::write(const Message& msg) {
     std::ostringstream buf;
     buf << msg;
-    write (buf.str ());
+    write(buf.str());
 }
 
-void LogWriter::writeln (const std::string& str)
-{
-    write (str + '\n');
+void LogWriter::writeln(const std::string& str) {
+    write(str + '\n');
 }
 
-LogWriter& LogWriter::operator<< (std::ostream& (*pf) (std::ostream&) )
-{
+LogWriter& LogWriter::operator<<(std::ostream& (*pf)(std::ostream&) ) {
     std::ostringstream buf;
     buf << pf;
-    write (buf.str ());
+    write(buf.str());
     return *this;
 }
 
-LogWriter::~LogWriter ()
-{}
+LogWriter::~LogWriter() {}

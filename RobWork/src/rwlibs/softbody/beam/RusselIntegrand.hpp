@@ -37,8 +37,8 @@ namespace rwlibs { namespace softbody {
          * @param a vector containing the angle of the deformation
          * @param da vector containing the deriatives of the angle of deformation
          **/
-        RusselIntegrand (const BeamGeometry& geom, const Eigen::VectorXd& a,
-                         const Eigen::VectorXd& da);
+        RusselIntegrand(const BeamGeometry& geom, const Eigen::VectorXd& a,
+                        const Eigen::VectorXd& da);
         ;
 
         /**
@@ -47,7 +47,7 @@ namespace rwlibs { namespace softbody {
          * @param i index of cross section
          * @return gravitional energy
          **/
-        double eg (const int i) const;
+        double eg(const int i) const;
         ;
 
         /**
@@ -56,7 +56,7 @@ namespace rwlibs { namespace softbody {
          * @param i index of cross section
          * @return elastic energy
          **/
-        double ee (const int i) const;
+        double ee(const int i) const;
         ;
 
         /**
@@ -65,7 +65,7 @@ namespace rwlibs { namespace softbody {
          * @param i index of cross section
          * @return total elastic energy per cross section
          **/
-        double operator() (const int i) const;
+        double operator()(const int i) const;
         ;
 
       private:
@@ -87,8 +87,8 @@ namespace rwlibs { namespace softbody {
          * @param a vector containing the angle of the deformation
          * @param da vector containing the deriatives of the angle of deformation
          **/
-        RusselIntegrandEonly (const BeamGeometry& geom, const Eigen::VectorXd& a,
-                              const Eigen::VectorXd& da);
+        RusselIntegrandEonly(const BeamGeometry& geom, const Eigen::VectorXd& a,
+                             const Eigen::VectorXd& da);
         ;
 
         /**
@@ -97,7 +97,7 @@ namespace rwlibs { namespace softbody {
          * @param i index of cross section
          * @return elastic energy
          **/
-        double operator() (const int i) const;
+        double operator()(const int i) const;
         ;
     };
     /*@}*/

@@ -17,10 +17,10 @@
 
 #include "IndexedTriMesh.hpp"
 
-template class rw::geometry::IndexedTriMeshN0< float >;
+template class rw::geometry::IndexedTriMeshN0<float>;
 // template class rw::geometry::IndexedTriMeshN1<float>;
 // template class rw::geometry::IndexedTriMeshN3<float>;
 
-template class rw::geometry::IndexedTriMeshN0< double >;
+template class rw::geometry::IndexedTriMeshN0<double>;
 // template class rw::geometry::IndexedTriMeshN1<double>;
 // template class rw::geometry::IndexedTriMeshN3<double>;

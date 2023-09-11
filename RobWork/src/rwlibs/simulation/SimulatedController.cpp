@@ -9,5 +9,4 @@
 
 using namespace rwlibs::simulation;
 
-SimulatedController::SimulatedController (rw::models::ControllerModel::Ptr model) : _model (model)
-{}
+SimulatedController::SimulatedController(rw::models::ControllerModel::Ptr model) : _model(model) {}

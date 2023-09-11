@@ -34,122 +34,96 @@ using namespace rw::loaders;
 using namespace rw::proximity;
 
 namespace {
-std::string quote (const std::string& str)
-{
-    return StringUtil::quote (str);
+std::string quote(const std::string& str) {
+    return StringUtil::quote(str);
 }
 
-std::string infoHeader (const std::string& file)
-{
-    return "File: " + quote (file) + ": ";
+std::string infoHeader(const std::string& file) {
+    return "File: " + quote(file) + ": ";
 }
 
-typedef std::pair< std::string, std::string > Pair;
+typedef std::pair<std::string, std::string> Pair;
 
 struct Result
 {
-    std::set< std::string > volatileFrames;
-    std::vector< Pair > excludePairs;
+    std::set<std::string> volatileFrames;
+    std::vector<Pair> excludePairs;
 };
 
 typedef PTree::const_iterator CI;
 
-void readFramePairAttributes (const std::string& prefix, const std::string& file, const PTree& tree,
-                              Result& result)
-{
-    result.excludePairs.push_back (std::make_pair (prefix + tree.get< string > ("first"),
-                                                   prefix + tree.get< string > ("second")));
+void readFramePairAttributes(const std::string& prefix, const std::string& file, const PTree& tree,
+                             Result& result) {
+    result.excludePairs.push_back(
+        std::make_pair(prefix + tree.get<string>("first"), prefix + tree.get<string>("second")));
 }
 
-void readExclude (const std::string& prefix, const std::string& file, const PTree& tree,
-                  Result& result)
-{
+void readExclude(const std::string& prefix, const std::string& file, const PTree& tree,
+                 Result& result) {
     // Now traverse the FramePair tags.
-    for (CI p = tree.begin (); p != tree.end (); ++p) {
-        if (p->first == "FramePair") {
-            boost::optional< const PTree& > child = p->second.get_child_optional ("<xmlattr>");
-            if (child) {
-                readFramePairAttributes (prefix, file, *child, result);
-            }
-            else {
-                RW_THROW (infoHeader (file) << "Attributes expected for FramePair tag.");
-            }
+    for(CI p = tree.begin(); p != tree.end(); ++p) {
+        if(p->first == "FramePair") {
+            boost::optional<const PTree&> child = p->second.get_child_optional("<xmlattr>");
+            if(child) { readFramePairAttributes(prefix, file, *child, result); }
+            else { RW_THROW(infoHeader(file) << "Attributes expected for FramePair tag."); }
         }
-        else if (p->first == "<xmlcomment>") {
-        }
+        else if(p->first == "<xmlcomment>") {}
         else {
-            RW_THROW (infoHeader (file) << "Non-supported CollisionSetup tag " << quote (p->first));
+            RW_THROW(infoHeader(file) << "Non-supported CollisionSetup tag " << quote(p->first));
         }
     }
 }
 
-void readVolatile (const std::string& prefix, const PTree& tree, Result& result)
-{
-    const std::string frameName = tree.get_value< std::string > ();
-    result.volatileFrames.insert (prefix + frameName);
+void readVolatile(const std::string& prefix, const PTree& tree, Result& result) {
+    const std::string frameName = tree.get_value<std::string>();
+    result.volatileFrames.insert(prefix + frameName);
 }
 
-CollisionSetup readCollisionSetup (const std::string& prefix, const std::string& file,
-                                   const PTree& tree)
-{
+CollisionSetup readCollisionSetup(const std::string& prefix, const std::string& file,
+                                  const PTree& tree) {
     Result result;
 
     bool excludeStaticPairs = false;
-    for (CI p = tree.begin (); p != tree.end (); ++p) {
-        if (p->first == "Exclude") {
-            readExclude (prefix, file, p->second, result);
-        }
-        else if (p->first == "Volatile") {
-            readVolatile (prefix, p->second, result);
-        }
-        else if (p->first == "ExcludeStaticPairs") {
-            excludeStaticPairs = true;
-        }
-        else if (p->first == "<xmlcomment>") {
-        }
-        else {
-            RW_THROW (infoHeader (file) << "Non-supported XML tag " << p->first);
-        }
+    for(CI p = tree.begin(); p != tree.end(); ++p) {
+        if(p->first == "Exclude") { readExclude(prefix, file, p->second, result); }
+        else if(p->first == "Volatile") { readVolatile(prefix, p->second, result); }
+        else if(p->first == "ExcludeStaticPairs") { excludeStaticPairs = true; }
+        else if(p->first == "<xmlcomment>") {}
+        else { RW_THROW(infoHeader(file) << "Non-supported XML tag " << p->first); }
     }
 
-    return CollisionSetup (result.excludePairs, result.volatileFrames, excludeStaticPairs);
+    return CollisionSetup(result.excludePairs, result.volatileFrames, excludeStaticPairs);
 }
 
-CollisionSetup readCollisionSetup (const std::string& prefix, const std::string& file)
-{
+CollisionSetup readCollisionSetup(const std::string& prefix, const std::string& file) {
     using namespace boost::property_tree;
 
     try {
         PTree tree;
-        std::ifstream istr (file.c_str ());
-        read_xml (istr, tree);
+        std::ifstream istr(file.c_str());
+        read_xml(istr, tree);
 
-        boost::optional< PTree& > child = tree.get_child_optional ("CollisionSetup");
-        if (child) {
-            return readCollisionSetup (prefix, file, *child);
-        }
+        boost::optional<PTree&> child = tree.get_child_optional("CollisionSetup");
+        if(child) { return readCollisionSetup(prefix, file, *child); }
         else {
-            RW_THROW (infoHeader (file) << "CollisionSetup tag expected at top-level.");
-            return CollisionSetup ();    // To avoid a compiler warning.
+            RW_THROW(infoHeader(file) << "CollisionSetup tag expected at top-level.");
+            return CollisionSetup();    // To avoid a compiler warning.
         }
     }
-    catch (const ptree_bad_path& e) {
-        RW_THROW ("The file specified does not exist. Pleace specify a valid path\n " << file
-                                                                                      << "\n"
-                                                                                      << e.what ());
+    catch(const ptree_bad_path& e) {
+        RW_THROW("The file specified does not exist. Pleace specify a valid path\n " << file << "\n"
+                                                                                     << e.what());
     }
-    catch (const ptree_error& e) {
-        RW_THROW ("Error occoured when parsing the CollisionSetup\n " << file << " \n"
-                                                                      << e.what ());
+    catch(const ptree_error& e) {
+        RW_THROW("Error occoured when parsing the CollisionSetup\n " << file << " \n" << e.what());
     }
 
     // To avoid a compiler warning.
-    return readCollisionSetup (prefix, file);
+    return readCollisionSetup(prefix, file);
 }
 }    // namespace
 
-rw::proximity::CollisionSetup CollisionSetupLoader::load (const std::string& prefix,
-                                                          const std::string& file)
-{
-    return readCollisionSetup (prefix, file);
+rw::proximity::CollisionSetup CollisionSetupLoader::load(const std::string& prefix,
+                                                         const std::string& file) {
+    return readCollisionSetup(prefix, file);
 }

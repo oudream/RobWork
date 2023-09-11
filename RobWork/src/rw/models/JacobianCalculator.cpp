@@ -19,5 +19,4 @@
 
 using namespace rw::models;
 
-JacobianCalculator::~JacobianCalculator ()
-{}
+JacobianCalculator::~JacobianCalculator() {}

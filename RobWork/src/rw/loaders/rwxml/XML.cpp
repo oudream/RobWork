@@ -51,169 +51,152 @@ using namespace boost::property_tree;
  */
 
 namespace {
-string quote (const string& str)
-{
-    return StringUtil::quote (str);
+string quote(const string& str) {
+    return StringUtil::quote(str);
 }
 
 typedef PTree::const_iterator CI;
 
-Q readNArray (const PTree& tree)
-{
+Q readNArray(const PTree& tree) {
     // If <N> tags are present:
-    if (tree.find ("N") != tree.not_found ()) {
-        Q q (tree.size ());
+    if(tree.find("N") != tree.not_found()) {
+        Q q(tree.size());
         int i = 0;
-        for (CI p = tree.begin (); p != tree.end (); ++p, ++i) {
-            if (p->first != "N") {
-                RW_THROW ("Unexpected XML tag " << quote (p->first)
-                                                << " where numbers <N> were expected.");
+        for(CI p = tree.begin(); p != tree.end(); ++p, ++i) {
+            if(p->first != "N") {
+                RW_THROW("Unexpected XML tag " << quote(p->first)
+                                               << " where numbers <N> were expected.");
             }
 
-            q[i] = p->second.get_value< double > ();
+            q[i] = p->second.get_value<double>();
         }
         return q;
     }
 
     // Otherwise extract a space separated string of numbers.
     else {
-        const std::vector< std::string > words =
-            StringUtil::words (tree.get_value< std::string > ());
-        std::vector< double > values;
-        for (const std::string& str : words) {
-            const pair< bool, double > okNum = StringUtil::toDouble (str);
-            if (!okNum.first)
-                RW_THROW ("Number expected. Got " << quote (str));
-            values.push_back (okNum.second);
+        const std::vector<std::string> words = StringUtil::words(tree.get_value<std::string>());
+        std::vector<double> values;
+        for(const std::string& str : words) {
+            const pair<bool, double> okNum = StringUtil::toDouble(str);
+            if(!okNum.first) RW_THROW("Number expected. Got " << quote(str));
+            values.push_back(okNum.second);
         }
 
-        Q q (values.size ());
-        for (size_t i = 0; i < q.size (); i++)
-            q[i] = values[i];
+        Q q(values.size());
+        for(size_t i = 0; i < q.size(); i++) q[i] = values[i];
         return q;
     }
 }
 
-RPY<> readRPY (const PTree& tree)
-{
-    const Q vals = readNArray (tree);
-    if (vals.size () != 3)
-        RW_THROW ("Unexpected number of RPY values " << (int) vals.size ());
+RPY<> readRPY(const PTree& tree) {
+    const Q vals = readNArray(tree);
+    if(vals.size() != 3) RW_THROW("Unexpected number of RPY values " << (int) vals.size());
 
-    return RPY<> (vals[0], vals[1], vals[2]);
+    return RPY<>(vals[0], vals[1], vals[2]);
 }
 
-Rotation3D<> readRotation3DMatrix (const PTree& tree)
-{
-    const Q vals = readNArray (tree);
-    if (vals.size () != 9) {
-        RW_THROW ("Unexpected number of values " << (int) vals.size () << " for Rotation3D.");
+Rotation3D<> readRotation3DMatrix(const PTree& tree) {
+    const Q vals = readNArray(tree);
+    if(vals.size() != 9) {
+        RW_THROW("Unexpected number of values " << (int) vals.size() << " for Rotation3D.");
     }
 
-    return Rotation3D<> (
+    return Rotation3D<>(
         vals[0], vals[1], vals[2], vals[3], vals[4], vals[5], vals[6], vals[7], vals[8]);
 }
 
-void readProperty (const PTree& tree, PropertyMap& properties)
-{
-    const string key  = tree.get< string > ("Key");
-    const string desc = tree.get< string > ("Description", "");
+void readProperty(const PTree& tree, PropertyMap& properties) {
+    const string key  = tree.get<string>("Key");
+    const string desc = tree.get<string>("Description", "");
 
     // Strings
     {
-        boost::optional< string > val = tree.get_optional< string > ("S");
-        if (val) {
-            properties.add (key, desc, *val);
+        boost::optional<string> val = tree.get_optional<string>("S");
+        if(val) {
+            properties.add(key, desc, *val);
             return;
         }
     }
 
     // Numbers
     {
-        boost::optional< double > val = tree.get_optional< double > ("N");
-        if (val) {
-            properties.add (key, desc, *val);
+        boost::optional<double> val = tree.get_optional<double>("N");
+        if(val) {
+            properties.add(key, desc, *val);
             return;
         }
     }
 
     // Vector3D
-    if (tree.find ("Vector3D") != tree.not_found ()) {
-        properties.add (key, desc, XML::readVector3D (tree.get_child ("Vector3D")));
+    if(tree.find("Vector3D") != tree.not_found()) {
+        properties.add(key, desc, XML::readVector3D(tree.get_child("Vector3D")));
         return;
     }
 
     // RPY
-    if (tree.find ("RPY") != tree.not_found ()) {
-        properties.add (key, desc, readRPY (tree.get_child ("RPY")));
+    if(tree.find("RPY") != tree.not_found()) {
+        properties.add(key, desc, readRPY(tree.get_child("RPY")));
         return;
     }
 
     // Rotation matrix
-    if (tree.find ("Rotation3D") != tree.not_found ()) {
-        properties.add (key, desc, readRotation3DMatrix (tree.get_child ("Rotation3D")));
+    if(tree.find("Rotation3D") != tree.not_found()) {
+        properties.add(key, desc, readRotation3DMatrix(tree.get_child("Rotation3D")));
         return;
     }
 
     // Transform3D
-    if (tree.find ("Transform3D") != tree.not_found ()) {
-        properties.add (key, desc, XML::readTransform3D (tree.get_child ("Transform3D")));
+    if(tree.find("Transform3D") != tree.not_found()) {
+        properties.add(key, desc, XML::readTransform3D(tree.get_child("Transform3D")));
         return;
     }
 
     // Q
-    if (tree.find ("Q") != tree.not_found ()) {
-        properties.add (key, desc, readNArray (tree.get_child ("Q")));
+    if(tree.find("Q") != tree.not_found()) {
+        properties.add(key, desc, readNArray(tree.get_child("Q")));
         return;
     }
 
-    RW_THROW ("No value for property " << quote (key) << " given.");
+    RW_THROW("No value for property " << quote(key) << " given.");
 }
 }    // namespace
 
-Vector3D<> XML::readVector3D (const PTree& tree)
-{
-    const Q vals = readNArray (tree);
-    if (vals.size () != 3)
-        RW_THROW ("Unexpected number of values " << (int) vals.size () << " for Vector3D.");
+Vector3D<> XML::readVector3D(const PTree& tree) {
+    const Q vals = readNArray(tree);
+    if(vals.size() != 3)
+        RW_THROW("Unexpected number of values " << (int) vals.size() << " for Vector3D.");
 
-    return Vector3D<> (vals[0], vals[1], vals[2]);
+    return Vector3D<>(vals[0], vals[1], vals[2]);
 }
 
-Rotation3D<> XML::readRotation3D (const PTree& tree)
-{
-    if (tree.find ("Rotation3D") != tree.not_found ()) {
-        return readRotation3DMatrix (tree.get_child ("Rotation3D"));
+Rotation3D<> XML::readRotation3D(const PTree& tree) {
+    if(tree.find("Rotation3D") != tree.not_found()) {
+        return readRotation3DMatrix(tree.get_child("Rotation3D"));
     }
-    else if (tree.find ("RPY") != tree.not_found ()) {
-        return readRPY (tree.get_child ("RPY")).toRotation3D ();
+    else if(tree.find("RPY") != tree.not_found()) {
+        return readRPY(tree.get_child("RPY")).toRotation3D();
     }
-    else {
-        RW_THROW ("No rotation specified. <Rotation3D> or <RPY> expected.");
-    }
+    else { RW_THROW("No rotation specified. <Rotation3D> or <RPY> expected."); }
 }
 
-Transform3D<> XML::readTransform3D (const PTree& tree)
-{
-    return Transform3D<> (XML::readVector3D (tree.get_child ("Vector3D")),
-                          XML::readRotation3D (tree));
+Transform3D<> XML::readTransform3D(const PTree& tree) {
+    return Transform3D<>(XML::readVector3D(tree.get_child("Vector3D")), XML::readRotation3D(tree));
 }
 
-Q XML::readQ (const PTree& tree)
-{
-    return readNArray (tree.get_child ("Q"));
+Q XML::readQ(const PTree& tree) {
+    return readNArray(tree.get_child("Q"));
 }
 
-void XML::readPropertyMap (const PTree& tree, PropertyMap& properties)
-{
+void XML::readPropertyMap(const PTree& tree, PropertyMap& properties) {
     int i = 0;
-    for (CI p = tree.begin (); p != tree.end (); ++p, ++i) {
-        if (p->first != "Property") {
-            RW_THROW ("Unexpected XML tag " << quote (p->first)
-                                            << " where property <Property> was expected.");
+    for(CI p = tree.begin(); p != tree.end(); ++p, ++i) {
+        if(p->first != "Property") {
+            RW_THROW("Unexpected XML tag " << quote(p->first)
+                                           << " where property <Property> was expected.");
         }
 
-        readProperty (p->second, properties);
+        readProperty(p->second, properties);
     }
 }
 
@@ -221,24 +204,20 @@ namespace {
 // This is just a utility that is useful when figuring out how property
 // trees are structured. Please let it stay here even though it isn't being
 // called in production code.
-void printTreeHelper (const PTree& tree, std::ostream& out, int level)
-{
-    string indent (2 * level, ' ');
+void printTreeHelper(const PTree& tree, std::ostream& out, int level) {
+    string indent(2 * level, ' ');
 
-    if (tree.size () == 0) {
-        out << indent << "Leaf: '" << tree.get_value< string > () << "'\n";
-    }
+    if(tree.size() == 0) { out << indent << "Leaf: '" << tree.get_value<string>() << "'\n"; }
     else {
-        for (CI p = tree.begin (); p != tree.end (); ++p) {
+        for(CI p = tree.begin(); p != tree.end(); ++p) {
             out << indent << p->first << "\n" << indent << "{\n";
-            printTreeHelper (p->second, out, level + 1);
+            printTreeHelper(p->second, out, level + 1);
             out << indent << "}\n";
         }
     }
 }
 }    // namespace
 
-void XML::printTree (const PTree& tree, std::ostream& out)
-{
-    printTreeHelper (tree, out, 0);
+void XML::printTree(const PTree& tree, std::ostream& out) {
+    printTreeHelper(tree, out, 0);
 }

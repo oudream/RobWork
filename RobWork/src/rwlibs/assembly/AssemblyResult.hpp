@@ -29,11 +29,11 @@
 
 // Forward declarations
 namespace rw { namespace trajectory {
-    template< class T > class Timed;
+    template<class T> class Timed;
 }}    // namespace rw::trajectory
 namespace rwlibs { namespace task {
-    template< class T > class Task;
-    typedef Task< rw::math::Transform3D<> > CartesianTask;
+    template<class T> class Task;
+    typedef Task<rw::math::Transform3D<>> CartesianTask;
 }}    // namespace rwlibs::task
 
 namespace rwlibs { namespace assembly {
@@ -53,7 +53,7 @@ namespace rwlibs { namespace assembly {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< AssemblyResult > Ptr;
+        typedef rw::core::Ptr<AssemblyResult> Ptr;
 
         //! @brief Different error codes.
         typedef enum Error {
@@ -63,71 +63,70 @@ namespace rwlibs { namespace assembly {
         } Error;
 
         //! @brief Constructor for empty result.
-        AssemblyResult ();
+        AssemblyResult();
 
         /**
          * @brief Construct result from a CartesianTask representation.
          * @param task [in] the CartesianTask to construct result from.
          */
-        AssemblyResult (rw::core::Ptr< rwlibs::task::CartesianTask > task);
+        AssemblyResult(rw::core::Ptr<rwlibs::task::CartesianTask> task);
 
         //! @brief Destructor.
-        virtual ~AssemblyResult ();
+        virtual ~AssemblyResult();
 
         /**
          * @brief Clone the result.
          * @return a new cloned result.
          */
-        AssemblyResult::Ptr clone () const;
+        AssemblyResult::Ptr clone() const;
 
         /**
          * @brief Convert to the CartesianTask format.
          * @return a CartesianTask representing the AssemblyResult.
          */
-        rw::core::Ptr< rwlibs::task::CartesianTask > toCartesianTask ();
+        rw::core::Ptr<rwlibs::task::CartesianTask> toCartesianTask();
 
         /**
          * @brief Store a result to a file.
          * @param result [in] the result to store.
          * @param name [in] the file to save to (normally with the extension .assembly.xml).
          */
-        static void saveRWResult (AssemblyResult::Ptr result, const std::string& name);
+        static void saveRWResult(AssemblyResult::Ptr result, const std::string& name);
 
         /**
          * @brief Store a list of results to a file.
          * @param results [in] the list of results to store.
          * @param name [in] the file to save to (normally with the extension .assembly.xml).
          */
-        static void saveRWResult (std::vector< AssemblyResult::Ptr > results,
-                                  const std::string& name);
+        static void saveRWResult(std::vector<AssemblyResult::Ptr> results, const std::string& name);
 
         /**
          * @brief Load a list of results from a file.
          * @param name [in] the file to load from.
          * @return a list of results.
          */
-        static std::vector< AssemblyResult::Ptr > load (const std::string& name);
+        static std::vector<AssemblyResult::Ptr> load(const std::string& name);
 
         /**
          * @brief Load a list of results from a input stream.
          * @param inputStream [in] the stream to load from.
          * @return a list of results.
          */
-        static std::vector< AssemblyResult::Ptr > load (std::istringstream& inputStream);
+        static std::vector<AssemblyResult::Ptr> load(std::istringstream& inputStream);
 
         /**
          * @brief Convert an error to string format.
          * @param error [in] the error to convert.
          * @return a string representation.
          */
-        static std::string toString (const Error& error);
+        static std::string toString(const Error& error);
 
         /**
          * @brief Convert a string to a specific error.
          * @param string [in] the string to convert.
          * @return an error enum.
          */
-        static Error toError (const std::string& string);
+        static Error toError(const std::string& string);
 
       public:
         /**
@@ -162,9 +161,9 @@ namespace rwlibs { namespace assembly {
          */
         ///@{
         //! @brief A TimedPath of AssemblyState objects for the real trajectory.
-        rw::trajectory::Path< rw::trajectory::Timed< AssemblyState > > realState;
+        rw::trajectory::Path<rw::trajectory::Timed<AssemblyState>> realState;
         //! @brief A TimedPath of AssemblyState objects for the assumed trajectory.
-        rw::trajectory::Path< rw::trajectory::Timed< AssemblyState > > assumedState;
+        rw::trajectory::Path<rw::trajectory::Timed<AssemblyState>> assumedState;
         //! @brief The approach pose used.
         rw::math::Transform3D<> approach;
         //! @brief Detailed error message.

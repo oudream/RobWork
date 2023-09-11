@@ -58,47 +58,45 @@ PFNGLISRENDERBUFFEREXTPROC RWGLFrameBuffer::glIsRenderbufferEXT =
 PFNGLRENDERBUFFERSTORAGEMULTISAMPLEEXTPROC RWGLFrameBuffer::glRenderbufferStorageMultisampleEXT = 0;
 PFNGLTEXIMAGE2DMULTISAMPLEPROC RWGLFrameBuffer::glTexImage2DMultisample                         = 0;
 PFNGLBLITFRAMEBUFFEREXTPROC RWGLFrameBuffer::glBlitFrameBufferEXT                               = 0;
-bool RWGLFrameBuffer::initialize ()
-{
-    if (_frameBuffersInitialized)
-        return _hasFrameBuffers;
+bool RWGLFrameBuffer::initialize() {
+    if(_frameBuffersInitialized) return _hasFrameBuffers;
 
         // check if FBO is supported by your video card
         // if(glInfo.isExtensionSupported("GL_EXT_framebuffer_object"))
 #if defined(RW_WIN32)
 
     // get pointers to GL functions
-    glGenFramebuffersEXT = (PFNGLGENFRAMEBUFFERSEXTPROC) wglGetProcAddress ("glGenFramebuffersEXT");
+    glGenFramebuffersEXT = (PFNGLGENFRAMEBUFFERSEXTPROC) wglGetProcAddress("glGenFramebuffersEXT");
     glDeleteFramebuffersEXT =
-        (PFNGLDELETEFRAMEBUFFERSEXTPROC) wglGetProcAddress ("glDeleteFramebuffersEXT");
-    glBindFramebufferEXT = (PFNGLBINDFRAMEBUFFEREXTPROC) wglGetProcAddress ("glBindFramebufferEXT");
+        (PFNGLDELETEFRAMEBUFFERSEXTPROC) wglGetProcAddress("glDeleteFramebuffersEXT");
+    glBindFramebufferEXT = (PFNGLBINDFRAMEBUFFEREXTPROC) wglGetProcAddress("glBindFramebufferEXT");
     glCheckFramebufferStatusEXT =
-        (PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC) wglGetProcAddress ("glCheckFramebufferStatusEXT");
+        (PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC) wglGetProcAddress("glCheckFramebufferStatusEXT");
     glGetFramebufferAttachmentParameterivEXT =
-        (PFNGLGETFRAMEBUFFERATTACHMENTPARAMETERIVEXTPROC) wglGetProcAddress (
+        (PFNGLGETFRAMEBUFFERATTACHMENTPARAMETERIVEXTPROC) wglGetProcAddress(
             "glGetFramebufferAttachmentParameterivEXT");
-    glGenerateMipmapEXT = (PFNGLGENERATEMIPMAPEXTPROC) wglGetProcAddress ("glGenerateMipmapEXT");
+    glGenerateMipmapEXT = (PFNGLGENERATEMIPMAPEXTPROC) wglGetProcAddress("glGenerateMipmapEXT");
     glFramebufferTexture2DEXT =
-        (PFNGLFRAMEBUFFERTEXTURE2DEXTPROC) wglGetProcAddress ("glFramebufferTexture2DEXT");
+        (PFNGLFRAMEBUFFERTEXTURE2DEXTPROC) wglGetProcAddress("glFramebufferTexture2DEXT");
     glFramebufferRenderbufferEXT =
-        (PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC) wglGetProcAddress ("glFramebufferRenderbufferEXT");
+        (PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC) wglGetProcAddress("glFramebufferRenderbufferEXT");
     glGenRenderbuffersEXT =
-        (PFNGLGENRENDERBUFFERSEXTPROC) wglGetProcAddress ("glGenRenderbuffersEXT");
+        (PFNGLGENRENDERBUFFERSEXTPROC) wglGetProcAddress("glGenRenderbuffersEXT");
     glDeleteRenderbuffersEXT =
-        (PFNGLDELETERENDERBUFFERSEXTPROC) wglGetProcAddress ("glDeleteRenderbuffersEXT");
+        (PFNGLDELETERENDERBUFFERSEXTPROC) wglGetProcAddress("glDeleteRenderbuffersEXT");
     glBindRenderbufferEXT =
-        (PFNGLBINDRENDERBUFFEREXTPROC) wglGetProcAddress ("glBindRenderbufferEXT");
+        (PFNGLBINDRENDERBUFFEREXTPROC) wglGetProcAddress("glBindRenderbufferEXT");
     glRenderbufferStorageEXT =
-        (PFNGLRENDERBUFFERSTORAGEEXTPROC) wglGetProcAddress ("glRenderbufferStorageEXT");
-    glGetRenderbufferParameterivEXT = (PFNGLGETRENDERBUFFERPARAMETERIVEXTPROC) wglGetProcAddress (
+        (PFNGLRENDERBUFFERSTORAGEEXTPROC) wglGetProcAddress("glRenderbufferStorageEXT");
+    glGetRenderbufferParameterivEXT = (PFNGLGETRENDERBUFFERPARAMETERIVEXTPROC) wglGetProcAddress(
         "glGetRenderbufferParameterivEXT");
-    glIsRenderbufferEXT = (PFNGLISRENDERBUFFEREXTPROC) wglGetProcAddress ("glIsRenderbufferEXT");
+    glIsRenderbufferEXT = (PFNGLISRENDERBUFFEREXTPROC) wglGetProcAddress("glIsRenderbufferEXT");
     glRenderbufferStorageMultisampleEXT =
-        (PFNGLRENDERBUFFERSTORAGEMULTISAMPLEEXTPROC) wglGetProcAddress (
+        (PFNGLRENDERBUFFERSTORAGEMULTISAMPLEEXTPROC) wglGetProcAddress(
             "glRenderbufferStorageMultisampleEXT");
     glTexImage2DMultisample =
-        (PFNGLTEXIMAGE2DMULTISAMPLEPROC) wglGetProcAddress ("glTexImage2DMultisample");
-    glBlitFrameBufferEXT = (PFNGLBLITFRAMEBUFFEREXTPROC) wglGetProcAddress ("glBlitFramebufferEXT");
+        (PFNGLTEXIMAGE2DMULTISAMPLEPROC) wglGetProcAddress("glTexImage2DMultisample");
+    glBlitFrameBufferEXT = (PFNGLBLITFRAMEBUFFEREXTPROC) wglGetProcAddress("glBlitFramebufferEXT");
 
 #elif defined(RW_MACOS)
 
@@ -122,52 +120,52 @@ bool RWGLFrameBuffer::initialize ()
 #else
     // get pointers to GL functions
     glGenFramebuffersEXT =
-        (PFNGLGENFRAMEBUFFERSEXTPROC) glXGetProcAddress ((GLubyte*) "glGenFramebuffersEXT");
+        (PFNGLGENFRAMEBUFFERSEXTPROC) glXGetProcAddress((GLubyte*) "glGenFramebuffersEXT");
     glDeleteFramebuffersEXT =
-        (PFNGLDELETEFRAMEBUFFERSEXTPROC) glXGetProcAddress ((GLubyte*) "glDeleteFramebuffersEXT");
+        (PFNGLDELETEFRAMEBUFFERSEXTPROC) glXGetProcAddress((GLubyte*) "glDeleteFramebuffersEXT");
     glBindFramebufferEXT =
-        (PFNGLBINDFRAMEBUFFEREXTPROC) glXGetProcAddress ((GLubyte*) "glBindFramebufferEXT");
-    glCheckFramebufferStatusEXT = (PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC) glXGetProcAddress (
+        (PFNGLBINDFRAMEBUFFEREXTPROC) glXGetProcAddress((GLubyte*) "glBindFramebufferEXT");
+    glCheckFramebufferStatusEXT = (PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC) glXGetProcAddress(
         (GLubyte*) "glCheckFramebufferStatusEXT");
     glGetFramebufferAttachmentParameterivEXT =
-        (PFNGLGETFRAMEBUFFERATTACHMENTPARAMETERIVEXTPROC) glXGetProcAddress (
+        (PFNGLGETFRAMEBUFFERATTACHMENTPARAMETERIVEXTPROC) glXGetProcAddress(
             (GLubyte*) "glGetFramebufferAttachmentParameterivEXT");
     glGenerateMipmapEXT =
-        (PFNGLGENERATEMIPMAPEXTPROC) glXGetProcAddress ((GLubyte*) "glGenerateMipmapEXT");
-    glFramebufferTexture2DEXT = (PFNGLFRAMEBUFFERTEXTURE2DEXTPROC) glXGetProcAddress (
+        (PFNGLGENERATEMIPMAPEXTPROC) glXGetProcAddress((GLubyte*) "glGenerateMipmapEXT");
+    glFramebufferTexture2DEXT = (PFNGLFRAMEBUFFERTEXTURE2DEXTPROC) glXGetProcAddress(
         (GLubyte*) "glFramebufferTexture2DEXT");
-    glFramebufferRenderbufferEXT = (PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC) glXGetProcAddress (
+    glFramebufferRenderbufferEXT = (PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC) glXGetProcAddress(
         (GLubyte*) "glFramebufferRenderbufferEXT");
     glGenRenderbuffersEXT =
-        (PFNGLGENRENDERBUFFERSEXTPROC) glXGetProcAddress ((GLubyte*) "glGenRenderbuffersEXT");
+        (PFNGLGENRENDERBUFFERSEXTPROC) glXGetProcAddress((GLubyte*) "glGenRenderbuffersEXT");
     glDeleteRenderbuffersEXT =
-        (PFNGLDELETERENDERBUFFERSEXTPROC) glXGetProcAddress ((GLubyte*) "glDeleteRenderbuffersEXT");
+        (PFNGLDELETERENDERBUFFERSEXTPROC) glXGetProcAddress((GLubyte*) "glDeleteRenderbuffersEXT");
     glBindRenderbufferEXT =
-        (PFNGLBINDRENDERBUFFEREXTPROC) glXGetProcAddress ((GLubyte*) "glBindRenderbufferEXT");
+        (PFNGLBINDRENDERBUFFEREXTPROC) glXGetProcAddress((GLubyte*) "glBindRenderbufferEXT");
     glRenderbufferStorageEXT =
-        (PFNGLRENDERBUFFERSTORAGEEXTPROC) glXGetProcAddress ((GLubyte*) "glRenderbufferStorageEXT");
-    glGetRenderbufferParameterivEXT = (PFNGLGETRENDERBUFFERPARAMETERIVEXTPROC) glXGetProcAddress (
+        (PFNGLRENDERBUFFERSTORAGEEXTPROC) glXGetProcAddress((GLubyte*) "glRenderbufferStorageEXT");
+    glGetRenderbufferParameterivEXT = (PFNGLGETRENDERBUFFERPARAMETERIVEXTPROC) glXGetProcAddress(
         (GLubyte*) "glGetRenderbufferParameterivEXT");
     glIsRenderbufferEXT =
-        (PFNGLISRENDERBUFFEREXTPROC) glXGetProcAddress ((GLubyte*) "glIsRenderbufferEXT");
+        (PFNGLISRENDERBUFFEREXTPROC) glXGetProcAddress((GLubyte*) "glIsRenderbufferEXT");
     glRenderbufferStorageMultisampleEXT =
-        (PFNGLRENDERBUFFERSTORAGEMULTISAMPLEEXTPROC) glXGetProcAddress (
+        (PFNGLRENDERBUFFERSTORAGEMULTISAMPLEEXTPROC) glXGetProcAddress(
             (GLubyte*) "glRenderbufferStorageMultisampleEXT");
     glTexImage2DMultisample =
-        (PFNGLTEXIMAGE2DMULTISAMPLEPROC) glXGetProcAddress ((GLubyte*) "glTexImage2DMultisample");
+        (PFNGLTEXIMAGE2DMULTISAMPLEPROC) glXGetProcAddress((GLubyte*) "glTexImage2DMultisample");
     glBlitFrameBufferEXT =
-        (PFNGLBLITFRAMEBUFFEREXTPROC) glXGetProcAddress ((GLubyte*) "glBlitFramebufferEXT");
+        (PFNGLBLITFRAMEBUFFEREXTPROC) glXGetProcAddress((GLubyte*) "glBlitFramebufferEXT");
 
 #endif
     // check once again FBO extension
 
-    if (glGenFramebuffersEXT && glDeleteFramebuffersEXT && glBindFramebufferEXT &&
-        glCheckFramebufferStatusEXT && glGetFramebufferAttachmentParameterivEXT &&
-        glGenerateMipmapEXT && glFramebufferTexture2DEXT && glFramebufferRenderbufferEXT &&
-        glGenRenderbuffersEXT && glDeleteRenderbuffersEXT && glBindRenderbufferEXT &&
-        glRenderbufferStorageEXT && glGetRenderbufferParameterivEXT && glIsRenderbufferEXT 
+    if(glGenFramebuffersEXT && glDeleteFramebuffersEXT && glBindFramebufferEXT &&
+       glCheckFramebufferStatusEXT && glGetFramebufferAttachmentParameterivEXT &&
+       glGenerateMipmapEXT && glFramebufferTexture2DEXT && glFramebufferRenderbufferEXT &&
+       glGenRenderbuffersEXT && glDeleteRenderbuffersEXT && glBindRenderbufferEXT &&
+       glRenderbufferStorageEXT && glGetRenderbufferParameterivEXT && glIsRenderbufferEXT
 #if !defined(RW_MACOS)
-        && glTexImage2DMultisample && glRenderbufferStorageMultisampleEXT && glBlitFrameBufferEXT
+       && glTexImage2DMultisample && glRenderbufferStorageMultisampleEXT && glBlitFrameBufferEXT
 #endif
     ) {
         _hasFrameBuffers = true;
@@ -182,88 +180,82 @@ bool RWGLFrameBuffer::initialize ()
     return _hasFrameBuffers;
 }
 
-void RWGLFrameBuffer::test (LogWriter& log)
-{
+void RWGLFrameBuffer::test(LogWriter& log) {
     GLint var;
-    glGetIntegerv (GL_MAX_RENDERBUFFER_SIZE_EXT, &var);
+    glGetIntegerv(GL_MAX_RENDERBUFFER_SIZE_EXT, &var);
     (log) << "GL_MAX_RENDERBUFFER_SIZE_EXT: " << var << std::endl;
-    glGetRenderbufferParameterivEXT (GL_RENDERBUFFER_EXT, GL_RENDERBUFFER_WIDTH_EXT, &var);
+    glGetRenderbufferParameterivEXT(GL_RENDERBUFFER_EXT, GL_RENDERBUFFER_WIDTH_EXT, &var);
     (log) << "GL_RENDERBUFFER_WIDTH_EXT: " << var << std::endl;
-    glGetRenderbufferParameterivEXT (GL_RENDERBUFFER_EXT, GL_RENDERBUFFER_HEIGHT_EXT, &var);
+    glGetRenderbufferParameterivEXT(GL_RENDERBUFFER_EXT, GL_RENDERBUFFER_HEIGHT_EXT, &var);
     (log) << "GL_RENDERBUFFER_HEIGHT_EXT: " << var << std::endl;
-    glGetRenderbufferParameterivEXT (
-        GL_RENDERBUFFER_EXT, GL_RENDERBUFFER_INTERNAL_FORMAT_EXT, &var);
+    glGetRenderbufferParameterivEXT(GL_RENDERBUFFER_EXT, GL_RENDERBUFFER_INTERNAL_FORMAT_EXT, &var);
     (log) << "GL_RENDERBUFFER_INTERNAL_FORMAT_EXT: " << var << std::endl;
-    glGetRenderbufferParameterivEXT (GL_RENDERBUFFER_EXT, GL_RENDERBUFFER_RED_SIZE_EXT, &var);
+    glGetRenderbufferParameterivEXT(GL_RENDERBUFFER_EXT, GL_RENDERBUFFER_RED_SIZE_EXT, &var);
     (log) << "GL_RENDERBUFFER_RED_SIZE_EXT: " << var << std::endl;
-    glGetRenderbufferParameterivEXT (GL_RENDERBUFFER_EXT, GL_RENDERBUFFER_GREEN_SIZE_EXT, &var);
+    glGetRenderbufferParameterivEXT(GL_RENDERBUFFER_EXT, GL_RENDERBUFFER_GREEN_SIZE_EXT, &var);
     (log) << "GL_RENDERBUFFER_GREEN_SIZE_EXT: " << var << std::endl;
-    glGetRenderbufferParameterivEXT (GL_RENDERBUFFER_EXT, GL_RENDERBUFFER_BLUE_SIZE_EXT, &var);
+    glGetRenderbufferParameterivEXT(GL_RENDERBUFFER_EXT, GL_RENDERBUFFER_BLUE_SIZE_EXT, &var);
     (log) << "GL_RENDERBUFFER_BLUE_SIZE_EXT: " << var << std::endl;
-    glGetRenderbufferParameterivEXT (GL_RENDERBUFFER_EXT, GL_RENDERBUFFER_ALPHA_SIZE_EXT, &var);
+    glGetRenderbufferParameterivEXT(GL_RENDERBUFFER_EXT, GL_RENDERBUFFER_ALPHA_SIZE_EXT, &var);
     (log) << "GL_RENDERBUFFER_ALPHA_SIZE_EXT: " << var << std::endl;
-    glGetRenderbufferParameterivEXT (GL_RENDERBUFFER_EXT, GL_RENDERBUFFER_DEPTH_SIZE_EXT, &var);
+    glGetRenderbufferParameterivEXT(GL_RENDERBUFFER_EXT, GL_RENDERBUFFER_DEPTH_SIZE_EXT, &var);
     (log) << "GL_RENDERBUFFER_DEPTH_SIZE_EXT: " << var << std::endl;
-    glGetRenderbufferParameterivEXT (GL_RENDERBUFFER_EXT, GL_RENDERBUFFER_STENCIL_SIZE_EXT, &var);
+    glGetRenderbufferParameterivEXT(GL_RENDERBUFFER_EXT, GL_RENDERBUFFER_STENCIL_SIZE_EXT, &var);
     (log) << "GL_RENDERBUFFER_STENCIL_SIZE_EXT: " << var << std::endl;
 }
 
-bool RWGLFrameBuffer::testFrameBufferCompleteness ()
-{
+bool RWGLFrameBuffer::testFrameBufferCompleteness() {
     GLenum status;
-    status = RWGLFrameBuffer::glCheckFramebufferStatusEXT (GL_FRAMEBUFFER_EXT);
-    switch (status) {
+    status = RWGLFrameBuffer::glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT);
+    switch(status) {
         case GL_FRAMEBUFFER_COMPLETE_EXT: return true; break;
         case GL_FRAMEBUFFER_UNSUPPORTED_EXT:
             // Choose different formats
-            Log::errorLog () << "Framebuffer object format is unsupported by the video hardware. "
-                                "(GL_FRAMEBUFFER_UNSUPPORTED_EXT)(FBO - 820)";
+            Log::errorLog() << "Framebuffer object format is unsupported by the video hardware. "
+                               "(GL_FRAMEBUFFER_UNSUPPORTED_EXT)(FBO - 820)";
             break;
         case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT:
-            Log::errorLog ()
+            Log::errorLog()
                 << "Incomplete attachment. (GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT)(FBO - 820)";
             break;
         case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT:
-            Log::errorLog () << "Incomplete missing attachment. "
-                                "(GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT)(FBO - 820)";
+            Log::errorLog() << "Incomplete missing attachment. "
+                               "(GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT)(FBO - 820)";
             break;
         case GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT:
-            Log::errorLog ()
+            Log::errorLog()
                 << "Incomplete dimensions. (GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT)(FBO - 820)";
             break;
         case GL_FRAMEBUFFER_INCOMPLETE_FORMATS_EXT:
-            Log::errorLog ()
+            Log::errorLog()
                 << "Incomplete formats. (GL_FRAMEBUFFER_INCOMPLETE_FORMATS_EXT)(FBO - 820)";
             break;
         case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT:
-            Log::errorLog ()
+            Log::errorLog()
                 << "Incomplete draw buffer. (GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT)(FBO - 820)";
             break;
         case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER_EXT:
-            Log::errorLog ()
+            Log::errorLog()
                 << "Incomplete read buffer. (GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER_EXT)(FBO - 820)";
             break;
         case GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE_EXT:
-            Log::errorLog () << "Incomplete multisample buffer. "
-                                "(GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE_EXT)(FBO - 820)";
+            Log::errorLog() << "Incomplete multisample buffer. "
+                               "(GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE_EXT)(FBO - 820)";
             break;
         default:
             // Programming error; will fail on all hardware
-            Log::errorLog () << "Some video driver error or programming error occured. Framebuffer "
-                                "object status is invalid. (FBO - 823)";
+            Log::errorLog() << "Some video driver error or programming error occured. Framebuffer "
+                               "object status is invalid. (FBO - 823)";
     }
     return false;
 }
 
-bool RWGLFrameBuffer::hasFrameBuffers ()
-{
+bool RWGLFrameBuffer::hasFrameBuffers() {
     return _hasFrameBuffers;
 }
 
-bool RWGLFrameBuffer::isFrameBuffersInitialized ()
-{
+bool RWGLFrameBuffer::isFrameBuffersInitialized() {
     return _frameBuffersInitialized;
 }
 
-RWGLFrameBuffer::RWGLFrameBuffer ()
-{}
+RWGLFrameBuffer::RWGLFrameBuffer() {}

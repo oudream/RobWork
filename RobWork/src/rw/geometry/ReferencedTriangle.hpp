@@ -37,35 +37,35 @@ namespace rw { namespace geometry {
          * @param ref [in] the TriMesh the triangle is a part of
          * @param triangle [in] the index of the triangle in the mesh
          */
-        ReferencedTriangle (TriMeshData::Ptr ref, uint32_t triangle);
+        ReferencedTriangle(TriMeshData::Ptr ref, uint32_t triangle);
 
         /**
          * @brief Acces the vertices of the triangle
          * @param i [in] which of the 3 vertices to access
          * @return ReferencedVertice. Any changes to the vertice will modify the mesh
          */
-        ReferencedVertice operator[] (size_t i) const;
+        ReferencedVertice operator[](size_t i) const;
 
         /**
          * @brief get the indexes of the vertices that constetutes this triangle
          * @param i [in] which of the 3 vertices to access
          * @return reference to the trangle index. Changing this value will modefiy the mesh
          */
-        uint32_t& idx (size_t i);
+        uint32_t& idx(size_t i);
 
         /**
          * @brief get the mesh index of the vertexes belonging to this triangle
          * @param i [in] index of the wanted mesh index
          * @return uint32_t&
          */
-        uint32_t idx (size_t i) const;
+        uint32_t idx(size_t i) const;
 
         /**
          * @brief get one of the 3 edges that makes up this triangle
          * @param i [in] index of the edge
          * @return ReferencedEdge
          */
-        ReferencedEdge edge (size_t i) const;
+        ReferencedEdge edge(size_t i) const;
 
         /**
          * @brief check if triangle got edge
@@ -73,7 +73,7 @@ namespace rw { namespace geometry {
          * @return true if got edge
          * @return false if dosen't have edge or don't share mesh
          */
-        bool has (const ReferencedEdge& edge) const;
+        bool has(const ReferencedEdge& edge) const;
 
         /**
          * @brief check if triangle got vertice
@@ -81,7 +81,7 @@ namespace rw { namespace geometry {
          * @return true if got vertice
          * @return false if dosen't have vertice or don't share mesh
          */
-        bool has (const ReferencedVertice& vertice) const;
+        bool has(const ReferencedVertice& vertice) const;
 
 #ifndef SWIGJAVA
         /**
@@ -91,7 +91,7 @@ namespace rw { namespace geometry {
          * @exception rw::core::Exception if edge not part of triangle
          */
 #endif
-        ReferencedVertice opposit (const ReferencedEdge& edge) const;
+        ReferencedVertice opposit(const ReferencedEdge& edge) const;
 
 #ifndef SWIGJAVA
         /**
@@ -101,7 +101,7 @@ namespace rw { namespace geometry {
          * @exception rw::core::Exception if vertice not part of triangle
          */
 #endif
-        ReferencedEdge opposit (const ReferencedVertice& vertice) const;
+        ReferencedEdge opposit(const ReferencedVertice& vertice) const;
 
         //###########################################
         //#             Functions                   #
@@ -113,7 +113,7 @@ namespace rw { namespace geometry {
          * @return true if intersects
          * @return false if don't intersect or if they are not part of the same mesh
          */
-        bool intersects (const ReferencedTriangle& t) const;
+        bool intersects(const ReferencedTriangle& t) const;
 
         /**
          * @brief Check if the triangles are part of the same mesh.
@@ -121,7 +121,7 @@ namespace rw { namespace geometry {
          * @return true if part of the same mesh
          * @return false if not part of the same mesh
          */
-        bool sameMesh (const ReferencedTriangle& t) const;
+        bool sameMesh(const ReferencedTriangle& t) const;
 
         //###########################################
         //#             Operators                   #
@@ -134,7 +134,7 @@ namespace rw { namespace geometry {
          * @param rhs [in] the new values of this triangle
          * @return ReferencedTriangle&
          */
-        ReferencedTriangle& operator= (rw::geometry::Triangle< double > rhs);
+        ReferencedTriangle& operator=(rw::geometry::Triangle<double> rhs);
 
         /**
          * @brief assignment operator. Over writes the values of the vertices of this triangle with
@@ -143,7 +143,7 @@ namespace rw { namespace geometry {
          * @param rhs [in] the new values of this triangle
          * @return ReferencedTriangle&
          */
-        ReferencedTriangle& operator= (rw::geometry::Triangle< float > rhs);
+        ReferencedTriangle& operator=(rw::geometry::Triangle<float> rhs);
 
         /**
          * @brief assignment operator. Over writes the values of which verticies this triangle
@@ -151,7 +151,7 @@ namespace rw { namespace geometry {
          * @param rhs [in] the new values of this triangle
          * @return ReferencedTriangle&
          */
-        ReferencedTriangle& operator= (rw::math::Vector3D< int > rhs);
+        ReferencedTriangle& operator=(rw::math::Vector3D<int> rhs);
 
         /**
          * @brief Serilization operator for converting to string
@@ -159,30 +159,30 @@ namespace rw { namespace geometry {
          * @param t [in] the triangle
          * @return std::ostream&
          */
-        friend std::ostream& operator<< (std::ostream& os, const ReferencedTriangle& t);
+        friend std::ostream& operator<<(std::ostream& os, const ReferencedTriangle& t);
 
         /**
          * @brief conversion operator to non-referenced triangle. This creates a copy of the values
          * in this triangle, for making the new triangle
          * @return rw::geometry::Triangle< double >
          */
-        operator rw::geometry::Triangle< double > () const;
+        operator rw::geometry::Triangle<double>() const;
 
         /**
          * @brief conversion operator to non-referenced triangle. This creates a copy of the values
          * in this triangle, for making the new triangle
          * @return rw::geometry::Triangle< double >
          */
-        operator rw::geometry::Triangle< float > () const;
+        operator rw::geometry::Triangle<float>() const;
 
         /**
          * @brief convert the refrenced triangle to the index of the triangle in the mesh
          * @return int
          */
-        operator int () const;
+        operator int() const;
 
       private:
-        ReferencedTriangle ();
+        ReferencedTriangle();
         TriMeshData::Ptr _mesh;
         uint32_t _triIndex;
     };

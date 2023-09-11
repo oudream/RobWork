@@ -42,7 +42,7 @@ namespace rw { namespace math {
       private:
       public:
         //! Eigen vector used as internal datastructure.
-        typedef Eigen::Matrix< double, Eigen::Dynamic, 1 > Base;
+        typedef Eigen::Matrix<double, Eigen::Dynamic, 1> Base;
 
         //! Value type.
         typedef double value_type;
@@ -50,16 +50,16 @@ namespace rw { namespace math {
         /**
          * @brief A configuration of vector of length \b dim.
          */
-        Q (size_t dim) : _vec (dim) {}
+        Q(size_t dim) : _vec(dim) {}
 
-        Q (const Q& q) : _vec (q._vec) {}
+        Q(const Q& q) : _vec(q._vec) {}
 
         /**
          * @brief Default constructor.
          *
          * The vector will be of dimension zero.
          */
-        Q () : _vec ((Base::Index) 0) {}
+        Q() : _vec((Base::Index) 0) {}
 
         /**
          * @brief Construct a configuration vector from a std::vector
@@ -67,7 +67,7 @@ namespace rw { namespace math {
          *
          * @param r [in] An expression for a vector of doubles
          */
-        Q (const std::vector< double >& r);
+        Q(const std::vector<double>& r);
 
         /**
          * @brief Creates a Q  initialized with values from \b values
@@ -78,14 +78,11 @@ namespace rw { namespace math {
          * @param args [in] the values of the configuration
          * @deprecated the use of n to describe length is deprecated.
          */
-        template< typename... ARGS > explicit Q (size_t n, ARGS... args) : _vec (n)
-        {
+        template<typename... ARGS> explicit Q(size_t n, ARGS... args) : _vec(n) {
             int i = 0;
-            ParamExpansion (i, args...);
+            ParamExpansion(i, args...);
             //_vec(i--) = arg0;
-            if (i == 0) {
-                _vec (i--) = n;
-            }
+            if(i == 0) { _vec(i--) = n; }
         }
 
         /**
@@ -97,14 +94,11 @@ namespace rw { namespace math {
          * @param args [in] the values of the configuration
          * @deprecated the use of n to describe length is deprecated.
          */
-        template< typename... ARGS > explicit Q (int n, ARGS... args) : _vec (n)
-        {
+        template<typename... ARGS> explicit Q(int n, ARGS... args) : _vec(n) {
             int i = 0;
-            ParamExpansion (i, args...);
+            ParamExpansion(i, args...);
             //_vec(i--) = arg0;
-            if (i == 0) {
-                _vec (i--) = n;
-            }
+            if(i == 0) { _vec(i--) = n; }
         }
 
         /**
@@ -112,12 +106,11 @@ namespace rw { namespace math {
          * @param arg0 [in] first value
          * @param args [in] the values of the configuration
          */
-        template< typename... ARGS > explicit Q (double arg0, ARGS... args)
-        {
+        template<typename... ARGS> explicit Q(double arg0, ARGS... args) {
             int i = 1;
-            ParamExpansion (i, args...);
+            ParamExpansion(i, args...);
             //_vec(i--) = arg1;
-            _vec (i--) = arg0;
+            _vec(i--) = arg0;
         }
 #if defined(SWIG)
         Q_SWIG_CONSTRUCTORS;
@@ -126,42 +119,47 @@ namespace rw { namespace math {
          * @brief Construct from Eigen base.
          * @param q [in] Eigen base.
          */
-        Q (const Base& q) : _vec (q.rows ())
-        {
-            for (int i = 0; i < q.size (); i++)
-                _vec (i) = q (i, 0);
+        Q(const Base& q) : _vec(q.rows()) {
+            for(int i = 0; i < q.size(); i++) _vec(i) = q(i, 0);
         }
 
         //! @brief Destructor.
-        virtual ~Q ();
+        virtual ~Q();
 
         /**
          * @brief Returns Q of length \b n initialized with 0's
          */
-        static Q zero (std::size_t n)
-        {
-            return Q (Eigen::Matrix< double, Eigen::Dynamic, 1 >::Zero (n));
+        static Q zero(std::size_t n) {
+            return Q(Eigen::Matrix<double, Eigen::Dynamic, 1>::Zero(n));
         }
 
         /**
          * @brief The dimension of the configuration vector.
          */
-        size_t size () const { return _vec.rows (); }
+        size_t size() const {
+            return _vec.rows();
+        }
 
         /**
          * @brief True if the configuration is of dimension zero.
          */
-        bool empty () const { return size () == 0; }
+        bool empty() const {
+            return size() == 0;
+        }
 
         /**
          * @brief Accessor for the internal Eigen vector state.
          */
-        const Base& e () const { return _vec; }
+        const Base& e() const {
+            return _vec;
+        }
 
         /**
          * @brief Accessor for the internal Eigen vector state.
          */
-        Base& e () { return _vec; }
+        Base& e() {
+            return _vec;
+        }
 
         /**
          * @brief Extracts a sub part (range) of this Q.
@@ -169,14 +167,11 @@ namespace rw { namespace math {
          * @param cnt [in] the number of elements to include
          * @return
          */
-        const Q getSubPart (size_t start, size_t cnt) const
-        {
-            RW_ASSERT (start + cnt <= size ());
+        const Q getSubPart(size_t start, size_t cnt) const {
+            RW_ASSERT(start + cnt <= size());
 
-            Q res (cnt);
-            for (size_t i = 0; i < cnt; i++) {
-                res (i) = (*this)[start + i];
-            }
+            Q res(cnt);
+            for(size_t i = 0; i < cnt; i++) { res(i) = (*this)[start + i]; }
             return res;
         }
 
@@ -185,12 +180,9 @@ namespace rw { namespace math {
          * @param index [in] the initial index.
          * @param part [in] the part to insert beginning from \b index.
          */
-        void setSubPart (size_t index, const Q& part)
-        {
-            RW_ASSERT (index + part.size () <= size ());
-            for (size_t i = 0; i < part.size (); i++) {
-                (*this)[index + i] = part (i);
-            }
+        void setSubPart(size_t index, const Q& part) {
+            RW_ASSERT(index + part.size() <= size());
+            for(size_t i = 0; i < part.size(); i++) { (*this)[index + i] = part(i); }
         }
 
         //----------------------------------------------------------------------
@@ -200,9 +192,8 @@ namespace rw { namespace math {
          * @brief Returns the Euclidean norm (2-norm) of the configuration
          * @return the norm
          */
-        double norm2 () const
-        {
-            return _vec.norm ();
+        double norm2() const {
+            return _vec.norm();
             // return norm_2(m());
         }
 
@@ -210,9 +201,8 @@ namespace rw { namespace math {
          * @brief Returns the Manhatten norm (1-norm) of the configuration
          * @return the norm
          */
-        double norm1 () const
-        {
-            return _vec.lpNorm< 1 > ();
+        double norm1() const {
+            return _vec.lpNorm<1>();
             // return norm_1(m());
         }
 
@@ -220,9 +210,8 @@ namespace rw { namespace math {
          * @brief Returns the infinte norm (\f$\inf\f$-norm) of the configuration
          * @return the norm
          */
-        double normInf () const
-        {
-            return _vec.lpNorm< Eigen::Infinity > ();
+        double normInf() const {
+            return _vec.lpNorm<Eigen::Infinity>();
             // return norm_inf(m());
         }
 
@@ -234,56 +223,68 @@ namespace rw { namespace math {
          * @param i [in] index in the vector
          * @return const reference to element
          */
-        const double& operator() (size_t i) const { return _vec (i); }
+        const double& operator()(size_t i) const {
+            return _vec(i);
+        }
 
         /**
          * @brief Returns reference to vector element
          * @param i [in] index in the vector
          * @return reference to element
          */
-        double& operator() (size_t i) { return _vec (i); }
+        double& operator()(size_t i) {
+            return _vec(i);
+        }
 
         /**
          * @brief Returns reference to vector element
          * @param i [in] index in the vector
          * @return const reference to element
          */
-        const double& operator[] (size_t i) const { return _vec (i); }
+        const double& operator[](size_t i) const {
+            return _vec(i);
+        }
 
         /**
          * @brief Returns reference to vector element
          * @param i [in] index in the vector
          * @return reference to element
          */
-        double& operator[] (size_t i) { return _vec (i); }
+        double& operator[](size_t i) {
+            return _vec(i);
+        }
 #else
-        ARRAYOPERATOR (double);
+        ARRAYOPERATOR(double);
 #endif
 
         /**
          * @brief Scalar division.
          */
-        const Q operator/ (double s) const { return Q (_vec / s); }
+        const Q operator/(double s) const {
+            return Q(_vec / s);
+        }
 
         /**
          * @brief Scalar multiplication.
          */
-        const Q operator* (double s) const { return Q (_vec * s); }
+        const Q operator*(double s) const {
+            return Q(_vec * s);
+        }
 
         /**
          * @brief Scalar multiplication.
          */
-        friend const Q operator* (double s, const Q& v) { return Q (s * v.e ()); }
+        friend const Q operator*(double s, const Q& v) {
+            return Q(s * v.e());
+        }
 
 #if !defined(SWIGPYTHON)
         /**
          * @brief Scalar division.
          */
-        friend const Q operator/ (double s, const Q& v)
-        {
+        friend const Q operator/(double s, const Q& v) {
             Q res = v;
-            for (size_t i = 0; i < v.size (); i++)
-                res (i) = s / v (i);
+            for(size_t i = 0; i < v.size(); i++) res(i) = s / v(i);
             return res;
         }
 #endif
@@ -291,12 +292,16 @@ namespace rw { namespace math {
         /**
          * @brief Vector subtraction.
          */
-        const Q operator- (const Q& b) const { return Q (_vec - b.e ()); }
+        const Q operator-(const Q& b) const {
+            return Q(_vec - b.e());
+        }
 
         /**
          * @brief Vector addition.
          */
-        const Q operator+ (const Q& b) const { return Q (_vec + b.e ()); }
+        const Q operator+(const Q& b) const {
+            return Q(_vec + b.e());
+        }
 
         /**
          * @brief Compares \b this and \b q2 for equality.
@@ -306,19 +311,20 @@ namespace rw { namespace math {
          * @param q2 [in]
          * @return True if this equals q2, false otherwise.
          */
-        bool operator== (const Q& q2) const;
+        bool operator==(const Q& q2) const;
 
         /**
          * @brief Inequality operator
          * The inverse of operator==().
          */
-        inline bool operator!= (const Q& q2) const { return !((*this) == q2); }
+        inline bool operator!=(const Q& q2) const {
+            return !((*this) == q2);
+        }
 
         /**
          * @brief Scalar multiplication.
          */
-        Q& operator*= (double s)
-        {
+        Q& operator*=(double s) {
             _vec *= s;
             return *this;
         }
@@ -326,8 +332,7 @@ namespace rw { namespace math {
         /**
          * @brief Scalar division.
          */
-        Q& operator/= (double s)
-        {
+        Q& operator/=(double s) {
             _vec /= s;
             return *this;
         }
@@ -335,25 +340,25 @@ namespace rw { namespace math {
         /**
          * @brief Vector addition.
          */
-        Q& operator+= (const Q& v)
-        {
-            _vec += v.e ();
+        Q& operator+=(const Q& v) {
+            _vec += v.e();
             return *this;
         }
 
         /**
          * @brief Vector subtraction.
          */
-        Q& operator-= (const Q& v)
-        {
-            _vec -= v.e ();
+        Q& operator-=(const Q& v) {
+            _vec -= v.e();
             return *this;
         }
 
         /**
          * @brief Unary minus.
          */
-        Q operator- () const { return Q (-_vec); }
+        Q operator-() const {
+            return Q(-_vec);
+        }
 
         /**
          * @brief Compares whether this is less than \b q
@@ -362,14 +367,11 @@ namespace rw { namespace math {
          * if (*this)[0] < q[0] then true is returned. If (*this)[0] > q[0] false is returned and
          * only if (*this)[0] == q[0] is the next index considered.
          */
-        bool operator< (const Q& q) const
-        {
-            RW_ASSERT (size () == q.size ());
-            for (size_t i = 0; i < size (); i++) {
-                if (_vec[i] < q[i])
-                    return true;
-                else if (_vec[i] > q[i])
-                    return false;
+        bool operator<(const Q& q) const {
+            RW_ASSERT(size() == q.size());
+            for(size_t i = 0; i < size(); i++) {
+                if(_vec[i] < q[i]) return true;
+                else if(_vec[i] > q[i]) return false;
             }
             return false;
         }
@@ -378,71 +380,60 @@ namespace rw { namespace math {
          * @brief Convert to a standard vector.
          * @param v [out] the result.
          */
-        void toStdVector (std::vector< double >& v) const
-        {
-            v.resize (size ());
-            for (size_t i = 0; i < size (); i++) {
-                v[i] = _vec[i];
-            }
+        void toStdVector(std::vector<double>& v) const {
+            v.resize(size());
+            for(size_t i = 0; i < size(); i++) { v[i] = _vec[i]; }
         }
 
         /**
          * @brief Convert to a standard vector.
          * @return the result.
          */
-        std::vector< double > toStdVector () const
-        {
-            std::vector< double > v (size ());
-            toStdVector (v);
+        std::vector<double> toStdVector() const {
+            std::vector<double> v(size());
+            toStdVector(v);
             return v;
         }
 #if defined(SWIG)
-        TOSTRING (rw::math::Q);
+        TOSTRING(rw::math::Q);
 #else
         /**
          * @brief Streaming operator.
          *
          * @relates Q
          */
-        friend std::ostream& operator<< (std::ostream& out, const Q& v);
+        friend std::ostream& operator<<(std::ostream& out, const Q& v);
 #endif
 
       private:
-        void ParamExpansion (int& i)
-        {
-            if (_vec.rows () == 0) {
-                _vec = Base (i--);
-            }
-            else if (i == 0) {
+        void ParamExpansion(int& i) {
+            if(_vec.rows() == 0) { _vec = Base(i--); }
+            else if(i == 0) {
                 // do noting
             }
-            else if (_vec.rows () != i) {
+            else if(_vec.rows() != i) {
 #ifndef RW_Q_USE_NEW_CONSTRUCTOR
-                if (_vec.rows () < i) {
-                    RW_THROW ("n.size ("
-                              << _vec.rows () << ") != args.size (" << i << "). "
-                              << "#define RW_Q_USE_NEW_CONSTRUCTOR if you want 'n' to be an "
-                              << "argumeent instead of the size of the configuration");
+                if(_vec.rows() < i) {
+                    RW_THROW("n.size ("
+                             << _vec.rows() << ") != args.size (" << i << "). "
+                             << "#define RW_Q_USE_NEW_CONSTRUCTOR if you want 'n' to be an "
+                             << "argumeent instead of the size of the configuration");
                 }
 #else
-                _vec = Base (i + 1);
+                _vec = Base(i + 1);
 #endif
             }
-            else {
-                i--;
-            }
+            else { i--; }
         }
 
-        template< typename T > void ParamExpansion (int& i, T arg)
-        {
-            ParamExpansion (++i);
-            _vec (i--) = arg;
+        template<typename T> void ParamExpansion(int& i, T arg) {
+            ParamExpansion(++i);
+            _vec(i--) = arg;
         }
 
-        template< typename T, typename... ARGS > void ParamExpansion (int& i, T arg, ARGS... args)
-        {
-            ParamExpansion (++i, args...);
-            _vec (i--) = arg;
+        template<typename T, typename... ARGS> void ParamExpansion(int& i, T arg, ARGS... args) {
+            ParamExpansion(++i, args...);
+            _vec(i--) = arg;
         }
 
         Base _vec;
@@ -454,7 +445,7 @@ namespace rw { namespace math {
      * @param n [in] Length of q.
      * @param values [in] Values to initialize with
      */
-    template<> Q::Q (size_t n, double* values);
+    template<> Q::Q(size_t n, double* values);
 
     /**
      * @brief Creates a Q of length \b n and initialized with values from \b values
@@ -462,7 +453,7 @@ namespace rw { namespace math {
      * @param n [in] Length of q.
      * @param values [in] Values to initialize with
      */
-    template<> Q::Q (size_t n, const double* values);
+    template<> Q::Q(size_t n, const double* values);
 
     /**
      * @brief Creates a Q of length \b n and initialized with values from \b values
@@ -470,7 +461,7 @@ namespace rw { namespace math {
      * @param n [in] Length of q.
      * @param values [in] Values to initialize with
      */
-    template<> Q::Q (int n, double* values);
+    template<> Q::Q(int n, double* values);
 
     /**
      * @brief Creates a Q of length \b n and initialized with values from \b values
@@ -478,21 +469,21 @@ namespace rw { namespace math {
      * @param n [in] Length of q.
      * @param values [in] Values to initialize with
      */
-    template<> Q::Q (int n, const double* values);
+    template<> Q::Q(int n, const double* values);
 
     /**
      * @brief Creates a Q of length \b n and initialize all values in Q to \b value
      * @param n [in] Length of q.
      * @param values [in] Value to initialize
      */
-    template<> Q::Q (int n, double values);
+    template<> Q::Q(int n, double values);
 
     /**
      * @brief Creates a Q of length \b n and initialize all values in Q to \b value
      * @param n [in] Length of q.
      * @param values [in] Value to initialize
      */
-    template<> Q::Q (size_t n, double values);
+    template<> Q::Q(size_t n, double values);
 
 #if !defined(SWIG)
     /**
@@ -505,14 +496,14 @@ namespace rw { namespace math {
      * @param q [in] Target of q read in
      * @return reference to \b in
      */
-    std::istream& operator>> (std::istream& in, Q& q);
+    std::istream& operator>>(std::istream& in, Q& q);
 #endif
 
     /**
      * @brief The dot product (inner product) of \b a and \b b.
      * @relates Q
      */
-    double dot (const Q& a, const Q& b);
+    double dot(const Q& a, const Q& b);
 
     /**
      * @brief concatenates q1 onto q2 such that the returned q has
@@ -522,7 +513,7 @@ namespace rw { namespace math {
      * @param q2 [in] the second Q
      * @return the concatenation of q1 and q2
      */
-    rw::math::Q concat (const Q& q1, const Q& q2);
+    rw::math::Q concat(const Q& q1, const Q& q2);
 
     /*@}*/
 }}    // namespace rw::math
@@ -530,8 +521,8 @@ namespace rw { namespace math {
 namespace rw { namespace core {
     //! @copydoc rw::core::PropertyMap::findProperty(const std::string& identifier) const
     template<>
-    rw::core::Ptr< Property< rw::math::Q > >
-    PropertyMap::findProperty (const std::string& identifier) const;
+    rw::core::Ptr<Property<rw::math::Q>>
+    PropertyMap::findProperty(const std::string& identifier) const;
 }}    // namespace rw::core
 
 namespace rw { namespace common {
@@ -543,15 +534,15 @@ namespace rw { namespace common {
          * @relatedalso rw::math::Q
          */
         template<>
-        void write (const rw::math::Q& sobject, rw::common::OutputArchive& oarchive,
-                    const std::string& id);
+        void write(const rw::math::Q& sobject, rw::common::OutputArchive& oarchive,
+                   const std::string& id);
 
         /**
          * @copydoc rw::common::serialization::read
          * @relatedalso rw::math::Q
          */
         template<>
-        void read (rw::math::Q& sobject, rw::common::InputArchive& iarchive, const std::string& id);
+        void read(rw::math::Q& sobject, rw::common::InputArchive& iarchive, const std::string& id);
     }    // namespace serialization
 }}       // namespace rw::common
 
@@ -563,10 +554,9 @@ namespace boost { namespace serialization {
      * @param version [in] class version (currently version 0).
      * @relatedalso rw::math::Q
      */
-    template< class Archive >
-    void serialize (Archive& archive, rw::math::Q& q, const unsigned int version)
-    {
-        split_free (archive, q, version);    // split into load and save
+    template<class Archive>
+    void serialize(Archive& archive, rw::math::Q& q, const unsigned int version) {
+        split_free(archive, q, version);    // split into load and save
     }
 
     /**
@@ -576,19 +566,16 @@ namespace boost { namespace serialization {
      * @param version [in] class version (currently version 0).
      * @relatedalso rw::math::Q
      */
-    template< class Archive >
-    void save (Archive& archive, const rw::math::Q& q, const unsigned int version)
-    {
-        const rw::math::Q::Base& e = q.e ();
+    template<class Archive>
+    void save(Archive& archive, const rw::math::Q& q, const unsigned int version) {
+        const rw::math::Q::Base& e = q.e();
 #if BOOST_VERSION >= 105900
-        archive << e.size ();
+        archive << e.size();
 #else
-        rw::math::Q::Base::Index size = e.size ();
+        rw::math::Q::Base::Index size = e.size();
         archive << size;
 #endif
-        for (rw::math::Q::Base::Index i = 0; i < e.size (); i++) {
-            archive << e[i];
-        }
+        for(rw::math::Q::Base::Index i = 0; i < e.size(); i++) { archive << e[i]; }
     }
 
     /**
@@ -598,16 +585,13 @@ namespace boost { namespace serialization {
      * @param version [in] class version (currently version 0).
      * @relatedalso rw::math::Q
      */
-    template< class Archive >
-    void load (Archive& archive, rw::math::Q& q, const unsigned int version)
-    {
-        rw::math::Q::Base& e = q.e ();
+    template<class Archive>
+    void load(Archive& archive, rw::math::Q& q, const unsigned int version) {
+        rw::math::Q::Base& e = q.e();
         rw::math::Q::Base::Index size;
         archive >> size;
-        e.resize (size);
-        for (rw::math::Q::Base::Index i = 0; i < size; i++) {
-            archive >> e[i];
-        }
+        e.resize(size);
+        for(rw::math::Q::Base::Index i = 0; i < size; i++) { archive >> e[i]; }
     }
 }}    // namespace boost::serialization
 

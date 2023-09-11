@@ -47,21 +47,21 @@ namespace rwsimlibs { namespace bullet {
     {
       public:
         //! @brief Constructor.
-        BtVelocityDevice (rw::core::Ptr< rwsim::dynamics::RigidDevice > rdev,
-                          const std::vector< btTypedConstraint* >& constraints);
+        BtVelocityDevice(rw::core::Ptr<rwsim::dynamics::RigidDevice> rdev,
+                         const std::vector<btTypedConstraint*>& constraints);
 
         //! @brief Destructor.
-        virtual ~BtVelocityDevice ();
+        virtual ~BtVelocityDevice();
 
         //! @brief @copydoc BtDevice::update
-        virtual void update (double dt, rw::kinematics::State& state);
+        virtual void update(double dt, rw::kinematics::State& state);
 
         //! @brief @copydoc BtDevice::postUpdate
-        virtual void postUpdate (rw::kinematics::State& state);
+        virtual void postUpdate(rw::kinematics::State& state);
 
       private:
-        const rw::core::Ptr< rwsim::dynamics::RigidDevice > _rdev;
-        const std::vector< btTypedConstraint* > _constraints;
+        const rw::core::Ptr<rwsim::dynamics::RigidDevice> _rdev;
+        const std::vector<btTypedConstraint*> _constraints;
     };
     //! @}
 }}     // namespace rwsimlibs::bullet

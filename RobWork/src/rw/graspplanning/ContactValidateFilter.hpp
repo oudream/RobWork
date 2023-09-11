@@ -31,16 +31,15 @@ namespace rw { namespace graspplanning {
     class ContactValidateFilter
     {
       public:
-
         /**
          * @brief Constructor
          */
-        ContactValidateFilter() {};
+        ContactValidateFilter(){};
 
         /**
          * @brief destructor
          */
-        virtual ~ContactValidateFilter (){};
+        virtual ~ContactValidateFilter(){};
 
         /**
          * @brief test if a contact \b contact is valid in regard to the criterias
@@ -48,7 +47,7 @@ namespace rw { namespace graspplanning {
          * @param contact [in] 3d contact
          * @return true if valid, false otherwise
          */
-        virtual bool isValid (const rw::sensor::Contact3D& contact) = 0;
+        virtual bool isValid(const rw::sensor::Contact3D& contact) = 0;
     };
 }}    // namespace rw::graspplanning
 #endif

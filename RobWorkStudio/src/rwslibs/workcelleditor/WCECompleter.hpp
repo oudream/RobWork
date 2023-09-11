@@ -23,25 +23,25 @@
 class WCECompleter : public QCompleter
 {
     Q_OBJECT
-    Q_PROPERTY (QString separator READ separator WRITE setSeparator)
+    Q_PROPERTY(QString separator READ separator WRITE setSeparator)
 
   public:
-    WCECompleter (QObject* parent = 0);
+    WCECompleter(QObject* parent = 0);
 
-    WCECompleter (QAbstractItemModel* model, QObject* parent = 0);
+    WCECompleter(QAbstractItemModel* model, QObject* parent = 0);
 
-    WCECompleter (QStringList list, QObject* paraent = 0);
+    WCECompleter(QStringList list, QObject* paraent = 0);
 
-    QString separator () const;
+    QString separator() const;
 
   public Q_SLOTS:
 
-    void setSeparator (const QString& separator);
+    void setSeparator(const QString& separator);
 
   protected:
-    QStringList splitPath (const QString& path) const;
+    QStringList splitPath(const QString& path) const;
 
-    QString pathFromIndex (const QModelIndex& index) const;
+    QString pathFromIndex(const QModelIndex& index) const;
 
   private:
     QString sep;

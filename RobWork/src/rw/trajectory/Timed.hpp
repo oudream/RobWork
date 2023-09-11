@@ -34,18 +34,18 @@ namespace rw { namespace trajectory {
     /**
        @brief A tuple of (time, value).
      */
-    template< class T > class Timed
+    template<class T> class Timed
     {
       public:
         /**
            Constructor
          */
-        Timed (double time, const T& value) : _time (time), _value (value) {}
+        Timed(double time, const T& value) : _time(time), _value(value) {}
 
         /**
            Default constructor
         */
-        Timed () : _time (0.0), _value () {}
+        Timed() : _time(0.0), _value() {}
 
 #ifdef SWIG
         SWIG_IGNORE (getTime () const);
@@ -54,18 +54,26 @@ namespace rw { namespace trajectory {
         /**
            @brief The time
         */
-        double& getTime () { return _time; }
-        
-        double getTime () const { return _time; }
+        double& getTime() {
+            return _time;
+        }
+
+        double getTime() const {
+            return _time;
+        }
 
 #if !defined(SWIGJAVA)
         /**
            @brief The value
         */
-        const T& getValue () const { return _value; }
+        const T& getValue() const {
+            return _value;
+        }
 #endif
 
-        T& getValue () { return _value; }
+        T& getValue() {
+            return _value;
+        }
 
 #ifdef SWIG
          SWIG_SET_TIME();
@@ -79,16 +87,15 @@ namespace rw { namespace trajectory {
     /**
        @brief A tuple of (time, value).
     */
-    template< class T > rw::trajectory::Timed< T > makeTimed (double time, const T& value)
-    {
-        return rw::trajectory::Timed< T > (time, value);
+    template<class T> rw::trajectory::Timed<T> makeTimed(double time, const T& value) {
+        return rw::trajectory::Timed<T>(time, value);
     }
 
     //! A tuple of (time, Q).
-    typedef rw::trajectory::Timed< rw::math::Q > TimedQ;
+    typedef rw::trajectory::Timed<rw::math::Q> TimedQ;
 
     //! A tuple of (time, State). See rw::trajectory::Timed<t> template for more info.
-    typedef rw::trajectory::Timed< rw::kinematics::State > TimedState;
+    typedef rw::trajectory::Timed<rw::kinematics::State> TimedState;
 
     /*@}*/
 }}    // namespace rw::trajectory

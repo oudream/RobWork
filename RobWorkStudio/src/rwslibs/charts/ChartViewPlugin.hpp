@@ -23,20 +23,20 @@
 namespace rws {
 
 //! @brief Plugin providing plots based on QChartView.
-class ChartViewPlugin: public rw::core::Plugin
+class ChartViewPlugin : public rw::core::Plugin
 {
-    public:
-        //! @brief Constructor.
-        ChartViewPlugin();
+  public:
+    //! @brief Constructor.
+    ChartViewPlugin();
 
-        //! @brief Destructor.
-        virtual ~ChartViewPlugin();
+    //! @brief Destructor.
+    virtual ~ChartViewPlugin();
 
-        //! @copydoc Plugin::getExtensionDescriptors
-        virtual std::vector< rw::core::Extension::Descriptor > getExtensionDescriptors ();
+    //! @copydoc Plugin::getExtensionDescriptors
+    virtual std::vector<rw::core::Extension::Descriptor> getExtensionDescriptors();
 
-        //! @copydoc Plugin::makeExtension
-        virtual rw::core::Ptr< rw::core::Extension > makeExtension (const std::string& id);
+    //! @copydoc Plugin::makeExtension
+    virtual rw::core::Ptr<rw::core::Extension> makeExtension(const std::string& id);
 };
 
 } /* namespace rws */

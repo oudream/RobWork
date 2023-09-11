@@ -16,6 +16,7 @@
  *****************************************************************************/
 
 #include "ChartViewGenerator.hpp"
+
 #include "ChartView.hpp"
 
 #include <rws/ImageUtil.hpp>
@@ -25,59 +26,46 @@ using rw::sensor::Image;
 using namespace rws;
 
 namespace {
-class ChartViewPlot: public Plot
+class ChartViewPlot : public Plot
 {
-    public:
-        ChartViewPlot():
-            Plot(),
-            _view(new ChartView())
-        {
-            std::cout << "ChartViewPlot Create" << std::endl;
-        }
+  public:
+    ChartViewPlot() : Plot(), _view(new ChartView()) {
+        std::cout << "ChartViewPlot Create" << std::endl;
+    }
 
-        virtual ~ChartViewPlot()
-        {
-            std::cout << "ChartViewPlot Delete" << std::endl;
-            delete _view;
-        }
+    virtual ~ChartViewPlot() {
+        std::cout << "ChartViewPlot Delete" << std::endl;
+        delete _view;
+    }
 
-        void listPlot (const std::vector< double >& x, const std::vector< double >& y,
-                       const std::string& title, const std::string& xlabel,
-                       const std::string& ylabel)
-        {
-            _view->listPlot(x, y, title, xlabel, ylabel);
-        }
+    void listPlot(const std::vector<double>& x, const std::vector<double>& y,
+                  const std::string& title, const std::string& xlabel, const std::string& ylabel) {
+        _view->listPlot(x, y, title, xlabel, ylabel);
+    }
 
-        Image::Ptr render(unsigned int width, unsigned int height)
-        {
-            std::cout << "ChartViewGenerator rendering.." << width << " " << height << std::endl;
-            QGraphicsView* const widget = _view->getWidget(0);
-            widget->resize(width, height);
-            std::cout << "ChartViewGenerator rendering.. A" << std::endl;
-            QPixmap p = widget->grab();
-            Image::Ptr image = ImageUtil::toRwImage(p.toImage());
-            std::cout << "ChartViewGenerator rendering.. C" << std::endl;
-            image->saveAsPPM("test.PPM");
-            delete widget;
-            std::cout << "ChartViewGenerator rendering.. D" << std::endl;
-            return image;
-        }
+    Image::Ptr render(unsigned int width, unsigned int height) {
+        std::cout << "ChartViewGenerator rendering.." << width << " " << height << std::endl;
+        QGraphicsView* const widget = _view->getWidget(0);
+        widget->resize(width, height);
+        std::cout << "ChartViewGenerator rendering.. A" << std::endl;
+        QPixmap p        = widget->grab();
+        Image::Ptr image = ImageUtil::toRwImage(p.toImage());
+        std::cout << "ChartViewGenerator rendering.. C" << std::endl;
+        image->saveAsPPM("test.PPM");
+        delete widget;
+        std::cout << "ChartViewGenerator rendering.. D" << std::endl;
+        return image;
+    }
 
-    private:
-        ChartView* const _view;
+  private:
+    ChartView* const _view;
 };
-}
+}    // namespace
 
-ChartViewGenerator::ChartViewGenerator():
-    PlotGenerator()
-{
-}
+ChartViewGenerator::ChartViewGenerator() : PlotGenerator() {}
 
-ChartViewGenerator::~ChartViewGenerator()
-{
-}
+ChartViewGenerator::~ChartViewGenerator() {}
 
-Plot::Ptr ChartViewGenerator::makePlot()
-{
+Plot::Ptr ChartViewGenerator::makePlot() {
     return new ChartViewPlot();
 }

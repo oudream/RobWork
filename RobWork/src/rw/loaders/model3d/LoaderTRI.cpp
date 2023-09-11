@@ -18,86 +18,79 @@ using namespace rw::math;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-LoaderTRI::LoaderTRI ()
-{}
-LoaderTRI::~LoaderTRI ()
-{}
+LoaderTRI::LoaderTRI() {}
+LoaderTRI::~LoaderTRI() {}
 
-Model3D::Ptr LoaderTRI::load (const std::string& filename)
-{
-    std::ifstream input_stream (filename.c_str ());
-    if (!input_stream.is_open ()) {
-        RW_THROW ("Can't open file "
-                  << "'" << filename << "'");
+Model3D::Ptr LoaderTRI::load(const std::string& filename) {
+    std::ifstream input_stream(filename.c_str());
+    if(!input_stream.is_open()) {
+        RW_THROW("Can't open file "
+                 << "'" << filename << "'");
     }
     // Start by storing the current locale. This is retrieved by passing NULL to setlocale
-    std::string locale = setlocale (LC_ALL, NULL);
+    std::string locale = setlocale(LC_ALL, NULL);
 
-    setlocale (LC_ALL, "C");
+    setlocale(LC_ALL, "C");
     char* next;
     char token[LINE_MAX_LENGTH];
     int width;
     char input[LINE_MAX_LENGTH];
-    int nb_points      = 0;
-    Model3D::Ptr model = ownedPtr (new Model3D (filename));
-    Model3D::Object3D< uint16_t >::Ptr obj =
-        ownedPtr (new Model3D::Object3D< uint16_t > ("TRIModel"));
+    int nb_points                        = 0;
+    Model3D::Ptr model                   = ownedPtr(new Model3D(filename));
+    Model3D::Object3D<uint16_t>::Ptr obj = ownedPtr(new Model3D::Object3D<uint16_t>("TRIModel"));
 
-    int currentMatIdx = model->addMaterial (Model3D::Material ("defcol", 0.5, 0.5, 0.5));
+    int currentMatIdx = model->addMaterial(Model3D::Material("defcol", 0.5, 0.5, 0.5));
     // while characters still exists and no errors occour
-    while (input_stream.fail () == 0 && input_stream.eof () == 0) {
+    while(input_stream.fail() == 0 && input_stream.eof() == 0) {
         //  Read the next line of the file into INPUT.
-        input_stream.getline (input, LINE_MAX_LENGTH);
+        input_stream.getline(input, LINE_MAX_LENGTH);
         //  Advance to the first nonspace character in INPUT.
-        for (next = input; *next != '\0' && *next == 32; next++) {
-        }
+        for(next = input; *next != '\0' && *next == 32; next++) {}
         // 32==SPACE character
 
         //  Skip blank lines and comments and linebreaks.
-        if (*next == '\0' || *next == '#' || *next == '!' || *next == '$') {
-            continue;
-        }
+        if(*next == '\0' || *next == '#' || *next == '!' || *next == '$') { continue; }
         //  Extract the first word in this line.
-        sscanf (next, "%s%n", token, &width);
+        sscanf(next, "%s%n", token, &width);
 
         //  Set NEXT to point to just after this token.
         next = next + width;
 
-        if (!strcmp (token, "color")) {
+        if(!strcmp(token, "color")) {
             float r, g, b;
-            sscanf (next, "%e %e %e", &r, &g, &b);
+            sscanf(next, "%e %e %e", &r, &g, &b);
             // create material in object
             std::stringstream sstr;
             sstr << r << "_" << g << "_" << b;
-            Model3D::Material mat (sstr.str (), r, g, b);
-            currentMatIdx = model->addMaterial (mat);
-            obj->setMaterial (currentMatIdx);
+            Model3D::Material mat(sstr.str(), r, g, b);
+            currentMatIdx = model->addMaterial(mat);
+            obj->setMaterial(currentMatIdx);
         }
-        else if (!strcmp (token, "point")) {
+        else if(!strcmp(token, "point")) {
             float x, y, z, nx, ny, nz;
-            sscanf (next, "%e %e %e %e %e %e", &x, &y, &z, &nx, &ny, &nz);
-            Vector3D< float > n (nx, ny, nz);
-            Vector3D< float > v (x, y, z);
+            sscanf(next, "%e %e %e %e %e %e", &x, &y, &z, &nx, &ny, &nz);
+            Vector3D<float> n(nx, ny, nz);
+            Vector3D<float> v(x, y, z);
 
-            obj->_vertices.push_back (v);
-            obj->_normals.push_back (n);
+            obj->_vertices.push_back(v);
+            obj->_normals.push_back(n);
             nb_points++;
-            if (nb_points % 3 == 0) {
-                obj->addTriangle (IndexedTriangle<> (nb_points - 3, nb_points - 2, nb_points - 1));
+            if(nb_points % 3 == 0) {
+                obj->addTriangle(IndexedTriangle<>(nb_points - 3, nb_points - 2, nb_points - 1));
                 // obj->_faces.push_back( IndexedTriangle<>(nb_points-3,nb_points-2,nb_points-1) );
             }
         }
         else {
-            setlocale (LC_ALL, locale.c_str ());
-            RW_THROW ("unrecognized keyword "
-                      << "'" << token << "'");
+            setlocale(LC_ALL, locale.c_str());
+            RW_THROW("unrecognized keyword "
+                     << "'" << token << "'");
         }
     }
 
     // order stuff in matrial faces
 
-    model->addObject (obj);
-    model->optimize (35 * Deg2Rad);
-    setlocale (LC_ALL, locale.c_str ());
+    model->addObject(obj);
+    model->optimize(35 * Deg2Rad);
+    setlocale(LC_ALL, locale.c_str());
     return model;
 }

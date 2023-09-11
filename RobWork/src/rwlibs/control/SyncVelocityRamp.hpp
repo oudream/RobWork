@@ -40,7 +40,7 @@ namespace rw { namespace control {
          * @brief Constructs a ramp generator a device
          * @param device [in] Device to construct ramp for
          */
-        SyncVelocityRamp (rw::models::Device* device);
+        SyncVelocityRamp(rw::models::Device* device);
 
         /**
          * @brief Constructs a ramp generator with specified velocity and acceleration limits
@@ -50,12 +50,12 @@ namespace rw { namespace control {
          * @param vellimits [in] Velocity limits
          * @param acclimits [in] Acceleration limits
          */
-        SyncVelocityRamp (const rw::math::Q& vellimits, const rw::math::Q& acclimits);
+        SyncVelocityRamp(const rw::math::Q& vellimits, const rw::math::Q& acclimits);
 
         /**
          * @brief Destructor
          */
-        virtual ~SyncVelocityRamp ();
+        virtual ~SyncVelocityRamp();
 
         /**
          * @brief Specifies from and to where a ramp should be generated.
@@ -63,26 +63,26 @@ namespace rw { namespace control {
          * @param qend [in] The end configuration
          */
         // TODO: Do we have a better name for this one?
-        void setTarget (const rw::math::Q& qstart, const rw::math::Q& qend);
+        void setTarget(const rw::math::Q& qstart, const rw::math::Q& qend);
 
         /**
          * @brief Returns the time it takes to run the profile
          * @return The duration
          */
 
-        double duration ();
+        double duration();
 
         /**
          * @brief Returns the extremum of the velocities for the joints
          * @return Joint extremum velocities
          */
-        rw::math::Q getExtremumVelocities ();
+        rw::math::Q getExtremumVelocities();
 
         /**
          * @brief Returns the extremum of the acceleration for the joints
          * @return Joint extremum accelerations
          */
-        rw::math::Q getExtremumAccelerations ();
+        rw::math::Q getExtremumAccelerations();
 
         /**
          * @brief Returns the configuration for time \b t
@@ -92,7 +92,7 @@ namespace rw { namespace control {
          * @param t [in] time
          * @return Configuration at time \b t
          */
-        rw::math::Q x (double t);
+        rw::math::Q x(double t);
 
         /**
          * @brief Returns the velocities for time \b t
@@ -103,7 +103,7 @@ namespace rw { namespace control {
          * @param t [in] time
          * @return Velocities at time \b t
          */
-        rw::math::Q dx (double t);
+        rw::math::Q dx(double t);
 
         /**
          * @brief Returns the accelerations for time \b t
@@ -114,7 +114,7 @@ namespace rw { namespace control {
          * @param t [in] time
          * @return Accelerations at time \b t
          */
-        rw::math::Q ddx (double t);
+        rw::math::Q ddx(double t);
 
       private:
         rw::math::Q _vellimits;
@@ -130,16 +130,16 @@ namespace rw { namespace control {
         double _tau_s;
         double _tau_e;
 
-        double calcMaxTime (const rw::math::Q& dists);
-        void calcRamp ();
+        double calcMaxTime(const rw::math::Q& dists);
+        void calcRamp();
 
-        double getStartAccTime ();
+        double getStartAccTime();
 
-        double getEndAccTime ();
+        double getEndAccTime();
 
-        double s (double t);
-        double ds (double t);
-        double dds (double t);
+        double s(double t);
+        double ds(double t);
+        double dds(double t);
     };
 
 }}    // namespace rw::control

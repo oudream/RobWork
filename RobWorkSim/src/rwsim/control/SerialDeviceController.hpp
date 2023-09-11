@@ -40,113 +40,113 @@ namespace rwsim { namespace control {
     class SerialDeviceController : public rwlibs::simulation::SimulatedController
     {
       public:
-        typedef rw::core::Ptr< SerialDeviceController > Ptr;
+        typedef rw::core::Ptr<SerialDeviceController> Ptr;
         /**
          *
          * @param name [in] controller name
          * @param ddev [in]
          */
-        SerialDeviceController (const std::string& name, dynamics::DynamicDevice::Ptr ddev);
+        SerialDeviceController(const std::string& name, dynamics::DynamicDevice::Ptr ddev);
 
         /**
          * @brief construct using RigidDevice.
          * @param name [in] name of controller
          * @param ddev [in] the RigidDevice that should be controlled
          */
-        SerialDeviceController (const std::string& name,
-                                rw::core::Ptr< rwsim::dynamics::RigidDevice > ddev);
+        SerialDeviceController(const std::string& name,
+                               rw::core::Ptr<rwsim::dynamics::RigidDevice> ddev);
 
         //! destructor
-        virtual ~SerialDeviceController ();
+        virtual ~SerialDeviceController();
 
         /////////////////// Move commandoes. The move commandoes are queued
 
         //! @brief move robot in a linear Cartesian path
-        bool moveLin (const rw::math::Transform3D<>& target, float speed = 100, float blend = 0);
+        bool moveLin(const rw::math::Transform3D<>& target, float speed = 100, float blend = 0);
 
         //! @brief move robot from point to point
-        bool movePTP (const rw::math::Q& target, float speed = 100, float blend = 0);
+        bool movePTP(const rw::math::Q& target, float speed = 100, float blend = 0);
 
         //! @brief move robot from point to point but using a pose as target (require invkin)
-        bool movePTP_T (const rw::math::Transform3D<>& target, float speed = 100, float blend = 0);
+        bool movePTP_T(const rw::math::Transform3D<>& target, float speed = 100, float blend = 0);
 
         //! @brief
-        bool moveTraj (const rw::trajectory::QTrajectory::Ptr traj, float speed = 100);
+        bool moveTraj(const rw::trajectory::QTrajectory::Ptr traj, float speed = 100);
 
         /**
          *  @brief flushes the move command queue. This is usefull for braking the current
          * trajectory without stopping the robot. However, if no commands are placed on the queue
          * after calling flush then the robot will stop.
          */
-        void flushQueue ();
+        void flushQueue();
 
         //////////////////// Servo commandoes. The servo commandoes does not get queued
 
         //! @brief move robot in a servoing fasion
-        virtual bool moveVelQ (const rw::math::Q& target_joint_velocity);
+        virtual bool moveVelQ(const rw::math::Q& target_joint_velocity);
 
-        virtual bool moveVelT (const rw::math::VelocityScrew6D<>& vel);
+        virtual bool moveVelT(const rw::math::VelocityScrew6D<>& vel);
 
         //! move robot with a hybrid position/force control
-        virtual bool moveLinFC (const rw::math::Transform3D<>& target,
-                                const rw::math::Wrench6D<>& wtarget, float selection[6],
-                                std::string refframe, rw::math::Rotation3D<> offset,
-                                float speed = 100, float blend = 0);
+        virtual bool moveLinFC(const rw::math::Transform3D<>& target,
+                               const rw::math::Wrench6D<>& wtarget, float selection[6],
+                               std::string refframe, rw::math::Rotation3D<> offset,
+                               float speed = 100, float blend = 0);
 
         /////////////////// Other control commands that effects the robot movements.
         //! hard stop the robot,
-        bool stop ();
+        bool stop();
 
         /**
          * @brief stops the robot but without flushing the command queue. Please notice that
          * the trajectories will
          */
-        bool pause ();
+        bool pause();
 
-        bool isStopped () { return _stop; };
+        bool isStopped() { return _stop; };
 
         /**
          * @brief reenable control after calling stop
          * @return
          */
-        bool start ();
+        bool start();
 
         //! enable safe mode, so that robot stops when collisions are detected
-        bool setSafeModeEnabled (bool enable);
+        bool setSafeModeEnabled(bool enable);
 
         //! the max linear/translational velocity in m/s
-        void setMaxLinearVelocity (double maxVel);
+        void setMaxLinearVelocity(double maxVel);
 
         //! the max angular velocity in rad/s
-        void setMaxAngularVelocity (double maxVel);
+        void setMaxAngularVelocity(double maxVel);
 
         //////////////////   get state information
 
-        rw::math::Q getQ ();
+        rw::math::Q getQ();
 
-        rw::math::Q getQd ();
+        rw::math::Q getQd();
 
-        bool isMoving ();
+        bool isMoving();
 
-        dynamics::DynamicDevice::Ptr getDynamicDevice () { return _ddev; };
+        dynamics::DynamicDevice::Ptr getDynamicDevice() { return _ddev; };
 
         //////////////////////////   simulated controller stuff
 
-        void update (const rwlibs::simulation::Simulator::UpdateInfo& info,
-                     rw::kinematics::State& state);
+        void update(const rwlibs::simulation::Simulator::UpdateInfo& info,
+                    rw::kinematics::State& state);
 
-        void updateFTcontrolWrist (const rwlibs::simulation::Simulator::UpdateInfo& info,
-                                   rw::kinematics::State& state);
+        void updateFTcontrolWrist(const rwlibs::simulation::Simulator::UpdateInfo& info,
+                                  rw::kinematics::State& state);
 
-        std::string getControllerName () { return _name; };
+        std::string getControllerName() { return _name; };
 
-        void reset (const rw::kinematics::State& state) {}
+        void reset(const rw::kinematics::State& state) {}
 
-        rwlibs::control::Controller* getController () { return NULL; }
+        rwlibs::control::Controller* getController() { return NULL; }
 
-        void setEnabled (bool enabled) { _enabled = enabled; }
+        void setEnabled(bool enabled) { _enabled = enabled; }
 
-        bool isEnabled () const { return _enabled; };
+        bool isEnabled() const { return _enabled; };
 
         /**
          * @brief Set a FTSensor.
@@ -158,11 +158,10 @@ namespace rwsim { namespace control {
          * @param sensor [in] a pointer to the FTSensor (must have its frame at one of the joints of
          * the robot).
          */
-        void setFTSensor (rw::sensor::FTSensor* sensor);
+        void setFTSensor(rw::sensor::FTSensor* sensor);
 
         rwlibs::control::Controller::Ptr
-        getControllerHandle (rwlibs::simulation::Simulator::Ptr sim)
-        {
+        getControllerHandle(rwlibs::simulation::Simulator::Ptr sim) {
             return NULL;
         }
 
@@ -173,7 +172,7 @@ namespace rwsim { namespace control {
          */
         struct CompiledTarget
         {
-            CompiledTarget () : ftcontrol (false), velcontrol (false), fttime (0.01), toId(0) {}
+            CompiledTarget() : ftcontrol(false), velcontrol(false), fttime(0.01), toId(0) {}
             rw::trajectory::QTrajectory::Ptr qtraj;
             rw::trajectory::Transform3DTrajectory::Ptr t3dtraj;
             rw::math::Wrench6D<> _wrenchTarget;
@@ -183,14 +182,10 @@ namespace rwsim { namespace control {
             // the id of the last target defining this CompiledTarget
             int toId;
 
-            bool isFinished (double time)
-            {
-                if ((qtraj != NULL) && time < qtraj->endTime ())
-                    return false;
-                if ((t3dtraj != NULL) && time < t3dtraj->endTime ())
-                    return false;
-                if ((ftcontrol) && time < fttime)
-                    return false;
+            bool isFinished(double time) {
+                if((qtraj != NULL) && time < qtraj->endTime()) return false;
+                if((t3dtraj != NULL) && time < t3dtraj->endTime()) return false;
+                if((ftcontrol) && time < fttime) return false;
                 return true;
             }
         };
@@ -214,21 +209,21 @@ namespace rwsim { namespace control {
         };
 
         //! create trajectory from current joint position and joint velocity
-        CompiledTarget makeTrajectory (const std::vector< Target >& targets,
-                                       rw::kinematics::State& state);
+        CompiledTarget makeTrajectory(const std::vector<Target>& targets,
+                                      rw::kinematics::State& state);
 
       private:
         dynamics::DynamicDevice::Ptr _ddev;
-        rw::core::Ptr< rwsim::dynamics::RigidDevice > _rdev;
+        rw::core::Ptr<rwsim::dynamics::RigidDevice> _rdev;
         rw::math::Q _target;
         rw::math::Q _currentQ, _currentQd;
         bool _enabled, _stop, _pause;
-        rw::core::Ptr< rw::invkin::JacobianIKSolver > _solver;
+        rw::core::Ptr<rw::invkin::JacobianIKSolver> _solver;
 
         bool _targetAdded;
 
-        void addTarget (const Target& target);
-        std::vector< Target > _targetQueue;
+        void addTarget(const Target& target);
+        std::vector<Target> _targetQueue;
         boost::mutex _targetMutex;
         rw::trajectory::QTrajectory::Ptr _currentTraj;
         double _currentTrajTime;
@@ -236,13 +231,13 @@ namespace rwsim { namespace control {
 
         double _linVelMax, _angVelMax;
 
-        std::deque< CompiledTarget > _compiledTargets;
+        std::deque<CompiledTarget> _compiledTargets;
         CompiledTarget _executingTarget;
         unsigned int _idCnt;
 
         // Hybrid/Force torque control
         Eigen::VectorXd _q_error, _q_error_last;
-        Eigen::Matrix< double, 6, 1 > _S;
+        Eigen::Matrix<double, 6, 1> _S;
         rw::core::Ptr<rw::kinematics::Frame> _taskFrame;
         rw::math::Rotation3D<> _eRoffset;
         rw::math::Transform3D<> _bXd;

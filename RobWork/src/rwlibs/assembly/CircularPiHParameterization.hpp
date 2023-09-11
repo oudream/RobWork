@@ -24,9 +24,8 @@
  * \copydoc rwlibs::assembly::CircularPiHParameterization
  */
 
-#include <rwlibs/assembly/AssemblyParameterization.hpp>
-
 #include <rw/core/Ptr.hpp>
+#include <rwlibs/assembly/AssemblyParameterization.hpp>
 
 namespace rw { namespace core {
     class PropertyMap;
@@ -45,13 +44,13 @@ namespace rwlibs { namespace assembly {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< CircularPiHParameterization > Ptr;
+        typedef rw::core::Ptr<CircularPiHParameterization> Ptr;
 
         /**
          * @brief Construct a new parameterization from a PropertyMap.
          * @param map [in] the PropertyMap to get the parameters from.
          */
-        CircularPiHParameterization (const rw::core::Ptr< rw::core::PropertyMap > map);
+        CircularPiHParameterization(const rw::core::Ptr<rw::core::PropertyMap> map);
 
         /**
          * @brief Construct a new parameterization with the given values.
@@ -65,24 +64,24 @@ namespace rwlibs { namespace assembly {
          * @param distB [in] the distance of the deepest point of the peg to the hole axis in
          * perpendicular to the peg axis (default is 0).
          */
-        CircularPiHParameterization (double holeRadius, double holeLength, double pegRadius,
-                                     double pegLength, double angle = 0, double distA = 0,
-                                     double distB = 0);
+        CircularPiHParameterization(double holeRadius, double holeLength, double pegRadius,
+                                    double pegLength, double angle = 0, double distA = 0,
+                                    double distB = 0);
 
         //! @brief Destructor.
-        virtual ~CircularPiHParameterization ();
+        virtual ~CircularPiHParameterization();
 
         //! @copydoc rwlibs::assembly::AssemblyParameterization::toPropertyMap
-        rw::core::Ptr< rw::core::PropertyMap > toPropertyMap () const;
+        rw::core::Ptr<rw::core::PropertyMap> toPropertyMap() const;
 
         //! @copydoc rwlibs::assembly::AssemblyParameterization::clone
-        AssemblyParameterization::Ptr clone () const;
+        AssemblyParameterization::Ptr clone() const;
 
         //! @copydoc rwlibs::assembly::AssemblyParameterization::make
-        AssemblyParameterization::Ptr make (rw::core::Ptr< rw::core::PropertyMap > pmap) const;
+        AssemblyParameterization::Ptr make(rw::core::Ptr<rw::core::PropertyMap> pmap) const;
 
         //! @copydoc rwlibs::assembly::AssemblyParameterization::reset
-        void reset (rw::core::Ptr< rw::core::PropertyMap > pmap);
+        void reset(rw::core::Ptr<rw::core::PropertyMap> pmap);
 
       public:
         /**

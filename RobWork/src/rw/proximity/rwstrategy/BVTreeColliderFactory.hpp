@@ -26,7 +26,7 @@
 //#include <rw/proximity/rwstrategy/OBBToleranceCollider.hpp>
 #include <rw/proximity/rwstrategy/BVTreeCollider.hpp>
 #include <rw/proximity/rwstrategy/OBVTreeDFSCollider.hpp>
-#endif 
+#endif
 namespace rw {
 namespace proximity {
 
@@ -39,10 +39,10 @@ namespace proximity {
         /**
          * @brief template base class to deside which node to descent into.
          */
-        template< class DERIVED > struct BVDescentStrategy
+        template<class DERIVED> struct BVDescentStrategy
         {
-            typedef typename Traits< DERIVED >::BVType BVType;
-            typedef typename Traits< DERIVED >::StateType StateType;
+            typedef typename Traits<DERIVED>::BVType BVType;
+            typedef typename Traits<DERIVED>::StateType StateType;
 
             /**
              * @brief returns true if
@@ -51,9 +51,8 @@ namespace proximity {
              * @param state
              * @return
              */
-            inline bool descentIntoA (const BVType& bvA, const BVType& bvB, StateType& state)
-            {
-                return static_cast< DERIVED* > (this)->descentIntoA (bvA, bvB, state);
+            inline bool descentIntoA(const BVType& bvA, const BVType& bvB, StateType& state) {
+                return static_cast<DERIVED*>(this)->descentIntoA(bvA, bvB, state);
             }
         };
 
@@ -61,27 +60,24 @@ namespace proximity {
          * @brief balanced descent strategy. The previous descent choice is saved and the oposite is
          * choosen if
          */
-        template< class BVTREE >
-        struct BalancedDescentStrategy
-            : public BVDescentStrategy< BalancedDescentStrategy< BVTREE > >
+        template<class BVTREE>
+        struct BalancedDescentStrategy : public BVDescentStrategy<BalancedDescentStrategy<BVTREE>>
         {
-            typedef typename Traits< BVTREE >::BVType BVType;
+            typedef typename Traits<BVTREE>::BVType BVType;
             //! returns the oposite direction than the previous state.
-            inline bool descentIntoA (const BVType& bvA, const BVType& bvB, bool& state)
-            {
+            inline bool descentIntoA(const BVType& bvA, const BVType& bvB, bool& state) {
                 state = !state;
                 return state;
             }
         };
 
-        template< class BVTREE >
-        struct MaxAreaDescentStrategy : public BVDescentStrategy< MaxAreaDescentStrategy< BVTREE > >
+        template<class BVTREE>
+        struct MaxAreaDescentStrategy : public BVDescentStrategy<MaxAreaDescentStrategy<BVTREE>>
         {
-            typedef typename Traits< BVTREE >::BVType BVType;
+            typedef typename Traits<BVTREE>::BVType BVType;
             //! returns the oposite direction than the previous state.
-            inline bool descentIntoA (const BVType& bvA, const BVType& bvB, bool& state)
-            {
-                return bvA.calcArea () > bvB.calcArea ();
+            inline bool descentIntoA(const BVType& bvA, const BVType& bvB, bool& state) {
+                return bvA.calcArea() > bvB.calcArea();
             }
         };
 
@@ -92,12 +88,12 @@ namespace proximity {
          * trees.
          * @return collider for checking if the bounding volume trees overlap.
          */
-        template< class BVTREE > static rw::proximity::BVTreeCollider< BVTREE >* makeBalancedDFSColliderOBB ()
-        {
-            rw::geometry::OBBCollider< typename BVTREE::value_type >* bvcollider =
-                new rw::geometry::OBBCollider< typename BVTREE::value_type > ();
-            BalancedDescentStrategy< BVTREE >* dstrategy = new BalancedDescentStrategy< BVTREE > ();
-            return makeDFSCollider< BVTREE > (bvcollider, dstrategy);
+        template<class BVTREE>
+        static rw::proximity::BVTreeCollider<BVTREE>* makeBalancedDFSColliderOBB() {
+            rw::geometry::OBBCollider<typename BVTREE::value_type>* bvcollider =
+                new rw::geometry::OBBCollider<typename BVTREE::value_type>();
+            BalancedDescentStrategy<BVTREE>* dstrategy = new BalancedDescentStrategy<BVTREE>();
+            return makeDFSCollider<BVTREE>(bvcollider, dstrategy);
         }
 
         /**
@@ -108,13 +104,13 @@ namespace proximity {
          * @param primcollider the primitive collider to use.
          * @return collider for checking if the bounding volume trees overlap.
          */
-        template< class BVTREE, class PRIMCOLLIDER >
-        static rw::proximity::BVTreeCollider< BVTREE >* makeBalancedDFSColliderOBB (PRIMCOLLIDER* primcollider)
-        {
-            rw::geometry::OBBCollider< typename BVTREE::value_type >* bvcollider =
-                new rw::geometry::OBBCollider< typename BVTREE::value_type > ();
-            BalancedDescentStrategy< BVTREE >* dstrategy = new BalancedDescentStrategy< BVTREE > ();
-            return makeDFSCollider< BVTREE > (bvcollider, primcollider, dstrategy);
+        template<class BVTREE, class PRIMCOLLIDER>
+        static rw::proximity::BVTreeCollider<BVTREE>*
+        makeBalancedDFSColliderOBB(PRIMCOLLIDER* primcollider) {
+            rw::geometry::OBBCollider<typename BVTREE::value_type>* bvcollider =
+                new rw::geometry::OBBCollider<typename BVTREE::value_type>();
+            BalancedDescentStrategy<BVTREE>* dstrategy = new BalancedDescentStrategy<BVTREE>();
+            return makeDFSCollider<BVTREE>(bvcollider, primcollider, dstrategy);
         }
 
         /**
@@ -124,14 +120,13 @@ namespace proximity {
          * @param dstrat
          * @return
          */
-        template< class BVTREE, class COLLIDER, class DESCENT_STRATEGY >
-        static rw::proximity::BVTreeCollider< BVTREE >* makeDFSCollider (COLLIDER* bvcollider,
-                                                          DESCENT_STRATEGY* dstrat)
-        {
+        template<class BVTREE, class COLLIDER, class DESCENT_STRATEGY>
+        static rw::proximity::BVTreeCollider<BVTREE>* makeDFSCollider(COLLIDER* bvcollider,
+                                                                      DESCENT_STRATEGY* dstrat) {
             typedef typename BVTREE::value_type T;
-            rw::geometry::TriTriIntersectDeviller< T >* primCollider =
-                new rw::geometry::TriTriIntersectDeviller< T > ();
-            return makeDFSCollider< BVTREE > (bvcollider, primCollider, dstrat);
+            rw::geometry::TriTriIntersectDeviller<T>* primCollider =
+                new rw::geometry::TriTriIntersectDeviller<T>();
+            return makeDFSCollider<BVTREE>(bvcollider, primCollider, dstrat);
         }
 
         /**
@@ -142,11 +137,11 @@ namespace proximity {
          * @param dstrat
          * @return
          */
-        template< class BVTREE, class COLLIDER, class DESCENT_STRATEGY, class PRIMCOLLIDER >
-        static rw::proximity::BVTreeCollider< BVTREE >*
-        makeDFSCollider (COLLIDER* bvcollider, PRIMCOLLIDER* primcollider, DESCENT_STRATEGY* dstrat)
-        {
-            return new OBVTreeDFSCollider< BVTREE, COLLIDER, DESCENT_STRATEGY, PRIMCOLLIDER > (
+        template<class BVTREE, class COLLIDER, class DESCENT_STRATEGY, class PRIMCOLLIDER>
+        static rw::proximity::BVTreeCollider<BVTREE>* makeDFSCollider(COLLIDER* bvcollider,
+                                                                      PRIMCOLLIDER* primcollider,
+                                                                      DESCENT_STRATEGY* dstrat) {
+            return new OBVTreeDFSCollider<BVTREE, COLLIDER, DESCENT_STRATEGY, PRIMCOLLIDER>(
                 bvcollider, primcollider, dstrat);
         }
 
@@ -158,9 +153,9 @@ namespace proximity {
          */
         /*
         template<class BVTREE>
-        static std::pair<rw::proximity::BVTreeCollider<BVTREE>*,OBBToleranceCollider<typename BVTREE::value_type>*
-        > makeBalancedDFSToleranceColliderOBB(){ typedef typename BVTREE::value_type T;
-            OBBToleranceCollider<T>* bvcollider = new OBBToleranceCollider<T>();
+        static std::pair<rw::proximity::BVTreeCollider<BVTREE>*,OBBToleranceCollider<typename
+        BVTREE::value_type>* > makeBalancedDFSToleranceColliderOBB(){ typedef typename
+        BVTREE::value_type T; OBBToleranceCollider<T>* bvcollider = new OBBToleranceCollider<T>();
             BalancedDescentStrategy<BVTREE>* dstrategy = new BalancedDescentStrategy<BVTREE>();
             return make_pair( makeDFSCollider<OBBToleranceCollider<T>,
         BalancedDescentStrategy<BVTREE>, BVTREE>(bvcollider, dstrategy), bvcollider);
@@ -176,19 +171,19 @@ namespace proximity {
 
 }    // namespace proximity
 
-template< class BVTREE >
-struct Traits< proximity::BVTreeColliderFactory::BalancedDescentStrategy< BVTREE > >
+template<class BVTREE>
+struct Traits<proximity::BVTreeColliderFactory::BalancedDescentStrategy<BVTREE>>
 {
     typedef BVTREE BVTree;
-    typedef typename Traits< BVTREE >::BVType BVType;
+    typedef typename Traits<BVTREE>::BVType BVType;
     typedef bool StateType;
 };
 
-template< class BVTREE >
-struct Traits< proximity::BVTreeColliderFactory::MaxAreaDescentStrategy< BVTREE > >
+template<class BVTREE>
+struct Traits<proximity::BVTreeColliderFactory::MaxAreaDescentStrategy<BVTREE>>
 {
     typedef BVTREE BVTree;
-    typedef typename Traits< BVTREE >::BVType BVType;
+    typedef typename Traits<BVTREE>::BVType BVType;
     typedef bool StateType;
 };
 

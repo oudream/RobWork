@@ -48,100 +48,100 @@ namespace rw { namespace models {
     {
       public:
         //! smart pointer
-        typedef rw::core::Ptr< Object > Ptr;
+        typedef rw::core::Ptr<Object> Ptr;
         //! const smart pointer
-        typedef rw::core::Ptr< const Object > CPtr;
+        typedef rw::core::Ptr<const Object> CPtr;
 
       protected:
         //! constructor
-        Object (rw::core::Ptr< rw::kinematics::Frame > baseframe);
+        Object(rw::core::Ptr<rw::kinematics::Frame> baseframe);
         //! constructor - first frame is base
-        Object (std::vector< rw::kinematics::Frame* > frames);
+        Object(std::vector<rw::kinematics::Frame*> frames);
 
       public:
         //! @brief destructor
-        virtual ~Object ();
+        virtual ~Object();
 
         /**
          * @brief get name of this object. Name is always the same as the name of the
          * base frame.
          * @return name of object.
          */
-        const std::string& getName () { return _base->getName (); }
+        const std::string& getName() { return _base->getName(); }
 
 #ifdef RW_USE_PTR
         /**
          * @brief get base frame of this object
          * @return base frame of object
          */
-        rw::kinematics::Frame::Ptr getBase () {return _base;}
+        rw::kinematics::Frame::Ptr getBase() {
+            return _base;
+        }
 
         /**
          * @brief get base frame of this object
          * @return base frame of object
          */
-        rw::kinematics::Frame::CPtr getBase () const {return _base;}
+        rw::kinematics::Frame::CPtr getBase() const {
+            return _base;
+        }
 #else
         /**
          * @brief get base frame of this object
          * @return base frame of object
          */
-        rw::kinematics::Frame* getBase ();
+        rw::kinematics::Frame* getBase();
 
         /**
          * @brief get base frame of this object
          * @return base frame of object
          */
-        const rw::kinematics::Frame* getBase () const;
+        const rw::kinematics::Frame* getBase() const;
 #endif
         /**
          * @brief get all associated frames of this object
          * @return a vector of frames
          */
-        const std::vector< rw::kinematics::Frame* >& getFrames ();
+        const std::vector<rw::kinematics::Frame*>& getFrames();
 
         /**
          * @brief associate a frame to this Object.
          * @param frame [in] frame to associate to object
          */
-        void addFrame (rw::core::Ptr< rw::kinematics::Frame > frame);
+        void addFrame(rw::core::Ptr<rw::kinematics::Frame> frame);
 
         /**
          * @brief get default geometries
          * @return geometry for collision detection
          */
-        const std::vector< rw::geometry::Geometry::Ptr >& getGeometry () const
-        {
-            return doGetGeometry (this->getStateStructure ()->getDefaultState ());
+        const std::vector<rw::geometry::Geometry::Ptr>& getGeometry() const {
+            return doGetGeometry(this->getStateStructure()->getDefaultState());
         }
 
         /**
          * @brief get the default models
          * @return models for vizualization
          */
-        const std::vector< rw::geometry::Model3D::Ptr >& getModels () const
-        {
-            return doGetModels (this->getStateStructure ()->getDefaultState ());
+        const std::vector<rw::geometry::Model3D::Ptr>& getModels() const {
+            return doGetModels(this->getStateStructure()->getDefaultState());
         }
 
         /**
          * @brief get geometry of this object
          * @return geometry for collision detection.
          */
-        const std::vector< rw::geometry::Geometry::Ptr >&
-        getGeometry (const rw::kinematics::State& state) const
-        {
-            return doGetGeometry (state);
+        const std::vector<rw::geometry::Geometry::Ptr>&
+        getGeometry(const rw::kinematics::State& state) const {
+            return doGetGeometry(state);
         }
 
         /**
          * @brief get visualization models of this object
          * @return models for visualization
          */
-        const std::vector< rw::geometry::Model3D::Ptr >&
-        getModels (const rw::kinematics::State& state) const
-        {
-            return doGetModels (state);
+        const std::vector<rw::geometry::Model3D::Ptr>&
+        getModels(const rw::kinematics::State& state) const {
+            return doGetModels(state);
         }
 
         // stuff that should be implemented by deriving classes
@@ -151,20 +151,20 @@ namespace rw { namespace models {
          * @param state [in] the state in which the mass should be gotten from
          * @return mass in kilo grams
          */
-        virtual double getMass (rw::kinematics::State& state) const = 0;
+        virtual double getMass(rw::kinematics::State& state) const = 0;
 
         /**
          * @brief get center of mass of this object
          * @param state [in] the state in which to get center of mass
          * @return
          */
-        virtual rw::math::Vector3D< double > getCOM (const rw::kinematics::State& state) const = 0;
+        virtual rw::math::Vector3D<double> getCOM(const rw::kinematics::State& state) const = 0;
 
         /**
          * @brief returns the inertia matrix of this body calculated around COM with the orientation
          * of the base frame.
          */
-        virtual rw::math::InertiaMatrix<> getInertia (rw::kinematics::State& state) const = 0;
+        virtual rw::math::InertiaMatrix<> getInertia(rw::kinematics::State& state) const = 0;
 
       protected:
         friend class WorkCell;
@@ -173,19 +173,19 @@ namespace rw { namespace models {
          * @brief get geometry of this object
          * @return geometry for collision detection.
          */
-        virtual const std::vector< rw::geometry::Geometry::Ptr >&
-        doGetGeometry (const rw::kinematics::State& state) const = 0;
+        virtual const std::vector<rw::geometry::Geometry::Ptr>&
+        doGetGeometry(const rw::kinematics::State& state) const = 0;
 
         /**
          * @brief get visualization models of this object
          * @return models for visualization
          */
-        virtual const std::vector< rw::geometry::Model3D::Ptr >&
-        doGetModels (const rw::kinematics::State& state) const = 0;
+        virtual const std::vector<rw::geometry::Model3D::Ptr>&
+        doGetModels(const rw::kinematics::State& state) const = 0;
 
       private:
-        rw::core::Ptr< rw::kinematics::Frame > _base;
-        std::vector< rw::kinematics::Frame* > _frames;
+        rw::core::Ptr<rw::kinematics::Frame> _base;
+        std::vector<rw::kinematics::Frame*> _frames;
     };
 
     /*@}*/

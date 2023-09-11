@@ -41,28 +41,28 @@ namespace rw { namespace core {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< LogWriter > Ptr;
+        typedef rw::core::Ptr<LogWriter> Ptr;
 
         /**
          * @brief Descructor
          */
-        virtual ~LogWriter ();
+        virtual ~LogWriter();
 
         /**
          * @brief Flush method
          */
-        void flush ();
+        void flush();
 
         /**
          * @brief Set the tab level
          */
-        void setTabLevel (int tabLevel);
+        void setTabLevel(int tabLevel);
 
         /**
          * @brief Writes \b str to the log
          * @param str [in] message to write
          */
-        void write (const std::string& str);
+        void write(const std::string& str);
 
         /**
          * @brief Writes \b msg to the log
@@ -72,7 +72,7 @@ namespace rw { namespace core {
          *
          * @param msg [in] message to write
          */
-        void write (const Message& msg);
+        void write(const Message& msg);
 
         /**
          * @brief Writes \b str as a line
@@ -80,24 +80,22 @@ namespace rw { namespace core {
          * By default writeln writes \b str followed by a '\\n'. However, logs
          * are free to implement a line change differently.
          */
-        void writeln (const std::string& str);
+        void writeln(const std::string& str);
 
         /**
          * @brief general stream operator
          */
-        template< class T > LogWriter& operator<< (T t)
-        {
+        template<class T> LogWriter& operator<<(T t) {
             std::stringstream tmp;
             tmp << t;
-            return this->operator<< (tmp.str ());
+            return this->operator<<(tmp.str());
         }
 
         /**
          * @brief specialized stream operator
         2 */
-        LogWriter& operator<< (const std::string& str)
-        {
-            write (str);
+        LogWriter& operator<<(const std::string& str) {
+            write(str);
             return *this;
         }
 
@@ -106,9 +104,8 @@ namespace rw { namespace core {
          * @param msg [in] the message.
          * @return a reference to this LogWriter for chaining of stream operators.
          */
-        LogWriter& operator<< (const Message& msg)
-        {
-            write (msg);
+        LogWriter& operator<<(const Message& msg) {
+            write(msg);
             return *this;
         }
 
@@ -116,27 +113,26 @@ namespace rw { namespace core {
         /**
          * @brief specialized stream operator
          */
-        LogWriter& operator<< (const char* str)
-        {
-            write (str);
+        LogWriter& operator<<(const char* str) {
+            write(str);
             return *this;
         }
 #endif
         /**
          * @brief Handle the std::endl and other stream functions.
          */
-        LogWriter& operator<< (std::ostream& (*pf) (std::ostream&) );
+        LogWriter& operator<<(std::ostream& (*pf)(std::ostream&) );
 
       protected:
-        LogWriter () {}
+        LogWriter() {}
 
-        virtual void doWrite (const std::string& message) = 0;
-        virtual void doSetTabLevel (int tabLevel)         = 0;
-        virtual void doFlush ()                           = 0;
+        virtual void doWrite(const std::string& message) = 0;
+        virtual void doSetTabLevel(int tabLevel)         = 0;
+        virtual void doFlush()                           = 0;
 
       private:
-        LogWriter (const LogWriter&);
-        LogWriter& operator= (const LogWriter&);
+        LogWriter(const LogWriter&);
+        LogWriter& operator=(const LogWriter&);
         std::mutex _mutex;
     };    // namespace core
     /* @} */

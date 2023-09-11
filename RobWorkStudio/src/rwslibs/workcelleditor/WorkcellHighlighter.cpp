@@ -20,106 +20,100 @@
 #include <QRegularExpression>
 #include <QTextCharFormat>
 
-WorkcellHighlighter::HighlightingRule WorkcellHighlighter::makeRule (QString pattern, QColor color,
-                                                                     int fontweight)
-{
+WorkcellHighlighter::HighlightingRule WorkcellHighlighter::makeRule(QString pattern, QColor color,
+                                                                    int fontweight) {
     HighlightingRule rule;
     QTextCharFormat format;
-    format.setForeground (color);
-    format.setFontWeight (fontweight);
-    rule.pattern = QRegularExpression (pattern);
+    format.setForeground(color);
+    format.setFontWeight(fontweight);
+    rule.pattern = QRegularExpression(pattern);
     rule.format  = format;
     return rule;
 }
 
-WorkcellHighlighter::WorkcellHighlighter (QTextDocument* parent) : QSyntaxHighlighter (parent)
-{
+WorkcellHighlighter::WorkcellHighlighter(QTextDocument* parent) : QSyntaxHighlighter(parent) {
     HighlightingRule rule;
 
-    highlightingRules.append (makeRule ("\\bWorkCell\\b", QColor (0, 94, 136), QFont::Bold));
+    highlightingRules.append(makeRule("\\bWorkCell\\b", QColor(0, 94, 136), QFont::Bold));
 
-    highlightingRules.append (makeRule ("\\bFrame\\b", QColor (217, 0, 93), QFont::Bold));
+    highlightingRules.append(makeRule("\\bFrame\\b", QColor(217, 0, 93), QFont::Bold));
 
-    highlightingRules.append (makeRule ("\\bDrawable\\b", QColor (0, 175, 95), QFont::Bold));
+    highlightingRules.append(makeRule("\\bDrawable\\b", QColor(0, 175, 95), QFont::Bold));
 
-    highlightingRules.append (makeRule ("\\bCollisionModel\\b", QColor (255, 87, 79), QFont::Bold));
+    highlightingRules.append(makeRule("\\bCollisionModel\\b", QColor(255, 87, 79), QFont::Bold));
 
-    highlightingRules.append (makeRule ("\\bProperty\\b", Qt::darkGreen, QFont::Bold));
+    highlightingRules.append(makeRule("\\bProperty\\b", Qt::darkGreen, QFont::Bold));
 
-    highlightingRules.append (makeRule ("\\bSerialDevice\\b", QColor (1, 135, 134), QFont::Bold));
+    highlightingRules.append(makeRule("\\bSerialDevice\\b", QColor(1, 135, 134), QFont::Bold));
 
-    highlightingRules.append (makeRule ("\\bInclude\\b", QColor (46, 125, 50), QFont::Bold));
+    highlightingRules.append(makeRule("\\bInclude\\b", QColor(46, 125, 50), QFont::Bold));
 
-    highlightingRules.append (makeRule ("\\bRPY\\b", QColor (142, 93, 171), QFont::Bold));
-    highlightingRules.append (makeRule ("\\bPos\\b", QColor (142, 93, 171), QFont::Bold));
-    highlightingRules.append (makeRule ("\\bPolytope\\b", QColor (142, 93, 171), QFont::Bold));
-    highlightingRules.append (makeRule ("\\bBox\\b", QColor (142, 93, 171), QFont::Bold));
-    highlightingRules.append (makeRule ("\\bRGB\\b", QColor (142, 93, 171), QFont::Bold));
+    highlightingRules.append(makeRule("\\bRPY\\b", QColor(142, 93, 171), QFont::Bold));
+    highlightingRules.append(makeRule("\\bPos\\b", QColor(142, 93, 171), QFont::Bold));
+    highlightingRules.append(makeRule("\\bPolytope\\b", QColor(142, 93, 171), QFont::Bold));
+    highlightingRules.append(makeRule("\\bBox\\b", QColor(142, 93, 171), QFont::Bold));
+    highlightingRules.append(makeRule("\\bRGB\\b", QColor(142, 93, 171), QFont::Bold));
 
-    classFormat.setFontWeight (QFont::Bold);
-    classFormat.setForeground (Qt::darkMagenta);
-    rule.pattern = QRegularExpression ("\\bQ[A-Za-z]+\\b");
+    classFormat.setFontWeight(QFont::Bold);
+    classFormat.setForeground(Qt::darkMagenta);
+    rule.pattern = QRegularExpression("\\bQ[A-Za-z]+\\b");
     rule.format  = classFormat;
-    highlightingRules.append (rule);
+    highlightingRules.append(rule);
 
-    singleLineCommentFormat.setForeground (QColor (135, 135, 135));
-    rule.pattern = QRegularExpression ("--(?!\\[)[^\n]*");
+    singleLineCommentFormat.setForeground(QColor(135, 135, 135));
+    rule.pattern = QRegularExpression("--(?!\\[)[^\n]*");
     rule.format  = singleLineCommentFormat;
-    highlightingRules.append (rule);
+    highlightingRules.append(rule);
 
-    multiLineCommentFormat.setForeground (Qt::red);
-    quotationFormat.setForeground (Qt::darkGreen);
+    multiLineCommentFormat.setForeground(Qt::red);
+    quotationFormat.setForeground(Qt::darkGreen);
 
-    attributeFormat.setForeground (QColor (215, 95, 0));
-    rule.pattern = QRegularExpression (R"**((?<range2>[\w\d\-\:]+)[ ]*=[ ]*"[^"]*")**",
-                                       QRegularExpression::DotMatchesEverythingOption |
-                                           QRegularExpression::MultilineOption);
+    attributeFormat.setForeground(QColor(215, 95, 0));
+    rule.pattern = QRegularExpression(R"**((?<range2>[\w\d\-\:]+)[ ]*=[ ]*"[^"]*")**",
+                                      QRegularExpression::DotMatchesEverythingOption |
+                                          QRegularExpression::MultilineOption);
     rule.format  = attributeFormat;
-    highlightingRules.append (rule);
+    highlightingRules.append(rule);
 
-    rule.pattern = QRegularExpression (R"**((?<!\\)([\"'])(.+?)(?<!\\)\1)**",
-                                       QRegularExpression::DotMatchesEverythingOption |
-                                           QRegularExpression::MultilineOption);
+    rule.pattern = QRegularExpression(R"**((?<!\\)([\"'])(.+?)(?<!\\)\1)**",
+                                      QRegularExpression::DotMatchesEverythingOption |
+                                          QRegularExpression::MultilineOption);
     rule.format  = quotationFormat;
-    highlightingRules.append (rule);
+    highlightingRules.append(rule);
 
-    functionFormat.setFontItalic (true);
-    functionFormat.setForeground (Qt::blue);
-    rule.pattern = QRegularExpression ("\\b[A-Za-z0-9_]+(?=\\()");
+    functionFormat.setFontItalic(true);
+    functionFormat.setForeground(Qt::blue);
+    rule.pattern = QRegularExpression("\\b[A-Za-z0-9_]+(?=\\()");
     rule.format  = functionFormat;
-    highlightingRules.append (rule);
+    highlightingRules.append(rule);
 
-    commentStartExpression = QRegularExpression ("--\\[");
-    commentEndExpression   = QRegularExpression ("\\]");
+    commentStartExpression = QRegularExpression("--\\[");
+    commentEndExpression   = QRegularExpression("\\]");
 }
 
-void WorkcellHighlighter::highlightBlock (const QString& text)
-{
-    Q_FOREACH (const HighlightingRule& rule, highlightingRules) {
-        QRegularExpressionMatchIterator matchIterator = rule.pattern.globalMatch (text);
-        while (matchIterator.hasNext ()) {
-            QRegularExpressionMatch match = matchIterator.next ();
-            setFormat (match.capturedStart (), match.capturedLength (), rule.format);
+void WorkcellHighlighter::highlightBlock(const QString& text) {
+    Q_FOREACH(const HighlightingRule& rule, highlightingRules) {
+        QRegularExpressionMatchIterator matchIterator = rule.pattern.globalMatch(text);
+        while(matchIterator.hasNext()) {
+            QRegularExpressionMatch match = matchIterator.next();
+            setFormat(match.capturedStart(), match.capturedLength(), rule.format);
         }
     }
-    setCurrentBlockState (0);
+    setCurrentBlockState(0);
 
     int startIndex = 0;
-    if (previousBlockState () != 1)
-        startIndex = text.indexOf (commentStartExpression);
+    if(previousBlockState() != 1) startIndex = text.indexOf(commentStartExpression);
 
-    while (startIndex >= 0) {
-        QRegularExpressionMatch match = commentEndExpression.match (text, startIndex);
-        int endIndex                  = match.capturedStart ();
+    while(startIndex >= 0) {
+        QRegularExpressionMatch match = commentEndExpression.match(text, startIndex);
+        int endIndex                  = match.capturedStart();
         int commentLength             = 0;
-        if (endIndex == -1) {
-            setCurrentBlockState (1);
-            commentLength = text.length () - startIndex;
+        if(endIndex == -1) {
+            setCurrentBlockState(1);
+            commentLength = text.length() - startIndex;
         }
-        else {
-            commentLength = endIndex - startIndex + match.capturedLength ();
-        }
-        setFormat (startIndex, commentLength, multiLineCommentFormat);
-        startIndex = text.indexOf (commentStartExpression, startIndex + commentLength);
+        else { commentLength = endIndex - startIndex + match.capturedLength(); }
+        setFormat(startIndex, commentLength, multiLineCommentFormat);
+        startIndex = text.indexOf(commentStartExpression, startIndex + commentLength);
     }
 }

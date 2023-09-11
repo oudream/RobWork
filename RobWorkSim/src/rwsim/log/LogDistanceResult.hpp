@@ -42,43 +42,43 @@ namespace rwsim { namespace log {
     {
       public:
         //! Smart pointer type of LogDistanceResult
-        typedef rw::core::Ptr< LogDistanceResult > Ptr;
+        typedef rw::core::Ptr<LogDistanceResult> Ptr;
 
         //! Smart pointer type of const LogDistanceResult
-        typedef rw::core::Ptr< const LogDistanceResult > CPtr;
+        typedef rw::core::Ptr<const LogDistanceResult> CPtr;
 
         //! @copydoc SimulatorLogEntry::SimulatorLogEntry
-        LogDistanceResult (SimulatorLogScope* parent);
+        LogDistanceResult(SimulatorLogScope* parent);
 
         //! @brief Destructor.
-        virtual ~LogDistanceResult ();
+        virtual ~LogDistanceResult();
 
         //! @copydoc SimulatorLogEntry::read
-        virtual void read (class rw::common::InputArchive& iarchive, const std::string& id);
+        virtual void read(class rw::common::InputArchive& iarchive, const std::string& id);
 
         //! @copydoc SimulatorLogEntry::write
-        virtual void write (class rw::common::OutputArchive& oarchive, const std::string& id) const;
+        virtual void write(class rw::common::OutputArchive& oarchive, const std::string& id) const;
 
         //! @copydoc SimulatorLogEntry::getType
-        virtual std::string getType () const;
+        virtual std::string getType() const;
 
         //! @copydoc SimulatorLogEntry::operator==
-        virtual bool operator== (const SimulatorLog& b) const;
+        virtual bool operator==(const SimulatorLog& b) const;
 
         //! @copydoc SimulatorLogEntry::getLinkedEntries
-        virtual std::list< SimulatorLogEntry::Ptr > getLinkedEntries () const;
+        virtual std::list<SimulatorLogEntry::Ptr> getLinkedEntries() const;
 
         //! @copydoc SimulatorLogEntry::autoLink
-        virtual bool autoLink ();
+        virtual bool autoLink();
 
         //! @copydoc SimulatorLogEntry::createNew
-        virtual SimulatorLogEntry::Ptr createNew (SimulatorLogScope* parent) const;
+        virtual SimulatorLogEntry::Ptr createNew(SimulatorLogScope* parent) const;
 
         /**
          * @brief Get the type id of this entry type.
          * @return the type id.
          */
-        static std::string getTypeID ();
+        static std::string getTypeID();
 
         //! @brief The result including info about the ProximityModels.
         struct ResultInfo
@@ -93,36 +93,36 @@ namespace rwsim { namespace log {
             std::string frameB;
 
             //! @brief The geometry ids for the first frame.
-            std::vector< std::string > geoNamesA;
+            std::vector<std::string> geoNamesA;
 
             //! @brief The geometry ids for the second frame.
-            std::vector< std::string > geoNamesB;
+            std::vector<std::string> geoNamesB;
 
             /**
              * @brief Compare with other ResultInfo structure.
              * @param b [in] the other structure.
              * @return true if equal, false otherwise.
              */
-            bool operator== (const ResultInfo& b) const;
+            bool operator==(const ResultInfo& b) const;
         };
 
         /**
          * @brief Retrieve the logged result.
          * @return the result.
          */
-        const std::vector< ResultInfo >& getResults () const;
+        const std::vector<ResultInfo>& getResults() const;
 
         /**
          * @brief Add the result to this log entry.
          * @param result [in] the result.
          */
-        void addResult (const rw::proximity::DistanceStrategy::Result& result);
+        void addResult(const rw::proximity::DistanceStrategy::Result& result);
 
         /**
          * @brief Add results to this log entry.
          * @param results [in] list of results.
          */
-        void addResults (const std::vector< rw::proximity::DistanceStrategy::Result >& results);
+        void addResults(const std::vector<rw::proximity::DistanceStrategy::Result>& results);
 
         /**
          * @brief Get the positions of the objects.
@@ -131,11 +131,11 @@ namespace rwsim { namespace log {
          *
          * @return the log entry with positions of objects (or NULL if not linked).
          */
-        rw::core::Ptr< LogPositions > getPositions () const;
+        rw::core::Ptr<LogPositions> getPositions() const;
 
       private:
-        rw::core::Ptr< LogPositions > _positions;
-        std::vector< ResultInfo > _results;
+        rw::core::Ptr<LogPositions> _positions;
+        std::vector<ResultInfo> _results;
     };
     //! @}
 

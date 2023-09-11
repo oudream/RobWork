@@ -18,10 +18,9 @@
 #ifndef RWLIBS_CALIBRATION_FIXEDFRAMECALIBRATION_HPP
 #define RWLIBS_CALIBRATION_FIXEDFRAMECALIBRATION_HPP
 
-#include <rwlibs/calibration/Calibration.hpp>
-
 #include <rw/core/Ptr.hpp>
 #include <rw/kinematics/FixedFrame.hpp>
+#include <rwlibs/calibration/Calibration.hpp>
 
 namespace rwlibs { namespace calibration {
     /** @addtogroup calibration */
@@ -36,14 +35,14 @@ namespace rwlibs { namespace calibration {
     {
       public:
         /** @brief Typedef for pointer to FixedFrameCalibration */
-        typedef rw::core::Ptr< FixedFrameCalibration > Ptr;
+        typedef rw::core::Ptr<FixedFrameCalibration> Ptr;
 
         /**
          * @brief Constructs FixedFrameCalibration for \b frame. Initializes correction to the
          * current transformation of the frame.
          * @param frame [in] Frame to correct with the FixedFrameCalibration
          */
-        FixedFrameCalibration (rw::kinematics::FixedFrame::Ptr frame);
+        FixedFrameCalibration(rw::kinematics::FixedFrame::Ptr frame);
 
         /**
          * @brief Construct FixedFrameCalibration for \b frame, with \b correctedTransform as the
@@ -51,34 +50,34 @@ namespace rwlibs { namespace calibration {
          * @param frame [in] Frame to correct with the FixedFrameCalibration
          * @param correctedTransform [in] Initial correction.
          */
-        FixedFrameCalibration (rw::kinematics::FixedFrame::Ptr frame,
-                               const rw::math::Transform3D<>& correctedTransform);
+        FixedFrameCalibration(rw::kinematics::FixedFrame::Ptr frame,
+                              const rw::math::Transform3D<>& correctedTransform);
 
         /**
          * @brief Destructor
          */
-        virtual ~FixedFrameCalibration ();
+        virtual ~FixedFrameCalibration();
 
         /**
          * @brief Returns the frame which are calibrated
          */
-        rw::kinematics::FixedFrame::Ptr getFrame () const;
+        rw::kinematics::FixedFrame::Ptr getFrame() const;
 
         /**
          * @brief Returns the correction transform.
          */
-        rw::math::Transform3D<> getCorrectedTransform () const;
+        rw::math::Transform3D<> getCorrectedTransform() const;
 
         /**
          * @brief Sets the corrected transform
          * @param transform [in] The new corrected transform
          */
-        void setCorrectedTransform (const rw::math::Transform3D<>& transform);
+        void setCorrectedTransform(const rw::math::Transform3D<>& transform);
 
       private:
-        virtual void doApply ();
+        virtual void doApply();
 
-        virtual void doRevert ();
+        virtual void doRevert();
 
       private:
         rw::kinematics::FixedFrame::Ptr _frame;

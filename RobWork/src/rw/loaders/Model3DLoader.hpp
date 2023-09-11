@@ -36,17 +36,17 @@ namespace rw { namespace loaders {
     {
       public:
         //! smart pointer type
-        typedef rw::core::Ptr< Model3DLoader > Ptr;
+        typedef rw::core::Ptr<Model3DLoader> Ptr;
 
         //! destructor
-        virtual ~Model3DLoader (){};
-        
+        virtual ~Model3DLoader(){};
+
         /**
          * @brief load a Model3D from file \b filename
          * @param filename [in] name of file to load
          * @return a model3d if loaded successfully else NULL (or exception)
          */
-        virtual rw::geometry::Model3D::Ptr load (const std::string& filename) = 0;
+        virtual rw::geometry::Model3D::Ptr load(const std::string& filename) = 0;
 
         // virtual void save(Model3DPtr model, const std::string& filename) = 0;
 
@@ -54,24 +54,25 @@ namespace rw { namespace loaders {
          * @brief get the list of supported 3D model formats (as extensions)
          * @return
          */
-        virtual std::vector< std::string > getModelFormats () = 0;
+        virtual std::vector<std::string> getModelFormats() = 0;
 
         /**
          * @brief Check if the loader support a specific format
          * @param format [in] the extension to check if is supported
-         * @return true if format is supported 
+         * @return true if format is supported
          */
         bool isSupported(std::string format);
 
         /**
          * @brief set a name that the loader can use, if it can't find anyother
-         * @param name 
+         * @param name
          */
         void setDefaultName(std::string name);
 
         /**
-         * @brief set which material to use if the File dosen't include a material/ texturing it self
-         * @param mat 
+         * @brief set which material to use if the File dosen't include a material/ texturing it
+         * self
+         * @param mat
          */
         void setDefaultMaterial(rw::geometry::Model3D::Material mat);
 
@@ -84,13 +85,13 @@ namespace rw { namespace loaders {
          * @brief a factory for Model3DLoaders. This factory defines an
          * extension point for Model3DLoaders.
          */
-        class Factory : public rw::core::ExtensionPoint< Model3DLoader >
+        class Factory : public rw::core::ExtensionPoint<Model3DLoader>
         {
           public:
             //! constructor
-            Factory () :
-                rw::core::ExtensionPoint< Model3DLoader > ("rw.loaders.Model3DLoader",
-                                                           "Example extension point"){};
+            Factory() :
+                rw::core::ExtensionPoint<Model3DLoader>("rw.loaders.Model3DLoader",
+                                                        "Example extension point"){};
 
             /**
              * get loader for a specific file format (extension)
@@ -98,28 +99,27 @@ namespace rw { namespace loaders {
              * @param skip [in] skip the first few valid loaders
              * @return
              */
-            static rw::core::Ptr< Model3DLoader > getModel3DLoader (const std::string& format, size_t skip = 0);
+            static rw::core::Ptr<Model3DLoader> getModel3DLoader(const std::string& format,
+                                                                 size_t skip = 0);
 
             /**
              * test if a loader exist for a specific file format (extension)
              * @param format [in] extension of file
              * @return
              */
-            static bool hasModel3DLoader (const std::string& format);
+            static bool hasModel3DLoader(const std::string& format);
 
             /**
              * @brief get a list of supported formats
              * @return
              */
-            static std::vector< std::string > getSupportedFormats ();
-
+            static std::vector<std::string> getSupportedFormats();
         };
-   
-   
-          protected:
-          Model3DLoader();
-          std::string _defaultName;
-          rw::geometry::Model3D::Material _defaultMat;
+
+      protected:
+        Model3DLoader();
+        std::string _defaultName;
+        rw::geometry::Model3D::Material _defaultMat;
     };
 
     // typedef Model3DLoader::Factory Model3DFactory;

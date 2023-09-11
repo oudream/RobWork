@@ -8,20 +8,21 @@
 #ifndef TREEDISTANCECALC_HPP_
 #define TREEDISTANCECALC_HPP_
 
+#include "BVCollider.hpp"
 #include "OBB.hpp"
 #include "OBBTree.hpp"
-#include "BVCollider.hpp"
 
 /**
  * @brief this class encapsulates the methods for iterating through
  * two hierachical BV trees and finding the smallest distance between
  * any triangle in the trees.
  */
-class TreeDistanceCalc {
-private:
+class TreeDistanceCalc
+{
+  private:
     TreeDistanceCalc(){};
 
-public:
+  public:
     virtual ~TreeDistanceCalc(){};
 
     /**
@@ -31,9 +32,8 @@ public:
      * @param fTB [in] transform from reference frame \b f to tree \b treeB root.
      * @param treeB [in]
      */
-    virtual double distance(
-        const rw::math::Transform3D<>& fTA, const CollisionModel& A,
-        const rw::math::Transform3D<>& fTB, const CollisionModel& B) = 0;
+    virtual double distance(const rw::math::Transform3D<>& fTA, const CollisionModel& A,
+                            const rw::math::Transform3D<>& fTB, const CollisionModel& B) = 0;
 
     /**
      * @brief returns the amount of heap memmory used by the tree distance calculator.
@@ -41,12 +41,11 @@ public:
      */
     virtual int getMemUsage() = 0;
 
+    virtual int getNrOfTestedBVs() { return -1; };
+    virtual int getNrOfCollidingBVs() { return -1; };
 
-    virtual int getNrOfTestedBVs(){ return -1;};
-    virtual int getNrOfCollidingBVs(){ return -1;};
-
-    virtual int getNrOfTestedPrimitives(){ return -1;};
-    virtual int getNrOfCollidingPrimitives(){ return -1;};
+    virtual int getNrOfTestedPrimitives() { return -1; };
+    virtual int getNrOfCollidingPrimitives() { return -1; };
 
     /**
      * @brief creates a tree collider that performes depth first search
@@ -56,7 +55,7 @@ public:
      */
     static TreeDistanceCalc* makeBalancedDFSDistanceCalc(BVDistanceCalc* bvdistcalc);
 
-    //TreeDistanceCalc* makeBalancedBFSCollider();
+    // TreeDistanceCalc* makeBalancedBFSCollider();
 
     /**
      * @brief creates a tree collider that performes depth first search
@@ -64,18 +63,16 @@ public:
      * performed using a synchronous descent strategy which means that the
      * traversal descents both trees at the same time.
      */
-    //static TreeDistanceCalc* makeSyncDFSCollider(BVCollider* bvcollider);
+    // static TreeDistanceCalc* makeSyncDFSCollider(BVCollider* bvcollider);
 
     /**
      *
      * @param weight
      * @return
      */
-    //TreeDistanceCalc* makeWeightedDFSCollider(const BVWeight& weight);
+    // TreeDistanceCalc* makeWeightedDFSCollider(const BVWeight& weight);
 
-    //TreeDistanceCalc* makeWeightedBFSCollider(const BVWeight& weight);
-
+    // TreeDistanceCalc* makeWeightedBFSCollider(const BVWeight& weight);
 };
-
 
 #endif /* TREECOLLIDER_HPP_ */

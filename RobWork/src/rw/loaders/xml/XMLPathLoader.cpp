@@ -56,10 +56,9 @@ using namespace rw::loaders;
 using namespace rw::kinematics;
 using namespace rw::models;
 
-XMLPathLoader::Initializer::Initializer ()
-{
+XMLPathLoader::Initializer::Initializer() {
     static bool done = false;
-    if (!done) {
+    if(!done) {
         XMLBasisTypes::Initializer init1;
         XMLPathFormat::Initializer init2;
         done = true;
@@ -68,229 +67,208 @@ XMLPathLoader::Initializer::Initializer ()
 
 const XMLPathLoader::Initializer XMLPathLoader::initializer;
 
-XMLPathLoader::XMLPathLoader (const std::string& filename, rw::models::WorkCell::Ptr workcell,
-                              const std::string& schemaFileName)
-{
+XMLPathLoader::XMLPathLoader(const std::string& filename, rw::models::WorkCell::Ptr workcell,
+                             const std::string& schemaFileName) {
     _workcell = workcell;
 
     XercesDOMParser parser;
     xercesc::DOMDocument* doc =
-        XercesDocumentReader::readDocument (parser, filename, schemaFileName);
-    xercesc::DOMElement* elementRoot = doc->getDocumentElement ();
-    readPath (elementRoot);
+        XercesDocumentReader::readDocument(parser, filename, schemaFileName);
+    xercesc::DOMElement* elementRoot = doc->getDocumentElement();
+    readPath(elementRoot);
 }
 
-XMLPathLoader::XMLPathLoader (std::istream& instream, rw::models::WorkCell::Ptr workcell,
-                              const std::string& schemaFileName)
-{
+XMLPathLoader::XMLPathLoader(std::istream& instream, rw::models::WorkCell::Ptr workcell,
+                             const std::string& schemaFileName) {
     _workcell = workcell;
     XercesDOMParser parser;
     xercesc::DOMDocument* doc =
-        XercesDocumentReader::readDocument (parser, instream, schemaFileName);
-    xercesc::DOMElement* elementRoot = doc->getDocumentElement ();
-    readPath (elementRoot);
+        XercesDocumentReader::readDocument(parser, instream, schemaFileName);
+    xercesc::DOMElement* elementRoot = doc->getDocumentElement();
+    readPath(elementRoot);
 }
 
-XMLPathLoader::XMLPathLoader (xercesc::DOMElement* element)
-{
-    readPath (element);
+XMLPathLoader::XMLPathLoader(xercesc::DOMElement* element) {
+    readPath(element);
 }
 
-XMLPathLoader::~XMLPathLoader ()
-{}
+XMLPathLoader::~XMLPathLoader() {}
 
 namespace {
 
-template< class T > class ElementReader
+template<class T> class ElementReader
 {
   public:
-    ElementReader (WorkCell::Ptr workcell = NULL) { _workcell = workcell; }
+    ElementReader(WorkCell::Ptr workcell = NULL) { _workcell = workcell; }
 
-    T readElement (xercesc::DOMElement* element);
+    T readElement(xercesc::DOMElement* element);
 
   protected:
     WorkCell::Ptr _workcell;
 };
 
-template<> Q ElementReader< Q >::readElement (xercesc::DOMElement* element)
-{
-    return XMLBasisTypes::readQ (element, true);
+template<> Q ElementReader<Q>::readElement(xercesc::DOMElement* element) {
+    return XMLBasisTypes::readQ(element, true);
 }
 
-template<> Vector3D<> ElementReader< Vector3D<> >::readElement (xercesc::DOMElement* element)
-{
-    return XMLBasisTypes::readVector3D (element, true);
+template<> Vector3D<> ElementReader<Vector3D<>>::readElement(xercesc::DOMElement* element) {
+    return XMLBasisTypes::readVector3D(element, true);
 }
 
-template<> Rotation3D<> ElementReader< Rotation3D<> >::readElement (xercesc::DOMElement* element)
-{
-    return XMLBasisTypes::readRotation3DStructure (element);
+template<> Rotation3D<> ElementReader<Rotation3D<>>::readElement(xercesc::DOMElement* element) {
+    return XMLBasisTypes::readRotation3DStructure(element);
 }
 
-template<> Transform3D<> ElementReader< Transform3D<> >::readElement (xercesc::DOMElement* element)
-{
-    return XMLBasisTypes::readTransform3D (element, true);
+template<> Transform3D<> ElementReader<Transform3D<>>::readElement(xercesc::DOMElement* element) {
+    return XMLBasisTypes::readTransform3D(element, true);
 }
 
-template<> State ElementReader< State >::readElement (xercesc::DOMElement* element)
-{
-    return XMLBasisTypes::readState (element, _workcell, true);
+template<> State ElementReader<State>::readElement(xercesc::DOMElement* element) {
+    return XMLBasisTypes::readState(element, _workcell, true);
 }
 
-template<> TimedQ ElementReader< TimedQ >::readElement (xercesc::DOMElement* element)
-{
+template<> TimedQ ElementReader<TimedQ>::readElement(xercesc::DOMElement* element) {
     double time = 0.0;
     Q q;
-    DOMNodeList* children     = element->getChildNodes ();
-    const XMLSize_t nodeCount = children->getLength ();
-    for (XMLSize_t i = 0; i < nodeCount; ++i) {
-        xercesc::DOMElement* child = dynamic_cast< xercesc::DOMElement* > (children->item (i));
-        if (child != NULL) {
-            if (XMLString::equals (child->getNodeName (), XMLPathFormat::idTime ())) {
-                time = XMLDouble (child->getChildNodes ()->item (0)->getNodeValue ()).getValue ();
+    DOMNodeList* children     = element->getChildNodes();
+    const XMLSize_t nodeCount = children->getLength();
+    for(XMLSize_t i = 0; i < nodeCount; ++i) {
+        xercesc::DOMElement* child = dynamic_cast<xercesc::DOMElement*>(children->item(i));
+        if(child != NULL) {
+            if(XMLString::equals(child->getNodeName(), XMLPathFormat::idTime())) {
+                time = XMLDouble(child->getChildNodes()->item(0)->getNodeValue()).getValue();
             }
-            else if (XMLString::equals (child->getNodeName (), XMLBasisTypes::idQ ())) {
-                q = XMLBasisTypes::readQ (child, false);
+            else if(XMLString::equals(child->getNodeName(), XMLBasisTypes::idQ())) {
+                q = XMLBasisTypes::readQ(child, false);
             }
         }
     }
-    return makeTimed (time, q);
+    return makeTimed(time, q);
 }
 
-template<> TimedState ElementReader< TimedState >::readElement (xercesc::DOMElement* element)
-{
+template<> TimedState ElementReader<TimedState>::readElement(xercesc::DOMElement* element) {
     double time = 0.0;
     State state;
-    DOMNodeList* children     = element->getChildNodes ();
-    const XMLSize_t nodeCount = children->getLength ();
-    for (XMLSize_t i = 0; i < nodeCount; ++i) {
-        xercesc::DOMElement* child = dynamic_cast< xercesc::DOMElement* > (children->item (i));
-        if (child != NULL) {
-            if (XMLString::equals (child->getNodeName (), XMLPathFormat::idTime ())) {
-                time = XMLDouble (child->getChildNodes ()->item (0)->getNodeValue ()).getValue ();
+    DOMNodeList* children     = element->getChildNodes();
+    const XMLSize_t nodeCount = children->getLength();
+    for(XMLSize_t i = 0; i < nodeCount; ++i) {
+        xercesc::DOMElement* child = dynamic_cast<xercesc::DOMElement*>(children->item(i));
+        if(child != NULL) {
+            if(XMLString::equals(child->getNodeName(), XMLPathFormat::idTime())) {
+                time = XMLDouble(child->getChildNodes()->item(0)->getNodeValue()).getValue();
             }
-            else if (XMLString::equals (child->getNodeName (), XMLBasisTypes::idState ())) {
-                state = XMLBasisTypes::readState (child, _workcell, false);
+            else if(XMLString::equals(child->getNodeName(), XMLBasisTypes::idState())) {
+                state = XMLBasisTypes::readState(child, _workcell, false);
             }
         }
     }
-    return makeTimed (time, state);
+    return makeTimed(time, state);
 }
 
-template< class T, class R >
-void read (xercesc::DOMElement* element, R result, WorkCell::Ptr workcell = NULL)
-{
-    DOMNodeList* children     = element->getChildNodes ();
-    const XMLSize_t nodeCount = children->getLength ();
-    ElementReader< T > reader (workcell);
+template<class T, class R>
+void read(xercesc::DOMElement* element, R result, WorkCell::Ptr workcell = NULL) {
+    DOMNodeList* children     = element->getChildNodes();
+    const XMLSize_t nodeCount = children->getLength();
+    ElementReader<T> reader(workcell);
     // Run through all elements and read in content
-    for (XMLSize_t i = 0; i < nodeCount; ++i) {
-        xercesc::DOMElement* child = dynamic_cast< xercesc::DOMElement* > (children->item (i));
-        if (child != NULL) {
-            T val = reader.readElement (child);
-            result->push_back (val);
+    for(XMLSize_t i = 0; i < nodeCount; ++i) {
+        xercesc::DOMElement* child = dynamic_cast<xercesc::DOMElement*>(children->item(i));
+        if(child != NULL) {
+            T val = reader.readElement(child);
+            result->push_back(val);
         }
     }
 }
 
 }    // end namespace
 
-XMLPathLoader::Type XMLPathLoader::getType ()
-{
+XMLPathLoader::Type XMLPathLoader::getType() {
     return _type;
 }
 
-QPath::Ptr XMLPathLoader::getQPath ()
-{
-    if (_type != QType)
-        RW_THROW (
+QPath::Ptr XMLPathLoader::getQPath() {
+    if(_type != QType)
+        RW_THROW(
             "The loaded Path is not of type QPath. Use XMLPathLoader::getType() to read its type");
     return _qPath;
 }
 
-Vector3DPath::Ptr XMLPathLoader::getVector3DPath ()
-{
-    if (_type != Vector3DType)
-        RW_THROW ("The loaded Path is not of type Vector3DPath. Use XMLPathLoader::getType() to "
-                  "read its type");
+Vector3DPath::Ptr XMLPathLoader::getVector3DPath() {
+    if(_type != Vector3DType)
+        RW_THROW("The loaded Path is not of type Vector3DPath. Use XMLPathLoader::getType() to "
+                 "read its type");
     return _v3dPath;
 }
 
-Rotation3DPath::Ptr XMLPathLoader::getRotation3DPath ()
-{
-    if (_type != Rotation3DType)
-        RW_THROW ("The loaded Path is not of type Rotation3DPath. Use XMLPathLoader::getType() to "
-                  "read its type");
+Rotation3DPath::Ptr XMLPathLoader::getRotation3DPath() {
+    if(_type != Rotation3DType)
+        RW_THROW("The loaded Path is not of type Rotation3DPath. Use XMLPathLoader::getType() to "
+                 "read its type");
     return _r3dPath;
 }
 
-Transform3DPath::Ptr XMLPathLoader::getTransform3DPath ()
-{
-    if (_type != Transform3DType)
-        RW_THROW ("The loaded Path is not of type Transform3DPath. Use XMLPathLoader::getType() to "
-                  "read its type");
+Transform3DPath::Ptr XMLPathLoader::getTransform3DPath() {
+    if(_type != Transform3DType)
+        RW_THROW("The loaded Path is not of type Transform3DPath. Use XMLPathLoader::getType() to "
+                 "read its type");
     return _t3dPath;
 }
 
-StatePath::Ptr XMLPathLoader::getStatePath ()
-{
-    if (_type != StateType)
-        RW_THROW ("The loaded Path is not of type StatePath. Use XMLPathLoader::getType() to read "
-                  "its type");
+StatePath::Ptr XMLPathLoader::getStatePath() {
+    if(_type != StateType)
+        RW_THROW("The loaded Path is not of type StatePath. Use XMLPathLoader::getType() to read "
+                 "its type");
     return _statePath;
 }
 
-rw::trajectory::TimedQPath::Ptr XMLPathLoader::getTimedQPath ()
-{
-    if (_type != TimedQType)
-        RW_THROW ("The loaded Path is not of type TimedQPath. Use XMLPathLoader::getType() to read "
-                  "its type");
+rw::trajectory::TimedQPath::Ptr XMLPathLoader::getTimedQPath() {
+    if(_type != TimedQType)
+        RW_THROW("The loaded Path is not of type TimedQPath. Use XMLPathLoader::getType() to read "
+                 "its type");
     return _timedQPath;
 }
 
-rw::trajectory::TimedStatePath::Ptr XMLPathLoader::getTimedStatePath ()
-{
-    if (_type != TimedStateType)
-        RW_THROW ("The loaded Path is not of type TimedStatePath. Use XMLPathLoader::getType() to "
-                  "read its type");
+rw::trajectory::TimedStatePath::Ptr XMLPathLoader::getTimedStatePath() {
+    if(_type != TimedStateType)
+        RW_THROW("The loaded Path is not of type TimedStatePath. Use XMLPathLoader::getType() to "
+                 "read its type");
     return _timedStatePath;
 }
 
-void XMLPathLoader::readPath (xercesc::DOMElement* element)
-{
-    if (XMLString::equals (XMLPathFormat::idQPath (), element->getNodeName ())) {
-        _qPath = ownedPtr (new QPath ());
-        read< Q, QPath::Ptr > (element, _qPath);
+void XMLPathLoader::readPath(xercesc::DOMElement* element) {
+    if(XMLString::equals(XMLPathFormat::idQPath(), element->getNodeName())) {
+        _qPath = ownedPtr(new QPath());
+        read<Q, QPath::Ptr>(element, _qPath);
         _type = QType;
     }
-    else if (XMLString::equals (XMLPathFormat::idV3DPath (), element->getNodeName ())) {
-        _v3dPath = ownedPtr (new Vector3DPath ());
-        read< Vector3D<>, Vector3DPath::Ptr > (element, _v3dPath);
+    else if(XMLString::equals(XMLPathFormat::idV3DPath(), element->getNodeName())) {
+        _v3dPath = ownedPtr(new Vector3DPath());
+        read<Vector3D<>, Vector3DPath::Ptr>(element, _v3dPath);
         _type = Vector3DType;
     }
-    else if (XMLString::equals (XMLPathFormat::idR3DPath (), element->getNodeName ())) {
-        _r3dPath = ownedPtr (new Rotation3DPath ());
-        read< Rotation3D<>, Rotation3DPath::Ptr > (element, _r3dPath);
+    else if(XMLString::equals(XMLPathFormat::idR3DPath(), element->getNodeName())) {
+        _r3dPath = ownedPtr(new Rotation3DPath());
+        read<Rotation3D<>, Rotation3DPath::Ptr>(element, _r3dPath);
         _type = Rotation3DType;
     }
-    else if (XMLString::equals (XMLPathFormat::idT3DPath (), element->getNodeName ())) {
-        _t3dPath = ownedPtr (new Transform3DPath ());
-        read< Transform3D<>, Transform3DPath::Ptr > (element, _t3dPath);
+    else if(XMLString::equals(XMLPathFormat::idT3DPath(), element->getNodeName())) {
+        _t3dPath = ownedPtr(new Transform3DPath());
+        read<Transform3D<>, Transform3DPath::Ptr>(element, _t3dPath);
         _type = Transform3DType;
     }
-    else if (XMLString::equals (XMLPathFormat::idStatePath (), element->getNodeName ())) {
-        _statePath = ownedPtr (new StatePath ());
-        read< State, StatePath::Ptr > (element, _statePath, _workcell);
+    else if(XMLString::equals(XMLPathFormat::idStatePath(), element->getNodeName())) {
+        _statePath = ownedPtr(new StatePath());
+        read<State, StatePath::Ptr>(element, _statePath, _workcell);
         _type = StateType;
     }
-    else if (XMLString::equals (XMLPathFormat::idTimedQPath (), element->getNodeName ())) {
-        _timedQPath = ownedPtr (new TimedQPath ());
-        read< TimedQ, TimedQPath::Ptr > (element, _timedQPath, _workcell);
+    else if(XMLString::equals(XMLPathFormat::idTimedQPath(), element->getNodeName())) {
+        _timedQPath = ownedPtr(new TimedQPath());
+        read<TimedQ, TimedQPath::Ptr>(element, _timedQPath, _workcell);
         _type = TimedQType;
     }
-    else if (XMLString::equals (XMLPathFormat::idTimedStatePath (), element->getNodeName ())) {
-        _timedStatePath = ownedPtr (new TimedStatePath ());
-        read< TimedState, TimedStatePath::Ptr > (element, _timedStatePath, _workcell);
+    else if(XMLString::equals(XMLPathFormat::idTimedStatePath(), element->getNodeName())) {
+        _timedStatePath = ownedPtr(new TimedStatePath());
+        read<TimedState, TimedStatePath::Ptr>(element, _timedStatePath, _workcell);
         _type = TimedStateType;
     }
     else {

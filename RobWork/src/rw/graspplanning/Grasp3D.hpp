@@ -21,7 +21,7 @@
 #if !defined(SWIG)
 #include <rw/math/Vector3D.hpp>
 #include <rw/sensor/Contact3D.hpp>
-#endif 
+#endif
 namespace rw { namespace graspplanning {
 
     /**
@@ -31,21 +31,20 @@ namespace rw { namespace graspplanning {
     class Grasp3D
     {
       public:
-        Grasp3D (int nrOfContacts = 1) :phi(0), psi(0),quality(0), contacts (nrOfContacts), approach (nrOfContacts) {}
+        Grasp3D(int nrOfContacts = 1) :
+            phi(0), psi(0), quality(0), contacts(nrOfContacts), approach(nrOfContacts) {}
 
-        Grasp3D (const std::vector< rw::sensor::Contact3D > cons) :
-            phi(0), psi(0),quality(0), contacts (cons), approach (cons.size ())
-        {}
+        Grasp3D(const std::vector<rw::sensor::Contact3D> cons) :
+            phi(0), psi(0), quality(0), contacts(cons), approach(cons.size()) {}
 
-        void scale (double clerance)
-        {
-            for (size_t i = 0; i < contacts.size (); i++)
-                contacts[i].p += normalize (approach[i]) * clerance;
+        void scale(double clerance) {
+            for(size_t i = 0; i < contacts.size(); i++)
+                contacts[i].p += normalize(approach[i]) * clerance;
         }
 
         double phi, psi, quality;
-        std::vector< rw::sensor::Contact3D > contacts;
-        std::vector< rw::math::Vector3D<> > approach;
+        std::vector<rw::sensor::Contact3D> contacts;
+        std::vector<rw::math::Vector3D<>> approach;
         rw::math::Vector3D<> center;
     };
 }}     // namespace rw::graspplanning

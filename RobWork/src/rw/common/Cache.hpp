@@ -32,49 +32,43 @@ namespace rw { namespace common {
     /**
      * @brief This class is a template for caching
      */
-    template< class KEY, class VAL > class Cache
+    template<class KEY, class VAL> class Cache
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< Cache > Ptr;
+        typedef rw::core::Ptr<Cache> Ptr;
 
         /**
          * @brief default constructor
          */
-        Cache (){};
+        Cache(){};
 
         /**
          * @brief default destructor
          */
-        virtual ~Cache (){};
+        virtual ~Cache(){};
 
         /**
          * @brief Tests whether a key is present in the cache
          */
-        bool isInCache (const KEY& id)
-        {
-            if (_map.find (id) == _map.end ())
-                return false;
+        bool isInCache(const KEY& id) {
+            if(_map.find(id) == _map.end()) return false;
             return true;
         }
 
         /**
          * @brief tests if the key id is in the cache
          */
-        bool has (const KEY& id)
-        {
-            if (_map.find (id) == _map.end ())
-                return false;
+        bool has(const KEY& id) {
+            if(_map.find(id) == _map.end()) return false;
             return true;
         }
 
         /**
          * @brief gets the value that is associated with the key
          */
-        rw::core::Ptr< VAL > get (const KEY& key)
-        {
-            if (_map.find (key) == _map.end ())
-                RW_THROW ("Key does not exist!");
+        rw::core::Ptr<VAL> get(const KEY& key) {
+            if(_map.find(key) == _map.end()) RW_THROW("Key does not exist!");
             return _map[key];
         }
 
@@ -82,26 +76,26 @@ namespace rw { namespace common {
          * @brief Ads a value to a key that was aquired at some specific
          * time. The rights to val is taken ower by this class.
          */
-        void add (const KEY& key, VAL* val) { _map[key] = rw::core::ownedPtr (val); }
+        void add(const KEY& key, VAL* val) { _map[key] = rw::core::ownedPtr(val); }
 
         /**
          * @brief Ads a value to a key that was aquired at some specific
          * time. The rights to value is not changed.
          */
-        void add (const KEY& key, rw::core::Ptr< VAL >& val) { _map[key] = val; }
+        void add(const KEY& key, rw::core::Ptr<VAL>& val) { _map[key] = val; }
 
         /**
          * @brief remove all values-key pairs that match key
          */
-        void remove (const KEY& key) { _map.erase (key); }
+        void remove(const KEY& key) { _map.erase(key); }
 
         /**
          * @brief clear all value-key pairs from this Cache
          */
-        void clear () { _map.clear (); }
+        void clear() { _map.clear(); }
 
       private:
-        typedef std::map< KEY, rw::core::Ptr< VAL > > KeyToValMap;
+        typedef std::map<KEY, rw::core::Ptr<VAL>> KeyToValMap;
         KeyToValMap _map;
     };
     /*@}*/

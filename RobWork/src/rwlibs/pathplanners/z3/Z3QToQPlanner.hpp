@@ -57,15 +57,15 @@ namespace rwlibs { namespace pathplanners {
            repeatCnt is negative, the attempts are repeated forever (or until
            the stop criteria returns true).
         */
-        Z3QToQPlanner (rw::core::Ptr< rw::pathplanning::QSampler > sampler,
-                       rw::pathplanning::QToQPlanner::Ptr localPlanner, int nodeCnt, int repeatCnt);
+        Z3QToQPlanner(rw::core::Ptr<rw::pathplanning::QSampler> sampler,
+                      rw::pathplanning::QToQPlanner::Ptr localPlanner, int nodeCnt, int repeatCnt);
 
       private:
-        bool doQuery (const rw::math::Q& start, const rw::math::Q& goal,
-                      rw::trajectory::QPath& path, const rw::pathplanning::StopCriteria& stop);
+        bool doQuery(const rw::math::Q& start, const rw::math::Q& goal, rw::trajectory::QPath& path,
+                     const rw::pathplanning::StopCriteria& stop);
 
       private:
-        rw::core::Ptr< rw::pathplanning::QSampler > _sampler;
+        rw::core::Ptr<rw::pathplanning::QSampler> _sampler;
         rw::pathplanning::QToQPlanner::Ptr _localPlanner;
         int _nodeCnt;
         int _repeatCnt;

@@ -16,51 +16,42 @@ namespace rw { namespace math {
     /**
      * @brief Class for collecting data and calculating simple statistics.
      */
-    template< class T > class Statistics
+    template<class T> class Statistics
     {
       public:
         /**
          * @brief Calculates the mean for a list of data
          */
-        template< class V > static T mean (const V& data)
-        {
+        template<class V> static T mean(const V& data) {
             T sum = 0;
-            for (T d : data) {
-                sum += d;
-            }
-            return (T) sum / data.size ();
+            for(T d : data) { sum += d; }
+            return (T) sum / data.size();
         }
 
         /**
          * @brief Calculates the mean for a list of angles.
          */
-        template< class V > static T angularMean (const V& data)
-        {
+        template<class V> static T angularMean(const V& data) {
             T s = 0, c = 0;
-            for (T d : data) {
-                s += sin (d);
-                c += cos (d);
+            for(T d : data) {
+                s += sin(d);
+                c += cos(d);
             }
-            return (T) atan2 (s, c);
+            return (T) atan2(s, c);
         }
 
         /**
          * @brief Calcualtes the median for a list of data
          */
-        template< class V > static T median (const V& data)
-        {
-            std::vector< T > myvector (data.begin (), data.end ());
-            std::sort (myvector.begin (), myvector.end ());
-            if (myvector.size () == 0)
-                return 0;
-            if (myvector.size () == 1)
-                return myvector.front ();
+        template<class V> static T median(const V& data) {
+            std::vector<T> myvector(data.begin(), data.end());
+            std::sort(myvector.begin(), myvector.end());
+            if(myvector.size() == 0) return 0;
+            if(myvector.size() == 1) return myvector.front();
 
-            if (myvector.size () % 1 == 1) {
-                return myvector[std::floor (myvector.size () / 2.0)];
-            }
+            if(myvector.size() % 1 == 1) { return myvector[std::floor(myvector.size() / 2.0)]; }
             else {
-                int i2 = myvector.size () / 2;
+                int i2 = myvector.size() / 2;
                 int i1 = i2 - 1;
                 return (myvector[i1] + myvector[i2]) / 2.0;
             }
@@ -72,59 +63,50 @@ namespace rw { namespace math {
          * @param mean [in] The mean value of the data
          * @return variance of data
          */
-        template< class V > static T variance (const V& data, const T& mean)
-        {
+        template<class V> static T variance(const V& data, const T& mean) {
             T var = 0;
-            for (T d : data) {
-                var += Math::sqr (d - mean);
-            }
-            return var / (data.size () - 1);
+            for(T d : data) { var += Math::sqr(d - mean); }
+            return var / (data.size() - 1);
         }
 
         /**
          * @brief Calculates the variance for a list of angles.
          */
-        template< class V > static T angularVariance (const V& data, const T& mean)
-        {
-            T sm = sin (mean), cm = cos (mean);
+        template<class V> static T angularVariance(const V& data, const T& mean) {
+            T sm = sin(mean), cm = cos(mean);
             T var = 0;
-            for (T d : data) {
-                T sd = sin (d), cd = cos (d);
-                T angle = acos (sd * sm + cd * cm);
-                var += Math::sqr (angle);
+            for(T d : data) {
+                T sd = sin(d), cd = cos(d);
+                T angle = acos(sd * sm + cd * cm);
+                var += Math::sqr(angle);
             }
-            return (T) var / (data.size () - 1);
+            return (T) var / (data.size() - 1);
         }
 
         /**
          * Calculates the mean and variance of a list of data
          */
-        template< class V > static std::pair< T, T > meanAndVariance (const V& data)
-        {
-            T my = mean (data);
-            return std::make_pair (my, Statistics::variance (data, my));
+        template<class V> static std::pair<T, T> meanAndVariance(const V& data) {
+            T my = mean(data);
+            return std::make_pair(my, Statistics::variance(data, my));
         }
 
         /**
          * Calculates the mean and variance of a list of angles.
          */
-        template< class V > static std::pair< T, T > angularMeanAndVariance (const V& data)
-        {
-            T my = angularMean (data);
-            return std::make_pair (my, Statistics::angularVariance (data, my));
+        template<class V> static std::pair<T, T> angularMeanAndVariance(const V& data) {
+            T my = angularMean(data);
+            return std::make_pair(my, Statistics::angularVariance(data, my));
         }
 
         /**
          * @brief Finds the minimal value in \b data
          */
-        template< class V > static T minValue (const V& data)
-        {
-            if (data.size () == 0)
-                return 0;
-            T var = data.front ();
-            for (T d : data) {
-                if (d < var)
-                    var = d;
+        template<class V> static T minValue(const V& data) {
+            if(data.size() == 0) return 0;
+            T var = data.front();
+            for(T d : data) {
+                if(d < var) var = d;
             }
             return var;
         }
@@ -132,14 +114,11 @@ namespace rw { namespace math {
         /**
          * @brief Finds the maximal value in \b data
          */
-        template< class V > static T maxValue (const V& data)
-        {
-            if (data.size () == 0)
-                return 0;
-            T var = data.front ();
-            for (T d : data) {
-                if (d > var)
-                    var = d;
+        template<class V> static T maxValue(const V& data) {
+            if(data.size() == 0) return 0;
+            T var = data.front();
+            for(T d : data) {
+                if(d > var) var = d;
             }
             return var;
         }
@@ -147,19 +126,15 @@ namespace rw { namespace math {
         /**
          * @brief Finds the minimal and maximal value in \b data
          */
-        template< class V > static std::pair< T, T > minAndMaxValue (const V& data)
-        {
-            if (data.size () == 0)
-                return std::pair< T, T > (0, 0);
-            T ma = data.front ();
-            T mi = data.front ();
-            for (T d : data) {
-                if (d < mi)
-                    mi = d;
-                if (d > ma)
-                    ma = d;
+        template<class V> static std::pair<T, T> minAndMaxValue(const V& data) {
+            if(data.size() == 0) return std::pair<T, T>(0, 0);
+            T ma = data.front();
+            T mi = data.front();
+            for(T d : data) {
+                if(d < mi) mi = d;
+                if(d > ma) ma = d;
             }
-            return std::make_pair (mi, ma);
+            return std::make_pair(mi, ma);
         }
 
         /**
@@ -167,7 +142,7 @@ namespace rw { namespace math {
          *
          * The mean is computed as @f$ \frac{1}{n} \Sigma_{d\in data}d @f$
          */
-        T mean () const { return Statistics::mean (_data); }
+        T mean() const { return Statistics::mean(_data); }
 
         /**
          * @brief Returns the angular mean of the values added
@@ -175,7 +150,7 @@ namespace rw { namespace math {
          * The angular mean is computed as @f$ \tan^{-1}\frac{\Sigma_{d\in
          * data}\sin(d)}{\Sigma_{d\in data}\cos(d)} @f$
          */
-        T angularMean () const { return Statistics::angularMean (_data); }
+        T angularMean() const { return Statistics::angularMean(_data); }
 
         /**
          * @brief Returns the median of the values added
@@ -183,14 +158,14 @@ namespace rw { namespace math {
          * Given an equal number of element, the mean is calculated as the average of the two center
          * elements.
          */
-        T median () const { return Statistics::median (_data); }
+        T median() const { return Statistics::median(_data); }
 
         /**
          * @brief Returns the variance of the values added
          * The variance is computed as @f$ \frac{1}{n-1} \Sigma_{d\in data}(m-\mu)^2 @f$
          * where @f$ \mu @f$ is the mean of the data.
          */
-        T variance () const { return Statistics::variance (_data, Statistics::mean (_data)); }
+        T variance() const { return Statistics::variance(_data, Statistics::mean(_data)); }
 
         /**
          * @brief Returns the angular variance of the values added
@@ -198,9 +173,8 @@ namespace rw { namespace math {
          * data}\left[\cos^{-1}(\sin(d)\sin(\mu)-\cos(d)\cos(\mu))\right]^2 @f$ where @f$ \mu @f$ is
          * the angular mean of the data.
          */
-        T angularVariance () const
-        {
-            return Statistics::angularVariance (_data, Statistics::angularMean (_data));
+        T angularVariance() const {
+            return Statistics::angularVariance(_data, Statistics::angularMean(_data));
         }
 
         /**
@@ -209,7 +183,7 @@ namespace rw { namespace math {
          * See documentation of Statistics::mean() and Statistics::variance()
          * for how the mean and variane are computed.
          */
-        std::pair< T, T > meanAndVariance () const { return Statistics::meanAndVariance (_data); }
+        std::pair<T, T> meanAndVariance() const { return Statistics::meanAndVariance(_data); }
 
         /**
          * @brief returns the angular mean and the variance of the data.
@@ -217,9 +191,8 @@ namespace rw { namespace math {
          * See documentation of Statistics::angularMean() and Statistics::angularVariance()
          * for how the mean and variane are computed.
          */
-        std::pair< T, T > angularMeanAndVariance () const
-        {
-            return Statistics::angularMeanAndVariance (_data);
+        std::pair<T, T> angularMeanAndVariance() const {
+            return Statistics::angularMeanAndVariance(_data);
         }
 
         /**
@@ -227,37 +200,37 @@ namespace rw { namespace math {
          *
          * If no data is added 0 is returned.
          */
-        T minValue () const { return Statistics::minValue (_data); }
+        T minValue() const { return Statistics::minValue(_data); }
 
         /**
          * @brief Returns the maximum value of data added.
          *
          * If no data is added 0 is returned.
          */
-        T maxValue () const { return Statistics::maxValue (_data); }
+        T maxValue() const { return Statistics::maxValue(_data); }
 
         /**
          * @brief Returns pair containing the minimum and maximum value of the data added.
          *
          * If no data is added 0 is returned for both values.
          */
-        std::pair< T, T > minAndMaxValue () const { return Statistics::minAndMaxValue (_data); }
+        std::pair<T, T> minAndMaxValue() const { return Statistics::minAndMaxValue(_data); }
 
         /**
          * @brief Add data to statistics
          */
-        void add (const T& t) { _data.push_back (t); }
+        void add(const T& t) { _data.push_back(t); }
 
         /**
          * @brief Clear the recorded statistics data
          */
-        void clear () { _data.clear (); }
+        void clear() { _data.clear(); }
 
         /**
          * @brief Provides reference to the internal data container
          */
-        const std::list< T >& data () const { return _data; }
-        
+        const std::list<T>& data() const { return _data; }
+
 #if !defined(SWIG)
         /**
          * @brief Statitics to stream
@@ -265,33 +238,32 @@ namespace rw { namespace math {
          * @param statistics [in] Statistics to output
          * @return the resulting stream
          */
-        friend std::ostream& operator<< (std::ostream& os, const Statistics< T >& statistics)
-        {
-            std::pair< T, T > meanAndVariance = statistics.meanAndVariance ();
-            std::pair< T, T > minAndMax       = statistics.minAndMaxValue ();
+        friend std::ostream& operator<<(std::ostream& os, const Statistics<T>& statistics) {
+            std::pair<T, T> meanAndVariance = statistics.meanAndVariance();
+            std::pair<T, T> minAndMax       = statistics.minAndMaxValue();
             os << "Mean: " << meanAndVariance.first << std::endl;
-            os << "Median: " << statistics.median () << std::endl;
+            os << "Median: " << statistics.median() << std::endl;
             os << "Variance: " << meanAndVariance.second << std::endl;
-            os << "Std Dev: " << std::sqrt (meanAndVariance.second) << std::endl;
+            os << "Std Dev: " << std::sqrt(meanAndVariance.second) << std::endl;
             os << "Min Value: " << minAndMax.first << std::endl;
             return os << "Max Value: " << minAndMax.second << std::endl;
         }
 #else
-        TOSTRING (rw::math::Statistics< T >);
+        TOSTRING(rw::math::Statistics<T>);
 #endif
 
       private:
-        std::list< T > _data;
+        std::list<T> _data;
     };
 
 #if defined(SWIG)
 #if SWIG_VERSION < 0x040000
-    SWIG_DECLARE_TEMPLATE (Statistics_d, rw::math::Statistics< double >);
-    ADD_DEFINITION (Statistics_d, Statistics,sdurw_geometry)
+    SWIG_DECLARE_TEMPLATE(Statistics_d, rw::math::Statistics<double>);
+    ADD_DEFINITION(Statistics_d, Statistics, sdurw_geometry)
 #else
-    SWIG_DECLARE_TEMPLATE (Statistics, rw::math::Statistics< double >);
+    SWIG_DECLARE_TEMPLATE(Statistics, rw::math::Statistics<double>);
 #endif
-    SWIG_DECLARE_TEMPLATE (Statistics_f, rw::math::Statistics< float >);
+    SWIG_DECLARE_TEMPLATE(Statistics_f, rw::math::Statistics<float>);
 #endif
 }}    // namespace rw::math
 

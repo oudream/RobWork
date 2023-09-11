@@ -24,38 +24,31 @@
 
 using namespace rw::common;
 
-LogFileWriter::LogFileWriter (const std::string& filename) : _tabLevel (0)
-{
+LogFileWriter::LogFileWriter(const std::string& filename) : _tabLevel(0) {
     try {
-        _stream.open (filename.c_str ());
+        _stream.open(filename.c_str());
     }
-    catch (const std::exception& exp) {
-        RW_THROW ("Unable to open log file with message: " << exp.what ());
+    catch(const std::exception& exp) {
+        RW_THROW("Unable to open log file with message: " << exp.what());
     }
-    if (!_stream.is_open ()) {
-        RW_THROW ("Unable to open log file with message!");
-    }
+    if(!_stream.is_open()) { RW_THROW("Unable to open log file with message!"); }
 }
 
-LogFileWriter::~LogFileWriter ()
-{
-    flush ();
-    _stream.close ();
+LogFileWriter::~LogFileWriter() {
+    flush();
+    _stream.close();
 }
 
-void LogFileWriter::doWrite (const std::string& str)
-{
-    _stream << std::setw (4 * _tabLevel) << std::setfill (' ') << "";
+void LogFileWriter::doWrite(const std::string& str) {
+    _stream << std::setw(4 * _tabLevel) << std::setfill(' ') << "";
     _stream << str;
-    _stream.flush ();
+    _stream.flush();
 }
 
-void LogFileWriter::doFlush ()
-{
-    _stream.flush ();
+void LogFileWriter::doFlush() {
+    _stream.flush();
 }
 
-void LogFileWriter::doSetTabLevel (int tabLevel)
-{
+void LogFileWriter::doSetTabLevel(int tabLevel) {
     _tabLevel = tabLevel;
 }

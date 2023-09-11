@@ -36,58 +36,54 @@ namespace rw { namespace geometry {
          * @param pos [in] position from which the ray starts
          * @param dir [in] direction in which the ray shoots
          */
-        Ray (rw::math::Vector3D<double>& pos, rw::math::Vector3D<double>& dir) :
-            Line (pos, pos + dir), _pos (pos), _dir (dir)
-        {}
+        Ray(rw::math::Vector3D<double>& pos, rw::math::Vector3D<double>& dir) :
+            Line(pos, pos + dir), _pos(pos), _dir(dir) {}
 
         //! @brief Destructor.
-        virtual ~Ray () {}
+        virtual ~Ray() {}
 
         /**
          * @brief Get the position from which the ray starts.
          */
-        rw::math::Vector3D<double>& pos () { return _pos; }
-        
+        rw::math::Vector3D<double>& pos() { return _pos; }
+
         /**
          * @brief Get the position from which the ray starts.
          */
-        const rw::math::Vector3D<double>& pos () const { return _pos; }
-
+        const rw::math::Vector3D<double>& pos() const { return _pos; }
 
         /**
          * @brief Get the direction in which the ray shoots.
          */
-        rw::math::Vector3D<double>& dir () { return _dir; }
+        rw::math::Vector3D<double>& dir() { return _dir; }
 
-          /**
+        /**
          * @brief Get the direction in which the ray shoots.
          */
-        const rw::math::Vector3D<double>& dir () const { return _dir; }
+        const rw::math::Vector3D<double>& dir() const { return _dir; }
 
         // inherited from Primitive
         //! @copydoc Primitive::createMesh
-        TriMesh::Ptr createMesh (int resolution) const { return NULL; }
+        TriMesh::Ptr createMesh(int resolution) const { return NULL; }
 
         //! @copydoc Primitive::getParameters
-        rw::math::Q getParameters () const
-        {
-            return rw::math::Q (6, _pos[0], _pos[1], _pos[2], _dir[0], _dir[1], _dir[2]);
+        rw::math::Q getParameters() const {
+            return rw::math::Q(6, _pos[0], _pos[1], _pos[2], _dir[0], _dir[1], _dir[2]);
         }
 
         //! @copydoc Primitive::getType
-        GeometryType getType () const { return LinePrim; }
+        GeometryType getType() const { return LinePrim; }
 
 #if !defined(SWIG)
         /**
            @brief Streaming operator.
          */
-        friend std::ostream& operator<< (std::ostream& out, const Ray& ray)
-        {
+        friend std::ostream& operator<<(std::ostream& out, const Ray& ray) {
             return out << "Ray("
                        << "pos: " << ray._pos << ", dir: " << ray._dir << ")";
         };
 #else
-        TOSTRING (rw::geometry::Ray);
+        TOSTRING(rw::geometry::Ray);
 #endif
 
       private:

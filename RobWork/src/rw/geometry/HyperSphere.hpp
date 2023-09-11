@@ -55,16 +55,16 @@ namespace rw { namespace geometry {
     {
       public:
         //! @brief Smart pointer type for HyperSphere.
-        typedef rw::core::Ptr< const HyperSphere > Ptr;
+        typedef rw::core::Ptr<const HyperSphere> Ptr;
 
         /**
          * @brief Construct a hyper-sphere of unit size.
          * @param dimensions [in] the number of dimensions.
          */
-        HyperSphere (unsigned int dimensions);
+        HyperSphere(unsigned int dimensions);
 
         //! @brief Destructor.
-        virtual ~HyperSphere ();
+        virtual ~HyperSphere();
 
         /**
          * @brief Create a uniform distribution in Cartesian coordinates.
@@ -77,7 +77,7 @@ namespace rw { namespace geometry {
          * dimension K.
          * @note This function is only implemented for \f$ 2 \leq K \leq 6\f$ .
          */
-        std::vector< Eigen::VectorXd > uniformDistributionCartesian (double delta) const;
+        std::vector<Eigen::VectorXd> uniformDistributionCartesian(double delta) const;
 
         /**
          * @brief Create a uniform distribution in spherical coordinates.
@@ -89,13 +89,13 @@ namespace rw { namespace geometry {
          * coordinates with dimension K-1.
          * @note This function is only implemented for \f$ 2 \leq K \leq 6\f$ .
          */
-        std::vector< Eigen::VectorXd > uniformDistributionSpherical (double delta) const;
+        std::vector<Eigen::VectorXd> uniformDistributionSpherical(double delta) const;
 
         /**
          * @brief Get the number of dimensions of the hyper-sphere.
          * @return the number of dimensions, \f$ 2 \leq K \leq 6\f$ .
          */
-        unsigned int getDimensions () const;
+        unsigned int getDimensions() const;
 
         /**
          * @brief Calculate the surface area of a hyper-sphere.
@@ -106,7 +106,7 @@ namespace rw { namespace geometry {
          *
          * @return the surface area.
          */
-        double area () const;
+        double area() const;
 
         /**
          * @brief The volume of a hyper-sphere.
@@ -118,7 +118,7 @@ namespace rw { namespace geometry {
          *
          * @return the volume.
          */
-        double volume () const;
+        double volume() const;
 
       private:
         const unsigned int _dimensions;

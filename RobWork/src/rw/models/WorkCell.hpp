@@ -77,9 +77,9 @@ namespace rw { namespace models {
     {
       public:
         //! @brief Smart pointer type to a WorkCell object
-        typedef rw::core::Ptr< WorkCell > Ptr;
+        typedef rw::core::Ptr<WorkCell> Ptr;
         //! @brief Smart pointer type to a constant WorkCell object
-        typedef rw::core::Ptr< const WorkCell > CPtr;
+        typedef rw::core::Ptr<const WorkCell> CPtr;
 
         //! @brief WorkCell Event Types.
         typedef enum {
@@ -101,7 +101,7 @@ namespace rw { namespace models {
          * workcell would be the (eventual) file that the workcell was
          * loaded from.
          */
-        WorkCell (const std::string& name);
+        WorkCell(const std::string& name);
 
         /**
          * @brief Constructs a WorkCell
@@ -115,8 +115,8 @@ namespace rw { namespace models {
          * @param filename [in] The filename from which the workcell is
          * loaded.
          */
-        WorkCell (rw::core::Ptr< rw::kinematics::StateStructure > tree,
-                  const std::string& name = "", const std::string& filename = "");
+        WorkCell(rw::core::Ptr<rw::kinematics::StateStructure> tree, const std::string& name = "",
+                 const std::string& filename = "");
 
         /**
          * Destroys a work cell including the devices that have been added.
@@ -126,21 +126,21 @@ namespace rw { namespace models {
          * existence (which it probably is), then the frames that used to be
          * accessible via this work cell will still be valid.
          */
-        ~WorkCell ();
+        ~WorkCell();
 
         /**
          * @brief The name of the workcell or the empty string if no name
          * was provided.
          * @return the name of the workcell
          */
-        std::string getName () const { return _name; }
+        std::string getName() const { return _name; }
 
         /**
          * @brief Returns pointer to the world frame
          *
          * @return Pointer to the world frame
          */
-        rw::kinematics::Frame* getWorldFrame () const;
+        rw::kinematics::Frame* getWorldFrame() const;
 
 #if !defined(SWIG)
         /**
@@ -153,8 +153,8 @@ namespace rw { namespace models {
          * @deprecated Since January 2018.
          * Please use the addFrame method using smart pointers instead.
          */
-        DEPRECATED ("Use Frame::Ptr insted of Frame*")
-        void addFrame (rw::kinematics::Frame* frame, rw::kinematics::Frame* parent = NULL);
+        DEPRECATED("Use Frame::Ptr insted of Frame*")
+        void addFrame(rw::kinematics::Frame* frame, rw::kinematics::Frame* parent = NULL);
 #endif
         /**
          * @brief Adds \b frame with \b parent as parent.
@@ -164,8 +164,8 @@ namespace rw { namespace models {
          * @param frame [in] Frame to add
          * @param parent [in] Parent frame - uses World is parent == NULL
          */
-        void addFrame (rw::core::Ptr< rw::kinematics::Frame > frame,
-                       rw::core::Ptr< rw::kinematics::Frame > parent = NULL);
+        void addFrame(rw::core::Ptr<rw::kinematics::Frame> frame,
+                      rw::core::Ptr<rw::kinematics::Frame> parent = NULL);
 #if !defined(SWIG)
         /**
          * @brief Adds dynamically attachable frame (DAF) \b frame with
@@ -178,8 +178,8 @@ namespace rw { namespace models {
          * @deprecated Since January 2018.
          * Please use the addDAF method using smart pointers instead.
          */
-        DEPRECATED ("Use Frame::Ptr insted of Frame*")
-        void addDAF (rw::kinematics::Frame* frame, rw::kinematics::Frame* parent = NULL);
+        DEPRECATED("Use Frame::Ptr insted of Frame*")
+        void addDAF(rw::kinematics::Frame* frame, rw::kinematics::Frame* parent = NULL);
 #endif
         /**
          * @brief Adds dynamically attachable frame (DAF) \b frame with
@@ -190,8 +190,8 @@ namespace rw { namespace models {
          * @param frame [in] Frame to add
          * @param parent [in] Parent frame - uses World is parent == NULL
          */
-        void addDAF (rw::core::Ptr< rw::kinematics::Frame > frame,
-                     rw::core::Ptr< rw::kinematics::Frame > parent = NULL);
+        void addDAF(rw::core::Ptr<rw::kinematics::Frame> frame,
+                    rw::core::Ptr<rw::kinematics::Frame> parent = NULL);
 
         /**
          * @brief Removes \b frame from work cell
@@ -201,7 +201,7 @@ namespace rw { namespace models {
          * Please use remove(rw::core::Ptr<rw::kinematics::Frame>)
          * instead.
          */
-        void remove (rw::core::Ptr< rw::kinematics::Frame > frame);
+        void remove(rw::core::Ptr<rw::kinematics::Frame> frame);
 
 #if !defined(SWIG)
         /**
@@ -210,8 +210,8 @@ namespace rw { namespace models {
          * @param frame [in] Frame to remove
          */
 
-        DEPRECATED ("Use Frame::Ptr insted of Frame*")
-        void remove (rw::kinematics::Frame* frame);
+        DEPRECATED("Use Frame::Ptr insted of Frame*")
+        void remove(rw::kinematics::Frame* frame);
 #endif
 
         /**
@@ -219,7 +219,7 @@ namespace rw { namespace models {
          *
          * @param object [in] Object to remove
          */
-        void removeObject (Object* object);
+        void removeObject(Object* object);
 
         /**
          * @brief Adds a Device to the WorkCell.
@@ -228,7 +228,7 @@ namespace rw { namespace models {
          *
          * @param device [in] pointer to device.
          */
-        void addDevice (rw::core::Ptr< rw::models::Device > device);
+        void addDevice(rw::core::Ptr<rw::models::Device> device);
 
         /**
          * @brief Returns a reference to a vector with pointers to the
@@ -236,7 +236,7 @@ namespace rw { namespace models {
          *
          * @return const vector with pointers to rw::models::Device(s).
          */
-        const std::vector< rw::core::Ptr< rw::models::Device > >& getDevices () const;
+        const std::vector<rw::core::Ptr<rw::models::Device>>& getDevices() const;
 
         /**
          * @brief Returns frame with the specified name.
@@ -248,7 +248,7 @@ namespace rw { namespace models {
          *
          * @return The frame with name \b name or NULL if no such frame.
          */
-        rw::kinematics::Frame* findFrame (const std::string& name) const;
+        rw::kinematics::Frame* findFrame(const std::string& name) const;
 
         /**
          * @brief Returns frame with the specified name and type \b T.
@@ -263,27 +263,23 @@ namespace rw { namespace models {
          * @return The frame with name \b name or NULL if no such frame or
          * the frame is not of type \b T.
          */
-        template< class T > T* findFrame (const std::string& name) const
-        {
-            rw::kinematics::Frame* frame = findFrame (name);
-            if (frame == NULL)
-                return NULL;
-            return dynamic_cast< T* > (frame);
+        template<class T> T* findFrame(const std::string& name) const {
+            rw::kinematics::Frame* frame = findFrame(name);
+            if(frame == NULL) return NULL;
+            return dynamic_cast<T*>(frame);
         }
 
         /**
          * @brief Returns all frames of a specific type \b T.
          * @return all frames of type \b T in the workcell
          */
-        template< class T > std::vector< T* > findFrames () const
-        {
+        template<class T> std::vector<T*> findFrames() const {
             using rw::kinematics::Frame;
-            const std::vector< Frame* > frames = getFrames ();
-            std::vector< T* > result;
-            for (Frame* f : frames) {
-                T* res = dynamic_cast< T* > (f);
-                if (res != NULL)
-                    result.push_back (res);
+            const std::vector<Frame*> frames = getFrames();
+            std::vector<T*> result;
+            for(Frame* f : frames) {
+                T* res = dynamic_cast<T*>(f);
+                if(res != NULL) result.push_back(res);
             }
             return result;
         }
@@ -292,7 +288,7 @@ namespace rw { namespace models {
          * @brief Returns all frames in workcell
          * @return List of all frames
          */
-        std::vector< rw::kinematics::Frame* > getFrames () const;
+        std::vector<rw::kinematics::Frame*> getFrames() const;
 
         /**
          * @brief The device named \b name of the workcell.
@@ -303,7 +299,7 @@ namespace rw { namespace models {
          *
          * @return The device named \b name or NULL if no such device.
          */
-        rw::core::Ptr< rw::models::Device > findDevice (const std::string& name) const;
+        rw::core::Ptr<rw::models::Device> findDevice(const std::string& name) const;
 
         /**
          * @brief The device named \b name of the workcell.
@@ -315,12 +311,10 @@ namespace rw { namespace models {
          * @return The device named \b name or NULL if no such device is
          * found or if the device is not of type \b T.
          */
-        template< class T > rw::core::Ptr< T > findDevice (const std::string& name) const
-        {
-            rw::core::Ptr< rw::models::Device > dev = findDevice (name);
-            if (dev == NULL)
-                return NULL;
-            return dev.cast< T > ();
+        template<class T> rw::core::Ptr<T> findDevice(const std::string& name) const {
+            rw::core::Ptr<rw::models::Device> dev = findDevice(name);
+            if(dev == NULL) return NULL;
+            return dev.cast<T>();
         }
 
         /**
@@ -329,13 +323,11 @@ namespace rw { namespace models {
          *
          * @return vector with pointers to Device(s) of type T.
          */
-        template< class T > std::vector< rw::core::Ptr< T > > findDevices () const
-        {
-            std::vector< rw::core::Ptr< T > > result;
-            for (rw::core::Ptr< rw::models::Device > dev : _devices) {
-                rw::core::Ptr< T > res = dev.cast< T > ();
-                if (res != NULL)
-                    result.push_back (res);
+        template<class T> std::vector<rw::core::Ptr<T>> findDevices() const {
+            std::vector<rw::core::Ptr<T>> result;
+            for(rw::core::Ptr<rw::models::Device> dev : _devices) {
+                rw::core::Ptr<T> res = dev.cast<T>();
+                if(res != NULL) result.push_back(res);
             }
             return result;
         }
@@ -344,14 +336,14 @@ namespace rw { namespace models {
          * @brief Returns a default State
          * @return default State
          */
-        rw::kinematics::State getDefaultState () const;
+        rw::kinematics::State getDefaultState() const;
 
         /**
          * @brief set the default state of the WorkCell.
          * if the given state is an older state then states valid in both
          * new and old version will be copied to the default state.
          */
-        void setDefaultState (const rw::kinematics::State& state);
+        void setDefaultState(const rw::kinematics::State& state);
 
         /**
          * @brief Returns sensor with the specified name.
@@ -364,7 +356,7 @@ namespace rw { namespace models {
          *
          * @return The sensor with name \b name or NULL if no such sensor.
          */
-        rw::core::Ptr< rw::sensor::SensorModel > findSensor (const std::string& name) const;
+        rw::core::Ptr<rw::sensor::SensorModel> findSensor(const std::string& name) const;
 
         /**
          * @brief Returns sensor with the specified name and type \b T.
@@ -378,26 +370,22 @@ namespace rw { namespace models {
          * @return The sensor with name \b name or NULL if no such sensor or
          * the sensor is not of type \b T.
          */
-        template< class T > rw::core::Ptr< T > findSensor (const std::string& name) const
-        {
-            rw::core::Ptr< rw::sensor::SensorModel > sensor = findSensor (name);
-            if (sensor == NULL)
-                return NULL;
-            return sensor.cast< T > ();
+        template<class T> rw::core::Ptr<T> findSensor(const std::string& name) const {
+            rw::core::Ptr<rw::sensor::SensorModel> sensor = findSensor(name);
+            if(sensor == NULL) return NULL;
+            return sensor.cast<T>();
         }
 
         /**
          * @brief Returns all frames of a specific type \b T.
          * @return all frames of type \b T in the workcell
          */
-        template< class T > std::vector< rw::core::Ptr< T > > findSensors () const
-        {
-            const std::vector< rw::core::Ptr< rw::sensor::SensorModel > > sensors = _sensors;
-            std::vector< rw::core::Ptr< T > > result;
-            for (rw::core::Ptr< rw::sensor::SensorModel > f : sensors) {
-                rw::core::Ptr< T > res = f.cast< T > ();
-                if (res != NULL)
-                    result.push_back (res);
+        template<class T> std::vector<rw::core::Ptr<T>> findSensors() const {
+            const std::vector<rw::core::Ptr<rw::sensor::SensorModel>> sensors = _sensors;
+            std::vector<rw::core::Ptr<T>> result;
+            for(rw::core::Ptr<rw::sensor::SensorModel> f : sensors) {
+                rw::core::Ptr<T> res = f.cast<T>();
+                if(res != NULL) result.push_back(res);
             }
             return result;
         }
@@ -406,7 +394,7 @@ namespace rw { namespace models {
          * @brief Returns all frames in workcell
          * @return List of all frames
          */
-        std::vector< rw::core::Ptr< rw::sensor::SensorModel > > getSensors () const;
+        std::vector<rw::core::Ptr<rw::sensor::SensorModel>> getSensors() const;
 
         /**
          * @brief Returns controller with the specified name.
@@ -420,7 +408,7 @@ namespace rw { namespace models {
          * @return The controller with name \b name or NULL if no such
          * controller.
          */
-        rw::core::Ptr< rw::models::ControllerModel > findController (const std::string& name) const;
+        rw::core::Ptr<rw::models::ControllerModel> findController(const std::string& name) const;
 
         /**
          * @brief Returns controller with the specified name and type \b T.
@@ -430,25 +418,21 @@ namespace rw { namespace models {
          * @return The sensor with name \b name or NULL if no such sensor
          * or the sensor is not of type \b T.
          */
-        template< class T > rw::core::Ptr< T > findController (const std::string& name) const
-        {
-            rw::core::Ptr< ControllerModel > sensor = findController (name);
-            if (sensor == NULL)
-                return NULL;
-            return sensor.cast< T > ();
+        template<class T> rw::core::Ptr<T> findController(const std::string& name) const {
+            rw::core::Ptr<ControllerModel> sensor = findController(name);
+            if(sensor == NULL) return NULL;
+            return sensor.cast<T>();
         }
 
         /**
          * @brief Returns all controllers of a specific type \b T.
          */
-        template< class T > std::vector< rw::core::Ptr< T > > findControllers () const
-        {
-            const std::vector< rw::core::Ptr< ControllerModel > > sensors = _controllers;
-            std::vector< rw::core::Ptr< T > > result;
-            for (rw::core::Ptr< ControllerModel > f : sensors) {
-                rw::core::Ptr< T > res = f.cast< T > ();
-                if (res != NULL)
-                    result.push_back (res);
+        template<class T> std::vector<rw::core::Ptr<T>> findControllers() const {
+            const std::vector<rw::core::Ptr<ControllerModel>> sensors = _controllers;
+            std::vector<rw::core::Ptr<T>> result;
+            for(rw::core::Ptr<ControllerModel> f : sensors) {
+                rw::core::Ptr<T> res = f.cast<T>();
+                if(res != NULL) result.push_back(res);
             }
             return result;
         }
@@ -457,14 +441,16 @@ namespace rw { namespace models {
          * @brief Returns all controllers in workcell
          * @return List of all controllers
          */
-        std::vector< rw::core::Ptr< ControllerModel > > getControllers () const;
+        std::vector<rw::core::Ptr<ControllerModel>> getControllers() const;
 
         /**
          * @brief Returns all object in the work cell
          *
          * @return All object in work cell
          */
-        std::vector< rw::core::Ptr< Object > > getObjects () const { return _objects; }
+        std::vector<rw::core::Ptr<Object>> getObjects() const {
+            return _objects;
+        }
 
         /**
          * @brief The object named \b name of the workcell.
@@ -475,73 +461,76 @@ namespace rw { namespace models {
          *
          * @return The object named \b name or NULL if no such object.
          */
-        rw::core::Ptr< Object > findObject (const std::string& name) const;
+        rw::core::Ptr<Object> findObject(const std::string& name) const;
 
         //! @brief Add device to workcell
-        void add (rw::core::Ptr< rw::models::Device > device);
+        void add(rw::core::Ptr<rw::models::Device> device);
         //! @brief Add object to workcell
-        void add (rw::core::Ptr< Object > object);
+        void add(rw::core::Ptr<Object> object);
         //! @brief Add sensormodel to workcell
-        void add (rw::core::Ptr< rw::sensor::SensorModel > sensor);
+        void add(rw::core::Ptr<rw::sensor::SensorModel> sensor);
         //! @brief Add controllermodel to workcell
-        void add (rw::core::Ptr< ControllerModel > controller);
+        void add(rw::core::Ptr<ControllerModel> controller);
 
         //! @brief Remove object from workcell
-        void remove (rw::core::Ptr< Object > object);
+        void remove(rw::core::Ptr<Object> object);
         //! @brief Remove device from workcell
-        void remove (rw::core::Ptr< rw::models::Device > device);
+        void remove(rw::core::Ptr<rw::models::Device> device);
         //! @brief Remove sensormodel from workcell
-        void remove (rw::core::Ptr< rw::sensor::SensorModel > sensor);
+        void remove(rw::core::Ptr<rw::sensor::SensorModel> sensor);
         //! @brief Remove controllermodel from workcell
-        void remove (rw::core::Ptr< ControllerModel > controller);
+        void remove(rw::core::Ptr<ControllerModel> controller);
 
         /**
          * @brief gets the complete state structure of the workcell.
          * @return the state structure of the workcell.
          */
-        rw::core::Ptr< rw::kinematics::StateStructure > getStateStructure () { return _tree; }
+        rw::core::Ptr<rw::kinematics::StateStructure> getStateStructure() {
+            return _tree;
+        }
 
 #if !defined(SWIG)
         /**
          * @brief Definition of work cell changed listener
          */
-        typedef boost::function< void (int) > WorkCellChangedListener;
+        typedef boost::function<void(int)> WorkCellChangedListener;
 
         /**
          * @brief Definition of even for work cell changed
          */
-        typedef rw::core::Event< WorkCellChangedListener, int > WorkCellChangedEvent;
+        typedef rw::core::Event<WorkCellChangedListener, int> WorkCellChangedEvent;
 
         /**
          * @brief Returns the work cell changed event
          * @return
          */
-        WorkCellChangedEvent& workCellChangedEvent () { return _workCellChangedEvent; }
+        WorkCellChangedEvent& workCellChangedEvent() {
+            return _workCellChangedEvent;
+        }
 #endif
 
         /**
          * @brief Properties of this workcell
          */
-        rw::core::PropertyMap& getPropertyMap ();
+        rw::core::PropertyMap& getPropertyMap();
 
         /**
          * @brief Properties of this workcell
          * @return the property map including the properties of this workcell
          */
-        const rw::core::PropertyMap& getPropertyMap () const;
+        const rw::core::PropertyMap& getPropertyMap() const;
 
         /**
          * @brief Returns collision setup associated to work cell
          * @return Collision setup
          */
-        rw::proximity::CollisionSetup getCollisionSetup ();
+        rw::proximity::CollisionSetup getCollisionSetup();
 
         /**
          * @brief Get the scene descriptor.
          * @return the scene descriptor.
          */
-        rw::core::Ptr< rw::graphics::SceneDescriptor > getSceneDescriptor ()
-        {
+        rw::core::Ptr<rw::graphics::SceneDescriptor> getSceneDescriptor() {
             return _sceneDescriptor;
         }
 
@@ -549,8 +538,7 @@ namespace rw { namespace models {
          * @brief Set the scene descriptor.
          * @param scene [in] the scene descriptor.
          */
-        void setSceneDescriptor (rw::core::Ptr< rw::graphics::SceneDescriptor > scene)
-        {
+        void setSceneDescriptor(rw::core::Ptr<rw::graphics::SceneDescriptor> scene) {
             _sceneDescriptor = scene;
         }
 
@@ -560,7 +548,7 @@ namespace rw { namespace models {
          * If the workcell is loaded from file, then this method returns the
          * full filename. Otherwise it returns an empty string.
          */
-        std::string getFilename () const;
+        std::string getFilename() const;
 
         /**
          * @brief Returns the path of where the work cell is located
@@ -568,7 +556,7 @@ namespace rw { namespace models {
          * If the workcell is not loaded from file, it returns an empty
          * string
          */
-        std::string getFilePath () const;
+        std::string getFilePath() const;
 
         /**
          * @brief Returns the filename of the calibration associated to the
@@ -579,7 +567,7 @@ namespace rw { namespace models {
          * To load the file use the getFilePath()+getCalibrationFilename()
          * to get the absolute location
          */
-        const std::string& getCalibrationFilename () const;
+        const std::string& getCalibrationFilename() const;
 
         /**
          * @brief Sets the filename of the calibration file
@@ -587,30 +575,30 @@ namespace rw { namespace models {
          * @param calibrationFilename [in] Filename of calibration file with
          * path relative to the work cell path.
          */
-        void setCalibrationFilename (const std::string& calibrationFilename);
+        void setCalibrationFilename(const std::string& calibrationFilename);
 
       private:
-        void stateDataAddedListener (const rw::kinematics::StateData* data);
-        void stateDataRemovedListener (const rw::kinematics::StateData* data);
+        void stateDataAddedListener(const rw::kinematics::StateData* data);
+        void stateDataRemovedListener(const rw::kinematics::StateData* data);
 
       private:
-        rw::core::Ptr< rw::kinematics::StateStructure > _tree;
-        std::vector< rw::core::Ptr< rw::models::Device > > _devices;
-        std::vector< rw::core::Ptr< Object > > _objects;
+        rw::core::Ptr<rw::kinematics::StateStructure> _tree;
+        std::vector<rw::core::Ptr<rw::models::Device>> _devices;
+        std::vector<rw::core::Ptr<Object>> _objects;
         std::string _name;
         std::string _filename;
         std::string _calibrationFilename;
 
         rw::core::PropertyMap* _map;
         WorkCellChangedEvent _workCellChangedEvent;
-        std::vector< rw::core::Ptr< rw::sensor::SensorModel > > _sensors;
-        std::vector< rw::core::Ptr< ControllerModel > > _controllers;
-        rw::core::Ptr< rw::graphics::SceneDescriptor > _sceneDescriptor;
+        std::vector<rw::core::Ptr<rw::sensor::SensorModel>> _sensors;
+        std::vector<rw::core::Ptr<ControllerModel>> _controllers;
+        rw::core::Ptr<rw::graphics::SceneDescriptor> _sceneDescriptor;
 
       private:
-        WorkCell ();
-        WorkCell (const WorkCell&);
-        WorkCell& operator= (const WorkCell&);
+        WorkCell();
+        WorkCell(const WorkCell&);
+        WorkCell& operator=(const WorkCell&);
     };
 #if !defined(SWIG)
     /**
@@ -619,12 +607,12 @@ namespace rw { namespace models {
      * @param workcell [in] the workcell to stream to \b out .
      * @return the output stream \b out .
      */
-    std::ostream& operator<< (std::ostream& out, const WorkCell& workcell);
+    std::ostream& operator<<(std::ostream& out, const WorkCell& workcell);
 #endif
     /*@}*/
 }}    // namespace rw::models
 #if defined(SWIG)
-TOSTRING_OUTOFCLASSDEF (rw::models::WorkCell);
+TOSTRING_OUTOFCLASSDEF(rw::models::WorkCell);
 #endif
 
 #endif    // end include guard

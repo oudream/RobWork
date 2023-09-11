@@ -27,197 +27,155 @@ using namespace rw::sensor;
 
 //----------------------------------------------------------------------------
 
-SceneDescriptor::SceneDescriptor ()
-{}
+SceneDescriptor::SceneDescriptor() {}
 
-SceneDescriptor::~SceneDescriptor ()
-{}
+SceneDescriptor::~SceneDescriptor() {}
 
-void SceneDescriptor::setVisible (bool visible, rw::core::Ptr<rw::kinematics::Frame> f)
-{
-    if (_frameStateMap.find (f.get()) == _frameStateMap.end ())
-        return;
+void SceneDescriptor::setVisible(bool visible, rw::core::Ptr<rw::kinematics::Frame> f) {
+    if(_frameStateMap.find(f.get()) == _frameStateMap.end()) return;
     _frameStateMap[f.get()].visible = visible;
-    for (DrawableProxy::Ptr d : _frameStateMap[f.get()].drawables) {
-        d->visible = visible;
-    }
+    for(DrawableProxy::Ptr d : _frameStateMap[f.get()].drawables) { d->visible = visible; }
 }
 
-bool SceneDescriptor::isVisible (rw::core::Ptr<rw::kinematics::Frame> f)
-{
-    if (_frameStateMap.find (f.get()) == _frameStateMap.end ())
-        return false;
+bool SceneDescriptor::isVisible(rw::core::Ptr<rw::kinematics::Frame> f) {
+    if(_frameStateMap.find(f.get()) == _frameStateMap.end()) return false;
     return _frameStateMap[f.get()].visible;
 }
 
-void SceneDescriptor::setHighlighted (bool highlighted, rw::core::Ptr<rw::kinematics::Frame> f)
-{
-    if (_frameStateMap.find (f.get()) == _frameStateMap.end ())
-        return;
+void SceneDescriptor::setHighlighted(bool highlighted, rw::core::Ptr<rw::kinematics::Frame> f) {
+    if(_frameStateMap.find(f.get()) == _frameStateMap.end()) return;
 
     _frameStateMap[f.get()].highlighted = highlighted;
 
-    for (DrawableProxy::Ptr d : _frameStateMap[f.get()].drawables) {
-        d->highlighted = highlighted;
-    }
+    for(DrawableProxy::Ptr d : _frameStateMap[f.get()].drawables) { d->highlighted = highlighted; }
 }
 
-bool SceneDescriptor::isHighlighted (rw::core::Ptr<rw::kinematics::Frame> f)
-{
+bool SceneDescriptor::isHighlighted(rw::core::Ptr<rw::kinematics::Frame> f) {
     return _frameStateMap[f.get()].highlighted;
 }
 
-void SceneDescriptor::setFrameAxisVisible (bool visible, rw::core::Ptr<rw::kinematics::Frame> f)
-{
-    if (_frameStateMap.find (f.get()) == _frameStateMap.end ()) {
-        return;
-    }
+void SceneDescriptor::setFrameAxisVisible(bool visible, rw::core::Ptr<rw::kinematics::Frame> f) {
+    if(_frameStateMap.find(f.get()) == _frameStateMap.end()) { return; }
     _frameStateMap[f.get()].frameAxisVisible = visible;
 }
 
-bool SceneDescriptor::isFrameAxisVisible (rw::core::Ptr<rw::kinematics::Frame> f)
-{
-    if (_frameStateMap.find (f.get()) == _frameStateMap.end ())
-        RW_THROW ("Frame is not in the scene!");
+bool SceneDescriptor::isFrameAxisVisible(rw::core::Ptr<rw::kinematics::Frame> f) {
+    if(_frameStateMap.find(f.get()) == _frameStateMap.end()) RW_THROW("Frame is not in the scene!");
     return _frameStateMap[f.get()].frameAxisVisible;
 }
 
-void SceneDescriptor::setDrawType (DrawableNode::DrawType type, rw::core::Ptr<rw::kinematics::Frame> f)
-{
-    if (_frameStateMap.find (f.get()) == _frameStateMap.end ())
-        return;
+void SceneDescriptor::setDrawType(DrawableNode::DrawType type,
+                                  rw::core::Ptr<rw::kinematics::Frame> f) {
+    if(_frameStateMap.find(f.get()) == _frameStateMap.end()) return;
     _frameStateMap[f.get()].dtype = type;
-    for (DrawableProxy::Ptr d : _frameStateMap[f.get()].drawables) {
-        d->dtype = type;
-    }
+    for(DrawableProxy::Ptr d : _frameStateMap[f.get()].drawables) { d->dtype = type; }
 }
 
-DrawableNode::DrawType SceneDescriptor::getDrawType (rw::core::Ptr<rw::kinematics::Frame> f)
-{
-    if (_frameStateMap.find (f.get()) == _frameStateMap.end ())
-        RW_THROW ("Frame is not in the scene!");
+DrawableNode::DrawType SceneDescriptor::getDrawType(rw::core::Ptr<rw::kinematics::Frame> f) {
+    if(_frameStateMap.find(f.get()) == _frameStateMap.end()) RW_THROW("Frame is not in the scene!");
     return _frameStateMap[f.get()].dtype;
 }
 
-void SceneDescriptor::setDrawMask (unsigned int mask, rw::core::Ptr<rw::kinematics::Frame> f)
-{
-    if (_frameStateMap.find (f.get()) == _frameStateMap.end ())
-        RW_THROW ("Frame is not in the scene!");
+void SceneDescriptor::setDrawMask(unsigned int mask, rw::core::Ptr<rw::kinematics::Frame> f) {
+    if(_frameStateMap.find(f.get()) == _frameStateMap.end()) RW_THROW("Frame is not in the scene!");
     _frameStateMap[f.get()].dmask = mask;
-    for (DrawableProxy::Ptr d : _frameStateMap[f.get()].drawables) {
-        d->dmask = mask;
-    }
+    for(DrawableProxy::Ptr d : _frameStateMap[f.get()].drawables) { d->dmask = mask; }
 }
 
-unsigned int SceneDescriptor::getDrawMask (rw::core::Ptr<rw::kinematics::Frame> f)
-{
-    if (_frameStateMap.find (f.get()) == _frameStateMap.end ())
-        RW_THROW ("Frame is not in the scene!");
+unsigned int SceneDescriptor::getDrawMask(rw::core::Ptr<rw::kinematics::Frame> f) {
+    if(_frameStateMap.find(f.get()) == _frameStateMap.end()) RW_THROW("Frame is not in the scene!");
     return _frameStateMap[f.get()].dmask;
 }
 
-void SceneDescriptor::setTransparency (double alpha, rw::core::Ptr<rw::kinematics::Frame> f)
-{
-    if (_frameStateMap.find (f.get()) == _frameStateMap.end ())
-        return;
+void SceneDescriptor::setTransparency(double alpha, rw::core::Ptr<rw::kinematics::Frame> f) {
+    if(_frameStateMap.find(f.get()) == _frameStateMap.end()) return;
 
     _frameStateMap[f.get()].alpha = alpha;
-    for (DrawableProxy::Ptr d : _frameStateMap[f.get()].drawables) {
-        d->alpha = alpha;
-    }
+    for(DrawableProxy::Ptr d : _frameStateMap[f.get()].drawables) { d->alpha = alpha; }
 }
 
-SceneDescriptor::DrawableProxy::Ptr SceneDescriptor::addDrawable (DrawableNode::Ptr drawable,
-                                                                  rw::core::Ptr<rw::kinematics::Frame> frame)
-{
+SceneDescriptor::DrawableProxy::Ptr
+SceneDescriptor::addDrawable(DrawableNode::Ptr drawable,
+                             rw::core::Ptr<rw::kinematics::Frame> frame) {
     // add frame to frame map
-    DrawableProxy::Ptr proxy = ownedPtr (new DrawableProxy ());
-    proxy->name              = drawable->getName ();
+    DrawableProxy::Ptr proxy = ownedPtr(new DrawableProxy());
+    proxy->name              = drawable->getName();
     // proxy->dmask = drawable->dmask;
     proxy->dnode = drawable;
 
-    _frameStateMap[frame.get()].drawables.push_back (proxy);
+    _frameStateMap[frame.get()].drawables.push_back(proxy);
     return proxy;
 }
 
 SceneDescriptor::DrawableProxy::Ptr
-SceneDescriptor::addDrawable (const std::string& filename, rw::core::Ptr<rw::kinematics::Frame> frame, int dmask)
-{
-    DrawableProxy::Ptr proxy = ownedPtr (new DrawableProxy ());
+SceneDescriptor::addDrawable(const std::string& filename,
+                             rw::core::Ptr<rw::kinematics::Frame> frame, int dmask) {
+    DrawableProxy::Ptr proxy = ownedPtr(new DrawableProxy());
     proxy->name              = filename;
     proxy->dmask             = dmask;
     proxy->filename          = filename;
 
-    _frameStateMap[frame.get()].drawables.push_back (proxy);
-    return proxy;
-}
-
-SceneDescriptor::DrawableProxy::Ptr SceneDescriptor::addFrameAxis (const std::string& name,
-                                                                   double size,
-                                                                   rw::core::Ptr<rw::kinematics::Frame> frame,
-                                                                   int dmask)
-{
-    DrawableProxy::Ptr proxy = ownedPtr (new DrawableProxy ());
-    proxy->name              = name;
-    proxy->frameSize         = size;
-
-    _frameStateMap[frame.get()].drawables.push_back (proxy);
+    _frameStateMap[frame.get()].drawables.push_back(proxy);
     return proxy;
 }
 
 SceneDescriptor::DrawableProxy::Ptr
-SceneDescriptor::addGeometry (const std::string& name,
-                              rw::core::Ptr< class rw::geometry::Geometry > geom,
-                              rw::core::Ptr<rw::kinematics::Frame> frame, int dmask)
-{
-    DrawableProxy::Ptr proxy = ownedPtr (new DrawableProxy ());
+SceneDescriptor::addFrameAxis(const std::string& name, double size,
+                              rw::core::Ptr<rw::kinematics::Frame> frame, int dmask) {
+    DrawableProxy::Ptr proxy = ownedPtr(new DrawableProxy());
+    proxy->name              = name;
+    proxy->frameSize         = size;
+
+    _frameStateMap[frame.get()].drawables.push_back(proxy);
+    return proxy;
+}
+
+SceneDescriptor::DrawableProxy::Ptr
+SceneDescriptor::addGeometry(const std::string& name,
+                             rw::core::Ptr<class rw::geometry::Geometry> geom,
+                             rw::core::Ptr<rw::kinematics::Frame> frame, int dmask) {
+    DrawableProxy::Ptr proxy = ownedPtr(new DrawableProxy());
     proxy->name              = name;
     proxy->dmask             = dmask;
     proxy->geom              = geom;
 
-    _frameStateMap[frame.get()].drawables.push_back (proxy);
+    _frameStateMap[frame.get()].drawables.push_back(proxy);
     return proxy;
 }
 
-SceneDescriptor::DrawableProxy::Ptr SceneDescriptor::addModel3D (const std::string& name,
-                                                                 Model3D::Ptr model,
-                                                                 rw::core::Ptr<rw::kinematics::Frame> frame,
-                                                                 int dmask)
-{
-    DrawableProxy::Ptr proxy = ownedPtr (new DrawableProxy ());
+SceneDescriptor::DrawableProxy::Ptr
+SceneDescriptor::addModel3D(const std::string& name, Model3D::Ptr model,
+                            rw::core::Ptr<rw::kinematics::Frame> frame, int dmask) {
+    DrawableProxy::Ptr proxy = ownedPtr(new DrawableProxy());
     proxy->name              = name;
     proxy->dmask             = dmask;
     proxy->model             = model;
 
-    _frameStateMap[frame.get()].drawables.push_back (proxy);
+    _frameStateMap[frame.get()].drawables.push_back(proxy);
     return proxy;
 }
 
-SceneDescriptor::DrawableProxy::Ptr SceneDescriptor::addImage (const std::string& name,
-                                                               rw::sensor::Image::Ptr img,
-                                                               rw::core::Ptr<rw::kinematics::Frame> frame,
-                                                               int dmask)
-{
-    DrawableProxy::Ptr proxy = ownedPtr (new DrawableProxy ());
+SceneDescriptor::DrawableProxy::Ptr
+SceneDescriptor::addImage(const std::string& name, rw::sensor::Image::Ptr img,
+                          rw::core::Ptr<rw::kinematics::Frame> frame, int dmask) {
+    DrawableProxy::Ptr proxy = ownedPtr(new DrawableProxy());
     proxy->name              = name;
     proxy->dmask             = dmask;
     proxy->img               = img;
 
-    _frameStateMap[frame.get()].drawables.push_back (proxy);
+    _frameStateMap[frame.get()].drawables.push_back(proxy);
     return proxy;
 }
 
-SceneDescriptor::DrawableProxy::Ptr SceneDescriptor::addScan (const std::string& name,
-                                                              rw::geometry::PointCloud::Ptr scan,
-                                                              rw::core::Ptr<rw::kinematics::Frame> frame,
-                                                              int dmask)
-{
-    DrawableProxy::Ptr proxy = ownedPtr (new DrawableProxy ());
+SceneDescriptor::DrawableProxy::Ptr
+SceneDescriptor::addScan(const std::string& name, rw::geometry::PointCloud::Ptr scan,
+                         rw::core::Ptr<rw::kinematics::Frame> frame, int dmask) {
+    DrawableProxy::Ptr proxy = ownedPtr(new DrawableProxy());
     proxy->name              = name;
     proxy->dmask             = dmask;
     proxy->scan25            = scan;
 
-    _frameStateMap[frame.get()].drawables.push_back (proxy);
+    _frameStateMap[frame.get()].drawables.push_back(proxy);
     return proxy;
 }
 
@@ -234,23 +192,20 @@ std::vector<rw::geometry::Line >& lines, rw::core::Ptr<rw::kinematics::Frame> fr
 
 */
 
-SceneDescriptor::DrawableProxy::Ptr SceneDescriptor::addRender (const std::string& name,
-                                                                rw::graphics::Render::Ptr render,
-                                                                rw::core::Ptr<rw::kinematics::Frame> frame,
-                                                                int dmask)
-{
-    DrawableProxy::Ptr proxy = ownedPtr (new DrawableProxy ());
+SceneDescriptor::DrawableProxy::Ptr
+SceneDescriptor::addRender(const std::string& name, rw::graphics::Render::Ptr render,
+                           rw::core::Ptr<rw::kinematics::Frame> frame, int dmask) {
+    DrawableProxy::Ptr proxy = ownedPtr(new DrawableProxy());
     proxy->name              = name;
     proxy->dmask             = dmask;
     proxy->render            = render;
 
-    _frameStateMap[frame.get()].drawables.push_back (proxy);
+    _frameStateMap[frame.get()].drawables.push_back(proxy);
     return proxy;
 }
 
-std::vector< SceneDescriptor::DrawableProxy::Ptr >
-SceneDescriptor::getDrawables (rw::core::Ptr<rw::kinematics::Frame> f)
-{
+std::vector<SceneDescriptor::DrawableProxy::Ptr>
+SceneDescriptor::getDrawables(rw::core::Ptr<rw::kinematics::Frame> f) {
     return _frameStateMap[f.get()].drawables;
 }
 
@@ -279,16 +234,14 @@ bool SceneDescriptor::removeDrawables(const std::string& name){
     return _scene->removeDrawables(name);
 }
 
-bool SceneDescriptor::removeDrawable(DrawableNode::Ptr drawable, rw::core::Ptr<rw::kinematics::Frame> f){
-    if(_frameStateMap.find(f)==_frameStateMap.end())
-        return false;
-    return _scene->removeDrawable(drawable, _frameStateMap[f]);
+bool SceneDescriptor::removeDrawable(DrawableNode::Ptr drawable,
+rw::core::Ptr<rw::kinematics::Frame> f){ if(_frameStateMap.find(f)==_frameStateMap.end()) return
+false; return _scene->removeDrawable(drawable, _frameStateMap[f]);
 }
 
-bool SceneDescriptor::removeDrawable(const std::string& name, rw::core::Ptr<rw::kinematics::Frame> f){
-    if(_frameStateMap.find(f)==_frameStateMap.end())
-        return false;
-    return _scene->removeChild(name, _frameStateMap[f]);
+bool SceneDescriptor::removeDrawable(const std::string& name, rw::core::Ptr<rw::kinematics::Frame>
+f){ if(_frameStateMap.find(f)==_frameStateMap.end()) return false; return _scene->removeChild(name,
+_frameStateMap[f]);
 }
 
 

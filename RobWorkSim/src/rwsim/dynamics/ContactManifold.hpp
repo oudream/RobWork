@@ -45,19 +45,19 @@ namespace rwsim { namespace dynamics {
          * @brief default constructor
          * @return
          */
-        ContactManifold (){};
+        ContactManifold(){};
 
         /**
          * @brief destructor
          * @return
          */
-        virtual ~ContactManifold (){};
+        virtual ~ContactManifold(){};
 
         /**
          * @brief update the manifold, which means removing contact
          * points that no longer are valid.
          */
-        void update (){};
+        void update(){};
 
         /**
          * @brief test if the contactpoint \b point is close enough to the
@@ -65,13 +65,13 @@ namespace rwsim { namespace dynamics {
          * @param point [in]
          * @return true if point is close enough to manifold, false otherwise
          */
-        bool isInManifold (ContactPoint& point) { return true; };
+        bool isInManifold(ContactPoint& point) { return true; };
 
         /**
          * @brief add a contact point to this contact manifold.
          * @param point [in] the
          */
-        void addContact (ContactPoint& point){};
+        void addContact(ContactPoint& point){};
 
         /**
          * @brief updates the \b manifolds with the new contact points.
@@ -80,8 +80,8 @@ namespace rwsim { namespace dynamics {
          * @param points
          * @param manifolds
          */
-        static void generateContactManifolds (std::vector< ContactPoint* >& points,
-                                              std::vector< ContactManifold* >& manifolds);
+        static void generateContactManifolds(std::vector<ContactPoint*>& points,
+                                             std::vector<ContactManifold*>& manifolds);
 
         /**
          * @brief updates the \b manifolds with the new contact points.
@@ -93,9 +93,9 @@ namespace rwsim { namespace dynamics {
          * @param manifolds
          * @param thres [in] maximum distance from deepest penetrating point.
          */
-        static void genThresContactManifolds (std::vector< ContactPoint >& points,
-                                              std::vector< ContactManifold* >& manifolds,
-                                              double thres);
+        static void genThresContactManifolds(std::vector<ContactPoint>& points,
+                                             std::vector<ContactManifold*>& manifolds,
+                                             double thres);
 
       private:
         ContactPoint _deepest[5];

@@ -43,88 +43,88 @@ namespace rwsim { namespace log {
     {
       public:
         //! Smart pointer type of SimulatorLog
-        typedef rw::core::Ptr< SimulatorLog > Ptr;
+        typedef rw::core::Ptr<SimulatorLog> Ptr;
 
         //! Smart pointer type of const SimulatorLog
-        typedef rw::core::Ptr< const SimulatorLog > CPtr;
+        typedef rw::core::Ptr<const SimulatorLog> CPtr;
 
         /**
          * @brief Constructor.
          * @note This item will not be added as a child to the parent scope using this constructor.
          * @param parent the parent of this log item.
          */
-        SimulatorLog (SimulatorLogScope* parent = NULL);
+        SimulatorLog(SimulatorLogScope* parent = NULL);
 
         //! @brief Destructor.
-        virtual ~SimulatorLog ();
+        virtual ~SimulatorLog();
 
         //! @copydoc rw::common::Serializable::read
-        virtual void read (class rw::common::InputArchive& iarchive, const std::string& id);
+        virtual void read(class rw::common::InputArchive& iarchive, const std::string& id);
 
         //! @copydoc rw::common::Serializable::write
-        virtual void write (class rw::common::OutputArchive& oarchive, const std::string& id) const;
+        virtual void write(class rw::common::OutputArchive& oarchive, const std::string& id) const;
 
         /**
          * @brief Get the parent of this log item.
          * @return the parent (NULL if no parent).
          */
-        virtual SimulatorLogScope* getParent () const;
+        virtual SimulatorLogScope* getParent() const;
 
         /**
          * @brief Get the number of children under this log item.
          * @return the number of children.
          */
-        virtual std::size_t children () const = 0;
+        virtual std::size_t children() const = 0;
 
         /**
          * @brief Get a textual representation of the type of the item.
          * @return the type of item as a string.
          */
-        virtual std::string getType () const = 0;
+        virtual std::string getType() const = 0;
 
         /**
          * @brief Check if logs are identical.
          * @param b [in] other log to compare with.
          * @return true if identical, false otherwise.
          */
-        virtual bool operator== (const SimulatorLog& b) const;
+        virtual bool operator==(const SimulatorLog& b) const;
 
         /**
          * @brief Check if logs are non-identical.
          * @param b [in] other log to compare with.
          * @return true if not identical, false otherwise.
          */
-        virtual bool operator!= (const SimulatorLog& b) const;
+        virtual bool operator!=(const SimulatorLog& b) const;
 
         /**
          * @brief Get the full filename with path for where this log entry was created.
          * @return the full filename.
          */
-        virtual std::string getFilename () const;
+        virtual std::string getFilename() const;
 
         /**
          * @brief Set the name of the file where this log entry was created.
          * @param file [in] the filename (expected to have full path included).
          */
-        virtual void setFilename (const std::string& file);
+        virtual void setFilename(const std::string& file);
 
         /**
          * @brief Set the name of the file where this log entry was created.
          * @param file [in] the filename (expected to have full path included).
          */
-        virtual void setFilename (const char* file);
+        virtual void setFilename(const char* file);
 
         /**
          * @brief Get a string describing this entry.
          * @return the string.
          */
-        virtual std::string getDescription () const;
+        virtual std::string getDescription() const;
 
         /**
          * @brief Set a very short description of this entry.
          * @param description [in] the description to set.
          */
-        virtual void setDescription (const std::string& description);
+        virtual void setDescription(const std::string& description);
 
       private:
         SimulatorLogScope* const _parent;

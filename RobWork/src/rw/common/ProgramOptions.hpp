@@ -21,14 +21,13 @@ namespace rw { namespace common {
          * @param applicationName [in] the name of the application.
          * @param version [in] the version of the application.
          */
-        ProgramOptions (const std::string& applicationName, const std::string& version) :
-            _appName (applicationName), _version (version), _optionDesc ("Options")
-        {}
+        ProgramOptions(const std::string& applicationName, const std::string& version) :
+            _appName(applicationName), _version(version), _optionDesc("Options") {}
 
         /**
          * @brief this initialize default options that can add simple properties to the propertymap.
          */
-        void initOptions ();
+        void initOptions();
 
         /**
          * @brief add a string option that is only allowed to occur once on the command line
@@ -36,8 +35,8 @@ namespace rw { namespace common {
          * @param defval [in] the default string value if any
          * @param desc [in] description of commandline option
          */
-        void addStringOption (const std::string& name, const std::string& defval,
-                              const std::string& desc);
+        void addStringOption(const std::string& name, const std::string& defval,
+                             const std::string& desc);
 
         /**
          * @brief add a bool option that is only allowed to occur once on the command line
@@ -45,15 +44,14 @@ namespace rw { namespace common {
          * @param defval [in] the default value when arg not present
          * @param desc [in] description of commandline option
          */
-        void addBoolOption (const std::string& name, bool defval,
-                              const std::string& desc);
+        void addBoolOption(const std::string& name, bool defval, const std::string& desc);
 
         /**
          * @brief Set \b name of option number \b i.
          * @param name [in] the name.
          * @param i [in] index of the option.
          */
-        void setPositionalOption (const std::string& name, int i);
+        void setPositionalOption(const std::string& name, int i);
 
         /**
          * @brief parses input, if
@@ -61,27 +59,26 @@ namespace rw { namespace common {
          * @param argv
          * @return if 0 is returned then help or an error
          */
-        int parse (int argc, char** argv);
+        int parse(int argc, char** argv);
 
         /**
          * @brief Parses input from a string.
          * @param string [in] input line.
          * @return 0 if success.
          */
-        int parse (const std::string& string);
+        int parse(const std::string& string);
 
         /**
          * @brief Get the underlying program options description from boost.
          * @return reference to options_description.
          */
-        boost::program_options::options_description& getOptionDescription () { return _optionDesc; }
+        boost::program_options::options_description& getOptionDescription() { return _optionDesc; }
 
         /**
          * @brief Get the underlying positional program options description from boost.
          * @return reference to positional_options_description.
          */
-        boost::program_options::positional_options_description& getPosOptionDescription ()
-        {
+        boost::program_options::positional_options_description& getPosOptionDescription() {
             return _posOptionDesc;
         }
 
@@ -89,16 +86,16 @@ namespace rw { namespace common {
          * @brief Get parsed properties in RobWork format in the form of a PropertyMap.
          * @return the property map with parsed options.
          */
-        rw::core::PropertyMap getPropertyMap () { return _pmap; }
+        rw::core::PropertyMap getPropertyMap() { return _pmap; }
 
       private:
-        int checkVariablesMap (boost::program_options::variables_map& vm);
+        int checkVariablesMap(boost::program_options::variables_map& vm);
 
         std::string _appName;
         rw::core::PropertyMap _pmap;
         std::string _inputFile, _version;
-        std::vector< std::string > _additionalStringOptions;
-        std::vector< std::string > _additionalBoolOptions;
+        std::vector<std::string> _additionalStringOptions;
+        std::vector<std::string> _additionalBoolOptions;
         boost::program_options::options_description _optionDesc;
         boost::program_options::positional_options_description _posOptionDesc;
     };

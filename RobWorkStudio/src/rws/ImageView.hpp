@@ -33,16 +33,16 @@ class ImageView : public QLabel
      * @brief Constructor.
      * @param parent [in] the owner.
      */
-    ImageView (QWidget* parent = NULL);
+    ImageView(QWidget* parent = NULL);
 
     //! @brief Destructor.
-    virtual ~ImageView ();
+    virtual ~ImageView();
 
     /**
      * @brief Display the image.
      * @param image [in] the image to show.
      */
-    void display (const rw::sensor::Image& image);
+    void display(const rw::sensor::Image& image);
 };
 
 #endif /* RWSTUDIO_COMPONENTS_IMAGEVIEW_HPP */

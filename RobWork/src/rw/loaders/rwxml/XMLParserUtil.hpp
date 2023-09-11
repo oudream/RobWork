@@ -27,13 +27,13 @@
 #include <boost/spirit/include/classic_core.hpp>
 #include <boost/spirit/include/classic_position_iterator.hpp>
 #include <map>
-#include <vector>
 #include <memory>
+#include <vector>
 
-template< typename ResultT >
-struct result_closure : public boost::spirit::classic::closure< result_closure< ResultT >, ResultT >
+template<typename ResultT>
+struct result_closure : public boost::spirit::classic::closure<result_closure<ResultT>, ResultT>
 {
-    typedef boost::spirit::classic::closure< result_closure< ResultT >, ResultT > base_t;
+    typedef boost::spirit::classic::closure<result_closure<ResultT>, ResultT> base_t;
     typename base_t::member1 result_;
 };
 
@@ -73,12 +73,12 @@ struct DummyNode
 {
     std::string _name;
     std::string _refframe;
-    std::vector< std::string > _scope;
+    std::vector<std::string> _scope;
 };
 
 struct DummyProperty
 {
-    DummyProperty () : _type ("string"){};
+    DummyProperty() : _type("string"){};
     std::string _name;
     std::string _refframe;
     std::string _desc;
@@ -111,28 +111,28 @@ struct DummyCollisionSetup
 {
     boost::spirit::classic::file_position _pos;
     std::string _filename;
-    std::vector< std::string > _scope;
+    std::vector<std::string> _scope;
 };
 
 struct DummyProximitySetup
 {
     boost::spirit::classic::file_position _pos;
     std::string _filename;
-    std::vector< std::string > _scope;
+    std::vector<std::string> _scope;
 };
 
 struct DummyCalibration
 {
     boost::spirit::classic::file_position _pos;
     std::string _filename;
-    std::vector< std::string > _scope;
+    std::vector<std::string> _scope;
 };
 
 struct DummyGeometry
 {
-    DummyGeometry () :
-        _radius (1.0), _x (1.0), _y (1.0), _z (1.0),_scale(1.0), _filename (""), _type (CubeType), _level (20)
-    {}
+    DummyGeometry() :
+        _radius(1.0), _x(1.0), _y(1.0), _z(1.0), _scale(1.0), _filename(""), _type(CubeType),
+        _level(20) {}
     double _radius;    // sphere, cone
     double _x;         // cube
     double _y;         // cube
@@ -147,26 +147,25 @@ struct DummyGeometry
 
 struct DummyModel
 {
-    DummyModel () :
-        _refframe (""), _isDrawable (true), _colmodel (true),
-        _transform (rw::math::Transform3D<>::identity ()), _r (0.6), _g (0.6), _b (0.6), _a (1.0),
-        _customMaterial (false)
-    {}
+    DummyModel() :
+        _refframe(""), _isDrawable(true), _colmodel(true),
+        _transform(rw::math::Transform3D<>::identity()), _r(0.6), _g(0.6), _b(0.6), _a(1.0),
+        _customMaterial(false) {}
 
     std::string _name;
     std::string _refframe;
     bool _isDrawable;
     bool _colmodel;
     rw::math::Transform3D<> _transform;
-    std::vector< DummyGeometry > _geo;
-    std::vector< std::string > _scope;
+    std::vector<DummyGeometry> _geo;
+    std::vector<std::string> _scope;
     double _r, _g, _b, _a;
     bool _customMaterial;
 };
 
 struct DummyRigidBody
 {
-    DummyRigidBody () : _transform (rw::math::Transform3D<>::identity ()), _iType (MatrixType) {}
+    DummyRigidBody() : _transform(rw::math::Transform3D<>::identity()), _iType(MatrixType) {}
 
     std::string _refframe;
     rw::math::Transform3D<> _transform;
@@ -178,27 +177,23 @@ struct DummyRigidBody
 
 struct DummyFrame
 {
-    DummyFrame () :
-        _name (""), _refframe (""), _type ("Fixed"), _state (ActiveState),
-        _transform (rw::math::Transform3D<>::identity ()), _isDaf (false), _isDepend (false),
-        _gain (0), _offset (0), _hasDHparam (false)
-    {}
+    DummyFrame() :
+        _name(""), _refframe(""), _type("Fixed"), _state(ActiveState),
+        _transform(rw::math::Transform3D<>::identity()), _isDaf(false), _isDepend(false), _gain(0),
+        _offset(0), _hasDHparam(false) {}
 
-    std::string getScoped (std::string str)
-    {
+    std::string getScoped(std::string str) {
         std::string tmpstr;
-        for (size_t i = 0; i < _scope.size (); i++) {
-            tmpstr += _scope[i] + ".";
-        }
+        for(size_t i = 0; i < _scope.size(); i++) { tmpstr += _scope[i] + "."; }
         tmpstr += str;
         return tmpstr;
     }
 
-    std::string getName () { return getScoped (_name); }
+    std::string getName() { return getScoped(_name); }
 
-    std::string getRefFrame () { return _refframe; }
+    std::string getRefFrame() { return _refframe; }
 
-    std::string getDependsOn () { return getScoped (_dependsOn); }
+    std::string getDependsOn() { return getScoped(_dependsOn); }
 
     std::string _name;
     std::string _refframe;
@@ -213,10 +208,10 @@ struct DummyFrame
     double _offset;
     std::string _dependsOn;
 
-    std::vector< std::string > _scope;
-    std::vector< DummyLimit > _limits;
-    std::vector< DummyModel > _models;
-    std::vector< DummyProperty > _properties;
+    std::vector<std::string> _scope;
+    std::vector<DummyLimit> _limits;
+    std::vector<DummyModel> _models;
+    std::vector<DummyProperty> _properties;
     DHParam _dhparam;
     bool _hasDHparam;
 };
@@ -224,57 +219,52 @@ struct DummyFrame
 struct QConfig
 {
   public:
-    QConfig () {}
+    QConfig() {}
     std::string name;
-    std::vector< double > q;
+    std::vector<double> q;
 };
 
 struct QJunction
 {
   public:
-    QJunction () {}
-    std::vector< std::string > chains;
+    QJunction() {}
+    std::vector<std::string> chains;
 };
 
 struct DummyDevice
 {
   public:
-    DummyDevice (const std::string& name, const DeviceType& type) :
-        _name (name), _type (type), _axelwidth (0.0)
-    {}
+    DummyDevice(const std::string& name, const DeviceType& type) :
+        _name(name), _type(type), _axelwidth(0.0) {}
 
-    DummyDevice () : _name (""), _type (SerialType) {}
+    DummyDevice() : _name(""), _type(SerialType) {}
 
-    std::string getScoped (std::string str)
-    {
+    std::string getScoped(std::string str) {
         std::string tmpstr;
-        for (size_t i = 0; i < _scope.size (); i++) {
-            tmpstr += _scope[i] + ".";
-        }
+        for(size_t i = 0; i < _scope.size(); i++) { tmpstr += _scope[i] + "."; }
         tmpstr += str;
         return tmpstr;
     }
 
-    std::string getName () { return getScoped (_name); }
+    std::string getName() { return getScoped(_name); }
 
-    std::string getRefFrame () { return _refframe; }
+    std::string getRefFrame() { return _refframe; }
 
     std::string _name;
     std::string _refframe;
     DeviceType _type;
-    std::vector< DummyFrame > _frames;    // base is allways the first frame
+    std::vector<DummyFrame> _frames;    // base is allways the first frame
 
-    std::vector< DummyCollisionSetup > _colsetups;     // collision setups
-    std::vector< DummyProximitySetup > _proxsetups;    // collision setups
+    std::vector<DummyCollisionSetup> _colsetups;     // collision setups
+    std::vector<DummyProximitySetup> _proxsetups;    // collision setups
 
-    std::vector< DummyCalibration > _calibration;    // device calibration
+    std::vector<DummyCalibration> _calibration;    // device calibration
 
-    std::map< std::string, std::vector< std::shared_ptr< rw::core::Property< std::string > > > >
-        _propMap;
+    std::map<std::string, std::vector<std::shared_ptr<rw::core::Property<std::string>>>> _propMap;
 
-    std::map< std::string, std::vector< DummyModel > > _modelMap;
-    std::map< std::string, std::vector< DummyLimit > > _limitMap;
-    std::map< std::string, std::vector< DummyProperty > > _propertyMap;
+    std::map<std::string, std::vector<DummyModel>> _modelMap;
+    std::map<std::string, std::vector<DummyLimit>> _limitMap;
+    std::map<std::string, std::vector<DummyProperty>> _propertyMap;
 
     /* in case of Composite device type */
     std::string _devAName, _devBName;
@@ -282,101 +272,94 @@ struct DummyDevice
     std::string _basename;
     double _axelwidth;
     std::string _leftname, _rightname;
-    std::vector< std::string > _scope;
-    std::vector< QConfig > _qconfig;
-    std::vector< QJunction > _junctions;
+    std::vector<std::string> _scope;
+    std::vector<QConfig> _qconfig;
+    std::vector<QJunction> _junctions;
 };
 
 struct DummyWorkcell
 {
   public:
-    void print ()
-    {
+    void print() {
         std::cout << "Name: " << _name << std::endl;
-        std::cout << "Nr of Frames: " << _framelist.size () << std::endl;
-        for (size_t i = 0; i < _framelist.size (); i++)
+        std::cout << "Nr of Frames: " << _framelist.size() << std::endl;
+        for(size_t i = 0; i < _framelist.size(); i++)
             std::cout << "\t" << _framelist[i]._name << std::endl;
-        std::cout << "Nr of devices: " << _devlist.size () << std::endl;
-        for (size_t i = 0; i < _devlist.size (); i++)
+        std::cout << "Nr of devices: " << _devlist.size() << std::endl;
+        for(size_t i = 0; i < _devlist.size(); i++)
             std::cout << "\t" << _devlist[i]._name << std::endl;
     }
 
-    void print_const () const
-    {
-        std::cout << "Nr of Frames: " << _framelist.size () << std::endl;
-        std::cout << "Nr of devices: " << _devlist.size () << std::endl;
+    void print_const() const {
+        std::cout << "Nr of Frames: " << _framelist.size() << std::endl;
+        std::cout << "Nr of devices: " << _devlist.size() << std::endl;
     }
 
     std::string _name;
-    std::vector< DummyFrame > _framelist;
-    std::vector< DummyDevice > _devlist;
-    std::vector< DummyModel > _models;
-    std::vector< DummyCollisionSetup > _colmodels;
-    std::vector< DummyProximitySetup > _proxmodels;
-    std::vector< DummyProperty > _properties;
-    std::vector< DummyCalibration > _calibration;    // workcell calibration
+    std::vector<DummyFrame> _framelist;
+    std::vector<DummyDevice> _devlist;
+    std::vector<DummyModel> _models;
+    std::vector<DummyCollisionSetup> _colmodels;
+    std::vector<DummyProximitySetup> _proxmodels;
+    std::vector<DummyProperty> _properties;
+    std::vector<DummyCalibration> _calibration;    // workcell calibration
 };
 
 /**********    Useful functors for the parsing proces    **********/
 
 struct SetDevScope
 {
-    SetDevScope (std::vector< std::string >& scope, DummyDevice& device) :
-        _scope (scope), _device (device)
-    {}
+    SetDevScope(std::vector<std::string>& scope, DummyDevice& device) :
+        _scope(scope), _device(device) {}
 
-    template< typename IteratorT >
-    void operator() (IteratorT const& first, IteratorT const& last) const
-    {
+    template<typename IteratorT>
+    void operator()(IteratorT const& first, IteratorT const& last) const {
         _device._scope = _scope;
     }
 
-    std::vector< std::string >& _scope;
+    std::vector<std::string>& _scope;
     DummyDevice& _device;
 };
 
 struct EnterScope
 {
-    EnterScope (std::vector< std::string >& scope) : _scope (scope) {}
+    EnterScope(std::vector<std::string>& scope) : _scope(scope) {}
 
-    void operator() (std::string const& next) const { _scope.push_back (next); }
+    void operator()(std::string const& next) const { _scope.push_back(next); }
 
-    template< typename IteratorT >
-    void operator() (IteratorT const& first, IteratorT const& last) const
-    {
-        std::string next (first, last);
-        _scope.push_back (next);
+    template<typename IteratorT>
+    void operator()(IteratorT const& first, IteratorT const& last) const {
+        std::string next(first, last);
+        _scope.push_back(next);
     }
 
-    std::vector< std::string >& _scope;
+    std::vector<std::string>& _scope;
 };
 
 struct LeaveScope
 {
-    LeaveScope (std::vector< std::string >& scope) : _scope (scope) {}
+    LeaveScope(std::vector<std::string>& scope) : _scope(scope) {}
 
-    void operator() (std::string const& next) const { _scope.pop_back (); }
+    void operator()(std::string const& next) const { _scope.pop_back(); }
 
-    template< typename IteratorT >
-    void operator() (IteratorT const& first, IteratorT const& last) const
-    {
-        _scope.pop_back ();
+    template<typename IteratorT>
+    void operator()(IteratorT const& first, IteratorT const& last) const {
+        _scope.pop_back();
     }
 
-    std::vector< std::string >& _scope;
+    std::vector<std::string>& _scope;
 };
 
 struct AddConfigToDevice
 {
-    AddConfigToDevice (const QConfig& config, DummyDevice& device) :
-        _config (config), _device (device)
+    AddConfigToDevice(const QConfig& config, DummyDevice& device) :
+        _config(config), _device(device)
 
     {}
 
-    template< typename IteratorT >
-    void operator() (IteratorT const& first, IteratorT const& last) const
-    {
-        _device._qconfig.push_back (_config);
+    template<typename IteratorT>
+    void operator()(IteratorT const& first, IteratorT const& last) const {
+        _device._qconfig.push_back(_config);
     }
 
     const QConfig& _config;
@@ -385,15 +368,14 @@ struct AddConfigToDevice
 
 struct AddJunctionToDevice
 {
-    AddJunctionToDevice (const QJunction& junction, DummyDevice& device) :
-        _junction (junction), _device (device)
+    AddJunctionToDevice(const QJunction& junction, DummyDevice& device) :
+        _junction(junction), _device(device)
 
     {}
 
-    template< typename IteratorT >
-    void operator() (IteratorT const& first, IteratorT const& last) const
-    {
-        _device._junctions.push_back (_junction);
+    template<typename IteratorT>
+    void operator()(IteratorT const& first, IteratorT const& last) const {
+        _device._junctions.push_back(_junction);
     }
 
     const QJunction& _junction;
@@ -402,203 +384,179 @@ struct AddJunctionToDevice
 
 struct AddFrameToDevice
 {
-    AddFrameToDevice (DummyFrame& frame, DummyDevice& device, std::vector< std::string >& scope) :
-        _frame (frame), _device (device), _scope (scope)
-    {}
+    AddFrameToDevice(DummyFrame& frame, DummyDevice& device, std::vector<std::string>& scope) :
+        _frame(frame), _device(device), _scope(scope) {}
 
-    void operator() (DummyFrame const& f) const
-    {
+    void operator()(DummyFrame const& f) const {
         DummyFrame frame = f;
         std::string absRefPath, absPath;
         frame._scope = _scope;
-        for (size_t i = 0; i < frame._scope.size (); i++) {
-            absPath += frame._scope[i] + ".";
-        }
+        for(size_t i = 0; i < frame._scope.size(); i++) { absPath += frame._scope[i] + "."; }
 
-        if (_device._frames.size () == 0) {
-            if (_device._type == MobileType) {
-                if (frame._refframe == "")
-                    frame._refframe = absPath + _device._basename;
-                else
-                    frame._refframe = absPath + frame._refframe;
-                _device._frames.push_back (frame);
+        if(_device._frames.size() == 0) {
+            if(_device._type == MobileType) {
+                if(frame._refframe == "") frame._refframe = absPath + _device._basename;
+                else frame._refframe = absPath + frame._refframe;
+                _device._frames.push_back(frame);
             }
             else {
-                if (frame._refframe != "")
+                if(frame._refframe != "")
                     std::cout << "*** Warning: base frame of device is referencing to a frame \""
                               << frame._refframe << "\"!!"
                               << "***          This will be ignored!" << std::endl;
                 frame._refframe = "";
-                _device._frames.push_back (frame);
+                _device._frames.push_back(frame);
             }
             return;
         }
 
-        DummyFrame lastFrame = _device._frames.back ();
-        for (size_t i = 0; i < lastFrame._scope.size (); i++) {
+        DummyFrame lastFrame = _device._frames.back();
+        for(size_t i = 0; i < lastFrame._scope.size(); i++) {
             absRefPath += lastFrame._scope[i] + ".";
         }
 
-        if (_device._type == SerialType) {
+        if(_device._type == SerialType) {
             frame._refframe = absRefPath + lastFrame._name;
-            _device._frames.push_back (frame);
+            _device._frames.push_back(frame);
         }
-        else if (_device._type == TreeType || _device._type == ParallelType ||
-                 _device._type == MobileType) {
-            if (frame._refframe == "") {
-                frame._refframe = absRefPath + lastFrame._name;
-            }
-            else {
-                frame._refframe = absPath + frame._refframe;
-            }
-            _device._frames.push_back (frame);
+        else if(_device._type == TreeType || _device._type == ParallelType ||
+                _device._type == MobileType) {
+            if(frame._refframe == "") { frame._refframe = absRefPath + lastFrame._name; }
+            else { frame._refframe = absPath + frame._refframe; }
+            _device._frames.push_back(frame);
         }
     }
 
-    template< typename IteratorT >
-    void operator() (IteratorT const& first, IteratorT const& last) const
-    {
-        (*this) (_frame);
+    template<typename IteratorT>
+    void operator()(IteratorT const& first, IteratorT const& last) const {
+        (*this)(_frame);
     }
 
     DummyFrame& _frame;
     DummyDevice& _device;
-    std::vector< std::string >& _scope;
+    std::vector<std::string>& _scope;
 };
 
 struct AddFrameToWorkcell
 {
-    AddFrameToWorkcell (DummyWorkcell& workcell, std::vector< std::string >& scope) :
-        _workcell (workcell), _scope (scope)
-    {}
+    AddFrameToWorkcell(DummyWorkcell& workcell, std::vector<std::string>& scope) :
+        _workcell(workcell), _scope(scope) {}
 
-    void operator() (DummyFrame const& f) const
-    {
+    void operator()(DummyFrame const& f) const {
         DummyFrame frame = f;
         frame._scope     = _scope;
-        if (_workcell._framelist.size () == 0 || frame._refframe == "") {
-            frame._refframe = "WORLD";
-        }
+        if(_workcell._framelist.size() == 0 || frame._refframe == "") { frame._refframe = "WORLD"; }
         std::string absRefPath;
-        for (size_t i = 0; i < _scope.size (); i++)
-            absRefPath += _scope[i] + ".";
+        for(size_t i = 0; i < _scope.size(); i++) absRefPath += _scope[i] + ".";
         frame._refframe = absRefPath + frame._refframe;
-        _workcell._framelist.push_back (frame);
+        _workcell._framelist.push_back(frame);
     }
 
     DummyWorkcell& _workcell;
-    std::vector< std::string >& _scope;
+    std::vector<std::string>& _scope;
 };
 
 struct AddDeviceToWorkcell
 {
-    AddDeviceToWorkcell (DummyWorkcell& workcell, std::vector< std::string >& scope) :
-        _workcell (workcell), _scope (scope)
-    {}
+    AddDeviceToWorkcell(DummyWorkcell& workcell, std::vector<std::string>& scope) :
+        _workcell(workcell), _scope(scope) {}
 
-    void operator() (DummyDevice const& device) const
-    {
+    void operator()(DummyDevice const& device) const {
         DummyDevice dev = device;
         dev._scope      = _scope;
-        if (_workcell._framelist.size () != 0 && dev._refframe == "" && !dev._frames.empty()) {
-            dev._refframe            = _workcell._framelist.back ().getName ();
+        if(_workcell._framelist.size() != 0 && dev._refframe == "" && !dev._frames.empty()) {
+            dev._refframe            = _workcell._framelist.back().getName();
             dev._frames[0]._refframe = dev._refframe;
-            _workcell._devlist.push_back (dev);
+            _workcell._devlist.push_back(dev);
         }
-        else if (_workcell._framelist.size () == 0 && dev._refframe == "" && !dev._frames.empty() ){
+        else if(_workcell._framelist.size() == 0 && dev._refframe == "" && !dev._frames.empty()) {
             dev._refframe            = "WORLD";
             dev._frames[0]._refframe = dev._refframe;
-            _workcell._devlist.push_back (dev);
+            _workcell._devlist.push_back(dev);
         }
     }
 
     DummyWorkcell& _workcell;
-    std::vector< std::string >& _scope;
+    std::vector<std::string>& _scope;
 };
 
 struct SetTransform3D
 {
-    SetTransform3D (const double* matrix, rw::math::Transform3D<>& t3d) :
-        _rpy (NULL), _pos (NULL), _t3d (t3d), _matrix (matrix), _param (NULL)
-    {}
+    SetTransform3D(const double* matrix, rw::math::Transform3D<>& t3d) :
+        _rpy(NULL), _pos(NULL), _t3d(t3d), _matrix(matrix), _param(NULL) {}
 
-    SetTransform3D (const DHParam& param, rw::math::Transform3D<>& t3d) :
-        _rpy (NULL), _pos (NULL), _t3d (t3d), _matrix (NULL), _param (&param)
-    {}
+    SetTransform3D(const DHParam& param, rw::math::Transform3D<>& t3d) :
+        _rpy(NULL), _pos(NULL), _t3d(t3d), _matrix(NULL), _param(&param) {}
 
-    SetTransform3D (const rw::math::RPY<>& rpy, const rw::math::Vector3D<>& pos,
-                    rw::math::Transform3D<>& t3d) :
-        _rpy (&rpy),
-        _pos (&pos), _t3d (t3d), _matrix (NULL), _param (NULL)
-    {}
+    SetTransform3D(const rw::math::RPY<>& rpy, const rw::math::Vector3D<>& pos,
+                   rw::math::Transform3D<>& t3d) :
+        _rpy(&rpy),
+        _pos(&pos), _t3d(t3d), _matrix(NULL), _param(NULL) {}
 
-    template< typename IteratorT >
-    void operator() (IteratorT const& first, IteratorT const& last) const
-    {
-        if (_rpy != NULL) {
+    template<typename IteratorT>
+    void operator()(IteratorT const& first, IteratorT const& last) const {
+        if(_rpy != NULL) {
             rw::math::Vector3D<> pos   = *_pos;
-            rw::math::Rotation3D<> rot = (*_rpy).toRotation3D ();
-            _t3d                       = rw::math::Transform3D<> (pos, rot);
+            rw::math::Rotation3D<> rot = (*_rpy).toRotation3D();
+            _t3d                       = rw::math::Transform3D<>(pos, rot);
         }
-        else if (_matrix != NULL) {
-            rw::math::Vector3D<> pos (_matrix[3], _matrix[7], _matrix[11]);
-            rw::math::Rotation3D<> rot (_matrix[0],
-                                        _matrix[1],
-                                        _matrix[2],
-                                        _matrix[4],
-                                        _matrix[5],
-                                        _matrix[6],
-                                        _matrix[8],
-                                        _matrix[9],
-                                        _matrix[10]);
-            _t3d = rw::math::Transform3D<> (pos, rot);
+        else if(_matrix != NULL) {
+            rw::math::Vector3D<> pos(_matrix[3], _matrix[7], _matrix[11]);
+            rw::math::Rotation3D<> rot(_matrix[0],
+                                       _matrix[1],
+                                       _matrix[2],
+                                       _matrix[4],
+                                       _matrix[5],
+                                       _matrix[6],
+                                       _matrix[8],
+                                       _matrix[9],
+                                       _matrix[10]);
+            _t3d = rw::math::Transform3D<>(pos, rot);
         }
         else {
-            if (_param->_dhtype == Revolute) {
-                if (_param->_type == "schilling") {
-                    _t3d = rw::math::Transform3D<>::DH (
+            if(_param->_dhtype == Revolute) {
+                if(_param->_type == "schilling") {
+                    _t3d = rw::math::Transform3D<>::DH(
                         _param->_alpha, _param->_a, _param->_d, _param->_offset);
                 }
-                else if (_param->_type == "HGP") {
+                else if(_param->_type == "HGP") {
                     // check if its parallel
-                    if (_param->_hgptype == "parallel") {
-                        _t3d = rw::math::Transform3D<>::DHHGP (
+                    if(_param->_hgptype == "parallel") {
+                        _t3d = rw::math::Transform3D<>::DHHGP(
                             _param->_alpha, _param->_a, _param->_offset, _param->_b);
                     }
                     else {
-                        _t3d = rw::math::Transform3D<>::DH (
+                        _t3d = rw::math::Transform3D<>::DH(
                             _param->_alpha, _param->_a, _param->_d, _param->_offset);
                     }
                 }
                 else {
-                    _t3d = rw::math::Transform3D<>::craigDH (
+                    _t3d = rw::math::Transform3D<>::craigDH(
                         _param->_alpha, _param->_a, _param->_d, _param->_offset);
                 }
             }
-            else if (_param->_dhtype == Prismatic) {
-                if (_param->_type == "schilling") {
-                    _t3d = rw::math::Transform3D<>::DH (
+            else if(_param->_dhtype == Prismatic) {
+                if(_param->_type == "schilling") {
+                    _t3d = rw::math::Transform3D<>::DH(
                         _param->_alpha, _param->_a, _param->_offset, _param->_theta);
                 }
-                else if (_param->_type == "HGP") {
+                else if(_param->_type == "HGP") {
                     // check if its parallel
-                    if (_param->_hgptype == "parallel") {
-                        _t3d = rw::math::Transform3D<>::DHHGP (
+                    if(_param->_hgptype == "parallel") {
+                        _t3d = rw::math::Transform3D<>::DHHGP(
                             _param->_alpha, _param->_a, _param->_b, _param->_offset);
                     }
                     else {
-                        _t3d = rw::math::Transform3D<>::DH (
+                        _t3d = rw::math::Transform3D<>::DH(
                             _param->_alpha, _param->_a, _param->_offset, _param->_theta);
                     }
                 }
                 else {
-                    _t3d = rw::math::Transform3D<>::craigDH (
+                    _t3d = rw::math::Transform3D<>::craigDH(
                         _param->_alpha, _param->_a, _param->_offset, _param->_theta);
                 }
             }
-            else {
-                _t3d = rw::math::Transform3D<>::identity ();
-            }
+            else { _t3d = rw::math::Transform3D<>::identity(); }
         }
     }
 
@@ -611,13 +569,11 @@ struct SetTransform3D
 
 struct SetDHParam
 {
-    SetDHParam (const DHParam& paramFrom, DummyFrame& dframe) :
-        _paramFrom (paramFrom), _dframe (dframe)
-    {}
+    SetDHParam(const DHParam& paramFrom, DummyFrame& dframe) :
+        _paramFrom(paramFrom), _dframe(dframe) {}
 
-    template< typename IteratorT >
-    void operator() (IteratorT const& first, IteratorT const& last) const
-    {
+    template<typename IteratorT>
+    void operator()(IteratorT const& first, IteratorT const& last) const {
         _dframe._dhparam    = _paramFrom;
         _dframe._hasDHparam = true;
     }
@@ -628,110 +584,85 @@ struct SetDHParam
 
 struct InsertModelInMap
 {
-    InsertModelInMap (const DummyModel& model, const std::string& refframe,
-                      std::vector< std::string >& scope,
-                      std::map< std::string, std::vector< DummyModel > >& map) :
-        _model (model),
-        _refframe (refframe), _scope (scope), _map (map)
-    {}
+    InsertModelInMap(const DummyModel& model, const std::string& refframe,
+                     std::vector<std::string>& scope,
+                     std::map<std::string, std::vector<DummyModel>>& map) :
+        _model(model),
+        _refframe(refframe), _scope(scope), _map(map) {}
 
-    void operator() (DummyModel const& model) const
-    {
+    void operator()(DummyModel const& model) const {
         std::string name;
-        for (size_t i = 0; i < _scope.size (); i++) {
-            name += _scope[i] + ".";
-        }
-        if (model._refframe == "") {
-            name += _refframe;
-        }
-        else {
-            name += model._refframe;
-        }
-        _map[name].push_back (model);
+        for(size_t i = 0; i < _scope.size(); i++) { name += _scope[i] + "."; }
+        if(model._refframe == "") { name += _refframe; }
+        else { name += model._refframe; }
+        _map[name].push_back(model);
     }
 
-    template< typename IteratorT >
-    void operator() (IteratorT const& first, IteratorT const& last) const
-    {
-        (*this) (_model);
+    template<typename IteratorT>
+    void operator()(IteratorT const& first, IteratorT const& last) const {
+        (*this)(_model);
     }
 
     const DummyModel& _model;
     const std::string& _refframe;
-    std::vector< std::string >& _scope;
-    std::map< std::string, std::vector< DummyModel > >& _map;
+    std::vector<std::string>& _scope;
+    std::map<std::string, std::vector<DummyModel>>& _map;
 };
 
 struct InsertLimitInMap
 {
-    InsertLimitInMap (std::vector< std::string >& scope,
-                      std::map< std::string, std::vector< DummyLimit > >& map) :
-        _scope (scope),
-        _map (map)
-    {}
+    InsertLimitInMap(std::vector<std::string>& scope,
+                     std::map<std::string, std::vector<DummyLimit>>& map) :
+        _scope(scope),
+        _map(map) {}
 
-    void operator() (DummyLimit const& limit) const
-    {
+    void operator()(DummyLimit const& limit) const {
         std::string name;
-        for (size_t i = 0; i < _scope.size (); i++) {
-            name += _scope[i] + ".";
-        }
-        if (limit._refjoint != "") {
-            name += limit._refjoint;
-        }
-        else {
-            name += limit._refjoint;
-        }
+        for(size_t i = 0; i < _scope.size(); i++) { name += _scope[i] + "."; }
+        if(limit._refjoint != "") { name += limit._refjoint; }
+        else { name += limit._refjoint; }
 
-        _map[name].push_back (limit);
+        _map[name].push_back(limit);
     }
 
-    std::vector< std::string >& _scope;
-    std::map< std::string, std::vector< DummyLimit > >& _map;
+    std::vector<std::string>& _scope;
+    std::map<std::string, std::vector<DummyLimit>>& _map;
 };
 
 struct InsertPropertyInMap
 {
-    InsertPropertyInMap (std::vector< std::string > scope,
-                         std::map< std::string, std::vector< DummyProperty > >& map) :
-        _scope (scope),
-        _map (map)
-    {}
+    InsertPropertyInMap(std::vector<std::string> scope,
+                        std::map<std::string, std::vector<DummyProperty>>& map) :
+        _scope(scope),
+        _map(map) {}
 
-    void operator() (DummyProperty const& prop) const
-    {
+    void operator()(DummyProperty const& prop) const {
         std::string name;
-        for (size_t i = 0; i < _scope.size (); i++) {
-            name += _scope[i] + ".";
-        }
-        if (prop._refframe != "") {
-            name += prop._refframe;
-        }
+        for(size_t i = 0; i < _scope.size(); i++) { name += _scope[i] + "."; }
+        if(prop._refframe != "") { name += prop._refframe; }
         else {
             name += prop._refframe;    //! TODO: this should be set to the base frame of the device
         }
-        _map[name].push_back (prop);
+        _map[name].push_back(prop);
     }
 
-    std::vector< std::string > _scope;
-    std::map< std::string, std::vector< DummyProperty > >& _map;
+    std::vector<std::string> _scope;
+    std::map<std::string, std::vector<DummyProperty>>& _map;
 };
 
 struct InsertInMap
 {
-    InsertInMap (std::map< std::string, std::string >& map, std::string& id) : _map (map), _id (id)
-    {}
+    InsertInMap(std::map<std::string, std::string>& map, std::string& id) : _map(map), _id(id) {}
 
-    void operator() (std::string const& text) const { _map[_id] = text; }
+    void operator()(std::string const& text) const { _map[_id] = text; }
 
-    template< typename IteratorT >
-    void operator() (IteratorT const& first, IteratorT const& last) const
-    {
+    template<typename IteratorT>
+    void operator()(IteratorT const& first, IteratorT const& last) const {
         // std::string text(first, last);
         std::string str;
 
         IteratorT tmpIter = first;
-        while (tmpIter != last) {
+        while(tmpIter != last) {
             str += *tmpIter;
             ++tmpIter;
         }
@@ -739,23 +670,21 @@ struct InsertInMap
         _map[_id] = str;
     }
 
-    std::map< std::string, std::string >& _map;
+    std::map<std::string, std::string>& _map;
     std::string& _id;
 };
 
 struct AppendToOutput
 {
-    AppendToOutput (std::vector< char >& output) : _output (output) {}
+    AppendToOutput(std::vector<char>& output) : _output(output) {}
 
-    void operator() (std::string const& text) const
-    {
+    void operator()(std::string const& text) const {
         // std::cout << "AppendToOutput " << text << std::endl;
-        _output.insert (_output.end (), text.begin (), text.end ());
+        _output.insert(_output.end(), text.begin(), text.end());
     }
 
-    template< typename IteratorT >
-    void operator() (IteratorT const& first, IteratorT const& last) const
-    {
+    template<typename IteratorT>
+    void operator()(IteratorT const& first, IteratorT const& last) const {
         // std::string text(first,last);
         // std::cout << "AppendToOutput " << std::endl;
         //_output.insert(_output.end(), first, last);
@@ -772,40 +701,37 @@ struct AppendToOutput
         //}
 
         // tmpIter = first;
-        while (tmpIter != last) {
+        while(tmpIter != last) {
             tmp = *tmpIter;
-            _output.push_back (tmp);
+            _output.push_back(tmp);
             ++tmpIter;
         }
         // std::cout << "Last val (iterator): " << (unsigned int) (unsigned char) tmp << std::endl;
     }
 
-    std::vector< char >& _output;
+    std::vector<char>& _output;
 };
 
 struct AppendToOutputFromMap
 {
-    AppendToOutputFromMap (std::map< std::string, std::string >& map, std::vector< char >& output) :
-        _map (map), _output (output)
-    {}
+    AppendToOutputFromMap(std::map<std::string, std::string>& map, std::vector<char>& output) :
+        _map(map), _output(output) {}
 
-    void operator() (std::string const& text) const
-    {
+    void operator()(std::string const& text) const {
         std::string& use = _map[text];
         // std::cout << "AppendToOutputFromMap " << use << std::endl;
-        _output.insert (_output.end (), use.begin (), use.end ());
+        _output.insert(_output.end(), use.begin(), use.end());
     }
 
-    template< typename IteratorT >
-    void operator() (IteratorT const& first, IteratorT const& last) const
-    {
-        std::string& use = _map[std::string (first, last)];
+    template<typename IteratorT>
+    void operator()(IteratorT const& first, IteratorT const& last) const {
+        std::string& use = _map[std::string(first, last)];
         // std::cout << "AppendToOutputFromMap " << use << std::endl;
-        _output.insert (_output.end (), use.begin (), use.end ());
+        _output.insert(_output.end(), use.begin(), use.end());
     }
 
-    std::map< std::string, std::string >& _map;
-    std::vector< char >& _output;
+    std::map<std::string, std::string>& _map;
+    std::vector<char>& _output;
 };
 
 #endif /*XMLPARSERUTIL_HPP_*/

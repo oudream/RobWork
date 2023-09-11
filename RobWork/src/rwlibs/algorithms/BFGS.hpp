@@ -33,9 +33,9 @@ namespace rwlibs { namespace algorithms {
         struct BFGS_function_struct
         {
             /** Function pointer to the static minimization function @f$f(vec{x})@f$. */
-            double (*f) (const vector* x, void* params);
+            double (*f)(const vector* x, void* params);
             /** Function pointer to the static minimization function @f$df(vec{x})@f$. */
-            void (*df) (const vector* x, void* params, vector* g);
+            void (*df)(const vector* x, void* params, vector* g);
             /** Void pointer to optional data that the minimization function might require */
             void* params;
         };
@@ -70,30 +70,29 @@ namespace rwlibs { namespace algorithms {
          * produce superlinear convergence of the overall algorithm.
          * @return GRADIENTWARNING on numerically precision problems SUCCESS when a minima is found.
          */
-        static int optimizer (vector& startguess, BFGS_function_struct function, double tolerance,
-                              unsigned int iterationLimit, double initialStepsize = 1.0,
-                              double c1 = 1e-4, double c2 = 0.9, double alphamax = 1.0);
+        static int optimizer(vector& startguess, BFGS_function_struct function, double tolerance,
+                             unsigned int iterationLimit, double initialStepsize = 1.0,
+                             double c1 = 1e-4, double c2 = 0.9, double alphamax = 1.0);
 
       private:
-        BFGS () {}
+        BFGS() {}
 
-        static void colDotRow (vector& colvec, vector& rowvec, matrix& result);
+        static void colDotRow(vector& colvec, vector& rowvec, matrix& result);
 
-        static double lineSearch (BFGS_function_struct function, vector& xk, vector& pk, double c1,
-                                  double c2, double alphamax);
+        static double lineSearch(BFGS_function_struct function, vector& xk, vector& pk, double c1,
+                                 double c2, double alphamax);
 
-        static double phiGradient (BFGS_function_struct function, vector& xk, vector& pk,
-                                   double alpha, vector& tempArray, double phi_alpha, double eps);
+        static double phiGradient(BFGS_function_struct function, vector& xk, vector& pk,
+                                  double alpha, vector& tempArray, double phi_alpha, double eps);
 
-        static double zoom (double& alphalow, double& alphahigh, double& phi_alphalow,
-                            double& dphi_alphalow, double& phi_alphahigh,
-                            BFGS_function_struct function, vector& xk, vector& pk,
-                            vector& tempArray, double phi_alpha_zero, double dphi_alpha_zero,
-                            double c1, double c2, double eps);
+        static double zoom(double& alphalow, double& alphahigh, double& phi_alphalow,
+                           double& dphi_alphalow, double& phi_alphahigh,
+                           BFGS_function_struct function, vector& xk, vector& pk, vector& tempArray,
+                           double phi_alpha_zero, double dphi_alpha_zero, double c1, double c2,
+                           double eps);
 
-        static double quadraticInterpolation (double phi_alpha_lo, double dphi_alpha_lo,
-                                              double alpha_lo, double phi_alpha_hi,
-                                              double alpha_hi);
+        static double quadraticInterpolation(double phi_alpha_lo, double dphi_alpha_lo,
+                                             double alpha_lo, double phi_alpha_hi, double alpha_hi);
     };
     /** \example bfgsExample.cpp
      * Example of using the BFGS optimization algorithm for finding a minimum in the Rosenbrock

@@ -24,9 +24,8 @@
  * \copydoc rwlibs::assembly::SpiralParameterization
  */
 
-#include <rwlibs/assembly/AssemblyParameterization.hpp>
-
 #include <rw/core/Ptr.hpp>
+#include <rwlibs/assembly/AssemblyParameterization.hpp>
 
 namespace rw { namespace core {
     class PropertyMap;
@@ -69,13 +68,13 @@ namespace rwlibs { namespace assembly {
     {
       public:
         //! @brief Smart pointer type for parameterization.
-        typedef rw::core::Ptr< SpiralParameterization > Ptr;
+        typedef rw::core::Ptr<SpiralParameterization> Ptr;
 
         /**
          * @brief Construct parameterization from PropertyMap.
          * @param pmap [in] a PropertyMap with the parameterization given as properties.
          */
-        SpiralParameterization (rw::core::Ptr< rw::core::PropertyMap > pmap);
+        SpiralParameterization(rw::core::Ptr<rw::core::PropertyMap> pmap);
 
         /**
          * @brief Construct parameterization with given values.
@@ -92,21 +91,21 @@ namespace rwlibs { namespace assembly {
          * @param d_path [in] the discretization of the spiral (in radians).
          * @param maxAllowedForce [in] the maximum allowed force before strategy is aborted.
          */
-        SpiralParameterization (double r, double n, double length_peg, double length_push,
-                                double length_start_traj, double depth_in_hole_for_success,
-                                double speed, double d_path, double maxAllowedForce);
+        SpiralParameterization(double r, double n, double length_peg, double length_push,
+                               double length_start_traj, double depth_in_hole_for_success,
+                               double speed, double d_path, double maxAllowedForce);
 
         //! @brief Destructor.
-        virtual ~SpiralParameterization ();
+        virtual ~SpiralParameterization();
 
         //! @copydoc AssemblyParameterization::toPropertyMap
-        virtual rw::core::Ptr< rw::core::PropertyMap > toPropertyMap () const;
+        virtual rw::core::Ptr<rw::core::PropertyMap> toPropertyMap() const;
 
         //! @copydoc AssemblyParameterization::clone
-        virtual AssemblyParameterization::Ptr clone () const;
+        virtual AssemblyParameterization::Ptr clone() const;
 
         //! @copydoc AssemblyParameterization::reset
-        virtual void reset (rw::core::Ptr< rw::core::PropertyMap > pmap);
+        virtual void reset(rw::core::Ptr<rw::core::PropertyMap> pmap);
 
       public:
         //! @brief the spiral radius in \f$\frac{m}{rad}\f$.

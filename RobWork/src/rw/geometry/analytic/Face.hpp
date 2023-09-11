@@ -52,28 +52,28 @@ namespace rw { namespace geometry {
     {
       public:
         //! @brief Smart pointer type to Face
-        typedef rw::core::Ptr< rw::geometry::Face > Ptr;
+        typedef rw::core::Ptr<rw::geometry::Face> Ptr;
 
         //! @brief Smart pointer type to const Face
-        typedef rw::core::Ptr< const rw::geometry::Face > CPtr;
+        typedef rw::core::Ptr<const rw::geometry::Face> CPtr;
 
         //! @brief Constructor.
-        Face ();
+        Face();
 
         //! @brief Destructor.
-        virtual ~Face ();
+        virtual ~Face();
 
         /**
          * @brief Get the surface of the face.
          * @return a reference to the surface data.
          */
-        virtual const rw::geometry::Surface& surface () const = 0;
+        virtual const rw::geometry::Surface& surface() const = 0;
 
         /**
          * @brief Get the number of curves in the face.
          * @return the number of curves.
          */
-        virtual std::size_t curveCount () const = 0;
+        virtual std::size_t curveCount() const = 0;
 
         /**
          * @brief Get a curve of the face.
@@ -81,25 +81,25 @@ namespace rw { namespace geometry {
          * curveCount().
          * @return a reference to the curve data.
          */
-        virtual const rw::geometry::Curve& getCurve (std::size_t i) const = 0;
+        virtual const rw::geometry::Curve& getCurve(std::size_t i) const = 0;
 
         /**
          * @brief Get the vertices of the face.
          * @return a reference to the vertex vector.
          */
-        virtual const std::vector< rw::math::Vector3D<double> >& vertices () const = 0;
+        virtual const std::vector<rw::math::Vector3D<double>>& vertices() const = 0;
 
         /**
          * @brief Transform the face.
          * @param T [in] transform.
          */
-        virtual void transform (const rw::math::Transform3D<>& T) = 0;
+        virtual void transform(const rw::math::Transform3D<>& T) = 0;
 
         /**
          * @brief Translation of face.
          * @param P [in] translation vector.
          */
-        virtual void transform (const rw::math::Vector3D<double>& P) = 0;
+        virtual void transform(const rw::math::Vector3D<double>& P) = 0;
 
         /**
          * @brief Create a TriMesh representation of the face.
@@ -111,14 +111,14 @@ namespace rw { namespace geometry {
          * @param forceCopy [in] (not currently used in default implementation)
          * @return a new TriMesh.
          */
-        virtual rw::core::Ptr< rw::geometry::TriMesh > getTriMesh (bool forceCopy = true) const;
+        virtual rw::core::Ptr<rw::geometry::TriMesh> getTriMesh(bool forceCopy = true) const;
 
         /**
          * @brief Find the extent of the surface along a specific direction.
          * @param dir [in] a normalized direction vector.
          * @return the minimum and maximum values along the given direction.
          */
-        virtual std::pair< double, double > extremums (const rw::math::Vector3D<double>& dir) const;
+        virtual std::pair<double, double> extremums(const rw::math::Vector3D<double>& dir) const;
 
         /**
          * @brief Create Oriented Bounding Box.
@@ -128,7 +128,7 @@ namespace rw { namespace geometry {
          *
          * @return an OBB around the Face.
          */
-        virtual rw::geometry::OBB<double> obb ();
+        virtual rw::geometry::OBB<double> obb();
 
         /**
          * @brief Set the resolution used for discretization in the getTriMesh and faceTriMesh
@@ -138,7 +138,7 @@ namespace rw { namespace geometry {
          *
          * @param resolution [in] the resolution parameter.
          */
-        void setMeshResolution (double resolution) { _resolution = resolution; }
+        void setMeshResolution(double resolution) { _resolution = resolution; }
 
       protected:
         //! @brief Resolution used for discretization into triangle meshes.

@@ -19,11 +19,10 @@
 #define RW_MATH_PERSPECTIVETRANSFORM2D_HPP
 
 #if !defined(SWIG)
-#include <rw/math/Vector2D.hpp>
-#include <rw/math/Vector3D.hpp>
-
 #include <rw/common/Serializable.hpp>
 #include <rw/core/macros.hpp>
+#include <rw/math/Vector2D.hpp>
+#include <rw/math/Vector3D.hpp>
 
 #include <Eigen/Core>
 #endif
@@ -36,57 +35,44 @@ namespace rw { namespace math {
      * The homographic transform can be used to map one arbitrary 2D
      * quadrilateral into another.
      */
-    template< class T = double > class PerspectiveTransform2D
+    template<class T = double> class PerspectiveTransform2D
     {
       private:
         //! Eigen 3x3 matrix used as internal data structure.
-        typedef Eigen::Matrix< T, 3, 3 > EigenMatrix3x3;
+        typedef Eigen::Matrix<T, 3, 3> EigenMatrix3x3;
 
       public:
         /**
          * @brief constructor
          */
-        PerspectiveTransform2D ()    //: _matrix(3,3)
+        PerspectiveTransform2D()    //: _matrix(3,3)
         {
-            _matrix (0, 0) = 1;
-            _matrix (0, 1) = 0;
-            _matrix (0, 2) = 0;
-            _matrix (1, 0) = 0;
-            _matrix (1, 1) = 1;
-            _matrix (1, 2) = 0;
-            _matrix (2, 0) = 0;
-            _matrix (2, 1) = 0;
-            _matrix (2, 2) = 1;
+            _matrix(0, 0) = 1;
+            _matrix(0, 1) = 0;
+            _matrix(0, 2) = 0;
+            _matrix(1, 0) = 0;
+            _matrix(1, 1) = 1;
+            _matrix(1, 2) = 0;
+            _matrix(2, 0) = 0;
+            _matrix(2, 1) = 0;
+            _matrix(2, 2) = 1;
         }
 
         /**
          * @brief constructor
          */
-        PerspectiveTransform2D (T r11, T r12, T r13, T r21, T r22, T r23, T r31, T r32,
-                                T r33)    //: _matrix(3,3)
+        PerspectiveTransform2D(T r11, T r12, T r13, T r21, T r22, T r23, T r31, T r32,
+                               T r33)    //: _matrix(3,3)
         {
-            _matrix (0, 0) = r11;
-            _matrix (0, 1) = r12;
-            _matrix (0, 2) = r13;
-            _matrix (1, 0) = r21;
-            _matrix (1, 1) = r22;
-            _matrix (1, 2) = r23;
-            _matrix (2, 0) = r31;
-            _matrix (2, 1) = r32;
-            _matrix (2, 2) = r33;
-        }
-
-        /**
-         * @brief constructor
-         * @param r
-         * @return
-         */
-        template< class R > explicit PerspectiveTransform2D (const Eigen::Matrix< R, 3, 3 >& r)
-        //: _matrix(r)
-        {
-            for (size_t i = 0; i < 3; i++)
-                for (size_t j = 0; j < 3; j++)
-                    _matrix (i, j) = r (i, j);
+            _matrix(0, 0) = r11;
+            _matrix(0, 1) = r12;
+            _matrix(0, 2) = r13;
+            _matrix(1, 0) = r21;
+            _matrix(1, 1) = r22;
+            _matrix(1, 2) = r23;
+            _matrix(2, 0) = r31;
+            _matrix(2, 1) = r32;
+            _matrix(2, 2) = r33;
         }
 
         /**
@@ -94,14 +80,27 @@ namespace rw { namespace math {
          * @param r
          * @return
          */
-        template< class R > explicit PerspectiveTransform2D (const Eigen::MatrixBase< R >& r)
+        template<class R>
+        explicit PerspectiveTransform2D(const Eigen::Matrix<R, 3, 3>& r)
         //: _matrix(r)
         {
-            RW_ASSERT (r.rows () == 3);
-            RW_ASSERT (r.cols () == 3);
-            for (size_t i = 0; i < 3; i++)
-                for (size_t j = 0; j < 3; j++)
-                    _matrix (i, j) = r.row (i) (j);
+            for(size_t i = 0; i < 3; i++)
+                for(size_t j = 0; j < 3; j++) _matrix(i, j) = r(i, j);
+        }
+
+        /**
+         * @brief constructor
+         * @param r
+         * @return
+         */
+        template<class R>
+        explicit PerspectiveTransform2D(const Eigen::MatrixBase<R>& r)
+        //: _matrix(r)
+        {
+            RW_ASSERT(r.rows() == 3);
+            RW_ASSERT(r.cols() == 3);
+            for(size_t i = 0; i < 3; i++)
+                for(size_t j = 0; j < 3; j++) _matrix(i, j) = r.row(i)(j);
         }
 
         /**
@@ -110,16 +109,14 @@ namespace rw { namespace math {
          * @param pts1 [in] point set one
          * @param pts2 [in] point set two
          */
-        static PerspectiveTransform2D< T >
-        calcTransform (std::vector< rw::math::Vector2D< T > > pts1,
-                       std::vector< rw::math::Vector2D< T > > pts2);
+        static PerspectiveTransform2D<T> calcTransform(std::vector<rw::math::Vector2D<T>> pts1,
+                                                       std::vector<rw::math::Vector2D<T>> pts2);
 
         /**
          * @brief Returns the inverse of the PerspectiveTransform
          */
-        PerspectiveTransform2D< T > inverse () const
-        {
-            return PerspectiveTransform2D< T > (_matrix.transpose ());
+        PerspectiveTransform2D<T> inverse() const {
+            return PerspectiveTransform2D<T>(_matrix.transpose());
         }
 #if !defined(SWIG)
         /**
@@ -128,11 +125,10 @@ namespace rw { namespace math {
          * @param col [in] col, col must be @f$ < 3 @f$
          * @return reference to matrix element
          */
-        T& operator() (std::size_t row, std::size_t col)
-        {
-            assert (row < 3);
-            assert (col < 3);
-            return _matrix (row, col);
+        T& operator()(std::size_t row, std::size_t col) {
+            assert(row < 3);
+            assert(col < 3);
+            return _matrix(row, col);
         }
 
         /**
@@ -141,39 +137,37 @@ namespace rw { namespace math {
          * @param col [in] col, col must be @f$ < 3 @f$
          * @return const reference to matrix element
          */
-        const T& operator() (std::size_t row, std::size_t col) const
-        {
-            assert (row < 3);
-            assert (col < 3);
-            return _matrix (row, col);
+        const T& operator()(std::size_t row, std::size_t col) const {
+            assert(row < 3);
+            assert(col < 3);
+            return _matrix(row, col);
         }
 #else
-        MATRIXOPERATOR (T);
+        MATRIXOPERATOR(T);
 #endif
 
         /**
          * @brief transform a point using this perspective transform
          */
-        rw::math::Vector2D< T > operator* (const rw::math::Vector2D< T >& v) const
-        {
-            const T x = v (0);
-            const T y = v (1);
+        rw::math::Vector2D<T> operator*(const rw::math::Vector2D<T>& v) const {
+            const T x = v(0);
+            const T y = v(1);
 
-            const T g      = (*this) (2, 0);
-            const T h      = (*this) (2, 1);
-            const T one    = static_cast< T > (1);
+            const T g      = (*this)(2, 0);
+            const T h      = (*this)(2, 1);
+            const T one    = static_cast<T>(1);
             const T lenInv = one / (g * x + h * y + one);
 
-            const T a = (*this) (0, 0);
-            const T b = (*this) (0, 1);
-            const T c = (*this) (0, 2);
+            const T a = (*this)(0, 0);
+            const T b = (*this)(0, 1);
+            const T c = (*this)(0, 2);
 
-            const T d = (*this) (1, 0);
-            const T e = (*this) (1, 1);
-            const T f = (*this) (1, 2);
+            const T d = (*this)(1, 0);
+            const T e = (*this)(1, 1);
+            const T f = (*this)(1, 2);
 
-            return rw::math::Vector2D< T > ((a * x + b * y + c) * lenInv,
-                                            (d * x + e * y + f) * lenInv);
+            return rw::math::Vector2D<T>((a * x + b * y + c) * lenInv,
+                                         (d * x + e * y + f) * lenInv);
         }
 
         /**
@@ -183,27 +177,26 @@ namespace rw { namespace math {
          * @param v
          * @return
          */
-        rw::math::Vector3D< T > calc3dVec (const PerspectiveTransform2D< T >& hT,
-                                           const rw::math::Vector2D< T >& v)
-        {
-            const T x = v (0);
-            const T y = v (1);
+        rw::math::Vector3D<T> calc3dVec(const PerspectiveTransform2D<T>& hT,
+                                        const rw::math::Vector2D<T>& v) {
+            const T x = v(0);
+            const T y = v(1);
 
-            const T g   = hT (2, 0);
-            const T h   = hT (2, 1);
-            const T one = static_cast< T > (1);
+            const T g   = hT(2, 0);
+            const T h   = hT(2, 1);
+            const T one = static_cast<T>(1);
             // const T lenInv = one / (g * x + h * y + one);
             const T len = (g * x + h * y + one);
 
-            const T a = hT (0, 0);
-            const T b = hT (0, 1);
-            const T c = hT (0, 2);
+            const T a = hT(0, 0);
+            const T b = hT(0, 1);
+            const T c = hT(0, 2);
 
-            const T d = hT (1, 0);
-            const T e = hT (1, 1);
-            const T f = hT (1, 2);
+            const T d = hT(1, 0);
+            const T e = hT(1, 1);
+            const T f = hT(1, 2);
 
-            return rw::math::Vector3D< T > ((a * x + b * y + c), (d * x + e * y + f), len);
+            return rw::math::Vector3D<T>((a * x + b * y + c), (d * x + e * y + f), len);
         }
 
         /**
@@ -212,7 +205,9 @@ namespace rw { namespace math {
          *
          * @return @f$ \mathbf{M}\in SO(3) @f$
          */
-        const Eigen::Matrix< T, 3, 3 >& e () const { return _matrix; }
+        const Eigen::Matrix<T, 3, 3>& e() const {
+            return _matrix;
+        }
 
         /**
          * @brief Returns reference to the 3x3 matrix @f$ \mathbf{M}\in SO(3)
@@ -220,7 +215,9 @@ namespace rw { namespace math {
          *
          * @return @f$ \mathbf{M}\in SO(3) @f$
          */
-        Eigen::Matrix< T, 3, 3 >& e () { return _matrix; }
+        Eigen::Matrix<T, 3, 3>& e() {
+            return _matrix;
+        }
 
       private:
         EigenMatrix3x3 _matrix;
@@ -232,27 +229,26 @@ namespace rw { namespace math {
      * @return the inverse of \b aRb .
      * @relates rw::math::PerspectiveTransform2D
      */
-    template< class T > PerspectiveTransform2D< T > inverse (const PerspectiveTransform2D< T >& aRb)
-    {
-        return aRb.inverse ();
+    template<class T> PerspectiveTransform2D<T> inverse(const PerspectiveTransform2D<T>& aRb) {
+        return aRb.inverse();
         // return PerspectiveTransform2D<T>(trans(aRb.m()));
     }
 #if !defined(SWIG)
-    extern template class rw::math::PerspectiveTransform2D< double >;
-    extern template class rw::math::PerspectiveTransform2D< float >;
+    extern template class rw::math::PerspectiveTransform2D<double>;
+    extern template class rw::math::PerspectiveTransform2D<float>;
 #else
-  
+
 #if SWIG_VERSION < 0x040000
-    SWIG_DECLARE_TEMPLATE (PerspectiveTransform2Dd, rw::math::PerspectiveTransform2D< double >);
-    ADD_DEFINITION (PerspectiveTransform2Dd, PerspectiveTransform2D,sdurw_math)
+    SWIG_DECLARE_TEMPLATE(PerspectiveTransform2Dd, rw::math::PerspectiveTransform2D<double>);
+    ADD_DEFINITION(PerspectiveTransform2Dd, PerspectiveTransform2D, sdurw_math)
 #else
-    SWIG_DECLARE_TEMPLATE (PerspectiveTransform2D, rw::math::PerspectiveTransform2D< double >);
+    SWIG_DECLARE_TEMPLATE(PerspectiveTransform2D, rw::math::PerspectiveTransform2D<double>);
 #endif
 
-    SWIG_DECLARE_TEMPLATE (PerspectiveTransform2Df, rw::math::PerspectiveTransform2D< float >);
+    SWIG_DECLARE_TEMPLATE(PerspectiveTransform2Df, rw::math::PerspectiveTransform2D<float>);
 #endif
-    using PerspectiveTransform2Dd = PerspectiveTransform2D< double >;
-    using PerspectiveTransform2Df = PerspectiveTransform2D< float >;
+    using PerspectiveTransform2Dd = PerspectiveTransform2D<double>;
+    using PerspectiveTransform2Df = PerspectiveTransform2D<float>;
 
 }}    // namespace rw::math
 
@@ -265,32 +261,32 @@ namespace rw { namespace common {
          * @relatedalso rw::math::PerspectiveTransform2D
          */
         template<>
-        void write (const rw::math::PerspectiveTransform2D< double >& sobject,
-                    rw::common::OutputArchive& oarchive, const std::string& id);
+        void write(const rw::math::PerspectiveTransform2D<double>& sobject,
+                   rw::common::OutputArchive& oarchive, const std::string& id);
 
         /**
          * @copydoc rw::common::serialization::write
          * @relatedalso rw::math::PerspectiveTransform2D
          */
         template<>
-        void write (const rw::math::PerspectiveTransform2D< float >& sobject,
-                    rw::common::OutputArchive& oarchive, const std::string& id);
+        void write(const rw::math::PerspectiveTransform2D<float>& sobject,
+                   rw::common::OutputArchive& oarchive, const std::string& id);
 
         /**
          * @copydoc rw::common::serialization::read
          * @relatedalso rw::math::PerspectiveTransform2D
          */
         template<>
-        void read (rw::math::PerspectiveTransform2D< double >& sobject,
-                   rw::common::InputArchive& iarchive, const std::string& id);
+        void read(rw::math::PerspectiveTransform2D<double>& sobject,
+                  rw::common::InputArchive& iarchive, const std::string& id);
 
         /**
          * @copydoc rw::common::serialization::read
          * @relatedalso rw::math::PerspectiveTransform2D
          */
         template<>
-        void read (rw::math::PerspectiveTransform2D< float >& sobject,
-                   rw::common::InputArchive& iarchive, const std::string& id);
+        void read(rw::math::PerspectiveTransform2D<float>& sobject,
+                  rw::common::InputArchive& iarchive, const std::string& id);
     }    // namespace serialization
 }}       // namespace rw::common
 

@@ -23,7 +23,7 @@
  */
 #if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
-#endif 
+#endif
 namespace rw { namespace geometry {
     class PointCloud;
 }}    // namespace rw::geometry
@@ -45,7 +45,7 @@ namespace rw { namespace sensor {
          * @brief converts an image of RGB type into an image of
          * GRAY type.
          */
-        static void RGB2GRAY (const Image& src, Image& dst);
+        static void RGB2GRAY(const Image& src, Image& dst);
 
         /*
          * @brief converts an image of type GRAY into an image of type RGB
@@ -58,19 +58,19 @@ namespace rw { namespace sensor {
          * @brief sets the value of all channels of an image to
          * \b color.
          */
-        static void reset (Image& img, int color = 0);
+        static void reset(Image& img, int color = 0);
 
         /**
          * @brief flips the image around the x-axis (horizontal)
          * @param img
          */
-        static void flipX (Image& img);
+        static void flipX(Image& img);
 
         /**
          * @brief flips the image around the y-axis (vertical)
          * @param img
          */
-        static void flipY (Image& img);
+        static void flipY(Image& img);
 
         /**
          * @cond
@@ -85,8 +85,8 @@ namespace rw { namespace sensor {
          * @param cloud [in] cloud to convert to image
          * @return image showing the pointcloud as a depth image
          */
-        static rw::core::Ptr< rw::sensor::Image >
-        makeDepthImage (const rw::geometry::PointCloud& cloud);
+        static rw::core::Ptr<rw::sensor::Image>
+        makeDepthImage(const rw::geometry::PointCloud& cloud);
 
         /**
          * convert pointcloud to a depth image. Colors are scaled to min and max distance
@@ -96,11 +96,11 @@ namespace rw { namespace sensor {
          * @param max [in] the maximum distance corresponding to white
          * @return image showing the pointcloud as a depth image
          */
-        static rw::core::Ptr< rw::sensor::Image >
-        makeDepthImage (const rw::geometry::PointCloud& cloud, float min, float max);
+        static rw::core::Ptr<rw::sensor::Image>
+        makeDepthImage(const rw::geometry::PointCloud& cloud, float min, float max);
 
       private:
-        ImageUtil ();
+        ImageUtil();
     };
 
     /*@}*/

@@ -48,11 +48,11 @@ namespace rwlibs { namespace softbody {
          * @param wTb world to base of beam transform
          * @param G vector of gravity, m/s^2
          */
-        BeamGeometry (double L, const std::vector< double >& Exvec,
-                      const std::vector< double >& vxvec, const std::vector< double >& rhovec,
-                      const rw::math::Transform3D<>& wTb, const rw::math::Vector3D<>& G);
+        BeamGeometry(double L, const std::vector<double>& Exvec, const std::vector<double>& vxvec,
+                     const std::vector<double>& rhovec, const rw::math::Transform3D<>& wTb,
+                     const rw::math::Vector3D<>& G);
 
-        virtual ~BeamGeometry ();
+        virtual ~BeamGeometry();
 
       public:
         /**
@@ -60,14 +60,14 @@ namespace rwlibs { namespace softbody {
          *
          * @param T world to beam base transform
          */
-        void setTransform (const rw::math::Transform3D<>& T);
+        void setTransform(const rw::math::Transform3D<>& T);
 
         /**
          * @brief Retrieves the world to beam base transform of the beam
          *
          * @return world to beam base transform
          */
-        rw::math::Transform3D<> getTransform (void) const;
+        rw::math::Transform3D<> getTransform(void) const;
 
         /**
          * @brief sets the directional vector of gravity
@@ -75,13 +75,13 @@ namespace rwlibs { namespace softbody {
          * @param G directional vector of gravity
          **/
 
-        void setG (const rw::math::Vector3D<>& G);
+        void setG(const rw::math::Vector3D<>& G);
         /**
          * @brief retrieves the directional vector of gravity
          *
          * @return directional vector of gravity
          **/
-        rw::math::Vector3D<> getG (void) const;
+        rw::math::Vector3D<> getG(void) const;
 
       public:
         /**@name Methods for retrieving material parameters */
@@ -92,7 +92,7 @@ namespace rwlibs { namespace softbody {
          * @param i index at which to return the value
          * @return Young's modulus at x = i * h
          **/
-        double Ex (const int i) const;
+        double Ex(const int i) const;
 
         /**
          * @brief returns the value of Poisson's ratio at x = i * h
@@ -100,7 +100,7 @@ namespace rwlibs { namespace softbody {
          * @param i index at which to return the value
          * @return Poisson's ratio at x = i * h
          **/
-        double vx (const int i) const;
+        double vx(const int i) const;
 
         /**
          * @brief returns the value of the mass density at x = i * h
@@ -108,7 +108,7 @@ namespace rwlibs { namespace softbody {
          * @param i index at which to return the value
          * @return mass density at x = i * h
          **/
-        double rho (const int i) const;
+        double rho(const int i) const;
 
         /**
          * @brief returns the kappa coefficient at x = i * h
@@ -125,7 +125,7 @@ namespace rwlibs { namespace softbody {
          * @param i index at which to return the value
          * @return kappa at x = i * h
          **/
-        double kappa (const int i) const;
+        double kappa(const int i) const;
 
         //@}
 
@@ -135,7 +135,7 @@ namespace rwlibs { namespace softbody {
          *
          * @return x-component of gravity
          **/
-        double g1 (void) const;
+        double g1(void) const;
 
         /**
          * @brief returns the y-component of vector of gravity for the current configuration of the
@@ -143,7 +143,7 @@ namespace rwlibs { namespace softbody {
          *
          * @return y-component of gravity
          **/
-        double g2 (void) const;
+        double g2(void) const;
 
       public:
         /**@name Integrals to be evaluate by derived classes */
@@ -163,7 +163,7 @@ namespace rwlibs { namespace softbody {
          * @param i index at which to evaluate the integral
          * @return the integral value
          **/
-        virtual double b0 (const int i) const = 0;
+        virtual double b0(const int i) const = 0;
 
         /**
          * @brief Evaluate the \f$b_1\f$ integral
@@ -179,7 +179,7 @@ namespace rwlibs { namespace softbody {
          * @param i index at which to evaluate the integral
          * @return the integral value
          **/
-        virtual double b1 (const int i) const = 0;
+        virtual double b1(const int i) const = 0;
 
         /**
          * @brief Evaluate the \f$ c_2 \f$ integral
@@ -195,7 +195,7 @@ namespace rwlibs { namespace softbody {
          * @param i index at which to evaluate the integral
          * @return the integral value
          **/
-        virtual double c2 (const int i) const = 0;
+        virtual double c2(const int i) const = 0;
 
         /**
          * @brief Evaluate the \f$ c_3 \f$ integral
@@ -211,7 +211,7 @@ namespace rwlibs { namespace softbody {
          * @param i index at which to evaluate the integral
          * @return the integral value
          **/
-        virtual double c3 (const int i) const = 0;
+        virtual double c3(const int i) const = 0;
 
         /**
          * @brief Evaluate the \f$ c_4 \f$ integral
@@ -227,7 +227,7 @@ namespace rwlibs { namespace softbody {
          * @param i index at which to evaluate the integral
          * @return the integral value
          **/
-        virtual double c4 (const int i) const = 0;
+        virtual double c4(const int i) const = 0;
 
         /**
          * @brief evaluate the \f$ B_0 \f$ constant
@@ -245,7 +245,7 @@ namespace rwlibs { namespace softbody {
          * @param i index at which to evaluate the integral
          * @return the constant value
          **/
-        virtual double B0 (const int i) const = 0;
+        virtual double B0(const int i) const = 0;
 
         //@}
       public:
@@ -254,39 +254,38 @@ namespace rwlibs { namespace softbody {
          *
          * @return left boundary
          **/
-        double get_a (void) const { return _a; };
+        double get_a(void) const { return _a; };
 
         /**
          * @brief return right boundary of domain
          *
          * @return right boundary
          **/
-        double get_b (void) const { return _b; };
+        double get_b(void) const { return _b; };
 
         /**
          * @brief return stepsize
          *
          * @return stepsize
          **/
-        double get_h (void) const { return _h; };
+        double get_h(void) const { return _h; };
 
         /**
          * @brief return length of beam
          *
          * @return double
          **/
-        double getL (void) const { return _L; };
+        double getL(void) const { return _L; };
 
         /**
          * @brief return number of cross sections in beam
          *
          * @return number of cross sections
          **/
-        int getM (void) const { return _M; };
+        int getM(void) const { return _M; };
 
       public:
-        friend std::ostream& operator<< (std::ostream& out, const BeamGeometry& obj)
-        {
+        friend std::ostream& operator<<(std::ostream& out, const BeamGeometry& obj) {
             /**
              * @brief outputs the geometry to stream
              *
@@ -296,10 +295,10 @@ namespace rwlibs { namespace softbody {
              **/
             std::stringstream str;
 
-            str << "BeamGeometry {a: " << obj.get_a () << ", b: " << obj.get_b ()
-                << ", h: " << obj.get_h () << ", L: " << obj.getL () << "}";
+            str << "BeamGeometry {a: " << obj.get_a() << ", b: " << obj.get_b()
+                << ", h: " << obj.get_h() << ", L: " << obj.getL() << "}";
 
-            return out << str.str ();
+            return out << str.str();
         };
 
       private:
@@ -309,11 +308,11 @@ namespace rwlibs { namespace softbody {
         double _a, _b;    // domain endpoints, see constructor initilization list
         double _h;        // stepsize
       private:
-        std::vector< double >
+        std::vector<double>
             _Exvec;    // vector holding the values of Young's modulus for each slice
-        std::vector< double >
+        std::vector<double>
             _vxvec;    // vector holding the values of Poisson's ratio for each slice
-        std::vector< double >
+        std::vector<double>
             _rhovec;    // vector holding the values of the mass density for each slice
 
         rw::math::Transform3D<> _wTb;    // world to beam transform

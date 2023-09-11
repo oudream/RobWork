@@ -22,35 +22,28 @@
 using namespace rw::kinematics;
 using namespace rw::math;
 
-FKTable::FKTable (const State* state) : _sp (state), _transforms (150)
-{}
+FKTable::FKTable(const State* state) : _sp(state), _transforms(150) {}
 
-FKTable::FKTable (const State& state) :
-    _state (state), _transforms (Transform3D<>::identity (), 150)
-{
+FKTable::FKTable(const State& state) : _state(state), _transforms(Transform3D<>::identity(), 150) {
     _sp = &_state;
 }
 
-void FKTable::reset (const State& state)
-{
+void FKTable::reset(const State& state) {
     _state = state;
     _sp    = &_state;
-    _transforms.clear ();
+    _transforms.clear();
 }
 
-const Transform3D<>& FKTable::get (const Frame& frame) const
-{
+const Transform3D<>& FKTable::get(const Frame& frame) const {
     /*
       Version based on kinematics::FrameMap:
     */
-    const bool has        = _transforms.has (frame);
+    const bool has        = _transforms.has(frame);
     Transform3D<>& result = _transforms[frame];
-    if (!has) {
-        rw::core::Ptr<const Frame> parent = frame.getParent (getState ());
-        if (!parent)
-            result = frame.getTransform (getState ());
-        else
-            frame.multiplyTransform (get (*parent), getState (), result);
+    if(!has) {
+        rw::core::Ptr<const Frame> parent = frame.getParent(getState());
+        if(!parent) result = frame.getTransform(getState());
+        else frame.multiplyTransform(get(*parent), getState(), result);
     }
     return result;
 

@@ -31,9 +31,9 @@
 
 namespace rw { namespace math {
 
-    template< class T > class Rotation2D;
-    template< class T > class Rotation2DVector;
-    template< class T > const Rotation2D<T> Rotation2DIdentity();
+    template<class T> class Rotation2D;
+    template<class T> class Rotation2DVector;
+    template<class T> const Rotation2D<T> Rotation2DIdentity();
 
     /** @addtogroup math */
     /* @{*/
@@ -61,19 +61,19 @@ namespace rw { namespace math {
      */
 #endif
 
-    template< class T = double > class Rotation2D
+    template<class T = double> class Rotation2D
     {
       public:
         //! Value type.
         typedef T value_type;
 
         //! The type of the internal Eigen matrix implementation.
-        typedef Eigen::Rotation2D< T > EigenMatrix2x2;
+        typedef Eigen::Rotation2D<T> EigenMatrix2x2;
 
         /**
            @brief A rotation matrix with uninitialized storage.
          */
-        Rotation2D () {}
+        Rotation2D() {}
 
 #if !defined(SWIGJAVA)
 
@@ -97,8 +97,7 @@ namespace rw { namespace math {
          */
 
 #endif
-        Rotation2D (T r11, T r12, T r21, T r22)
-        {
+        Rotation2D(T r11, T r12, T r21, T r22) {
             _m[0][0] = r11;
             _m[0][1] = r12;
             _m[1][0] = r21;
@@ -121,8 +120,7 @@ namespace rw { namespace math {
          */
 
 #endif
-        Rotation2D (const rw::math::Vector2D< T >& i, const rw::math::Vector2D< T >& j)
-        {
+        Rotation2D(const rw::math::Vector2D<T>& i, const rw::math::Vector2D<T>& j) {
             _m[0][0] = i[0];
             _m[0][1] = j[0];
             _m[1][0] = i[1];
@@ -144,12 +142,11 @@ namespace rw { namespace math {
          */
 
 #endif
-        Rotation2D (const T theta)
-        {
-            _m[0][0] = cos (theta);
-            _m[0][1] = -sin (theta);
-            _m[1][0] = sin (theta);
-            _m[1][1] = cos (theta);
+        Rotation2D(const T theta) {
+            _m[0][0] = cos(theta);
+            _m[0][1] = -sin(theta);
+            _m[1][0] = sin(theta);
+            _m[1][1] = cos(theta);
         }
 
         /**
@@ -159,8 +156,7 @@ namespace rw { namespace math {
 
            @param i [in] The first column of the rotation matrix.
         */
-        Rotation2D (const rw::math::Vector2D< T >& i)
-        {
+        Rotation2D(const rw::math::Vector2D<T>& i) {
             _m[0][0] = i[0];
             _m[0][1] = -i[1];
             _m[1][0] = i[1];
@@ -170,12 +166,11 @@ namespace rw { namespace math {
         /**
            @brief Construct a rotation matrix from an Eigen matrix.
          */
-        template< class R > explicit Rotation2D (const EigenMatrix2x2& m)
-        {
-            _m[0][0] = m (0, 0);
-            _m[0][1] = m (0, 1);
-            _m[1][0] = m (1, 0);
-            _m[1][1] = m (1, 1);
+        template<class R> explicit Rotation2D(const EigenMatrix2x2& m) {
+            _m[0][0] = m(0, 0);
+            _m[0][1] = m(0, 1);
+            _m[1][0] = m(1, 0);
+            _m[1][1] = m(1, 1);
         }
 
 #if !defined(SWIGJAVA)
@@ -195,8 +190,7 @@ namespace rw { namespace math {
          */
 
 #endif
-        static const Rotation2D identity ()
-        {
+        static const Rotation2D identity() {
             return Rotation2DIdentity<T>();
         }
 
@@ -207,7 +201,9 @@ namespace rw { namespace math {
          * @param column [in] column
          * @return reference to the element
          */
-        T& operator() (size_t row, size_t column) { return _m[row][column]; }
+        T& operator()(size_t row, size_t column) {
+            return _m[row][column];
+        }
 
         /**
          * @brief Returns reference to matrix element
@@ -215,9 +211,11 @@ namespace rw { namespace math {
          * @param column [in] column
          * @return reference to the element
          */
-        const T& operator() (size_t row, size_t column) const { return _m[row][column]; }
+        const T& operator()(size_t row, size_t column) const {
+            return _m[row][column];
+        }
 #else
-        MATRIXOPERATOR (T);
+        MATRIXOPERATOR(T);
 #endif
         /**
          * @brief Comparison operator.
@@ -228,13 +226,10 @@ namespace rw { namespace math {
          * @param rhs [in] Rotation2D to compare with
          * @return True if equal.
          */
-        bool operator== (const Rotation2D< T >& rhs) const
-        {
-            for (int i = 0; i < 2; ++i) {
-                for (int j = 0; j < 2; ++j) {
-                    if (!(_m[i][j] == rhs (i, j))) {
-                        return false;
-                    }
+        bool operator==(const Rotation2D<T>& rhs) const {
+            for(int i = 0; i < 2; ++i) {
+                for(int j = 0; j < 2; ++j) {
+                    if(!(_m[i][j] == rhs(i, j))) { return false; }
                 }
             }
             return true;
@@ -249,7 +244,9 @@ namespace rw { namespace math {
          * @param rhs [in] Rotation2D to compare with
          * @return True if not equal.
          */
-        bool operator!= (const Rotation2D< T >& rhs) const { return !(*this == rhs); }
+        bool operator!=(const Rotation2D<T>& rhs) const {
+            return !(*this == rhs);
+        }
 
         /**
          * @brief Returns a Eigen 2x2 matrix @f$ \mathbf{M}\in SO(2)
@@ -257,13 +254,12 @@ namespace rw { namespace math {
          *
          * @return @f$ \mathbf{M}\in SO(2) @f$
          */
-        EigenMatrix2x2 e () const
-        {
+        EigenMatrix2x2 e() const {
             typename EigenMatrix2x2::Matrix2 matrix;
-            matrix (0, 0) = _m[0][0];
-            matrix (0, 1) = _m[0][1];
-            matrix (1, 0) = _m[1][0];
-            matrix (1, 1) = _m[1][1];
+            matrix(0, 0) = _m[0][0];
+            matrix(0, 1) = _m[0][1];
+            matrix(1, 0) = _m[1][0];
+            matrix(1, 1) = _m[1][1];
             return EigenMatrix2x2{matrix};
         }
 
@@ -276,12 +272,11 @@ namespace rw { namespace math {
          *
          * @return \f$ \robabx{a}{c}{\mathbf{R}} \f$
          */
-        const Rotation2D operator* (const Rotation2D& bRc) const
-        {
-            return Rotation2D ((*this) (0, 0) * bRc (0, 0) + (*this) (0, 1) * bRc (1, 0),
-                               (*this) (0, 0) * bRc (0, 1) + (*this) (0, 1) * bRc (1, 1),
-                               (*this) (1, 0) * bRc (0, 0) + (*this) (1, 1) * bRc (1, 0),
-                               (*this) (1, 0) * bRc (0, 1) + (*this) (1, 1) * bRc (1, 1));
+        const Rotation2D operator*(const Rotation2D& bRc) const {
+            return Rotation2D((*this)(0, 0) * bRc(0, 0) + (*this)(0, 1) * bRc(1, 0),
+                              (*this)(0, 0) * bRc(0, 1) + (*this)(0, 1) * bRc(1, 1),
+                              (*this)(1, 0) * bRc(0, 0) + (*this)(1, 1) * bRc(1, 0),
+                              (*this)(1, 0) * bRc(0, 1) + (*this)(1, 1) * bRc(1, 1));
         }
 
         /**
@@ -293,10 +288,9 @@ namespace rw { namespace math {
          *
          * @return \f$ \robabx{a}{c}{\mathbf{v}} \f$
          */
-        const rw::math::Vector2D< T > operator* (const rw::math::Vector2D< T >& bVc) const
-        {
-            return rw::math::Vector2D< T > ((*this) (0, 0) * bVc (0) + (*this) (0, 1) * bVc (1),
-                                            (*this) (1, 0) * bVc (0) + (*this) (1, 1) * bVc (1));
+        const rw::math::Vector2D<T> operator*(const rw::math::Vector2D<T>& bVc) const {
+            return rw::math::Vector2D<T>((*this)(0, 0) * bVc(0) + (*this)(0, 1) * bVc(1),
+                                         (*this)(1, 0) * bVc(0) + (*this)(1, 1) * bVc(1));
         }
 #if !defined(SWIG)
         /**
@@ -305,13 +299,12 @@ namespace rw { namespace math {
          * @param r [in] rotation matrix to print
          * @return the updated output stream
          */
-        friend std::ostream& operator<< (std::ostream& os, const Rotation2D& r)
-        {
-            return os << "Rotation2D {" << r (0, 0) << ", " << r (0, 1) << ", " << r (1, 0) << ", "
-                   << r (1, 1) << "}";
+        friend std::ostream& operator<<(std::ostream& os, const Rotation2D& r) {
+            return os << "Rotation2D {" << r(0, 0) << ", " << r(0, 1) << ", " << r(1, 0) << ", "
+                      << r(1, 1) << "}";
         }
 #else
-        TOSTRING (rw::math::Rotation2D< T >);
+        TOSTRING(rw::math::Rotation2D<T>);
 #endif
 
       private:
@@ -324,12 +317,10 @@ namespace rw { namespace math {
      * @param rot [in] Rotation2D with type T
      * @return Rotation2D with type R
      */
-    template< class R, class T > const Rotation2D< R > cast (const Rotation2D< T >& rot)
-    {
-        Rotation2D< R > res (Rotation2D< R >::identity ());
-        for (size_t i = 0; i < 2; i++)
-            for (size_t j = 0; j < 2; j++)
-                res (i, j) = static_cast< R > (rot (i, j));
+    template<class R, class T> const Rotation2D<R> cast(const Rotation2D<T>& rot) {
+        Rotation2D<R> res(Rotation2D<R>::identity());
+        for(size_t i = 0; i < 2; i++)
+            for(size_t j = 0; j < 2; j++) res(i, j) = static_cast<R>(rot(i, j));
         return res;
     }
 
@@ -347,9 +338,8 @@ namespace rw { namespace math {
      * @f$ \robabx{b}{a}{\mathbf{R}} = \robabx{a}{b}{\mathbf{R}}^{-1} =
      * \robabx{a}{b}{\mathbf{R}}^T @f$
      */
-    template< class T > const Rotation2D< T > inverse (const Rotation2D< T >& aRb)
-    {
-        return Rotation2D< T > (aRb (0, 0), aRb (1, 0), aRb (0, 1), aRb (1, 1));
+    template<class T> const Rotation2D<T> inverse(const Rotation2D<T>& aRb) {
+        return Rotation2D<T>(aRb(0, 0), aRb(1, 0), aRb(0, 1), aRb(1, 1));
     }
 
     /**
@@ -357,26 +347,25 @@ namespace rw { namespace math {
      *
      * The transpose of a rotation matrix is the same as the inverse.
      */
-    template< class T > const Rotation2D< T > transpose (const Rotation2D< T >& aRb)
-    {
-        return Rotation2D< T > (aRb (0, 0), aRb (1, 0), aRb (0, 1), aRb (1, 1));
+    template<class T> const Rotation2D<T> transpose(const Rotation2D<T>& aRb) {
+        return Rotation2D<T>(aRb(0, 0), aRb(1, 0), aRb(0, 1), aRb(1, 1));
     }
 #if !defined(SWIG)
-    extern template class rw::math::Rotation2D< double >;
-    extern template class rw::math::Rotation2D< float >;
+    extern template class rw::math::Rotation2D<double>;
+    extern template class rw::math::Rotation2D<float>;
 #else
 
 #if SWIG_VERSION < 0x040000
-    SWIG_DECLARE_TEMPLATE (Rotation2Dd, rw::math::Rotation2D< double >);
-    ADD_DEFINITION (Rotation2Dd, Rotation2D, sdurw_math);
+    SWIG_DECLARE_TEMPLATE(Rotation2Dd, rw::math::Rotation2D<double>);
+    ADD_DEFINITION(Rotation2Dd, Rotation2D, sdurw_math);
 #else
-    SWIG_DECLARE_TEMPLATE (Rotation2D, rw::math::Rotation2D< double >);
+    SWIG_DECLARE_TEMPLATE(Rotation2D, rw::math::Rotation2D<double>);
 #endif
 
-    SWIG_DECLARE_TEMPLATE (Rotation2Df, rw::math::Rotation2D< float >);
+    SWIG_DECLARE_TEMPLATE(Rotation2Df, rw::math::Rotation2D<float>);
 #endif
-    using Rotation2Dd = Rotation2D< double >;
-    using Rotation2Df = Rotation2D< float >;
+    using Rotation2Dd = Rotation2D<double>;
+    using Rotation2Df = Rotation2D<float>;
 
     /* @} */
 }}    // namespace rw::math
@@ -390,23 +379,15 @@ namespace rw { namespace common {
          * @relatedalso rw::math::Rotation2D
          */
         template<>
-        void write (const rw::math::Rotation2D< double >& sobject,
-                    rw::common::OutputArchive& oarchive, const std::string& id);
+        void write(const rw::math::Rotation2D<double>& sobject, rw::common::OutputArchive& oarchive,
+                   const std::string& id);
 
         /**
          * @copydoc rw::common::serialization::write
          * @relatedalso rw::math::Rotation2D
          */
         template<>
-        void write (const rw::math::Rotation2D< float >& sobject,
-                    rw::common::OutputArchive& oarchive, const std::string& id);
-
-        /**
-         * @copydoc rw::common::serialization::read
-         * @relatedalso rw::math::Rotation2D
-         */
-        template<>
-        void read (rw::math::Rotation2D< double >& sobject, rw::common::InputArchive& iarchive,
+        void write(const rw::math::Rotation2D<float>& sobject, rw::common::OutputArchive& oarchive,
                    const std::string& id);
 
         /**
@@ -414,8 +395,16 @@ namespace rw { namespace common {
          * @relatedalso rw::math::Rotation2D
          */
         template<>
-        void read (rw::math::Rotation2D< float >& sobject, rw::common::InputArchive& iarchive,
-                   const std::string& id);
+        void read(rw::math::Rotation2D<double>& sobject, rw::common::InputArchive& iarchive,
+                  const std::string& id);
+
+        /**
+         * @copydoc rw::common::serialization::read
+         * @relatedalso rw::math::Rotation2D
+         */
+        template<>
+        void read(rw::math::Rotation2D<float>& sobject, rw::common::InputArchive& iarchive,
+                  const std::string& id);
 
     }    // namespace serialization
 }}       // namespace rw::common
@@ -428,13 +417,12 @@ namespace boost { namespace serialization {
      * @param version [in] class version (currently version 0).
      * @relatedalso rw::math::Rotation2D
      */
-    template< class Archive, class T >
-    void serialize (Archive& archive, rw::math::Rotation2D< T >& R, const unsigned int version)
-    {
-        archive& R (0, 0);
-        archive& R (0, 1);
-        archive& R (1, 0);
-        archive& R (1, 1);
+    template<class Archive, class T>
+    void serialize(Archive& archive, rw::math::Rotation2D<T>& R, const unsigned int version) {
+        archive& R(0, 0);
+        archive& R(0, 1);
+        archive& R(1, 0);
+        archive& R(1, 1);
     }
 }}    // namespace boost::serialization
 

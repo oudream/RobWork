@@ -49,51 +49,50 @@ namespace rwsimlibs { namespace gui {
          * @param parent [in] (optional) the parent Qt widget. Ownership is shared by the caller and
          * the parent widget if given.
          */
-        LogMessageWidget (rw::core::Ptr< const rwsim::log::LogMessage > entry, QWidget* parent = 0);
+        LogMessageWidget(rw::core::Ptr<const rwsim::log::LogMessage> entry, QWidget* parent = 0);
 
         //! @brief Destructor.
-        virtual ~LogMessageWidget ();
+        virtual ~LogMessageWidget();
 
         //! @copydoc SimulatorLogEntryWidget::setDWC
-        virtual void setDWC (rw::core::Ptr< const rwsim::dynamics::DynamicWorkCell > dwc);
+        virtual void setDWC(rw::core::Ptr<const rwsim::dynamics::DynamicWorkCell> dwc);
 
         //! @copydoc SimulatorLogEntryWidget::setEntry
-        virtual void setEntry (rw::core::Ptr< const rwsim::log::SimulatorLog > entry);
+        virtual void setEntry(rw::core::Ptr<const rwsim::log::SimulatorLog> entry);
 
         //! @copydoc SimulatorLogEntryWidget::getEntry
-        virtual rw::core::Ptr< const rwsim::log::SimulatorLog > getEntry () const;
+        virtual rw::core::Ptr<const rwsim::log::SimulatorLog> getEntry() const;
 
         //! @copydoc SimulatorLogEntryWidget::updateEntryWidget
-        virtual void updateEntryWidget ();
+        virtual void updateEntryWidget();
 
         //! @copydoc SimulatorLogEntryWidget::showGraphics
-        virtual void showGraphics (rw::core::Ptr< rw::graphics::GroupNode > root,
-                                   rw::core::Ptr< rw::graphics::SceneGraph > graph);
+        virtual void showGraphics(rw::core::Ptr<rw::graphics::GroupNode> root,
+                                  rw::core::Ptr<rw::graphics::SceneGraph> graph);
 
         //! @copydoc SimulatorLogEntryWidget::getName
-        virtual std::string getName () const;
+        virtual std::string getName() const;
 
         //! @copydoc SimulatorLogEntryWidget::Dispatcher
         class Dispatcher : public SimulatorLogEntryWidget::Dispatcher
         {
           public:
             //! @brief Constructor.
-            Dispatcher ();
+            Dispatcher();
 
             //! @brief Destructor.
-            virtual ~Dispatcher ();
+            virtual ~Dispatcher();
 
             //! @copydoc SimulatorLogEntryWidget::Dispatcher::makeWidget
-            SimulatorLogEntryWidget*
-            makeWidget (rw::core::Ptr< const rwsim::log::SimulatorLog > entry,
-                        QWidget* parent = 0) const;
+            SimulatorLogEntryWidget* makeWidget(rw::core::Ptr<const rwsim::log::SimulatorLog> entry,
+                                                QWidget* parent = 0) const;
 
             //! @copydoc SimulatorLogEntryWidget::Dispatcher::accepts
-            bool accepts (rw::core::Ptr< const rwsim::log::SimulatorLog > entry) const;
+            bool accepts(rw::core::Ptr<const rwsim::log::SimulatorLog> entry) const;
         };
 
       private:
-        rw::core::Ptr< const rwsim::log::LogMessage > _message;
+        rw::core::Ptr<const rwsim::log::LogMessage> _message;
         QTextBrowser* const _text;
     };
     //! @}

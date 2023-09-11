@@ -32,11 +32,11 @@ namespace rw { namespace trajectory {
     /**
      * @brief Bi-directional iterator for running efficiently through a trajectory
      */
-    template< class T > class TrajectoryIterator
+    template<class T> class TrajectoryIterator
     {
       public:
         //! @brief smart pointer type
-        typedef rw::core::Ptr< TrajectoryIterator< T > > Ptr;
+        typedef rw::core::Ptr<TrajectoryIterator<T>> Ptr;
 
         /**
          * @brief destructor
@@ -47,35 +47,35 @@ namespace rw { namespace trajectory {
          * @brief Returns the current position (time) of the iterator
          * @return The current time.
          */
-        virtual double getTime () const = 0;
+        virtual double getTime() const = 0;
 
         /**
          * @brief Method for increasing the position of the iterator a fixed amount
          *
          * The increment is equal to the \b dt specified in the constructor.
          */
-        virtual void inc () = 0;
+        virtual void inc() = 0;
 
         /**
          * @brief Method for increasing the position of the iterator by \b dt
          *
          * @param dt [in] Amount to increase. A positive value is expected.
          */
-        virtual void inc (double dt) = 0;
+        virtual void inc(double dt) = 0;
 
         /**
          * @brief Method for decreasing the position of the iterator a fixed amount
          *
          * The decrement is equal to the \b dt specified in the constructor.
          */
-        virtual void dec () = 0;
+        virtual void dec() = 0;
 
         /**
          * @brief Method for decreasing the position of the iterator a fixed amount
          *
          * @param dt [in] Amount to decrease. A positive value is expected
          */
-        virtual void dec (double dt) = 0;
+        virtual void dec(double dt) = 0;
 
         /**
          * @brief This function can be used to decrease the iterator position.
@@ -84,7 +84,7 @@ namespace rw { namespace trajectory {
          * @param dt [in] a double that describes how much to decrease the
          * iterator position
          */
-        virtual void operator-= (double dt) { dec (dt); }
+        virtual void operator-=(double dt) { dec(dt); }
         /**
          * @brief This function can be used to increase the iterator position.
          * The position can be increased no longer than the length of the
@@ -93,7 +93,7 @@ namespace rw { namespace trajectory {
          * @param dt [in] a double that describes how much to increase the
          * iterator position
          */
-        virtual void operator+= (double dt) { inc (dt); }
+        virtual void operator+=(double dt) { inc(dt); }
 
         /**
          * @brief Operator overloading ++ for increasing the position of the iterator.
@@ -101,11 +101,10 @@ namespace rw { namespace trajectory {
          * Usage: ++iterator
          *
          * The increment is equal to the \b dt specified in the constructor.
-         * @return Reference to the TrajectoryIterator  
+         * @return Reference to the TrajectoryIterator
          */
-        virtual TrajectoryIterator& operator++ ()
-        {
-            inc ();
+        virtual TrajectoryIterator& operator++() {
+            inc();
             return *this;
         }
 
@@ -116,7 +115,7 @@ namespace rw { namespace trajectory {
          *
          * The increment is equal to the \b dt specified in the constructor.
          */
-        virtual void operator++ (int) { inc (); }
+        virtual void operator++(int) { inc(); }
 
         /**
          * @brief Operator overloading -- for decreasing the position of the iterator.
@@ -126,9 +125,8 @@ namespace rw { namespace trajectory {
          * The decrement is equal to the \b dt specified in the constructor.
          * @return Reference to the TrajectoryIterator
          */
-        virtual TrajectoryIterator& operator-- ()
-        {
-            dec ();
+        virtual TrajectoryIterator& operator--() {
+            dec();
             return *this;
         }
 
@@ -139,7 +137,7 @@ namespace rw { namespace trajectory {
          *
          * The decrement is equal to the \b dt specified in the constructor.
          */
-        virtual void operator-- (int) { dec (); }
+        virtual void operator--(int) { dec(); }
 
         /**
          * @brief Test if the end of the trajectory is reached.
@@ -147,7 +145,7 @@ namespace rw { namespace trajectory {
          * @return true if the iterator has reached the end of the trajectory false
          * otherwise.
          */
-        virtual bool isEnd () const = 0;
+        virtual bool isEnd() const = 0;
 
         /**
          * @brief Test if the beginning of the trajectory is reached.
@@ -155,21 +153,21 @@ namespace rw { namespace trajectory {
          * @return true if the iterator has reached the beginning of the trajectory
          * false otherwise.
          */
-        virtual bool isBegin () const = 0;
+        virtual bool isBegin() const = 0;
 
         /**
          * @brief Extracts a point at the current position in the trajectory.
          *
          * @return the point at the current position in the trajectory.
          */
-        virtual T operator* () const = 0;
+        virtual T operator*() const = 0;
 
         /**
          * @brief Extracts a point at the current position in the trajectory.
          *
          * @return the point at the current position in the trajectory.
          */
-        virtual T x () const = 0;
+        virtual T x() const = 0;
 
         /**
          * @brief Extracts a point of the derivative of the trajectory
@@ -177,7 +175,7 @@ namespace rw { namespace trajectory {
          *
          * @return the derived point at the current position in the trajectory.
          */
-        virtual T dx () const = 0;
+        virtual T dx() const = 0;
 
         /**
          * @brief Extracts a point of the double derivative of the trajectory at the
@@ -185,7 +183,7 @@ namespace rw { namespace trajectory {
          *
          * @return the double derived point at the current position in the trajectory.
          */
-        virtual T ddx () const = 0;
+        virtual T ddx() const = 0;
     };
 
     /* @} */

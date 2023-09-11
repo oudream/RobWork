@@ -55,48 +55,48 @@ namespace rwsim { namespace util {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< RecursiveNewtonEuler > Ptr;
+        typedef rw::core::Ptr<RecursiveNewtonEuler> Ptr;
 
         /**
          * @brief Constructor for inverse dynamics for a RigidDevice
          * @param device [in] a rigid device
          */
-        RecursiveNewtonEuler (rw::core::Ptr< rwsim::dynamics::RigidDevice > device);
+        RecursiveNewtonEuler(rw::core::Ptr<rwsim::dynamics::RigidDevice> device);
 
         /**
          * @brief Destructor
          */
-        virtual ~RecursiveNewtonEuler ();
+        virtual ~RecursiveNewtonEuler();
 
         /**
          * @brief Get the used gravity in base coordinates.
          * @return gravity vector
          */
-        rw::math::Vector3D<> getGravity () const;
+        rw::math::Vector3D<> getGravity() const;
 
         /**
          * @brief Set the gravity used
          * @param gravity [in] vector giving the gravity in base coordinates.
          */
-        void setGravity (const rw::math::Vector3D<>& gravity);
+        void setGravity(const rw::math::Vector3D<>& gravity);
 
         /**
          * @brief Get the center of mass of the payload in the tool frame.
          * @return center of mass of the payload
          */
-        rw::math::Vector3D<> getPayloadCOM () const;
+        rw::math::Vector3D<> getPayloadCOM() const;
 
         /**
          * @brief Get the mass of the payload.
          * @return mass of payload in end frame of device.
          */
-        double getPayloadMass () const;
+        double getPayloadMass() const;
 
         /**
          * @brief Get the inertia of the payload.
          * @return inertia of payload in end frame of device.
          */
-        rw::math::InertiaMatrix<> getPayloadInertia () const;
+        rw::math::InertiaMatrix<> getPayloadInertia() const;
 
         /**
          * @brief Set the payload relative to the end frame of the device
@@ -104,22 +104,22 @@ namespace rwsim { namespace util {
          * @param payload [in] the mass of the payload
          * @param inertia [in] the inertia of the payload
          */
-        void setPayload (const rw::math::Vector3D<>& com, double payload,
-                         const rw::math::InertiaMatrix<>& inertia);
+        void setPayload(const rw::math::Vector3D<>& com, double payload,
+                        const rw::math::InertiaMatrix<>& inertia);
 
         /**
          * @brief Get the force and torque that the robot exerts on the environment at the TCP frame
          * in base coordinates.
          * @return a 6D wrench
          */
-        rw::math::Wrench6D<> getEnvironment () const;
+        rw::math::Wrench6D<> getEnvironment() const;
 
         /**
          * @brief Set the force and torque that the robot exerts on the environment at the TCP frame
          * in base coordinates.
          * @param wrench [in] the wrench the robot exerts on the environment
          */
-        void setEnvironment (const rw::math::Wrench6D<>& wrench);
+        void setEnvironment(const rw::math::Wrench6D<>& wrench);
 
         /**
          * @brief Motion of a body defined as velocity and acceleration.
@@ -139,8 +139,8 @@ namespace rwsim { namespace util {
          * @return vector of velocities and accelerations of the center of mass of each body in base
          * coordinates
          */
-        std::vector< Motion > getBodyMotion (const rw::kinematics::State& state,
-                                             const rw::math::Q& dq, const rw::math::Q& ddq) const;
+        std::vector<Motion> getBodyMotion(const rw::kinematics::State& state, const rw::math::Q& dq,
+                                          const rw::math::Q& ddq) const;
 
         /**
          * @brief Determine the net force and torque acting on each link to achieve the given
@@ -149,9 +149,9 @@ namespace rwsim { namespace util {
          * @param state [in] state (position) of the robot
          * @return the net forces and torques acting on each link as a vector
          */
-        std::vector< rw::math::Wrench6D<> >
-        getBodyNetForces (const std::vector< Motion >& motions,
-                          const rw::kinematics::State& state) const;
+        std::vector<rw::math::Wrench6D<>>
+        getBodyNetForces(const std::vector<Motion>& motions,
+                         const rw::kinematics::State& state) const;
 
         /**
          * @brief Determine the forces and torques acting in each joint to achieve the given net
@@ -161,9 +161,9 @@ namespace rwsim { namespace util {
          * @param state [in] state (position) of the robot
          * @return the net forces and torques acting on each joint in base coordinates.
          */
-        std::vector< rw::math::Wrench6D<> >
-        getJointForces (const std::vector< rw::math::Wrench6D<> >& bodyNetForces,
-                        const rw::kinematics::State& state) const;
+        std::vector<rw::math::Wrench6D<>>
+        getJointForces(const std::vector<rw::math::Wrench6D<>>& bodyNetForces,
+                       const rw::kinematics::State& state) const;
 
         /**
          * @brief Do inverse dynamics for a robot in motion.
@@ -172,9 +172,9 @@ namespace rwsim { namespace util {
          * @param ddq [in] the joint accelerations
          * @return the wrenches working in each joint in base coordinates
          */
-        std::vector< rw::math::Wrench6D<> > solve (const rw::kinematics::State& state,
-                                                   const rw::math::Q dq  = rw::math::Q (),
-                                                   const rw::math::Q ddq = rw::math::Q ()) const;
+        std::vector<rw::math::Wrench6D<>> solve(const rw::kinematics::State& state,
+                                                const rw::math::Q dq  = rw::math::Q(),
+                                                const rw::math::Q ddq = rw::math::Q()) const;
 
         /**
          * @brief Get the torque provided by each motor.
@@ -183,23 +183,22 @@ namespace rwsim { namespace util {
          * @param ddq [in] the joint accelerations
          * @return the torques provided by each motor
          */
-        std::vector< double > solveMotorTorques (const rw::kinematics::State& state,
-                                                 const rw::math::Q& dq,
-                                                 const rw::math::Q& ddq) const;
+        std::vector<double> solveMotorTorques(const rw::kinematics::State& state,
+                                              const rw::math::Q& dq, const rw::math::Q& ddq) const;
 
         /**
          * @brief Check if solver will work for the given device - if not an exception will be
          * thrown when trying to solve.
          * @return true if solver works for the given device, false otherwise.
          */
-        bool validate () const;
+        bool validate() const;
 
       private:
-        static std::string invalidMsg ();
-        static rw::math::Vector3D<> toVector3D (const rw::math::EAA<>& eaa);
+        static std::string invalidMsg();
+        static rw::math::Vector3D<> toVector3D(const rw::math::EAA<>& eaa);
 
-        const rw::core::Ptr< rwsim::dynamics::RigidDevice > _rdev;
-        const rw::core::Ptr< rw::models::JointDevice > _jdev;
+        const rw::core::Ptr<rwsim::dynamics::RigidDevice> _rdev;
+        const rw::core::Ptr<rw::models::JointDevice> _jdev;
         rw::math::Vector3D<> _gravity;
         rw::math::Vector3D<> _payloadCOM;
         double _payloadMass;

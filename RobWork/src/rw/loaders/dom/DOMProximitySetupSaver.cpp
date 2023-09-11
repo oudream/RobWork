@@ -26,10 +26,9 @@ using namespace rw::core;
 using namespace rw::loaders;
 using namespace rw::proximity;
 
-DOMProximitySetupSaver::Initializer::Initializer ()
-{
+DOMProximitySetupSaver::Initializer::Initializer() {
     static bool done = false;
-    if (!done) {
+    if(!done) {
         DOMBasisTypes::Initializer init1;
         done = true;
     }
@@ -37,58 +36,50 @@ DOMProximitySetupSaver::Initializer::Initializer ()
 
 const DOMProximitySetupSaver::Initializer DOMProximitySetupSaver::initializer;
 
-void DOMProximitySetupSaver::save (const ProximitySetup& prox, Ptr< DOMElem > parent)
-{
-    Ptr< DOMElem > root = parent->addChild ("ProximitySetup");
-    if (prox.useIncludeAll ())
-        root->addAttribute ("UseIncludeAll")->setValueString ("true");
-    else
-        root->addAttribute ("UseIncludeAll")->setValueString ("false");
+void DOMProximitySetupSaver::save(const ProximitySetup& prox, Ptr<DOMElem> parent) {
+    Ptr<DOMElem> root = parent->addChild("ProximitySetup");
+    if(prox.useIncludeAll()) root->addAttribute("UseIncludeAll")->setValueString("true");
+    else root->addAttribute("UseIncludeAll")->setValueString("false");
 
-    if (prox.useExcludeStaticPairs ())
-        root->addAttribute ("UseExcludeStaticPairs")->setValueString ("true");
-    else
-        root->addAttribute ("UseExcludeStaticPairs")->setValueString ("false");
+    if(prox.useExcludeStaticPairs())
+        root->addAttribute("UseExcludeStaticPairs")->setValueString("true");
+    else root->addAttribute("UseExcludeStaticPairs")->setValueString("false");
 
-    const std::vector< ProximitySetupRule >& prox_rules = prox.getProximitySetupRules ();
+    const std::vector<ProximitySetupRule>& prox_rules = prox.getProximitySetupRules();
 
-    for (const auto& prox_rule : prox_rules) {
-        Ptr< DOMElem > element;
-        if (prox_rule.type () == ProximitySetupRule::EXCLUDE_RULE) {
-            element                                        = root->addChild ("Exclude");
-            std::pair< std::string, std::string > patterns = prox_rule.getPatterns ();
-            element->addAttribute ("PatternA")->setValue (patterns.first);
-            element->addAttribute ("PatternB")->setValue (patterns.second);
+    for(const auto& prox_rule : prox_rules) {
+        Ptr<DOMElem> element;
+        if(prox_rule.type() == ProximitySetupRule::EXCLUDE_RULE) {
+            element                                      = root->addChild("Exclude");
+            std::pair<std::string, std::string> patterns = prox_rule.getPatterns();
+            element->addAttribute("PatternA")->setValue(patterns.first);
+            element->addAttribute("PatternB")->setValue(patterns.second);
         }
-        else if (prox_rule.type () == ProximitySetupRule::INCLUDE_RULE) {
-            element                                        = root->addChild ("Include");
-            std::pair< std::string, std::string > patterns = prox_rule.getPatterns ();
-            element->addAttribute ("PatternA")->setValue (patterns.first);
-            element->addAttribute ("PatternB")->setValue (patterns.second);
+        else if(prox_rule.type() == ProximitySetupRule::INCLUDE_RULE) {
+            element                                      = root->addChild("Include");
+            std::pair<std::string, std::string> patterns = prox_rule.getPatterns();
+            element->addAttribute("PatternA")->setValue(patterns.first);
+            element->addAttribute("PatternB")->setValue(patterns.second);
         }
-        else
-            RW_THROW ("The ProximitySetupRule has an unknown type!");
+        else RW_THROW("The ProximitySetupRule has an unknown type!");
     }
 }
 
-void DOMProximitySetupSaver::save (const ProximitySetup& prox, const std::string& filename)
-{
-    DOMParser::Ptr parser = DOMParser::make ();
-    createDOMDocument (prox, parser);
-    parser->save (filename);
+void DOMProximitySetupSaver::save(const ProximitySetup& prox, const std::string& filename) {
+    DOMParser::Ptr parser = DOMParser::make();
+    createDOMDocument(prox, parser);
+    parser->save(filename);
 }
 
-void DOMProximitySetupSaver::write (const ProximitySetup& prox, std::ostream& outstream)
-{
-    DOMParser::Ptr parser = DOMParser::make ();
-    createDOMDocument (prox, parser);
-    parser->save (outstream);
+void DOMProximitySetupSaver::write(const ProximitySetup& prox, std::ostream& outstream) {
+    DOMParser::Ptr parser = DOMParser::make();
+    createDOMDocument(prox, parser);
+    parser->save(outstream);
 }
 
-DOMElem::Ptr DOMProximitySetupSaver::createDOMDocument (const ProximitySetup& prox,
-                                                        Ptr< DOMParser > parser)
-{
-    Ptr< DOMElem > doc = parser->getRootElement ();
-    save (prox, doc);
+DOMElem::Ptr DOMProximitySetupSaver::createDOMDocument(const ProximitySetup& prox,
+                                                       Ptr<DOMParser> parser) {
+    Ptr<DOMElem> doc = parser->getRootElement();
+    save(prox, doc);
     return doc;
 }

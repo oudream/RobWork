@@ -55,48 +55,47 @@ namespace rwlibs { namespace assembly {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< AssemblyParameterization > Ptr;
+        typedef rw::core::Ptr<AssemblyParameterization> Ptr;
 
         //! @brief Construct an empty parameterization.
-        AssemblyParameterization ();
+        AssemblyParameterization();
 
         /**
          * @brief Construct a parameterization from a PropertyMap.
          * @param pmap [in] a PropertyMap.
          */
-        AssemblyParameterization (rw::core::Ptr< rw::core::PropertyMap > pmap);
+        AssemblyParameterization(rw::core::Ptr<rw::core::PropertyMap> pmap);
 
         //! @brief Destructor
-        virtual ~AssemblyParameterization ();
+        virtual ~AssemblyParameterization();
 
         /**
          * @brief Store the parameterization in a PropertyMap.
          * @return a pointer to a PropertyMap, or NULL if parameterization is empty.
          */
-        virtual rw::core::Ptr< rw::core::PropertyMap > toPropertyMap () const;
+        virtual rw::core::Ptr<rw::core::PropertyMap> toPropertyMap() const;
 
         /**
          * @brief Clone the parameterization.
          * @return a pointer to the new parameterization.
          */
-        virtual AssemblyParameterization::Ptr clone () const;
+        virtual AssemblyParameterization::Ptr clone() const;
 
         /**
          * @brief Construct a parameterization of same type from a PropertyMap.
          * @param pmap [in] a PropertyMap.
          */
-        virtual AssemblyParameterization::Ptr
-        make (rw::core::Ptr< rw::core::PropertyMap > pmap) const;
+        virtual AssemblyParameterization::Ptr make(rw::core::Ptr<rw::core::PropertyMap> pmap) const;
 
         /**
          * @brief Reset the parameters by taking new parameters from a PropertyMap.
          * @param pmap [in] a PropertyMap.
          */
-        virtual void reset (rw::core::Ptr< rw::core::PropertyMap > pmap);
+        virtual void reset(rw::core::Ptr<rw::core::PropertyMap> pmap);
 
       protected:
         //! @brief The PropertyMap.
-        rw::core::Ptr< rw::core::PropertyMap > _pmap;
+        rw::core::Ptr<rw::core::PropertyMap> _pmap;
     };
     //! @}
 }}     // namespace rwlibs::assembly

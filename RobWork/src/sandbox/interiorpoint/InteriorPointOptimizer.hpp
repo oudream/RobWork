@@ -20,120 +20,86 @@
 
 #include <rw/math/Math.hpp>
 
-#include <iostream>
-#include <boost/function.hpp>
 #include <boost/bind/bind.hpp>
+#include <boost/function.hpp>
+#include <iostream>
 
-namespace rw {
-namespace math {
+namespace rw { namespace math {
 
+    class InteriorPointOptimizer
+    {
+      public:
+        typedef boost::function<void(const Eigen::VectorXd& x, double& f, Eigen::VectorXd& df,
+                                     Eigen::MatrixXd& ddf)>
+            ObjectFunction;
 
-class InteriorPointOptimizer
-{
-public:
+        typedef void*(Q& q) ObjectFunction;
 
-    typedef boost::function<void(const Eigen::VectorXd& x,
-                                 double& f,
-                                 Eigen::VectorXd& df,
-                                 Eigen::MatrixXd& ddf) > ObjectFunction;
+        typedef boost::function<void(const Eigen::VectorXd& x, size_t no, Eigen::VectorXd& g,
+                                     Eigen::MatrixXd& dg, Eigen::MatrixXd& ddq)>
+            ConstraintFunction;
 
-    typedef void*(Q& q) ObjectFunction;
+        InteriorPointOptimizer(size_t n, size_t m, ObjectFunction objectFunction,
+                               ConstraintFunction constraintFunction);
 
-    typedef boost::function<void(const Eigen::VectorXd& x,
-                                 size_t no,
-                                 Eigen::VectorXd& g,
-                                 Eigen::MatrixXd& dg,
-                                 Eigen::MatrixXd& ddq) > ConstraintFunction;
+        virtual ~InteriorPointOptimizer();
 
-    InteriorPointOptimizer(size_t n,
-                           size_t m,
-                           ObjectFunction objectFunction,
-                           ConstraintFunction constraintFunction);
+        int solve(const Eigen::VectorXd& x_init);
 
-    virtual ~InteriorPointOptimizer();
+        void setAccuracy(double accuracy);
+        double getAccuracy();
 
+        void verify_user_defined_objective_and_constraints();
 
-    int solve(const Eigen::VectorXd& x_init);
+      protected:
+        InteriorPointOptimizer(size_t n, size_t m);
 
-    void setAccuracy(double accuracy);
-    double getAccuracy();
+        void initialize();
 
-    void verify_user_defined_objective_and_constraints();
+        virtual void objectFunction(const Eigen::VectorXd& x, double& f, Eigen::VectorXd& df,
+                                    Eigen::MatrixXd& ddf);
 
+        virtual void constraintFunction(const Eigen::VectorXd& x, int i, Eigen::VectorXd& a,
+                                        Eigen::MatrixXd& da, Eigen::MatrixXd& dda);
 
-protected:
-    InteriorPointOptimizer(size_t n, size_t m);
+      private:
+        ObjectFunction compute_f_info_EXT;
+        ConstraintFunction compute_con_info_i_EXT;
 
-    void initialize();
+        void choleskySolve(int n_e, int bw, Eigen::MatrixXd& A, Eigen::VectorXd& b,
+                           Eigen::VectorXd& x);
 
-    virtual void objectFunction(const Eigen::VectorXd& x,
-                                double &f,
-                                Eigen::VectorXd &df,
-                                Eigen::MatrixXd &ddf);
+        void compute_f_info(Eigen::MatrixXd& A, Eigen::VectorXd& RHS);
 
-    virtual void constraintFunction(const Eigen::VectorXd& x,
-                                    int i,
-                                    Eigen::VectorXd &a,
-                                    Eigen::MatrixXd &da,
-                                    Eigen::MatrixXd &dda);
+        void compute_con_info(Eigen::MatrixXd& A, Eigen::VectorXd& RHS);
 
-private:
-    ObjectFunction compute_f_info_EXT;
-    ConstraintFunction compute_con_info_i_EXT;
+        void merit_info(Eigen::VectorXd& x, Eigen::VectorXd& s, double& phi, double& eta);
 
+        void Dmerit_info(Eigen::VectorXd& x, Eigen::VectorXd& s, Eigen::VectorXd& dx,
+                         Eigen::VectorXd& ds, double& Dphi, double& eta);
 
-    void choleskySolve(int n_e,
-                       int bw,
-                       Eigen::MatrixXd &A,
-                       Eigen::VectorXd &b,
-                       Eigen::VectorXd &x);
+        void update(Eigen::VectorXd& x, Eigen::VectorXd& dx, Eigen::VectorXd& s,
+                    Eigen::VectorXd& z);
 
+        const size_t N;
+        const size_t M;
+        double _accuracy;
+        Eigen::VectorXd _x;
+        Eigen::VectorXd _s;
+        Eigen::VectorXd _z;
+        double _mu, _eta;
 
-    void compute_f_info(Eigen::MatrixXd &A,
-                        Eigen::VectorXd &RHS);
+        // objective and derivatives
+        double _f;
+        Eigen::VectorXd _df;
+        Eigen::MatrixXd _ddf;
 
-    void compute_con_info(Eigen::MatrixXd &A,
-                          Eigen::VectorXd &RHS);
+        // constraints and derivatives (second derivative only stored for one constraint at a time)
+        Eigen::VectorXd _a;
+        Eigen::MatrixXd _da;
+        Eigen::MatrixXd _dda;
+    };
 
-    void merit_info(Eigen::VectorXd &x,
-                    Eigen::VectorXd &s,
-                    double &phi,
-                    double &eta);
+}}    // namespace rw::math
 
-    void Dmerit_info(Eigen::VectorXd &x,
-                     Eigen::VectorXd &s,
-                     Eigen::VectorXd &dx,
-                     Eigen::VectorXd &ds,
-                     double &Dphi,
-                     double &eta);
-
-    void update(Eigen::VectorXd &x,
-                Eigen::VectorXd &dx,
-                Eigen::VectorXd &s,
-                Eigen::VectorXd &z);
-
-    const size_t N;
-    const size_t M;
-    double _accuracy;
-    Eigen::VectorXd _x;
-    Eigen::VectorXd _s;
-    Eigen::VectorXd _z;
-    double _mu, _eta;
-
-    // objective and derivatives
-    double _f;
-    Eigen::VectorXd _df;
-    Eigen::MatrixXd _ddf;
-
-    // constraints and derivatives (second derivative only stored for one constraint at a time)
-    Eigen::VectorXd _a;
-    Eigen::MatrixXd _da;
-    Eigen::MatrixXd _dda;
-
-
-};
-
-} //end namespace math
-} //end namespace rw
-
-#endif //end include guard
+#endif    // end include guard

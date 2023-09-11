@@ -23,7 +23,8 @@
 #pragma message( \
     "#include <rw/loaders/ImageFactory.hpp> is deprecated use #include <rw/loaders/ImageLoader.hpp> instead")
 #else
-#warning "#include <rw/loaders/ImageFactory.hpp> is deprecated use #include <rw/loaders/ImageLoader.hpp> instead"
+#warning \
+    "#include <rw/loaders/ImageFactory.hpp> is deprecated use #include <rw/loaders/ImageLoader.hpp> instead"
 #endif
 
 #endif    // end include guard

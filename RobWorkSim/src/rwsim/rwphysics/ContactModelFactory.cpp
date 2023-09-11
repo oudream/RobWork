@@ -24,19 +24,18 @@ namespace {
 class MyContactInfo
 {
   public:
-    MyContactInfo () {}
+    MyContactInfo() {}
 
     // DistanceResult narrowCache;
     // MultiDistanceResult contactCache;
     ProximityStrategyData dataCache;
 };
 
-void deriveContactInfo (Transform3D<>& wTa, Transform3D<>& wTb, Vector3D<>& p1, Vector3D<>& p2,
-                        double dist, ContactPoint& contact)
-{
+void deriveContactInfo(Transform3D<>& wTa, Transform3D<>& wTb, Vector3D<>& p1, Vector3D<>& p2,
+                       double dist, ContactPoint& contact) {
     contact.pA       = p1;
     contact.pB       = p2;
-    double len       = (contact.pB - contact.pA).norm2 ();
+    double len       = (contact.pB - contact.pA).norm2();
     contact.n        = (contact.pB - contact.pA) / len;
     contact.p        = contact.n * (len / 2) + contact.pA;
     contact.dist     = len;
@@ -61,17 +60,16 @@ void deriveContactInfo (Transform3D<>& wTa, Transform3D<>& wTb, Vector3D<>& p1, 
     }
 */
 
-void Filter (MultiDistanceResult& dists, std::list< FilteredPoint >& blobs, double sepDist)
-{
-    for (size_t i = 0; i < dists.p1s.size (); i++) {
+void Filter(MultiDistanceResult& dists, std::list<FilteredPoint>& blobs, double sepDist) {
+    for(size_t i = 0; i < dists.p1s.size(); i++) {
         const Vector3D<>& v = dists.p1s[i];
         bool inBlob         = false;
-        for (FilteredPoint& p : blobs) {
+        for(FilteredPoint& p : blobs) {
             // for(int j=0; j<blobs.size(); j++){
-            double dist = MetricUtil::dist2< Vector3D<> > (v, p.p);
-            if (dist < sepDist) {
+            double dist = MetricUtil::dist2<Vector3D<>>(v, p.p);
+            if(dist < sepDist) {
                 // point is inside blob, break loop
-                if (dists.distances[i] < p.dist) {
+                if(dists.distances[i] < p.dist) {
                     p.p1   = v;
                     p.p2   = dists.p2s[i];
                     p.dist = dists.distances[i];
@@ -80,111 +78,99 @@ void Filter (MultiDistanceResult& dists, std::list< FilteredPoint >& blobs, doub
                 p.hits++;
                 break;
             }
-            else if (dist < sepDist * 2) {
+            else if(dist < sepDist * 2) {
                 // discard point
                 inBlob = true;
                 break;
             }
         }
-        if (!inBlob)
-            blobs.push_back (FilteredPoint (v, dists.p2s[i], dists.distances[i]));
+        if(!inBlob) blobs.push_back(FilteredPoint(v, dists.p2s[i], dists.distances[i]));
     }
 }
 
 }    // namespace
 
-ContactModelFactory::ContactModelFactory (DynamicWorkCell* dwc, CNodePool* pool) :
-    _dwc (dwc), _pool (pool), _touchDist (0.01), _penDist (0.00001), _sepDist (0.1)
-{
-    _narrowStrategy                    = new ProximityStrategyPQP ();
+ContactModelFactory::ContactModelFactory(DynamicWorkCell* dwc, CNodePool* pool) :
+    _dwc(dwc), _pool(pool), _touchDist(0.01), _penDist(0.00001), _sepDist(0.1) {
+    _narrowStrategy                    = new ProximityStrategyPQP();
     CollisionToleranceStrategy* tStrat = _narrowStrategy;
-    CollisionStrategy::Ptr cStrat      = CollisionStrategy::make (tStrat, _sepDist);
-    _toleranceDetector                 = new CollisionDetector (_dwc->getWorkcell (), cStrat);
+    CollisionStrategy::Ptr cStrat      = CollisionStrategy::make(tStrat, _sepDist);
+    _toleranceDetector                 = new CollisionDetector(_dwc->getWorkcell(), cStrat);
 }
 
-void ContactModelFactory::broadPhaseCalc (rw::kinematics::State& state,
-                                          rw::kinematics::FramePairSet& oFrames)
-{
-    std::cout << "* Nr of Collisions: " << oFrames.size () << std::endl;
+void ContactModelFactory::broadPhaseCalc(rw::kinematics::State& state,
+                                         rw::kinematics::FramePairSet& oFrames) {
+    std::cout << "* Nr of Collisions: " << oFrames.size() << std::endl;
     CollisionDetector::QueryResult res;
-    _toleranceDetector->inCollision (state, &res, false);
+    _toleranceDetector->inCollision(state, &res, false);
     oFrames = res.collidingFrames;
-    std::cout << "* Nr of Collisions: " << oFrames.size () << std::endl;
+    std::cout << "* Nr of Collisions: " << oFrames.size() << std::endl;
 }
 
-void ContactModelFactory::narrowPhaseCalc (ConstraintEdge& edge, rw::kinematics::State& state)
-{
+void ContactModelFactory::narrowPhaseCalc(ConstraintEdge& edge, rw::kinematics::State& state) {
     std::cout << "NARROWPHASE CALC" << std::endl;
     // perform distance calculation and find pricipal contact points
     // that is find relevant contact points and save it in edge
 
-    if (edge.data == NULL) {
-        std::cout << "ERROR: Edge is not a ContactEdge" << std::endl;
-    }
-    if (edge.getType () == ConstraintEdge::Physical)
-        std::cout << "Edge is physical" << std::endl;
-    else
-        std::cout << "Edge is not physical" << std::endl;
+    if(edge.data == NULL) { std::cout << "ERROR: Edge is not a ContactEdge" << std::endl; }
+    if(edge.getType() == ConstraintEdge::Physical) std::cout << "Edge is physical" << std::endl;
+    else std::cout << "Edge is not physical" << std::endl;
 
-    Frame* frameA = edge.getNodes ().first->getFrame ();
-    Frame* frameB = edge.getNodes ().second->getFrame ();
-    if (frameA == NULL || frameB == NULL)
-        return;
+    Frame* frameA = edge.getNodes().first->getFrame();
+    Frame* frameB = edge.getNodes().second->getFrame();
+    if(frameA == NULL || frameB == NULL) return;
 
-    Transform3D<> wTa = Kinematics::worldTframe (frameA, state);
-    Transform3D<> wTb = Kinematics::worldTframe (frameB, state);
+    Transform3D<> wTa = Kinematics::worldTframe(frameA, state);
+    Transform3D<> wTb = Kinematics::worldTframe(frameB, state);
 
     DistanceResult& result =
         ((DistanceStrategy*) _narrowStrategy)
-            ->distance (frameA, wTa, frameB, wTb, ((MyContactInfo*) edge.data)->dataCache);
+            ->distance(frameA, wTa, frameB, wTb, ((MyContactInfo*) edge.data)->dataCache);
 
     /*if( !res ){
         std::cout<<"No collision models exist for frame" << std::endl;
         edge.setDistance(100);
         return;
     }*/
-    edge.setDistance (result.distance);
+    edge.setDistance(result.distance);
     std::cout << "MIN DISTANCE: " << result.distance << std::endl;
 }
 
-ConstraintEdge* ContactModelFactory::CreateConstraintEdge (CNodePair& nodes)
-{
+ConstraintEdge* ContactModelFactory::CreateConstraintEdge(CNodePair& nodes) {
     // The type of contact edge is determined from the type of the
     // two nodes
 
     ConstraintEdge::EdgeType type;
-    if (nodes.first->getNodeType () == ConstraintNode::CompositeBody ||
-        nodes.second->getNodeType () == ConstraintNode::CompositeBody ||
-        nodes.first->getNodeType () == ConstraintNode::MultiBody ||
-        nodes.second->getNodeType () == ConstraintNode::MultiBody) {
+    if(nodes.first->getNodeType() == ConstraintNode::CompositeBody ||
+       nodes.second->getNodeType() == ConstraintNode::CompositeBody ||
+       nodes.first->getNodeType() == ConstraintNode::MultiBody ||
+       nodes.second->getNodeType() == ConstraintNode::MultiBody) {
         type = ConstraintEdge::Structural;
     }
-    else if (nodes.first->isPhysical () && nodes.second->isPhysical ()) {
+    else if(nodes.first->isPhysical() && nodes.second->isPhysical()) {
         type = ConstraintEdge::Physical;
     }
-    else {
-        type = ConstraintEdge::Logical;
-    }
+    else { type = ConstraintEdge::Logical; }
     ConstraintEdge* edge;
 
     // The type of contact model is determined from the type of the
     // two bodies, for now we use a default model.
-    std::cout << "Creating edge! for nodes: " << nodes.first->getFrame ()->getName () << " and "
-              << nodes.second->getFrame ()->getName () << std::endl;
+    std::cout << "Creating edge! for nodes: " << nodes.first->getFrame()->getName() << " and "
+              << nodes.second->getFrame()->getName() << std::endl;
 
-    if (type == ConstraintEdge::Physical) {
+    if(type == ConstraintEdge::Physical) {
         std::cout << "PHYSICAL" << std::endl;
-        edge = _pool->createCEdge (nodes, ConstraintEdge::Physical);
-        edge->setThresholds (_touchDist, _penDist, _sepDist);
-        edge->data = (void*) new MyContactInfo ();
+        edge = _pool->createCEdge(nodes, ConstraintEdge::Physical);
+        edge->setThresholds(_touchDist, _penDist, _sepDist);
+        edge->data = (void*) new MyContactInfo();
         // edge = new MyContactEdge(nodes,_touchDist,_penDist, _sepDist);
 
-        RWBody* bodyA = nodes.first->getBody ();
-        RWBody* bodyB = nodes.second->getBody ();
+        RWBody* bodyA = nodes.first->getBody();
+        RWBody* bodyB = nodes.second->getBody();
 
         // ContactModel *model = new ContactModel( *bodyA, *bodyB, this);
-        ContactModel* model = new ContactModel (*nodes.first, *nodes.second, this);
-        Contact* contact    = new Contact (model);
+        ContactModel* model = new ContactModel(*nodes.first, *nodes.second, this);
+        Contact* contact    = new Contact(model);
         contact->bodyA      = bodyA;
         contact->bodyB      = bodyB;
 
@@ -198,7 +184,7 @@ ConstraintEdge* ContactModelFactory::CreateConstraintEdge (CNodePair& nodes)
     }
     else {
         std::cout << "NOT PHYSICAL" << std::endl;
-        edge = new ConstraintEdge (nodes, type, _touchDist, _penDist, _sepDist);
+        edge = new ConstraintEdge(nodes, type, _touchDist, _penDist, _sepDist);
     }
 
     return edge;
@@ -207,56 +193,52 @@ ConstraintEdge* ContactModelFactory::CreateConstraintEdge (CNodePair& nodes)
 /**
  * Determines contact information from multiple cooliding points
  */
-void ContactModelFactory::DetermineContact (ConstraintEdge& e, rw::kinematics::State& state)
-{
+void ContactModelFactory::DetermineContact(ConstraintEdge& e, rw::kinematics::State& state) {
     std::cout << "* Determine contact" << std::endl;
     MyContactInfo& edgeInfo = *((MyContactInfo*) e.data);
     std::cout << " Get frames! " << std::endl;
     Frame* frameA = NULL;    // = (Frame*) edgeInfo.narrowCache.f1;
     Frame* frameB = NULL;    // = (Frame*) edgeInfo.narrowCache.f2;
 
-    if (frameA == NULL || frameB == NULL)
-        std::cout << " Frame is NULLLLLL" << std::endl;
+    if(frameA == NULL || frameB == NULL) std::cout << " Frame is NULLLLLL" << std::endl;
 
     std::cout << "frames loaded " << std::endl;
-    Transform3D<> wTa = Kinematics::worldTframe (frameA, state);
-    Transform3D<> wTb = Kinematics::worldTframe (frameB, state);
+    Transform3D<> wTa = Kinematics::worldTframe(frameA, state);
+    Transform3D<> wTb = Kinematics::worldTframe(frameB, state);
 
     std::cout << " calc multi distance result: " << _touchDist << std::endl;
 
     MultiDistanceResult& result =
-        _narrowStrategy->distances (frameA, wTa, frameB, wTb, _touchDist, edgeInfo.dataCache);
+        _narrowStrategy->distances(frameA, wTa, frameB, wTb, _touchDist, edgeInfo.dataCache);
 
-    if (result.distances.size () == 0) {
-        _filteredPoints.clear ();
-        e._contact->contactPoints.resize (0);
+    if(result.distances.size() == 0) {
+        _filteredPoints.clear();
+        e._contact->contactPoints.resize(0);
         return;
     }
 
-    size_t nrOfContacts = result.distances.size ();
+    size_t nrOfContacts = result.distances.size();
     // TODO: filter away points that lie close to each other
-    Filter (result, _filteredPoints, 0.02);
+    Filter(result, _filteredPoints, 0.02);
 
     std::cout << "NR OF CONTACTS FOUND: " << nrOfContacts << std::endl;
     // resize the ContactPoint list so all contacts can fit into it
-    e._contact->contactPoints.resize (nrOfContacts);
+    e._contact->contactPoints.resize(nrOfContacts);
 
-    size_t idx                                 = 0;
-    std::list< FilteredPoint >::iterator fiter = _filteredPoints.begin ();
-    while (fiter != _filteredPoints.end ()) {
+    size_t idx                               = 0;
+    std::list<FilteredPoint>::iterator fiter = _filteredPoints.begin();
+    while(fiter != _filteredPoints.end()) {
         FilteredPoint& p = *fiter;
-        if (p.hits == 0) {
-            fiter = _filteredPoints.erase (fiter);
-        }
+        if(p.hits == 0) { fiter = _filteredPoints.erase(fiter); }
         else {
             ContactPoint& contact = e._contact->contactPoints[idx++];
-            deriveContactInfo (wTa, wTb, p.p1, p.p2, p.dist, contact);
+            deriveContactInfo(wTa, wTb, p.p1, p.p2, p.dist, contact);
             p.hits = 0;
             p.p    = p.p1;
             ++fiter;
         }
     }
-    e._contact->contactPoints.resize (idx);
+    e._contact->contactPoints.resize(idx);
     std::cout << "NR OF CONTACTS AFTER FILTER: " << idx << std::endl;
     /*    for(size_t j=0; j< nrOfContacts; j++){
             ContactPoint &contact = edge._contact->contactPoints[j];

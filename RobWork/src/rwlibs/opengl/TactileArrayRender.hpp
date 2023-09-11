@@ -37,27 +37,26 @@ namespace rwlibs { namespace opengl {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< TactileArrayRender > Ptr;
+        typedef rw::core::Ptr<TactileArrayRender> Ptr;
 
         /**
          * @brief constructor
          * @param sensor [in] the tactile array that is to be rendered
          */
-        TactileArrayRender (rw::core::Ptr< rw::sensor::TactileArrayModel > sensor) :
-            _sensor (sensor)
-        {}
+        TactileArrayRender(rw::core::Ptr<rw::sensor::TactileArrayModel> sensor) : _sensor(sensor) {}
 
         /**
          * @brief destructor
          */
-        virtual ~TactileArrayRender (){};
+        virtual ~TactileArrayRender(){};
 
-        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info, DrawableNode::DrawType type, double alpha) const
-        void draw (const rw::graphics::DrawableNode::RenderInfo& info,
-                   rw::graphics::DrawableNode::DrawType type, double alpha) const;
+        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info,
+        //! DrawableNode::DrawType type, double alpha) const
+        void draw(const rw::graphics::DrawableNode::RenderInfo& info,
+                  rw::graphics::DrawableNode::DrawType type, double alpha) const;
 
       private:
-        rw::core::Ptr< rw::sensor::TactileArrayModel > _sensor;
+        rw::core::Ptr<rw::sensor::TactileArrayModel> _sensor;
     };
     //! @}
 }}    // namespace rwlibs::opengl

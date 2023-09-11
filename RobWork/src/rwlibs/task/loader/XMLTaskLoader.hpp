@@ -18,11 +18,10 @@
 #ifndef RWLIBS_TASK_XMLTASKLOADER_HPP
 #define RWLIBS_TASK_XMLTASKLOADER_HPP
 
+#include <rw/core/Ptr.hpp>
 #include <rwlibs/task/Entity.hpp>
 #include <rwlibs/task/Task.hpp>
 #include <rwlibs/task/loader/TaskLoader.hpp>
-
-#include <rw/core/Ptr.hpp>
 
 #include <string>
 #include <xercesc/util/XercesDefs.hpp>
@@ -44,28 +43,28 @@ namespace rwlibs { namespace task {
     {
       public:
         //! @brief Constructor.
-        XMLTaskLoader () {}
+        XMLTaskLoader() {}
 
         //! @brief Destructor.
-        virtual ~XMLTaskLoader () {}
+        virtual ~XMLTaskLoader() {}
 
         //! @copydoc TaskLoader::load(const std::string&, const std::string&)
-        void load (const std::string& filename, const std::string& schemaFileName = "");
+        void load(const std::string& filename, const std::string& schemaFileName = "");
 
         //! @copydoc TaskLoader::load(std::istream&, const std::string&)
-        void load (std::istream& instream, const std::string& schemaFileName = "");
+        void load(std::istream& instream, const std::string& schemaFileName = "");
 
         //! @copydoc TaskLoader::getQTask
-        rwlibs::task::QTask::Ptr getQTask ();
+        rwlibs::task::QTask::Ptr getQTask();
 
         //! @copydoc TaskLoader::getCartesianTask
-        rwlibs::task::CartesianTask::Ptr getCartesianTask ();
+        rwlibs::task::CartesianTask::Ptr getCartesianTask();
 
         //! @copydoc TaskLoader::getTask
-        rwlibs::task::TaskBase::Ptr getTask ();
+        rwlibs::task::TaskBase::Ptr getTask();
 
         //! @copydoc TaskLoader::clone
-        TaskLoader::Ptr clone () const;
+        TaskLoader::Ptr clone() const;
 
         /**
          * @brief Utility class which initializes local static variables.
@@ -82,39 +81,38 @@ namespace rwlibs { namespace task {
         {
           public:
             //! @brief Initializes when constructed.
-            Initializer ();
+            Initializer();
         };
 
       private:
-        rwlibs::task::TaskBase::Ptr readTask (xercesc::DOMElement* element);
+        rwlibs::task::TaskBase::Ptr readTask(xercesc::DOMElement* element);
 
-        void readEntityData (xercesc::DOMElement* element,
-                             rw::core::Ptr< rwlibs::task::Entity > entity);
+        void readEntityData(xercesc::DOMElement* element,
+                            rw::core::Ptr<rwlibs::task::Entity> entity);
 
-        rwlibs::task::Action::Ptr readAction (xercesc::DOMElement* element);
+        rwlibs::task::Action::Ptr readAction(xercesc::DOMElement* element);
 
-        template< class T >
-        typename rwlibs::task::Motion< T >::Ptr readMotion (xercesc::DOMElement* element);
+        template<class T>
+        typename rwlibs::task::Motion<T>::Ptr readMotion(xercesc::DOMElement* element);
 
-        template< class T >
-        typename rwlibs::task::Target< T >::Ptr readTarget (xercesc::DOMElement* element);
+        template<class T>
+        typename rwlibs::task::Target<T>::Ptr readTarget(xercesc::DOMElement* element);
 
-        template< class T >
-        void readTargets (xercesc::DOMElement* element, typename rwlibs::task::Task< T >::Ptr task);
+        template<class T>
+        void readTargets(xercesc::DOMElement* element, typename rwlibs::task::Task<T>::Ptr task);
 
-        template< class T >
-        void readEntities (xercesc::DOMElement* element,
-                           typename rwlibs::task::Task< T >::Ptr task);
+        template<class T>
+        void readEntities(xercesc::DOMElement* element, typename rwlibs::task::Task<T>::Ptr task);
 
-        void readAugmentations (xercesc::DOMElement* element, rwlibs::task::TaskBase::Ptr task);
+        void readAugmentations(xercesc::DOMElement* element, rwlibs::task::TaskBase::Ptr task);
 
-        template< class T >
-        typename rwlibs::task::Task< T >::Ptr readTemplateTask (xercesc::DOMElement* element);
+        template<class T>
+        typename rwlibs::task::Task<T>::Ptr readTemplateTask(xercesc::DOMElement* element);
 
       private:
         static const Initializer initializer;
 
-        typedef std::map< std::string, rwlibs::task::TargetBase::Ptr > TargetMap;
+        typedef std::map<std::string, rwlibs::task::TargetBase::Ptr> TargetMap;
         TargetMap _targetMap;
 
         rwlibs::task::QTask::Ptr _qTask;

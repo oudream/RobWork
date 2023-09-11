@@ -35,9 +35,9 @@ namespace rw { namespace invkin {
     {
       public:
         //! @brief Smart pointer type to ClosedFormURSolver
-        typedef rw::core::Ptr< ClosedFormIKSolverUR > Ptr;
+        typedef rw::core::Ptr<ClosedFormIKSolverUR> Ptr;
         //! @brief Smart pointer type to const ClosedFormURSolver
-        typedef rw::core::Ptr< const ClosedFormIKSolverUR > CPtr;
+        typedef rw::core::Ptr<const ClosedFormIKSolverUR> CPtr;
 
         /**
          * @brief Construct new closed form solver for a Universal Robot.
@@ -46,66 +46,65 @@ namespace rw { namespace invkin {
          * @param device [in] the device.
          * @param state [in] the state to use to extract dimensions.
          */
-        ClosedFormIKSolverUR (const rw::core::Ptr< const rw::models::SerialDevice > device,
-                              const rw::kinematics::State& state);
-
+        ClosedFormIKSolverUR(const rw::core::Ptr<const rw::models::SerialDevice> device,
+                             const rw::kinematics::State& state);
 
         //! @brief Destructor.
-        virtual ~ClosedFormIKSolverUR ();
+        virtual ~ClosedFormIKSolverUR();
 
         //! @copydoc InvKinSolver::solve
-        std::vector< rw::math::Q > solve (const rw::math::Transform3D< double >& baseTend,
-                                          const rw::kinematics::State& state) const;
+        std::vector<rw::math::Q> solve(const rw::math::Transform3D<double>& baseTend,
+                                       const rw::kinematics::State& state) const;
 
         //! @copydoc InvKinSolver::setCheckJointLimits
-        void setCheckJointLimits (bool check);
+        void setCheckJointLimits(bool check);
 
         /**
          * @copydoc InvKinSolver::getTCP
          */
-        virtual rw::core::Ptr< const rw::kinematics::Frame > getTCP () const;
+        virtual rw::core::Ptr<const rw::kinematics::Frame> getTCP() const;
 
       private:
-        rw::math::Q adjustJoints (const rw::math::Q& q) const;
+        rw::math::Q adjustJoints(const rw::math::Q& q) const;
 
-        void addBaseAngleSolutions (const rw::math::Transform3D< double >& baseTend,
-                                    const rw::math::Vector3D< double >& baseTdh5,
-                                    rw::kinematics::State& state, double angle,
-                                    std::vector< rw::math::Q >& res) const;
+        void addBaseAngleSolutions(const rw::math::Transform3D<double>& baseTend,
+                                   const rw::math::Vector3D<double>& baseTdh5,
+                                   rw::kinematics::State& state, double angle,
+                                   std::vector<rw::math::Q>& res) const;
 
-        void addElbowSolutions (const rw::math::Transform3D< double >& baseTend,
-                                const rw::math::Vector3D< double >& baseTdh5,
-                                rw::kinematics::State& state, double baseAngle,
-                                std::pair< double, double > elbow,
-                                std::vector< rw::math::Q >& res) const;
+        void addElbowSolutions(const rw::math::Transform3D<double>& baseTend,
+                               const rw::math::Vector3D<double>& baseTdh5,
+                               rw::kinematics::State& state, double baseAngle,
+                               std::pair<double, double> elbow,
+                               std::vector<rw::math::Q>& res) const;
 
         // UR specific geometric functions
-        std::pair< rw::math::Vector3D< double >, rw::math::Vector3D< double > >
-        getJoint4Positions (const rw::math::Vector3D<>& baseTdh5, const rw::math::Vector3D<>& tcpZ,
-                            const rw::kinematics::State& state) const;
-        std::pair< std::pair< double, double >, std::pair< double, double > >
-        getElbowJoints (const rw::math::Vector3D<>& intersection,
-                        rw::kinematics::State& state) const;
-        rw::math::Q getOrientationJoints (const rw::math::Transform3D<>& baseTend,
-                                          const rw::math::Vector3D<>& baseTdh5,
-                                          rw::kinematics::State& state) const;
-        std::vector< double > findBaseAngle (const rw::math::Vector2D<>& pos,
-                                             const rw::kinematics::State& state) const;
+        std::pair<rw::math::Vector3D<double>, rw::math::Vector3D<double>>
+        getJoint4Positions(const rw::math::Vector3D<>& baseTdh5, const rw::math::Vector3D<>& tcpZ,
+                           const rw::kinematics::State& state) const;
+        std::pair<std::pair<double, double>, std::pair<double, double>>
+        getElbowJoints(const rw::math::Vector3D<>& intersection,
+                       rw::kinematics::State& state) const;
+        rw::math::Q getOrientationJoints(const rw::math::Transform3D<>& baseTend,
+                                         const rw::math::Vector3D<>& baseTdh5,
+                                         rw::kinematics::State& state) const;
+        std::vector<double> findBaseAngle(const rw::math::Vector2D<>& pos,
+                                          const rw::kinematics::State& state) const;
 
         // Generic geometric functions
-        static std::pair< rw::math::Vector3D<>, rw::math::Vector3D<> >
-        findCirclePlaneIntersection (const rw::math::Vector3D<>& circleCenter, double radius,
-                                     const rw::math::Vector3D<>& circleDir1,
-                                     const rw::math::Vector3D<>& circleDir2,
-                                     const rw::math::Vector3D<>& planeNormal);
-        static std::pair< std::pair< double, double >, std::pair< double, double > >
-        findTwoBarAngles (const rw::math::Vector2D<>& pos, double L1, double L2);
-        static rw::math::Vector3D<> getPerpendicularVector (const rw::math::Vector3D<>& vec);
+        static std::pair<rw::math::Vector3D<>, rw::math::Vector3D<>>
+        findCirclePlaneIntersection(const rw::math::Vector3D<>& circleCenter, double radius,
+                                    const rw::math::Vector3D<>& circleDir1,
+                                    const rw::math::Vector3D<>& circleDir2,
+                                    const rw::math::Vector3D<>& planeNormal);
+        static std::pair<std::pair<double, double>, std::pair<double, double>>
+        findTwoBarAngles(const rw::math::Vector2D<>& pos, double L1, double L2);
+        static rw::math::Vector3D<> getPerpendicularVector(const rw::math::Vector3D<>& vec);
 
       private:
-        const rw::core::Ptr< const rw::models::SerialDevice > _device;
+        const rw::core::Ptr<const rw::models::SerialDevice> _device;
         bool _checkJointLimits;
-        std::vector< const rw::kinematics::Frame* > _frames;
+        std::vector<const rw::kinematics::Frame*> _frames;
         double _lTcp, _baseRadius, _baseRadiusSqr, _endCircleRadius, _l1, _l2, _lJ0J1;
 
         rw::kinematics::FKRange _fkRange0_2;

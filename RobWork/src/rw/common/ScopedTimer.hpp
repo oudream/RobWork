@@ -20,7 +20,7 @@
 
 #if !defined(SWIG)
 #include <rw/common/Timer.hpp>
-#endif 
+#endif
 namespace rw { namespace common {
 
     /**
@@ -47,18 +47,18 @@ namespace rw { namespace common {
          * @brief constructor. Starts the timer
          * @param timer
          */
-        ScopedTimer (rw::common::Timer& timer) : _timer (timer) { _timer.resume (); }
+        ScopedTimer(rw::common::Timer& timer) : _timer(timer) { _timer.resume(); }
 
         /**
          * @brief destructor, stops the timer
          */
-        virtual ~ScopedTimer () { _timer.pause (); }
+        virtual ~ScopedTimer() { _timer.pause(); }
 
         /**
          * @brief Returns the time wrapped in the ScopedTimer
          * @return Timer wrapped
          */
-        rw::common::Timer& getTimer () { return _timer; }
+        rw::common::Timer& getTimer() { return _timer; }
 
       private:
         rw::common::Timer& _timer;

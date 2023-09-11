@@ -25,47 +25,41 @@ using namespace rw::math;
 using namespace rw::geometry;
 using namespace rwlibs::csg;
 
-SimpleFinger::SimpleFinger () :
-    _length (0.1), _width (0.025), _depth (0.01), _chflength (0.0), _chfdepth (0.0),
-    _cutpos (0.075), _cutdepth (0.0), _cutangle (120.0), _cuttilt (0.0)
-{}
+SimpleFinger::SimpleFinger() :
+    _length(0.1), _width(0.025), _depth(0.01), _chflength(0.0), _chfdepth(0.0), _cutpos(0.075),
+    _cutdepth(0.0), _cutangle(120.0), _cuttilt(0.0) {}
 
-SimpleFinger::~SimpleFinger ()
-{}
+SimpleFinger::~SimpleFinger() {}
 
-SimpleFinger::SimpleFinger (const rw::math::Q& initQ)
-{
-    setParameters (initQ);
+SimpleFinger::SimpleFinger(const rw::math::Q& initQ) {
+    setParameters(initQ);
 }
 
-TriMesh::Ptr SimpleFinger::createMesh (int resolution) const
-{
+TriMesh::Ptr SimpleFinger::createMesh(int resolution) const {
     /* make base geometry */
-    CSGModel::Ptr base = CSGModelFactory::makeBox (static_cast< float > (_length),
-                                                   static_cast< float > (_width),
-                                                   static_cast< float > (_depth));
-    base->translate (static_cast< float > (_length / 2), 0, static_cast< float > (_depth / 2));
+    CSGModel::Ptr base = CSGModelFactory::makeBox(
+        static_cast<float>(_length), static_cast<float>(_width), static_cast<float>(_depth));
+    base->translate(static_cast<float>(_length / 2), 0, static_cast<float>(_depth / 2));
 
     /* make chamfering */
-    Vector3D<> point (_length - _chflength, 0.0, _depth);
-    Vector3D<> normal = Vector3D<> (_chfdepth, 0.0, _chflength);
-    base->subtract (CSGModelFactory::makePlane (point, -normal));
+    Vector3D<> point(_length - _chflength, 0.0, _depth);
+    Vector3D<> normal = Vector3D<>(_chfdepth, 0.0, _chflength);
+    base->subtract(CSGModelFactory::makePlane(point, -normal));
 
     /* make cutout */
-    CSGModel::Ptr cutout = CSGModelFactory::makeWedge (static_cast< float > (_cutangle * Deg2Rad));
-    cutout->rotate (static_cast< float > (-90 * Deg2Rad), static_cast< float > (90 * Deg2Rad), 0);
-    cutout->rotate (static_cast< float > (_cuttilt * Deg2Rad), 0, 0);
-    cutout->translate (static_cast< float > (_cutpos), 0, static_cast< float > (_cutdepth));
-    base->subtract (cutout);
+    CSGModel::Ptr cutout = CSGModelFactory::makeWedge(static_cast<float>(_cutangle * Deg2Rad));
+    cutout->rotate(static_cast<float>(-90 * Deg2Rad), static_cast<float>(90 * Deg2Rad), 0);
+    cutout->rotate(static_cast<float>(_cuttilt * Deg2Rad), 0, 0);
+    cutout->translate(static_cast<float>(_cutpos), 0, static_cast<float>(_cutdepth));
+    base->subtract(cutout);
 
-    TriMesh::Ptr mesh = base->getTriMesh ();
+    TriMesh::Ptr mesh = base->getTriMesh();
 
     return mesh;
 }
 
-Q SimpleFinger::getParameters () const
-{
-    Q q (9);
+Q SimpleFinger::getParameters() const {
+    Q q(9);
 
     q[0] = _length;
     q[1] = _width;
@@ -80,11 +74,8 @@ Q SimpleFinger::getParameters () const
     return q;
 }
 
-void SimpleFinger::setParameters (const rw::math::Q& q)
-{
-    if (q.size () != 9) {
-        RW_THROW ("Size of parameter list must be 9!");
-    }
+void SimpleFinger::setParameters(const rw::math::Q& q) {
+    if(q.size() != 9) { RW_THROW("Size of parameter list must be 9!"); }
 
     _length    = q[0];
     _width     = q[1];

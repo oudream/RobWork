@@ -51,22 +51,22 @@ namespace rwsim { namespace log {
     {
       public:
         //! @brief Constructor.
-        SimulatorLogUtil ();
+        SimulatorLogUtil();
 
         //! @brief Destructor.
-        virtual ~SimulatorLogUtil ();
+        virtual ~SimulatorLogUtil();
 
         /**
          * @brief Set the simulator log to write to.
          * @param log [in] the base log scope.
          */
-        virtual void setSimulatorLog (rw::core::Ptr< rwsim::log::SimulatorLogScope > log);
+        virtual void setSimulatorLog(rw::core::Ptr<rwsim::log::SimulatorLogScope> log);
 
         /**
          * @brief Check if there is a log to write to.
          * @return true if logging is enabled.
          */
-        virtual bool doLog () const;
+        virtual bool doLog() const;
 
         /**
          * @brief Begin a new discrete simulation step.
@@ -74,14 +74,14 @@ namespace rwsim { namespace log {
          * @param file [in] filename where logging is happening.
          * @param line [in] the line number of the file where logging is happening.
          */
-        virtual void beginStep (double time, const char* file = "", int line = -1);
+        virtual void beginStep(double time, const char* file = "", int line = -1);
 
         /**
          * @brief End a discrete simulation step.
          * @param time [in] simulation time at end of step.
          * @param line [in] the line number of the file where logging is happening.
          */
-        virtual void endStep (double time, int line = -1);
+        virtual void endStep(double time, int line = -1);
 
         /**
          * @brief Add a grouping section.
@@ -89,13 +89,13 @@ namespace rwsim { namespace log {
          * @param file [in] filename where logging is happening.
          * @param line [in] the line number of the file where logging is happening.
          */
-        virtual void beginSection (const std::string& name, const char* file = "", int line = -1);
+        virtual void beginSection(const std::string& name, const char* file = "", int line = -1);
 
         /**
          * @brief End current grouping section.
          * @param line [in] the line number of the file where logging is happening.
          */
-        virtual void endSection (int line = -1);
+        virtual void endSection(int line = -1);
 
         /**
          * @brief Make a subscope.
@@ -104,8 +104,8 @@ namespace rwsim { namespace log {
          * @param line [in] the line number of the file where logging is happening.
          * @return a new log scope.
          */
-        virtual rwsim::log::SimulatorLogScope* makeScope (const std::string& name,
-                                                          const char* file = "", int line = -1);
+        virtual rwsim::log::SimulatorLogScope* makeScope(const std::string& name,
+                                                         const char* file = "", int line = -1);
 
         /**
          * @brief Add numeric values.
@@ -115,9 +115,9 @@ namespace rwsim { namespace log {
          * @param file [in] filename where logging is happening.
          * @param line [in] the line number of the file where logging is happening.
          */
-        virtual void addValues (const std::string& description, const std::vector< double >& values,
-                                const std::vector< std::string >& labels, const char* file = "",
-                                int line = -1);
+        virtual void addValues(const std::string& description, const std::vector<double>& values,
+                               const std::vector<std::string>& labels, const char* file = "",
+                               int line = -1);
 
         /**
          * @brief Log a message.
@@ -126,8 +126,8 @@ namespace rwsim { namespace log {
          * @param line [in] the line number of the file where logging is happening.
          * @return a stream to write longer message to.
          */
-        virtual std::ostream& log (const std::string& description, const char* file = "",
-                                   int line = -1);
+        virtual std::ostream& log(const std::string& description, const char* file = "",
+                                  int line = -1);
 
         /**
          * @brief Log a message.
@@ -135,7 +135,7 @@ namespace rwsim { namespace log {
          * @param line [in] the line number of the file where logging is happening.
          * @return a stream to write longer message to.
          */
-        virtual std::ostream& log (const char* file = "", int line = -1);
+        virtual std::ostream& log(const char* file = "", int line = -1);
 
         /**
          * @brief Add positions for bodies to log.
@@ -144,10 +144,9 @@ namespace rwsim { namespace log {
          * @param file [in] filename where logging is happening.
          * @param line [in] the line number of the file where logging is happening.
          */
-        virtual void
-        addPositions (const std::string& description,
-                      const std::map< std::string, rw::math::Transform3D<> >& positions,
-                      const char* file = "", int line = -1);
+        virtual void addPositions(const std::string& description,
+                                  const std::map<std::string, rw::math::Transform3D<>>& positions,
+                                  const char* file = "", int line = -1);
 
         /**
          * @brief Add velocities for bodies to log.
@@ -157,9 +156,9 @@ namespace rwsim { namespace log {
          * @param line [in] the line number of the file where logging is happening.
          */
         virtual void
-        addVelocities (const std::string& description,
-                       const std::map< std::string, rw::math::VelocityScrew6D<> >& velocities,
-                       const char* file = "", int line = -1);
+        addVelocities(const std::string& description,
+                      const std::map<std::string, rw::math::VelocityScrew6D<>>& velocities,
+                      const char* file = "", int line = -1);
 
         /**
          * @brief Add results from a collision strategy.
@@ -169,9 +168,9 @@ namespace rwsim { namespace log {
          * @param line [in] the line number of the file where logging is happening.
          */
         virtual void
-        addCollisionResults (const std::string& description,
-                             const std::vector< rw::proximity::CollisionStrategy::Result >& results,
-                             const char* file = "", int line = -1);
+        addCollisionResults(const std::string& description,
+                            const std::vector<rw::proximity::CollisionStrategy::Result>& results,
+                            const char* file = "", int line = -1);
 
         /**
          * @brief Add results from a distance strategy.
@@ -181,9 +180,9 @@ namespace rwsim { namespace log {
          * @param line [in] the line number of the file where logging is happening.
          */
         virtual void
-        addDistanceResults (const std::string& description,
-                            const std::vector< rw::proximity::DistanceStrategy::Result >& results,
-                            const char* file = "", int line = -1);
+        addDistanceResults(const std::string& description,
+                           const std::vector<rw::proximity::DistanceStrategy::Result>& results,
+                           const char* file = "", int line = -1);
 
         /**
          * @brief Add results from a multi-distance strategy.
@@ -192,9 +191,9 @@ namespace rwsim { namespace log {
          * @param file [in] filename where logging is happening.
          * @param line [in] the line number of the file where logging is happening.
          */
-        virtual void addDistanceMultiResults (
+        virtual void addDistanceMultiResults(
             const std::string& description,
-            const std::vector< rw::proximity::DistanceMultiStrategy::Result >& results,
+            const std::vector<rw::proximity::DistanceMultiStrategy::Result>& results,
             const char* file = "", int line = -1);
 
       protected:
@@ -202,7 +201,7 @@ namespace rwsim { namespace log {
         rwsim::log::SimulatorLogScope* _scope;
 
       private:
-        rw::core::Ptr< rwsim::log::SimulatorLogScope > _log;
+        rw::core::Ptr<rwsim::log::SimulatorLogScope> _log;
         std::stringstream _dummyStream;
     };
     //! @}

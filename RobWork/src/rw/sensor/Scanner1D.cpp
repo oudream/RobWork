@@ -19,5 +19,4 @@
 
 using namespace rw::sensor;
 
-Scanner1D::~Scanner1D ()
-{}
+Scanner1D::~Scanner1D() {}

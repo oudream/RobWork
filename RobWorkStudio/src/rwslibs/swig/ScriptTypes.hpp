@@ -20,18 +20,17 @@
 
 #include <rw/core/Ptr.hpp>
 #include <rw/geometry/Geometry.hpp>
+#include <rw/kinematics/FixedFrame.hpp>
 #include <rw/kinematics/Frame.hpp>
 #include <rw/kinematics/MovableFrame.hpp>
-#include <rw/kinematics/FixedFrame.hpp>
 #include <rw/kinematics/State.hpp>
+#include <rw/models/JointDevice.hpp>
+#include <rw/models/ParallelDevice.hpp>
+#include <rw/models/SerialDevice.hpp>
+#include <rw/models/TreeDevice.hpp>
 #include <rwlibs/swig/ScriptTypes.hpp>
 #include <rws/RobWorkStudio.hpp>
 #include <rws/RobWorkStudioPlugin.hpp>
-#include <rw/models/JointDevice.hpp>
-#include <rw/models/SerialDevice.hpp>
-#include <rw/models/TreeDevice.hpp>
-#include <rw/models/ParallelDevice.hpp>
-
 
 /*
 #ifdef __cplusplus
@@ -44,11 +43,10 @@ extern "C" {
 */
 namespace rws { namespace swig {
 
-    template< typename T > std::string toString (const T& x)
-    {
+    template<typename T> std::string toString(const T& x) {
         std::ostringstream buf;
         buf << x;
-        return buf.str ();
+        return buf.str();
     }
 
     typedef rws::RobWorkStudio RobWorkStudio;
@@ -57,59 +55,61 @@ namespace rws { namespace swig {
     typedef rws::RWStudioView3D RWStudioView3D;
 
     // for now we add all static functions here
-    rw::core::Ptr<RobWorkStudio>& getRobWorkStudio ();
-    rw::core::Ptr<RobWorkStudio> getRobWorkStudioFromQt ();
+    rw::core::Ptr<RobWorkStudio>& getRobWorkStudio();
+    rw::core::Ptr<RobWorkStudio> getRobWorkStudioFromQt();
 
     /**
      * @brief set current RobWorkStudio instance
      */
-    void setRobWorkStudio (RobWorkStudio* rwstudio);
+    void setRobWorkStudio(RobWorkStudio* rwstudio);
 
     /// These functions all work on the current RobWorkStudio state
 
-    #if defined(SWIGPYTHON)
-        rw::core::Ptr< RobWorkStudio >& getRobWorkStudioInstance (const std::string& args = "RobWorkStudio --exclude-plugins libsdurws_pythoneditor.so");
-    #else
-        rw::core::Ptr< RobWorkStudio >& getRobWorkStudioInstance (const std::string& args = "RobWorkStudio");
-    #endif
-    void closeRobWorkStudio ();
+#if defined(SWIGPYTHON)
+    rw::core::Ptr<RobWorkStudio>& getRobWorkStudioInstance(
+        const std::string& args = "RobWorkStudio --exclude-plugins libsdurws_pythoneditor.so");
+#else
+    rw::core::Ptr<RobWorkStudio>&
+    getRobWorkStudioInstance(const std::string& args = "RobWorkStudio");
+#endif
+    void closeRobWorkStudio();
 
-    bool isRunning ();
+    bool isRunning();
 
-    const rw::kinematics::State& getState ();
-    void setState (rw::kinematics::State& state);
-    rw::core::Ptr< rw::models::Device > findDevice (const std::string& name);
-    rw::core::Ptr< rw::models::JointDevice > findJointDevice (const std::string& name);
-    rw::core::Ptr< rw::models::SerialDevice > findSerialDevice (const std::string& name);
-    rw::core::Ptr< rw::models::TreeDevice > findTreeDevice (const std::string& name);
-    rw::core::Ptr< rw::models::ParallelDevice > findParallelDevice (const std::string& name);
-    rw::kinematics::Frame* findFrame (const std::string& name);
-    rw::kinematics::MovableFrame* findMovableFrame (const std::string& name);
-    rw::kinematics::FixedFrame* findFixedFrame (const std::string& name);
+    const rw::kinematics::State& getState();
+    void setState(rw::kinematics::State& state);
+    rw::core::Ptr<rw::models::Device> findDevice(const std::string& name);
+    rw::core::Ptr<rw::models::JointDevice> findJointDevice(const std::string& name);
+    rw::core::Ptr<rw::models::SerialDevice> findSerialDevice(const std::string& name);
+    rw::core::Ptr<rw::models::TreeDevice> findTreeDevice(const std::string& name);
+    rw::core::Ptr<rw::models::ParallelDevice> findParallelDevice(const std::string& name);
+    rw::kinematics::Frame* findFrame(const std::string& name);
+    rw::kinematics::MovableFrame* findMovableFrame(const std::string& name);
+    rw::kinematics::FixedFrame* findFixedFrame(const std::string& name);
 
-    void moveTo (rw::kinematics::MovableFrame* mframe, rw::math::Transform3D< double > wTframe);
-    void moveTo (rw::kinematics::Frame* frame, rw::kinematics::MovableFrame* mframe,
-                 rw::math::Transform3D< double > wTtcp);
-    void moveTo (const std::string& fname, const std::string& mname,
-                 rw::math::Transform3D< double > wTframe);
+    void moveTo(rw::kinematics::MovableFrame* mframe, rw::math::Transform3D<double> wTframe);
+    void moveTo(rw::kinematics::Frame* frame, rw::kinematics::MovableFrame* mframe,
+                rw::math::Transform3D<double> wTtcp);
+    void moveTo(const std::string& fname, const std::string& mname,
+                rw::math::Transform3D<double> wTframe);
 
     // utility functions for
-    rw::math::Q getQ (rw::core::Ptr< rw::models::Device > dev);
-    void setQ (rw::core::Ptr< rw::models::Device > dev, rw::math::Q);
+    rw::math::Q getQ(rw::core::Ptr<rw::models::Device> dev);
+    void setQ(rw::core::Ptr<rw::models::Device> dev, rw::math::Q);
 
-    void setTransform (rw::kinematics::Frame* mframe, rw::math::Transform3D< double > wTframe);
+    void setTransform(rw::kinematics::Frame* mframe, rw::math::Transform3D<double> wTframe);
 
-    rw::math::Transform3D< double > wTf (rw::kinematics::Frame* frame);
-    rw::math::Transform3D< double > wTf (const std::string& name);
-    rw::math::Transform3D< double > fTf (rw::kinematics::Frame* frame, rw::kinematics::Frame* to);
-    rw::math::Transform3D< double > fTf (const std::string& from, const std::string& to);
+    rw::math::Transform3D<double> wTf(rw::kinematics::Frame* frame);
+    rw::math::Transform3D<double> wTf(const std::string& name);
+    rw::math::Transform3D<double> fTf(rw::kinematics::Frame* frame, rw::kinematics::Frame* to);
+    rw::math::Transform3D<double> fTf(const std::string& from, const std::string& to);
 
     /**
      * @brief add geometry to an existing frame or object with name objName
      * @param frameName
      * @param geom
      */
-    void addGeometry (const std::string& objName, rw::geometry::Geometry::Ptr geom);
+    void addGeometry(const std::string& objName, rw::geometry::Geometry::Ptr geom);
 
     /**
      * @brief adds an rigid object to the scene. If a frame with the objName allready exist then
@@ -117,8 +117,8 @@ namespace rws { namespace swig {
      * @param objName
      * @param geom
      */
-    void addObject (const std::string& objName, rw::geometry::Geometry::Ptr geom);
-    void removeObject (const std::string& objName);
+    void addObject(const std::string& objName, rw::geometry::Geometry::Ptr geom);
+    void removeObject(const std::string& objName);
 
 }}    // namespace rws::swig
 

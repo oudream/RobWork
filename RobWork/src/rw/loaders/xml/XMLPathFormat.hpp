@@ -34,62 +34,62 @@ namespace rw { namespace loaders {
          * @brief Identifier for rw::trajectory::QPath in the XML format.
          * @return the identifier.
          */
-        static const XMLCh* idQPath ();
+        static const XMLCh* idQPath();
 
         /**
          * @brief Identifier for rw::trajectory::Vector3DPath in the XML format.
          * @return the identifier.
          */
-        static const XMLCh* idV3DPath ();
+        static const XMLCh* idV3DPath();
 
         /**
          * @brief Identifier for rw::trajectory::Rotation3DPath in the XML format.
          * @return the identifier.
          */
-        static const XMLCh* idR3DPath ();
+        static const XMLCh* idR3DPath();
 
         /**
          * @brief Identifier for rw::trajectory::Transform3DPath in the XML format.
          * @return the identifier.
          */
-        static const XMLCh* idT3DPath ();
+        static const XMLCh* idT3DPath();
 
         /**
          * @brief Identifier for rw::trajectory::StatePath in the XML format.
          * @return the identifier.
          */
-        static const XMLCh* idStatePath ();
+        static const XMLCh* idStatePath();
 
         /**
          * @brief Identifier for rw::trajectory::TimedQPath in the XML format.
          * @return the identifier.
          */
-        static const XMLCh* idTimedQPath ();
+        static const XMLCh* idTimedQPath();
 
         /**
          * @brief Identifier for rw::trajectory::TimedState in the XML format.
          * @return the identifier.
          */
-        static const XMLCh* idTimedState ();
+        static const XMLCh* idTimedState();
 
         /**
          * @brief Identifier for rw::trajectory::TimedQ in the XML format.
          * @return the identifier.
          */
-        static const XMLCh* idTimedQ ();
+        static const XMLCh* idTimedQ();
 
         /**
          * @brief Identifier for rw::trajectory::TimedStatePath in the XML format.
          * @return the identifier.
          */
-        static const XMLCh* idTimedStatePath ();
+        static const XMLCh* idTimedStatePath();
 
         /**
          * @brief Identifier for time attribute used for rw::trajectory::TimedQPath and
          * rw::trajectory::TimedStatePath in the XML format.
          * @return the identifier.
          */
-        static const XMLCh* idTime ();
+        static const XMLCh* idTime();
 
         /**
          * @brief Utility class which initializes local static variables.
@@ -106,13 +106,13 @@ namespace rw { namespace loaders {
         {
           public:
             //! @brief Initializes when constructed.
-            Initializer ();
+            Initializer();
         };
 
       private:
         static const Initializer initializer;
 
-        XMLPathFormat (){}
+        XMLPathFormat() {}
     };
 
     /* @} */

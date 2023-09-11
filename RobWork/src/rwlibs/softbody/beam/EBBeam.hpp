@@ -53,8 +53,8 @@ namespace rwlibs { namespace softbody {
          * @param h stepsize used in the beam
          * @param g2 vertical component of the gravity direction vector
          **/
-        EBBeam (const double H, const double K, const double L, const double E, const double rho,
-                const double h, const double g2);
+        EBBeam(const double H, const double K, const double L, const double E, const double rho,
+               const double h, const double g2);
 
         /**
          * @brief returns the deformation at x = i * h
@@ -62,7 +62,7 @@ namespace rwlibs { namespace softbody {
          * @param i the index at which to return the deformation
          * @return the deformation
          **/
-        double operator() (const int i) const;
+        double operator()(const int i) const;
 
         /**
          * @brief returns the first derivative of the deformation at x = i * h
@@ -70,7 +70,7 @@ namespace rwlibs { namespace softbody {
          * @param i the index at which to return the deformation
          * @return the first derivative of the deformation
          **/
-        double d (const int i) const;
+        double d(const int i) const;
 
       private:
         const double _H, _K, _L, _E, _rho, _h;

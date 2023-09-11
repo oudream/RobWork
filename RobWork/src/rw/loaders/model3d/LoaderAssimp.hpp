@@ -43,16 +43,16 @@ namespace rw { namespace loaders {
     {
       public:
         //! @brief Constructor
-        LoaderAssimp ();
+        LoaderAssimp();
 
         //! @brief Destructor
-        virtual ~LoaderAssimp ();
+        virtual ~LoaderAssimp();
 
         //! @copydoc Model3DLoader::load
-        rw::graphics::Model3D::Ptr load (const std::string& filename);
+        rw::graphics::Model3D::Ptr load(const std::string& filename);
 
         //! @copydoc Model3DLoader::getModelFormats
-        std::vector< std::string > getModelFormats () {return {".OBJ",".DAE",".STP",".STEP"};}
+        std::vector<std::string> getModelFormats() { return {".OBJ", ".DAE", ".STP", ".STEP"}; }
     };
     //! @}
 }}     // namespace rw::loaders

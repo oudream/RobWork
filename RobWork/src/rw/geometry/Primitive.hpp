@@ -39,40 +39,40 @@ namespace rw { namespace geometry {
     {
       public:
         //! Smart pointer to this type of class.
-        typedef rw::core::Ptr< Primitive > Ptr;
+        typedef rw::core::Ptr<Primitive> Ptr;
 
       public:
         //! @brief destructor
-        virtual ~Primitive (){};
+        virtual ~Primitive(){};
 
         /**
          * @copydoc GeometryData::getTriMesh
          * @note primitives allways return a new trimesh
          */
-        TriMesh::Ptr getTriMesh (bool forceCopy = true) { return createMesh (_levels); }
+        TriMesh::Ptr getTriMesh(bool forceCopy = true) { return createMesh(_levels); }
 
         /**
          * @brief make a trimesh from this primitive. Use \b granularity to
          * specify minimum number of line segments a half circle is split into
          * @param resolution [in]
          */
-        virtual TriMesh::Ptr createMesh (int resolution) const = 0;
+        virtual TriMesh::Ptr createMesh(int resolution) const = 0;
 
         /**
          * @brief get the parameters that define this primitive
          */
-        virtual rw::math::Q getParameters () const = 0;
+        virtual rw::math::Q getParameters() const = 0;
 
         /**
          * @brief set the parameters that define this primitive
          */
-        virtual void setParameters (const rw::math::Q& q) = 0;
+        virtual void setParameters(const rw::math::Q& q) = 0;
 
         //! @copydoc GeometryData::isConvex
-        virtual bool isConvex () { return true; }
+        virtual bool isConvex() { return true; }
 
         //! test if a point is on the border or inside this primitive
-        bool isInside (const rw::math::Vector3D< double >& point) { return doIsInside (point); };
+        bool isInside(const rw::math::Vector3D<double>& point) { return doIsInside(point); };
 
       protected:
         /**
@@ -80,10 +80,9 @@ namespace rw { namespace geometry {
          * @param point [in] point to check.
          * @return true if inside geometry, false otherwise.
          */
-        virtual bool doIsInside (const rw::math::Vector3D< double >& point)
-        {
-            RW_THROW ("Current primitive " << GeometryData::toString (getType ())
-                                           << " does not implement isInside method!");
+        virtual bool doIsInside(const rw::math::Vector3D<double>& point) {
+            RW_THROW("Current primitive " << GeometryData::toString(getType())
+                                          << " does not implement isInside method!");
             return false;
         }
 
@@ -92,7 +91,7 @@ namespace rw { namespace geometry {
          *
          * @param levels [in] mesh resolution.
          */
-        Primitive (int levels = 20) : _levels (levels) {}
+        Primitive(int levels = 20) : _levels(levels) {}
 
       private:
         int _levels;

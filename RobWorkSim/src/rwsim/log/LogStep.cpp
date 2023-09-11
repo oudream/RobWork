@@ -23,63 +23,51 @@
 using namespace rw::common;
 using namespace rwsim::log;
 
-LogStep::LogStep (SimulatorLogScope* parent) : SimulatorLogScope (parent)
-{}
+LogStep::LogStep(SimulatorLogScope* parent) : SimulatorLogScope(parent) {}
 
-LogStep::~LogStep ()
-{}
+LogStep::~LogStep() {}
 
-void LogStep::read (class InputArchive& iarchive, const std::string& id)
-{
-    iarchive.read (_interval.first, "IntervalFirst");
-    iarchive.read (_interval.second, "IntervalSecond");
-    SimulatorLogScope::read (iarchive, id);
+void LogStep::read(class InputArchive& iarchive, const std::string& id) {
+    iarchive.read(_interval.first, "IntervalFirst");
+    iarchive.read(_interval.second, "IntervalSecond");
+    SimulatorLogScope::read(iarchive, id);
 }
 
-void LogStep::write (class OutputArchive& oarchive, const std::string& id) const
-{
-    oarchive.write (_interval.first, "IntervalFirst");
-    oarchive.write (_interval.second, "IntervalSecond");
-    SimulatorLogScope::write (oarchive, id);
+void LogStep::write(class OutputArchive& oarchive, const std::string& id) const {
+    oarchive.write(_interval.first, "IntervalFirst");
+    oarchive.write(_interval.second, "IntervalSecond");
+    SimulatorLogScope::write(oarchive, id);
 }
 
-std::string LogStep::getType () const
-{
+std::string LogStep::getType() const {
     return "Step";
 }
 
-bool LogStep::operator== (const SimulatorLog& b) const
-{
-    if (const LogStep* const entry = dynamic_cast< const LogStep* > (&b)) {
-        if (_interval != entry->_interval)
-            return false;
+bool LogStep::operator==(const SimulatorLog& b) const {
+    if(const LogStep* const entry = dynamic_cast<const LogStep*>(&b)) {
+        if(_interval != entry->_interval) return false;
     }
-    return SimulatorLogScope::operator== (b);
+    return SimulatorLogScope::operator==(b);
 }
 
-std::string LogStep::getDescription () const
-{
+std::string LogStep::getDescription() const {
     std::stringstream str;
     str << "Step (time " << _interval.first << " to " << _interval.second << ")";
-    return str.str ();
+    return str.str();
 }
 
-double LogStep::timeBegin () const
-{
+double LogStep::timeBegin() const {
     return _interval.first;
 }
 
-double LogStep::timeEnd () const
-{
+double LogStep::timeEnd() const {
     return _interval.second;
 }
 
-void LogStep::setTimeBegin (double time)
-{
+void LogStep::setTimeBegin(double time) {
     _interval.first = time;
 }
 
-void LogStep::setTimeEnd (double time)
-{
+void LogStep::setTimeEnd(double time) {
     _interval.second = time;
 }

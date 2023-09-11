@@ -41,7 +41,7 @@ namespace rwlibs { namespace opengl {
 
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< RenderMatrix > Ptr;
+        typedef rw::core::Ptr<RenderMatrix> Ptr;
 
         /**
          * @brief Constructs a RenderMatrix
@@ -51,35 +51,34 @@ namespace rwlibs { namespace opengl {
          * @param width [in] Width of matrix in meters
          * @param height [in] Height of matrix in meters
          */
-        RenderMatrix (const std::string& id, size_t cols, size_t rows, float width, float height);
+        RenderMatrix(const std::string& id, size_t cols, size_t rows, float width, float height);
 
         /**
          * Destroys RenderMatrix
          */
-        virtual ~RenderMatrix (){};
+        virtual ~RenderMatrix(){};
 
         /**
          * @brief sets the value of the texel at (col,row)
          */
-        void setValue (size_t col, size_t row, float val) { _vals (col, row) = val; }
+        void setValue(size_t col, size_t row, float val) { _vals(col, row) = val; }
 
         /**
          * @brief sets the max depth of the 3d boxed graph
          */
-        void setMaxDepth (float maxlen)
-        {
+        void setMaxDepth(float maxlen) {
             _maxZ = maxlen;
-            if (_maxZ < 0.001f)
-                _maxZ = 0.001f;
+            if(_maxZ < 0.001f) _maxZ = 0.001f;
 
             _zscale = 1 / _maxZ;
         }
 
         /* Functions inherited from Render */
 
-        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info, DrawableNode::DrawType type, double alpha) const
-        void draw (const rw::graphics::DrawableNode::RenderInfo& info,
-                   rw::graphics::DrawableNode::DrawType type, double alpha) const;
+        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info,
+        //! DrawableNode::DrawType type, double alpha) const
+        void draw(const rw::graphics::DrawableNode::RenderInfo& info,
+                  rw::graphics::DrawableNode::DrawType type, double alpha) const;
     };
 
     /*@}*/

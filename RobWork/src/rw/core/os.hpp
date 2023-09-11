@@ -36,7 +36,7 @@
 
 #if defined(RW_WIN32) || defined(RW_WIN64)
 #define RW_WIN
-#endif 
+#endif
 
 #ifdef RW_WIN
 #define DLL_EXPORT extern "C" __declspec(dllexport)
@@ -54,8 +54,7 @@ class OS
      * @brief get the extension for dynamic linked libraries
      * @return returns the extension without a . infront
      */
-    static std::string getDLLExtension ()
-    {
+    static std::string getDLLExtension() {
 #if defined(RW_WIN)
         return "dll";
 #elif defined(RW_MACOS)
@@ -72,7 +71,7 @@ class OS
      * strings as argument {RobWork, RobWorkSim, RobWorkHardware and RobWorkStudio}
      * @return return "" if location not found
      */
-    static std::string InstallPluginLocation (std::string pack = "RobWork");
+    static std::string InstallPluginLocation(std::string pack = "RobWork");
 };
 
 #endif /*RW_COMMOM_OS_HPP*/

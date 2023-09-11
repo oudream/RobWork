@@ -35,36 +35,36 @@ namespace rw { namespace trajectory {
      *
      * See the specific implementations for more details
      */
-    template< class T > class Interpolator
+    template<class T> class Interpolator
     {
       public:
         //! @brief smart pointer type to this class
-        typedef typename rw::core::Ptr< Interpolator > Ptr;
+        typedef typename rw::core::Ptr<Interpolator> Ptr;
         /**
          * @brief Virtual destructor
          */
-        virtual ~Interpolator () {}
+        virtual ~Interpolator() {}
 
         /**
          * @brief Position at time t
          * @param t [in] time between \b 0 and \b length
          * @return Position
          */
-        virtual T x (double t) const = 0;
+        virtual T x(double t) const = 0;
 
         /**
          * @brief Velocity at time t
          * @param t [in] time between \b 0 and \b length
          * @return Velocity
          */
-        virtual T dx (double t) const = 0;
+        virtual T dx(double t) const = 0;
 
         /**
          * @brief Acceleration at time t
          * @param t [in] time between \b 0 and \b length
          * @return Acceleration
          */
-        virtual T ddx (double t) const = 0;
+        virtual T ddx(double t) const = 0;
 
         /**
          * @brief Returns the duration of the interpolator
@@ -73,7 +73,7 @@ namespace rw { namespace trajectory {
          * of the interpolator to the other.
          * @return duration
          */
-        virtual double duration () const = 0;
+        virtual double duration() const = 0;
     };
 
     /* @} */

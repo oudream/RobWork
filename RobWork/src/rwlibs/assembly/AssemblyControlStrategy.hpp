@@ -64,13 +64,13 @@ namespace rwlibs { namespace assembly {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< AssemblyControlStrategy > Ptr;
+        typedef rw::core::Ptr<AssemblyControlStrategy> Ptr;
 
         //! @brief Create new control strategy.
-        AssemblyControlStrategy ();
+        AssemblyControlStrategy();
 
         //! @brief Destructor.
-        virtual ~AssemblyControlStrategy ();
+        virtual ~AssemblyControlStrategy();
 
         /**
          * @brief Derive from the ControlState class to implement state that is specific to a
@@ -80,13 +80,13 @@ namespace rwlibs { namespace assembly {
         {
           public:
             //! @brief smart pointer type to this class
-            typedef rw::core::Ptr< ControlState > Ptr;
+            typedef rw::core::Ptr<ControlState> Ptr;
 
             //! @brief Constructor.
-            ControlState (){};
+            ControlState(){};
 
             //! @brief Destructor.
-            virtual ~ControlState (){};
+            virtual ~ControlState(){};
         };
 
         /**
@@ -94,7 +94,7 @@ namespace rwlibs { namespace assembly {
          * time.
          * @return a new ControlState.
          */
-        virtual ControlState::Ptr createState () const;
+        virtual ControlState::Ptr createState() const;
 
         /**
          * @brief The main control loop.
@@ -109,11 +109,11 @@ namespace rwlibs { namespace assembly {
          * @return a AssemblyControlResponse with a new target for the male controller (or NULL if
          * nothing should be done).
          */
-        virtual rw::core::Ptr< AssemblyControlResponse >
-        update (rw::core::Ptr< AssemblyParameterization > parameters,
-                rw::core::Ptr< AssemblyState > real, rw::core::Ptr< AssemblyState > assumed,
-                ControlState::Ptr controlState, rw::kinematics::State& state,
-                rw::sensor::FTSensor* ftSensor, double time) const = 0;
+        virtual rw::core::Ptr<AssemblyControlResponse>
+        update(rw::core::Ptr<AssemblyParameterization> parameters,
+               rw::core::Ptr<AssemblyState> real, rw::core::Ptr<AssemblyState> assumed,
+               ControlState::Ptr controlState, rw::kinematics::State& state,
+               rw::sensor::FTSensor* ftSensor, double time) const = 0;
 
         /**
          * @brief Get the initial relative configuration between female and male objects (uses
@@ -125,20 +125,20 @@ namespace rwlibs { namespace assembly {
          * @return relative configuration between female and male objects.
          */
         virtual rw::math::Transform3D<>
-        getApproach (rw::core::Ptr< AssemblyParameterization > parameters) = 0;
+        getApproach(rw::core::Ptr<AssemblyParameterization> parameters) = 0;
 
         /**
          * @brief All implementations should provide a unique id, which will be used for
          * serialization and in the factory.
          * @return a string with the unique id of the control strategy.
          */
-        virtual std::string getID () = 0;
+        virtual std::string getID() = 0;
 
         /**
          * @brief A textual description of the control strategy.
          * @return a string with a description of the control strategy.
          */
-        virtual std::string getDescription () = 0;
+        virtual std::string getDescription() = 0;
 
         /**
          * @brief Construct a parameterization from a PropertyMap - this is required for
@@ -146,8 +146,8 @@ namespace rwlibs { namespace assembly {
          * @param map [in] the PropertyMap to construct a parameterization from.
          * @return a new AssemblyParameterization.
          */
-        virtual rw::core::Ptr< AssemblyParameterization >
-        createParameterization (const rw::core::Ptr< rw::core::PropertyMap > map) = 0;
+        virtual rw::core::Ptr<AssemblyParameterization>
+        createParameterization(const rw::core::Ptr<rw::core::PropertyMap> map) = 0;
     };
     //! @}
 }}     // namespace rwlibs::assembly

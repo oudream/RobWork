@@ -36,7 +36,7 @@ namespace rwlibs { namespace opengl {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< RenderGeometry > Ptr;
+        typedef rw::core::Ptr<RenderGeometry> Ptr;
 
         /**
          * @brief Constructs RenderGeometry object
@@ -45,7 +45,7 @@ namespace rwlibs { namespace opengl {
          *
          * @param geo [in] the geometry to draw
          */
-        RenderGeometry (rw::geometry::Geometry::Ptr geo);
+        RenderGeometry(rw::geometry::Geometry::Ptr geo);
 
         /**
          * @brief Constructs RenderGeometry object
@@ -54,12 +54,12 @@ namespace rwlibs { namespace opengl {
          *
          * @param mesh [in] the triangle mesh to draw
          */
-        RenderGeometry (rw::core::Ptr< rw::geometry::TriMesh > mesh);
+        RenderGeometry(rw::core::Ptr<rw::geometry::TriMesh> mesh);
 
         /**
          * @brief Destructor
          */
-        virtual ~RenderGeometry ();
+        virtual ~RenderGeometry();
 
         /**
          * @brief Sets color of the object
@@ -67,31 +67,32 @@ namespace rwlibs { namespace opengl {
          * @param g [in] green color component
          * @param b [in] blue color component
          */
-        void setColor (float r, float g, float b);
+        void setColor(float r, float g, float b);
 
         /**
          * @brief set a new geometry on this render
          * @param geom [in] geometry that is to be rendered
          */
-        void setGeometry (rw::geometry::Geometry::Ptr geom);
+        void setGeometry(rw::geometry::Geometry::Ptr geom);
 
         /**
          * @brief Get the geometry that is being rendered.
          * @return the geometry.
          */
-        rw::geometry::Geometry::Ptr getGeometry () const { return _geometry; }
+        rw::geometry::Geometry::Ptr getGeometry() const { return _geometry; }
 
-        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info, DrawableNode::DrawType type, double alpha) const
-        void draw (const rw::graphics::DrawableNode::RenderInfo& info,
-                   rw::graphics::DrawableNode::DrawType type, double alpha) const;
+        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info,
+        //! DrawableNode::DrawType type, double alpha) const
+        void draw(const rw::graphics::DrawableNode::RenderInfo& info,
+                  rw::graphics::DrawableNode::DrawType type, double alpha) const;
 
       protected:
         //! @brief Do the actual rendering of the triangles.
-        void render () const;
+        void render() const;
 
       private:
         rw::geometry::Geometry::Ptr _geometry;
-        rw::core::Ptr< rw::geometry::TriMesh > _mesh;
+        rw::core::Ptr<rw::geometry::TriMesh> _mesh;
         float _r, _g, _b;
     };
 

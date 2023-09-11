@@ -20,25 +20,21 @@
 using namespace rw::sensor;
 using namespace rw::kinematics;
 
-Scanner2DModel::Scanner2DModel (const std::string& name, double angleRange, int width,
-                                rw::core::Ptr<rw::kinematics::Frame> frame) :
-    SensorModel (name, frame),
-    _sstate (1, rw::core::ownedPtr (new Scanner2DModelCache (width)).cast< StateCache > ()),
-    _width (width), _angleRange (-angleRange / 2, angleRange / 2), _distRange (0, 15)
-{
-    add (_sstate);
+Scanner2DModel::Scanner2DModel(const std::string& name, double angleRange, int width,
+                               rw::core::Ptr<rw::kinematics::Frame> frame) :
+    SensorModel(name, frame),
+    _sstate(1, rw::core::ownedPtr(new Scanner2DModelCache(width)).cast<StateCache>()),
+    _width(width), _angleRange(-angleRange / 2, angleRange / 2), _distRange(0, 15) {
+    add(_sstate);
 }
 
-Scanner2DModel::~Scanner2DModel ()
-{}
+Scanner2DModel::~Scanner2DModel() {}
 
-rw::geometry::PointCloud& Scanner2DModel::getScan (const rw::kinematics::State& state)
-{
-    return _sstate.getStateCache< Scanner2DModelCache > (state)->_cloud;
+rw::geometry::PointCloud& Scanner2DModel::getScan(const rw::kinematics::State& state) {
+    return _sstate.getStateCache<Scanner2DModelCache>(state)->_cloud;
 }
 
-void Scanner2DModel::setScan (const rw::geometry::PointCloud& data,
-                              const rw::kinematics::State& state)
-{
-    _sstate.getStateCache< Scanner2DModelCache > (state)->_cloud = data;
+void Scanner2DModel::setScan(const rw::geometry::PointCloud& data,
+                             const rw::kinematics::State& state) {
+    _sstate.getStateCache<Scanner2DModelCache>(state)->_cloud = data;
 }

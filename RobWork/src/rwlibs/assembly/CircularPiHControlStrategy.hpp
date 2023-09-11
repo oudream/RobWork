@@ -24,9 +24,8 @@
  * \copydoc rwlibs::assembly::CircularPiHControlStrategy
  */
 
-#include <rwlibs/assembly/AssemblyControlStrategy.hpp>
-
 #include <rw/core/Ptr.hpp>
+#include <rwlibs/assembly/AssemblyControlStrategy.hpp>
 
 namespace rw { namespace core {
     class PropertyMap;
@@ -45,36 +44,36 @@ namespace rwlibs { namespace assembly {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< CircularPiHControlStrategy > Ptr;
+        typedef rw::core::Ptr<CircularPiHControlStrategy> Ptr;
 
         //! @brief Create new control strategy.
-        CircularPiHControlStrategy ();
+        CircularPiHControlStrategy();
 
         //! @brief Destructor.
-        virtual ~CircularPiHControlStrategy ();
+        virtual ~CircularPiHControlStrategy();
 
         //! @copydoc rwlibs::assembly::AssemblyControlStrategy::createState
-        ControlState::Ptr createState () const;
+        ControlState::Ptr createState() const;
 
         //! @copydoc rwlibs::assembly::AssemblyControlStrategy::update
-        rw::core::Ptr< AssemblyControlResponse >
-        update (rw::core::Ptr< AssemblyParameterization > parameters,
-                rw::core::Ptr< AssemblyState > real, rw::core::Ptr< AssemblyState > assumed,
-                ControlState::Ptr controlState, rw::kinematics::State& state,
-                rw::sensor::FTSensor* ftSensor, double time) const;
+        rw::core::Ptr<AssemblyControlResponse>
+        update(rw::core::Ptr<AssemblyParameterization> parameters,
+               rw::core::Ptr<AssemblyState> real, rw::core::Ptr<AssemblyState> assumed,
+               ControlState::Ptr controlState, rw::kinematics::State& state,
+               rw::sensor::FTSensor* ftSensor, double time) const;
 
         //! @copydoc rwlibs::assembly::AssemblyControlStrategy::getApproach
-        rw::math::Transform3D<> getApproach (rw::core::Ptr< AssemblyParameterization > parameters);
+        rw::math::Transform3D<> getApproach(rw::core::Ptr<AssemblyParameterization> parameters);
 
         //! @copydoc rwlibs::assembly::AssemblyControlStrategy::getID
-        std::string getID ();
+        std::string getID();
 
         //! @copydoc rwlibs::assembly::AssemblyControlStrategy::getDescription
-        std::string getDescription ();
+        std::string getDescription();
 
         //! @copydoc rwlibs::assembly::AssemblyControlStrategy::createParameterization
-        rw::core::Ptr< AssemblyParameterization >
-        createParameterization (const rw::core::Ptr< rw::core::PropertyMap > map);
+        rw::core::Ptr<AssemblyParameterization>
+        createParameterization(const rw::core::Ptr<rw::core::PropertyMap> map);
 
       private:
         class CircularControlState;

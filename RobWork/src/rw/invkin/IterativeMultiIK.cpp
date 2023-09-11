@@ -23,50 +23,41 @@ using namespace rw::invkin;
 using namespace rw::core;
 using namespace boost;
 
-IterativeMultiIK::IterativeMultiIK (size_t nrOfEndEff) : _nrOfEndEff (nrOfEndEff)
-{
-    _properties.add ("MaxIterations", "Max number of iterations", 20);
+IterativeMultiIK::IterativeMultiIK(size_t nrOfEndEff) : _nrOfEndEff(nrOfEndEff) {
+    _properties.add("MaxIterations", "Max number of iterations", 20);
 
-    std::vector< double > maxError (_nrOfEndEff);
-    for (size_t i = 0; i < _nrOfEndEff; i++)
-        maxError[i] = 1e-6;
+    std::vector<double> maxError(_nrOfEndEff);
+    for(size_t i = 0; i < _nrOfEndEff; i++) maxError[i] = 1e-6;
 
-    _properties.add ("MaxErrorVector", "Max Error ", maxError);
+    _properties.add("MaxErrorVector", "Max Error ", maxError);
 }
 
-void IterativeMultiIK::setMaxError (const std::vector< double >& maxError)
-{
-    if (maxError.size () != _nrOfEndEff)
-        RW_THROW ("Size of maxError vector, must equal nr of end effectors" << _nrOfEndEff);
+void IterativeMultiIK::setMaxError(const std::vector<double>& maxError) {
+    if(maxError.size() != _nrOfEndEff)
+        RW_THROW("Size of maxError vector, must equal nr of end effectors" << _nrOfEndEff);
 
-    for (size_t i = 0; i < _nrOfEndEff; i++)
-        if (maxError[i] < 0)
-            RW_THROW ("MaxError must be positive");
+    for(size_t i = 0; i < _nrOfEndEff; i++)
+        if(maxError[i] < 0) RW_THROW("MaxError must be positive");
 
-    _properties.set ("MaxErrorVector", maxError);
+    _properties.set("MaxErrorVector", maxError);
 }
 
-std::vector< double > IterativeMultiIK::getMaxError () const
-{
-    return _properties.get< std::vector< double > > ("MaxErrorVector");
+std::vector<double> IterativeMultiIK::getMaxError() const {
+    return _properties.get<std::vector<double>>("MaxErrorVector");
 }
 
-void IterativeMultiIK::setMaxIterations (int maxIterations)
-{
-    _properties.set ("MaxIterations", maxIterations);
+void IterativeMultiIK::setMaxIterations(int maxIterations) {
+    _properties.set("MaxIterations", maxIterations);
 }
 
-int IterativeMultiIK::getMaxIterations () const
-{
-    return _properties.get< int > ("MaxIterations");
+int IterativeMultiIK::getMaxIterations() const {
+    return _properties.get<int>("MaxIterations");
 }
 
-PropertyMap& IterativeMultiIK::getProperties ()
-{
+PropertyMap& IterativeMultiIK::getProperties() {
     return _properties;
 }
 
-const PropertyMap& IterativeMultiIK::getProperties () const
-{
+const PropertyMap& IterativeMultiIK::getProperties() const {
     return _properties;
 }

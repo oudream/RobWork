@@ -23,10 +23,9 @@
 #include <windows.h>
 #endif    //#ifdef _WIN32
 
-int main (int argc, char** argv)
-{
+int main(int argc, char** argv) {
     std::string arg;
-    for(int i = 0; i < argc; i++){
+    for(int i = 0; i < argc; i++) {
         arg += argv[i];
         arg += " ";
     }
@@ -36,8 +35,7 @@ int main (int argc, char** argv)
 }
 
 #ifdef _WIN32
-int WINAPI WinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
-{
-    return main (__argc, __argv);
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd) {
+    return main(__argc, __argv);
 }
 #endif

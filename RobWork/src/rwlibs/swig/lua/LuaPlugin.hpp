@@ -41,16 +41,16 @@ namespace rwlibs { namespace swig {
     {
       public:
         //! @brief Constructor.
-        LuaPlugin ();
+        LuaPlugin();
 
         //! @brief Destructor.
-        virtual ~LuaPlugin ();
+        virtual ~LuaPlugin();
 
         //! @copydoc rw::core::Plugin::getExtensionDescriptors
-        std::vector< rw::core::Extension::Descriptor > getExtensionDescriptors ();
+        std::vector<rw::core::Extension::Descriptor> getExtensionDescriptors();
 
         //! @copydoc rw::core::Plugin::makeExtension
-        rw::core::Ptr< rw::core::Extension > makeExtension (const std::string& str);
+        rw::core::Ptr<rw::core::Extension> makeExtension(const std::string& str);
     };
     //! @}
 

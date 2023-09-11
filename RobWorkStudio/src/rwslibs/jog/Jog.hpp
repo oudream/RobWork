@@ -53,39 +53,39 @@ class Jog : public RobWorkStudioPlugin
 {
     Q_OBJECT
 #ifndef RWS_USE_STATIC_LINK_PLUGINS
-    Q_INTERFACES (rws::RobWorkStudioPlugin)
-    Q_PLUGIN_METADATA (IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "plugin.json")
+    Q_INTERFACES(rws::RobWorkStudioPlugin)
+    Q_PLUGIN_METADATA(IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "plugin.json")
 #endif
   public:
     /**
      * @brief Constructor
      */
-    Jog ();
+    Jog();
 
     /**
      * @brief Destructor
      */
-    virtual ~Jog ();
+    virtual ~Jog();
 
     /**
      * @copydoc RobWorkStudioPlugin::initialize
      */
-    virtual void initialize ();
+    virtual void initialize();
 
     /**
      * @copydoc RobWorkStudioPlugin::open
      */
-    virtual void open (rw::models::WorkCell* workcell);
+    virtual void open(rw::models::WorkCell* workcell);
 
     /**
      * @copydoc RobWorkStudioPlugin::close
      */
-    virtual void close ();
+    virtual void close();
 
     /**
      * @brief not implemented yet
      */
-    void frameSelectedListener (rw::kinematics::Frame* frame);
+    void frameSelectedListener(rw::kinematics::Frame* frame);
 
     /**
      * @brief Listen for change in workcell.
@@ -94,40 +94,40 @@ class Jog : public RobWorkStudioPlugin
      *
      * @param notUsed [in] not used.
      */
-    void workcellChangedListener (int notUsed);
+    void workcellChangedListener(int notUsed);
 
     /**
      * @brief Listen for generic events:
      * - WorkcellUpdated event makes Jog plugin refresh GUI to represent new workcell configuration
      * (i.e. new frames & devices).
      */
-    void genericEventListener (const std::string& event);
+    void genericEventListener(const std::string& event);
 
   protected:
     /**
      * @brief Update the widget when it is shown.
      * @param event [in] the event (not used).
      */
-    void showEvent (QShowEvent* event);
+    void showEvent(QShowEvent* event);
 
   private Q_SLOTS:
-    void cmbChanged (int index);
-    void cmbUnitChanged (int index);
+    void cmbChanged(int index);
+    void cmbUnitChanged(int index);
 
-    void tabChanged (int);
+    void tabChanged(int);
 
-    void update ();
+    void update();
 
-    void stateChanged (const rw::kinematics::State& state);
+    void stateChanged(const rw::kinematics::State& state);
 
-    void deviceConfigChanged (const rw::math::Q& q);
-    void deviceConfigChangedFull (const rw::math::Q& q);
-    void frameConfigChanged (const rw::math::Transform3D<>& transform);
+    void deviceConfigChanged(const rw::math::Q& q);
+    void deviceConfigChangedFull(const rw::math::Q& q);
+    void frameConfigChanged(const rw::math::Transform3D<>& transform);
 
   private:
     rw::models::WorkCell* _workcell;
     rw::kinematics::State _state;
-    rw::core::Ptr< rw::models::Device > _selectedDevice;
+    rw::core::Ptr<rw::models::Device> _selectedDevice;
     JointSliderWidget* _jointSliderWidget;
     JointSliderWidget* _jointSliderWidgetFull;
 
@@ -138,33 +138,32 @@ class Jog : public RobWorkStudioPlugin
 
     QComboBox* _cmbDevices;
     QTabWidget* _tabWidget;
-    std::vector< std::pair< rw::core::Ptr< rw::models::Device >, rw::kinematics::MovableFrame* > >
-        _items;
-    std::vector< unsigned int > _chosenTabs;
+    std::vector<std::pair<rw::core::Ptr<rw::models::Device>, rw::kinematics::MovableFrame*>> _items;
+    std::vector<unsigned int> _chosenTabs;
     QComboBox *_cmbAngleUnit, *_cmbDistanceUnit;
 
-    std::pair< rw::math::Q, rw::math::Q > _cartesianBounds;
+    std::pair<rw::math::Q, rw::math::Q> _cartesianBounds;
     // std::vector<JointTab*> _sliders;
 
     /*std::vector<DeviceTab*> _deviceTabs;
     QTabWidget* _tabWidget;
 */
-    void removeTabs ();
-    void constructTabs (rw::core::Ptr< rw::models::Device > device);
-    void constructCartTab (rw::kinematics::MovableFrame* device);
+    void removeTabs();
+    void constructTabs(rw::core::Ptr<rw::models::Device> device);
+    void constructCartTab(rw::kinematics::MovableFrame* device);
 
-    void stateChangedListener (const rw::kinematics::State& state);
-    void keyListener (int key, Qt::KeyboardModifiers modifiers);
+    void stateChangedListener(const rw::kinematics::State& state);
+    void keyListener(int key, Qt::KeyboardModifiers modifiers);
     // RobWorkStudio::StateChangedListener
 
-    QIcon getIcon ();
-    void updateValues ();
+    QIcon getIcon();
+    void updateValues();
 
-    void updateUnit (const std::string& angles, const std::string& distances);
+    void updateUnit(const std::string& angles, const std::string& distances);
     rw::core::PropertyMap* _rwsSettings;
-    std::map< std::string, double > _angleUnitConverters, _distanceUnitConverters;
+    std::map<std::string, double> _angleUnitConverters, _distanceUnitConverters;
 
-    rw::kinematics::FrameMap< int > _frameToIndex;
+    rw::kinematics::FrameMap<int> _frameToIndex;
 };
 
 }    // namespace rws

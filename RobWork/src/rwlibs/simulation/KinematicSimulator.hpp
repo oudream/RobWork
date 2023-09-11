@@ -20,9 +20,8 @@
 
 //! @file KinematicSimulator.hpp
 #if !defined(SWIG)
-#include <rwlibs/simulation/Simulator.hpp>
-
 #include <rw/core/Ptr.hpp>
+#include <rwlibs/simulation/Simulator.hpp>
 #endif
 namespace rwlibs { namespace simulation {
     class SimulatedSensor;
@@ -37,34 +36,34 @@ namespace rwlibs { namespace simulation {
     {
       public:
         //! smart pointer type of KinematicSimulator
-        typedef rw::core::Ptr< KinematicSimulator > Ptr;
+        typedef rw::core::Ptr<KinematicSimulator> Ptr;
 
         /**
          * @brief add a simulated controller to the simulator
          * @param controller [in] the controller to be simulated
          */
-        virtual void addController (rwlibs::simulation::SimulatedController* controller);
+        virtual void addController(rwlibs::simulation::SimulatedController* controller);
 
         /**
          * @brief add a simulated sensor to the simulator
          * @param sensor [in] the sensor
          */
-        virtual void addSensor (rwlibs::simulation::SimulatedSensor* sensor);
+        virtual void addSensor(rwlibs::simulation::SimulatedSensor* sensor);
 
         /**
          * @brief remove a sensor from simulation
          * @param sensor [in] sensor that is to be removed
          */
-        virtual void removeSensor (rwlibs::simulation::SimulatedSensor* sensor);
+        virtual void removeSensor(rwlibs::simulation::SimulatedSensor* sensor);
 
         /**
          * @brief add a simulator that is to be controlled by this simulator
          * @param sim
          */
-        void addSimulator (rwlibs::simulation::Simulator* sim);
+        void addSimulator(rwlibs::simulation::Simulator* sim);
 
         //! @copydoc Simulator::step
-        void step (double dt);
+        void step(double dt);
     };
     //! @}
 }}    // namespace rwlibs::simulation

@@ -24,9 +24,8 @@
  * \copydoc rwlibs::assembly::SpiralStrategy
  */
 
-#include <rwlibs/assembly/AssemblyControlStrategy.hpp>
-
 #include <rw/trajectory/Trajectory.hpp>
+#include <rwlibs/assembly/AssemblyControlStrategy.hpp>
 namespace rw { namespace core {
     class PropertyMap;
 }}    // namespace rw::core
@@ -50,38 +49,38 @@ namespace rwlibs { namespace assembly {
     {
       public:
         //! @brief Constructor.
-        SpiralStrategy ();
+        SpiralStrategy();
 
         //! @brief Destructor.
-        virtual ~SpiralStrategy ();
+        virtual ~SpiralStrategy();
 
         //! @copydoc AssemblyControlStrategy::createState
-        ControlState::Ptr createState () const;
+        ControlState::Ptr createState() const;
 
         //! @copydoc AssemblyControlStrategy::update
-        virtual rw::core::Ptr< AssemblyControlResponse >
-        update (rw::core::Ptr< AssemblyParameterization > parameters,
-                rw::core::Ptr< AssemblyState > real, rw::core::Ptr< AssemblyState > assumed,
-                ControlState::Ptr controlState, rw::kinematics::State& state,
-                rw::sensor::FTSensor* ftSensor, double time) const;
+        virtual rw::core::Ptr<AssemblyControlResponse>
+        update(rw::core::Ptr<AssemblyParameterization> parameters,
+               rw::core::Ptr<AssemblyState> real, rw::core::Ptr<AssemblyState> assumed,
+               ControlState::Ptr controlState, rw::kinematics::State& state,
+               rw::sensor::FTSensor* ftSensor, double time) const;
 
         //! @copydoc AssemblyControlStrategy::getApproach
         virtual rw::math::Transform3D<>
-        getApproach (rw::core::Ptr< AssemblyParameterization > parameters);
+        getApproach(rw::core::Ptr<AssemblyParameterization> parameters);
 
         //! @copydoc AssemblyControlStrategy::getID
-        virtual std::string getID ();
+        virtual std::string getID();
 
         //! @copydoc AssemblyControlStrategy::getDescription
-        virtual std::string getDescription ();
+        virtual std::string getDescription();
 
         //! @copydoc AssemblyControlStrategy::createParameterization
-        virtual rw::core::Ptr< AssemblyParameterization >
-        createParameterization (const rw::core::Ptr< rw::core::PropertyMap > map);
+        virtual rw::core::Ptr<AssemblyParameterization>
+        createParameterization(const rw::core::Ptr<rw::core::PropertyMap> map);
 
       private:
-        rw::core::Ptr< rw::trajectory::Transform3DTrajectory >
-        generateTrajectory (rw::core::Ptr< SpiralParameterization > param) const;
+        rw::core::Ptr<rw::trajectory::Transform3DTrajectory>
+        generateTrajectory(rw::core::Ptr<SpiralParameterization> param) const;
 
         rw::math::Transform3D<> _worldTfemale;
         rw::math::Transform3D<> _femaleTfemTcp;

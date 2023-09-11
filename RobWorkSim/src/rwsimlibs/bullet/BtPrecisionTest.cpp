@@ -19,11 +19,10 @@
 #include <LinearMath/btVector3.h>
 #include <iostream>
 
-int main ()
-{
-    const btSphereShape sphere (1);
+int main() {
+    const btSphereShape sphere(1);
     btVector3 res;
-    sphere.calculateLocalInertia (
+    sphere.calculateLocalInertia(
         1, res);    // linking fails with undefined symbol if BT_USE_DOUBLE_PRECISION is wrong
 #ifdef BT_USE_DOUBLE_PRECISION
     std::cout << "DOUBLE" << std::endl;

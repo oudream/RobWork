@@ -24,9 +24,8 @@
  * \copydoc rwlibs::mathematica::EvaluatePacket
  */
 
-#include <rwlibs/mathematica/Mathematica.hpp>
-
 #include <rw/core/Ptr.hpp>
+#include <rwlibs/mathematica/Mathematica.hpp>
 
 namespace rwlibs { namespace mathematica {
 
@@ -38,37 +37,37 @@ namespace rwlibs { namespace mathematica {
     {
       public:
         //! @brief Smart pointer type.
-        typedef rw::core::Ptr< EvaluatePacket > Ptr;
+        typedef rw::core::Ptr<EvaluatePacket> Ptr;
 
         /**
          * @brief Construct a new packet.
          * @param expression [in] the expression.
          */
-        EvaluatePacket (const Mathematica::Expression& expression);
+        EvaluatePacket(const Mathematica::Expression& expression);
 
         /**
          * @brief Construct a new packet.
          * @param expression [in] the expression.
          */
-        EvaluatePacket (rw::core::Ptr< const Mathematica::Expression > expression);
+        EvaluatePacket(rw::core::Ptr<const Mathematica::Expression> expression);
 
         //! @brief Destructor.
-        virtual ~EvaluatePacket ();
+        virtual ~EvaluatePacket();
 
         /**
          * @brief Get the expression stored in the packet.
          * @return the expression.
          */
-        const rw::core::Ptr< const Mathematica::Expression > expression ();
+        const rw::core::Ptr<const Mathematica::Expression> expression();
 
         //! @copydoc Mathematica::FunctionBase::getArguments
-        std::list< rw::core::Ptr< const Mathematica::Expression > > getArguments () const;
+        std::list<rw::core::Ptr<const Mathematica::Expression>> getArguments() const;
 
         //! @copydoc Mathematica::Expression::clone
-        Mathematica::Expression::Ptr clone () const;
+        Mathematica::Expression::Ptr clone() const;
 
       private:
-        const rw::core::Ptr< const Mathematica::Expression > _expression;
+        const rw::core::Ptr<const Mathematica::Expression> _expression;
     };
     //! @}
 }}     // namespace rwlibs::mathematica

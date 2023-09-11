@@ -17,9 +17,9 @@
 
 #include <rw/core/Extension.hpp>
 #include <rw/kinematics/Frame.hpp>
+#include <rw/models/DeformableObject.hpp>
 #include <rw/models/Object.hpp>
 #include <rw/models/RigidObject.hpp>
-#include <rw/models/DeformableObject.hpp>
 #include <rw/proximity/rwstrategy/ProximityStrategyRW.hpp>
 
 #include <thread>
@@ -31,82 +31,69 @@ using namespace rw::geometry;
 using namespace rw::core;
 using namespace rw::models;
 
-ProximityStrategy::ProximityStrategy () : _frameToModel (NULL, 100)
-{
-    useThreads (-1);
+ProximityStrategy::ProximityStrategy() : _frameToModel(NULL, 100) {
+    useThreads(-1);
 }
 
-ProximityStrategy::~ProximityStrategy ()
-{}
+ProximityStrategy::~ProximityStrategy() {}
 
-ProximityModel::Ptr ProximityStrategy::getModel (const rw::core::Ptr<rw::kinematics::Frame> frame)
-{
+ProximityModel::Ptr ProximityStrategy::getModel(const rw::core::Ptr<rw::kinematics::Frame> frame) {
     ProximityModel::Ptr model = _frameToModel[*frame];
     return model;
 }
 
-bool ProximityStrategy::addModel (rw::models::Object::Ptr object)
-{
-    if (RigidObject::Ptr robj = object.cast< RigidObject > ()) {
-        std::vector< Geometry::Ptr > geoms = robj->getGeometry ();
-        for (Geometry::Ptr geom : geoms) {
-            rw::core::Ptr<Frame> geoframe = geom->getFrame ();
-            if (!hasModel (geoframe)) {
-                _frameToModel[*geoframe] = createModel ();
-                _frameToModel[*geoframe]->setFrame (geoframe);
+bool ProximityStrategy::addModel(rw::models::Object::Ptr object) {
+    if(RigidObject::Ptr robj = object.cast<RigidObject>()) {
+        std::vector<Geometry::Ptr> geoms = robj->getGeometry();
+        for(Geometry::Ptr geom : geoms) {
+            rw::core::Ptr<Frame> geoframe = geom->getFrame();
+            if(!hasModel(geoframe)) {
+                _frameToModel[*geoframe] = createModel();
+                _frameToModel[*geoframe]->setFrame(geoframe);
             }
-            ProximityModel::Ptr model = getModel (geoframe);
-            model->addGeometry (geom);
+            ProximityModel::Ptr model = getModel(geoframe);
+            model->addGeometry(geom);
         }
         return true;
-    }else if(object.cast< DeformableObject > () == NULL ){
-        std::vector< Geometry::Ptr > geoms = object->getGeometry ();
-        for (Geometry::Ptr geom : geoms) {
-            rw::core::Ptr<Frame> geoframe = geom->getFrame ();
-            if (!hasModel (geoframe)) {
-                _frameToModel[*geoframe] = createModel ();
-                _frameToModel[*geoframe]->setFrame (geoframe);
+    }
+    else if(object.cast<DeformableObject>() == NULL) {
+        std::vector<Geometry::Ptr> geoms = object->getGeometry();
+        for(Geometry::Ptr geom : geoms) {
+            rw::core::Ptr<Frame> geoframe = geom->getFrame();
+            if(!hasModel(geoframe)) {
+                _frameToModel[*geoframe] = createModel();
+                _frameToModel[*geoframe]->setFrame(geoframe);
             }
-            ProximityModel::Ptr model = getModel (geoframe);
-            model->addGeometry (geom);
+            ProximityModel::Ptr model = getModel(geoframe);
+            model->addGeometry(geom);
         }
         return true;
     }
     return false;
 }
 
-bool ProximityStrategy::addModel (const rw::core::Ptr<Frame> frame, const rw::geometry::Geometry& geom)
-{
-    ProximityModel::Ptr model = getModel (frame);
-    if (model == NULL) {
-        model = createModel ();
-    }
-    model->setFrame (frame);
-    bool res = addGeometry (model.get (), geom);
-    if (res) {
-        _frameToModel[*frame] = model;
-    }
+bool ProximityStrategy::addModel(const rw::core::Ptr<Frame> frame,
+                                 const rw::geometry::Geometry& geom) {
+    ProximityModel::Ptr model = getModel(frame);
+    if(model == NULL) { model = createModel(); }
+    model->setFrame(frame);
+    bool res = addGeometry(model.get(), geom);
+    if(res) { _frameToModel[*frame] = model; }
     return res;
 }
 
-bool ProximityStrategy::addModel (const rw::core::Ptr<Frame> frame, rw::geometry::Geometry::Ptr geom,
-                                  bool forceCopy)
-{
-    ProximityModel::Ptr model = getModel (frame);
-    if (model == NULL) {
-        model = createModel ();
-    }
-    model->setFrame (frame);
-    bool res = model->addGeometry (geom, forceCopy);
-    if (res) {
-        _frameToModel[*frame] = model;
-    }
+bool ProximityStrategy::addModel(const rw::core::Ptr<Frame> frame, rw::geometry::Geometry::Ptr geom,
+                                 bool forceCopy) {
+    ProximityModel::Ptr model = getModel(frame);
+    if(model == NULL) { model = createModel(); }
+    model->setFrame(frame);
+    bool res = model->addGeometry(geom, forceCopy);
+    if(res) { _frameToModel[*frame] = model; }
     return res;
 }
 
-bool ProximityStrategy::hasModel (const rw::core::Ptr<rw::kinematics::Frame> frame)
-{
-    if (!_frameToModel.has (*frame) || _frameToModel[*frame] == NULL) {
+bool ProximityStrategy::hasModel(const rw::core::Ptr<rw::kinematics::Frame> frame) {
+    if(!_frameToModel.has(*frame) || _frameToModel[*frame] == NULL) {
         // if (CollisionModelInfo::get(frame).size()>0)
         //    return true;
         return false;
@@ -114,70 +101,57 @@ bool ProximityStrategy::hasModel (const rw::core::Ptr<rw::kinematics::Frame> fra
     return true;
 }
 
-void ProximityStrategy::clearFrame (const rw::core::Ptr<rw::kinematics::Frame> frame)
-{
-    if (!_frameToModel.has (*frame) || _frameToModel[*frame] == NULL)
-        return;
+void ProximityStrategy::clearFrame(const rw::core::Ptr<rw::kinematics::Frame> frame) {
+    if(!_frameToModel.has(*frame) || _frameToModel[*frame] == NULL) return;
     ProximityModel::Ptr model = _frameToModel[*frame];
-    if (model == NULL)
-        return;
+    if(model == NULL) return;
     _frameToModel[*frame] = NULL;
-    destroyModel (model.get ());
+    destroyModel(model.get());
 }
 
-void ProximityStrategy::clearFrames ()
-{
-    _frameToModel.clear ();
+void ProximityStrategy::clearFrames() {
+    _frameToModel.clear();
 }
 
-ProximityStrategy::Factory::Factory () :
-    ExtensionPoint< ProximityStrategy > ("rw.proximity.ProximityStrategy",
-                                         "Extensions to create proximity strategies")
-{}
+ProximityStrategy::Factory::Factory() :
+    ExtensionPoint<ProximityStrategy>("rw.proximity.ProximityStrategy",
+                                      "Extensions to create proximity strategies") {}
 
-std::vector< std::string > ProximityStrategy::Factory::getStrategies ()
-{
-    std::vector< std::string > ids;
+std::vector<std::string> ProximityStrategy::Factory::getStrategies() {
+    std::vector<std::string> ids;
     ProximityStrategy::Factory ep;
-    std::vector< Extension::Descriptor > exts = ep.getExtensionDescriptors ();
-    ids.push_back ("RW");
-    for (Extension::Descriptor& ext : exts) {
-        ids.push_back (ext.getProperties ().get ("strategyID", ext.name));
+    std::vector<Extension::Descriptor> exts = ep.getExtensionDescriptors();
+    ids.push_back("RW");
+    for(Extension::Descriptor& ext : exts) {
+        ids.push_back(ext.getProperties().get("strategyID", ext.name));
     }
     return ids;
 }
 
-bool ProximityStrategy::Factory::hasStrategy (const std::string& strategy)
-{
+bool ProximityStrategy::Factory::hasStrategy(const std::string& strategy) {
     std::string upper = strategy;
-    std::transform (upper.begin (), upper.end (), upper.begin (), ::toupper);
-    if (upper == "RW")
-        return true;
+    std::transform(upper.begin(), upper.end(), upper.begin(), ::toupper);
+    if(upper == "RW") return true;
     ProximityStrategy::Factory ep;
-    std::vector< Extension::Descriptor > exts = ep.getExtensionDescriptors ();
-    for (Extension::Descriptor& ext : exts) {
-        std::string id = ext.getProperties ().get ("strategyID", ext.name);
-        std::transform (id.begin (), id.end (), id.begin (), ::toupper);
-        if (id == upper)
-            return true;
+    std::vector<Extension::Descriptor> exts = ep.getExtensionDescriptors();
+    for(Extension::Descriptor& ext : exts) {
+        std::string id = ext.getProperties().get("strategyID", ext.name);
+        std::transform(id.begin(), id.end(), id.begin(), ::toupper);
+        if(id == upper) return true;
     }
     return false;
 }
 
-ProximityStrategy::Ptr ProximityStrategy::Factory::makeStrategy (const std::string& strategy)
-{
+ProximityStrategy::Ptr ProximityStrategy::Factory::makeStrategy(const std::string& strategy) {
     std::string upper = strategy;
-    std::transform (upper.begin (), upper.end (), upper.begin (), ::toupper);
-    if (upper == "RW")
-        return ownedPtr (new ProximityStrategyRW ());
+    std::transform(upper.begin(), upper.end(), upper.begin(), ::toupper);
+    if(upper == "RW") return ownedPtr(new ProximityStrategyRW());
     ProximityStrategy::Factory ep;
-    std::vector< Extension::Ptr > exts = ep.getExtensions ();
-    for (Extension::Ptr& ext : exts) {
-        std::string id = ext->getProperties ().get ("strategyID", ext->getName ());
-        std::transform (id.begin (), id.end (), id.begin (), ::toupper);
-        if (id == upper) {
-            return ext->getObject ().cast< ProximityStrategy > ();
-        }
+    std::vector<Extension::Ptr> exts = ep.getExtensions();
+    for(Extension::Ptr& ext : exts) {
+        std::string id = ext->getProperties().get("strategyID", ext->getName());
+        std::transform(id.begin(), id.end(), id.begin(), ::toupper);
+        if(id == upper) { return ext->getObject().cast<ProximityStrategy>(); }
     }
     return NULL;
 }
@@ -189,12 +163,7 @@ ProximityStrategy::getGeometries (rw::proximity::ProximityModel* model)
     return std::vector< rw::core::Ptr< rw::geometry::Geometry > > ();
 }*/
 
-void ProximityStrategy::useThreads (int threads)
-{
-    if (threads <= 0) {
-        this->_threads = std::thread::hardware_concurrency () - 1;
-    }
-    else {
-        this->_threads = threads;
-    }
+void ProximityStrategy::useThreads(int threads) {
+    if(threads <= 0) { this->_threads = std::thread::hardware_concurrency() - 1; }
+    else { this->_threads = threads; }
 }

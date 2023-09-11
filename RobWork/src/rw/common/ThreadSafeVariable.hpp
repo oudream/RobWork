@@ -27,7 +27,7 @@
 #include <boost/thread/condition_variable.hpp>
 #include <boost/thread/mutex.hpp>
 #include <boost/thread/shared_mutex.hpp>
-#endif 
+#endif
 namespace rw { namespace common {
     //! @addtogroup common
 
@@ -38,30 +38,28 @@ namespace rw { namespace common {
      * This is very useful for making simple thread-safe variables, but also for synchronization
      * between threads.
      */
-    template< typename T > class ThreadSafeVariable
+    template<typename T> class ThreadSafeVariable
     {
       public:
         /**
          * @brief Create new protected variable.
          * @param var [in] the initial value.
          */
-        ThreadSafeVariable (const T var)
-        {
+        ThreadSafeVariable(const T var) {
             _changed = false;
             _waiting = 0;
             _var     = var;
         }
 
         //! @brief Destructor
-        virtual ~ThreadSafeVariable () {}
+        virtual ~ThreadSafeVariable() {}
 
         /**
          * @brief Get the value.
          * @return the value.
          */
-        T getVariable ()
-        {
-            boost::shared_lock< boost::shared_mutex > lock2 (_mutex);
+        T getVariable() {
+            boost::shared_lock<boost::shared_mutex> lock2(_mutex);
             return _var;
         }
 
@@ -74,22 +72,19 @@ namespace rw { namespace common {
          *
          * @param var [in] the new value.
          */
-        void setVariable (const T var)
-        {
+        void setVariable(const T var) {
             bool notifyChange = false;
             {
-                boost::mutex::scoped_lock lock1 (_changedMutex);
-                while (_changed)
-                    _waitingCond.wait (lock1);
-                boost::unique_lock< boost::shared_mutex > lock2 (_mutex);
-                if (_waiting > 0) {
+                boost::mutex::scoped_lock lock1(_changedMutex);
+                while(_changed) _waitingCond.wait(lock1);
+                boost::unique_lock<boost::shared_mutex> lock2(_mutex);
+                if(_waiting > 0) {
                     _changed     = true;
                     notifyChange = true;
                 }
                 _var = var;
             }
-            if (notifyChange)
-                _changeCond.notify_all ();
+            if(notifyChange) _changeCond.notify_all();
         }
 
         /**
@@ -100,44 +95,40 @@ namespace rw { namespace common {
          *
          * @return the new value that is not equal to the previous value.
          */
-        T waitForUpdate (T previous)
-        {
+        T waitForUpdate(T previous) {
             bool noMoreWaiting = false;
             {
-                boost::mutex::scoped_lock lock1 (_changedMutex);
+                boost::mutex::scoped_lock lock1(_changedMutex);
                 {
-                    boost::unique_lock< boost::shared_mutex > lock2 (_mutex);
-                    if (!(_var == previous))
-                        return _var;
+                    boost::unique_lock<boost::shared_mutex> lock2(_mutex);
+                    if(!(_var == previous)) return _var;
                 }
-                while (!_changed) {
+                while(!_changed) {
                     _waiting++;
-                    _changeCond.wait (lock1);
+                    _changeCond.wait(lock1);
                     _waiting--;
                 }
-                boost::unique_lock< boost::shared_mutex > lock2 (_mutex);
-                if (_waiting == 0) {
+                boost::unique_lock<boost::shared_mutex> lock2(_mutex);
+                if(_waiting == 0) {
                     _changed      = false;
                     noMoreWaiting = true;
                 }
             }
-            if (noMoreWaiting)
-                _waitingCond.notify_all ();
+            if(noMoreWaiting) _waitingCond.notify_all();
             return _var;
         }
-
 
         /**
          * @brief Use the () operator to access the value.
          * @return the value.
          */
-        T operator() () { return getVariable (); }
+        T operator()() { return getVariable(); }
 
         /**
          * @brief Set the value using the assignment operator (same as using setVariable()).
          * @param var [in] the new value.
          */
-        void operator= (const T var) { setVariable (var); }
+        void operator=(const T var) { setVariable(var); }
 
       private:
         // Lock 1

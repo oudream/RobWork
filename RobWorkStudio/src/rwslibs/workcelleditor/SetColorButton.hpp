@@ -12,15 +12,15 @@ class SetColorButton : public QPushButton
     Q_OBJECT
 
   public:
-    SetColorButton ();
+    SetColorButton();
 
-    void setColor (const QColor& color);
+    void setColor(const QColor& color);
 
-    const QColor& color () const;
+    const QColor& color() const;
 
   public Q_SLOTS:
 
-    void changeColor ();
+    void changeColor();
 
   private:
     QColor color_;

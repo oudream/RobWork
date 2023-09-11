@@ -20,12 +20,11 @@
 
 //! @file SimulatedScanner1D.hpp
 #if !defined(SWIG)
+#include <rw/math/Constants.hpp>
+#include <rw/sensor/Scanner1D.hpp>
+#include <rw/sensor/Scanner2D.hpp>
 #include <rwlibs/simulation/FrameGrabber25D.hpp>
 #include <rwlibs/simulation/SimulatedSensor.hpp>
-
-#include <rw/math/Constants.hpp>
-#include <rw/sensor/Scanner2D.hpp>
-#include <rw/sensor/Scanner1D.hpp>
 #endif
 namespace rwlibs { namespace simulation {
     //! @addtogroup simulation
@@ -34,10 +33,10 @@ namespace rwlibs { namespace simulation {
     /**
      * @brief A simulated line scanner.
      */
-    class SimulatedScanner1D : public rw::sensor::Scanner1D, public virtual rwlibs::simulation::SimulatedSensor
+    class SimulatedScanner1D : public rw::sensor::Scanner1D,
+                               public virtual rwlibs::simulation::SimulatedSensor
     {
       public:
-
         typedef rw::core::Ptr<SimulatedScanner1D> Ptr;
 
         /**
@@ -45,7 +44,8 @@ namespace rwlibs { namespace simulation {
          * @param name [in] name of this simulated scanner
          * @param framegrabber [in] the framegrabber used for grabbing 2.5D images
          */
-        SimulatedScanner1D (const std::string& name, rw::core::Ptr<rwlibs::simulation::FrameGrabber25D> framegrabber);
+        SimulatedScanner1D(const std::string& name,
+                           rw::core::Ptr<rwlibs::simulation::FrameGrabber25D> framegrabber);
 
         /**
          * @brief constructor
@@ -53,45 +53,45 @@ namespace rwlibs { namespace simulation {
          * @param desc [in] description of this scanner
          * @param framegrabber [in] the framegrabber used for grabbing 2.5D images
          */
-        SimulatedScanner1D (const std::string& name, const std::string& desc,
-                            rw::core::Ptr<rwlibs::simulation::FrameGrabber25D> framegrabber);
+        SimulatedScanner1D(const std::string& name, const std::string& desc,
+                           rw::core::Ptr<rwlibs::simulation::FrameGrabber25D> framegrabber);
 
         /**
          * @brief destructor
          */
-        virtual ~SimulatedScanner1D ();
+        virtual ~SimulatedScanner1D();
 
         /**
          * @brief set the framerate in frames per sec.
          * @param rate [in] frames per sec
          */
-        void setFrameRate (double rate);
+        void setFrameRate(double rate);
 
         ///////////// below is inheritet functions form Scanner25D and Sensor
 
         //! @copydoc rw::sensor::Scanner1D::open
-        void open ();
+        void open();
 
         //! @copydoc rw::sensor::Scanner1D::isOpen
-        bool isOpen ();
+        bool isOpen();
 
         //! @copydoc rw::sensor::Scanner1D::close
-        void close ();
+        void close();
 
         //! @copydoc rw::sensor::Scanner1D::acquire
-        void acquire ();
+        void acquire();
 
         //! @copydoc rw::sensor::Scanner1D::isScanReady
-        bool isScanReady ();
+        bool isScanReady();
 
         //! @copydoc rw::sensor::Scanner1D::getRange
-        std::pair< double, double > getRange ();
+        std::pair<double, double> getRange();
 
         //! @copydoc rw::sensor::Scanner1D::getFrameRate
-        double getFrameRate ();
+        double getFrameRate();
 
         //! @copydoc rwlibs::simulation::SimulatedKinect
-        const rw::geometry::PointCloud& getImage ();
+        const rw::geometry::PointCloud& getImage();
 
         /**
          * @brief steps the the sensor with time \b dt and saves any state
@@ -99,19 +99,18 @@ namespace rwlibs { namespace simulation {
          * @param dt [in] the timestep.
          * @param state [out] changes of the SimulatedSensor is saved in state.
          */
-        void update (double dt, rw::kinematics::State& state);
+        void update(double dt, rw::kinematics::State& state);
 
         //! @copydoc SimulatedSensor::reset
-        void reset (const rw::kinematics::State& state);
+        void reset(const rw::kinematics::State& state);
 
-        rw::sensor::Sensor* getSensor ();
+        rw::sensor::Sensor* getSensor();
 
         //! @copydoc rw::geometry::PointCloud::getData
-        virtual const rw::geometry::PointCloud& getData () { return _scan; }
+        virtual const rw::geometry::PointCloud& getData() { return _scan; }
 
-        virtual double getResolution ()
-        {
-            return _framegrabber->getFieldOfViewY () * rw::math::Deg2Rad / _scan.getWidth ();
+        virtual double getResolution() {
+            return _framegrabber->getFieldOfViewY() * rw::math::Deg2Rad / _scan.getWidth();
         }
 
       private:

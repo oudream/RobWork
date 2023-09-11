@@ -21,10 +21,9 @@
 //! @file SimulatedSensor.hpp
 
 #if !defined(SWIG)
-#include <rwlibs/simulation/Simulator.hpp>
-
 #include <rw/core/Ptr.hpp>
 #include <rw/sensor/SensorModel.hpp>
+#include <rwlibs/simulation/Simulator.hpp>
 #endif
 
 namespace rw { namespace kinematics {
@@ -45,26 +44,26 @@ namespace rwlibs { namespace simulation {
     {
       public:
         //! @brief smart pointer type of this class
-        typedef rw::core::Ptr< SimulatedSensor > Ptr;
+        typedef rw::core::Ptr<SimulatedSensor> Ptr;
 
       protected:
         //! constructor
-        SimulatedSensor (rw::sensor::SensorModel::Ptr model) : _model (model) {}
+        SimulatedSensor(rw::sensor::SensorModel::Ptr model) : _model(model) {}
 
       public:
         //! @brief destructor
-        virtual ~SimulatedSensor ();
+        virtual ~SimulatedSensor();
 
         /**
          * @brief get name of this simulated sensor
          */
-        const std::string& getName () const { return _model->getName (); }
+        const std::string& getName() const { return _model->getName(); }
 
         /**
          * @brief get frame that this sensor is attached to.
          * @return frame
          */
-        rw::kinematics::Frame* getFrame () const { return _model->getFrame (); }
+        rw::kinematics::Frame* getFrame() const { return _model->getFrame(); }
 
         /**
          * @brief steps the the SimulatedSensor with time \b dt and saves any state
@@ -72,25 +71,26 @@ namespace rwlibs { namespace simulation {
          * @param info [in] update information related to the time step.
          * @param state [out] changes of the SimulatedSensor is saved in state.
          */
-        virtual void update (const rwlibs::simulation::Simulator::UpdateInfo& info, rw::kinematics::State& state) = 0;
+        virtual void update(const rwlibs::simulation::Simulator::UpdateInfo& info,
+                            rw::kinematics::State& state) = 0;
 
         /**
          * @brief Resets the state of the SimulatedSensor to that of \b state
          * @param state [in] the state that the sensor is reset too.
          */
-        virtual void reset (const rw::kinematics::State& state) = 0;
+        virtual void reset(const rw::kinematics::State& state) = 0;
 
         /**
          * @brief get the sensor model of this simulated sensor.
          */
-        rw::sensor::SensorModel::Ptr getSensorModel () { return _model; }
+        rw::sensor::SensorModel::Ptr getSensorModel() { return _model; }
 
         /**
          * @brief get a handle to controlling an instance of the simulated sensor in a specific
          * simulator
          * @param sim [in] the simulator in which the handle is active
          */
-        rw::sensor::Sensor::Ptr getSensorHandle (rwlibs::simulation::Simulator::Ptr sim);
+        rw::sensor::Sensor::Ptr getSensorHandle(rwlibs::simulation::Simulator::Ptr sim);
 
       private:
         rw::sensor::SensorModel::Ptr _model;

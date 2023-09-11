@@ -45,25 +45,24 @@ class PropertyViewEditor : public QtTreePropertyBrowser
      * @brief Make new editor.
      * @param parent [in] the owning parent widget.
      */
-    PropertyViewEditor (QWidget* parent);
+    PropertyViewEditor(QWidget* parent);
 
     //! @brief Destructor.
-    virtual ~PropertyViewEditor ();
+    virtual ~PropertyViewEditor();
 
     /**
      * @brief set the propertymap and update it.
      * @param map
      */
-    void setPropertyMap (rw::core::Ptr< rw::core::PropertyMap > map)
-    {
+    void setPropertyMap(rw::core::Ptr<rw::core::PropertyMap> map) {
         _map = map;
-        update ();
+        update();
     }
 
     /**
      * @brief updates the propertyviewer with its propertymap
      */
-    void update ();
+    void update();
 
     /**
      * @brief sets the number of decimal places used for displaying properties of
@@ -72,27 +71,27 @@ class PropertyViewEditor : public QtTreePropertyBrowser
      *
      * Note that the update() must be called in order for the changes to take effect
      */
-    void setDecimals (const int decimals) { _decimals = decimals; };
+    void setDecimals(const int decimals) { _decimals = decimals; };
 
   Q_SIGNALS:
     /**
      * @brief if a property is changed then its identifier is signalled.
      */
-    void propertyChanged (const std::string& identifier);
+    void propertyChanged(const std::string& identifier);
 
   private Q_SLOTS:
-    void slotValueChanged (QtProperty* property, const QVariant& value);
-    void slotPropertyDestroyed (QtProperty* property);
+    void slotValueChanged(QtProperty* property, const QVariant& value);
+    void slotPropertyDestroyed(QtProperty* property);
 
   private:
-    QtProperty* update (rw::core::Ptr< rw::core::PropertyMap > map, std::string propname);
+    QtProperty* update(rw::core::Ptr<rw::core::PropertyMap> map, std::string propname);
 
   private:
     QtVariantEditorFactory* _variantFactory;
     QtVariantPropertyManager* _variantManager;
-    rw::core::Ptr< rw::core::PropertyMap > _map;
-    std::map< QtProperty*, rw::core::Ptr< rw::core::PropertyBase > > _qtPropToRwProp;
-    std::map< QtProperty*, rw::core::Ptr< rw::core::PropertyMap > > _qtPropToRwPropMap;
+    rw::core::Ptr<rw::core::PropertyMap> _map;
+    std::map<QtProperty*, rw::core::Ptr<rw::core::PropertyBase>> _qtPropToRwProp;
+    std::map<QtProperty*, rw::core::Ptr<rw::core::PropertyMap>> _qtPropToRwPropMap;
 
     int _decimals;
 };

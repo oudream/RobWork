@@ -34,51 +34,43 @@ class CameraWrapper : public rw::sensor::Camera
   public:
     SimulatedCamera* _simscanner;
 
-    CameraWrapper (SimulatedCamera* scanner, const std::string& name) :
-        Camera (name, "Simulated Camera"), _simscanner (scanner)
-    {}
+    CameraWrapper(SimulatedCamera* scanner, const std::string& name) :
+        Camera(name, "Simulated Camera"), _simscanner(scanner) {}
 
-    bool initialize () { return _simscanner->initialize (); }
-    bool start () { return _simscanner->start (); }
-    void stop () { return _simscanner->stop (); }
-    void acquire () { return _simscanner->acquire (); }
-    bool isImageReady () { return _simscanner->isImageReady (); }
-    const rw::sensor::Image* getImage () { return _simscanner->getImage (); }
-    double getFrameRate () { return _simscanner->getFrameRate (); }
-    void setFrameRate (double framerate) { return _simscanner->setFrameRate (framerate); }
-    unsigned int getWidth () { return _simscanner->getWidth (); }
-    unsigned int getHeight () { return _simscanner->getHeight (); }
+    bool initialize() { return _simscanner->initialize(); }
+    bool start() { return _simscanner->start(); }
+    void stop() { return _simscanner->stop(); }
+    void acquire() { return _simscanner->acquire(); }
+    bool isImageReady() { return _simscanner->isImageReady(); }
+    const rw::sensor::Image* getImage() { return _simscanner->getImage(); }
+    double getFrameRate() { return _simscanner->getFrameRate(); }
+    void setFrameRate(double framerate) { return _simscanner->setFrameRate(framerate); }
+    unsigned int getWidth() { return _simscanner->getWidth(); }
+    unsigned int getHeight() { return _simscanner->getHeight(); }
 };
 
 }    // namespace
 
-SimulatedCamera::SimulatedCamera (const std::string& name, double fov, rw::core::Ptr<Frame> frame,
-                                  FrameGrabber::Ptr frameGrabber) :
-    SimulatedSensor (ownedPtr (
-        new CameraModel (rw::math::ProjectionMatrix::makePerspective (
-                             fov, frameGrabber->getWidth (), frameGrabber->getHeight (), 0.01, 30),
-                         name, frame, "SimulatedCamera with near 0.01 and far field 30"))),
-    _frameRate (30), _dtSum (0.0), _frameGrabber (frameGrabber), _isAcquired (false),
-    _started (false), _initialized (false),
-    _csensor (rw::core::ownedPtr (new CameraWrapper (this, name)))
-{}
+SimulatedCamera::SimulatedCamera(const std::string& name, double fov, rw::core::Ptr<Frame> frame,
+                                 FrameGrabber::Ptr frameGrabber) :
+    SimulatedSensor(ownedPtr(
+        new CameraModel(rw::math::ProjectionMatrix::makePerspective(
+                            fov, frameGrabber->getWidth(), frameGrabber->getHeight(), 0.01, 30),
+                        name, frame, "SimulatedCamera with near 0.01 and far field 30"))),
+    _frameRate(30), _dtSum(0.0), _frameGrabber(frameGrabber), _isAcquired(false), _started(false),
+    _initialized(false), _csensor(rw::core::ownedPtr(new CameraWrapper(this, name))) {}
 
-SimulatedCamera::SimulatedCamera (CameraModel::Ptr model, FrameGrabber::Ptr frameGrabber) :
-    SimulatedSensor (model), _frameRate (30), _dtSum (0.0), _frameGrabber (frameGrabber),
-    _isAcquired (false), _started (false), _initialized (false),
-    _csensor (rw::core::ownedPtr (new CameraWrapper (this, model->getName ())))
-{}
+SimulatedCamera::SimulatedCamera(CameraModel::Ptr model, FrameGrabber::Ptr frameGrabber) :
+    SimulatedSensor(model), _frameRate(30), _dtSum(0.0), _frameGrabber(frameGrabber),
+    _isAcquired(false), _started(false), _initialized(false),
+    _csensor(rw::core::ownedPtr(new CameraWrapper(this, model->getName()))) {}
 
-SimulatedCamera::~SimulatedCamera ()
-{
-    if (_started)
-        stop ();
+SimulatedCamera::~SimulatedCamera() {
+    if(_started) stop();
 }
 
-bool SimulatedCamera::initialize ()
-{
-    if (_started)
-        stop ();
+bool SimulatedCamera::initialize() {
+    if(_started) stop();
 
     // next: allocate memory for the image
     //_imgBuffer = new char[(_width*_height*colorTypeWidth)];
@@ -88,75 +80,57 @@ bool SimulatedCamera::initialize ()
     return true;
 }
 
-void SimulatedCamera::stop ()
-{
-    if (!_initialized) {
-        RW_THROW ("Camera was not initialized!");
-    }
-    if (!_started) {
-        RW_THROW ("Camera was not started!");
-    }
+void SimulatedCamera::stop() {
+    if(!_initialized) { RW_THROW("Camera was not initialized!"); }
+    if(!_started) { RW_THROW("Camera was not started!"); }
     //
     _started = false;
 }
 
-bool SimulatedCamera::start ()
-{
-    if (_initialized == false)
-        initialize ();
-    if (_initialized == false)
-        return false;
+bool SimulatedCamera::start() {
+    if(_initialized == false) initialize();
+    if(_initialized == false) return false;
     _started = true;
     return true;
 }
 
-void SimulatedCamera::acquire ()
-{
+void SimulatedCamera::acquire() {
     _isAcquired = false;
 }
 
-void SimulatedCamera::update (const Simulator::UpdateInfo& info, rw::kinematics::State& state)
-{
-    if (!_started || _isAcquired)
-        return;
-    if (_frameRate < 0.00001)
-        return;
+void SimulatedCamera::update(const Simulator::UpdateInfo& info, rw::kinematics::State& state) {
+    if(!_started || _isAcquired) return;
+    if(_frameRate < 0.00001) return;
 
     _dtSum += info.dt;
 
-    if (_dtSum > 1 / _frameRate) {
+    if(_dtSum > 1 / _frameRate) {
         _dtSum = 0;
-        _frameGrabber->grab (getFrame (), state);
+        _frameGrabber->grab(getFrame(), state);
         _isAcquired = true;
     }
 }
 
-bool SimulatedCamera::isImageReady ()
-{
+bool SimulatedCamera::isImageReady() {
     return _isAcquired;
 }
 
-const Image* SimulatedCamera::getImage ()
-{
-    return &(_frameGrabber->getImage ());
+const Image* SimulatedCamera::getImage() {
+    return &(_frameGrabber->getImage());
 }
 
-double SimulatedCamera::getFrameRate ()
-{
+double SimulatedCamera::getFrameRate() {
     return _frameRate;
 }
 
-void SimulatedCamera::setFrameRate (double framerate)
-{
+void SimulatedCamera::setFrameRate(double framerate) {
     _frameRate = framerate;
 }
 
-unsigned int SimulatedCamera::getWidth () const
-{
-    return _frameGrabber->getWidth ();
+unsigned int SimulatedCamera::getWidth() const {
+    return _frameGrabber->getWidth();
 }
 
-unsigned int SimulatedCamera::getHeight () const
-{
-    return _frameGrabber->getHeight ();
+unsigned int SimulatedCamera::getHeight() const {
+    return _frameGrabber->getHeight();
 }

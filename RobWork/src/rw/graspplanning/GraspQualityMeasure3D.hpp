@@ -20,7 +20,7 @@
 
 #if !defined(SWIG)
 #include <rw/core/Ptr.hpp>
-#endif 
+#endif
 namespace rw { namespace graspplanning {
 
     class Grasp3D;
@@ -32,7 +32,7 @@ namespace rw { namespace graspplanning {
     {
       public:
         //! smart pointer type of this class
-        typedef rw::core::Ptr< GraspQualityMeasure3D > Ptr;
+        typedef rw::core::Ptr<GraspQualityMeasure3D> Ptr;
 
         virtual ~GraspQualityMeasure3D() {}
 
@@ -40,7 +40,7 @@ namespace rw { namespace graspplanning {
          * @brief computes the quality of the grasp such that the quality
          * is in the interval [0;1] with 1 being the highest quality.
          */
-        virtual double quality (const Grasp3D& grasp) const = 0;
+        virtual double quality(const Grasp3D& grasp) const = 0;
     };
 
 }}    // namespace rw::graspplanning

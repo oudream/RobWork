@@ -33,43 +33,39 @@ namespace rw { namespace common {
      * @brief a cache that use a timestamp in combination with a key to determine the uniqueness
      * of an item in the cache.
      */
-    template< class KEY, class VAL, class STAMP_T > class FileCache
+    template<class KEY, class VAL, class STAMP_T> class FileCache
     {
       public:
         /**
          * @brief default constructor
          */
-        FileCache (){};
+        FileCache(){};
 
         /**
          * @brief default destructor
          */
-        virtual ~FileCache (){};
+        virtual ~FileCache(){};
 
         /**
          * @brief Tests whether a key is present in the cache
          */
-        bool isInCache (const KEY& id, const STAMP_T& stamp)
-        {
-            if (_map.find (id) == _map.end () || _keyToStamp.find (id) == _keyToStamp.end ())
+        bool isInCache(const KEY& id, const STAMP_T& stamp) {
+            if(_map.find(id) == _map.end() || _keyToStamp.find(id) == _keyToStamp.end())
                 return false;
-            if (_keyToStamp[id] != stamp)
-                return false;
+            if(_keyToStamp[id] != stamp) return false;
             return true;
         }
 
         /**
          * @brief tests if the key id is in the cache
          */
-        bool has (const KEY& id, const STAMP_T& stamp) { return isInCache (id, stamp); }
+        bool has(const KEY& id, const STAMP_T& stamp) { return isInCache(id, stamp); }
 
         /**
          * @brief gets the value that is associated with the key
          */
-        rw::core::Ptr< VAL > get (const KEY& key)
-        {
-            if (_map.find (key) == _map.end ())
-                RW_THROW ("Key does not exist!");
+        rw::core::Ptr<VAL> get(const KEY& key) {
+            if(_map.find(key) == _map.end()) RW_THROW("Key does not exist!");
             return _map[key];
         }
 
@@ -77,18 +73,16 @@ namespace rw { namespace common {
          * @brief Ads a value to a key that was aquired at some specific
          * time.
          */
-        void add (const KEY& key, VAL* val, const STAMP_T& stamp)
-        {
+        void add(const KEY& key, VAL* val, const STAMP_T& stamp) {
             _keyToStamp[key] = stamp;
-            _map[key]        = rw::core::ownedPtr (val);
+            _map[key]        = rw::core::ownedPtr(val);
         }
 
         /**
          * @brief Ads a value to a key that was aquired at some specific
          * time.
          */
-        void add (const KEY& key, rw::core::Ptr< VAL > val, const STAMP_T& stamp)
-        {
+        void add(const KEY& key, rw::core::Ptr<VAL> val, const STAMP_T& stamp) {
             _keyToStamp[key] = stamp;
             _map[key]        = val;
         }
@@ -96,25 +90,23 @@ namespace rw { namespace common {
         /**
          * @brief remove all values-key pairs that match key
          */
-        void remove (const KEY& key)
-        {
-            _map.erase (key);
-            _keyToStamp.erase (key);
+        void remove(const KEY& key) {
+            _map.erase(key);
+            _keyToStamp.erase(key);
         }
 
         /**
          * @brief clear all value-key pairs from this Cache
          */
-        void clear ()
-        {
-            _map.clear ();
-            _keyToStamp.clear ();
+        void clear() {
+            _map.clear();
+            _keyToStamp.clear();
         }
 
       private:
-        typedef std::map< KEY, rw::core::Ptr< VAL > > KeyToValMap;
+        typedef std::map<KEY, rw::core::Ptr<VAL>> KeyToValMap;
         KeyToValMap _map;
-        std::map< KEY, STAMP_T > _keyToStamp;
+        std::map<KEY, STAMP_T> _keyToStamp;
     };
     // @}
 }}     // namespace rw::common

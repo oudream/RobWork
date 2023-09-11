@@ -26,15 +26,14 @@
 
 #include <rw/graphics/PlotGenerator.hpp>
 
-namespace rwlibs {
-namespace plots {
-//! @addtogroup plots
+namespace rwlibs { namespace plots {
+    //! @addtogroup plots
 
-//! @{
-//! @brief MathGL based implementation of a plot generator.
-class MathGLPlotGenerator: public rw::graphics::PlotGenerator
-{
-    public:
+    //! @{
+    //! @brief MathGL based implementation of a plot generator.
+    class MathGLPlotGenerator : public rw::graphics::PlotGenerator
+    {
+      public:
         //! @brief Constructor.
         MathGLPlotGenerator();
 
@@ -43,10 +42,9 @@ class MathGLPlotGenerator: public rw::graphics::PlotGenerator
 
         //! @copydoc PlotGenerator::makePlot
         virtual rw::graphics::Plot::Ptr makePlot();
-};
-//! @}
+    };
+    //! @}
 
-} /* namespace plots */
-} /* namespace rwlibs */
+}}    // namespace rwlibs::plots
 
 #endif /* RWLIBS_PLOTS_MATHGLPLOTGENERATOR_HPP_ */

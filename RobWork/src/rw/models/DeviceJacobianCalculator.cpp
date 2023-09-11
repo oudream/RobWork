@@ -28,45 +28,38 @@ using namespace rw::models;
 using namespace rw::kinematics;
 using namespace rw::math;
 
-DeviceJacobianCalculator::DeviceJacobianCalculator (std::vector< Device::Ptr > devices,
-                                                    const rw::core::Ptr<Frame> base,
-                                                    const std::vector< Frame* >& tcps,
-                                                    const State& state) :
-    _base (base),
-    _tcps (tcps)
-{
+DeviceJacobianCalculator::DeviceJacobianCalculator(std::vector<Device::Ptr> devices,
+                                                   const rw::core::Ptr<Frame> base,
+                                                   const std::vector<Frame*>& tcps,
+                                                   const State& state) :
+    _base(base),
+    _tcps(tcps) {
     _dof = 0;
-    for (Device::Ptr dev : _devices) {
-        _dof += dev->getDOF ();
-    }
+    for(Device::Ptr dev : _devices) { _dof += dev->getDOF(); }
 }
 
-DeviceJacobianCalculator::~DeviceJacobianCalculator ()
-{}
+DeviceJacobianCalculator::~DeviceJacobianCalculator() {}
 
 // Jacobian DeviceJacobianCalculator::get(const FKTable& fk) const {
-Jacobian DeviceJacobianCalculator::get (const rw::kinematics::State& state) const
-{
-    const rw::kinematics::FKTable fk (state);
-    Jacobian jacobian (Jacobian::zero (6 * _tcps.size (), _dof));
+Jacobian DeviceJacobianCalculator::get(const rw::kinematics::State& state) const {
+    const rw::kinematics::FKTable fk(state);
+    Jacobian jacobian(Jacobian::zero(6 * _tcps.size(), _dof));
 
-    for (Device::Ptr dev : _devices) {
-        Jacobian jac = dev->baseJframes (_tcps, state);
-    }
+    for(Device::Ptr dev : _devices) { Jacobian jac = dev->baseJframes(_tcps, state); }
 
-    for (size_t i = 0; i < _tcps.size (); i++) {
-        const rw::core::Ptr<Frame> tcpFrame      = _tcps[i];
-        const JacobianSetup& setup = _jacobianSetups[i];
+    for(size_t i = 0; i < _tcps.size(); i++) {
+        const rw::core::Ptr<Frame> tcpFrame = _tcps[i];
+        const JacobianSetup& setup          = _jacobianSetups[i];
 
-        Transform3D<> tcp = fk.get (*tcpFrame);
-        for (std::vector< std::pair< const Joint*, size_t > >::const_iterator it = setup.begin ();
-             it != setup.end ();
-             ++it) {
-            Transform3D<> jointTransform = fk.get (*(*it).first);
-            (*it).first->getJacobian (6 * i, (*it).second, jointTransform, tcp, state, jacobian);
+        Transform3D<> tcp = fk.get(*tcpFrame);
+        for(std::vector<std::pair<const Joint*, size_t>>::const_iterator it = setup.begin();
+            it != setup.end();
+            ++it) {
+            Transform3D<> jointTransform = fk.get(*(*it).first);
+            (*it).first->getJacobian(6 * i, (*it).second, jointTransform, tcp, state, jacobian);
         }
     }
 
-    const Rotation3D<>& R = fk.get (*_base).R ();
-    return inverse (R) * jacobian;
+    const Rotation3D<>& R = fk.get(*_base).R();
+    return inverse(R) * jacobian;
 }

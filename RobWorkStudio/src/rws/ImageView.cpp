@@ -16,6 +16,7 @@
  ********************************************************************************/
 
 #include "ImageView.hpp"
+
 #include "ImageUtil.hpp"
 
 #include <rw/sensor/Image.hpp>
@@ -26,16 +27,13 @@
 using namespace rw::sensor;
 using rws::ImageUtil;
 
-ImageView::ImageView (QWidget* parent) : QLabel (parent)
-{}
+ImageView::ImageView(QWidget* parent) : QLabel(parent) {}
 
-ImageView::~ImageView ()
-{}
+ImageView::~ImageView() {}
 
-void ImageView::display (const Image& image)
-{
+void ImageView::display(const Image& image) {
     const QImage* const qimage = ImageUtil::toQtImage(image);
-    QPixmap pixmap = QPixmap::fromImage (*qimage);
+    QPixmap pixmap             = QPixmap::fromImage(*qimage);
     delete qimage;
-    this->setPixmap (pixmap);
+    this->setPixmap(pixmap);
 }

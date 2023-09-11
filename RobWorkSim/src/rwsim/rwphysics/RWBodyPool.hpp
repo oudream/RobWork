@@ -25,27 +25,27 @@ namespace rwsim { namespace simulator {
         /**
          * @brief initialize the node and edge buffers
          */
-        RWBodyPool (int nrBodies = 0);
+        RWBodyPool(int nrBodies = 0);
 
         /**
          * @brief create a ConstraintNode
          */
-        RWBody* createBody (RWBody::BodyType type);
+        RWBody* createBody(RWBody::BodyType type);
 
         /**
          * @brief delete a constraint node
          */
-        void deleteBody (RWBody* body);
+        void deleteBody(RWBody* body);
 
         /**
          * @brief gets the complete list of constraint nodes
          * in the pool. NULL elements can occour.
          */
-        const RWBodyList& getBodies () const;
+        const RWBodyList& getBodies() const;
 
       protected:
-        std::vector< RWBody* > _bodies;
-        std::stack< int > _freeBodyIDs;
+        std::vector<RWBody*> _bodies;
+        std::stack<int> _freeBodyIDs;
     };
 
 }}    // namespace rwsim::simulator

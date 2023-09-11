@@ -42,26 +42,26 @@ namespace rwsim { namespace contacts {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< ContactModel > Ptr;
+        typedef rw::core::Ptr<ContactModel> Ptr;
 
         /**
          * @brief Construct new contact model.
          *
          * @param pOwner [in] The contact strategy that creates this model.
          */
-        ContactModel (rw::proximity::ProximityStrategy* pOwner) : ProximityModel (pOwner){};
+        ContactModel(rw::proximity::ProximityStrategy* pOwner) : ProximityModel(pOwner){};
 
         /**
          * @brief Destruct the model.
          */
-        virtual ~ContactModel (){};
+        virtual ~ContactModel(){};
 
         /**
          * @brief Get name of model as a string.
          *
          * @return name of model.
          */
-        virtual std::string getName () const = 0;
+        virtual std::string getName() const = 0;
     };
     //! @}
 }}     // namespace rwsim::contacts

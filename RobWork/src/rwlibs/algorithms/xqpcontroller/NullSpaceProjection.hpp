@@ -54,13 +54,14 @@ namespace rwlibs { namespace algorithms {
          * @param state [in] State giving the assembly of the workcell
          * @param dt [in] Time step size
          */
-        NullSpaceProjection (rw::models::Device* device, rw::core::Ptr<rw::kinematics::Frame> controlFrame,
-                             const rw::kinematics::State& state, double dt);
+        NullSpaceProjection(rw::models::Device* device,
+                            rw::core::Ptr<rw::kinematics::Frame> controlFrame,
+                            const rw::kinematics::State& state, double dt);
 
         /**
          * @brief Destructor
          */
-        virtual ~NullSpaceProjection ();
+        virtual ~NullSpaceProjection();
 
         /**
          * @brief Solves to give a joint motion moving away from joint limits while satisfying the
@@ -80,8 +81,8 @@ namespace rwlibs { namespace algorithms {
          * @param dqcurrent [in] The current velocity
          * @param dq1 [in] The new velocity calculated e.g. by the XQPController
          */
-        rw::math::Q solve (const rw::math::Q& q, const rw::math::Q& dqcurrent,
-                           const rw::math::Q& dq1);
+        rw::math::Q solve(const rw::math::Q& q, const rw::math::Q& dqcurrent,
+                          const rw::math::Q& dq1);
 
         /**
          * @brief Enumeration used to specify frame associated with the projection
@@ -111,7 +112,7 @@ namespace rwlibs { namespace algorithms {
          * @param P [in] The projection matrix
          * @param space [in] The space in which to apply the projection
          */
-        void setProjection (const Eigen::MatrixXd& P, ProjectionFrame space);
+        void setProjection(const Eigen::MatrixXd& P, ProjectionFrame space);
 
         /**
          * @brief Sets the threshold for the joint limits
@@ -122,27 +123,27 @@ namespace rwlibs { namespace algorithms {
          *
          * @param threshold [in] Relative threshold for the joint limits
          */
-        void setThreshold (double threshold);
+        void setThreshold(double threshold);
 
         /**
          * @brief Sets the weight of the joint limits
          *
          * @param w [in] Weight of the joint limit
          */
-        void setJointLimitsWeight (double w);
+        void setJointLimitsWeight(double w);
 
       private:
         /**
          * Calculate gradient for joint limit cost function
          */
-        rw::math::Q getGradient (const rw::math::Q& q);
+        rw::math::Q getGradient(const rw::math::Q& q);
 
         /**
          * Calculate velocity limits associated with position, velocity and acceleration limits as
          * in the QPController
          */
-        void calculateVelocityLimits (rw::math::Q& lower, rw::math::Q& upper, const rw::math::Q& q,
-                                      const rw::math::Q& dq);
+        void calculateVelocityLimits(rw::math::Q& lower, rw::math::Q& upper, const rw::math::Q& q,
+                                     const rw::math::Q& dq);
 
         rw::models::Device* _device;
         rw::core::Ptr<rw::kinematics::Frame> _controlFrame;

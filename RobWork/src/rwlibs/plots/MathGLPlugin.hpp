@@ -26,15 +26,14 @@
 
 #include <rw/core/Plugin.hpp>
 
-namespace rwlibs {
-namespace plots {
-//! @addtogroup plots
+namespace rwlibs { namespace plots {
+    //! @addtogroup plots
 
-//! @{
-//! @brief Plugin providing MathGL plots.
-class MathGLPlugin: public rw::core::Plugin
-{
-    public:
+    //! @{
+    //! @brief Plugin providing MathGL plots.
+    class MathGLPlugin : public rw::core::Plugin
+    {
+      public:
         //! @brief Constructor.
         MathGLPlugin();
 
@@ -42,14 +41,13 @@ class MathGLPlugin: public rw::core::Plugin
         virtual ~MathGLPlugin();
 
         //! @copydoc Plugin::getExtensionDescriptors
-        virtual std::vector< rw::core::Extension::Descriptor > getExtensionDescriptors ();
+        virtual std::vector<rw::core::Extension::Descriptor> getExtensionDescriptors();
 
         //! @copydoc Plugin::makeExtension
-        virtual rw::core::Ptr< rw::core::Extension > makeExtension (const std::string& id);
-};
-//! @}
+        virtual rw::core::Ptr<rw::core::Extension> makeExtension(const std::string& id);
+    };
+    //! @}
 
-} /* namespace plots */
-} /* namespace rwlibs */
+}}    // namespace rwlibs::plots
 
 #endif /* RWLIBS_PLOTS_MATHGLPLUGIN_HPP_ */

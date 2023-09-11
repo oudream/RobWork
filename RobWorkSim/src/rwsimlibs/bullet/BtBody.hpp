@@ -86,19 +86,19 @@ namespace rwsimlibs { namespace bullet {
          * reset the body position and velocity after creation. Instead the body must be deleted and
          * created again.
          */
-        BtBody (rw::core::Ptr< rwsim::dynamics::Body > body,
-                const rwsim::dynamics::MaterialDataMap* frictionMap,
-                const rwsim::dynamics::ContactDataMap* collisionMap, btDynamicsWorld* btWorld,
-                const rw::kinematics::State& state);
+        BtBody(rw::core::Ptr<rwsim::dynamics::Body> body,
+               const rwsim::dynamics::MaterialDataMap* frictionMap,
+               const rwsim::dynamics::ContactDataMap* collisionMap, btDynamicsWorld* btWorld,
+               const rw::kinematics::State& state);
 
         //! @brief Destructor
-        virtual ~BtBody ();
+        virtual ~BtBody();
 
         /**
          * @brief Get the RobWork body.
          * @return a smart pointer to a RobWork Body.
          */
-        rw::core::Ptr< rwsim::dynamics::Body > getRwBody () const;
+        rw::core::Ptr<rwsim::dynamics::Body> getRwBody() const;
 
         /**
          * @brief Get the underlying btRigidBody from Bullet.
@@ -107,27 +107,27 @@ namespace rwsimlibs { namespace bullet {
          * btRigidBody only.
          * @return a pointer to a btRigidBody.
          */
-        btRigidBody* getBulletBody () const;
+        btRigidBody* getBulletBody() const;
 
         /**
          * @brief Update the position of all kinematic bodies.
          * @param dt [in] the size of the timestep.
          * @param state [in/out] the state with updated position for kinematic bodies.
          */
-        void update (double dt, rw::kinematics::State& state) const;
+        void update(double dt, rw::kinematics::State& state) const;
 
         /**
          * @brief This method updates the \b state with state info of the Bullet object.
          * Which means that Bullet states are converted to rw states.
          * @param state [in/out] the state is updated with new positions and velocities.
          */
-        void postupdate (rw::kinematics::State& state) const;
+        void postupdate(rw::kinematics::State& state) const;
 
         /**
          * @brief Test whether the object is dynamic (equivalent to the RigidBody type in RobWork).
          * @return true if object is dynamic, false if object is kinematic or static.
          */
-        bool isDynamic () const;
+        bool isDynamic() const;
 
         /**
          * @brief Get the transform from the body frame to the center of mass frame.
@@ -137,7 +137,7 @@ namespace rwsimlibs { namespace bullet {
          * used internally in Bullet.
          * @return a reference to the transform.
          */
-        const rw::math::Transform3D<>& getBodyTcom () const;
+        const rw::math::Transform3D<>& getBodyTcom() const;
 
         /**
          * @brief Get the current transform of the Bullet body.
@@ -145,7 +145,7 @@ namespace rwsimlibs { namespace bullet {
          * RobWork body frame - see #getBodyTcom .
          * @return the current transform.
          */
-        rw::math::Transform3D<> getWorldTcom () const;
+        rw::math::Transform3D<> getWorldTcom() const;
 
         //! @brief Data structure to attach to bullet bodies, allowing friction and restitution to
         //! be specified separately for each pair of bodies.
@@ -157,10 +157,10 @@ namespace rwsimlibs { namespace bullet {
              * @param material [in] the BtMaterial (the map, and information about the material of
              * this specific body).
              */
-            BodyMetaData (const rw::kinematics::Frame* frame, const BtMaterial* material);
+            BodyMetaData(const rw::kinematics::Frame* frame, const BtMaterial* material);
 
             //! @brief Destructor.
-            ~BodyMetaData ();
+            ~BodyMetaData();
 
             //! @brief The body frame.
             const rw::kinematics::Frame* const frame;
@@ -176,30 +176,30 @@ namespace rwsimlibs { namespace bullet {
              * @brief Constructor.
              * @param geometry [in] the geometry.
              */
-            GeometryMetaData (rw::core::Ptr< const rw::geometry::Geometry > geometry);
+            GeometryMetaData(rw::core::Ptr<const rw::geometry::Geometry> geometry);
 
             //! @brief Destrcutor.
-            ~GeometryMetaData ();
+            ~GeometryMetaData();
 
             //! @brief The geometry.
-            const rw::core::Ptr< const rw::geometry::Geometry > geometry;
+            const rw::core::Ptr<const rw::geometry::Geometry> geometry;
         };
 
       private:
-        btRigidBody* createRigidBody (const rwsim::dynamics::MaterialDataMap* frictionMap,
-                                      const rwsim::dynamics::ContactDataMap* collisionMap,
-                                      rw::core::Ptr< rwsim::dynamics::Body > body,
-                                      const rw::kinematics::State& state) const;
+        btRigidBody* createRigidBody(const rwsim::dynamics::MaterialDataMap* frictionMap,
+                                     const rwsim::dynamics::ContactDataMap* collisionMap,
+                                     rw::core::Ptr<rwsim::dynamics::Body> body,
+                                     const rw::kinematics::State& state) const;
         btCollisionShape*
-        createColShape (rw::core::Ptr< const rw::geometry::Geometry > geometry) const;
-        btCompoundShape* getColShape (rw::core::Ptr< rwsim::dynamics::Body > body,
-                                      const rw::math::Transform3D<>& bTcom) const;
+        createColShape(rw::core::Ptr<const rw::geometry::Geometry> geometry) const;
+        btCompoundShape* getColShape(rw::core::Ptr<rwsim::dynamics::Body> body,
+                                     const rw::math::Transform3D<>& bTcom) const;
 
       private:
-        const rw::core::Ptr< rwsim::dynamics::Body > _rwBody;
-        const rw::core::Ptr< rwsim::dynamics::RigidBody > _rwBodyDynamic;
-        const rw::core::Ptr< rwsim::dynamics::KinematicBody > _rwBodyKinematic;
-        const rw::core::Ptr< rwsim::dynamics::FixedBody > _rwBodyStatic;
+        const rw::core::Ptr<rwsim::dynamics::Body> _rwBody;
+        const rw::core::Ptr<rwsim::dynamics::RigidBody> _rwBodyDynamic;
+        const rw::core::Ptr<rwsim::dynamics::KinematicBody> _rwBodyKinematic;
+        const rw::core::Ptr<rwsim::dynamics::FixedBody> _rwBodyStatic;
         btDynamicsWorld* const _btDynamicsWorld;
         const rw::math::Transform3D<> _bTcom;
         btCompoundShape* const _collisionShape;

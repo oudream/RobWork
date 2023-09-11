@@ -71,16 +71,16 @@ namespace rw { namespace loaders {
     {
       public:
         //! @brief Smart pointer of WorkCellLoader.
-        typedef rw::core::Ptr< WorkCellLoader > Ptr;
+        typedef rw::core::Ptr<WorkCellLoader> Ptr;
 
         //! @brief Destructor.
-        virtual ~WorkCellLoader () {}
+        virtual ~WorkCellLoader() {}
 
         /**
          * @brief Load a WorkCell from a file.
          * @param filename [in] path to workcell file.
          */
-        virtual models::WorkCell::Ptr loadWorkCell (const std::string& filename) = 0;
+        virtual models::WorkCell::Ptr loadWorkCell(const std::string& filename) = 0;
 
         /**
          * @addtogroup extensionpoints
@@ -93,7 +93,7 @@ namespace rw { namespace loaders {
          * "rw.loaders.WorkCellLoader" extension point where new loaders can be
          * registered.
          */
-        class Factory : public rw::core::ExtensionPoint< WorkCellLoader >
+        class Factory : public rw::core::ExtensionPoint<WorkCellLoader>
         {
           public:
             /**
@@ -102,7 +102,7 @@ namespace rw { namespace loaders {
              * The extension name is case-insensitive.
              * @return a suitable loader.
              */
-            static rw::core::Ptr< WorkCellLoader > getWorkCellLoader (const std::string& format);
+            static rw::core::Ptr<WorkCellLoader> getWorkCellLoader(const std::string& format);
 
             /**
              * @brief Loads/imports a WorkCell from a file.
@@ -111,18 +111,17 @@ namespace rw { namespace loaders {
              * The %RobWork %XML format is supported by default.
              * @param filename [in] name of the WorkCell file.
              */
-            static models::WorkCell::Ptr load (const std::string& filename);
+            static models::WorkCell::Ptr load(const std::string& filename);
 
           private:
-            Factory () :
-                rw::core::ExtensionPoint< WorkCellLoader > (
-                    "rw.loaders.WorkCellLoader", "Extension point for for WorkCell loaders.")
-            {}
+            Factory() :
+                rw::core::ExtensionPoint<WorkCellLoader>(
+                    "rw.loaders.WorkCellLoader", "Extension point for for WorkCell loaders.") {}
         };
 
       protected:
         //! @brief Constructor.
-        WorkCellLoader () {}
+        WorkCellLoader() {}
     };
 
     /**

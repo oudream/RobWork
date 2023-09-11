@@ -22,11 +22,10 @@
  * @file StructuredLineModel.hpp
  */
 
-#include <rwlibs/algorithms/RANSACModel.hpp>
-
 #include <rw/core/Ptr.hpp>
 #include <rw/geometry/Line.hpp>
 #include <rw/math/Vector3D.hpp>
+#include <rwlibs/algorithms/RANSACModel.hpp>
 
 namespace rwlibs { namespace algorithms {
 
@@ -39,46 +38,45 @@ namespace rwlibs { namespace algorithms {
      * @image html sline.png
      * Structured line model requires at least two samples to create.
      */
-    class StructuredLineModel : public RANSACModel< StructuredLineModel, rw::math::Vector3D<> >
+    class StructuredLineModel : public RANSACModel<StructuredLineModel, rw::math::Vector3D<>>
     {
       public:
         //! @brief Smart pointer type to this class.
-        typedef rw::core::Ptr< StructuredLineModel > Ptr;
+        typedef rw::core::Ptr<StructuredLineModel> Ptr;
 
       public:    // constructors
         /**
          * @brief Constructor.
          */
-        StructuredLineModel () : _interval (0.0) {}
+        StructuredLineModel() : _interval(0.0) {}
 
         /**
          * @brief Constructor.
          */
-        StructuredLineModel (const rw::geometry::Line& line, const rw::math::Vector3D<>& start,
-                             double interval) :
-            _line (line),
-            _start (start), _interval (interval)
-        {}
+        StructuredLineModel(const rw::geometry::Line& line, const rw::math::Vector3D<>& start,
+                            double interval) :
+            _line(line),
+            _start(start), _interval(interval) {}
 
         //! @brief Destructor.
-        virtual ~StructuredLineModel () {}
+        virtual ~StructuredLineModel() {}
 
       public:    // methods
         //! @copydoc RANSACModel::fitError
-        virtual double fitError (const rw::math::Vector3D<>& sample) const;
+        virtual double fitError(const rw::math::Vector3D<>& sample) const;
 
         //! @copydoc RANSACModel::invalid
-        virtual bool invalid () const;
+        virtual bool invalid() const;
 
         /**
          * @copydoc RANSACModel::getMinReqData
          *
          * StructuredLineModel requires at least 2 sample.
          */
-        virtual int getMinReqData () const { return 2; }
+        virtual int getMinReqData() const { return 2; }
 
         //! @copydoc RANSACModel::refit
-        virtual double refit (const std::vector< rw::math::Vector3D<> >& samples);
+        virtual double refit(const std::vector<rw::math::Vector3D<>>& samples);
 
         /**
          * @copydoc RANSACModel::same
@@ -89,7 +87,7 @@ namespace rwlibs { namespace algorithms {
          * to metric taking into account weighted sum of direction angle difference
          * and the closest separation between lines is lower than specified threshold.
          */
-        virtual bool same (const StructuredLineModel& model, double threshold) const;
+        virtual bool same(const StructuredLineModel& model, double threshold) const;
 
         /**
          * @brief Test if interval matches the dataset.
@@ -104,25 +102,24 @@ namespace rwlibs { namespace algorithms {
          * 4. For each of the spots calculate cumulated distance to the neighbours.
          * 5. Total error is the sum of spot errors.
          */
-        double testInterval (const std::vector< rw::math::Vector3D<> >& samples, double interval,
-                             rw::math::Vector3D<> start, double maxDist) const;
+        double testInterval(const std::vector<rw::math::Vector3D<>>& samples, double interval,
+                            rw::math::Vector3D<> start, double maxDist) const;
 
         /* getters */
         //! @brief Get line.
-        rw::geometry::Line line () const { return _line; }
+        rw::geometry::Line line() const { return _line; }
 
         //! @brief Get starting point.
-        inline rw::math::Vector3D<> start () const { return _start; }
+        inline rw::math::Vector3D<> start() const { return _start; }
 
         //! @brief Get interval.
-        inline double getInterval () const { return _interval; }
+        inline double getInterval() const { return _interval; }
 
         /* operators */
         /**
          * @brief Streaming operator.
          */
-        friend std::ostream& operator<< (std::ostream& out, const StructuredLineModel& model)
-        {
+        friend std::ostream& operator<<(std::ostream& out, const StructuredLineModel& model) {
             return out << "StructuredLine(line: " << model._line << ", start: " << model._start
                        << ", interval: " << model._interval << ")";
         }

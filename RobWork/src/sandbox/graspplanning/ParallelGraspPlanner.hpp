@@ -8,16 +8,12 @@
 #ifndef PARALLELGRASPPLANNER_HPP_
 #define PARALLELGRASPPLANNER_HPP_
 
-
 /**
  * @brief this
  */
-class ParallelGraspPlanner {
-public:
-
-
-
-
+class ParallelGraspPlanner
+{
+  public:
 };
 
 #endif /* PARALLELGRASPPLANNER_HPP_ */

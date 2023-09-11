@@ -48,98 +48,96 @@ namespace rwlibs { namespace proximitystrategies {
     */
     class ProximityStrategyYaobi : public rw::proximity::CollisionStrategy
     {
-        typedef rw::core::Ptr< yaobi::CollModel > YaobiModelPtr;
+        typedef rw::core::Ptr<yaobi::CollModel> YaobiModelPtr;
 
         struct RWYaobiModel
         {
-            RWYaobiModel (rw::core::Ptr< rw::geometry::Geometry > geo,
-                          rw::math::Transform3D<> trans, YaobiModelPtr model) :
-                geo (geo),
-                t3d (trans), yaobimodel (model)
-            {}
-            rw::core::Ptr< rw::geometry::Geometry > geo;
+            RWYaobiModel(rw::core::Ptr<rw::geometry::Geometry> geo, rw::math::Transform3D<> trans,
+                         YaobiModelPtr model) :
+                geo(geo),
+                t3d(trans), yaobimodel(model) {}
+            rw::core::Ptr<rw::geometry::Geometry> geo;
             rw::math::Transform3D<> t3d;
             YaobiModelPtr yaobimodel;
         };
         // typedef std::pair< rw::math::Transform3D<>, YaobiModelPtr > RWYaobiModel;
-        typedef std::vector< RWYaobiModel > RWYaobiModelList;
-        typedef std::pair< RWYaobiModel, RWYaobiModel > RWYaobiModelPair;
+        typedef std::vector<RWYaobiModel> RWYaobiModelList;
+        typedef std::pair<RWYaobiModel, RWYaobiModel> RWYaobiModelPair;
 
         struct YaobiProximityModel : public rw::proximity::ProximityModel
         {
-            YaobiProximityModel (ProximityStrategy* owner) : ProximityModel (owner) {}
+            YaobiProximityModel(ProximityStrategy* owner) : ProximityModel(owner) {}
             RWYaobiModelList models;
         };
 
       private:
-        rw::common::Cache< std::string, yaobi::CollModel > _modelCache;
-        std::vector< RWYaobiModel > _allmodels;
-        std::map< std::string, std::vector< int > > _geoIdToModelIdx;
+        rw::common::Cache<std::string, yaobi::CollModel> _modelCache;
+        std::vector<RWYaobiModel> _allmodels;
+        std::map<std::string, std::vector<int>> _geoIdToModelIdx;
 
       public:
         /**
          * @brief Constructor
          */
-        ProximityStrategyYaobi ();
+        ProximityStrategyYaobi();
 
         /**
          * @copydoc rw::proximity::ProximityStrategy::createModel
          */
-        virtual rw::proximity::ProximityModel::Ptr createModel ();
+        virtual rw::proximity::ProximityModel::Ptr createModel();
 
         /**
          * @copydoc rw::proximity::ProximityStrategy::destroyModel
          */
-        void destroyModel (rw::proximity::ProximityModel* model);
+        void destroyModel(rw::proximity::ProximityModel* model);
 
         /**
          * @copydoc rw::proximity::ProximityStrategy::addGeometry
          */
-        bool addGeometry (rw::proximity::ProximityModel* model, const rw::geometry::Geometry& geom);
+        bool addGeometry(rw::proximity::ProximityModel* model, const rw::geometry::Geometry& geom);
 
-        //! @copydoc rw::proximity::ProximityStrategy::addGeometry(ProximityModel* model, rw::core::Ptr<rw::geometry::Geometry> geom, bool forceCopy=false)
-        bool addGeometry (rw::proximity::ProximityModel* model,
-                          rw::core::Ptr< rw::geometry::Geometry > geom, bool forceCopy = false);
+        //! @copydoc rw::proximity::ProximityStrategy::addGeometry(ProximityModel* model,
+        //! rw::core::Ptr<rw::geometry::Geometry> geom, bool forceCopy=false)
+        bool addGeometry(rw::proximity::ProximityModel* model,
+                         rw::core::Ptr<rw::geometry::Geometry> geom, bool forceCopy = false);
 
         /**
          * @copydoc rw::proximity::ProximityStrategy::removeGeometry
          */
-        bool removeGeometry (rw::proximity::ProximityModel* model, const std::string& geomId);
+        bool removeGeometry(rw::proximity::ProximityModel* model, const std::string& geomId);
 
         /**
          * @copydoc rw::proximity::ProximityStrategy::getGeometryIDs
          */
-        std::vector< std::string > getGeometryIDs (rw::proximity::ProximityModel* model);
+        std::vector<std::string> getGeometryIDs(rw::proximity::ProximityModel* model);
 
         /**
          * @copydoc rw::proximity::ProximityStrategy::getGeometries
          */
-        std::vector< rw::core::Ptr< rw::geometry::Geometry > >
-        getGeometries (rw::proximity::ProximityModel* model);
+        std::vector<rw::core::Ptr<rw::geometry::Geometry>>
+        getGeometries(rw::proximity::ProximityModel* model);
 
         /**
          *  @copydoc rw::proximity::ProximityStrategy::clear
          */
-        void clear ();
+        void clear();
 
         //! @copydoc rw::proximity::CollisionStrategy::getCollisionContacts
-        void getCollisionContacts (std::vector< rw::proximity::CollisionStrategy::Contact >& contacts,
-                                   rw::proximity::ProximityStrategyData& data);
+        void getCollisionContacts(std::vector<rw::proximity::CollisionStrategy::Contact>& contacts,
+                                  rw::proximity::ProximityStrategyData& data);
 
         /**
            @brief Makes a Yaobi based collision strategy.
         */
-        static rw::proximity::CollisionStrategy::Ptr make ();
+        static rw::proximity::CollisionStrategy::Ptr make();
 
       protected:
         /**
          * @copydoc rw::proximity::CollisionStrategy::doInCollision
          */
-        bool doInCollision (rw::proximity::ProximityModel::Ptr a,
-                            const rw::math::Transform3D<>& wTa,
-                            rw::proximity::ProximityModel::Ptr b,
-                            const rw::math::Transform3D<>& wTb,
-                            rw::proximity::ProximityStrategyData& data);
+        bool doInCollision(rw::proximity::ProximityModel::Ptr a, const rw::math::Transform3D<>& wTa,
+                           rw::proximity::ProximityModel::Ptr b, const rw::math::Transform3D<>& wTb,
+                           rw::proximity::ProximityStrategyData& data);
     };
 
     // static const bool YaobiCollisionStrategyRegistrered =

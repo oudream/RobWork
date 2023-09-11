@@ -80,36 +80,36 @@ class TaskSetupDialog : public QDialog
      * @param wc [in] the workcell to set up assembly task for.
      * @param strategy the assembly strategy to use.
      */
-    TaskSetupDialog (QWidget* parent, rw::core::Ptr< const rw::models::WorkCell > wc,
-                     rw::core::Ptr< rwlibs::assembly::AssemblyControlStrategy > strategy);
+    TaskSetupDialog(QWidget* parent, rw::core::Ptr<const rw::models::WorkCell> wc,
+                    rw::core::Ptr<rwlibs::assembly::AssemblyControlStrategy> strategy);
 
     //! @brief Destructor.
-    virtual ~TaskSetupDialog ();
+    virtual ~TaskSetupDialog();
 
   private Q_SLOTS:
-    void setFemaleObject (const QString& text);
-    void setMaleObject (const QString& text);
-    void rpyChanged (double value);
-    void dialChanged (int value);
-    void updateViews ();
-    void updatePositions ();
-    void stepInsertion ();
-    void loadTask ();
-    void saveTask ();
-    void showHelpStrategy ();
-    void showHelpParameterization ();
+    void setFemaleObject(const QString& text);
+    void setMaleObject(const QString& text);
+    void rpyChanged(double value);
+    void dialChanged(int value);
+    void updateViews();
+    void updatePositions();
+    void stepInsertion();
+    void loadTask();
+    void saveTask();
+    void showHelpStrategy();
+    void showHelpParameterization();
 
   private:
-    void updateView (rws::SceneOpenGLViewer* widget);
-    void updatePosition (rws::SceneOpenGLViewer* widget, const rw::math::Transform3D<>& fTm);
+    void updateView(rws::SceneOpenGLViewer* widget);
+    void updatePosition(rws::SceneOpenGLViewer* widget, const rw::math::Transform3D<>& fTm);
 
     struct InsertionSimulation;
 
     Ui::TaskSetupDialog* const _ui;
-    const rw::core::Ptr< const rw::models::WorkCell > _wc;
-    rw::core::Ptr< rwlibs::assembly::AssemblyControlStrategy > _strategy;
+    const rw::core::Ptr<const rw::models::WorkCell> _wc;
+    rw::core::Ptr<rwlibs::assembly::AssemblyControlStrategy> _strategy;
     QTimer* const _timer;
-    rw::core::Ptr< rw::core::PropertyMap > _propertyMap;
+    rw::core::Ptr<rw::core::PropertyMap> _propertyMap;
     std::string _lastDir;
     InsertionSimulation* const _simulation;
     HelpAssistant* const _help;

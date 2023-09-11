@@ -38,32 +38,30 @@ class MovingAverage
      * \b N samples.
      * @param N [in] the size of the window of samples
      */
-    MovingAverage (std::size_t N);
+    MovingAverage(std::size_t N);
 
     /**
      * @brief adds a sample
      * @param sample
      */
-    void addSample (double sample)
-    {
+    void addSample(double sample) {
         _sum -= _cb[_idx];
         _sum += sample;
         _cb[_idx] = sample;
         _idx++;
-        if (_idx == _len)
-            _idx = 0;
+        if(_idx == _len) _idx = 0;
     }
 
     /**
      * @brief returns the current average
      * @return
      */
-    double getAverage () { return _sum * _invLen; }
+    double getAverage() { return _sum * _invLen; }
 
   private:
     const int _len;
     double _invLen;
-    std::vector< double > _cb;
+    std::vector<double> _cb;
     double _sum;
     int _idx;
 };

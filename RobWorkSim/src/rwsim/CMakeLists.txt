@@ -7,7 +7,6 @@ set(SUBSYS_DEPS
             RW::sdurw_pathplanners
             RW::sdurw_proximitystrategies
             RW::sdurw_graspplanning
-            RW::sdurw_loaders
     PUBLIC
             RW::sdurw_simulation
             RW::sdurw_task
@@ -15,6 +14,7 @@ set(SUBSYS_DEPS
             RW::sdurw_proximity
             RW::sdurw_geometry
             RW::sdurw_models
+            RW::sdurw_loaders
             RW::sdurw_trajectory
             RW::sdurw_graphics
             RW::sdurw_sensor

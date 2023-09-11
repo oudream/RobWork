@@ -25,9 +25,8 @@
  */
 
 #if !defined(SWIG)
-#include <rw/geometry/analytic/Surface.hpp>
-
 #include <rw/core/Ptr.hpp>
+#include <rw/geometry/analytic/Surface.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/Vector3D.hpp>
 #endif
@@ -48,52 +47,49 @@ namespace rw { namespace geometry {
     {
       public:
         //! @brief Smart pointer type for ImplicitSurface
-        typedef rw::core::Ptr< ImplicitSurface > Ptr;
+        typedef rw::core::Ptr<ImplicitSurface> Ptr;
 
         //! @brief Smart pointer type for const ImplicitSurface
-        typedef rw::core::Ptr< const ImplicitSurface > CPtr;
+        typedef rw::core::Ptr<const ImplicitSurface> CPtr;
 
         //! @brief Constructor.
-        ImplicitSurface () {}
+        ImplicitSurface() {}
 
         //! @brief Destructor.
-        virtual ~ImplicitSurface () {}
+        virtual ~ImplicitSurface() {}
 
         //! @copydoc Surface::transform(const rw::math::Transform3D<double>&) const
-        inline ImplicitSurface::Ptr transform (const rw::math::Transform3D<double>& T) const
-        {
-            return doTransformImplicitSurface (T);
+        inline ImplicitSurface::Ptr transform(const rw::math::Transform3D<double>& T) const {
+            return doTransformImplicitSurface(T);
         }
 
         //! @copydoc Surface::transform(const rw::math::Vector3D<double>&) const
-        inline ImplicitSurface::Ptr transform (const rw::math::Vector3D<double>& P) const
-        {
-            return doTransformImplicitSurface (P);
+        inline ImplicitSurface::Ptr transform(const rw::math::Vector3D<double>& P) const {
+            return doTransformImplicitSurface(P);
         }
 
         //! @copydoc Surface::scale
-        inline ImplicitSurface::Ptr scale (double factor) const
-        {
-            return doScaleImplicitSurface (factor);
+        inline ImplicitSurface::Ptr scale(double factor) const {
+            return doScaleImplicitSurface(factor);
         }
 
         //! @copydoc Surface::clone
-        inline ImplicitSurface::Ptr clone () const { return doCloneImplicitSurface (); }
+        inline ImplicitSurface::Ptr clone() const { return doCloneImplicitSurface(); }
 
         //! @copydoc Surface::extremums
-        virtual std::pair< double, double >
-        extremums (const rw::math::Vector3D<double>& direction) const = 0;
+        virtual std::pair<double, double>
+        extremums(const rw::math::Vector3D<double>& direction) const = 0;
 
         //! @copydoc Surface::getTriMesh
-        virtual rw::core::Ptr< TriMesh >
-        getTriMesh (const std::vector< rw::math::Vector3D<double> >& border =
-                        std::vector< rw::math::Vector3D<double> > ()) const = 0;
+        virtual rw::core::Ptr<TriMesh>
+        getTriMesh(const std::vector<rw::math::Vector3D<double>>& border =
+                       std::vector<rw::math::Vector3D<double>>()) const = 0;
 
         //! @copydoc Surface::setDiscretizationResolution
-        virtual void setDiscretizationResolution (double resolution) = 0;
+        virtual void setDiscretizationResolution(double resolution) = 0;
 
         //! @copydoc Surface::equals
-        virtual bool equals (const Surface& surface, double threshold) const = 0;
+        virtual bool equals(const Surface& surface, double threshold) const = 0;
 #if !defined(SWIG)
         /**
          * @brief Evaluate the implicit function, \f$ F(\mathbf{x}) \f$, for the surface.
@@ -101,16 +97,18 @@ namespace rw { namespace geometry {
          * @return the value of the implicit function. If smaller than zero, \b x lies inside the
          * surface. If larger than zero, \b x lies outside the surface.
          */
-        virtual double operator() (const rw::math::Vector3D<double>& x) const = 0;
-#else 
-        CALLOPERATOR(double,const rw::math::Vector3D<double>& );
-#endif 
+        virtual double operator()(const rw::math::Vector3D<double>& x) const = 0;
+#else
+        CALLOPERATOR(double, const rw::math::Vector3D<double>&);
+#endif
         /**
          * @brief Check if point, \b P, on surface lies inside the trimming region.
          * @param P [in] the point to check.
          * @return true if the points lies inside the trimming region.
          */
-        virtual bool insideTrimmingRegion (const rw::math::Vector3D<double>& P) const { return true; }
+        virtual bool insideTrimmingRegion(const rw::math::Vector3D<double>& P) const {
+            return true;
+        }
 
 #if !defined(SWIGJAVA)
         /**
@@ -125,10 +123,9 @@ namespace rw { namespace geometry {
          * @see the gradient function to find the gradient.
          */
 
-         #endif 
-        virtual rw::math::Vector3D<double> normal (const rw::math::Vector3D<double>& x) const
-        {
-            return normalize (gradient (x));
+#endif
+        virtual rw::math::Vector3D<double> normal(const rw::math::Vector3D<double>& x) const {
+            return normalize(gradient(x));
         }
 
 #if !defined(SWIGJAVA)
@@ -145,8 +142,8 @@ namespace rw { namespace geometry {
          * @see the normal function to find the normal to the surface (the normalized gradient).
          */
 
-         #endif
-        virtual rw::math::Vector3D<double> gradient (const rw::math::Vector3D<double>& x) const = 0;
+#endif
+        virtual rw::math::Vector3D<double> gradient(const rw::math::Vector3D<double>& x) const = 0;
 
         /**
          * @brief Let other \b surface reuse this surfaces trimming regions,
@@ -155,30 +152,29 @@ namespace rw { namespace geometry {
          * This allows for some implementations to save a small amount of memory.
          * @param surface [in/out] the other surface.
          */
-        virtual void reuseTrimmingRegions (ImplicitSurface::Ptr surface) const {}
+        virtual void reuseTrimmingRegions(ImplicitSurface::Ptr surface) const {}
 
       private:
 #if !defined(SWIGJAVA)
-        inline virtual Surface::Ptr doTransformSurface (const rw::math::Transform3D<>& T) const
-        {
-            return doTransformImplicitSurface (T);
+        inline virtual Surface::Ptr doTransformSurface(const rw::math::Transform3D<>& T) const {
+            return doTransformImplicitSurface(T);
         }
-        inline virtual Surface::Ptr doTransformSurface (const rw::math::Vector3D<double>& P) const
-        {
-            return doTransformImplicitSurface (P);
+        inline virtual Surface::Ptr doTransformSurface(const rw::math::Vector3D<double>& P) const {
+            return doTransformImplicitSurface(P);
         }
-        inline virtual Surface::Ptr doScaleSurface (double factor) const
-        {
-            return doScaleImplicitSurface (factor);
+        inline virtual Surface::Ptr doScaleSurface(double factor) const {
+            return doScaleImplicitSurface(factor);
         }
-        inline virtual Surface::Ptr doCloneSurface () const { return doCloneImplicitSurface (); }
+        inline virtual Surface::Ptr doCloneSurface() const {
+            return doCloneImplicitSurface();
+        }
 #endif
         virtual ImplicitSurface::Ptr
-        doTransformImplicitSurface (const rw::math::Transform3D<>& T) const = 0;
+        doTransformImplicitSurface(const rw::math::Transform3D<>& T) const = 0;
         virtual ImplicitSurface::Ptr
-        doTransformImplicitSurface (const rw::math::Vector3D<double>& P) const          = 0;
-        virtual ImplicitSurface::Ptr doScaleImplicitSurface (double factor) const = 0;
-        virtual ImplicitSurface::Ptr doCloneImplicitSurface () const              = 0;
+        doTransformImplicitSurface(const rw::math::Vector3D<double>& P) const    = 0;
+        virtual ImplicitSurface::Ptr doScaleImplicitSurface(double factor) const = 0;
+        virtual ImplicitSurface::Ptr doCloneImplicitSurface() const              = 0;
     };
 #if !defined(SWIG)
 //! @}

@@ -44,21 +44,21 @@ namespace rwsimlibs { namespace bullet {
          * @param v3d [in] the RobWork vector.
          * @return the Bullet vector.
          */
-        static btVector3 makeBtVector (const rw::math::Vector3D<>& v3d);
+        static btVector3 makeBtVector(const rw::math::Vector3D<>& v3d);
 
         /**
          * @brief Create a RobWork vector from a Bullet vector.
          * @param v [in] the Bullet vector.
          * @return the RobWork vector.
          */
-        static rw::math::Vector3D<> toVector3D (const btVector3& v);
+        static rw::math::Vector3D<> toVector3D(const btVector3& v);
 
         /**
          * @brief Create a Bullet transform from a RobWork transform.
          * @param t3d [in] the RobWork transform.
          * @return the Bullet transform.
          */
-        static btTransform makeBtTransform (const rw::math::Transform3D<>& t3d);
+        static btTransform makeBtTransform(const rw::math::Transform3D<>& t3d);
 
         /**
          * @brief Create a RobWork transform from a Bullet vector and quaternion.
@@ -66,11 +66,11 @@ namespace rwsimlibs { namespace bullet {
          * @param q [in] the Bullet quaternion.
          * @return the RobWork transform.
          */
-        static rw::math::Transform3D<> toTransform3D (const btVector3& v, const btQuaternion& q);
+        static rw::math::Transform3D<> toTransform3D(const btVector3& v, const btQuaternion& q);
 
       private:
-        BtUtil ();
-        virtual ~BtUtil ();
+        BtUtil();
+        virtual ~BtUtil();
     };
     //! @}
 }}     // namespace rwsimlibs::bullet

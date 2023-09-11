@@ -38,19 +38,17 @@ namespace rw { namespace geometry {
     class TriangleUtil
     {
       private:
-        template< class T > struct VertexCmp
+        template<class T> struct VertexCmp
         {
           public:
-            VertexCmp () : vertIdx (-1) {}
-            VertexCmp (const rw::math::Vector3D< T >& val, int tidx, int vidx, int* axisp) :
-                n (val), triIdx (tidx), vertIdx (vidx), _axisPtr (axisp)
-            {}
+            VertexCmp() : vertIdx(-1) {}
+            VertexCmp(const rw::math::Vector3D<T>& val, int tidx, int vidx, int* axisp) :
+                n(val), triIdx(tidx), vertIdx(vidx), _axisPtr(axisp) {}
 
-            bool operator< (VertexCmp< T > const& other) const
-            {
+            bool operator<(VertexCmp<T> const& other) const {
                 return n[*_axisPtr] < other.n[*_axisPtr];
             }
-            rw::math::Vector3D< T > n;
+            rw::math::Vector3D<T> n;
             int triIdx;
             int vertIdx;
             int* _axisPtr;
@@ -58,12 +56,11 @@ namespace rw { namespace geometry {
         struct SortJob
         {
           public:
-            SortJob (int a, int f, int t) : axis (a), from (f), to (t) {}
+            SortJob(int a, int f, int t) : axis(a), from(f), to(t) {}
             int axis;
             int from;
             int to;
-            void print () const
-            {
+            void print() const {
                 std::cout << "Job: " << axis << " " << from << "-->" << to << std::endl;
             }
         };
@@ -73,68 +70,63 @@ namespace rw { namespace geometry {
          * indexed into the triangle mesh so that each vertice "knows" the triangle
          * that its comming from.
          */
-        template< class T >
-        static std::vector< VertexCmp< T > >* createSortedVerticeIdxList (const TriMesh& triMesh,
-                                                                          double epsilon)
-        {
+        template<class T>
+        static std::vector<VertexCmp<T>>* createSortedVerticeIdxList(const TriMesh& triMesh,
+                                                                     double epsilon) {
             using namespace rw::math;
 
-            std::vector< VertexCmp< T > >* verticesIdx =
-                new std::vector< VertexCmp< T > > (triMesh.getSize () * 3);
+            std::vector<VertexCmp<T>>* verticesIdx =
+                new std::vector<VertexCmp<T>>(triMesh.getSize() * 3);
             int axis = 0;
 
             // now copy all relevant info into the compare list
-            rw::geometry::Triangle< T > tri;
-            for (size_t i = 0; i < triMesh.getSize (); i++) {
+            rw::geometry::Triangle<T> tri;
+            for(size_t i = 0; i < triMesh.getSize(); i++) {
                 int vIdx = (int) i * 3;
 
-                triMesh.getTriangle (i, tri);
+                triMesh.getTriangle(i, tri);
 
-                RW_ASSERT (vIdx + 0 < (int) verticesIdx->size ());
-                RW_ASSERT (vIdx + 1 < (int) verticesIdx->size ());
-                RW_ASSERT (vIdx + 2 < (int) verticesIdx->size ());
+                RW_ASSERT(vIdx + 0 < (int) verticesIdx->size());
+                RW_ASSERT(vIdx + 1 < (int) verticesIdx->size());
+                RW_ASSERT(vIdx + 2 < (int) verticesIdx->size());
 
-                (*verticesIdx)[vIdx + 0] = VertexCmp< T > (tri[0], (int) i, 0, &axis);
-                (*verticesIdx)[vIdx + 1] = VertexCmp< T > (tri[1], (int) i, 1, &axis);
-                (*verticesIdx)[vIdx + 2] = VertexCmp< T > (tri[2], (int) i, 2, &axis);
+                (*verticesIdx)[vIdx + 0] = VertexCmp<T>(tri[0], (int) i, 0, &axis);
+                (*verticesIdx)[vIdx + 1] = VertexCmp<T>(tri[1], (int) i, 1, &axis);
+                (*verticesIdx)[vIdx + 2] = VertexCmp<T>(tri[2], (int) i, 2, &axis);
             }
 
             // first sort all vertices into one large array
             axis = 0;
-            std::sort (verticesIdx->begin (), verticesIdx->end ());
+            std::sort(verticesIdx->begin(), verticesIdx->end());
 
             // run through the semi sorted list and merge vertices that are alike
-            std::stack< SortJob > sjobs;
-            sjobs.push (SortJob (0, 0, (int) (verticesIdx->size () - 1)));
-            while (!sjobs.empty ()) {
-                SortJob job = sjobs.top ();
-                sjobs.pop ();
-                if (job.from == job.to)
-                    continue;
+            std::stack<SortJob> sjobs;
+            sjobs.push(SortJob(0, 0, (int) (verticesIdx->size() - 1)));
+            while(!sjobs.empty()) {
+                SortJob job = sjobs.top();
+                sjobs.pop();
+                if(job.from == job.to) continue;
                 // locate the next end
                 int j = job.from;
-                RW_ASSERT_MSG (j < (int) verticesIdx->size (), j << "<" << verticesIdx->size ());
-                RW_ASSERT (job.axis < 3);
+                RW_ASSERT_MSG(j < (int) verticesIdx->size(), j << "<" << verticesIdx->size());
+                RW_ASSERT(job.axis < 3);
                 T axisVal, lastAxisVal = (*verticesIdx)[j].n[job.axis];
                 do {
                     j++;
                     axisVal = (*verticesIdx)[j].n[job.axis];
-                } while (axisVal < lastAxisVal + epsilon && j < job.to);
+                } while(axisVal < lastAxisVal + epsilon && j < job.to);
                 // if j==job.to, then we might have two possible outcomes,
                 // we change j to point to the element that is not equal to lastVal
-                if (j == job.to && axisVal < lastAxisVal + epsilon)
-                    j++;
+                if(j == job.to && axisVal < lastAxisVal + epsilon) j++;
 
                 // the previus has determined an interval [job.from;j] in which values in job.axis
                 // equal now add the unproccessed in a new job [j;job.to]
-                if (j < job.to)
-                    sjobs.push (SortJob (job.axis, j, job.to));
+                if(j < job.to) sjobs.push(SortJob(job.axis, j, job.to));
 
-                if (job.axis == 0)
-                    sjobs.push (SortJob (job.axis + 1, job.from, j - 1));
+                if(job.axis == 0) sjobs.push(SortJob(job.axis + 1, job.from, j - 1));
 
                 axis = job.axis + 1;
-                std::sort (verticesIdx->begin () + job.from, verticesIdx->begin () + j);
+                std::sort(verticesIdx->begin() + job.from, verticesIdx->begin() + j);
             }
 
             return verticesIdx;
@@ -151,41 +143,39 @@ namespace rw { namespace geometry {
          * @param epsilon [in] if two vertices are closer than epsilon they
          * are considered the equal.
          */
-        template< class TRILIST >
-        static rw::core::Ptr< TRILIST > toIndexedTriMesh (const TriMesh& triMesh,
-                                                          double epsilon = 0.00001)
-        {
+        template<class TRILIST>
+        static rw::core::Ptr<TRILIST> toIndexedTriMesh(const TriMesh& triMesh,
+                                                       double epsilon = 0.00001) {
             typedef typename TRILIST::value_type T;
             typedef typename TRILIST::tri_type TRI;
             typedef typename TRILIST::index_type S;
             typedef typename TRILIST::TriangleArray TriangleArray;
             using namespace rw::math;
-            if (triMesh.getSize () == 0)
-                RW_THROW ("Size of mesh must be more than 0!");
+            if(triMesh.getSize() == 0) RW_THROW("Size of mesh must be more than 0!");
 
             // create a sorted vertice list with backreference to the triangle list
-            std::vector< VertexCmp< T > >* verticesIdx =
-                createSortedVerticeIdxList< T > (triMesh, epsilon);
+            std::vector<VertexCmp<T>>* verticesIdx =
+                createSortedVerticeIdxList<T>(triMesh, epsilon);
 
             // Now copy all sorted vertices into the vertice array
             // and make sure vertices that are close to each other are discarded
-            std::vector< Vector3D< T > >* vertices =
-                new std::vector< Vector3D< T > > (triMesh.getSize () * 3);
+            std::vector<Vector3D<T>>* vertices =
+                new std::vector<Vector3D<T>>(triMesh.getSize() * 3);
 
             // allocate enough memory
-            TriangleArray* triangles = new TriangleArray (triMesh.getSize ());
+            TriangleArray* triangles = new TriangleArray(triMesh.getSize());
 
-            S vertCnt              = 0;
-            Vector3D< T > lastVert = (*verticesIdx)[0].n;
+            S vertCnt            = 0;
+            Vector3D<T> lastVert = (*verticesIdx)[0].n;
 
             (*vertices)[vertCnt] = lastVert;
 
             TRI& itri                       = (*triangles)[(*verticesIdx)[0].triIdx];
             itri[(*verticesIdx)[0].vertIdx] = vertCnt;
 
-            for (size_t i = 1; i < verticesIdx->size (); i++) {
+            for(size_t i = 1; i < verticesIdx->size(); i++) {
                 // check if vertices are too close
-                if (MetricUtil::dist2 (lastVert, (*verticesIdx)[i].n) > epsilon) {
+                if(MetricUtil::dist2(lastVert, (*verticesIdx)[i].n) > epsilon) {
                     lastVert = (*verticesIdx)[i].n;
                     vertCnt++;
                     (*vertices)[vertCnt] = lastVert;
@@ -196,25 +186,24 @@ namespace rw { namespace geometry {
                 ((*triangles)[triIdx])[vertTriIdx] = vertCnt;
             }
 
-            vertices->resize (vertCnt + 1);
+            vertices->resize(vertCnt + 1);
 
             delete verticesIdx;
 
-            return rw::core::ownedPtr (
-                new TRILIST (rw::core::ownedPtr (vertices), rw::core::ownedPtr (triangles)));
+            return rw::core::ownedPtr(
+                new TRILIST(rw::core::ownedPtr(vertices), rw::core::ownedPtr(triangles)));
         }
 
         /**
          * @brief Recalculate the normals of \b trimesh
          */
-        template< class T >
+        template<class T>
         static void
-        recalcNormals (rw::geometry::PlainTriMesh< rw::geometry::TriangleN1< T > >& trimesh)
-        {
+        recalcNormals(rw::geometry::PlainTriMesh<rw::geometry::TriangleN1<T>>& trimesh) {
             using namespace rw::math;
-            for (size_t i = 0; i < trimesh.getSize (); i++) {
-                Vector3D< T > normal        = trimesh[i].calcFaceNormal ();
-                trimesh[i].getFaceNormal () = normal;
+            for(size_t i = 0; i < trimesh.getSize(); i++) {
+                Vector3D<T> normal         = trimesh[i].calcFaceNormal();
+                trimesh[i].getFaceNormal() = normal;
             }
         }
 
@@ -227,101 +216,88 @@ namespace rw { namespace geometry {
          * @return First item in the pair is the triangles in front of the plane and second item is
          * the triangles behind or in the plane.
          */
-        template< class TRI >
-        static std::pair< TriMesh::Ptr, TriMesh::Ptr > divide (TriMesh::Ptr trimesh,
-                                                               Plane::Ptr plane)
-        {
+        template<class TRI>
+        static std::pair<TriMesh::Ptr, TriMesh::Ptr> divide(TriMesh::Ptr trimesh,
+                                                            Plane::Ptr plane) {
             typedef typename TRI::value_type T;
             using namespace rw::math;
-            typename PlainTriMesh< TRI >::Ptr front =
-                rw::core::ownedPtr (new PlainTriMesh< TRI > ());
-            typename PlainTriMesh< TRI >::Ptr back =
-                rw::core::ownedPtr (new PlainTriMesh< TRI > ());
-            for (size_t i = 0; i < trimesh->size (); i++) {
-                const rw::geometry::Triangle< double >& tri = trimesh->getTriangle (i);
-                double d0                                   = plane->distance (tri.getVertex (0));
-                double d1                                   = plane->distance (tri.getVertex (1));
-                double d2                                   = plane->distance (tri.getVertex (2));
+            typename PlainTriMesh<TRI>::Ptr front = rw::core::ownedPtr(new PlainTriMesh<TRI>());
+            typename PlainTriMesh<TRI>::Ptr back  = rw::core::ownedPtr(new PlainTriMesh<TRI>());
+            for(size_t i = 0; i < trimesh->size(); i++) {
+                const rw::geometry::Triangle<double>& tri = trimesh->getTriangle(i);
+                double d0                                 = plane->distance(tri.getVertex(0));
+                double d1                                 = plane->distance(tri.getVertex(1));
+                double d2                                 = plane->distance(tri.getVertex(2));
                 // std::cout<<"d0 = "<<d0<<" d1 = "<<d1<<" d2 = "<<d2<<std::endl;
-                if (d0 <= 0 && d1 <= 0 && d2 <= 0) {
-                    back->add (tri);
-                }
-                else if (d0 >= 0 && d1 >= 0 && d2 >= 0) {
-                    front->add (tri);
-                }
+                if(d0 <= 0 && d1 <= 0 && d2 <= 0) { back->add(tri); }
+                else if(d0 >= 0 && d1 >= 0 && d2 >= 0) { front->add(tri); }
                 else {
-                    std::vector< int > behind;
-                    std::vector< int > infront;
-                    if (d0 < 0)
-                        behind.push_back (0);
-                    else
-                        infront.push_back (0);
+                    std::vector<int> behind;
+                    std::vector<int> infront;
+                    if(d0 < 0) behind.push_back(0);
+                    else infront.push_back(0);
 
-                    if (d1 < 0)
-                        behind.push_back (1);
-                    else
-                        infront.push_back (1);
+                    if(d1 < 0) behind.push_back(1);
+                    else infront.push_back(1);
 
-                    if (d2 < 0)
-                        behind.push_back (2);
-                    else
-                        infront.push_back (2);
+                    if(d2 < 0) behind.push_back(2);
+                    else infront.push_back(2);
 
-                    if (behind.size () == 2) {
-                        Vector3D< T > b1 = tri.getVertex (behind[0]);
-                        Vector3D< T > b2 = tri.getVertex (behind[1]);
-                        Vector3D< T > f1 = tri.getVertex (infront[0]);
+                    if(behind.size() == 2) {
+                        Vector3D<T> b1 = tri.getVertex(behind[0]);
+                        Vector3D<T> b2 = tri.getVertex(behind[1]);
+                        Vector3D<T> f1 = tri.getVertex(infront[0]);
 
-                        Vector3D< T > i1 = plane->intersection (b1, f1);
-                        Vector3D< T > i2 = plane->intersection (b2, f1);
+                        Vector3D<T> i1 = plane->intersection(b1, f1);
+                        Vector3D<T> i2 = plane->intersection(b2, f1);
 
-                        if (d0 > 0 || d2 > 0) {
-                            TRI trib1 (b1, i2, i1);
-                            TRI trib2 (b1, b2, i2);
-                            TRI trif1 (i1, i2, f1);
-                            back->add (trib1);
-                            back->add (trib2);
-                            front->add (trif1);
+                        if(d0 > 0 || d2 > 0) {
+                            TRI trib1(b1, i2, i1);
+                            TRI trib2(b1, b2, i2);
+                            TRI trif1(i1, i2, f1);
+                            back->add(trib1);
+                            back->add(trib2);
+                            front->add(trif1);
                         }
                         else {
-                            TRI trib1 (b1, i1, i2);
-                            TRI trib2 (b1, i2, b2);
-                            TRI trif1 (i1, f1, i2);
-                            back->add (trib1);
-                            back->add (trib2);
-                            front->add (trif1);
+                            TRI trib1(b1, i1, i2);
+                            TRI trib2(b1, i2, b2);
+                            TRI trif1(i1, f1, i2);
+                            back->add(trib1);
+                            back->add(trib2);
+                            front->add(trif1);
                         }
                     }
                     else {    // inFront.size() == 2
-                        Vector3D< T > b1 = tri.getVertex (behind[0]);
-                        Vector3D< T > f1 = tri.getVertex (infront[0]);
-                        Vector3D< T > f2 = tri.getVertex (infront[1]);
+                        Vector3D<T> b1 = tri.getVertex(behind[0]);
+                        Vector3D<T> f1 = tri.getVertex(infront[0]);
+                        Vector3D<T> f2 = tri.getVertex(infront[1]);
 
-                        Vector3D< T > i1 = plane->intersection (b1, f1);
-                        Vector3D< T > i2 = plane->intersection (b1, f2);
+                        Vector3D<T> i1 = plane->intersection(b1, f1);
+                        Vector3D<T> i2 = plane->intersection(b1, f2);
 
-                        if (d0 < 0 || d2 < 0) {
-                            TRI trif1 (f1, i2, i1);
-                            TRI trif2 (f1, f2, i2);
-                            TRI trib1 (b1, i1, i2);
+                        if(d0 < 0 || d2 < 0) {
+                            TRI trif1(f1, i2, i1);
+                            TRI trif2(f1, f2, i2);
+                            TRI trib1(b1, i1, i2);
 
-                            front->add (trif1);
-                            front->add (trif2);
-                            back->add (trib1);
+                            front->add(trif1);
+                            front->add(trif2);
+                            back->add(trib1);
                         }
                         else {
-                            TRI trif1 (f1, i1, i2);
-                            TRI trif2 (f1, i2, f2);
-                            TRI trib1 (b1, i2, i1);
+                            TRI trif1(f1, i1, i2);
+                            TRI trif2(f1, i2, f2);
+                            TRI trib1(b1, i2, i1);
 
-                            front->add (trif1);
-                            front->add (trif2);
-                            back->add (trib1);
+                            front->add(trif1);
+                            front->add(trif2);
+                            back->add(trib1);
                         }
                     }
                 }
             }
-            return std::make_pair (front, back);
+            return std::make_pair(front, back);
         }
     };
 

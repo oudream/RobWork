@@ -34,51 +34,46 @@ using namespace rw;
 
 namespace {
 
-FixedFrameCalibration::Ptr readFixedFrameCalibration (DOMElem::Ptr felement, WorkCell::Ptr workcell)
-{
-    DOMElem::Ptr element = felement->getChild ("FixedFrameCalibration");
+FixedFrameCalibration::Ptr readFixedFrameCalibration(DOMElem::Ptr felement,
+                                                     WorkCell::Ptr workcell) {
+    DOMElem::Ptr element = felement->getChild("FixedFrameCalibration");
 
-    if (!element->hasAttribute ("frame"))
-        RW_THROW ("\"frame\" attribute missing.");
-    std::string frameName        = element->getAttributeValue ("frame");
-    rw::core::Ptr<rw::kinematics::Frame> frame = workcell->findFrame (frameName);
+    if(!element->hasAttribute("frame")) RW_THROW("\"frame\" attribute missing.");
+    std::string frameName                      = element->getAttributeValue("frame");
+    rw::core::Ptr<rw::kinematics::Frame> frame = workcell->findFrame(frameName);
     rw::kinematics::FixedFrame::Ptr fixedFrame =
-        rw::kinematics::Frame::Ptr (frame).cast< rw::kinematics::FixedFrame > ();
-    if (fixedFrame.isNull ())
-        RW_THROW ("Frame \"" << frameName << "\" not found.");
+        rw::kinematics::Frame::Ptr(frame).cast<rw::kinematics::FixedFrame>();
+    if(fixedFrame.isNull()) RW_THROW("Frame \"" << frameName << "\" not found.");
 
-    DOMElem::Ptr transformElement = element->getChild ("Transform3D");
-    if (transformElement == NULL)
-        RW_THROW ("\"Transform3D\" element not found");
+    DOMElem::Ptr transformElement = element->getChild("Transform3D");
+    if(transformElement == NULL) RW_THROW("\"Transform3D\" element not found");
 
-    Transform3D<> t3d = DOMBasisTypes::readTransform3D (transformElement, false);
+    Transform3D<> t3d = DOMBasisTypes::readTransform3D(transformElement, false);
 
     // if (!transformElement->hasAttribute("isPostCorrection"))
     //	RW_THROW("\"isPostCorrection\" attribute missing.");
     // bool isPostCorrection = transformElement->getAttributeValueAsBool("isPostCorrection");
 
-    return rw::core::ownedPtr (new FixedFrameCalibration (fixedFrame, t3d));
+    return rw::core::ownedPtr(new FixedFrameCalibration(fixedFrame, t3d));
 }
 
 }    // namespace
 
-WorkCellCalibration::Ptr XmlCalibrationLoader::load (rw::models::WorkCell::Ptr workcell,
-                                                     std::string fileName)
-{
-    DOMParser::Ptr parser = DOMParser::make ();
+WorkCellCalibration::Ptr XmlCalibrationLoader::load(rw::models::WorkCell::Ptr workcell,
+                                                    std::string fileName) {
+    DOMParser::Ptr parser = DOMParser::make();
 
-    parser->load (fileName);
+    parser->load(fileName);
 
-    DOMElem::Ptr elmRoot = parser->getRootElement ();
+    DOMElem::Ptr elmRoot = parser->getRootElement();
 
-    if (!elmRoot->hasChild ("WorkCellCalibration"))
-        RW_THROW ("Element not found.");
-    elmRoot                                      = elmRoot->getChild ("WorkCellCalibration");
-    WorkCellCalibration::Ptr workcellCalibration = ownedPtr (new WorkCellCalibration ());
-    for (DOMElem::Ptr child : elmRoot->getChildren ()) {
-        if (child->getName () == "FixedFrameCalibration") {
-            FixedFrameCalibration::Ptr ffCalibration = readFixedFrameCalibration (child, workcell);
-            workcellCalibration->addCalibration (ffCalibration);
+    if(!elmRoot->hasChild("WorkCellCalibration")) RW_THROW("Element not found.");
+    elmRoot                                      = elmRoot->getChild("WorkCellCalibration");
+    WorkCellCalibration::Ptr workcellCalibration = ownedPtr(new WorkCellCalibration());
+    for(DOMElem::Ptr child : elmRoot->getChildren()) {
+        if(child->getName() == "FixedFrameCalibration") {
+            FixedFrameCalibration::Ptr ffCalibration = readFixedFrameCalibration(child, workcell);
+            workcellCalibration->addCalibration(ffCalibration);
         }
     }
 

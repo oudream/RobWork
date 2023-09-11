@@ -29,107 +29,90 @@ using namespace rw::kinematics;
 using namespace rw::proximity;
 using namespace rw::pathplanning;
 
-bool PlannerUtil::inCollision (const PlannerConstraint& constraint, const rw::math::Q& start,
-                               const rw::math::Q& end, bool checkStart, bool checkEnd)
-{
-    return (checkStart && constraint.getQConstraint ().inCollision (start)) ||
-           (checkEnd && constraint.getQConstraint ().inCollision (end)) ||
-           constraint.getQEdgeConstraint ().inCollision (start, end);
+bool PlannerUtil::inCollision(const PlannerConstraint& constraint, const rw::math::Q& start,
+                              const rw::math::Q& end, bool checkStart, bool checkEnd) {
+    return (checkStart && constraint.getQConstraint().inCollision(start)) ||
+           (checkEnd && constraint.getQConstraint().inCollision(end)) ||
+           constraint.getQEdgeConstraint().inCollision(start, end);
 }
 
-bool PlannerUtil::inCollision (const PlannerConstraint& constraint, const std::vector< Q >& path)
-{
-    for (const Q& q : path) {
-        if (constraint.getQConstraint ().inCollision (q))
-            return true;
+bool PlannerUtil::inCollision(const PlannerConstraint& constraint, const std::vector<Q>& path) {
+    for(const Q& q : path) {
+        if(constraint.getQConstraint().inCollision(q)) return true;
     }
 
-    for (size_t i = 1; i < path.size (); ++i) {
+    for(size_t i = 1; i < path.size(); ++i) {
         const Q& a = path[i - 1];
         const Q& b = path[i];
-        if (constraint.getQEdgeConstraint ().inCollision (a, b))
-            return true;
+        if(constraint.getQEdgeConstraint().inCollision(a, b)) return true;
     }
 
     return false;
 }
 
 namespace {
-Q divide (double s, const Q& q)
-{
-    Q result (q.size ());
-    for (size_t i = 0; i < q.size (); i++)
-        result[i] = s / q[i];
+Q divide(double s, const Q& q) {
+    Q result(q.size());
+    for(size_t i = 0; i < q.size(); i++) result[i] = s / q[i];
     return result;
 }
 }    // namespace
 
-QMetric::Ptr PlannerUtil::normalizingInfinityMetric (const Device::QBox& bounds, double length)
-{
-    return MetricFactory::makeWeightedInfinity (divide (length, bounds.second - bounds.first));
+QMetric::Ptr PlannerUtil::normalizingInfinityMetric(const Device::QBox& bounds, double length) {
+    return MetricFactory::makeWeightedInfinity(divide(length, bounds.second - bounds.first));
 }
 
-QMetric::Ptr PlannerUtil::timeMetric (const Q& speed)
-{
-    return MetricFactory::makeWeightedInfinity (divide (1, speed));
+QMetric::Ptr PlannerUtil::timeMetric(const Q& speed) {
+    return MetricFactory::makeWeightedInfinity(divide(1, speed));
 }
 
-QMetric::Ptr PlannerUtil::timeMetric (const Device& device)
-{
-    return timeMetric (device.getVelocityLimits ());
+QMetric::Ptr PlannerUtil::timeMetric(const Device& device) {
+    return timeMetric(device.getVelocityLimits());
 }
 
-Q PlannerUtil::estimateMotionWeights (const Device& device, rw::core::Ptr<const Frame> frame,
-                                      const State& initialState, EstimateType type, size_t samples)
-{
-    QSampler::Ptr sampler = QSampler::makeUniform (device);
+Q PlannerUtil::estimateMotionWeights(const Device& device, rw::core::Ptr<const Frame> frame,
+                                     const State& initialState, EstimateType type, size_t samples) {
+    QSampler::Ptr sampler = QSampler::makeUniform(device);
 
-    if (frame == NULL)
-        frame = device.getEnd ();
+    if(frame == NULL) frame = device.getEnd();
 
-    size_t n    = device.getDOF ();
+    size_t n    = device.getDOF();
     State state = initialState;
-    Q ws        = Q (Q::zero ((int) n));
-    for (size_t i = 0; i < samples; i++) {
-        Q q = sampler->sample ();
-        device.setQ (q, state);
-        Jacobian jac = device.baseJframe (frame, state);
-        for (size_t j = 0; j < n; j++) {
-            double dx = jac (0, j);
-            double dy = jac (1, j);
-            double dz = jac (2, j);
-            double w  = sqrt (dx * dx + dy * dy + dz * dz);
-            switch (type) {
+    Q ws        = Q(Q::zero((int) n));
+    for(size_t i = 0; i < samples; i++) {
+        Q q = sampler->sample();
+        device.setQ(q, state);
+        Jacobian jac = device.baseJframe(frame, state);
+        for(size_t j = 0; j < n; j++) {
+            double dx = jac(0, j);
+            double dy = jac(1, j);
+            double dz = jac(2, j);
+            double w  = sqrt(dx * dx + dy * dy + dz * dz);
+            switch(type) {
                 case WORSTCASE:
-                    if (w > ws (j))
-                        ws (j) = w;
+                    if(w > ws(j)) ws(j) = w;
                     break;
-                case AVERAGE: ws (j) += w; break;
+                case AVERAGE: ws(j) += w; break;
             }
         }
     }
 
-    if (type == AVERAGE)
-        ws /= (double) samples;
+    if(type == AVERAGE) ws /= (double) samples;
 
     return ws;
 }
 
-rw::math::Q PlannerUtil::clampPosition (const Device::QBox& bounds, const rw::math::Q& q)
-{
-    RW_ASSERT (q.size () == bounds.first.size ());
+rw::math::Q PlannerUtil::clampPosition(const Device::QBox& bounds, const rw::math::Q& q) {
+    RW_ASSERT(q.size() == bounds.first.size());
 
-    Q res (q);
-    for (size_t i = 0; i < q.size (); i++) {
-        if (res (i) < bounds.first (i))
-            res (i) = bounds.first (i);
-        else if (res (i) > bounds.second (i))
-            res (i) = bounds.second (i);
+    Q res(q);
+    for(size_t i = 0; i < q.size(); i++) {
+        if(res(i) < bounds.first(i)) res(i) = bounds.first(i);
+        else if(res(i) > bounds.second(i)) res(i) = bounds.second(i);
     }
     return res;
 }
 
-rw::math::Q PlannerUtil::clampPosition (const Device& device, const rw::math::Q& q)
-{
-    return clampPosition (device.getBounds (), q);
+rw::math::Q PlannerUtil::clampPosition(const Device& device, const rw::math::Q& q) {
+    return clampPosition(device.getBounds(), q);
 }

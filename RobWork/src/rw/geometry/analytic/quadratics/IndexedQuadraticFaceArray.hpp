@@ -46,16 +46,16 @@ namespace rw { namespace geometry {
     {
       public:
         //! @brief Smart pointer type to IndexedQuadraticFaceArray
-        typedef rw::core::Ptr< IndexedQuadraticFaceArray > Ptr;
+        typedef rw::core::Ptr<IndexedQuadraticFaceArray> Ptr;
 
         //! @brief Smart pointer type for a const IndexedQuadraticFaceArray.
-        typedef rw::core::Ptr< const IndexedQuadraticFaceArray > CPtr;
+        typedef rw::core::Ptr<const IndexedQuadraticFaceArray> CPtr;
 
         //! @brief Structure that holds information for each face.
         struct IndexedFace
         {
             //! @brief Constructor.
-            IndexedFace () : originalID (0), lower (0), upper (0), center (0) {}
+            IndexedFace() : originalID(0), lower(0), upper(0), center(0) {}
 
             //! @brief Index of the original face.
             std::size_t originalID;
@@ -72,7 +72,7 @@ namespace rw { namespace geometry {
          * @brief Construct new indexed face array.
          * @param quadric [in] the underlying Shell.
          */
-        IndexedQuadraticFaceArray (rw::core::Ptr< const QuadraticShell > quadric);
+        IndexedQuadraticFaceArray(rw::core::Ptr<const QuadraticShell> quadric);
 
         /**
          * @brief Construct new indexed face array.
@@ -81,45 +81,45 @@ namespace rw { namespace geometry {
          * @param first [in] skip the \b first \b faces.
          * @param last [in] last index of \b faces to include.
          */
-        IndexedQuadraticFaceArray (rw::core::Ptr< const QuadraticShell > quadric,
-                                   const std::vector< IndexedFace >& faces, std::size_t first,
-                                   std::size_t last);
+        IndexedQuadraticFaceArray(rw::core::Ptr<const QuadraticShell> quadric,
+                                  const std::vector<IndexedFace>& faces, std::size_t first,
+                                  std::size_t last);
 
         //! @brief Destructor.
-        virtual ~IndexedQuadraticFaceArray ();
+        virtual ~IndexedQuadraticFaceArray();
 
         //! @copydoc QuadraticShell::isConvex
-        virtual bool isConvex ();
+        virtual bool isConvex();
 
         //! @copydoc QuadraticShell::size
-        virtual std::size_t size () const;
+        virtual std::size_t size() const;
 
         //! @copydoc QuadraticShell::getFace(std::size_t) const
-        virtual rw::core::Ptr< const QuadraticFace > getFace (std::size_t idx) const;
+        virtual rw::core::Ptr<const QuadraticFace> getFace(std::size_t idx) const;
 
         //! @copydoc QuadraticShell::getFace(std::size_t,QuadraticFace&) const
-        virtual void getFace (std::size_t idx, QuadraticFace& dst) const;
+        virtual void getFace(std::size_t idx, QuadraticFace& dst) const;
 
         /**
          * @brief Get the indexed face.
          * @param idx [in] index of indexed face.
          * @return the indexed face.
          */
-        IndexedFace getIndexedFace (std::size_t idx) const;
+        IndexedFace getIndexedFace(std::size_t idx) const;
 
         /**
          * @brief Get the indexed face.
          * @param idx [in] index of indexed face.
          * @param dst [out] existing object to copy data into.
          */
-        void getIndexedFace (std::size_t idx, IndexedFace& dst) const;
+        void getIndexedFace(std::size_t idx, IndexedFace& dst) const;
 
         /**
          * @brief Sort the faces according to their extent in the direction along \b axis.
          * @param axis [in] axis to sort.
          * @param t3d [in] transform giving the position and axis directions.
          */
-        void sortAxis (int axis, const rw::math::Transform3D<>& t3d);
+        void sortAxis(int axis, const rw::math::Transform3D<>& t3d);
 
         /**
          * @brief Take out a subrange of faces.
@@ -127,23 +127,22 @@ namespace rw { namespace geometry {
          * @param last [in] last index.
          * @return a new indexed face array.
          */
-        IndexedQuadraticFaceArray getSubRange (std::size_t first, std::size_t last) const;
+        IndexedQuadraticFaceArray getSubRange(std::size_t first, std::size_t last) const;
 
         /**
          * @brief Get the original face index.
          * @param idx [in] the indexed face index.
          * @return the original index.
          */
-        inline std::size_t getGlobalIndex (std::size_t idx) const
-        {
+        inline std::size_t getGlobalIndex(std::size_t idx) const {
             return _faces[_first + idx].originalID;
         }
 
       private:
         struct CenterSort;
 
-        const rw::core::Ptr< const QuadraticShell > _quadric;
-        std::vector< IndexedFace > _faces;
+        const rw::core::Ptr<const QuadraticShell> _quadric;
+        std::vector<IndexedFace> _faces;
         std::size_t _first;
         std::size_t _last;
     };

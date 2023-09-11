@@ -52,14 +52,14 @@ namespace rwlibs { namespace task {
          *
          * @param type [in] Type of entity. Default is Undefined
          */
-        EntityType (int type = Undefined) : _type (type) {}
+        EntityType(int type = Undefined) : _type(type) {}
 
         /**
          * @brief Cast operator enable implicit conversion to int
          *
          * This operator enables using EntityType in a switch statement.
          */
-        operator int () { return _type; }
+        operator int() { return _type; }
 
       private:
         int _type;
@@ -72,7 +72,7 @@ namespace rwlibs { namespace task {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< Entity > Ptr;
+        typedef rw::core::Ptr<Entity> Ptr;
 
         /**
          * @brief Constructs an Entity with a given type,
@@ -80,26 +80,25 @@ namespace rwlibs { namespace task {
          * @param type [in] Type of entity
          * @param id [in] Optional id of entity
          */
-        Entity (EntityType type, const std::string& id = "") :
-            _entityType (type), _index (-1), _id (id)
-        {}
+        Entity(EntityType type, const std::string& id = "") :
+            _entityType(type), _index(-1), _id(id) {}
 
         /**
          * @brief Destructor
          */
-        virtual ~Entity () {}
+        virtual ~Entity() {}
 
         /**
          * @brief Returns reference to rw::core::PropertyMap associated with the Entity
          * @return Reference to PropertyMap
          */
-        rw::core::PropertyMap& getPropertyMap () { return _properties; }
+        rw::core::PropertyMap& getPropertyMap() { return _properties; }
 
         /**
          * @brief Returns reference to rw::core::PropertyMap associated with the Entity
          * @return Reference to PropertyMap
          */
-        const rw::core::PropertyMap& getPropertyMap () const { return _properties; }
+        const rw::core::PropertyMap& getPropertyMap() const { return _properties; }
 
         /**
          * @brief Sets the content of the propertymap
@@ -107,10 +106,7 @@ namespace rwlibs { namespace task {
          * Overrides the current propertymap with \b propertymap
          * @param propertymap [in] The propertymap to use
          */
-        void setPropertyMap (const rw::core::PropertyMap& propertymap)
-        {
-            _properties = propertymap;
-        }
+        void setPropertyMap(const rw::core::PropertyMap& propertymap) { _properties = propertymap; }
 
         /**
          * @brief Returns index specifying the position of the Entity in a Task
@@ -121,7 +117,7 @@ namespace rwlibs { namespace task {
          *
          * @return The index specifying the relative position of the Entity
          */
-        int getIndex () const { return _index; }
+        int getIndex() const { return _index; }
 
         /**
          * @brief Sets the order index of the Entity.
@@ -131,25 +127,25 @@ namespace rwlibs { namespace task {
          *
          * @param index [in] The index specifying the order
          */
-        void setIndex (int index) { _index = index; }
+        void setIndex(int index) { _index = index; }
 
         /**
          * @brief Returns the type of Entity.
          * @return Type of the Entity
          */
-        virtual EntityType entityType () const { return _entityType; }
+        virtual EntityType entityType() const { return _entityType; }
 
         /**
          * @brief Set the id for the entity.
          * @param id [in] the id.
          */
-        void setId (const std::string& id) { _id = id; }
+        void setId(const std::string& id) { _id = id; }
 
         /**
          * @brief Get the id of the entity.
          * @return the id.
          */
-        const std::string& getId () const { return _id; }
+        const std::string& getId() const { return _id; }
 
         /**
          * @brief Method which can be used to explicitly and safely casting an Entity.
@@ -162,16 +158,15 @@ namespace rwlibs { namespace task {
          * Action* action = myEntity->cast<Action*>();
          * \endcode
          */
-        template< class T > T cast ()
-        {
+        template<class T> T cast() {
             try {
-                T entity = dynamic_cast< T > (this);
+                T entity = dynamic_cast<T>(this);
                 return entity;
             }
-            catch (std::bad_cast& exp) {
-                RW_THROW ("Unable to perform cast: " << exp.what ());
+            catch(std::bad_cast& exp) {
+                RW_THROW("Unable to perform cast: " << exp.what());
             }
-            RW_THROW ("Unable to perform cast");
+            RW_THROW("Unable to perform cast");
         }
 
       protected:

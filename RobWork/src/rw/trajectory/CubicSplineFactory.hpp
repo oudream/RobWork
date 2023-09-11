@@ -22,13 +22,12 @@
  * @file CubicSplineFactory.hpp
  */
 #if !defined(SWIG)
-#include <rw/trajectory/InterpolatorTrajectory.hpp>
-#include <rw/trajectory/Path.hpp>
-
 #include <rw/math/Q.hpp>
 #include <rw/math/Quaternion.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/Transform3DVector.hpp>
+#include <rw/trajectory/InterpolatorTrajectory.hpp>
+#include <rw/trajectory/Path.hpp>
 #endif
 namespace rw { namespace trajectory {
 
@@ -55,9 +54,9 @@ namespace rw { namespace trajectory {
          * @param qpath [in] a list of points that the spline should intersect
          * @param timeStep [in] the duration of each spline path
          */
-        static rw::core::Ptr< InterpolatorTrajectory< rw::math::Q > >
-        makeNaturalSpline (rw::core::Ptr< rw::trajectory::Path< rw::math::Q > > qpath,
-                           double timeStep = 1.0);
+        static rw::core::Ptr<InterpolatorTrajectory<rw::math::Q>>
+        makeNaturalSpline(rw::core::Ptr<rw::trajectory::Path<rw::math::Q>> qpath,
+                          double timeStep = 1.0);
 
         /**
          * @brief constructs a natural cubic spline, see above.
@@ -69,9 +68,8 @@ namespace rw { namespace trajectory {
          * @endcond
          * @return a trajectory of CubicSplineInterpolators
          */
-        static rw::core::Ptr< rw::trajectory::InterpolatorTrajectory< rw::math::Q > >
-        makeNaturalSpline (
-            rw::core::Ptr< rw::trajectory::Path< rw::trajectory::Timed< rw::math::Q > > > tqpath);
+        static rw::core::Ptr<rw::trajectory::InterpolatorTrajectory<rw::math::Q>> makeNaturalSpline(
+            rw::core::Ptr<rw::trajectory::Path<rw::trajectory::Timed<rw::math::Q>>> tqpath);
 
         /**
          * @brief Construct a natural cubic spline. See documentation of
@@ -81,9 +79,9 @@ namespace rw { namespace trajectory {
          * @param times [in] Times associated to the different configurations in \b qpath
          * @return a trajectory of CubicSplineInterpolators
          */
-        static rw::core::Ptr< rw::trajectory::InterpolatorTrajectory< rw::math::Q > >
-        makeNaturalSpline (const rw::trajectory::Path< rw::math::Q >& qpath,
-                           const std::vector< double >& times);
+        static rw::core::Ptr<rw::trajectory::InterpolatorTrajectory<rw::math::Q>>
+        makeNaturalSpline(const rw::trajectory::Path<rw::math::Q>& qpath,
+                          const std::vector<double>& times);
 
         /**
          * @brief constructs a free/natural cubic spline
@@ -98,9 +96,9 @@ namespace rw { namespace trajectory {
          * @param timeStep [in] the duration of each spline path
          */
         static rw::core::Ptr<
-            rw::trajectory::InterpolatorTrajectory< rw::math::Transform3DVector< double > > >
-        makeNaturalSpline (const rw::trajectory::Path< rw::math::Transform3D< double > >& path,
-                           double timeStep = 1.0);
+            rw::trajectory::InterpolatorTrajectory<rw::math::Transform3DVector<double>>>
+        makeNaturalSpline(const rw::trajectory::Path<rw::math::Transform3D<double>>& path,
+                          double timeStep = 1.0);
 
         /**
          * @brief constructs a natural cubic spline, see above.
@@ -112,10 +110,9 @@ namespace rw { namespace trajectory {
          * @return a trajectory of CubicSplineInterpolators
          */
         static rw::core::Ptr<
-            rw::trajectory::InterpolatorTrajectory< rw::math::Transform3DVector< double > > >
-        makeNaturalSpline (
-            const rw::trajectory::Path< rw::trajectory::Timed< rw::math::Transform3D< double > > >&
-                path);
+            rw::trajectory::InterpolatorTrajectory<rw::math::Transform3DVector<double>>>
+        makeNaturalSpline(
+            const rw::trajectory::Path<rw::trajectory::Timed<rw::math::Transform3D<double>>>& path);
 
         /**
          * @brief Construct a natural cubic spline. See documentation of
@@ -126,9 +123,9 @@ namespace rw { namespace trajectory {
          * @return a trajectory of CubicSplineInterpolators
          */
         static rw::core::Ptr<
-            rw::trajectory::InterpolatorTrajectory< rw::math::Transform3DVector< double > > >
-        makeNaturalSpline (const rw::trajectory::Path< rw::math::Transform3D< double > >& path,
-                           const std::vector< double >& times);
+            rw::trajectory::InterpolatorTrajectory<rw::math::Transform3DVector<double>>>
+        makeNaturalSpline(const rw::trajectory::Path<rw::math::Transform3D<double>>& path,
+                          const std::vector<double>& times);
 
         /**
          * @brief constructs a free/natural cubic spline
@@ -145,9 +142,9 @@ namespace rw { namespace trajectory {
          * @note the following template parameters are currently supported:
          * Transform3DVector, Vector3D, Quaternion
          */
-        template< typename T >
-        static rw::core::Ptr< rw::trajectory::InterpolatorTrajectory< T > >
-        makeNaturalSpline (const rw::trajectory::Path< T >& path, double timeStep = 1.0);
+        template<typename T>
+        static rw::core::Ptr<rw::trajectory::InterpolatorTrajectory<T>>
+        makeNaturalSpline(const rw::trajectory::Path<T>& path, double timeStep = 1.0);
 
         /**
          * @brief constructs a natural cubic spline, see above.
@@ -160,9 +157,9 @@ namespace rw { namespace trajectory {
          * @note the following template parameters are currently supported:
          * Transform3DVector, Vector3D, Quaternion
          */
-        template< typename T >
-        static  rw::core::Ptr< rw::trajectory::InterpolatorTrajectory< T > >
-        makeNaturalSpline (const rw::trajectory::Path< rw::trajectory::Timed< T > >& path);
+        template<typename T>
+        static rw::core::Ptr<rw::trajectory::InterpolatorTrajectory<T>>
+        makeNaturalSpline(const rw::trajectory::Path<rw::trajectory::Timed<T>>& path);
 
         /**
          * @brief Construct a natural cubic spline. See documentation of
@@ -174,10 +171,9 @@ namespace rw { namespace trajectory {
          * @note the following template parameters are currently supported:
          * Transform3DVector, Vector3D, Quaternion
          */
-        template< typename T >
-        static rw::core::Ptr< rw::trajectory::InterpolatorTrajectory< T > >
-        makeNaturalSpline (const rw::trajectory::Path< T >& path,
-                           const std::vector< double >& times);
+        template<typename T>
+        static rw::core::Ptr<rw::trajectory::InterpolatorTrajectory<T>>
+        makeNaturalSpline(const rw::trajectory::Path<T>& path, const std::vector<double>& times);
 
         /**
          * @brief creates a clamped spline trajectory with equally spaced
@@ -191,10 +187,10 @@ namespace rw { namespace trajectory {
          * @note the following template parameters are currently supported:
          * Transform3DVector, Vector3D, Quaternion
          */
-        static rw::core::Ptr< rw::trajectory::InterpolatorTrajectory< rw::math::Q > >
-        makeClampedSpline (rw::core::Ptr< rw::trajectory::Path< rw::math::Q > > qpath,
-                           const rw::math::Q& dqStart, const rw::math::Q& dqEnd,
-                           double timeStep = 1.0);
+        static rw::core::Ptr<rw::trajectory::InterpolatorTrajectory<rw::math::Q>>
+        makeClampedSpline(rw::core::Ptr<rw::trajectory::Path<rw::math::Q>> qpath,
+                          const rw::math::Q& dqStart, const rw::math::Q& dqEnd,
+                          double timeStep = 1.0);
 
         /**
          * @brief creates a clamped spline trajectory where the timed label is used
@@ -207,9 +203,8 @@ namespace rw { namespace trajectory {
          * @note the following template parameters are currently supported:
          * Transform3DVector, Vector3D, Quaternion
          */
-        static rw::core::Ptr< rw::trajectory::InterpolatorTrajectory< rw::math::Q > >
-        makeClampedSpline (
-            rw::core::Ptr< rw::trajectory::Path< rw::trajectory::Timed< rw::math::Q > > > tqpath,
+        static rw::core::Ptr<rw::trajectory::InterpolatorTrajectory<rw::math::Q>> makeClampedSpline(
+            rw::core::Ptr<rw::trajectory::Path<rw::trajectory::Timed<rw::math::Q>>> tqpath,
             const rw::math::Q& dqStart, const rw::math::Q& dqEnd);
 
         /**
@@ -224,10 +219,10 @@ namespace rw { namespace trajectory {
          * @note the following template parameters are currently supported:
          * Transform3DVector, Vector3D, Quaternion
          */
-        template< typename T >
-        static typename rw::core::Ptr< rw::trajectory::InterpolatorTrajectory< T > >
-        makeClampedSpline (const rw::trajectory::Path< T >& path, const T& dStart, const T& dEnd,
-                           double timeStep = 1.0);
+        template<typename T>
+        static typename rw::core::Ptr<rw::trajectory::InterpolatorTrajectory<T>>
+        makeClampedSpline(const rw::trajectory::Path<T>& path, const T& dStart, const T& dEnd,
+                          double timeStep = 1.0);
 
         /**
          * @brief creates a clamped spline trajectory where the timed label is used
@@ -240,10 +235,10 @@ namespace rw { namespace trajectory {
          * @note the following template parameters are currently supported:
          * Transform3DVector, Vector3D, Quaternion
          */
-        template< typename T >
-        static typename rw::core::Ptr< rw::trajectory::InterpolatorTrajectory< T > >
-        makeClampedSpline (const rw::trajectory::Path< rw::trajectory::Timed< T > >& tpath,
-                           const T& dStart, const T& dEnd);
+        template<typename T>
+        static typename rw::core::Ptr<rw::trajectory::InterpolatorTrajectory<T>>
+        makeClampedSpline(const rw::trajectory::Path<rw::trajectory::Timed<T>>& tpath,
+                          const T& dStart, const T& dEnd);
 
         /**
          * @brief creates a clamped spline trajectory where the timed label is used
@@ -257,10 +252,10 @@ namespace rw { namespace trajectory {
          * @note the following template parameters are currently supported:
          * Transform3DVector, Vector3D, Quaternion
          */
-        template< typename T >
-        static typename rw::core::Ptr< rw::trajectory::InterpolatorTrajectory< T > >
-        makeClampedSpline (const rw::trajectory::Path< T >& path,
-                           const std::vector< double >& times, const T& dStart, const T& dEnd);
+        template<typename T>
+        static typename rw::core::Ptr<rw::trajectory::InterpolatorTrajectory<T>>
+        makeClampedSpline(const rw::trajectory::Path<T>& path, const std::vector<double>& times,
+                          const T& dStart, const T& dEnd);
 
         /**
          * @brief constructs a Spherical Spline Quaternion interpolation (SQUAD)
@@ -274,10 +269,9 @@ namespace rw { namespace trajectory {
          * @param timeStep [in] the duration of each SQUAD path
          * @return a trajectory of SQUADInterpolators
          */
-        static rw::core::Ptr<
-            rw::trajectory::InterpolatorTrajectory< rw::math::Quaternion< double > > >
-        makeSQUAD (const rw::trajectory::Path< rw::math::Quaternion< double > >& path,
-                   double timeStep = 1.0);
+        static rw::core::Ptr<rw::trajectory::InterpolatorTrajectory<rw::math::Quaternion<double>>>
+        makeSQUAD(const rw::trajectory::Path<rw::math::Quaternion<double>>& path,
+                  double timeStep = 1.0);
 
         /**
          * @brief constructs a Spherical Spline Quaternion interpolation (SQUAD)
@@ -286,11 +280,9 @@ namespace rw { namespace trajectory {
          * the points at the time specified in \b tpath
          * @return a trajectory of SQUADInterpolators
          */
-        static rw::core::Ptr<
-            rw::trajectory::InterpolatorTrajectory< rw::math::Quaternion< double > > >
-        makeSQUAD (
-            const rw::trajectory::Path< rw::trajectory::Timed< rw::math::Quaternion< double > > >&
-                tpath);
+        static rw::core::Ptr<rw::trajectory::InterpolatorTrajectory<rw::math::Quaternion<double>>>
+        makeSQUAD(
+            const rw::trajectory::Path<rw::trajectory::Timed<rw::math::Quaternion<double>>>& tpath);
 
         /**
          * @brief constructs a Spherical Spline Quaternion interpolation (SQUAD)
@@ -299,15 +291,14 @@ namespace rw { namespace trajectory {
          * @param times [in] Times associated to the different configurations in \b qpath
          * @return a trajectory of CubicSplineInterpolators
          */
-        static rw::core::Ptr<
-            rw::trajectory::InterpolatorTrajectory< rw::math::Quaternion< double > > >
-        makeSQUAD (const rw::trajectory::Path< rw::math::Quaternion< double > >& path,
-                   const std::vector< double >& times);
+        static rw::core::Ptr<rw::trajectory::InterpolatorTrajectory<rw::math::Quaternion<double>>>
+        makeSQUAD(const rw::trajectory::Path<rw::math::Quaternion<double>>& path,
+                  const std::vector<double>& times);
 
       private:
-        CubicSplineFactory ();
+        CubicSplineFactory();
 
-        virtual ~CubicSplineFactory ();
+        virtual ~CubicSplineFactory();
     };
 
     /* @} */

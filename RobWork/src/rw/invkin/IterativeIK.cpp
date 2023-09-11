@@ -28,46 +28,37 @@ using namespace rw::models;
 using namespace rw::kinematics;
 using namespace boost;
 
-IterativeIK::IterativeIK ()
-{
-    getProperties ().add ("MaxIterations", "Max number of iterations", 20);
-    getProperties ().add ("MaxError", "Max Error ", 1e-6);
+IterativeIK::IterativeIK() {
+    getProperties().add("MaxIterations", "Max number of iterations", 20);
+    getProperties().add("MaxError", "Max Error ", 1e-6);
 }
 
-void IterativeIK::setMaxError (double maxError)
-{
-    if (maxError < 0)
-        RW_THROW ("MaxError must be positive");
+void IterativeIK::setMaxError(double maxError) {
+    if(maxError < 0) RW_THROW("MaxError must be positive");
 
-    getProperties ().set< double > ("MaxError", maxError);
+    getProperties().set<double>("MaxError", maxError);
 }
 
-double IterativeIK::getMaxError () const
-{
-    return getProperties ().get< double > ("MaxError");
+double IterativeIK::getMaxError() const {
+    return getProperties().get<double>("MaxError");
 }
 
-void IterativeIK::setMaxIterations (int maxIterations)
-{
-    getProperties ().set ("MaxIterations", maxIterations);
+void IterativeIK::setMaxIterations(int maxIterations) {
+    getProperties().set("MaxIterations", maxIterations);
 }
 
-int IterativeIK::getMaxIterations () const
-{
-    return getProperties ().get< int > ("MaxIterations");
+int IterativeIK::getMaxIterations() const {
+    return getProperties().get<int>("MaxIterations");
 }
 
-PropertyMap& IterativeIK::getProperties ()
-{
+PropertyMap& IterativeIK::getProperties() {
     return _properties;
 }
 
-const PropertyMap& IterativeIK::getProperties () const
-{
+const PropertyMap& IterativeIK::getProperties() const {
     return _properties;
 }
 
-IterativeIK::Ptr IterativeIK::makeDefault (Device::Ptr device, const State& state)
-{
-    return ownedPtr (new JacobianIKSolver (device, state));
+IterativeIK::Ptr IterativeIK::makeDefault(Device::Ptr device, const State& state) {
+    return ownedPtr(new JacobianIKSolver(device, state));
 }

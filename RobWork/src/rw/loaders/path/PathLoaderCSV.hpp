@@ -85,7 +85,7 @@ namespace rw { namespace loaders {
          * @return the path
          */
 
-        static rw::trajectory::QPath loadPath (const std::string& file);
+        static rw::trajectory::QPath loadPath(const std::string& file);
 
         /**
          * @brief Load a sequence of states for \b workcell from the file named \b
@@ -95,7 +95,7 @@ namespace rw { namespace loaders {
          * format with respect to the work cell.
          */
         static rw::trajectory::TimedStatePath
-        loadTimedStatePath (const rw::models::WorkCell& workcell, const std::string& file);
+        loadTimedStatePath(const rw::models::WorkCell& workcell, const std::string& file);
 
         /**
          *  @brief Load a sequence of states for \b workcell from the file named \b file.
@@ -103,8 +103,8 @@ namespace rw { namespace loaders {
          * An exception is thrown if the file can't be read or is of the wrong
          * format with respect to the work cell.
          */
-        static rw::trajectory::StatePath loadStatePath (const models::WorkCell& workcell,
-                                                        const std::string& file);
+        static rw::trajectory::StatePath loadStatePath(const models::WorkCell& workcell,
+                                                       const std::string& file);
     };
 
     /* @} */

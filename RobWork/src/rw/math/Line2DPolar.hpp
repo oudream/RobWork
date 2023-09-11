@@ -19,12 +19,11 @@
 #define RW_MATH_LINE2DPOLAR_HPP
 
 #if !defined(SWIG)
+#include <rw/common/Serializable.hpp>
 #include <rw/math/Line2D.hpp>
 #include <rw/math/Pose2D.hpp>
 #include <rw/math/Vector2D.hpp>
-
-#include <rw/common/Serializable.hpp>
-#endif 
+#endif
 namespace rw { namespace math {
 
     /**
@@ -42,7 +41,7 @@ namespace rw { namespace math {
          * @param theta [in] angle from x-axis up to the line that connects the origo and the
          * point on the line that is closest to origo.
          */
-        Line2DPolar (double rho = 0, double theta = 0);
+        Line2DPolar(double rho = 0, double theta = 0);
 
         /**
          * @brief constructor
@@ -51,45 +50,46 @@ namespace rw { namespace math {
          * @param theta [in]  angle in radians from x-axis up to the line that connects the origo
          * and the point on the line that is closest to origo.
          */
-        Line2DPolar (const rw::math::Vector2D<>& pnt, double theta);
+        Line2DPolar(const rw::math::Vector2D<>& pnt, double theta);
 
         /**
          * @brief constructor - The line moving through the segment from 'start' to 'end'.
          * @param start [in] point on line
          * @param end [in] point on line
          */
-        Line2DPolar (const rw::math::Vector2D<>& start, const rw::math::Vector2D<>& end);
+        Line2DPolar(const rw::math::Vector2D<>& start, const rw::math::Vector2D<>& end);
 
         /**
          * @brief constructor - The line moving through the line segment.
          * @param line [in] the line described as a segment
          */
-        Line2DPolar (const Line2D& line);
+        Line2DPolar(const Line2D& line);
 
         /**
          * @brief the shortest distance from origo the line
          * @return
          */
-        double getRho () const { return _rho; }
+        double getRho() const { return _rho; }
 
         /**
          * @brief angle in radians from x-axis up to the line that connects the origo and the
          * point on the line that is closest to origo.
          * @return
          */
-        double getTheta () const { return _theta; }
+        double getTheta() const { return _theta; }
 
         //! @brief get normal of line
-        rw::math::Vector2D<> calcNormal () const;
+        rw::math::Vector2D<> calcNormal() const;
 
         //! @brief The L_2 distance from 'pnt' to the line.
-        double dist2 (const rw::math::Vector2D<>& pnt) const;
+        double dist2(const rw::math::Vector2D<>& pnt) const;
 
         //! The point for the projection of 'pnt' onto 'line'.
-        static rw::math::Vector2D<> projectionPoint (const Line2DPolar& line, const rw::math::Vector2D<>& pnt);
+        static rw::math::Vector2D<> projectionPoint(const Line2DPolar& line,
+                                                    const rw::math::Vector2D<>& pnt);
 
         //! A supporting point on the line (equal to rho * normal).
-        static rw::math::Vector2D<> linePoint (const Line2DPolar& line);
+        static rw::math::Vector2D<> linePoint(const Line2DPolar& line);
 
         /**
          * @brief The vector for the projection of \b pnt onto the normal of \b line.
@@ -97,7 +97,8 @@ namespace rw { namespace math {
          * @param pnt [in] a point.
          * @return the projection vector.
          */
-        static rw::math::Vector2D<> normalProjectionVector (const Line2DPolar& line, const rw::math::Vector2D<>& pnt);
+        static rw::math::Vector2D<> normalProjectionVector(const Line2DPolar& line,
+                                                           const rw::math::Vector2D<>& pnt);
 
         // Print the line to stdout.
         // static void print(const LinePolar& line);
@@ -108,7 +109,7 @@ namespace rw { namespace math {
          * @param line [in] the line.
          * @return a Line2DPolar.
          */
-        static Line2DPolar lineToLocal (const rw::math::Pose2D<>& pose, const Line2DPolar& line);
+        static Line2DPolar lineToLocal(const rw::math::Pose2D<>& pose, const Line2DPolar& line);
 
       private:
         double _rho;
@@ -126,16 +127,16 @@ namespace rw { namespace common {
          * @relatedalso rw::math::Line2DPolar
          */
         template<>
-        void write (const rw::math::Line2DPolar& sobject, rw::common::OutputArchive& oarchive,
-                    const std::string& id);
+        void write(const rw::math::Line2DPolar& sobject, rw::common::OutputArchive& oarchive,
+                   const std::string& id);
 
         /**
          * @copydoc rw::common::serialization::read
          * @relatedalso rw::math::Line2DPolar
          */
         template<>
-        void read (rw::math::Line2DPolar& sobject, rw::common::InputArchive& iarchive,
-                   const std::string& id);
+        void read(rw::math::Line2DPolar& sobject, rw::common::InputArchive& iarchive,
+                  const std::string& id);
     }    // namespace serialization
 }}       // namespace rw::common
 

@@ -16,47 +16,47 @@ class PlayBackSettings : public QDialog
     Q_OBJECT
   public:
     //! @brief Constructor.
-    PlayBackSettings ();
+    PlayBackSettings();
 
     //! @brief Destructor.
-    virtual ~PlayBackSettings ();
+    virtual ~PlayBackSettings();
 
     /**
      * @brief Get the update rate.
      * @return the update rate.
      */
-    double getUpdateRate ();
+    double getUpdateRate();
 
     /**
      * @brief Get the filename to record images to.
      * @return the filename.
      */
-    QString getRecordFilename ();
+    QString getRecordFilename();
 
     /**
      * @brief Get the filetype of images to record.
      * @return the filetype.
      */
-    QString getRecordFileType ();
+    QString getRecordFileType();
 
     /**
      * @brief The the amount to scale the speed of playback.
      * @return the scale.
      */
-    double getScale () { return _theScale; }
+    double getScale() { return _theScale; }
 
   protected:
     /**
      * @brief Setup the dialog when it is shown.
      * @param event [in] the event (not used).
      */
-    void showEvent (QShowEvent* event);
+    void showEvent(QShowEvent* event);
 
   private Q_SLOTS:
-    void browse ();
-    void ok ();
-    void scale ();
-    void cancel ();
+    void browse();
+    void ok();
+    void scale();
+    void cancel();
 
   private:
     double _updateRate, _theScale;

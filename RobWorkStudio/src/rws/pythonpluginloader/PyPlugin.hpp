@@ -28,10 +28,10 @@
 class PyPlugin : public rws::RobWorkStudioPlugin
 {
     Q_OBJECT
-    Q_INTERFACES (rws::RobWorkStudioPlugin)
+    Q_INTERFACES(rws::RobWorkStudioPlugin)
   public:
     //! @copydoc rws::RobWorkStudioPlugin::RobWorkStudioPlugin
-    PyPlugin (const QString& name, const QIcon& icon);
+    PyPlugin(const QString& name, const QIcon& icon);
 
     /**
      * @brief Initialize the Python plugin
@@ -41,20 +41,20 @@ class PyPlugin : public rws::RobWorkStudioPlugin
      *
      * @return true if succes otherwise false
      */
-    bool initialize (std::string pythonFilePath, std::string pluginName);
+    bool initialize(std::string pythonFilePath, std::string pluginName);
 
-    void open (rw::models::WorkCell* workcell);
+    void open(rw::models::WorkCell* workcell);
 
-    void close ();
+    void close();
 
   protected:
     /**
      * @brief simple destructer
      */
-    ~PyPlugin ();
+    ~PyPlugin();
   private Q_SLOTS:
 
-    void stateChangedListener (const rw::kinematics::State& state);
+    void stateChangedListener(const rw::kinematics::State& state);
 
   private:
     static size_t _pyPlugins;

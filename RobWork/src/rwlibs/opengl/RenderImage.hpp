@@ -43,49 +43,50 @@ namespace rwlibs { namespace opengl {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< RenderImage > Ptr;
+        typedef rw::core::Ptr<RenderImage> Ptr;
 
         /**
          * @brief constructor
          * @param scale [in] scale from image coordinates to meters.
          */
-        RenderImage (float scale = 1.0 / 1000.0);
+        RenderImage(float scale = 1.0 / 1000.0);
 
         /**
          * @brief Constructs
          * @param img [in} the image that is to be rendered
          * @param scale [in] scale from image coordinates to meters.
          */
-        RenderImage (const rw::sensor::Image& img, float scale = 1.0 / 1000.0);
+        RenderImage(const rw::sensor::Image& img, float scale = 1.0 / 1000.0);
 
         /**
          * @brief Destructor
          */
-        virtual ~RenderImage ();
+        virtual ~RenderImage();
 
         /**
          * @brief set the image that is to be rendered.
          * @param img [in] image to render
          */
-        void setImage (const rw::sensor::Image& img);
+        void setImage(const rw::sensor::Image& img);
 
         /* Functions inherited from Render */
 
-        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info, DrawableNode::DrawType type, double alpha) const
-        void draw (const rw::graphics::DrawableNode::RenderInfo& info,
-                   rw::graphics::DrawableNode::DrawType type, double alpha) const;
+        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info,
+        //! DrawableNode::DrawType type, double alpha) const
+        void draw(const rw::graphics::DrawableNode::RenderInfo& info,
+                  rw::graphics::DrawableNode::DrawType type, double alpha) const;
 
       private:
         int _w, _h;
         float _scale;
-        rw::core::Ptr< RWGLTexture > _tex;
+        rw::core::Ptr<RWGLTexture> _tex;
     };
 
     /**
      * @brief Legacy type of a smart pointer for RenderImage.
      * @deprecated Use RenderImage::Ptr instead. This type will be removed sometime in the future.
      */
-    typedef rw::core::Ptr< RenderImage > RenderImagePtr;
+    typedef rw::core::Ptr<RenderImage> RenderImagePtr;
 
     /*@}*/
 }}    // namespace rwlibs::opengl

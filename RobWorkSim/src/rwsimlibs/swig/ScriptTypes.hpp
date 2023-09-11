@@ -117,36 +117,35 @@ namespace rwsim { namespace swig {
     // rwsimlibs tools
 
     // helper functions
-    template< typename T > std::string toString (const T& x)
-    {
+    template<typename T> std::string toString(const T& x) {
         std::ostringstream buf;
         buf << x;
-        return buf.str ();
+        return buf.str();
     }
 
     // general functions
-    rw::core::Ptr< DynamicWorkCell > getDynamicWorkCell ();
+    rw::core::Ptr<DynamicWorkCell> getDynamicWorkCell();
 
     /**
      * @brief set current dynamic workcell instance
      */
-    void setDynamicWorkCell (rw::core::Ptr< DynamicWorkCell > dwc);
+    void setDynamicWorkCell(rw::core::Ptr<DynamicWorkCell> dwc);
 
     /**
      * @brief add instance of simulator
      * @param sim [in]
      * @param id [in] id of simulator
      */
-    void addSimulatorInstance (rw::core::Ptr< ThreadSimulator > sim, const std::string& id);
+    void addSimulatorInstance(rw::core::Ptr<ThreadSimulator> sim, const std::string& id);
 
     //! @brief get first available simulator instance
-    rw::core::Ptr< ThreadSimulator > getSimulatorInstance ();
+    rw::core::Ptr<ThreadSimulator> getSimulatorInstance();
 
-    rw::core::Ptr< ThreadSimulator > getSimulatorInstance (const std::string& id);
+    rw::core::Ptr<ThreadSimulator> getSimulatorInstance(const std::string& id);
 
-    void removeSimulatorInstance (const std::string& id);
+    void removeSimulatorInstance(const std::string& id);
 
-    std::vector< std::string > getSimulatorInstances ();
+    std::vector<std::string> getSimulatorInstances();
 
 }}    // namespace rwsim::swig
 

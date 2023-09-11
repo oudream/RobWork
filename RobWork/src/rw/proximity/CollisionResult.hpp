@@ -43,13 +43,12 @@ namespace rw { namespace proximity {
         struct CollisionPair
         {
             //! @brief Default constructor
-            CollisionPair () : geoIdxA (0), geoIdxB (0), startIdx (0), size (0) {}
-            
+            CollisionPair() : geoIdxA(0), geoIdxB(0), startIdx(0), size(0) {}
+
             //! @brief  Copy Constructor
-            CollisionPair (const CollisionPair& copy) :
-                geoIdxA (copy.geoIdxA), geoIdxB (copy.geoIdxB), startIdx (copy.startIdx),
-                size (copy.size)
-            {}
+            CollisionPair(const CollisionPair& copy) :
+                geoIdxA(copy.geoIdxA), geoIdxB(copy.geoIdxB), startIdx(copy.startIdx),
+                size(copy.size) {}
 
             //! @brief geometry index
             int geoIdxA, geoIdxB;
@@ -62,33 +61,32 @@ namespace rw { namespace proximity {
         };
 
         //! @brief transformation from a to b
-        rw::math::Transform3D< double > _aTb;
+        rw::math::Transform3D<double> _aTb;
 
         //! @brief the collision pairs
-        std::vector< CollisionPair > _collisionPairs;
+        std::vector<CollisionPair> _collisionPairs;
 
         /**
          * @brief indices of triangles/primitives in geometry a and b that are colliding
          * all colliding triangle indices are in this array also those that are from different
          * geometries
          */
-        std::vector< std::pair< int, int > > _geomPrimIds;
+        std::vector<std::pair<int, int>> _geomPrimIds;
 
         int _nrBVTests, _nrPrimTests;
 
-        int getNrPrimTests () { return _nrPrimTests; }
-        int getNrBVTests () { return _nrBVTests; }
+        int getNrPrimTests() { return _nrPrimTests; }
+        int getNrBVTests() { return _nrBVTests; }
 
         /**
          * @brief clear all result values
          */
-        void clear ()
-        {
+        void clear() {
             a    = NULL;
             b    = NULL;
-            _aTb = rw::math::Transform3D< double >::identity ();
-            _collisionPairs.clear ();
-            _geomPrimIds.clear ();
+            _aTb = rw::math::Transform3D<double>::identity();
+            _collisionPairs.clear();
+            _geomPrimIds.clear();
             _nrBVTests   = 0;
             _nrPrimTests = 0;
         }

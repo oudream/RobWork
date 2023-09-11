@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,72 +14,64 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ********************************************************************************/
- 
- 
 
 #ifndef RW_ALGORITHMS_LINECONSTRAINT_HPP
 #define RW_ALGORITHMS_LINECONSTRAINT_HPP
-
-
 
 /**
  * @file LineConstraint.hpp
  */
 
-#include <rw/math/Vector3D.hpp>
-
 #include "ConstraintModel.hpp"
 
-
+#include <rw/math/Vector3D.hpp>
 
 namespace rwlibs { namespace algorithms {
 
+    /**
+     * @brief A line constraint model.
+     *
+     * Describes a line constraint, i.e. an edge in Cartesian coordinates.
+     */
+    class LineConstraint : public ConstraintModel
+    {
+      public:
+        //! @brief Smart pointer type to this class.
+        typedef rw::core::Ptr<LineConstraint> Ptr;
 
+        //! @copydoc ConstraintModel::MinSamples
+        static const int MinSamples = 2;
 
-/**
- * @brief A line constraint model.
- * 
- * Describes a line constraint, i.e. an edge in Cartesian coordinates.
- */
-class LineConstraint : public ConstraintModel {
-	public:
-		//! @brief Smart pointer type to this class.
-		typedef rw::core::Ptr<LineConstraint> Ptr;
-		
-		//! @copydoc ConstraintModel::MinSamples
-		static const int MinSamples = 2;
-		
-	public: // constructors
-		/**
-		 * @brief Constructor.
-		 */
-		LineConstraint() : ConstraintModel() {}
-		
-		//! @brief Destructor.
-		virtual ~LineConstraint() {}
+      public:    // constructors
+        /**
+         * @brief Constructor.
+         */
+        LineConstraint() : ConstraintModel() {}
 
-	public: // methods
-		//! @copydoc sandbox::algorithms::RANSACModel::fitError
-		virtual double fitError(rw::math::Transform3D<> sample) const;
-		
-		//! @copydoc sandbox::algorithms::RANSACModel::invalid
-		virtual bool invalid() const;
-		
-		//! @copydoc sandbox::algorithms::RANSACModel::refit
-		virtual void refit();
-		
-		//! @copydoc sandbox::algorithms::RANSACModel::getMinReqData
-		virtual int getMinReqData() const { return MinSamples; }
-		
-		//! @copydoc ConstraintModel::update
-		virtual void update(rw::math::Transform3D<> sample);
-	
-	protected: // body
-		// how to represent a line? -- there is a Line2D class, but no 3D model...; implement this?
-};
+        //! @brief Destructor.
+        virtual ~LineConstraint() {}
 
+      public:    // methods
+        //! @copydoc sandbox::algorithms::RANSACModel::fitError
+        virtual double fitError(rw::math::Transform3D<> sample) const;
 
+        //! @copydoc sandbox::algorithms::RANSACModel::invalid
+        virtual bool invalid() const;
 
-}} // /namespaces
+        //! @copydoc sandbox::algorithms::RANSACModel::refit
+        virtual void refit();
 
-#endif // include guard
+        //! @copydoc sandbox::algorithms::RANSACModel::getMinReqData
+        virtual int getMinReqData() const { return MinSamples; }
+
+        //! @copydoc ConstraintModel::update
+        virtual void update(rw::math::Transform3D<> sample);
+
+      protected:    // body
+                    // how to represent a line? -- there is a Line2D class, but no 3D model...;
+                    // implement this?
+    };
+
+}}    // namespace rwlibs::algorithms
+
+#endif    // include guard

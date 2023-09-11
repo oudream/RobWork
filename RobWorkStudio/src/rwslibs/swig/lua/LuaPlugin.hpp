@@ -23,16 +23,16 @@ namespace rwslibs { namespace swig {
         /**
          * @brief constructor
          */
-        LuaPlugin ();
+        LuaPlugin();
 
         //! destructor
-        virtual ~LuaPlugin ();
+        virtual ~LuaPlugin();
 
         //! @copydoc rw::core::Plugin::getExtensionDescriptors
-        std::vector< rw::core::Extension::Descriptor > getExtensionDescriptors ();
+        std::vector<rw::core::Extension::Descriptor> getExtensionDescriptors();
 
         //! @copydoc rw::core::Plugin::makeExtension
-        rw::core::Ptr< rw::core::Extension > makeExtension (const std::string& str);
+        rw::core::Ptr<rw::core::Extension> makeExtension(const std::string& str);
     };
 
 }}     // namespace rwslibs::swig

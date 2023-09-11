@@ -38,40 +38,40 @@ class Sensors : public RobWorkStudioPlugin
 {
     Q_OBJECT
 #ifndef RWS_USE_STATIC_LINK_PLUGINS
-    Q_INTERFACES (rws::RobWorkStudioPlugin)
-    Q_PLUGIN_METADATA (IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "plugin.json")
+    Q_INTERFACES(rws::RobWorkStudioPlugin)
+    Q_PLUGIN_METADATA(IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "plugin.json")
 #endif
 
   public:
     //! @brief Constructor.
-    Sensors ();
+    Sensors();
 
     //! @brief Destructor.
-    virtual ~Sensors ();
+    virtual ~Sensors();
 
     //! @copydoc RobWorkStudioPlugin::initialize
-    void initialize ();
+    void initialize();
 
     //! @copydoc RobWorkStudioPlugin::open
-    void open (rw::models::WorkCell* workcell);
+    void open(rw::models::WorkCell* workcell);
 
     //! @copydoc RobWorkStudioPlugin::close
-    void close ();
+    void close();
 
     // void setupToolBar(QToolBar* toolbar);
   public Q_SLOTS:
     //! @brief Update simulated sensors - invoked by timer.
-    void updateSim ();
+    void updateSim();
 
   private Q_SLOTS:
-    void on_btnDisplay_clicked (bool checked);
-    void on_spnUpdateTime_valueChanged (int value);
+    void on_btnDisplay_clicked(bool checked);
+    void on_spnUpdateTime_valueChanged(int value);
 
-    void viewClosed (SensorView* view);
+    void viewClosed(SensorView* view);
 
   private:
     // This listens for changes to the state of RobWorkStudio.
-    void stateChangedListener (const rw::kinematics::State& state);
+    void stateChangedListener(const rw::kinematics::State& state);
 
   private:
     class Ui::SensorsPlugin* _ui;
@@ -84,17 +84,16 @@ class Sensors : public RobWorkStudioPlugin
     struct SensorSet
     {
       public:
-        SensorSet (rw::core::Ptr< rwlibs::simulation::SimulatedSensor > sensor,
-                   rw::core::Ptr< SensorView > view) :
-            sensor (sensor),
-            view (view)
-        {}
+        SensorSet(rw::core::Ptr<rwlibs::simulation::SimulatedSensor> sensor,
+                  rw::core::Ptr<SensorView> view) :
+            sensor(sensor),
+            view(view) {}
 
-        rw::core::Ptr< rwlibs::simulation::SimulatedSensor > sensor;
-        rw::core::Ptr< SensorView > view;
+        rw::core::Ptr<rwlibs::simulation::SimulatedSensor> sensor;
+        rw::core::Ptr<SensorView> view;
     };
 
-    std::vector< SensorSet > _sensors;
+    std::vector<SensorSet> _sensors;
 
     // std::vector<SensorView*> _sensorViews;
 

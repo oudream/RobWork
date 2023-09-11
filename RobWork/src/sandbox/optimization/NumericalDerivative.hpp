@@ -8,35 +8,31 @@
 #ifndef SRC_RW_MATH_NUMERICALDERIVATIVE_HPP_
 #define SRC_RW_MATH_NUMERICALDERIVATIVE_HPP_
 
-#include <rw/math/Function.hpp>
 #include <rw/core/Ptr.hpp>
+#include <rw/math/Function.hpp>
 
-namespace rw {
-namespace math {
+namespace rw { namespace math {
 
-template<typename RES_T = double, typename ARG_T = double,
-		typename GRAD_T = double>
-class NumericalDerivative {
-public:
-	//! Smart pointer.
-	typedef rw::core::Ptr<NumericalDerivative> Ptr;
+    template<typename RES_T = double, typename ARG_T = double, typename GRAD_T = double>
+    class NumericalDerivative
+    {
+      public:
+        //! Smart pointer.
+        typedef rw::core::Ptr<NumericalDerivative> Ptr;
 
-public:
-	//! Constructor.
-	NumericalDerivative() {
-	}
+      public:
+        //! Constructor.
+        NumericalDerivative() {}
 
-	//! Destructor.
-	virtual ~NumericalDerivative() {
-	}
+        //! Destructor.
+        virtual ~NumericalDerivative() {}
 
-	/**
-	 * @brief Get numerical derivative of a function at point x.
-	 */
-	virtual GRAD_T derivative(typename Function<RES_T, ARG_T>::Ptr function, ARG_T x) = 0;
-};
+        /**
+         * @brief Get numerical derivative of a function at point x.
+         */
+        virtual GRAD_T derivative(typename Function<RES_T, ARG_T>::Ptr function, ARG_T x) = 0;
+    };
 
-} /* namespace math */
-} /* namespace rw */
+}}    // namespace rw::math
 
 #endif /* SRC_RW_MATH_NUMERICALDERIVATIVE_HPP_ */

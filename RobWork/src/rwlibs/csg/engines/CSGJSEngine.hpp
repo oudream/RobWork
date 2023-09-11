@@ -25,20 +25,20 @@ namespace rwlibs { namespace csg { namespace engines {
     class CSGJSEngine : public rw::geometry::CSGEngine
     {
       public:
-        using Ptr = rw::core::Ptr< CSGJSEngine >;
+        using Ptr = rw::core::Ptr<CSGJSEngine>;
         /**
          * @brief Construct a new CSGJSEngine object
          *
          */
-        CSGJSEngine () {}
+        CSGJSEngine() {}
 
         virtual ~CSGJSEngine() {}
-        
+
         /**
          * @brief get the String id of the engine
          * @return std::string
          */
-        std::string getID () const { return "CSGJS"; }
+        std::string getID() const { return "CSGJS"; }
 
         /**
          * @brief Create a Union of two TriMeshes
@@ -46,8 +46,8 @@ namespace rwlibs { namespace csg { namespace engines {
          * @param m2 Second TriMesh
          * @return The Resulting TriMesh created as a new Shared pointer
          */
-        rw::geometry::TriMeshData::Ptr Union (rw::geometry::TriMeshData::Ptr m1,
-                                              rw::geometry::TriMeshData::Ptr m2) const;
+        rw::geometry::TriMeshData::Ptr Union(rw::geometry::TriMeshData::Ptr m1,
+                                             rw::geometry::TriMeshData::Ptr m2) const;
 
         /**
          * @brief Create a Union of two TriMeshes
@@ -55,8 +55,8 @@ namespace rwlibs { namespace csg { namespace engines {
          * @param m2 Second TriMesh
          * @return The Resulting TriMesh created as a new Shared pointer
          */
-        rw::geometry::TriMeshData::Ptr Difference (rw::geometry::TriMeshData::Ptr m1,
-                                                   rw::geometry::TriMeshData::Ptr m2) const;
+        rw::geometry::TriMeshData::Ptr Difference(rw::geometry::TriMeshData::Ptr m1,
+                                                  rw::geometry::TriMeshData::Ptr m2) const;
 
         /**
          * @brief Create a Union of two TriMeshes
@@ -64,8 +64,8 @@ namespace rwlibs { namespace csg { namespace engines {
          * @param m2 Second TriMesh
          * @return The Resulting TriMesh created as a new Shared pointer
          */
-        rw::geometry::TriMeshData::Ptr Intersection (rw::geometry::TriMeshData::Ptr m1,
-                                                     rw::geometry::TriMeshData::Ptr m2) const;
+        rw::geometry::TriMeshData::Ptr Intersection(rw::geometry::TriMeshData::Ptr m1,
+                                                    rw::geometry::TriMeshData::Ptr m2) const;
 
         /**
          * @brief Create a Union of two TriMeshes
@@ -73,9 +73,8 @@ namespace rwlibs { namespace csg { namespace engines {
          * @param m2 Second TriMesh
          * @return The Resulting TriMesh created as a new Shared pointer
          */
-        rw::geometry::TriMeshData::Ptr
-        SymmetricDifference (rw::geometry::TriMeshData::Ptr m1,
-                             rw::geometry::TriMeshData::Ptr m2) const;
+        rw::geometry::TriMeshData::Ptr SymmetricDifference(rw::geometry::TriMeshData::Ptr m1,
+                                                           rw::geometry::TriMeshData::Ptr m2) const;
     };
 
     /**
@@ -85,19 +84,19 @@ namespace rwlibs { namespace csg { namespace engines {
     {
       public:
         //! @brief Construct new plugin
-        CSGEJSEnginePlugin ();
+        CSGEJSEnginePlugin();
 
         //! @brief Destructor
-        virtual ~CSGEJSEnginePlugin ();
+        virtual ~CSGEJSEnginePlugin();
 
         //! @copydoc rw::core::Plugin::getExtensionDescriptors
-        std::vector< rw::core::Extension::Descriptor > getExtensionDescriptors ();
+        std::vector<rw::core::Extension::Descriptor> getExtensionDescriptors();
 
         //! @copydoc rw::core::Plugin::makeExtension
-        rw::core::Ptr< rw::core::Extension > makeExtension (const std::string& id);
+        rw::core::Ptr<rw::core::Extension> makeExtension(const std::string& id);
 
         //! @brief Register the plugins extensions in the rw::core::ExtensionRegistry.
-        static void registerPlugin ();
+        static void registerPlugin();
     };
 
 }}}    // namespace rwlibs::csg::engines

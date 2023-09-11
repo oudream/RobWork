@@ -40,74 +40,74 @@ namespace rwsim { namespace log {
     {
       public:
         //! Smart pointer type of LogContactSet
-        typedef rw::core::Ptr< LogContactSet > Ptr;
+        typedef rw::core::Ptr<LogContactSet> Ptr;
 
         //! @copydoc SimulatorLogEntry::SimulatorLogEntry
-        LogContactSet (SimulatorLogScope* parent);
+        LogContactSet(SimulatorLogScope* parent);
 
         //! @brief Destructor.
-        virtual ~LogContactSet ();
+        virtual ~LogContactSet();
 
         //! @copydoc SimulatorLogEntry::read
-        virtual void read (class rw::common::InputArchive& iarchive, const std::string& id);
+        virtual void read(class rw::common::InputArchive& iarchive, const std::string& id);
 
         //! @copydoc SimulatorLogEntry::write
-        virtual void write (class rw::common::OutputArchive& oarchive, const std::string& id) const;
+        virtual void write(class rw::common::OutputArchive& oarchive, const std::string& id) const;
 
         //! @copydoc SimulatorLogEntry::getType
-        virtual std::string getType () const;
+        virtual std::string getType() const;
 
         //! @copydoc SimulatorLogEntry::operator==
-        virtual bool operator== (const SimulatorLog& b) const;
+        virtual bool operator==(const SimulatorLog& b) const;
 
         //! @copydoc SimulatorLogEntry::getLinkedEntries
-        virtual std::list< SimulatorLogEntry::Ptr > getLinkedEntries () const;
+        virtual std::list<SimulatorLogEntry::Ptr> getLinkedEntries() const;
 
         //! @copydoc SimulatorLogEntry::autoLink
-        virtual bool autoLink ();
+        virtual bool autoLink();
 
         //! @copydoc SimulatorLogEntry::createNew
-        virtual SimulatorLogEntry::Ptr createNew (SimulatorLogScope* parent) const;
+        virtual SimulatorLogEntry::Ptr createNew(SimulatorLogScope* parent) const;
 
         /**
          * @brief Get the type id of this entry type.
          * @return the type id.
          */
-        static std::string getTypeID ();
+        static std::string getTypeID();
 
         /**
          * @brief Get the list of contacts.
          * @return the list of contacts.
          */
-        const std::vector< rwsim::contacts::Contact >& getContacts () const;
+        const std::vector<rwsim::contacts::Contact>& getContacts() const;
 
         /**
          * @brief Get a contact.
          * @param i [in] the index.
          * @return the contact.
          */
-        const rwsim::contacts::Contact& getContact (std::size_t i) const;
+        const rwsim::contacts::Contact& getContact(std::size_t i) const;
 
         /**
          * @brief Set a new list of contacts.
          * @param contacts [in] the list of contacts.
          */
-        void setContacts (const std::vector< rwsim::contacts::Contact >& contacts);
+        void setContacts(const std::vector<rwsim::contacts::Contact>& contacts);
 
         /**
          * @brief Append a contact.
          * @param contact [in] the contact to append.
          */
-        void addContact (const rwsim::contacts::Contact& contact);
+        void addContact(const rwsim::contacts::Contact& contact);
 
         /**
          * @brief Get the number of contacts currently in set.
          * @return the number of contacts.
          */
-        std::size_t size () const;
+        std::size_t size() const;
 
       private:
-        std::vector< rwsim::contacts::Contact > _contacts;
+        std::vector<rwsim::contacts::Contact> _contacts;
     };
     //! @}
 }}     // namespace rwsim::log

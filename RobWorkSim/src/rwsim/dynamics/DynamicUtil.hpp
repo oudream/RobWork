@@ -50,15 +50,16 @@ namespace rwsim { namespace dynamics {
          * @brief util function that locates all frames that is staticly connected to f
          * and that has geometry information.
          */
-        static std::vector< rw::kinematics::Frame* >
-        getAnchoredFrames (rw::kinematics::Frame& f, const rw::kinematics::State& state);
+        static std::vector<rw::kinematics::Frame*>
+        getAnchoredFrames(rw::kinematics::Frame& f, const rw::kinematics::State& state);
 
         /**
          * @brief util function that locates all frames in the sub tree of parent
          * that is staticly connected and that has geometry information.
          */
-        static std::vector< rw::kinematics::Frame* >
-        getAnchoredChildFrames (rw::core::Ptr<rw::kinematics::Frame> parent, const rw::kinematics::State& state);
+        static std::vector<rw::kinematics::Frame*>
+        getAnchoredChildFrames(rw::core::Ptr<rw::kinematics::Frame> parent,
+                               const rw::kinematics::State& state);
         // static double getMaxVelocity(dynamics::DynamicWorkcell& dwc);
 
         /**
@@ -68,16 +69,17 @@ namespace rwsim { namespace dynamics {
          * @param exclude
          * @return
          */
-        static std::vector< rw::kinematics::Frame* >
-        getAnchoredChildFrames (rw::core::Ptr<rw::kinematics::Frame> parent, const rw::kinematics::State& state,
-                                const std::vector< rw::kinematics::Frame* >& exclude);
+        static std::vector<rw::kinematics::Frame*>
+        getAnchoredChildFrames(rw::core::Ptr<rw::kinematics::Frame> parent,
+                               const rw::kinematics::State& state,
+                               const std::vector<rw::kinematics::Frame*>& exclude);
 
         /**
          * @brief get rigid bodies from a dynamic workcell
          * @param dwc
          * @return all rigid bodies in a dynamic workcell
          */
-        static std::vector< RigidBody::Ptr > getRigidBodies (DynamicWorkCell& dwc);
+        static std::vector<RigidBody::Ptr> getRigidBodies(DynamicWorkCell& dwc);
 
         /**
          * @brief Check if the dynamic workcell has reached a steady state where objects are in
@@ -89,9 +91,9 @@ namespace rwsim { namespace dynamics {
          * @param max_jointvel [in] (optional) the joint velocity threshold. Default is 0.05 rad/s.
          * @return
          */
-        static bool isResting (rw::core::Ptr< DynamicWorkCell > dwc,
-                               const rw::kinematics::State& state, double max_linvel = 0.02,
-                               double max_angvel = 0.1, double max_jointvel = 0.05);
+        static bool isResting(rw::core::Ptr<DynamicWorkCell> dwc,
+                              const rw::kinematics::State& state, double max_linvel = 0.02,
+                              double max_angvel = 0.1, double max_jointvel = 0.05);
 
         /**
          * @brief Check if a device has reached a steady state where it is in rest.
@@ -103,9 +105,8 @@ namespace rwsim { namespace dynamics {
          * rad/s.
          * @return
          */
-        static bool isResting (rw::core::Ptr< DynamicDevice > dev,
-                               const rw::kinematics::State& state, double max_linjointvel = 0.02,
-                               double max_jointvel = 0.05);
+        static bool isResting(rw::core::Ptr<DynamicDevice> dev, const rw::kinematics::State& state,
+                              double max_linjointvel = 0.02, double max_jointvel = 0.05);
 
         /**
          * @brief compute torques on a robot arm as a concequence of gravity, position, velocity and

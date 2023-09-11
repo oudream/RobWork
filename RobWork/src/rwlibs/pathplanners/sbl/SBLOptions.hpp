@@ -22,10 +22,9 @@
    @file SBLOptions.hpp
 */
 
-#include <rwlibs/pathplanners/sbl/SBLExpand.hpp>
-
 #include <rw/pathplanning/QConstraint.hpp>
 #include <rw/pathplanning/QEdgeConstraintIncremental.hpp>
+#include <rwlibs/pathplanners/sbl/SBLExpand.hpp>
 
 namespace rwlibs { namespace pathplanners {
 
@@ -42,24 +41,22 @@ namespace rwlibs { namespace pathplanners {
          * @param edgeconstraint [in] a constraint for checking the edges in-between valid
          * configurations.
          */
-        SBLPlannerConstraint (rw::pathplanning::QConstraint::Ptr qconstraint,
-                              rw::pathplanning::QEdgeConstraintIncremental::Ptr edgeconstraint) :
-            _qconstraint (qconstraint),
-            _edgeConstraint (edgeconstraint)
-        {}
+        SBLPlannerConstraint(rw::pathplanning::QConstraint::Ptr qconstraint,
+                             rw::pathplanning::QEdgeConstraintIncremental::Ptr edgeconstraint) :
+            _qconstraint(qconstraint),
+            _edgeConstraint(edgeconstraint) {}
 
         /**
          * @brief Get the part that checks for valid configurations.
          * @return a reference to the constraint.
          */
-        const rw::pathplanning::QConstraint& getQConstraint () const { return *_qconstraint; }
+        const rw::pathplanning::QConstraint& getQConstraint() const { return *_qconstraint; }
 
         /**
          * @brief Get the part that checks edges in-between valid configurations.
          * @return a reference to the edge constraint.
          */
-        const rw::pathplanning::QEdgeConstraintIncremental& getEdgeConstraint () const
-        {
+        const rw::pathplanning::QEdgeConstraintIncremental& getEdgeConstraint() const {
             return *_edgeConstraint;
         }
 
@@ -90,9 +87,9 @@ namespace rwlibs { namespace pathplanners {
          * @param connectRadius [in] connect trees if the distance to the nearest neighbor is below
          * this threshold.
          */
-        SBLOptions (rw::pathplanning::QConstraint::Ptr& constraint,
-                    rw::pathplanning::QEdgeConstraintIncremental::Ptr& edgeConstraint,
-                    SBLExpand::Ptr expansion, rw::math::QMetric::Ptr metric, double connectRadius);
+        SBLOptions(rw::pathplanning::QConstraint::Ptr& constraint,
+                   rw::pathplanning::QEdgeConstraintIncremental::Ptr& edgeConstraint,
+                   SBLExpand::Ptr expansion, rw::math::QMetric::Ptr metric, double connectRadius);
 
         //! @brief The constraint that determined if a path or configuration is valid (collision
         //! free) or not.

@@ -70,9 +70,9 @@ namespace rwlibs { namespace pathplanners {
            the stop criteria returns true.
         */
         static rw::pathplanning::QToQPlanner::Ptr
-        makeQToQPlanner (rw::core::Ptr< rw::pathplanning::QSampler > sampler,
-                         rw::pathplanning::QToQPlanner::Ptr localPlanner, int nodeCnt = -1,
-                         int repeatCnt = -1);
+        makeQToQPlanner(rw::core::Ptr<rw::pathplanning::QSampler> sampler,
+                        rw::pathplanning::QToQPlanner::Ptr localPlanner, int nodeCnt = -1,
+                        int repeatCnt = -1);
 
         /**
            @brief Z3 based point-to-point planner.
@@ -86,8 +86,8 @@ namespace rwlibs { namespace pathplanners {
            @param device [in] Device for which the path is planned.
         */
         static rw::pathplanning::QToQPlanner::Ptr
-        makeQToQPlanner (const rw::pathplanning::PlannerConstraint& constraint,
-                         rw::core::Ptr< rw::models::Device > device);
+        makeQToQPlanner(const rw::pathplanning::PlannerConstraint& constraint,
+                        rw::core::Ptr<rw::models::Device> device);
 
         /**
            @brief Sliding local planner.
@@ -117,11 +117,11 @@ namespace rwlibs { namespace pathplanners {
            is chosen based on the value of \b extend.
         */
         static rw::pathplanning::QToQPlanner::Ptr
-        makeSlidingQToQPlanner (const rw::pathplanning::PlannerConstraint& constraint,
-                                rw::core::Ptr< rw::pathplanning::QSampler > directionSampler,
-                                rw::core::Ptr< rw::pathplanning::QConstraint > boundsConstraint,
-                                rw::math::QMetric::Ptr metric, double extend,
-                                double slideImprovement = -1);
+        makeSlidingQToQPlanner(const rw::pathplanning::PlannerConstraint& constraint,
+                               rw::core::Ptr<rw::pathplanning::QSampler> directionSampler,
+                               rw::core::Ptr<rw::pathplanning::QConstraint> boundsConstraint,
+                               rw::math::QMetric::Ptr metric, double extend,
+                               double slideImprovement = -1);
 
         /**
            @brief Sliding local planner.
@@ -147,15 +147,15 @@ namespace rwlibs { namespace pathplanners {
            is chosen based on the value of \b extend.
         */
         static rw::pathplanning::QToQPlanner::Ptr
-        makeSlidingQToQPlanner (const rw::pathplanning::PlannerConstraint& constraint,
-                                rw::core::Ptr< rw::models::Device > device,
-                                rw::math::QMetric::Ptr metric = 0, double extend = -1,
-                                double slideImprovement = -1);
+        makeSlidingQToQPlanner(const rw::pathplanning::PlannerConstraint& constraint,
+                               rw::core::Ptr<rw::models::Device> device,
+                               rw::math::QMetric::Ptr metric = 0, double extend = -1,
+                               double slideImprovement = -1);
 
       private:
-        Z3Planner ();
-        Z3Planner (const Z3Planner&);
-        Z3Planner& operator= (const Z3Planner&);
+        Z3Planner();
+        Z3Planner(const Z3Planner&);
+        Z3Planner& operator=(const Z3Planner&);
     };
 
     /*\}*/

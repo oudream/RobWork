@@ -22,66 +22,64 @@
  * @file PointModel.hpp
  */
 
-#include <rwlibs/algorithms/RANSACModel.hpp>
-
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Vector3D.hpp>
+#include <rwlibs/algorithms/RANSACModel.hpp>
 
 namespace rwlibs { namespace algorithms {
 
     /**
      * @brief A point model.
      */
-    class PointModel : public RANSACModel< PointModel, rw::math::Vector3D<> >
+    class PointModel : public RANSACModel<PointModel, rw::math::Vector3D<>>
     {
       public:
         //! @brief Smart pointer type to this class.
-        typedef rw::core::Ptr< PointModel > Ptr;
+        typedef rw::core::Ptr<PointModel> Ptr;
 
       public:    // constructors
         /**
          * @brief Constructor.
          */
-        PointModel () {}
+        PointModel() {}
 
         /**
          * @brief Constructor.
          *
          * @param point [in] position
          */
-        PointModel (const rw::math::Vector3D<>& point) : _model (point) {}
+        PointModel(const rw::math::Vector3D<>& point) : _model(point) {}
 
         //! @brief Destructor.
-        virtual ~PointModel () {}
+        virtual ~PointModel() {}
 
       public:    // methods
         //! @copydoc RANSACModel::fitError
-        virtual double fitError (const rw::math::Vector3D<>& sample) const;
+        virtual double fitError(const rw::math::Vector3D<>& sample) const;
 
         //! @copydoc RANSACModel::invalid
-        virtual bool invalid () const;
+        virtual bool invalid() const;
 
         /**
          * @copydoc RANSACModel::getMinReqData
          *
          * PointModel requires at least 1 sample.
          */
-        virtual int getMinReqData () const { return 1; }
+        virtual int getMinReqData() const { return 1; }
 
         //! @copydoc RANSACModel::refit
-        virtual double refit (const std::vector< rw::math::Vector3D<> >& samples);
+        virtual double refit(const std::vector<rw::math::Vector3D<>>& samples);
 
         //! @copydoc RANSACModel::same
-        virtual bool same (const PointModel& model, double threshold) const;
+        virtual bool same(const PointModel& model, double threshold) const;
 
         //! @brief Get point position.
-        inline rw::math::Vector3D<> p () const { return _model; }
+        inline rw::math::Vector3D<> p() const { return _model; }
 
         /**
          * @brief Streaming operator.
          */
-        friend std::ostream& operator<< (std::ostream& out, const PointModel& model)
-        {
+        friend std::ostream& operator<<(std::ostream& out, const PointModel& model) {
             return out << model._model;
         }
 

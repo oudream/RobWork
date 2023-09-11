@@ -22,24 +22,21 @@ using namespace rwsim;
 
 #include "TargetConfigGraspPolicy.hpp"
 
-std::vector< std::string > GraspPolicyFactory::getAvailablePolicies ()
-{
-    std::vector< std::string > policies;
-    policies.push_back (TargetConfigGraspPolicy::getID ());
-    policies.push_back ("TargetVelocity");
+std::vector<std::string> GraspPolicyFactory::getAvailablePolicies() {
+    std::vector<std::string> policies;
+    policies.push_back(TargetConfigGraspPolicy::getID());
+    policies.push_back("TargetVelocity");
     return policies;
 }
 
-GraspPolicy::Ptr GraspPolicyFactory::makePolicy (const std::string& id,
-                                                 dynamics::DynamicWorkCell* dwc,
-                                                 rwsim::dynamics::DynamicDevice* dev)
-{
-    if (id == TargetConfigGraspPolicy::getID ()) {
-        return rw::core::ownedPtr (new TargetConfigGraspPolicy (dev));
+GraspPolicy::Ptr GraspPolicyFactory::makePolicy(const std::string& id,
+                                                dynamics::DynamicWorkCell* dwc,
+                                                rwsim::dynamics::DynamicDevice* dev) {
+    if(id == TargetConfigGraspPolicy::getID()) {
+        return rw::core::ownedPtr(new TargetConfigGraspPolicy(dev));
     }
-    else if (id == "TargetVelocity") {
-    }
+    else if(id == "TargetVelocity") {}
 
-    RW_THROW ("No such policy! ");
+    RW_THROW("No such policy! ");
     return NULL;
 }

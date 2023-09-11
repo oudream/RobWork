@@ -26,7 +26,7 @@
 #include <rw/math/Function.hpp>
 #include <rw/math/Jacobian.hpp>
 #include <rw/math/Transform3D.hpp>
-#endif 
+#endif
 namespace rw { namespace models {
 
     /** @addtogroup models */
@@ -41,7 +41,7 @@ namespace rw { namespace models {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< Joint > Ptr;
+        typedef rw::core::Ptr<Joint> Ptr;
 
       protected:
         /**
@@ -51,7 +51,7 @@ namespace rw { namespace models {
          * @param dof [in] the degrees of freedom of this joint
          */
 
-        Joint (const std::string& name, size_t dof);
+        Joint(const std::string& name, size_t dof);
 
         /**
          * @brief constructor - with the possiblity of adding additional
@@ -60,13 +60,13 @@ namespace rw { namespace models {
          * @param dof [in] degree of freedom of the joint
          * @param stateSize [in] additional doubles to allocate space for in the state
          */
-        Joint (const std::string& name, size_t dof, size_t stateSize);
+        Joint(const std::string& name, size_t dof, size_t stateSize);
 
       public:
         /**
          * @brief Virtual destructor
          */
-        virtual ~Joint () {}
+        virtual ~Joint() {}
 
         /*
          * @brief Sets configuration vector @f$ \mathbf{q} \in \mathbb{R}^n @f$
@@ -90,8 +90,7 @@ namespace rw { namespace models {
          * @brief Sets joint bounds
          * @param bounds [in] the lower and upper bounds of this joint
          */
-        void setBounds (const std::pair< const rw::math::Q, const rw::math::Q >& bounds)
-        {
+        void setBounds(const std::pair<const rw::math::Q, const rw::math::Q>& bounds) {
             _bounds = bounds;
         }
 
@@ -100,35 +99,33 @@ namespace rw { namespace models {
          * @param lower [in] the lower of this joint
          * @param upper [in] the upper of this joint
          */
-        void setBounds (const rw::math::Q& lower, const rw::math::Q& upper)
-        {
-            _bounds = std::make_pair(lower,upper);
+        void setBounds(const rw::math::Q& lower, const rw::math::Q& upper) {
+            _bounds = std::make_pair(lower, upper);
         }
 
         /**
          * @brief Gets joint bounds
          * @return the lower and upper bound of this joint
          */
-        const std::pair< rw::math::Q, rw::math::Q >& getBounds () const { return _bounds; }
+        const std::pair<rw::math::Q, rw::math::Q>& getBounds() const { return _bounds; }
 
         /**
          * @brief Sets max velocity of joint
          * @param maxVelocity [in] the new maximum velocity of the joint
          */
-        void setMaxVelocity (const rw::math::Q& maxVelocity) { _maxVelocity = maxVelocity; }
+        void setMaxVelocity(const rw::math::Q& maxVelocity) { _maxVelocity = maxVelocity; }
 
         /**
          * @brief Gets max velocity of joint
          * @return the maximum velocity of the joint
          */
-        const rw::math::Q& getMaxVelocity () const { return _maxVelocity; }
+        const rw::math::Q& getMaxVelocity() const { return _maxVelocity; }
 
         /**
          * @brief Sets max acceleration of joint
          * @param maxAcceleration [in] the new maximum acceleration of the joint
          */
-        void setMaxAcceleration (const rw::math::Q& maxAcceleration)
-        {
+        void setMaxAcceleration(const rw::math::Q& maxAcceleration) {
             _maxAcceleration = maxAcceleration;
         }
 
@@ -136,7 +133,7 @@ namespace rw { namespace models {
          * @brief Gets max acceleration of joint
          * @return the maximum acceleration of the joint
          */
-        const rw::math::Q& getMaxAcceleration () const { return _maxAcceleration; }
+        const rw::math::Q& getMaxAcceleration() const { return _maxAcceleration; }
 
         /**
          * @brief Finds the Jacobian of the joints and adds it in \b jacobian.
@@ -154,9 +151,10 @@ namespace rw { namespace models {
          * @param state
          * @param jacobian [in] Jacobian to which to add the results.
          */
-        virtual void getJacobian (size_t row, size_t col, const rw::math::Transform3D<>& joint,
-                                  const rw::math::Transform3D<>& tcp, const rw::kinematics::State& state,
-                                  rw::math::Jacobian& jacobian) const = 0;
+        virtual void getJacobian(size_t row, size_t col, const rw::math::Transform3D<>& joint,
+                                 const rw::math::Transform3D<>& tcp,
+                                 const rw::kinematics::State& state,
+                                 rw::math::Jacobian& jacobian) const = 0;
 
         /**
          * @brief get the fixed transform from parent to this joint
@@ -166,13 +164,13 @@ namespace rw { namespace models {
          *
          * @return fixed part of transform from paretn to joint
          */
-        virtual rw::math::Transform3D<> getFixedTransform () const = 0;
+        virtual rw::math::Transform3D<> getFixedTransform() const = 0;
 
         /**
          * @brief change the transform from parent to joint base.
          * @param t3d [in] the new transform.
          */
-        virtual void setFixedTransform (const rw::math::Transform3D<>& t3d) = 0;
+        virtual void setFixedTransform(const rw::math::Transform3D<>& t3d) = 0;
 
         /**
          * @brief get the isolated joint transformation which is purely dependent on
@@ -181,20 +179,20 @@ namespace rw { namespace models {
          * @return the joint transformation
          */
         virtual rw::math::Transform3D<>
-        getJointTransform (const rw::kinematics::State& state) const = 0;
+        getJointTransform(const rw::kinematics::State& state) const = 0;
 
         /**
          * @brief set the active state of the joint
          * @param isActive [in] true to enable control/motorization of joint, false otherwise
          */
-        void setActive (bool isActive) { _isActive = isActive; };
+        void setActive(bool isActive) { _isActive = isActive; };
 
         /**
          * @brief a joint is active if its motorized/controlled in some
          * fasion. passive or non-active joints are typically used in parrallel robots.
          * @return
          */
-        bool isActive () const { return _isActive; };
+        bool isActive() const { return _isActive; };
 
         /**
          * @brief set the function to be used in transforming from the state q to the actual q
@@ -203,15 +201,15 @@ namespace rw { namespace models {
          * This function can be used e.g. by a calibration.
          * @param function [in] function with first order derivative.
          */
-        virtual void setJointMapping (rw::math::Function1Diff<>::Ptr function) = 0;
+        virtual void setJointMapping(rw::math::Function1Diff<>::Ptr function) = 0;
 
         /**
          * @brief removes mapping of joint values
          */
-        virtual void removeJointMapping () = 0;
+        virtual void removeJointMapping() = 0;
 
       private:
-        std::pair< rw::math::Q, rw::math::Q > _bounds;
+        std::pair<rw::math::Q, rw::math::Q> _bounds;
         rw::math::Q _maxVelocity;
         rw::math::Q _maxAcceleration;
         bool _isActive;

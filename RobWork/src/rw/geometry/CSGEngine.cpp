@@ -3,10 +3,9 @@
 using namespace rw::geometry;
 using namespace rw::core;
 
-namespace{
-    CSGEngine::Ptr _defaultEngine(NULL);
+namespace {
+CSGEngine::Ptr _defaultEngine(NULL);
 }
-
 
 CSGEngine::Ptr CSGEngine::Factory::getDefaultEngine() {
     if(_defaultEngine.isNull()) {
@@ -57,4 +56,3 @@ bool CSGEngine::Factory::hasEngine(const std::string& engine) {
     }
     return false;
 }
-

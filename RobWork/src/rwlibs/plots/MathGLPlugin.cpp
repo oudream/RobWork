@@ -16,6 +16,7 @@
  *****************************************************************************/
 
 #include "MathGLPlugin.hpp"
+
 #include "MathGLPlotGenerator.hpp"
 
 #include <rw/core/Extension.hpp>
@@ -26,28 +27,25 @@ using rwlibs::plots::MathGLPlugin;
 
 RW_ADD_PLUGIN(MathGLPlugin)
 
-MathGLPlugin::MathGLPlugin():
-    Plugin("rwlibs.plots.mathgl", "MathGL", "1.0")
-{
-}
+MathGLPlugin::MathGLPlugin() : Plugin("rwlibs.plots.mathgl", "MathGL", "1.0") {}
 
-MathGLPlugin::~MathGLPlugin()
-{
-}
+MathGLPlugin::~MathGLPlugin() {}
 
-std::vector< Extension::Descriptor > MathGLPlugin::getExtensionDescriptors ()
-{
-    std::vector< Extension::Descriptor > exts;
-    exts.push_back(Extension::Descriptor("rwlibs.plots.mathgl","rw.graphics.PlotGenerator"));
+std::vector<Extension::Descriptor> MathGLPlugin::getExtensionDescriptors() {
+    std::vector<Extension::Descriptor> exts;
+    exts.push_back(Extension::Descriptor("rwlibs.plots.mathgl", "rw.graphics.PlotGenerator"));
     exts.back().name = "MathGL";
     exts.back().getProperties().set<std::string>("generator", "rwlibs.plots.mathgl");
     return exts;
 }
 
-Extension::Ptr MathGLPlugin::makeExtension (const std::string& id)
-{
+Extension::Ptr MathGLPlugin::makeExtension(const std::string& id) {
     if(id == "rwlibs.plots.mathgl") {
-        const Extension::Ptr extension = ownedPtr(new Extension("rwlibs.plots.mathgl","rw.graphics.PlotGenerator", this, ownedPtr(new MathGLPlotGenerator).cast< PlotGenerator > () ) );
+        const Extension::Ptr extension =
+            ownedPtr(new Extension("rwlibs.plots.mathgl",
+                                   "rw.graphics.PlotGenerator",
+                                   this,
+                                   ownedPtr(new MathGLPlotGenerator).cast<PlotGenerator>()));
         extension->getProperties().set<std::string>("generator", "rwlibs.plots.mathgl");
         return extension;
     }

@@ -41,8 +41,8 @@ namespace rwlibs { namespace softbody {
          * @param avec reference to starting guess vector to be set
          * @param beamPtr pointer to the beam
          **/
-        static void setZeroStartingGuess (Eigen::VectorXd& avec,
-                                          std::shared_ptr< ModRusselBeamBase > beamPtr);
+        static void setZeroStartingGuess(Eigen::VectorXd& avec,
+                                         std::shared_ptr<ModRusselBeamBase> beamPtr);
 
         /**
          * @brief sets starting guess angles for a cuboid beam initialized to that of an analytical
@@ -51,9 +51,9 @@ namespace rwlibs { namespace softbody {
          * @param avec reference to starting guess vector containing angles to be set
          * @param beamGeomPtr pointer to the beam geometry
          **/
-        static void setEulerStartingGuess (
-            Eigen::VectorXd& avec,
-            std::shared_ptr< rwlibs::softbody::BeamGeometryCuboid > beamGeomPtr);
+        static void
+        setEulerStartingGuess(Eigen::VectorXd& avec,
+                              std::shared_ptr<rwlibs::softbody::BeamGeometryCuboid> beamGeomPtr);
     };
     /*@}*/
 }}    // namespace rwlibs::softbody

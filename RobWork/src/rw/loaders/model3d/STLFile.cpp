@@ -38,46 +38,38 @@ namespace {
 class Reader
 {
   public:
-    Reader (std::ifstream* in) : _in (in)
-    {
-        RW_ASSERT (in);
-        okOrThrow ();
+    Reader(std::ifstream* in) : _in(in) {
+        RW_ASSERT(in);
+        okOrThrow();
     }
 
-    void read (char* out, int size)
-    {
-        in ().read (out, size);
-        okOrThrow ();
+    void read(char* out, int size) {
+        in().read(out, size);
+        okOrThrow();
     }
 
-    void ignore (int cnt)
-    {
-        in ().ignore (cnt);
-        okOrThrow ();
+    void ignore(int cnt) {
+        in().ignore(cnt);
+        okOrThrow();
     }
 
-    void get ()
-    {
-        in ().get ();
-        okOrThrow ();
+    void get() {
+        in().get();
+        okOrThrow();
     }
 
   private:
-    bool ok () { return !in ().fail (); }
-    void okOrThrow ()
-    {
-        if (!ok ())
-            RW_THROW ("IO error.");
+    bool ok() { return !in().fail(); }
+    void okOrThrow() {
+        if(!ok()) RW_THROW("IO error.");
     }
 
-    std::ifstream& in () { return *_in; }
+    std::ifstream& in() { return *_in; }
     std::ifstream* _in;
 };
 
-void readVec (rw::math::Vector3D< float >& vec, Reader& input)
-{
-    for (int i = 0; i < 3; i++)
-        input.read ((char*) &vec[i], sizeof (float));
+void readVec(rw::math::Vector3D<float>& vec, Reader& input) {
+    for(int i = 0; i < 3; i++) input.read((char*) &vec[i], sizeof(float));
 }
 
 //
@@ -103,16 +95,15 @@ void readVec (rw::math::Vector3D< float >& vec, Reader& input)
 //    Stereolithography Interface Specification,
 //    October 1989.
 //
-void ReadBinarySTL (Reader& input, PlainTriMesh< TriangleN1< float > >& result)
-{
-    input.ignore (80);
+void ReadBinarySTL(Reader& input, PlainTriMesh<TriangleN1<float>>& result) {
+    input.ignore(80);
 
     //
     //  Number of faces.
     //
     int face_num;
-    input.read ((char*) &face_num, 4);
-    result.resize (face_num);
+    input.read((char*) &face_num, 4);
+    result.resize(face_num);
 
     //
     //  For each (triangular) face,
@@ -120,16 +111,16 @@ void ReadBinarySTL (Reader& input, PlainTriMesh< TriangleN1< float > >& result)
     //    coordinates of three vertices,
     //    2 byte "attribute".
     //
-    for (int cnt = 0; cnt < face_num; cnt++) {
-        TriangleN1< float >& face = result[cnt];
-        readVec (face.getFaceNormal (), input);
-        readVec (face[0], input);
-        readVec (face[1], input);
-        readVec (face[2], input);
+    for(int cnt = 0; cnt < face_num; cnt++) {
+        TriangleN1<float>& face = result[cnt];
+        readVec(face.getFaceNormal(), input);
+        readVec(face[0], input);
+        readVec(face[1], input);
+        readVec(face[2], input);
 
         // Read 2 byte attribute - which is not used
-        input.get ();
-        input.get ();
+        input.get();
+        input.get();
     }
 }
 
@@ -177,29 +168,25 @@ const char TOKEN_normal[] = "normal";
 */
 struct ParserState
 {
-    ParserState (const std::string& name, std::istream& istream) :
-        lineNr (0), filename (name), input_stream (istream)
-    {}
+    ParserState(const std::string& name, std::istream& istream) :
+        lineNr(0), filename(name), input_stream(istream) {}
 
-    std::string parseErrorString (const std::string& token)
-    {
+    std::string parseErrorString(const std::string& token) {
         std::ostringstream ostr;
-        ostr << "Error parsing " << StringUtil::quote (token) << " in file "
-             << StringUtil::quote (filename) << " at line " << lineNr;
-        return ostr.str ();
+        ostr << "Error parsing " << StringUtil::quote(token) << " in file "
+             << StringUtil::quote(filename) << " at line " << lineNr;
+        return ostr.str();
     }
 
-    std::string errorUnknownString (const std::string& token)
-    {
+    std::string errorUnknownString(const std::string& token) {
         std::ostringstream ostr;
-        ostr << "Error unknown token " << StringUtil::quote (token) << " in file "
-             << StringUtil::quote (filename) << " at line " << lineNr;
-        return ostr.str ();
+        ostr << "Error unknown token " << StringUtil::quote(token) << " in file "
+             << StringUtil::quote(filename) << " at line " << lineNr;
+        return ostr.str();
     }
 
-    void getLine (char* line)
-    {
-        input_stream.getline (line, LINE_MAX_LENGTH);
+    void getLine(char* line) {
+        input_stream.getline(line, LINE_MAX_LENGTH);
         lineNr++;
     }
 
@@ -210,36 +197,29 @@ struct ParserState
 
 // reads a vertex from a line
 
-void readVertex (char* line, Vector3D< float >& vertices, ParserState& state)
-{
+void readVertex(char* line, Vector3D<float>& vertices, ParserState& state) {
     int width;
     char token[20];
     // char *str = skipWhiteSpace(line);
-    /*int res = */ sscanf (line, "%s%n", token, &width);
-    if (strcmp (token, TOKEN_vertex)) {
-        RW_THROW (state.parseErrorString (TOKEN_vertex));
-    }
-    sscanf (line + width, "%e %e %e", &(vertices (0)), &(vertices (1)), &(vertices (2)));
+    /*int res = */ sscanf(line, "%s%n", token, &width);
+    if(strcmp(token, TOKEN_vertex)) { RW_THROW(state.parseErrorString(TOKEN_vertex)); }
+    sscanf(line + width, "%e %e %e", &(vertices(0)), &(vertices(1)), &(vertices(2)));
 }
 
-void readNormal (char* line, Vector3D< float >& vertices, ParserState& state)
-{
+void readNormal(char* line, Vector3D<float>& vertices, ParserState& state) {
     int width;
     char token[20];
     // char *str = skipWhiteSpace(line);
-    /*int res = */ sscanf (line, "%s%n", token, &width);
-    if (strcmp (token, TOKEN_normal)) {
-        RW_THROW (state.parseErrorString (TOKEN_normal));
-    }
-    sscanf (line + width, "%e %e %e", &(vertices (0)), &(vertices (1)), &(vertices (2)));
+    /*int res = */ sscanf(line, "%s%n", token, &width);
+    if(strcmp(token, TOKEN_normal)) { RW_THROW(state.parseErrorString(TOKEN_normal)); }
+    sscanf(line + width, "%e %e %e", &(vertices(0)), &(vertices(1)), &(vertices(2)));
 }
 
-void ReadAsciiSTL (std::istream& input_stream, PlainTriMesh< TriangleN1< float > >& result,
-                   ParserState& state)
-{
+void ReadAsciiSTL(std::istream& input_stream, PlainTriMesh<TriangleN1<float>>& result,
+                  ParserState& state) {
     // Start by storing the current locale. This is retrieved by passing NULL to setlocale
-    std::string locale = setlocale (LC_ALL, NULL);
-    setlocale (LC_ALL, "C");
+    std::string locale = setlocale(LC_ALL, NULL);
+    setlocale(LC_ALL, "C");
 
     bool endReached = false;
 
@@ -248,92 +228,86 @@ void ReadAsciiSTL (std::istream& input_stream, PlainTriMesh< TriangleN1< float >
     char token[LINE_MAX_LENGTH];
     int width;
     char input[LINE_MAX_LENGTH];
-    state.getLine (input);
+    state.getLine(input);
 
     // while characters still exists and no errors occour
-    while (input_stream.fail () == 0 && input_stream.eof () == 0) {
+    while(input_stream.fail() == 0 && input_stream.eof() == 0) {
         //  Read the next line of the file into INPUT.
-        state.getLine (input);
+        state.getLine(input);
 
         //  Advance to the first nonspace character in INPUT.
         // 32==SPACE character
-        for (next = input; *next != '\0' && *next == 32; next++) {
-        }
+        for(next = input; *next != '\0' && *next == 32; next++) {}
         //  Skip blank lines and comments and linebreaks.
-        if (*next == '\0' || *next == '#' || *next == '!' || *next == '$') {
-            continue;
-        }
+        if(*next == '\0' || *next == '#' || *next == '!' || *next == '$') { continue; }
 
         //  Extract the first word in this line.
-        sscanf (next, "%s%n", token, &width);
+        sscanf(next, "%s%n", token, &width);
         //  Set NEXT to point to just after this token.
         next = next + width;
 
         //  FACET
-        TriangleN1< float > face;
-        if (!strcmp (token, "facet")) {
+        TriangleN1<float> face;
+        if(!strcmp(token, "facet")) {
             //  Get the XYZ coordinates of the normal vector to the face.
-            readNormal (next, face.getFaceNormal (), state);
-            state.getLine (input);
+            readNormal(next, face.getFaceNormal(), state);
+            state.getLine(input);
 
             // Get the XYZ coordinates of the vertex1 vector
-            state.getLine (input);
-            readVertex (input, face[0], state);
+            state.getLine(input);
+            readVertex(input, face[0], state);
 
             // Get the XYZ coordinates of the vertex2 vector
-            state.getLine (input);
-            readVertex (input, face[1], state);
+            state.getLine(input);
+            readVertex(input, face[1], state);
 
             // Get the XYZ coordinates of the vertex3 vector
-            state.getLine (input);
-            readVertex (input, face[2], state);
+            state.getLine(input);
+            readVertex(input, face[2], state);
 
             // closeloop
-            state.getLine (input);
+            state.getLine(input);
             // endfacet
-            state.getLine (input);
+            state.getLine(input);
 
             // save the facet in the vector
-            result.add (face);
+            result.add(face);
         }
-        else if (!strcmp (token, "color")) {    //  COLOR
-            sscanf (next, "%*s %f %f %f %f", &r1, &r2, &r3, &r4);
+        else if(!strcmp(token, "color")) {    //  COLOR
+            sscanf(next, "%*s %f %f %f %f", &r1, &r2, &r3, &r4);
         }
-        else if (!strcmp (token, "solid")) {    // SOLID
+        else if(!strcmp(token, "solid")) {    // SOLID
             // object_num = object_num + 1;
         }
-        else if (!strcmp (token, "endsolid")) {    // ENDSOLID
+        else if(!strcmp(token, "endsolid")) {    // ENDSOLID
             endReached = true;
         }
         else {    //  Unexpected or unrecognized.
-            setlocale (LC_ALL, locale.c_str ());
-            RW_THROW (state.errorUnknownString (token));
+            setlocale(LC_ALL, locale.c_str());
+            RW_THROW(state.errorUnknownString(token));
         }
     }
-    if (!endReached) {
-        RW_THROW ("The 'endsolid' keyword was not found in end of file. "
-                  "The file may be damaged or is a binary STL format. "
-                  "A binary STL file must not have 'solid' keyword in header.");
+    if(!endReached) {
+        RW_THROW("The 'endsolid' keyword was not found in end of file. "
+                 "The file may be damaged or is a binary STL format. "
+                 "A binary STL file must not have 'solid' keyword in header.");
     }
-    setlocale (LC_ALL, locale.c_str ());
+    setlocale(LC_ALL, locale.c_str());
     return;
 }
 
-void ReadSTLHelper (std::ifstream& streamIn, PlainTriMesh< TriangleN1< float > >& result,
-                    ParserState& state)
-{
+void ReadSTLHelper(std::ifstream& streamIn, PlainTriMesh<TriangleN1<float>>& result,
+                   ParserState& state) {
     char solidkey[6];
     // Determine if it's a binary or ASCII STL file. ASCII start with
     // "solid" keyword
-    streamIn.get (solidkey, 6);
-    streamIn.seekg (0, std::ios::beg);
+    streamIn.get(solidkey, 6);
+    streamIn.seekg(0, std::ios::beg);
 
-    if (!strcmp (solidkey, "solid")) {
-        ReadAsciiSTL (streamIn, result, state);
-    }
+    if(!strcmp(solidkey, "solid")) { ReadAsciiSTL(streamIn, result, state); }
     else {
-        Reader reader (&streamIn);
-        ReadBinarySTL (reader, result);
+        Reader reader(&streamIn);
+        ReadBinarySTL(reader, result);
     }
 }
 
@@ -341,11 +315,10 @@ void ReadSTLHelper (std::ifstream& streamIn, PlainTriMesh< TriangleN1< float > >
  * @brief outputs a face in STL format given by 3 vertices
  * and a normal that defines the face.
  */
-template< class T >
-void writeFaceSTL (const rw::math::Vector3D< T >& v1, const rw::math::Vector3D< T >& v2,
-                   const rw::math::Vector3D< T >& v3, const rw::math::Vector3D< T >& n,
-                   std::ostream& ostr)
-{
+template<class T>
+void writeFaceSTL(const rw::math::Vector3D<T>& v1, const rw::math::Vector3D<T>& v2,
+                  const rw::math::Vector3D<T>& v3, const rw::math::Vector3D<T>& n,
+                  std::ostream& ostr) {
     ostr << " facet normal " << n[0] << " " << n[1] << " " << n[2] << std::endl;
     ostr << "  outer loop " << std::endl;
     ostr << "   vertex " << v1[0] << " " << v1[1] << " " << v1[2] << std::endl;
@@ -357,56 +330,49 @@ void writeFaceSTL (const rw::math::Vector3D< T >& v1, const rw::math::Vector3D< 
 
 }    // namespace
 
-bool STLFile::isSupported (std::string format)
-{
-    std::vector< std::string > support = getModelFormats ();
-    format                             = StringUtil::toUpper (format);
-    return std::find (support.begin (), support.end (), format) != support.end ();
+bool STLFile::isSupported(std::string format) {
+    std::vector<std::string> support = getModelFormats();
+    format                           = StringUtil::toUpper(format);
+    return std::find(support.begin(), support.end(), format) != support.end();
 }
 
-PlainTriMeshN1F::Ptr STLFile::load (const std::string& filename)
-{
-    std::ifstream streamIn (filename.c_str (), std::ios::binary);
-    if (!(streamIn.is_open ())) {
-        RW_THROW ("Can't open file " << StringUtil::quote (filename));
-    }
+PlainTriMeshN1F::Ptr STLFile::load(const std::string& filename) {
+    std::ifstream streamIn(filename.c_str(), std::ios::binary);
+    if(!(streamIn.is_open())) { RW_THROW("Can't open file " << StringUtil::quote(filename)); }
 
-    ParserState state (filename, streamIn);
+    ParserState state(filename, streamIn);
 
-    PlainTriMesh< TriangleN1< float > >::Ptr trimesh =
-        ownedPtr (new PlainTriMesh< TriangleN1< float > > ());
-    ReadSTLHelper (streamIn, *trimesh, state);
-    TriangleUtil::recalcNormals (*trimesh);
-    streamIn.close ();
+    PlainTriMesh<TriangleN1<float>>::Ptr trimesh = ownedPtr(new PlainTriMesh<TriangleN1<float>>());
+    ReadSTLHelper(streamIn, *trimesh, state);
+    TriangleUtil::recalcNormals(*trimesh);
+    streamIn.close();
     return trimesh;
 }
 
-void STLFile::save (const rw::core::Ptr< rw::geometry::TriMesh >& mesh, const std::string& filename)
-{
-    STLFile::save (*mesh, filename);
+void STLFile::save(const rw::core::Ptr<rw::geometry::TriMesh>& mesh, const std::string& filename) {
+    STLFile::save(*mesh, filename);
 }
 
-void STLFile::save (const TriMesh& mesh, const std::string& filename)
-{
+void STLFile::save(const TriMesh& mesh, const std::string& filename) {
     // Start by storing the current locale. This is retrieved by passing NULL to setlocale
-    std::string locale = setlocale (LC_ALL, NULL);
-    setlocale (LC_ALL, "C");
+    std::string locale = setlocale(LC_ALL, NULL);
+    setlocale(LC_ALL, "C");
     using namespace rw::geometry;
     std::ofstream ostr;
-    ostr.open (filename.c_str ());
+    ostr.open(filename.c_str());
     ostr.precision(16);
     ostr << std::scientific;
-    
-    if (!ostr.is_open ()) {
-        RW_THROW ("Failed to open file \"" << filename << "\" with state " << ostr.rdstate ());
+
+    if(!ostr.is_open()) {
+        RW_THROW("Failed to open file \"" << filename << "\" with state " << ostr.rdstate());
     }
     ostr << "solid ascii" << std::endl;
-    for (size_t i = 0; i < mesh.getSize (); i++) {
-        Triangle< double > tri = mesh.getTriangle (i);
-        writeFaceSTL (tri[0], tri[1], tri[2], tri.calcFaceNormal (), ostr);
+    for(size_t i = 0; i < mesh.getSize(); i++) {
+        Triangle<double> tri = mesh.getTriangle(i);
+        writeFaceSTL(tri[0], tri[1], tri[2], tri.calcFaceNormal(), ostr);
     }
     ostr << "endsolid" << std::endl;
-    ostr.flush ();
-    ostr.close ();
-    setlocale (LC_ALL, locale.c_str ());
+    ostr.flush();
+    ostr.close();
+    setlocale(LC_ALL, locale.c_str());
 }

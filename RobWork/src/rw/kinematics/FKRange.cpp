@@ -26,30 +26,30 @@ using namespace rw::math;
 
 namespace {
 // 'parent' is included. The path starts at 'parent' and goes to the root.
-std::vector< const rw::kinematics::Frame* > rootPath (rw::core::Ptr<const rw::kinematics::Frame> parent, const State& state)
-{
-    std::vector< const rw::kinematics::Frame* > result;
-    while (parent) {
-        result.push_back (parent.get());
-        parent = parent->getParent (state);
+std::vector<const rw::kinematics::Frame*>
+rootPath(rw::core::Ptr<const rw::kinematics::Frame> parent, const State& state) {
+    std::vector<const rw::kinematics::Frame*> result;
+    while(parent) {
+        result.push_back(parent.get());
+        parent = parent->getParent(state);
     }
     return result;
 }
 
 // The product of getTransform() values of the path in reverse order. The
 // path must be non-empty.
-Transform3D<> reversePathTransform (const std::vector< const rw::kinematics::Frame* >& frames, const State& state)
-{
-    RW_ASSERT (!frames.empty ());
-    typedef std::vector< const rw::kinematics::Frame* >::const_reverse_iterator I;
-    const I end = frames.rend ();
+Transform3D<> reversePathTransform(const std::vector<const rw::kinematics::Frame*>& frames,
+                                   const State& state) {
+    RW_ASSERT(!frames.empty());
+    typedef std::vector<const rw::kinematics::Frame*>::const_reverse_iterator I;
+    const I end = frames.rend();
 
-    I p                        = frames.rbegin ();
-    Transform3D<> transforms[] = {(**p).getTransform (state), Transform3D<> ()};
+    I p                        = frames.rbegin();
+    Transform3D<> transforms[] = {(**p).getTransform(state), Transform3D<>()};
     int pos                    = 0;
-    for (++p; p != end; ++p) {
+    for(++p; p != end; ++p) {
         const int nextPos = 1 - pos;
-        (**p).multiplyTransform (transforms[pos], state, transforms[nextPos]);
+        (**p).multiplyTransform(transforms[pos], state, transforms[nextPos]);
         pos = nextPos;
     }
     return transforms[pos];
@@ -95,57 +95,42 @@ Transform3D<> reversePathTransform (const std::vector< const rw::kinematics::Fra
 }
 }    // namespace
 
-FKRange::FKRange ( rw::core::Ptr<const rw::kinematics::Frame> from,  rw::core::Ptr<const rw::kinematics::Frame> to, const State& state)
-{
+FKRange::FKRange(rw::core::Ptr<const rw::kinematics::Frame> from,
+                 rw::core::Ptr<const rw::kinematics::Frame> to, const State& state) {
     // We allow a NULL-pointer to mean the world frame, so this check no longer
     // applies.
     //   RW_ASSERT(from && to);
-    _inverseBranch = rootPath (from, state);
-    _forwardBranch = rootPath (to, state);
-    while (!_inverseBranch.empty () && !_forwardBranch.empty ()) {
-        if (_inverseBranch.back () == _forwardBranch.back ()) {
-            _inverseBranch.pop_back ();
-            _forwardBranch.pop_back ();
+    _inverseBranch = rootPath(from, state);
+    _forwardBranch = rootPath(to, state);
+    while(!_inverseBranch.empty() && !_forwardBranch.empty()) {
+        if(_inverseBranch.back() == _forwardBranch.back()) {
+            _inverseBranch.pop_back();
+            _forwardBranch.pop_back();
         }
-        else
-            break;
+        else break;
     }
 }
 
-FKRange::FKRange ()
-{}
+FKRange::FKRange() {}
 
-Transform3D<> FKRange::get (const State& state) const
-{
+Transform3D<> FKRange::get(const State& state) const {
     // These matrix operations _can_ be speeded up. For example some copying of
     // values can be omitted. We will deal with that later.
-    if (_forwardBranch.empty () && _inverseBranch.empty ()) {
-        return Transform3D<>::identity ();
-    }
-    if (_inverseBranch.empty ()) {
-        return reversePathTransform (_forwardBranch, state);
-    }
-    else if (_forwardBranch.empty ()) {
-        return inverse (reversePathTransform (_inverseBranch, state));
-    }
+    if(_forwardBranch.empty() && _inverseBranch.empty()) { return Transform3D<>::identity(); }
+    if(_inverseBranch.empty()) { return reversePathTransform(_forwardBranch, state); }
+    else if(_forwardBranch.empty()) { return inverse(reversePathTransform(_inverseBranch, state)); }
     else {
-        return inverse (reversePathTransform (_inverseBranch, state)) *
-               reversePathTransform (_forwardBranch, state);
+        return inverse(reversePathTransform(_inverseBranch, state)) *
+               reversePathTransform(_forwardBranch, state);
     }
 }
 
-Frame::CPtr FKRange::getEnd () const
-{
-    if (_forwardBranch.empty ()) {
-        return nullptr;
-    }
-    return _forwardBranch.front ();
+Frame::CPtr FKRange::getEnd() const {
+    if(_forwardBranch.empty()) { return nullptr; }
+    return _forwardBranch.front();
 }
 
-Frame::CPtr FKRange::getBase () const
-{
-    if (_inverseBranch.empty ()) {
-        return nullptr;
-    }
-    return _inverseBranch.front ();
+Frame::CPtr FKRange::getBase() const {
+    if(_inverseBranch.empty()) { return nullptr; }
+    return _inverseBranch.front();
 }

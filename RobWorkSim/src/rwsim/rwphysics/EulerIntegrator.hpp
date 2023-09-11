@@ -16,16 +16,16 @@ namespace rwsim { namespace simulator {
         /**
          * @brief constructor
          */
-        EulerIntegrator (RWBody* body);
+        EulerIntegrator(RWBody* body);
 
         //! destructor
-        virtual ~EulerIntegrator (){};
+        virtual ~EulerIntegrator(){};
 
         //!@copydoc BodyIntegrator::updatePosition
-        void updatePosition (double h, rw::kinematics::State& state);
+        void updatePosition(double h, rw::kinematics::State& state);
 
         //!@copydoc BodyIntegrator::updateVelocity
-        void updateVelocity (double h, rw::kinematics::State& state);
+        void updateVelocity(double h, rw::kinematics::State& state);
 
       private:
         RWBody* _body;

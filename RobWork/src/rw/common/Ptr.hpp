@@ -26,15 +26,14 @@
  * @deprecated use rw::core not rw::common
  */
 namespace rw { namespace common {
-    template< class T > using Ptr = rw::core::Ptr< T >;
+    template<class T> using Ptr = rw::core::Ptr<T>;
 
     /**
      * @brief A Ptr that takes ownership over a raw pointer \b ptr.
      * @relates Ptr
      */
-    template< class T > Ptr< T > ownedPtr (T* ptr)
-    {
-        return Ptr< T > (typename Ptr< T >::shared_ptr (ptr));
+    template<class T> Ptr<T> ownedPtr(T* ptr) {
+        return Ptr<T>(typename Ptr<T>::shared_ptr(ptr));
     }
 }}    // namespace rw::common
 

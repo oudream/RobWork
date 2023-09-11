@@ -21,7 +21,7 @@
 //#include <rw/math/Pose6D.hpp>
 
 namespace rwlibs { namespace algorithms {
-    template class KDTree< rw::math::Vector3D<>, 3 >;
+    template class KDTree<rw::math::Vector3D<>, 3>;
 }}    // namespace rwlibs::algorithms
 
 // template class KDTree<rw::math::Pose6D<>, 6>;

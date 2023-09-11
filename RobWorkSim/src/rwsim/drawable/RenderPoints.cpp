@@ -25,61 +25,53 @@ using namespace rwsim::drawable;
 
 struct RenderPoints::GLData
 {
-    GLData () : sphereObj (gluNewQuadric ()) {}
-    ~GLData () { gluDeleteQuadric (sphereObj); }
+    GLData() : sphereObj(gluNewQuadric()) {}
+    ~GLData() { gluDeleteQuadric(sphereObj); }
     GLUquadricObj* sphereObj;
 };
 
-RenderPoints::RenderPoints () : _gl (new GLData ())
-{}
+RenderPoints::RenderPoints() : _gl(new GLData()) {}
 
-RenderPoints::~RenderPoints ()
-{
+RenderPoints::~RenderPoints() {
     delete _gl;
 }
 
-void RenderPoints::addPoints (const std::vector< rw::math::Vector3D<> >& points)
-{
-    int origSize = (int) _points.size ();
-    _points.resize (_points.size () + points.size ());
+void RenderPoints::addPoints(const std::vector<rw::math::Vector3D<>>& points) {
+    int origSize = (int) _points.size();
+    _points.resize(_points.size() + points.size());
     // add the remaining points
-    for (size_t i = 0; i < points.size (); i++) {
-        _points[i + origSize] = points[i];
-    }
+    for(size_t i = 0; i < points.size(); i++) { _points[i + origSize] = points[i]; }
 }
 
-void RenderPoints::setColor (double r, double g, double b)
-{
+void RenderPoints::setColor(double r, double g, double b) {
     _color[0] = (float) r;
     _color[1] = (float) g;
     _color[2] = (float) b;
 }
 
-void RenderPoints::clear ()
-{
-    _points.clear ();
+void RenderPoints::clear() {
+    _points.clear();
 }
 
-void RenderPoints::draw (const DrawableNode::RenderInfo& info, DrawType type, double alpha) const
-{
+void RenderPoints::draw(const DrawableNode::RenderInfo& info, DrawType type, double alpha) const {
     // glColor3fv(_color);
     // glPointSize(100.0f);
     // glBegin(GL_POINTS);
     float a = (float) alpha;
     // Save and restore the color so that everything doesn't turn red.
-    glPushAttrib (GL_CURRENT_BIT);
+    glPushAttrib(GL_CURRENT_BIT);
     {
-        glPushMatrix ();
-        glColor4f (_color[0], _color[1], _color[2], a);
+        glPushMatrix();
+        glColor4f(_color[0], _color[1], _color[2], a);
         // glColor3fv(_color);
-        for (const Vector3D<>& p : _points) {
-            glTranslatef ((float) p (0), (float) p (1), (float) p (2));
-            gluSphere (_gl->sphereObj, 0.01, 3, 3);
-            glTranslatef ((float) -p (0), (float) -p (1), (float) -p (2));
+        for(const Vector3D<>& p : _points) {
+            glTranslatef((float) p(0), (float) p(1), (float) p(2));
+            gluSphere(_gl->sphereObj, 0.01, 3, 3);
+            glTranslatef((float) -p(0), (float) -p(1), (float) -p(2));
         }
-        glPopMatrix ();
+        glPopMatrix();
     }
-    glPopAttrib ();
+    glPopAttrib();
 
     // for(const Vector3D<> &p: _points){
     //	glVertex3f( (float)p(0), (float)p(1), (float)p(2) );

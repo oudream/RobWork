@@ -19,94 +19,75 @@
 
 using namespace rw::graphics;
 
-GroupNode::GroupNode (const std::string& name) : SceneNode (name, SceneNode::GroupType)
-{
-    _t3d = rw::math::Transform3D<>::identity ();
+GroupNode::GroupNode(const std::string& name) : SceneNode(name, SceneNode::GroupType) {
+    _t3d = rw::math::Transform3D<>::identity();
 }
 
-GroupNode* GroupNode::asGroupNode ()
-{
+GroupNode* GroupNode::asGroupNode() {
     return this;
 }
 
-size_t GroupNode::nrOfChildren ()
-{
-    return _childNodes.size ();
+size_t GroupNode::nrOfChildren() {
+    return _childNodes.size();
 }
 
-bool GroupNode::hasChild (SceneNode::Ptr child)
-{
-    std::list< SceneNode::Ptr >::iterator location =
-        std::find (_childNodes.begin (), _childNodes.end (), child);
-    return location != _childNodes.end ();
+bool GroupNode::hasChild(SceneNode::Ptr child) {
+    std::list<SceneNode::Ptr>::iterator location =
+        std::find(_childNodes.begin(), _childNodes.end(), child);
+    return location != _childNodes.end();
 }
 
-bool GroupNode::hasChild (const std::string& childname)
-{
-    for (SceneNode::Ptr childnode : _childNodes) {
-        if (childname == childnode->getName ())
-            return true;
+bool GroupNode::hasChild(const std::string& childname) {
+    for(SceneNode::Ptr childnode : _childNodes) {
+        if(childname == childnode->getName()) return true;
     }
     return false;
 }
 
-void GroupNode::removeChild (SceneNode::Ptr child)
-{
-    std::list< SceneNode::Ptr >::iterator location =
-        std::find (_childNodes.begin (), _childNodes.end (), child);
+void GroupNode::removeChild(SceneNode::Ptr child) {
+    std::list<SceneNode::Ptr>::iterator location =
+        std::find(_childNodes.begin(), _childNodes.end(), child);
 
-    if (location != _childNodes.end ()) {
+    if(location != _childNodes.end()) {
         // 1. remove this from the childs parent list
-        removeParent (child, this);
+        removeParent(child, this);
         // 2. erase the child from the child list
-        _childNodes.erase (location);
+        _childNodes.erase(location);
     }
 }
 
-void GroupNode::removeChild (const std::string& name)
-{
-    std::list< SceneNode::Ptr >::iterator iter = _childNodes.begin ();
-    for (; iter != _childNodes.end (); ++iter) {
-        if ((*iter)->getName () == name) {
-            break;
-        }
+void GroupNode::removeChild(const std::string& name) {
+    std::list<SceneNode::Ptr>::iterator iter = _childNodes.begin();
+    for(; iter != _childNodes.end(); ++iter) {
+        if((*iter)->getName() == name) { break; }
     }
-    if (iter != _childNodes.end ()) {
+    if(iter != _childNodes.end()) {
         // 1. remove this from the childs parent list
-        removeParent (*iter, this);
+        removeParent(*iter, this);
         // 2. erase the child from the child list
-        _childNodes.erase (iter);
+        _childNodes.erase(iter);
     }
 }
 
-void GroupNode::addChild (SceneNode::Ptr node, AddPolicy policy)
-{
-    if (!hasChild (node)) {
-        if (policy == Back) {
-            _childNodes.push_back (node);
-        }
-        else {
-            _childNodes.push_front (node);
-        }
+void GroupNode::addChild(SceneNode::Ptr node, AddPolicy policy) {
+    if(!hasChild(node)) {
+        if(policy == Back) { _childNodes.push_back(node); }
+        else { _childNodes.push_front(node); }
     }
 }
 
-void GroupNode::addChild (SceneNode::Ptr child, GroupNode::Ptr parent, AddPolicy policy)
-{
-    RW_ASSERT (child != NULL);
-    RW_ASSERT (parent != NULL);
+void GroupNode::addChild(SceneNode::Ptr child, GroupNode::Ptr parent, AddPolicy policy) {
+    RW_ASSERT(child != NULL);
+    RW_ASSERT(parent != NULL);
 
-    parent->addChild (child, policy);
-    if (!child->hasParent (parent))
-        child->addParent (parent);
+    parent->addChild(child, policy);
+    if(!child->hasParent(parent)) child->addParent(parent);
 }
 
-void GroupNode::setTransform (const rw::math::Transform3D<>& t3d)
-{
+void GroupNode::setTransform(const rw::math::Transform3D<>& t3d) {
     _t3d = t3d;
 }
 
-rw::math::Transform3D<> GroupNode::getTransform ()
-{
+rw::math::Transform3D<> GroupNode::getTransform() {
     return _t3d;
 }

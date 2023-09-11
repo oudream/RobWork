@@ -42,49 +42,49 @@ namespace rwsim { namespace log {
     {
       public:
         //! Smart pointer type of LogContactForceTorque
-        typedef rw::core::Ptr< LogContactForceTorque > Ptr;
+        typedef rw::core::Ptr<LogContactForceTorque> Ptr;
 
         //! @copydoc SimulatorLogEntry::SimulatorLogEntry
-        LogContactForceTorque (SimulatorLogScope* parent);
+        LogContactForceTorque(SimulatorLogScope* parent);
 
         //! @brief Destructor.
-        virtual ~LogContactForceTorque ();
+        virtual ~LogContactForceTorque();
 
         //! @copydoc SimulatorLogEntry::getType
-        virtual std::string getType () const;
+        virtual std::string getType() const;
 
         //! @copydoc LogForceTorque::operator==
-        virtual bool operator== (const SimulatorLog& b) const;
+        virtual bool operator==(const SimulatorLog& b) const;
 
         //! @copydoc SimulatorLogEntry::getLinkedEntries
-        virtual std::list< SimulatorLogEntry::Ptr > getLinkedEntries () const;
+        virtual std::list<SimulatorLogEntry::Ptr> getLinkedEntries() const;
 
         //! @copydoc SimulatorLogEntry::autoLink
-        virtual bool autoLink ();
+        virtual bool autoLink();
 
         //! @copydoc SimulatorLogEntry::createNew
-        virtual SimulatorLogEntry::Ptr createNew (SimulatorLogScope* parent) const;
+        virtual SimulatorLogEntry::Ptr createNew(SimulatorLogScope* parent) const;
 
         //! @copydoc LogForceTorque::sizeLinkedEntry
-        virtual int sizeLinkedEntry () const;
+        virtual int sizeLinkedEntry() const;
 
         //! @copydoc LogForceTorque::getNameA
-        virtual const std::string& getNameA (std::size_t i) const;
+        virtual const std::string& getNameA(std::size_t i) const;
 
         //! @copydoc LogForceTorque::getNameB
-        virtual const std::string& getNameB (std::size_t i) const;
+        virtual const std::string& getNameB(std::size_t i) const;
 
         //! @copydoc LogForceTorque::getPositionA
-        virtual rw::math::Vector3D<> getPositionA (std::size_t i) const;
+        virtual rw::math::Vector3D<> getPositionA(std::size_t i) const;
 
         //! @copydoc LogForceTorque::getPositionB
-        virtual rw::math::Vector3D<> getPositionB (std::size_t i) const;
+        virtual rw::math::Vector3D<> getPositionB(std::size_t i) const;
 
         /**
          * @brief Get the type id of this entry type.
          * @return the type id.
          */
-        static std::string getTypeID ();
+        static std::string getTypeID();
 
         /**
          * @brief Get the positions of the contacts.
@@ -93,10 +93,10 @@ namespace rwsim { namespace log {
          *
          * @return the log entry with positions of contacts (or NULL if not linked).
          */
-        rw::core::Ptr< LogContactSet > getContacts () const;
+        rw::core::Ptr<LogContactSet> getContacts() const;
 
       private:
-        rw::core::Ptr< LogContactSet > _contacts;
+        rw::core::Ptr<LogContactSet> _contacts;
         const std::string _emptyStr;
     };
     //! @}

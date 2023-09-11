@@ -20,7 +20,7 @@
 
 #if !defined(SWIG)
 #include <rw/graspplanning/GWSMeasure3D.hpp>
-#endif 
+#endif
 
 namespace rw { namespace graspplanning {
 

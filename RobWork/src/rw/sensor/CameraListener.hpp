@@ -36,22 +36,22 @@ namespace rw { namespace sensor {
         /**
          * @brief constructor
          */
-        CameraListener ();
+        CameraListener();
 
       public:
         /**
          * @brief destructor
          */
-        virtual ~CameraListener ();
+        virtual ~CameraListener();
 
         /**
          * @brief called when the camera wish to signal a change.
          */
-        virtual void notifyChanged () = 0;
+        virtual void notifyChanged() = 0;
 
       private:
-        CameraListener (const CameraListener&);
-        CameraListener& operator= (const CameraListener&);
+        CameraListener(const CameraListener&);
+        CameraListener& operator=(const CameraListener&);
     };
 
     /* @} */

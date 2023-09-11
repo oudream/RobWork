@@ -71,11 +71,11 @@ namespace rw { namespace loaders {
      * where "type" is a custom geometry type provided by extensions,
      * "parameters" is a space separated string with custom geometry parameters.
      */
-    class GeometryFactory : public rw::core::ExtensionPoint< rw::geometry::GeometryData >
+    class GeometryFactory : public rw::core::ExtensionPoint<rw::geometry::GeometryData>
     {
       public:
         //! Constructor.
-        GeometryFactory ();
+        GeometryFactory();
 
         /**
          * @brief Factory method for geometric primitive
@@ -89,18 +89,18 @@ namespace rw { namespace loaders {
          * @param useCache [in] set true to return cached geometry if available
          * @return Pointer to a new geometry object
          */
-        static rw::geometry::Geometry::Ptr load (const std::string& str, bool useCache = true);
+        static rw::geometry::Geometry::Ptr load(const std::string& str, bool useCache = true);
 
         //! @copydoc load
-        static rw::geometry::Geometry::Ptr getGeometry (const std::string& str,
-                                                        bool useCache = true);
+        static rw::geometry::Geometry::Ptr getGeometry(const std::string& str,
+                                                       bool useCache = true);
 
         //! @brief Clear the geometry cache.
-        static void clearGeometryCache ();
+        static void clearGeometryCache();
 
       private:
-        typedef rw::common::FileCache< std::string, rw::geometry::GeometryData, std::string > Cache;
-        static Cache& getCache ();
+        typedef rw::common::FileCache<std::string, rw::geometry::GeometryData, std::string> Cache;
+        static Cache& getCache();
     };
 
     /* @} */
