@@ -52,8 +52,8 @@ namespace rw { namespace loaders {
          * @param prox [in] ProximitySetup to save.
          * @param parent [out] DOMDocument which should contain the ProximitySetup representation
          */
-        static void save (const rw::proximity::ProximitySetup& prox,
-                          rw::core::Ptr< rw::core::DOMElem > parent);
+        static void save(const rw::proximity::ProximitySetup& prox,
+                         rw::core::Ptr<rw::core::DOMElem> parent);
 
         /**
          * @brief Saves the proximity setup \b prox to a file named \b filename
@@ -63,7 +63,7 @@ namespace rw { namespace loaders {
          * @param prox [in] ProximitySetup to save.
          * @param filename [in] Filename
          */
-        static void save (const rw::proximity::ProximitySetup& prox, const std::string& filename);
+        static void save(const rw::proximity::ProximitySetup& prox, const std::string& filename);
 
         /**
          * @brief Writes the proximity setup \b prox to \b outstream
@@ -72,7 +72,7 @@ namespace rw { namespace loaders {
          * @param prox [in] Proximity setup to save.
          * @param outstream [in] Output stream
          */
-        static void write (const rw::proximity::ProximitySetup& prox, std::ostream& outstream);
+        static void write(const rw::proximity::ProximitySetup& prox, std::ostream& outstream);
 
         /**
          * @brief Creates DOMDocument for \b prox
@@ -83,9 +83,9 @@ namespace rw { namespace loaders {
          * @param parser [in] DOMParser to use
          * @return DOMDocument containing ProximitySetup.
          */
-        static rw::core::Ptr< rw::core::DOMElem >
-        createDOMDocument (const rw::proximity::ProximitySetup& prox,
-                           rw::core::Ptr< rw::core::DOMParser > parser);
+        static rw::core::Ptr<rw::core::DOMElem>
+        createDOMDocument(const rw::proximity::ProximitySetup& prox,
+                          rw::core::Ptr<rw::core::DOMParser> parser);
 
         /**
          * @brief Utility class which initializes local static variables.
@@ -102,12 +102,12 @@ namespace rw { namespace loaders {
         {
           public:
             //! @brief Initializes when constructed.
-            Initializer ();
+            Initializer();
         };
 
       private:
         static const Initializer initializer;
-        DOMProximitySetupSaver (){}
+        DOMProximitySetupSaver() {}
     };
 
     /* @} */

@@ -49,22 +49,22 @@ namespace rw { namespace proximity {
 
     {
       public:
-        typedef rw::core::Ptr< ProximityStrategyRW > Ptr;
+        typedef rw::core::Ptr<ProximityStrategyRW> Ptr;
 
         //! @brief cache key
-        typedef std::pair< std::string, double > CacheKey;
+        typedef std::pair<std::string, double> CacheKey;
 
         //! @brief cache for any of the queries possible on this strategy
         struct PCache : public rw::proximity::ProximityCache
         {
-            PCache (void* owner) : ProximityCache (owner), tolCollider (nullptr) {}
-            virtual size_t size () const { return 0; }
-            virtual void clear () {}
+            PCache(void* owner) : ProximityCache(owner), tolCollider(nullptr) {}
+            virtual size_t size() const { return 0; }
+            virtual void clear() {}
 
             // TODO: reuse stuff from the collision test
-            rw::core::Ptr< rw::proximity::BVTreeCollider< rw::proximity::BinaryOBBPtrTreeD > >
+            rw::core::Ptr<rw::proximity::BVTreeCollider<rw::proximity::BinaryOBBPtrTreeD>>
                 tcollider;
-            rw::core::Ptr< rw::proximity::BVTreeCollider< rw::proximity::BinaryOBBPtrTreeD > >
+            rw::core::Ptr<rw::proximity::BVTreeCollider<rw::proximity::BinaryOBBPtrTreeD>>
                 tolcollider;
             rw::geometry::OBBToleranceCollider<>* tolCollider;
         };
@@ -73,15 +73,14 @@ namespace rw { namespace proximity {
 
         struct Model
         {
-            typedef rw::core::Ptr< Model > Ptr;
+            typedef rw::core::Ptr<Model> Ptr;
 
-            Model (rw::core::Ptr< rw::geometry::Geometry > geo, rw::math::Transform3D<> trans,
-                   rw::proximity::BinaryOBBPtrTreeD::Ptr obbtree) :
-                geo (geo),
-                scale (1), t3d (trans), tree (obbtree)
-            {}
+            Model(rw::core::Ptr<rw::geometry::Geometry> geo, rw::math::Transform3D<> trans,
+                  rw::proximity::BinaryOBBPtrTreeD::Ptr obbtree) :
+                geo(geo),
+                scale(1), t3d(trans), tree(obbtree) {}
 
-            rw::core::Ptr< rw::geometry::Geometry > geo;
+            rw::core::Ptr<rw::geometry::Geometry> geo;
             double scale;
             rw::math::Transform3D<> t3d;
             rw::proximity::BinaryOBBPtrTreeD::Ptr tree;
@@ -92,95 +91,89 @@ namespace rw { namespace proximity {
         // typedef std::pair<RWPQPModel, RWPQPModel> RWPQPModelPair;
         struct RWProximityModel : public rw::proximity::ProximityModel
         {
-            RWProximityModel (ProximityStrategy* owner) : ProximityModel (owner) {}
-            std::vector< Model::Ptr > models;
+            RWProximityModel(ProximityStrategy* owner) : ProximityModel(owner) {}
+            std::vector<Model::Ptr> models;
         };
 
       private:
-        rw::common::Cache< CacheKey, Model > _modelCache;
+        rw::common::Cache<CacheKey, Model> _modelCache;
 
       public:
         /**
          * @brief Constructor
          */
-        ProximityStrategyRW ();
+        ProximityStrategyRW();
 
         //// interface of ProximityStrategy
 
         /**
          * @copydoc rw::proximity::ProximityStrategy::createModel
          */
-        virtual rw::proximity::ProximityModel::Ptr createModel ();
+        virtual rw::proximity::ProximityModel::Ptr createModel();
 
         /**
          * @copydoc rw::proximity::ProximityStrategy::destroyModel
          */
-        void destroyModel (rw::proximity::ProximityModel* model);
+        void destroyModel(rw::proximity::ProximityModel* model);
 
         /**
          * @copydoc rw::proximity::ProximityStrategy::addGeometry
          */
-        bool addGeometry (rw::proximity::ProximityModel* model, const rw::geometry::Geometry& geom);
+        bool addGeometry(rw::proximity::ProximityModel* model, const rw::geometry::Geometry& geom);
 
-        bool addGeometry (rw::proximity::ProximityModel* model,
-                          rw::core::Ptr< rw::geometry::Geometry > geom, bool);
+        bool addGeometry(rw::proximity::ProximityModel* model,
+                         rw::core::Ptr<rw::geometry::Geometry> geom, bool);
 
         /**
          * @copydoc rw::proximity::ProximityStrategy::removeGeometry
          */
-        bool removeGeometry (rw::proximity::ProximityModel* model, const std::string& geomId);
+        bool removeGeometry(rw::proximity::ProximityModel* model, const std::string& geomId);
 
         /**
          * @copydoc rw::proximity::ProximityStrategy::getGeometryIDs
          */
-        std::vector< std::string > getGeometryIDs (rw::proximity::ProximityModel* model);
+        std::vector<std::string> getGeometryIDs(rw::proximity::ProximityModel* model);
 
         /**
          * @copydoc rw::proximity::ProximityStrategy::getGeometries
          */
-        std::vector< rw::core::Ptr< rw::geometry::Geometry > >
-        getGeometries (rw::proximity::ProximityModel* model);
+        std::vector<rw::core::Ptr<rw::geometry::Geometry>>
+        getGeometries(rw::proximity::ProximityModel* model);
 
         /**
          * @copydoc rw::proximity::CollisionStrategy::doInCollision
          */
-        bool doInCollision (rw::proximity::ProximityModel::Ptr a,
-                            const rw::math::Transform3D<>& wTa,
-                            rw::proximity::ProximityModel::Ptr b,
-                            const rw::math::Transform3D<>& wTb,
-                            rw::proximity::ProximityStrategyData& data);
-
-
+        bool doInCollision(rw::proximity::ProximityModel::Ptr a, const rw::math::Transform3D<>& wTa,
+                           rw::proximity::ProximityModel::Ptr b, const rw::math::Transform3D<>& wTb,
+                           rw::proximity::ProximityStrategyData& data);
 
         /**
          *  @copydoc rw::proximity::ProximityStrategy::clear
          */
-        void clear ();
+        void clear();
 
         /**
          * @brief returns the number of bounding volume tests performed
          * since the last call to clearStats
          */
-        int getNrOfBVTests () { return _numBVTests; }
+        int getNrOfBVTests() { return _numBVTests; }
 
         /**
          * @brief returns the number of ptriangle tests performed
          * since the last call to clearStats
          */
-        int getNrOfTriTests () { return _numTriTests; }
+        int getNrOfTriTests() { return _numTriTests; }
 
         /**
          * @brief clears the bounding volume and triangle test counters.
          */
-        void clearStats ()
-        {
+        void clearStats() {
             _numBVTests  = 0;
             _numTriTests = 0;
         }
 
-        void
-        getCollisionContacts (std::vector< rw::proximity::CollisionStrategy::Contact >& contacts,
-                              ProximityStrategyData& data);
+        void getCollisionContacts(std::vector<rw::proximity::CollisionStrategy::Contact>& contacts,
+                                  ProximityStrategyData& data);
 
       private:
         struct QueryData
@@ -189,15 +182,15 @@ namespace rw { namespace proximity {
             RWProximityModel *a, *b;
         };
 
-        QueryData initQuery (rw::proximity::ProximityModel::Ptr& aModel,
-                             rw::proximity::ProximityModel::Ptr& bModel,
-                             rw::proximity::ProximityStrategyData& data);
+        QueryData initQuery(rw::proximity::ProximityModel::Ptr& aModel,
+                            rw::proximity::ProximityModel::Ptr& bModel,
+                            rw::proximity::ProximityStrategyData& data);
 
       private:
         int _numBVTests, _numTriTests;
 
-        rw::proximity::BVTreeCollider< rw::proximity::BinaryOBBPtrTreeD >::Ptr _tcollider;
-        std::vector< Model::Ptr > _allModels;
+        rw::proximity::BVTreeCollider<rw::proximity::BinaryOBBPtrTreeD>::Ptr _tcollider;
+        std::vector<Model::Ptr> _allModels;
     };
 
 }}    // namespace rw::proximity

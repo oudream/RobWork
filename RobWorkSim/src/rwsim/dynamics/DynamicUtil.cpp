@@ -42,85 +42,79 @@ using namespace rwsim::dynamics;
  * Locates all frames that are staticly connected to the frame and
  * that has geometry information
  */
-std::vector< Frame* > DynamicUtil::getAnchoredFrames (Frame& frame, const State& state)
-{
+std::vector<Frame*> DynamicUtil::getAnchoredFrames(Frame& frame, const State& state) {
     // first locate the independant parent everything else than fixed
     Frame* parent = &frame;
 
     // if the current frame is the independent parent then use that
-    if (dynamic_cast< FixedFrame* > (parent) == NULL) {
-        return getAnchoredChildFrames (parent, state);
-    }
+    if(dynamic_cast<FixedFrame*>(parent) == NULL) { return getAnchoredChildFrames(parent, state); }
 
     // else search for the independent parent
-    for (; parent->getParent (state) != NULL; parent = parent->getParent (state)) {
-        if (dynamic_cast< FixedFrame* > (parent) == NULL)
-            break;
+    for(; parent->getParent(state) != NULL; parent = parent->getParent(state)) {
+        if(dynamic_cast<FixedFrame*>(parent) == NULL) break;
     }
-    return getAnchoredChildFrames (parent, state);
+    return getAnchoredChildFrames(parent, state);
 }
 
-std::vector< Frame* > DynamicUtil::getAnchoredChildFrames (rw::core::Ptr<Frame> parent, const State& state)
-{
+std::vector<Frame*> DynamicUtil::getAnchoredChildFrames(rw::core::Ptr<Frame> parent,
+                                                        const State& state) {
     // next follow all children and locate fixed anchored frames
-    std::vector< Frame* > res;
-    std::stack< Frame* > fstack;
+    std::vector<Frame*> res;
+    std::stack<Frame*> fstack;
 
-    fstack.push (parent.get());
+    fstack.push(parent.get());
 
     // if( rw::models::Accessor::collisionModelInfo().has(*parent) )
     // res.push_back(&frame);
-    res.push_back (parent.get());
+    res.push_back(parent.get());
 
-    while (!fstack.empty ()) {
-        parent = fstack.top ();
-        fstack.pop ();
-        Frame::iterator_pair pairiter = parent->getChildren (state);
-        for (; pairiter.first != pairiter.second; ++pairiter.first) {
+    while(!fstack.empty()) {
+        parent = fstack.top();
+        fstack.pop();
+        Frame::iterator_pair pairiter = parent->getChildren(state);
+        for(; pairiter.first != pairiter.second; ++pairiter.first) {
             Frame* f = &(*(pairiter.first));
 
-            if (dynamic_cast< FixedFrame* > (f)) {
-                fstack.push (f);
-                res.push_back (f);
+            if(dynamic_cast<FixedFrame*>(f)) {
+                fstack.push(f);
+                res.push_back(f);
             }
         }
     }
     return res;
 }
 
-std::vector< Frame* > DynamicUtil::getAnchoredChildFrames(rw::core::Ptr<Frame> initparent, const State& state,
-                                                           const std::vector< Frame* >& exclude)
-{
+std::vector<Frame*> DynamicUtil::getAnchoredChildFrames(rw::core::Ptr<Frame> initparent,
+                                                        const State& state,
+                                                        const std::vector<Frame*>& exclude) {
     // next follow all children and locate fixed anchored frames
-    std::vector< Frame* > res;
-    std::stack< Frame* > fstack;
+    std::vector<Frame*> res;
+    std::stack<Frame*> fstack;
 
-    fstack.push (initparent.get());
+    fstack.push(initparent.get());
 
     // res.push_back(&frame);
-    res.push_back (initparent.get());
+    res.push_back(initparent.get());
 
-    while (!fstack.empty ()) {
-        Frame* parent = fstack.top ();
-        fstack.pop ();
-        Frame::iterator_pair pairiter = parent->getChildren (state);
-        for (; pairiter.first != pairiter.second; ++pairiter.first) {
+    while(!fstack.empty()) {
+        Frame* parent = fstack.top();
+        fstack.pop();
+        Frame::iterator_pair pairiter = parent->getChildren(state);
+        for(; pairiter.first != pairiter.second; ++pairiter.first) {
             Frame* f = &(*(pairiter.first));
 
             // also check if frame has geometric properties attached
             // bool hasGeo = rw::models::Accessor::collisionModelInfo().has(*f);
 
-            if (dynamic_cast< FixedFrame* > (f)) {
+            if(dynamic_cast<FixedFrame*>(f)) {
                 size_t i;
-                for (i = 0; i < exclude.size (); i++)
-                    if (exclude[i] != initparent && exclude[i] == f)
-                        break;
-                if (i != exclude.size ())
-                    continue;
+                for(i = 0; i < exclude.size(); i++)
+                    if(exclude[i] != initparent && exclude[i] == f) break;
+                if(i != exclude.size()) continue;
 
-                fstack.push (f);
+                fstack.push(f);
                 // if( hasGeo )
-                res.push_back (f);
+                res.push_back(f);
             }
         }
     }
@@ -128,51 +122,47 @@ std::vector< Frame* > DynamicUtil::getAnchoredChildFrames(rw::core::Ptr<Frame> i
 }
 
 #ifdef oldold
-std::pair< rw::math::Vector3D<>, rw::math::InertiaMatrix<> >
-DynamicUtil::estimateInertia (double mass, rw::kinematics::Frame& refframe, const State& state)
-{
-    typedef std::vector< geometry::Face< float > > TriMesh;
-    std::vector< std::pair< Transform3D<>, TriMesh > > meshes;
-    std::vector< Frame* > frames = getAnchoredFrames (refframe, state);
+std::pair<rw::math::Vector3D<>, rw::math::InertiaMatrix<>>
+DynamicUtil::estimateInertia(double mass, rw::kinematics::Frame& refframe, const State& state) {
+    typedef std::vector<geometry::Face<float>> TriMesh;
+    std::vector<std::pair<Transform3D<>, TriMesh>> meshes;
+    std::vector<Frame*> frames = getAnchoredFrames(refframe, state);
     // first calculate center
-    Vector3D<> center (0, 0, 0);
-    for (const Frame* frame : frames) {
-        if (frame == NULL)
-            continue;
+    Vector3D<> center(0, 0, 0);
+    for(const Frame* frame : frames) {
+        if(frame == NULL) continue;
         // check if frame has collision descriptor
-        if (!Accessor::collisionModelInfo ().has (*frame))
-            continue;
+        if(!Accessor::collisionModelInfo().has(*frame)) continue;
 
-        Transform3D<> pTf   = Kinematics::frameTframe (&refframe, frame, state);
-        std::string geofile = Accessor::collisionModelInfo ().get (*frame)[0].getId ();
-        Transform3D<> fTgeo = pTf * Accessor::collisionModelInfo ().get (*frame)[0].getTransform ();
+        Transform3D<> pTf   = Kinematics::frameTframe(&refframe, frame, state);
+        std::string geofile = Accessor::collisionModelInfo().get(*frame)[0].getId();
+        Transform3D<> fTgeo = pTf * Accessor::collisionModelInfo().get(*frame)[0].getTransform();
 
-        meshes.push_back (std::make_pair (fTgeo, TriMesh ()));
+        meshes.push_back(std::make_pair(fTgeo, TriMesh()));
         // get the geo descriptor
-        if (!geometry::FaceArrayFactory::loadFaceArrayFile (geofile, meshes.back ().second))
-            continue;
+        if(!geometry::FaceArrayFactory::loadFaceArrayFile(geofile, meshes.back().second)) continue;
 
-        for (size_t i = 0; i < meshes.back ().second.size (); i++) {
-            geometry::Face< float >& f = meshes.back ().second[i];
-            Vector3D<> v1 (f._vertex1[0], f._vertex1[1], f._vertex1[2]);
-            Vector3D<> v2 (f._vertex2[0], f._vertex2[1], f._vertex2[2]);
-            Vector3D<> v3 (f._vertex3[0], f._vertex3[1], f._vertex3[2]);
-            double area         = (cross (v1 - v2, v1 - v3)).norm2 () / 2;
+        for(size_t i = 0; i < meshes.back().second.size(); i++) {
+            geometry::Face<float>& f = meshes.back().second[i];
+            Vector3D<> v1(f._vertex1[0], f._vertex1[1], f._vertex1[2]);
+            Vector3D<> v2(f._vertex2[0], f._vertex2[1], f._vertex2[2]);
+            Vector3D<> v3(f._vertex3[0], f._vertex3[1], f._vertex3[2]);
+            double area         = (cross(v1 - v2, v1 - v3)).norm2() / 2;
             Vector3D<> centroid = ((fTgeo * v1 + fTgeo * v2 + fTgeo * v3) / 3) * area;
             center += centroid;
         }
-        center /= meshes.back ().second.size ();
+        center /= meshes.back().second.size();
     }
 
-    InertiaMatrix<> itotal (0, 0, 0);
+    InertiaMatrix<> itotal(0, 0, 0);
 
-    for (size_t i = 0; i < meshes.size (); i++) {
+    for(size_t i = 0; i < meshes.size(); i++) {
         Transform3D<> t3d = meshes[i].first;
-        t3d.P () += center;
-        InertiaMatrix<> inertia = estimateInertia (mass, meshes[i].second, t3d);
-        itotal                  = InertiaMatrix<> (itotal.m () + inertia.m ());
+        t3d.P() += center;
+        InertiaMatrix<> inertia = estimateInertia(mass, meshes[i].second, t3d);
+        itotal                  = InertiaMatrix<>(itotal.m() + inertia.m());
     }
-    return std::make_pair (center, itotal);
+    return std::make_pair(center, itotal);
 }
 #endif
 /*
@@ -287,15 +277,14 @@ DynamicUtil::estimateInertia(
 }
 */
 #ifdef OLDOLD
-InertiaMatrix<> DynamicUtil::estimateInertia (double mass,
-                                              const std::vector< geometry::Face< float > >& faces,
-                                              const Transform3D<>& t3d)
-{
-    size_t faceCnt = faces.size ();
+InertiaMatrix<> DynamicUtil::estimateInertia(double mass,
+                                             const std::vector<geometry::Face<float>>& faces,
+                                             const Transform3D<>& t3d) {
+    size_t faceCnt = faces.size();
     double Ixx = 0, Iyy = 0, Izz = 0;    // the diagonal elements
     double Ixy = 0, Ixz = 0, Iyz = 0;    // the off diagonal elements
-    for (size_t i = 0; i < faceCnt; i++) {
-        const geometry::Face< float >& face = faces[i];
+    for(size_t i = 0; i < faceCnt; i++) {
+        const geometry::Face<float>& face = faces[i];
         /*		float x = (face._vertex1[0] + face._vertex2[0] + face._vertex3[0])/3.0;
                         float y = (face._vertex1[1] + face._vertex2[1] + face._vertex3[1])/3.0;
                         float z = (face._vertex1[2] + face._vertex2[2] + face._vertex3[2])/3.0;
@@ -303,10 +292,10 @@ InertiaMatrix<> DynamicUtil::estimateInertia (double mass,
         float x        = face._vertex1[0];
         float y        = face._vertex1[1];
         float z        = face._vertex1[2];
-        Vector3D<> pos = t3d * Vector3D<> (x, y, z);
-        x              = pos (0);
-        y              = pos (1);
-        z              = pos (2);
+        Vector3D<> pos = t3d * Vector3D<>(x, y, z);
+        x              = pos(0);
+        y              = pos(1);
+        z              = pos(2);
         Ixx += y * y + z * z;
         Iyy += x * x + z * z;
         Izz += x * x + y * y;
@@ -321,60 +310,50 @@ InertiaMatrix<> DynamicUtil::estimateInertia (double mass,
     double Iyx = Ixy = -ptMass * Ixy;
     double Izx = Ixz = -ptMass * Ixz;
     double Izy = Iyz = -ptMass * Iyz;
-    return InertiaMatrix<> (Ixx, Ixy, Ixz, Iyx, Iyy, Iyz, Izx, Izy, Izz);
+    return InertiaMatrix<>(Ixx, Ixy, Ixz, Iyx, Iyy, Iyz, Izx, Izy, Izz);
 }
 #endif
-std::vector< RigidBody::Ptr > DynamicUtil::getRigidBodies (DynamicWorkCell& dwc)
-{
+std::vector<RigidBody::Ptr> DynamicUtil::getRigidBodies(DynamicWorkCell& dwc) {
     using namespace dynamics;
-    std::vector< RigidBody::Ptr > bodies = dwc.findBodies< RigidBody > ();
+    std::vector<RigidBody::Ptr> bodies = dwc.findBodies<RigidBody>();
     return bodies;
 }
 
-bool DynamicUtil::isResting (DynamicDevice::Ptr dev, const rw::kinematics::State& state,
-                             double max_linjointvel, double max_angjointvel)
-{
-    if (RigidDevice* rdev = dynamic_cast< RigidDevice* > (dev.get ())) {
-        std::vector< Joint* > rjoints = rdev->getJointDevice ()->getJoints ();
-        Q vel                         = rdev->getJointVelocities (state);
+bool DynamicUtil::isResting(DynamicDevice::Ptr dev, const rw::kinematics::State& state,
+                            double max_linjointvel, double max_angjointvel) {
+    if(RigidDevice* rdev = dynamic_cast<RigidDevice*>(dev.get())) {
+        std::vector<Joint*> rjoints = rdev->getJointDevice()->getJoints();
+        Q vel                       = rdev->getJointVelocities(state);
         // std::cout << vel << std::endl;
-        RW_ASSERT_MSG (vel.size () <= rjoints.size (), vel.size () << "<=" << rjoints.size ());
+        RW_ASSERT_MSG(vel.size() <= rjoints.size(), vel.size() << "<=" << rjoints.size());
         int depOffset = 0;
-        for (size_t i = 0; i < rjoints.size (); i++) {
-            if (dynamic_cast< rw::models::RevoluteJoint* > (rjoints[i])) {
-                if (max_angjointvel < vel[i - depOffset])
-                    return false;
+        for(size_t i = 0; i < rjoints.size(); i++) {
+            if(dynamic_cast<rw::models::RevoluteJoint*>(rjoints[i])) {
+                if(max_angjointvel < vel[i - depOffset]) return false;
             }
-            else if (dynamic_cast< rw::models::PrismaticJoint* > (rjoints[i])) {
-                if (max_linjointvel < vel[i - depOffset])
-                    return false;
+            else if(dynamic_cast<rw::models::PrismaticJoint*>(rjoints[i])) {
+                if(max_linjointvel < vel[i - depOffset]) return false;
             }
-            else {
-                depOffset++;
-            }
+            else { depOffset++; }
         }
     }
     return true;
 }
 
-bool DynamicUtil::isResting (DynamicWorkCell::Ptr dwc, const rw::kinematics::State& state,
-                             double max_lin, double max_ang, double max_jointvel)
-{
+bool DynamicUtil::isResting(DynamicWorkCell::Ptr dwc, const rw::kinematics::State& state,
+                            double max_lin, double max_ang, double max_jointvel) {
     // first check all rigid bodies
-    std::vector< RigidBody::Ptr > bodies = dwc->findBodies< RigidBody > ();
-    for (RigidBody::Ptr rbody : bodies) {
-        Vector3D<> avel = rbody->getAngVel (state);
-        if (MetricUtil::norm2 (avel) > max_ang)
-            return false;
-        Vector3D<> lvel = rbody->getLinVel (state);
-        if (MetricUtil::norm2 (lvel) > max_lin)
-            return false;
+    std::vector<RigidBody::Ptr> bodies = dwc->findBodies<RigidBody>();
+    for(RigidBody::Ptr rbody : bodies) {
+        Vector3D<> avel = rbody->getAngVel(state);
+        if(MetricUtil::norm2(avel) > max_ang) return false;
+        Vector3D<> lvel = rbody->getLinVel(state);
+        if(MetricUtil::norm2(lvel) > max_lin) return false;
     }
 
-    std::vector< DynamicDevice::Ptr > devices = dwc->getDynamicDevices ();
-    for (DynamicDevice::Ptr dev : devices) {
-        if (!DynamicUtil::isResting (dev, state, max_lin, max_jointvel))
-            return false;
+    std::vector<DynamicDevice::Ptr> devices = dwc->getDynamicDevices();
+    for(DynamicDevice::Ptr dev : devices) {
+        if(!DynamicUtil::isResting(dev, state, max_lin, max_jointvel)) return false;
     }
     return true;
 }

@@ -30,14 +30,14 @@ namespace rwsim { namespace simulator {
         unsigned int _drawMask;
 
       public:
-        ODEDebugRender (ODESimulator* sim) : _sim (sim) {}
+        ODEDebugRender(ODESimulator* sim) : _sim(sim) {}
 
-        virtual ~ODEDebugRender () {}
+        virtual ~ODEDebugRender() {}
 
-        virtual void draw (const rw::graphics::DrawableNode::RenderInfo& info, DrawType draw,
-                           double alpha) const;
+        virtual void draw(const rw::graphics::DrawableNode::RenderInfo& info, DrawType draw,
+                          double alpha) const;
 
-        virtual void setDrawMask (unsigned int mask) { _drawMask = mask; }
+        virtual void setDrawMask(unsigned int mask) { _drawMask = mask; }
     };
 
 }}    // namespace rwsim::simulator

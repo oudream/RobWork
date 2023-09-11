@@ -72,26 +72,24 @@ typedef struct _rawImageRec
 
 /******************************************************************************/
 
-void ConvertShort (unsigned short* array, long length)
-{
+void ConvertShort(unsigned short* array, long length) {
     unsigned long b1, b2;
     unsigned char* ptr;
 
     ptr = (unsigned char*) array;
-    while (length--) {
+    while(length--) {
         b1       = *ptr++;
         b2       = *ptr++;
         *array++ = (unsigned short) ((b1 << 8) | (b2));
     }
 }
 
-void ConvertLong (GLuint* array, long length)
-{
+void ConvertLong(GLuint* array, long length) {
     unsigned long b1, b2, b3, b4;
     unsigned char* ptr;
 
     ptr = (unsigned char*) array;
-    while (length--) {
+    while(length--) {
         b1       = *ptr++;
         b2       = *ptr++;
         b3       = *ptr++;
@@ -100,8 +98,7 @@ void ConvertLong (GLuint* array, long length)
     }
 }
 
-rawImageRec* RawImageOpen (const char* fileName)
-{
+rawImageRec* RawImageOpen(const char* fileName) {
     union
     {
         int testWord;
@@ -113,127 +110,105 @@ rawImageRec* RawImageOpen (const char* fileName)
     int x;
 
     endianTest.testWord = 1;
-    if (endianTest.testByte[0] == 1) {
-        swapFlag = GL_TRUE;
-    }
-    else {
-        swapFlag = GL_FALSE;
-    }
+    if(endianTest.testByte[0] == 1) { swapFlag = GL_TRUE; }
+    else { swapFlag = GL_FALSE; }
 
-    raw = (rawImageRec*) malloc (sizeof (rawImageRec));
-    if (raw == NULL) {
-        fprintf (stderr, "Out of memory!\n");
+    raw = (rawImageRec*) malloc(sizeof(rawImageRec));
+    if(raw == NULL) {
+        fprintf(stderr, "Out of memory!\n");
         return (NULL);
     }
-    if ((raw->file = fopen (fileName, "rb")) == NULL) {
-        perror (fileName);
+    if((raw->file = fopen(fileName, "rb")) == NULL) {
+        perror(fileName);
         return (NULL);
     }
 
-    size_t stat = fread (raw, 1, 12, raw->file);
-    if (stat != 12) {
-        RW_THROW ("Reading error");
-    }
+    size_t stat = fread(raw, 1, 12, raw->file);
+    if(stat != 12) { RW_THROW("Reading error"); }
 
-    if (swapFlag) {
-        ConvertShort (&raw->imagic, 6);
-    }
+    if(swapFlag) { ConvertShort(&raw->imagic, 6); }
 
-    raw->tmp  = (unsigned char*) malloc (raw->sizeX * 256);
-    raw->tmpR = (unsigned char*) malloc (raw->sizeX * 256);
-    raw->tmpG = (unsigned char*) malloc (raw->sizeX * 256);
-    raw->tmpB = (unsigned char*) malloc (raw->sizeX * 256);
-    raw->tmpA = (unsigned char*) malloc (raw->sizeX * 256);
-    if (raw->tmp == NULL || raw->tmpR == NULL || raw->tmpG == NULL || raw->tmpB == NULL) {
-        fprintf (stderr, "Out of memory!\n");
+    raw->tmp  = (unsigned char*) malloc(raw->sizeX * 256);
+    raw->tmpR = (unsigned char*) malloc(raw->sizeX * 256);
+    raw->tmpG = (unsigned char*) malloc(raw->sizeX * 256);
+    raw->tmpB = (unsigned char*) malloc(raw->sizeX * 256);
+    raw->tmpA = (unsigned char*) malloc(raw->sizeX * 256);
+    if(raw->tmp == NULL || raw->tmpR == NULL || raw->tmpG == NULL || raw->tmpB == NULL) {
+        fprintf(stderr, "Out of memory!\n");
         return (NULL);
     }
 
-    if ((raw->type & 0xFF00) == 0x0100) {    // if Run Length Encoding is used (RLE)
-        x             = raw->sizeY * raw->sizeZ * sizeof (GLuint);
-        raw->rowStart = (GLuint*) malloc (x);
-        raw->rowSize  = (GLint*) malloc (x);
-        if (raw->rowStart == NULL || raw->rowSize == NULL) {
-            fprintf (stderr, "Out of memory!\n");
+    if((raw->type & 0xFF00) == 0x0100) {    // if Run Length Encoding is used (RLE)
+        x             = raw->sizeY * raw->sizeZ * sizeof(GLuint);
+        raw->rowStart = (GLuint*) malloc(x);
+        raw->rowSize  = (GLint*) malloc(x);
+        if(raw->rowStart == NULL || raw->rowSize == NULL) {
+            fprintf(stderr, "Out of memory!\n");
             return (NULL);
         }
         raw->rleEnd = 512 + (2 * x);
-        fseek (raw->file, 512, SEEK_SET);
-        stat = fread (raw->rowStart, 1, x, raw->file);
-        stat = fread (raw->rowSize, 1, x, raw->file);
-        if (swapFlag) {
-            ConvertLong (raw->rowStart, x / sizeof (GLuint));
-            ConvertLong ((GLuint*) raw->rowSize, x / sizeof (GLint));
+        fseek(raw->file, 512, SEEK_SET);
+        stat = fread(raw->rowStart, 1, x, raw->file);
+        stat = fread(raw->rowSize, 1, x, raw->file);
+        if(swapFlag) {
+            ConvertLong(raw->rowStart, x / sizeof(GLuint));
+            ConvertLong((GLuint*) raw->rowSize, x / sizeof(GLint));
         }
     }
     return raw;
 }
 
-void RawImageClose (rawImageRec* raw)
-{
-    fclose (raw->file);
-    free (raw->tmp);
-    free (raw->tmpR);
-    free (raw->tmpG);
-    free (raw->tmpB);
-    free (raw);
+void RawImageClose(rawImageRec* raw) {
+    fclose(raw->file);
+    free(raw->tmp);
+    free(raw->tmpR);
+    free(raw->tmpG);
+    free(raw->tmpB);
+    free(raw);
 }
 
-void RawImageGetRow (rawImageRec* raw, unsigned char* buf, int y, int z)
-{
+void RawImageGetRow(rawImageRec* raw, unsigned char* buf, int y, int z) {
     unsigned char *iPtr, *oPtr, pixel;
     int count;
     size_t stat;
-    if ((raw->type & 0xFF00) == 0x0100) {    // Run Length Encoding (RLE)
-        fseek (raw->file, raw->rowStart[y + z * raw->sizeY], SEEK_SET);
-        stat = fread (raw->tmp, 1, (unsigned int) raw->rowSize[y + z * raw->sizeY], raw->file);
-        if (stat != (size_t) raw->rowSize[y + z * raw->sizeY]) {
-            RW_THROW ("Reading error");
-        }
+    if((raw->type & 0xFF00) == 0x0100) {    // Run Length Encoding (RLE)
+        fseek(raw->file, raw->rowStart[y + z * raw->sizeY], SEEK_SET);
+        stat = fread(raw->tmp, 1, (unsigned int) raw->rowSize[y + z * raw->sizeY], raw->file);
+        if(stat != (size_t) raw->rowSize[y + z * raw->sizeY]) { RW_THROW("Reading error"); }
 
         // If an even number of bytes has been read, we add an implicit zero count
         // at the end to make sure that the following while loop exits correctly.
         // (Otherwise issues with the GIMP "Aggressive RLE" has been observed)
-        if (stat % 2 == 0)
-            *(raw->tmp + stat) = 0;
+        if(stat % 2 == 0) *(raw->tmp + stat) = 0;
         iPtr = raw->tmp;
         oPtr = buf;
-        while (1) {
+        while(1) {
             pixel = *iPtr++;
             count = (int) (pixel & 0x7F);
-            if (!count) {
-                return;
-            }
-            if (pixel & 0x80) {
-                while (count--) {
-                    *oPtr++ = *iPtr++;
-                }
+            if(!count) { return; }
+            if(pixel & 0x80) {
+                while(count--) { *oPtr++ = *iPtr++; }
             }
             else {
                 pixel = *iPtr++;
-                while (count--) {
-                    *oPtr++ = pixel;
-                }
+                while(count--) { *oPtr++ = pixel; }
             }
         }
     }
     else {
-        fseek (raw->file, 512 + (y * raw->sizeX) + (z * raw->sizeX * raw->sizeY), SEEK_SET);
-        stat = fread (buf, 1, raw->sizeX, raw->file);
-        if (stat != raw->sizeX) {
-            RW_THROW ("Reading error");
-        }
+        fseek(raw->file, 512 + (y * raw->sizeX) + (z * raw->sizeX * raw->sizeY), SEEK_SET);
+        stat = fread(buf, 1, raw->sizeX, raw->file);
+        if(stat != raw->sizeX) { RW_THROW("Reading error"); }
     }
 }
 
-void RawImageGetData (rawImageRec* raw, ACImage* final)
-{
+void RawImageGetData(rawImageRec* raw, ACImage* final) {
     unsigned char* ptr;
     int i, j;
 
-    final->data = (unsigned char*) malloc ((raw->sizeX + 1) * (raw->sizeY + 1) * raw->sizeZ);
-    if (final->data == NULL) {
-        fprintf (stderr, "Out of memory!\n");
+    final->data = (unsigned char*) malloc((raw->sizeX + 1) * (raw->sizeY + 1) * raw->sizeZ);
+    if(final->data == NULL) {
+        fprintf(stderr, "Out of memory!\n");
         return;
     }
 
@@ -242,10 +217,10 @@ void RawImageGetData (rawImageRec* raw, ACImage* final)
     /*
      debugf("raw image depth %d", raw->sizeZ);
      */
-    if (raw->sizeZ == 1) {
-        for (i = 0; i < raw->sizeY; i++) {
-            RawImageGetRow (raw, raw->tmpR, i, 0);
-            for (j = 0; j < raw->sizeX; j++) { /* packing */
+    if(raw->sizeZ == 1) {
+        for(i = 0; i < raw->sizeY; i++) {
+            RawImageGetRow(raw, raw->tmpR, i, 0);
+            for(j = 0; j < raw->sizeX; j++) { /* packing */
                 *ptr++ = *(raw->tmpR + j);
                 /**ptr++ = *(raw->tmpR + j);
                  *ptr++ = *(raw->tmpR + j);
@@ -253,11 +228,11 @@ void RawImageGetData (rawImageRec* raw, ACImage* final)
             }
         }
     }
-    if (raw->sizeZ == 2) {
-        for (i = 0; i < raw->sizeY; i++) {
-            RawImageGetRow (raw, raw->tmpR, i, 0);
-            RawImageGetRow (raw, raw->tmpA, i, 1);
-            for (j = 0; j < raw->sizeX; j++) { /* packing */
+    if(raw->sizeZ == 2) {
+        for(i = 0; i < raw->sizeY; i++) {
+            RawImageGetRow(raw, raw->tmpR, i, 0);
+            RawImageGetRow(raw, raw->tmpA, i, 1);
+            for(j = 0; j < raw->sizeX; j++) { /* packing */
                 *ptr++ = *(raw->tmpR + j);
                 /**ptr++ = *(raw->tmpR + j);
                  *ptr++ = *(raw->tmpR + j);*/
@@ -270,12 +245,12 @@ void RawImageGetData (rawImageRec* raw, ACImage* final)
             }
         }
     }
-    else if (raw->sizeZ == 3) {
-        for (i = 0; i < raw->sizeY; i++) {
-            RawImageGetRow (raw, raw->tmpR, i, 0);
-            RawImageGetRow (raw, raw->tmpG, i, 1);
-            RawImageGetRow (raw, raw->tmpB, i, 2);
-            for (j = 0; j < raw->sizeX; j++) { /* packing */
+    else if(raw->sizeZ == 3) {
+        for(i = 0; i < raw->sizeY; i++) {
+            RawImageGetRow(raw, raw->tmpR, i, 0);
+            RawImageGetRow(raw, raw->tmpG, i, 1);
+            RawImageGetRow(raw, raw->tmpB, i, 2);
+            for(j = 0; j < raw->sizeX; j++) { /* packing */
                 *ptr++ = *(raw->tmpR + j);
                 *ptr++ = *(raw->tmpG + j);
                 *ptr++ = *(raw->tmpB + j);
@@ -283,13 +258,13 @@ void RawImageGetData (rawImageRec* raw, ACImage* final)
             }
         }
     }
-    else if (raw->sizeZ == 4) {
-        for (i = 0; i < raw->sizeY; i++) {
-            RawImageGetRow (raw, raw->tmpR, i, 0);
-            RawImageGetRow (raw, raw->tmpG, i, 1);
-            RawImageGetRow (raw, raw->tmpB, i, 2);
-            RawImageGetRow (raw, raw->tmpA, i, 3);
-            for (j = 0; j < raw->sizeX; j++) { /* packing */
+    else if(raw->sizeZ == 4) {
+        for(i = 0; i < raw->sizeY; i++) {
+            RawImageGetRow(raw, raw->tmpR, i, 0);
+            RawImageGetRow(raw, raw->tmpG, i, 1);
+            RawImageGetRow(raw, raw->tmpB, i, 2);
+            RawImageGetRow(raw, raw->tmpA, i, 3);
+            for(j = 0; j < raw->sizeX; j++) { /* packing */
                 *ptr++ = *(raw->tmpR + j);
                 *ptr++ = *(raw->tmpG + j);
                 *ptr++ = *(raw->tmpB + j);
@@ -322,30 +297,27 @@ namespace {
 */
 }
 
-rw::sensor::Image::Ptr RGBLoader::loadImage (const std::string& fname)
-{
-    return RGBLoader::load (fname);
+rw::sensor::Image::Ptr RGBLoader::loadImage(const std::string& fname) {
+    return RGBLoader::load(fname);
 }
 
-std::vector< std::string > RGBLoader::getImageFormats ()
-{
-    std::vector< std::string > formats;
-    formats.push_back ("RGB");
+std::vector<std::string> RGBLoader::getImageFormats() {
+    std::vector<std::string> formats;
+    formats.push_back("RGB");
     return formats;
 }
 
-rw::sensor::Image::Ptr RGBLoader::load (const std::string& fname)
-{
-    const char* fileName = fname.c_str ();
+rw::sensor::Image::Ptr RGBLoader::load(const std::string& fname) {
+    const char* fileName = fname.c_str();
     rawImageRec* raw;
     Image::Ptr img;
-    ACImage* final = new ACImage ();
+    ACImage* final = new ACImage();
 
     // printf("Loading texture: %s\n", fileName);
 
-    raw = RawImageOpen (fileName);
-    if (raw == NULL) {
-        fprintf (stderr, "error opening rgb file\n");
+    raw = RawImageOpen(fileName);
+    if(raw == NULL) {
+        fprintf(stderr, "error opening rgb file\n");
         return img;
     }
 
@@ -353,28 +325,22 @@ rw::sensor::Image::Ptr RGBLoader::load (const std::string& fname)
     final->height = raw->sizeY;
     final->depth  = raw->sizeZ;
 
-    RawImageGetData (raw, final);
-    RawImageClose (raw);
+    RawImageGetData(raw, final);
+    RawImageClose(raw);
 
     // printf("loaded RGB image %dx%d (%d)\n", final->width, final->height, final->depth);
 
     Image::PixelDepth pdepth = Image::Depth8U;
     Image::ColorCode ccode   = Image::RGB;
-    if (final->depth == 3) {
-        ccode = Image::RGB;
-    }
-    else if (final->depth == 4) {
-        ccode = Image::RGBA;
-    }
-    else if (final->depth == 1) {
+    if(final->depth == 3) { ccode = Image::RGB; }
+    else if(final->depth == 4) { ccode = Image::RGBA; }
+    else if(final->depth == 1) {
         // R
     }
-    else if (final->depth == 2) {
+    else if(final->depth == 2) {
         // RA
     }
-    else {
-        RW_ASSERT (0);
-    }
+    else { RW_ASSERT(0); }
 
     // std::cout << "Copy data to the image" << std::endl;
     // std::cout << "final->width: " << final->width << std::endl;
@@ -383,15 +349,13 @@ rw::sensor::Image::Ptr RGBLoader::load (const std::string& fname)
 
     unsigned int widthStep = final->width * final->depth;
 
-    img           = new Image (final->width, final->height, ccode, pdepth);
-    char* imgData = img->getImageData ();
-    for (size_t y = 0; y < final->height; y++) {
+    img           = new Image(final->width, final->height, ccode, pdepth);
+    char* imgData = img->getImageData();
+    for(size_t y = 0; y < final->height; y++) {
         unsigned int rowidx   = (int) y * widthStep;
         unsigned char* dstrow = (unsigned char*) &(imgData[rowidx]);
         unsigned char* srcrow = &(((unsigned char*) final->data)[rowidx]);
-        for (int x = 0; x < final->width * final->depth; x++) {
-            dstrow[x] = srcrow[x];
-        }
+        for(int x = 0; x < final->width * final->depth; x++) { dstrow[x] = srcrow[x]; }
     }
     return img;
 }

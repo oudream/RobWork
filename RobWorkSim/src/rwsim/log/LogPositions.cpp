@@ -25,91 +25,75 @@ using namespace rw::core;
 using namespace rw::math;
 using namespace rwsim::log;
 
-LogPositions::LogPositions (SimulatorLogScope* parent) : SimulatorLogEntry (parent)
-{}
+LogPositions::LogPositions(SimulatorLogScope* parent) : SimulatorLogEntry(parent) {}
 
-LogPositions::~LogPositions ()
-{}
+LogPositions::~LogPositions() {}
 
-void LogPositions::read (class InputArchive& iarchive, const std::string& id)
-{
-    const unsigned int n = iarchive.readUInt ("Positions");
-    for (unsigned int i = 0; i < n; i++) {
-        const std::string name = iarchive.readString ("Name");
-        iarchive.read (_positions[name], "Transform3D");
+void LogPositions::read(class InputArchive& iarchive, const std::string& id) {
+    const unsigned int n = iarchive.readUInt("Positions");
+    for(unsigned int i = 0; i < n; i++) {
+        const std::string name = iarchive.readString("Name");
+        iarchive.read(_positions[name], "Transform3D");
     }
-    SimulatorLogEntry::read (iarchive, id);
+    SimulatorLogEntry::read(iarchive, id);
 }
 
-void LogPositions::write (class OutputArchive& oarchive, const std::string& id) const
-{
-    oarchive.write (_positions.size (), "Positions");
-    std::map< std::string, Transform3D<> >::const_iterator it;
-    for (it = _positions.begin (); it != _positions.end (); it++) {
-        oarchive.write (it->first, "Name");
-        oarchive.write (it->second, "Transform3D");
+void LogPositions::write(class OutputArchive& oarchive, const std::string& id) const {
+    oarchive.write(_positions.size(), "Positions");
+    std::map<std::string, Transform3D<>>::const_iterator it;
+    for(it = _positions.begin(); it != _positions.end(); it++) {
+        oarchive.write(it->first, "Name");
+        oarchive.write(it->second, "Transform3D");
     }
-    SimulatorLogEntry::write (oarchive, id);
+    SimulatorLogEntry::write(oarchive, id);
 }
 
-std::string LogPositions::getType () const
-{
-    return getTypeID ();
+std::string LogPositions::getType() const {
+    return getTypeID();
 }
 
-bool LogPositions::operator== (const SimulatorLog& b) const
-{
-    if (const LogPositions* const entry = dynamic_cast< const LogPositions* > (&b)) {
-        if (_positions != entry->_positions)
-            return false;
+bool LogPositions::operator==(const SimulatorLog& b) const {
+    if(const LogPositions* const entry = dynamic_cast<const LogPositions*>(&b)) {
+        if(_positions != entry->_positions) return false;
     }
-    return SimulatorLogEntry::operator== (b);
+    return SimulatorLogEntry::operator==(b);
 }
 
-std::list< SimulatorLogEntry::Ptr > LogPositions::getLinkedEntries () const
-{
-    return std::list< SimulatorLogEntry::Ptr > ();
+std::list<SimulatorLogEntry::Ptr> LogPositions::getLinkedEntries() const {
+    return std::list<SimulatorLogEntry::Ptr>();
 }
 
-bool LogPositions::autoLink ()
-{
+bool LogPositions::autoLink() {
     return true;
 }
 
-SimulatorLogEntry::Ptr LogPositions::createNew (SimulatorLogScope* parent) const
-{
-    return ownedPtr (new LogPositions (parent));
+SimulatorLogEntry::Ptr LogPositions::createNew(SimulatorLogScope* parent) const {
+    return ownedPtr(new LogPositions(parent));
 }
 
-const std::map< std::string, Transform3D<> >& LogPositions::getPositions () const
-{
+const std::map<std::string, Transform3D<>>& LogPositions::getPositions() const {
     return _positions;
 }
 
-const Transform3D<>& LogPositions::getPosition (const std::string& name) const
-{
-    const std::map< std::string, Transform3D<> >::const_iterator it = _positions.find (name);
-    RW_ASSERT (it != _positions.end ());
+const Transform3D<>& LogPositions::getPosition(const std::string& name) const {
+    const std::map<std::string, Transform3D<>>::const_iterator it = _positions.find(name);
+    RW_ASSERT(it != _positions.end());
     return it->second;
 }
 
-bool LogPositions::has (const std::string& name) const
-{
-    const std::map< std::string, Transform3D<> >::const_iterator it = _positions.find (name);
-    return it != _positions.end ();
+bool LogPositions::has(const std::string& name) const {
+    const std::map<std::string, Transform3D<>>::const_iterator it = _positions.find(name);
+    return it != _positions.end();
 }
 
-void LogPositions::setPositions (const std::map< std::string, Transform3D<> >& positions)
-{
+void LogPositions::setPositions(const std::map<std::string, Transform3D<>>& positions) {
     _positions = positions;
 }
 
-std::size_t LogPositions::size () const
-{
-    return _positions.size ();
+std::size_t LogPositions::size() const {
+    return _positions.size();
 }
 
-std::string LogPositions::getTypeID ()
-{
+std::string LogPositions::getTypeID() {
     return "Positions";
 }

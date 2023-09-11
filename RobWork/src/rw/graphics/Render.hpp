@@ -22,10 +22,9 @@
  * @file Render.hpp
  */
 #if !defined(SWIG)
-#include <rw/graphics/DrawableNode.hpp>
-
 #include <rw/core/Ptr.hpp>
-#endif 
+#include <rw/graphics/DrawableNode.hpp>
+#endif
 
 namespace rw { namespace graphics {
 
@@ -41,7 +40,7 @@ namespace rw { namespace graphics {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< Render > Ptr;
+        typedef rw::core::Ptr<Render> Ptr;
 
         /**
          * @brief when calling render on the draw mode or type
@@ -52,7 +51,7 @@ namespace rw { namespace graphics {
         /**
          * @brief destructor
          */
-        virtual ~Render (){};
+        virtual ~Render(){};
 
         /**
          * @brief draws the object.
@@ -60,19 +59,19 @@ namespace rw { namespace graphics {
          * @param type [in] the drawtype which is being used
          * @param alpha [in] the alpha value to render with
          */
-        virtual void draw (const DrawableNode::RenderInfo& info, DrawableNode::DrawType type,
-                           double alpha) const = 0;
+        virtual void draw(const DrawableNode::RenderInfo& info, DrawableNode::DrawType type,
+                          double alpha) const = 0;
 
       protected:
         //! @brief Only instances of classes inheriting Render is allowed
-        Render (){};
+        Render(){};
 
       private:
-        Render (const Render&);
-        Render& operator= (const Render&);
+        Render(const Render&);
+        Render& operator=(const Render&);
     };
     //! smart pointer type
-    typedef rw::core::Ptr< Render > RenderPtr;
+    typedef rw::core::Ptr<Render> RenderPtr;
 
     /*@}*/
 }}    // namespace rw::graphics

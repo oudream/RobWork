@@ -28,134 +28,108 @@ using namespace rw::common;
 using namespace rw::core;
 using namespace rwsim::log;
 
-SimulatorLogScope::SimulatorLogScope (SimulatorLogScope* parent) :
-    SimulatorLog (parent), _line (std::make_pair< int, int > (-1, -1))
-{}
+SimulatorLogScope::SimulatorLogScope(SimulatorLogScope* parent) :
+    SimulatorLog(parent), _line(std::make_pair<int, int>(-1, -1)) {}
 
-SimulatorLogScope::~SimulatorLogScope ()
-{}
+SimulatorLogScope::~SimulatorLogScope() {}
 
-void SimulatorLogScope::read (class InputArchive& iarchive, const std::string& id)
-{
-    _children.clear ();
-    _line.first           = iarchive.readInt ("LineFirst");
-    _line.second          = iarchive.readInt ("LineSecond");
-    unsigned int children = iarchive.readUInt ("Children");
-    _children.resize (children);
-    for (unsigned int i = 0; i < children; i++) {
-        const std::string type = iarchive.readString ("ChildType");
-        if (type == "Scope")
-            _children[i] = ownedPtr (new SimulatorLogScope (this));
-        else if (type == "Step")
-            _children[i] = ownedPtr (new LogStep (this));
+void SimulatorLogScope::read(class InputArchive& iarchive, const std::string& id) {
+    _children.clear();
+    _line.first           = iarchive.readInt("LineFirst");
+    _line.second          = iarchive.readInt("LineSecond");
+    unsigned int children = iarchive.readUInt("Children");
+    _children.resize(children);
+    for(unsigned int i = 0; i < children; i++) {
+        const std::string type = iarchive.readString("ChildType");
+        if(type == "Scope") _children[i] = ownedPtr(new SimulatorLogScope(this));
+        else if(type == "Step") _children[i] = ownedPtr(new LogStep(this));
         else {
-            if (!SimulatorLogEntry::Factory::hasEntryType (type))
-                RW_THROW ("Could not read entry of type \""
-                          << type << "\" - type could not be found in factory.");
-            const SimulatorLogEntry::Ptr entry = SimulatorLogEntry::Factory::makeEntry (type, this);
+            if(!SimulatorLogEntry::Factory::hasEntryType(type))
+                RW_THROW("Could not read entry of type \""
+                         << type << "\" - type could not be found in factory.");
+            const SimulatorLogEntry::Ptr entry = SimulatorLogEntry::Factory::makeEntry(type, this);
             _children[i]                       = entry;
-            entry->autoLink ();
+            entry->autoLink();
         }
-        _children[i]->read (iarchive, id);
+        _children[i]->read(iarchive, id);
     }
-    SimulatorLog::read (iarchive, id);
+    SimulatorLog::read(iarchive, id);
     _statistics = NULL;
 }
 
-void SimulatorLogScope::write (class OutputArchive& oarchive, const std::string& id) const
-{
-    oarchive.write (_line.first, "LineFirst");
-    oarchive.write (_line.second, "LineSecond");
-    oarchive.write (_children.size (), "Children");
-    for (const SimulatorLog::Ptr& child : _children) {
-        oarchive.write (child->getType (), "ChildType");
-        child->write (oarchive, "");
+void SimulatorLogScope::write(class OutputArchive& oarchive, const std::string& id) const {
+    oarchive.write(_line.first, "LineFirst");
+    oarchive.write(_line.second, "LineSecond");
+    oarchive.write(_children.size(), "Children");
+    for(const SimulatorLog::Ptr& child : _children) {
+        oarchive.write(child->getType(), "ChildType");
+        child->write(oarchive, "");
     }
-    SimulatorLog::write (oarchive, id);
+    SimulatorLog::write(oarchive, id);
 }
 
-std::size_t SimulatorLogScope::children () const
-{
-    return _children.size ();
+std::size_t SimulatorLogScope::children() const {
+    return _children.size();
 }
 
-std::string SimulatorLogScope::getType () const
-{
+std::string SimulatorLogScope::getType() const {
     return "Scope";
 }
 
-bool SimulatorLogScope::operator== (const SimulatorLog& b) const
-{
-    if (const SimulatorLogScope* const scope = dynamic_cast< const SimulatorLogScope* > (&b)) {
-        if (_line != scope->_line)
-            return false;
-        const std::vector< SimulatorLog::Ptr > bChildren = scope->_children;
-        if (bChildren.size () != _children.size ())
-            return false;
-        for (std::size_t i = 0; i < _children.size (); i++) {
-            if (*_children[i] != *bChildren[i])
-                return false;
+bool SimulatorLogScope::operator==(const SimulatorLog& b) const {
+    if(const SimulatorLogScope* const scope = dynamic_cast<const SimulatorLogScope*>(&b)) {
+        if(_line != scope->_line) return false;
+        const std::vector<SimulatorLog::Ptr> bChildren = scope->_children;
+        if(bChildren.size() != _children.size()) return false;
+        for(std::size_t i = 0; i < _children.size(); i++) {
+            if(*_children[i] != *bChildren[i]) return false;
         }
     }
-    return SimulatorLog::operator== (b);
+    return SimulatorLog::operator==(b);
 }
 
-std::vector< SimulatorLog::Ptr > SimulatorLogScope::getChildren () const
-{
+std::vector<SimulatorLog::Ptr> SimulatorLogScope::getChildren() const {
     return _children;
 }
 
-SimulatorLog::Ptr SimulatorLogScope::getChild (std::size_t id) const
-{
-    RW_ASSERT (id < children ());
+SimulatorLog::Ptr SimulatorLogScope::getChild(std::size_t id) const {
+    RW_ASSERT(id < children());
     return _children[id];
 }
 
-std::size_t SimulatorLogScope::indexOf (const SimulatorLog* child) const
-{
+std::size_t SimulatorLogScope::indexOf(const SimulatorLog* child) const {
     std::size_t i = 0;
-    for (const SimulatorLog::Ptr& c : _children) {
-        if (c.get () == child)
-            return i;
+    for(const SimulatorLog::Ptr& c : _children) {
+        if(c.get() == child) return i;
         i++;
     }
-    return _children.size ();
+    return _children.size();
 }
 
-void SimulatorLogScope::appendChild (SimulatorLog::Ptr child)
-{
-    _children.push_back (child);
+void SimulatorLogScope::appendChild(SimulatorLog::Ptr child) {
+    _children.push_back(child);
     _statistics = NULL;
 }
 
-rw::core::Ptr< const SimulatorStatistics > SimulatorLogScope::getStatistics ()
-{
-    if (_statistics == NULL) {
-        _statistics = ownedPtr (new SimulatorStatistics (this));
-    }
-    _statistics->update ();
-    if (_statistics->hasData () == 0)
-        return 0;
-    else
-        return _statistics;
+rw::core::Ptr<const SimulatorStatistics> SimulatorLogScope::getStatistics() {
+    if(_statistics == NULL) { _statistics = ownedPtr(new SimulatorStatistics(this)); }
+    _statistics->update();
+    if(_statistics->hasData() == 0) return 0;
+    else return _statistics;
 }
 
-int SimulatorLogScope::lineBegin () const
-{
+int SimulatorLogScope::lineBegin() const {
     return _line.first;
 }
 
-int SimulatorLogScope::lineEnd () const
-{
+int SimulatorLogScope::lineEnd() const {
     return _line.second;
 }
 
-void SimulatorLogScope::setLineBegin (int line)
-{
+void SimulatorLogScope::setLineBegin(int line) {
     _line.first = line;
 }
 
-void SimulatorLogScope::setLineEnd (int line)
-{
+void SimulatorLogScope::setLineEnd(int line) {
     _line.second = line;
 }

@@ -20,51 +20,51 @@
 
 #if !defined(SWIG)
 #include <rw/geometry/OBB.hpp>
-#endif 
+#endif
 namespace rw { namespace proximity {
 
     //! @brief Interface for accessing primitives.
-    template< class PRIM > struct PrimArrayAccessor
+    template<class PRIM> struct PrimArrayAccessor
     {
         //! @brief Type of primitive.
         typedef PRIM PRIMType;
 
         //! @brief Destructor.
-        virtual ~PrimArrayAccessor () {}
+        virtual ~PrimArrayAccessor() {}
 
         /**
          * @brief Get primitive.
          * @param pidx [in] id of primitive.
          * @param prim [out] the primitive.
          */
-        virtual void getPrimitive (size_t pidx, PRIM& prim) const = 0;
+        virtual void getPrimitive(size_t pidx, PRIM& prim) const = 0;
 
         /**
          * @brief Get the number of primitives.
          * @return the number of primitices.
          */
-        virtual size_t getSize () const = 0;
+        virtual size_t getSize() const = 0;
     };
 
-    template< class DERIVED, class BV > struct BVTreeIterator
+    template<class DERIVED, class BV> struct BVTreeIterator
     {
         typedef BV BVType;
         //! @brief constructor
 
-        inline DERIVED* downcast () { return static_cast< const DERIVED* > (this); }
-        inline const DERIVED* downcast () const { return static_cast< const DERIVED* > (this); }
+        inline DERIVED* downcast() { return static_cast<const DERIVED*>(this); }
+        inline const DERIVED* downcast() const { return static_cast<const DERIVED*>(this); }
 
-        inline int getId () const { return downcast ()->getId (); };
-        inline const BVType& getBV () const { return downcast ()->bv (); };
-        inline bool isLeaf () const { return downcast ()->leaf (); };
-        inline DERIVED left () const { return downcast ()->left (); };
-        inline DERIVED right () const { return downcast ()->right (); };
-        inline bool hasRight () const { return downcast ()->hasRight (); };
-        inline bool hasLeft () const { return downcast ()->hasLeft (); };
-        inline unsigned char depth () const { return downcast ()->depth (); };
+        inline int getId() const { return downcast()->getId(); };
+        inline const BVType& getBV() const { return downcast()->bv(); };
+        inline bool isLeaf() const { return downcast()->leaf(); };
+        inline DERIVED left() const { return downcast()->left(); };
+        inline DERIVED right() const { return downcast()->right(); };
+        inline bool hasRight() const { return downcast()->hasRight(); };
+        inline bool hasLeft() const { return downcast()->hasLeft(); };
+        inline unsigned char depth() const { return downcast()->depth(); };
 
-        inline size_t primitiveIdx () const { return downcast ()->primitiveIdx (); }
-        inline size_t nrOfPrimitives () const { return downcast ()->nrOfPrimitives (); }
+        inline size_t primitiveIdx() const { return downcast()->primitiveIdx(); }
+        inline size_t nrOfPrimitives() const { return downcast()->nrOfPrimitives(); }
 
         // inline std::vector<PRIMType> getPrimitives() const {
         //    return downcast()->getPrimitives();
@@ -78,7 +78,7 @@ namespace rw { namespace proximity {
      *
      */
 #ifdef bubmumb
-    template< class NODEITERATOR > class BVTree
+    template<class NODEITERATOR> class BVTree
     {
       public:
         typedef typename NODEITERATOR::BVType BVType;
@@ -86,23 +86,23 @@ namespace rw { namespace proximity {
         typedef typename BVType::value_type value_type;
         typedef NODEITERATOR Node;
 
-        BVTree (rw::geometry::TriMesh::Ptr triangles) : _triangles (triangles) {}
+        BVTree(rw::geometry::TriMesh::Ptr triangles) : _triangles(triangles) {}
 
-        virtual ~BVTree (){};
+        virtual ~BVTree(){};
 
         virtual NODEITERATOR
-        getRootIterator () const = 0;    //{ return static_cast<DERIVED*>(this)->getRoot(); }
-        virtual int getMaxTrisPerLeaf () const = 0;
+        getRootIterator() const = 0;    //{ return static_cast<DERIVED*>(this)->getRoot(); }
+        virtual int getMaxTrisPerLeaf() const = 0;
 
-        virtual NODEITERATOR createLeft (NODEITERATOR parent)  = 0;
-        virtual NODEITERATOR createRight (NODEITERATOR parent) = 0;
-        virtual NODEITERATOR createRoot ()                     = 0;
+        virtual NODEITERATOR createLeft(NODEITERATOR parent)  = 0;
+        virtual NODEITERATOR createRight(NODEITERATOR parent) = 0;
+        virtual NODEITERATOR createRoot()                     = 0;
 
-        virtual void setBV (const BVType& bv, NODEITERATOR node) = 0;
-        virtual void setNrOfPrims (int size, NODEITERATOR node)  = 0;
-        virtual void setPrimIdx (int primIdx, NODEITERATOR node) = 0;
+        virtual void setBV(const BVType& bv, NODEITERATOR node) = 0;
+        virtual void setNrOfPrims(int size, NODEITERATOR node)  = 0;
+        virtual void setPrimIdx(int primIdx, NODEITERATOR node) = 0;
 
-        virtual void compile () = 0;
+        virtual void compile() = 0;
 
         /**
          * @brief get triangle nr \b triNr that the BVNode \b leafnode is bounding. The result is
@@ -112,13 +112,12 @@ namespace rw { namespace proximity {
          * @param triNr [in] the triangle nr
          * @return global index of triangle
          */
-        inline int getTriangle (const NODEITERATOR& leafnode,
-                                rw::geometry::Triangle< value_type >& dst, size_t triNr) const
-        {
-            RW_ASSERT (leafnode.nrOfTriangles () > 0);
-            size_t idx = leafnode.triangleIdx ();
+        inline int getTriangle(const NODEITERATOR& leafnode,
+                               rw::geometry::Triangle<value_type>& dst, size_t triNr) const {
+            RW_ASSERT(leafnode.nrOfTriangles() > 0);
+            size_t idx = leafnode.triangleIdx();
             // std::cout << "Idx: " << idx+triNr << "  " << idx<<"+"<<triNr<< "\n";
-            _triangles->getTriangle (idx + triNr, dst);
+            _triangles->getTriangle(idx + triNr, dst);
             // std::cout << dst[0] << "\n";
             return idx + triNr;
         }
@@ -129,9 +128,8 @@ namespace rw { namespace proximity {
             return downcast()->getTriangles();
         }*/
 
-        inline size_t getNrTriangles (const NODEITERATOR& leafnode) const
-        {
-            return leafnode.nrOfTriangles ();
+        inline size_t getNrTriangles(const NODEITERATOR& leafnode) const {
+            return leafnode.nrOfTriangles();
         };
 
       private:
@@ -139,38 +137,38 @@ namespace rw { namespace proximity {
     };
 #endif
 
-    template< class DERIVED > class BVTree
+    template<class DERIVED> class BVTree
     {
       public:
-        typedef typename Traits< DERIVED >::BVType BVType;
-        typedef typename Traits< DERIVED >::PRIMType PRIMType;
+        typedef typename Traits<DERIVED>::BVType BVType;
+        typedef typename Traits<DERIVED>::PRIMType PRIMType;
         typedef typename BVType::value_type value_type;
-        typedef typename Traits< DERIVED >::NodeIterator NodeIterator;
-        typedef typename Traits< DERIVED >::Node Node;
+        typedef typename Traits<DERIVED>::NodeIterator NodeIterator;
+        typedef typename Traits<DERIVED>::Node Node;
 
       public:
         /**
          * @brief Constructor. The BVTree takes ownership of the \b primAccessor .
          * @param primAccessor
          */
-        BVTree (PrimArrayAccessor< PRIMType >* primAccessor) : _pAccessor (primAccessor) {}
+        BVTree(PrimArrayAccessor<PRIMType>* primAccessor) : _pAccessor(primAccessor) {}
 
         //! @brief Destructor.
-        virtual ~BVTree () { delete _pAccessor; }
+        virtual ~BVTree() { delete _pAccessor; }
 
         virtual NodeIterator
-        getRootIterator () const = 0;    //{ return static_cast<DERIVED*>(this)->getRoot(); }
-        virtual int getMaxTrisPerLeaf () const = 0;
+        getRootIterator() const = 0;    //{ return static_cast<DERIVED*>(this)->getRoot(); }
+        virtual int getMaxTrisPerLeaf() const = 0;
 
-        virtual NodeIterator createLeft (NodeIterator parent)  = 0;
-        virtual NodeIterator createRight (NodeIterator parent) = 0;
-        virtual NodeIterator createRoot ()                     = 0;
+        virtual NodeIterator createLeft(NodeIterator parent)  = 0;
+        virtual NodeIterator createRight(NodeIterator parent) = 0;
+        virtual NodeIterator createRoot()                     = 0;
 
-        virtual void setBV (const BVType& bv, NodeIterator node) = 0;
-        virtual void setNrOfPrims (int size, NodeIterator node)  = 0;
-        virtual void setPrimIdx (int primIdx, NodeIterator node) = 0;
+        virtual void setBV(const BVType& bv, NodeIterator node) = 0;
+        virtual void setNrOfPrims(int size, NodeIterator node)  = 0;
+        virtual void setPrimIdx(int primIdx, NodeIterator node) = 0;
 
-        virtual void optimize () = 0;
+        virtual void optimize() = 0;
 
         /**
          * @brief get triangle nr \b triNr that the BVNode \b leafnode is bounding. The result is
@@ -183,19 +181,17 @@ namespace rw { namespace proximity {
          * @param dst documentation missing !
          * @return global index of triangle
          */
-        inline int getPrimitive (const NodeIterator& leafnode, PRIMType& dst, size_t triNr) const
-        {
-            RW_ASSERT (leafnode.nrOfPrimitives () > 0);
-            size_t idx = leafnode.primitiveIdx ();
+        inline int getPrimitive(const NodeIterator& leafnode, PRIMType& dst, size_t triNr) const {
+            RW_ASSERT(leafnode.nrOfPrimitives() > 0);
+            size_t idx = leafnode.primitiveIdx();
             // std::cout << "Idx: " << idx+triNr << "  " << idx<<"+"<<triNr<< "\n";
-            _pAccessor->getPrimitive (idx + triNr, dst);
+            _pAccessor->getPrimitive(idx + triNr, dst);
             // std::cout << dst[0] << "\n";
             return (int) (idx + triNr);
         }
 
-        inline size_t getNrPrimitives (const NodeIterator& leafnode) const
-        {
-            return leafnode.nrOfPrimitives ();
+        inline size_t getNrPrimitives(const NodeIterator& leafnode) const {
+            return leafnode.nrOfPrimitives();
         }
 
         /*
@@ -205,7 +201,7 @@ namespace rw { namespace proximity {
         */
 
       private:
-        const PrimArrayAccessor< PRIMType >* const _pAccessor;
+        const PrimArrayAccessor<PRIMType>* const _pAccessor;
     };
 
 }}    // namespace rw::proximity

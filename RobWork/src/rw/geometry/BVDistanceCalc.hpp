@@ -20,33 +20,31 @@
 
 #if !defined(SWIG)
 #include <rw/math/Transform3D.hpp>
-#endif 
+#endif
 namespace rw { namespace proximity {
-template< class COLLIDER, class BVTYPE > class BVDistanceCalc
-{
-  public:
-    typedef BVTYPE BVType;
-    typedef typename BVTYPE::value_type value_type;
-
-    BVDistanceCalc (){};
-
-    virtual ~BVDistanceCalc (){};
-
-    inline value_type distance (const BVTYPE& a, const BVTYPE& b,
-                                const rw::math::Transform3D<value_type>& aTb)
+    template<class COLLIDER, class BVTYPE> class BVDistanceCalc
     {
-        return distance (a, b, aTb.P ());
-    }
+      public:
+        typedef BVTYPE BVType;
+        typedef typename BVTYPE::value_type value_type;
 
-    inline value_type distance (const BVTYPE& a, const BVTYPE& b, const rw::math::Vector3D<value_type>& aTb)
-    {
-        return ((COLLIDER*) this)->distance (a, b, aTb);
-    }
+        BVDistanceCalc(){};
 
-    inline value_type distance (const BVTYPE& a, const BVTYPE& b)
-    {
-        return ((COLLIDER*) this)->distance (a, b);
-    }
-};
-}}
+        virtual ~BVDistanceCalc(){};
+
+        inline value_type distance(const BVTYPE& a, const BVTYPE& b,
+                                   const rw::math::Transform3D<value_type>& aTb) {
+            return distance(a, b, aTb.P());
+        }
+
+        inline value_type distance(const BVTYPE& a, const BVTYPE& b,
+                                   const rw::math::Vector3D<value_type>& aTb) {
+            return ((COLLIDER*) this)->distance(a, b, aTb);
+        }
+
+        inline value_type distance(const BVTYPE& a, const BVTYPE& b) {
+            return ((COLLIDER*) this)->distance(a, b);
+        }
+    };
+}}     // namespace rw::proximity
 #endif /* BVCOLLIDER_HPP_ */

@@ -22,14 +22,13 @@
  * @file CameraModel.hpp
  */
 #if !defined(SWIG)
+#include <rw/core/Ptr.hpp>
+#include <rw/math/ProjectionMatrix.hpp>
 #include <rw/sensor/Image.hpp>
 #include <rw/sensor/SensorModel.hpp>
 
-#include <rw/core/Ptr.hpp>
-#include <rw/math/ProjectionMatrix.hpp>
-
 #include <string>
-#endif 
+#endif
 
 namespace rw { namespace kinematics {
     class State;
@@ -49,9 +48,9 @@ namespace rw { namespace sensor {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< CameraModel > Ptr;
+        typedef rw::core::Ptr<CameraModel> Ptr;
         //! @brief smart pointer type to this const class
-        typedef rw::core::Ptr< const CameraModel > CPtr;
+        typedef rw::core::Ptr<const CameraModel> CPtr;
 
       public:
         /**
@@ -61,13 +60,13 @@ namespace rw { namespace sensor {
          * @param frame [in] frame that camera is attached/referenced to
          * @param modelInfo [in] text description of the camera
          */
-        CameraModel (const rw::math::ProjectionMatrix& projection, const std::string& name,
-                     rw::core::Ptr<rw::kinematics::Frame> frame, const std::string& modelInfo = "");
+        CameraModel(const rw::math::ProjectionMatrix& projection, const std::string& name,
+                    rw::core::Ptr<rw::kinematics::Frame> frame, const std::string& modelInfo = "");
 
         /**
          * @brief destructor
          */
-        virtual ~CameraModel ();
+        virtual ~CameraModel();
 
         /**
          * @brief returns the image if it has been saved in the State. Else null is
@@ -75,67 +74,63 @@ namespace rw { namespace sensor {
          * @param state [in] the state in which the image is taken.
          * @return last image captured from camera.
          */
-        Image::Ptr getImage (const rw::kinematics::State& state);
+        Image::Ptr getImage(const rw::kinematics::State& state);
 
         /**
          * @brief set the image in the state
          * @param img [in] image to set in state
          * @param state [in/out] the state in which to set the image.
          */
-        void setImage (Image::Ptr img, rw::kinematics::State& state);
+        void setImage(Image::Ptr img, rw::kinematics::State& state);
 
         //! @brief get the camera projection matrix
-        rw::math::ProjectionMatrix getProjectionMatrix () const;
+        rw::math::ProjectionMatrix getProjectionMatrix() const;
 
         /**
          * @brief get horisontal field of view.
          * @return  field of view in degrees
          */
-        double getFieldOfViewX () const;
+        double getFieldOfViewX() const;
 
         /**
          * @brief get Vertical field of view.
          * @return  field of view in degrees
          */
-        double getFieldOfViewY () const;
+        double getFieldOfViewY() const;
 
         ///// a list of features that most of the time is available
         /**
          * @brief get far clipping plane
          * @return distance to far clipping plane in meters.
          */
-        double getFarClippingPlane () const;
+        double getFarClippingPlane() const;
         /**
          * @brief get near clipping plane
          * @return distance to near clipping plane in meters.
          */
-        double getNearClippingPlane () const;
+        double getNearClippingPlane() const;
 
       protected:
         //! CameraModelCache that define data to store in the State
         class CameraModelCache : public rw::kinematics::StateCache
         {
           public:
-            typedef rw::core::Ptr< CameraModelCache > Ptr;
-            rw::core::Ptr< rw::sensor::Image > _image;
+            typedef rw::core::Ptr<CameraModelCache> Ptr;
+            rw::core::Ptr<rw::sensor::Image> _image;
 
             //! constructor
-            CameraModelCache () {}
+            CameraModelCache() {}
 
             //! @copydoc rw::kinematics::StateCache::size
-            size_t size () const
-            {
-                if (_image != NULL)
-                    return _image->getDataSize ();
+            size_t size() const {
+                if(_image != NULL) return _image->getDataSize();
                 return 0;
             }
 
             //! @copydoc rw::kinematics::StateCache::clone
-            virtual rw::core::Ptr< StateCache > clone () const
-            {
-                CameraModelCache::Ptr cache = rw::core::ownedPtr (new CameraModelCache (*this));
-                if (_image != NULL)
-                    cache->_image = rw::core::ownedPtr (new Image (*_image));
+            virtual rw::core::Ptr<StateCache> clone() const {
+                CameraModelCache::Ptr cache = rw::core::ownedPtr(new CameraModelCache(*this));
+                if(_image != NULL) cache->_image = rw::core::ownedPtr(new Image(*_image));
                 return cache;
             }
         };
@@ -143,7 +138,7 @@ namespace rw { namespace sensor {
       private:
         //! name of camera model information
         rw::math::ProjectionMatrix _pmatrix;
-        rw::kinematics::StatelessData< int > _sdata;
+        rw::kinematics::StatelessData<int> _sdata;
     };
 
     /* @} */

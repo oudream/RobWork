@@ -33,7 +33,7 @@
 
 // Forward declarations
 namespace rw { namespace trajectory {
-    template< class T > class Trajectory;
+    template<class T> class Trajectory;
 }}    // namespace rw::trajectory
 
 namespace rwlibs { namespace assembly {
@@ -47,13 +47,13 @@ namespace rwlibs { namespace assembly {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< AssemblyControlResponse > Ptr;
+        typedef rw::core::Ptr<AssemblyControlResponse> Ptr;
 
         //! @brief Constructor.
-        AssemblyControlResponse ();
+        AssemblyControlResponse();
 
         //! @brief Destructor.
-        virtual ~AssemblyControlResponse ();
+        virtual ~AssemblyControlResponse();
 
         //! @brief The control mode.
         typedef enum Type {
@@ -68,14 +68,14 @@ namespace rwlibs { namespace assembly {
         //! @brief Positional control of the robot.
         rw::math::Transform3D<> femaleTmaleTarget;
         //! @brief Trajectory control of the robot (in world coordinates).
-        rw::core::Ptr< rw::trajectory::Trajectory< rw::math::Transform3D<> > > worldTendTrajectory;
+        rw::core::Ptr<rw::trajectory::Trajectory<rw::math::Transform3D<>>> worldTendTrajectory;
         //! @brief Relative velocity target for velocity control.
         rw::math::VelocityScrew6D<> femaleTmaleVelocityTarget;
         //! @brief Specify the coordinate axes for hybrid force/torque control.
         rw::math::Rotation3D<> offset;
         //! @brief Select which coordinates axes to use force/torque control instead of position
         //! control.
-        rw::math::VectorND< 6, bool > selection;
+        rw::math::VectorND<6, bool> selection;
         //! @brief Specify the force and torque target - only the elements specified by the
         //! selection vector is used.
         rw::math::Wrench6D<> force_torque;

@@ -46,8 +46,8 @@ namespace rwsim { namespace util {
          * number of samples is allowed
          * @param type documentation missing !
          */
-        FiniteStateSampler (const rw::kinematics::State& state, int n = 1,
-                            SamplerType type = ORDERED_SAMPLING);
+        FiniteStateSampler(const rw::kinematics::State& state, int n = 1,
+                           SamplerType type = ORDERED_SAMPLING);
 
         /**
          * @brief constructor for sampling multiple states
@@ -56,46 +56,46 @@ namespace rwsim { namespace util {
          * number of samples is allowed
          * @param type documentation missing !
          */
-        FiniteStateSampler (const std::vector< rw::kinematics::State >& states, int n = 1,
-                            SamplerType type = ORDERED_SAMPLING);
+        FiniteStateSampler(const std::vector<rw::kinematics::State>& states, int n = 1,
+                           SamplerType type = ORDERED_SAMPLING);
 
         /**
          * @brief destructor
          */
-        virtual ~FiniteStateSampler ();
+        virtual ~FiniteStateSampler();
 
         /**
          * @brief add a single state to sample
          * @param state [in] state to sample
          */
-        void addState (const rw::kinematics::State& state);
+        void addState(const rw::kinematics::State& state);
 
         /**
          * @brief add states to be sampled
          * @param states [in] states to sample
          */
-        void addStates (const std::vector< rw::kinematics::State >& states);
+        void addStates(const std::vector<rw::kinematics::State>& states);
 
         /**
          * @brief set the states that you want sampled
          * @param states [in] the states to sample
          */
-        void setStates (const std::vector< rw::kinematics::State >& states);
+        void setStates(const std::vector<rw::kinematics::State>& states);
 
         /**
          * @copydoc StateSampler::sample
          *
          * One of the states in the finite state list is choosen and returned
          */
-        bool sample (rw::kinematics::State& state);
+        bool sample(rw::kinematics::State& state);
 
         //! @copydoc StateSampler::sample
-        bool empty () const;
+        bool empty() const;
 
       private:
         SamplerType _type;
         int _n, _cidx;
-        std::vector< rw::kinematics::State > _states;
+        std::vector<rw::kinematics::State> _states;
         bool _empty;
     };
     //! @}

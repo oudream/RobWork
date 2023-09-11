@@ -43,7 +43,7 @@ namespace rw { namespace geometry {
          * @param height [in] height of the cylinder.
          * @param levels [in] granularity of the mesh.
          */
-        Tube (float radius, float thickness, float height, int levels = 16);
+        Tube(float radius, float thickness, float height, int levels = 16);
 
         /**
          * @brief Constructs tube primitive based on vector with parameters
@@ -51,42 +51,42 @@ namespace rw { namespace geometry {
          * @param initQ [in] vector of (radius, height)
          * @param levels [in] granularity of the mesh
          */
-        Tube (const rw::math::Q& initQ, int levels = 16);
+        Tube(const rw::math::Q& initQ, int levels = 16);
 
         //! @brief destructor
-        virtual ~Tube ();
+        virtual ~Tube();
 
         /**
          * @brief Get the inner radius of the tube.
          * @return the radius
          */
-        float getInnerRadius () const;
+        float getInnerRadius() const;
 
         /**
          * @brief Get the thickness of the tube.
          * @return the thickness.
          */
-        float getThickness () const;
+        float getThickness() const;
 
         /**
          * @brief Get the height of the tube.
          * @return the height
          */
-        float getHeight () const;
+        float getHeight() const;
 
         // inherited from Primitive
 
         //! @copydoc Primitive::createMesh
-        TriMesh::Ptr createMesh (int resolution) const;
+        TriMesh::Ptr createMesh(int resolution) const;
 
         //! @copydoc Primitive::getParameters
-        virtual rw::math::Q getParameters () const;
+        virtual rw::math::Q getParameters() const;
 
         //! @copydoc Primitive::setParameters
-        virtual void setParameters (const rw::math::Q& q);
+        virtual void setParameters(const rw::math::Q& q);
 
         //! @copydoc GeometryData::getType
-        GeometryType getType () const { return TubePrim; }
+        GeometryType getType() const { return TubePrim; }
 
       protected:
         /**
@@ -94,7 +94,7 @@ namespace rw { namespace geometry {
          * @param point [in] point to check.
          * @return true if inside geometry, false otherwise.
          */
-        bool doIsInside (const rw::math::Vector3D<double>& point);
+        bool doIsInside(const rw::math::Vector3D<double>& point);
 
       private:
         float _radius;

@@ -32,10 +32,10 @@ namespace rwlibs { namespace csg {
     {
       public:
         /** Converts TriMesh to csgjs_model */
-        static rw::core::Ptr< csgjs_model > TriMesh2csgjs_model (const rw::geometry::TriMesh& mesh);
+        static rw::core::Ptr<csgjs_model> TriMesh2csgjs_model(const rw::geometry::TriMesh& mesh);
 
         /** Converts csgjs_model to TriMesh */
-        static rw::geometry::TriMesh::Ptr csgjs_model2TriMesh (rw::core::Ptr< csgjs_model > model);
+        static rw::geometry::TriMesh::Ptr csgjs_model2TriMesh(rw::core::Ptr<csgjs_model> model);
     };
 
 }}    // namespace rwlibs::csg

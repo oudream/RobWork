@@ -6,45 +6,42 @@
 
 #pragma once
 
-#include <string>
 #include <rw/rw.hpp>
 #include <rwsim/rwsim.hpp>
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/xml_parser.hpp>
-#include <boost/optional.hpp>
 
 #include <boost/lexical_cast.hpp>
+#include <boost/optional.hpp>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/xml_parser.hpp>
+#include <string>
 
+namespace rwlibs { namespace xml {
 
+    /// Boost property tree shorthand.
+    typedef boost::property_tree::ptree PTree;
 
-namespace rwlibs {
-	namespace xml {
+    /// Boost property tree iterator shorthand.
+    typedef PTree::iterator CI;
 
-/// Boost property tree shorthand.	
-typedef boost::property_tree::ptree PTree;
+    /**
+     * @class XMLHelpers
+     * @brief Contains assorted methods for parsing XML files.
+     */
+    class XMLHelpers
+    {
+      public:
+        // static methods
+        static std::vector<double> readArray(PTree& tree);
+        static double readInt(PTree& tree);
+        static double readDouble(PTree& tree);
+        static rw::math::Q readQ(PTree& tree);
 
-/// Boost property tree iterator shorthand.
-typedef PTree::iterator CI;
-		
-/**
- * @class XMLHelpers
- * @brief Contains assorted methods for parsing XML files.
- */
-class XMLHelpers
-{
-	public:		
-	// static methods
-		static std::vector<double> readArray(PTree& tree);
-		static double readInt(PTree& tree);
-		static double readDouble(PTree& tree);
-		static rw::math::Q readQ(PTree& tree);
-		
-		static std::string QToString(rw::math::Q q);
-	
-	protected:
-	// static methods
-		static std::pair<bool, int> toInt(const std::string& str);
-		static std::pair<bool, double> toDouble(const std::string& str);
-};
+        static std::string QToString(rw::math::Q q);
 
-}} // end namespaces
+      protected:
+        // static methods
+        static std::pair<bool, int> toInt(const std::string& str);
+        static std::pair<bool, double> toDouble(const std::string& str);
+    };
+
+}}    // namespace rwlibs::xml

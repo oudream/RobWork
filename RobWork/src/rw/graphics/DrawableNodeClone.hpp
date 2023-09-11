@@ -22,12 +22,10 @@
  * @file DrawableNodeClone.hpp
  */
 #if !defined(SWIG)
-#include <rw/graphics/DrawableNode.hpp>
-
 #include <rw/core/Ptr.hpp>
+#include <rw/graphics/DrawableNode.hpp>
 #include <rw/math/Transform3D.hpp>
-#endif 
-
+#endif
 
 namespace rw { namespace graphics {
 
@@ -54,7 +52,7 @@ namespace rw { namespace graphics {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< DrawableNodeClone > Ptr;
+        typedef rw::core::Ptr<DrawableNodeClone> Ptr;
 
         /**
          * @brief constructor
@@ -62,34 +60,32 @@ namespace rw { namespace graphics {
          * @param drawable [in] the drawable to clone - it will not make an actual clone of data,
          * only of the visualization.
          */
-        DrawableNodeClone (const std::string& name, DrawableNode::Ptr drawable) :
-            DrawableNode (name), _drawable (drawable)
-        {
+        DrawableNodeClone(const std::string& name, DrawableNode::Ptr drawable) :
+            DrawableNode(name), _drawable(drawable) {
             _highlightedState = false;
-            _highlighted      = _drawable->isHighlighted ();
+            _highlighted      = _drawable->isHighlighted();
             _visibleState     = false;
-            _visible          = _drawable->isVisible ();
-            _transform        = _drawable->getTransform ();
+            _visible          = _drawable->isVisible();
+            _transform        = _drawable->getTransform();
             _scaleState       = 0;
-            _scale            = _drawable->getScale ();
+            _scale            = _drawable->getScale();
             _maskState        = 0;
-            _mask             = _drawable->getMask ();
+            _mask             = _drawable->getMask();
             _alphaState       = 0;
-            _alpha            = _drawable->getTransparency ();
+            _alpha            = _drawable->getTransparency();
         }
 
         //! destructor
-        virtual ~DrawableNodeClone () {}
+        virtual ~DrawableNodeClone() {}
 
         /**
          * @brief draws the object.
          */
-        void draw (const DrawableNode::RenderInfo& info = DrawableNode::RenderInfo ()) const
-        {
-            saveState ();
-            setState ();
-            _drawable->draw (info);
-            restoreState ();
+        void draw(const DrawableNode::RenderInfo& info = DrawableNode::RenderInfo()) const {
+            saveState();
+            setState();
+            _drawable->draw(info);
+            restoreState();
         }
 
         /**
@@ -97,21 +93,21 @@ namespace rw { namespace graphics {
          *
          * @param b [in] a if true highlight is enabled if false disabled
          */
-        virtual void setHighlighted (bool b) { _highlighted = b; }
+        virtual void setHighlighted(bool b) { _highlighted = b; }
 
         /**
          * @brief Returns whether the DrawableNode is highlighted
          *
          * @return true/false
          */
-        virtual bool isHighlighted () const { return _highlighted; }
+        virtual bool isHighlighted() const { return _highlighted; }
 
         /**
          * @brief Sets the DrawType
          *
          * @param drawType [in] the DrawType to be used
          */
-        virtual void setDrawType (DrawType drawType) {}
+        virtual void setDrawType(DrawType drawType) {}
 
         /**
          * @brief Sets up the color alpha value.
@@ -119,97 +115,94 @@ namespace rw { namespace graphics {
          * @param alpha [in] \f$ 0.0 \f$ corresponds to fully transparent and
          * \f$1.0\f$ to completely solid.
          */
-        virtual void setTransparency (float alpha) { _alpha = alpha; }
+        virtual void setTransparency(float alpha) { _alpha = alpha; }
 
         /**
          * @brief Gets the color alpha value.
          * @return alpha value in the interval \f$ [0.0;1.0] \f$
          */
-        virtual float getTransparency () { return _alpha; }
+        virtual float getTransparency() { return _alpha; }
 
         /**
          * @brief Specifies the scale of the object
          * @param scale [in] the scale
          */
-        virtual void setScale (float scale) { _scale = scale; }
+        virtual void setScale(float scale) { _scale = scale; }
 
         /**
          * @brief gets the scale of the object
          * @return scale [in] the scale
          */
-        virtual float getScale () const { return _scale; }
+        virtual float getScale() const { return _scale; }
 
         /**
          * @brief enable or disable this drawable. When disabled the drawable
          * will not render anything.
          */
-        virtual void setVisible (bool enable) { _visible = enable; }
+        virtual void setVisible(bool enable) { _visible = enable; }
 
         /**
          * @brief checks if this drawable is enabled
          */
-        virtual bool isVisible () { return _visible; }
+        virtual bool isVisible() { return _visible; }
 
         /**
          * @brief gets the transformation of the drawable object
          * @return transform of the drawable object
          */
-        virtual const rw::math::Transform3D<>& getTransform () const { return _transform; }
+        virtual const rw::math::Transform3D<>& getTransform() const { return _transform; }
 
         /**
          * @brief Sets the transformation of the drawable object
          * @param t3d [in] transform of drawable object
          */
-        virtual void setTransform (const rw::math::Transform3D<>& t3d) { _transform = t3d; }
+        virtual void setTransform(const rw::math::Transform3D<>& t3d) { _transform = t3d; }
 
         /**
          * @brief the group(s) that this drawable belong to
          * @param mask [in] drawable mask
          */
-        virtual void setMask (unsigned int mask) { _mask = mask; }
+        virtual void setMask(unsigned int mask) { _mask = mask; }
 
         /**
          * @brief Get the DrawableTypeMask for the node.
          * @return the type mask.
          */
-        virtual unsigned int getMask () const { return _mask; }
+        virtual unsigned int getMask() const { return _mask; }
 
       protected:
         //! saves state of drawable
-        void saveState () const
-        {
-            _highlightedState = _drawable->isHighlighted ();
-            _visibleState     = _drawable->isVisible ();
-            _transformState   = _drawable->getTransform ();
-            _alphaState       = _drawable->getTransparency ();
-            _maskState        = _drawable->getMask ();
-            _scaleState       = _drawable->getScale ();
+        void saveState() const {
+            _highlightedState = _drawable->isHighlighted();
+            _visibleState     = _drawable->isVisible();
+            _transformState   = _drawable->getTransform();
+            _alphaState       = _drawable->getTransparency();
+            _maskState        = _drawable->getMask();
+            _scaleState       = _drawable->getScale();
         }
         //! sets state of drawable
-        void setState () const
-        {
-            _drawable->setHighlighted (_highlighted);
-            _drawable->setVisible (_visible);
-            _drawable->setTransform (_transform);
-            _drawable->setTransparency (_alpha);
-            _drawable->setMask (_mask);
-            _drawable->setScale (_scale);
+        void setState() const {
+            _drawable->setHighlighted(_highlighted);
+            _drawable->setVisible(_visible);
+            _drawable->setTransform(_transform);
+            _drawable->setTransparency(_alpha);
+            _drawable->setMask(_mask);
+            _drawable->setScale(_scale);
         }
         //! restore the drawable state
-        void restoreState () const
-        {
-            _drawable->setHighlighted (_highlightedState);
-            _drawable->setVisible (_visibleState);
-            _drawable->setTransform (_transformState);
-            _drawable->setTransparency (_alphaState);
-            _drawable->setMask (_maskState);
-            _drawable->setScale (_scaleState);
+        void restoreState() const {
+            _drawable->setHighlighted(_highlightedState);
+            _drawable->setVisible(_visibleState);
+            _drawable->setTransform(_transformState);
+            _drawable->setTransparency(_alphaState);
+            _drawable->setMask(_maskState);
+            _drawable->setScale(_scaleState);
         }
 
       private:
-        DrawableNodeClone ();
-        DrawableNodeClone (const DrawableNodeClone&);
-        DrawableNodeClone& operator= (const DrawableNodeClone&);
+        DrawableNodeClone();
+        DrawableNodeClone(const DrawableNodeClone&);
+        DrawableNodeClone& operator=(const DrawableNodeClone&);
 
       private:
         mutable DrawableNode::Ptr _drawable;

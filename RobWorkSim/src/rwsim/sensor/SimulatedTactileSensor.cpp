@@ -19,7 +19,7 @@
 
 using namespace rwsim::sensor;
 
-SimulatedTactileSensor::SimulatedTactileSensor (rw::sensor::SensorModel::Ptr model) :
-    rwlibs::simulation::SimulatedSensor (model)
+SimulatedTactileSensor::SimulatedTactileSensor(rw::sensor::SensorModel::Ptr model) :
+    rwlibs::simulation::SimulatedSensor(model)
 
 {}

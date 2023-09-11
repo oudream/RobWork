@@ -22,12 +22,11 @@
  * @file GLFrameGrabber.hpp
  */
 #if !defined(SWIG)
-#include <rwlibs/simulation/FrameGrabber.hpp>
-
 #include <rw/core/Ptr.hpp>
 #include <rw/graphics/SceneViewer.hpp>
 #include <rw/math/Transform3D.hpp>
-#endif 
+#include <rwlibs/simulation/FrameGrabber.hpp>
+#endif
 
 namespace rw { namespace kinematics {
     class Frame;
@@ -58,7 +57,7 @@ namespace rwlibs { namespace simulation {
     {
       public:
         //! @brief Smart pointer type for GLFrameGrabber.
-        typedef rw::core::Ptr< GLFrameGrabber > Ptr;
+        typedef rw::core::Ptr<GLFrameGrabber> Ptr;
 
         /**
          * @brief constructor
@@ -68,16 +67,16 @@ namespace rwlibs { namespace simulation {
          * @param near [in] the minimum depth of camera.
          * @param far [in] the maximum depth of camera.
          */
-        GLFrameGrabber (int width, int height, double fov, double near = 0.1, double far = 10.0);
+        GLFrameGrabber(int width, int height, double fov, double near = 0.1, double far = 10.0);
 
         /**
          * @brief destructor
          */
-        virtual ~GLFrameGrabber ();
+        virtual ~GLFrameGrabber();
 
-        void resize (int width, int height);
+        void resize(int width, int height);
 
-        void resize (int width, int height, rw::sensor::Image::ColorCode colorCode);
+        void resize(int width, int height, rw::sensor::Image::ColorCode colorCode);
 
         /**
          * @brief initialize the grabber with a scene viewer. This registers the grabber
@@ -86,15 +85,16 @@ namespace rwlibs { namespace simulation {
          * @return true if initialization succeeded, false otherwise (depends on the capabilities of
          * the SceneViewer).
          */
-        bool init (rw::core::Ptr<rw::graphics::SceneViewer> drawer);
+        bool init(rw::core::Ptr<rw::graphics::SceneViewer> drawer);
 
         //! @copydoc FrameGrabber::grab
-        virtual void grab (rw::core::Ptr<rw::kinematics::Frame> frame, const rw::kinematics::State& state);
+        virtual void grab(rw::core::Ptr<rw::kinematics::Frame> frame,
+                          const rw::kinematics::State& state);
 
       private:
         double _fieldOfView;    // in the y-axis
         rw::graphics::SceneViewer::Ptr _drawer;
-        rw::math::Transform3D< double > _perspTrans;
+        rw::math::Transform3D<double> _perspTrans;
         rw::graphics::SceneViewer::View::Ptr _view;
         double _near, _far;
     };

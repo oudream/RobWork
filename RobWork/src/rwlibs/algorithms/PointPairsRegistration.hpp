@@ -30,7 +30,7 @@ namespace rwlibs { namespace algorithms {
     class PointPairsRegistration
     {
       public:
-        typedef std::pair< rw::math::Vector3D<>, rw::math::Vector3D<> > PointPair;
+        typedef std::pair<rw::math::Vector3D<>, rw::math::Vector3D<>> PointPair;
 
         /**
          * @brief Perform registration of point pairs using SVD based method.
@@ -45,7 +45,7 @@ namespace rwlibs { namespace algorithms {
          * @return Transform minimising the squared distance between point pairs
          */
         static rw::math::Transform3D<>
-        pointPairRegistrationSVD (const std::vector< PointPair >& pointPairs);
+        pointPairRegistrationSVD(const std::vector<PointPair>& pointPairs);
 
         /**
          * @brief Perform registration of point pairs using Quaternion based method.
@@ -59,7 +59,7 @@ namespace rwlibs { namespace algorithms {
          * @return Transform minimising the squared distance between point pairs
          */
         static rw::math::Transform3D<>
-        pointPairRegistrationQuaternion (const std::vector< PointPair >& pointPairs);
+        pointPairRegistrationQuaternion(const std::vector<PointPair>& pointPairs);
     };
 
 }}    // namespace rwlibs::algorithms

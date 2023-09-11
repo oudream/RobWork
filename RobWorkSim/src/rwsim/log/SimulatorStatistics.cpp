@@ -23,67 +23,54 @@
 
 using namespace rwsim::log;
 
-SimulatorStatistics::SimulatorStatistics (const SimulatorLogScope* log) : _log (log)
-{}
+SimulatorStatistics::SimulatorStatistics(const SimulatorLogScope* log) : _log(log) {}
 
-SimulatorStatistics::~SimulatorStatistics ()
-{}
+SimulatorStatistics::~SimulatorStatistics() {}
 
-void SimulatorStatistics::update ()
-{
-    _singleValues.clear ();
-    _multipleValues.clear ();
+void SimulatorStatistics::update() {
+    _singleValues.clear();
+    _multipleValues.clear();
 
     // Collect all data from children (of type SimulatorLogValues or SimulatorLogScope)
     DataSeries data;
-    const std::vector< SimulatorLog::Ptr > children = _log->getChildren ();
-    for (const SimulatorLog::Ptr& child : children) {
-        if (const SimulatorLogScope::Ptr scope = child.cast< SimulatorLogScope > ()) {
-            const rw::core::Ptr< const SimulatorStatistics > stats = scope->getStatistics ();
-            if (!stats.isNull ()) {
-                const DataSeries& prop = stats->getPropagated ();
-                for (DataSeries::const_iterator it = prop.begin (); it != prop.end (); it++) {
-                    for (double val : it->second) {
-                        data[it->first].push_back (val);
-                    }
+    const std::vector<SimulatorLog::Ptr> children = _log->getChildren();
+    for(const SimulatorLog::Ptr& child : children) {
+        if(const SimulatorLogScope::Ptr scope = child.cast<SimulatorLogScope>()) {
+            const rw::core::Ptr<const SimulatorStatistics> stats = scope->getStatistics();
+            if(!stats.isNull()) {
+                const DataSeries& prop = stats->getPropagated();
+                for(DataSeries::const_iterator it = prop.begin(); it != prop.end(); it++) {
+                    for(double val : it->second) { data[it->first].push_back(val); }
                 }
             }
         }
-        else if (child.cast< LogValues > ()) {
-            const rw::core::Ptr< const LogValues > values = child.cast< const LogValues > ();
-            const std::vector< double >& val              = values->getValues ();
-            const std::vector< std::string >& labels      = values->getLabels ();
-            RW_ASSERT (val.size () == labels.size ());
-            for (std::size_t i = 0; i < val.size (); i++)
-                data[labels[i]].push_back (val[i]);
+        else if(child.cast<LogValues>()) {
+            const rw::core::Ptr<const LogValues> values = child.cast<const LogValues>();
+            const std::vector<double>& val              = values->getValues();
+            const std::vector<std::string>& labels      = values->getLabels();
+            RW_ASSERT(val.size() == labels.size());
+            for(std::size_t i = 0; i < val.size(); i++) data[labels[i]].push_back(val[i]);
         }
     }
 
     // Now determine if the values in data map should be propagated to higher levels, or if
     // it belongs to this level.
-    for (DataSeries::iterator it = data.begin (); it != data.end (); it++) {
-        if (it->second.size () > 1) {
-            for (double val : it->second) {
-                _multipleValues[it->first].push_back (val);
-            }
+    for(DataSeries::iterator it = data.begin(); it != data.end(); it++) {
+        if(it->second.size() > 1) {
+            for(double val : it->second) { _multipleValues[it->first].push_back(val); }
         }
-        else {
-            _singleValues[it->first].push_back (it->second[0]);
-        }
+        else { _singleValues[it->first].push_back(it->second[0]); }
     }
 }
 
-bool SimulatorStatistics::hasData () const
-{
-    return _multipleValues.size () > 0 || _singleValues.size () > 0;
+bool SimulatorStatistics::hasData() const {
+    return _multipleValues.size() > 0 || _singleValues.size() > 0;
 }
 
-const SimulatorStatistics::DataSeries& SimulatorStatistics::getSeries () const
-{
+const SimulatorStatistics::DataSeries& SimulatorStatistics::getSeries() const {
     return _multipleValues;
 }
 
-const SimulatorStatistics::DataSeries& SimulatorStatistics::getPropagated () const
-{
+const SimulatorStatistics::DataSeries& SimulatorStatistics::getPropagated() const {
     return _singleValues;
 }

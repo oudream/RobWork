@@ -33,27 +33,25 @@ namespace rws { namespace python {
         /**
          * @brief construct a Python interpretor
          */
-        PythonRunner ();
+        PythonRunner();
 
         /**
          * @brief destruct the python interpertor
          */
-        ~PythonRunner ();
+        ~PythonRunner();
 
         /**
          * @brief run code with python lock
          * @param code [in] python code to be run
          * @return 0 if succesfull
          */
-        int runCode (std::string code);
+        int runCode(std::string code);
 
       private:
-        void initPython ();
+        void initPython();
 
         PyThreadState* _threadState;
     };
-
-
 
 }}    // namespace rws::python
 #endif

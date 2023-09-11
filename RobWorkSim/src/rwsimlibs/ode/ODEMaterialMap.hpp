@@ -43,8 +43,8 @@ namespace rwsim { namespace simulator {
          * @param odeBodies
          * @return
          */
-        ODEMaterialMap (dynamics::MaterialDataMap& map, dynamics::ContactDataMap& cmap,
-                        std::vector< ODEBody* > odeBodies);
+        ODEMaterialMap(dynamics::MaterialDataMap& map, dynamics::ContactDataMap& cmap,
+                       std::vector<ODEBody*> odeBodies);
 
         /**
          * @brief copies contact properties between body \b b1 and body \b b2 into
@@ -53,17 +53,17 @@ namespace rwsim { namespace simulator {
          * @param b1
          * @param b2
          */
-        void setContactProperties (dContact& con, ODEBody* b1, ODEBody* b2);
+        void setContactProperties(dContact& con, ODEBody* b1, ODEBody* b2);
 
       private:
         dynamics::MaterialDataMap& _map;
         dynamics::ContactDataMap& _cmap;
 
-        std::vector< float > _muMap;
-        std::vector< float > _bounceMap;
-        std::vector< float > _bounceVelMap;
-        std::vector< float > _cfmMap;
-        std::vector< float > _erpMap;
+        std::vector<float> _muMap;
+        std::vector<float> _bounceMap;
+        std::vector<float> _bounceVelMap;
+        std::vector<float> _cfmMap;
+        std::vector<float> _erpMap;
     };
 }}    // namespace rwsim::simulator
 

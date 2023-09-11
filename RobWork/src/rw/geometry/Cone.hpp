@@ -39,7 +39,7 @@ namespace rw { namespace geometry {
     {
       public:
         //! @brief constructor
-        Cone (const rw::math::Q& initQ, int levels = 16);
+        Cone(const rw::math::Q& initQ, int levels = 16);
 
         /**
          * @brief constructor
@@ -48,32 +48,32 @@ namespace rw { namespace geometry {
          * @param radiusBot [in] radius of the bottom end
          * @param levels [in] granularity of the mesh
          */
-        Cone (double height, double radiusTop, double radiusBot, int levels = 16);
+        Cone(double height, double radiusTop, double radiusBot, int levels = 16);
 
         //! @brief destructor
-        virtual ~Cone ();
+        virtual ~Cone();
 
         //! @brief the height
-        double getHeight () { return _height; }
+        double getHeight() { return _height; }
 
         //! @brief the top radius
-        double getTopRadius () { return _radiusTop; };
+        double getTopRadius() { return _radiusTop; };
 
         //! @brief the bottom radius
-        double getBottomRadius () { return _radiusBottom; };
+        double getBottomRadius() { return _radiusBottom; };
 
         // inherited from Primitive
         //! @copydoc Primitive::createMesh
-        TriMesh::Ptr createMesh (int resolution) const;
+        TriMesh::Ptr createMesh(int resolution) const;
 
         //! @copydoc Primitive::getParameters
-        virtual rw::math::Q getParameters () const;
+        virtual rw::math::Q getParameters() const;
 
         //! @copydoc Primitive::setParameters
-        virtual void setParameters (const rw::math::Q& q);
+        virtual void setParameters(const rw::math::Q& q);
 
         //! @copydoc GeometryData::getType
-        GeometryType getType () const { return ConePrim; }
+        GeometryType getType() const { return ConePrim; }
 
       protected:
         /**
@@ -81,7 +81,7 @@ namespace rw { namespace geometry {
          * @param point [in] point to check.
          * @return true if inside geometry, false otherwise.
          */
-        bool doIsInside (const rw::math::Vector3D<double>& point);
+        bool doIsInside(const rw::math::Vector3D<double>& point);
 
       private:
         double _radiusTop, _radiusBottom, _height;

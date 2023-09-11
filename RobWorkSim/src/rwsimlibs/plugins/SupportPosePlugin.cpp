@@ -40,7 +40,6 @@
 #include <QShortcut>
 #include <QTreeWidgetItem>
 #include <QVariant>
-
 #include <memory>
 
 //#include <simulator/bullet/BtSimulator.hpp>
@@ -77,66 +76,61 @@ using namespace drawable;
 #define RW_DEBUG(str) std::cout << str << std::endl;
 
 namespace {
-QLabel* makeNumericQLabel (double val)
-{
+QLabel* makeNumericQLabel(double val) {
     std::stringstream s;
     s << val;
-    return new QLabel (s.str ().c_str ());
+    return new QLabel(s.str().c_str());
 }
 
-QDoubleSpinBox* makeDoubleSpinBox (double low, double high)
-{
-    QDoubleSpinBox* box = new QDoubleSpinBox ();
-    box->setDecimals (3);
-    box->setRange (low, high);
+QDoubleSpinBox* makeDoubleSpinBox(double low, double high) {
+    QDoubleSpinBox* box = new QDoubleSpinBox();
+    box->setDecimals(3);
+    box->setRange(low, high);
 
     const double step = (high - low) / 1000;
-    box->setSingleStep (step);
+    box->setSingleStep(step);
 
     return box;
 }
 
-void GLTransform (const Transform3D<>& transform)
-{
+void GLTransform(const Transform3D<>& transform) {
     GLfloat gltrans[16];
-    for (int j = 0; j < 3; j++) {
-        for (int k = 0; k < 3; k++)
-            gltrans[j + 4 * k] = (float) transform (j, k);
-        gltrans[12 + j] = (float) transform (j, 3);
+    for(int j = 0; j < 3; j++) {
+        for(int k = 0; k < 3; k++) gltrans[j + 4 * k] = (float) transform(j, k);
+        gltrans[12 + j] = (float) transform(j, 3);
     }
     gltrans[3] = gltrans[7] = gltrans[11] = 0;
     gltrans[15]                           = 1;
-    glMultMatrixf (gltrans);
+    glMultMatrixf(gltrans);
 }
 
 }    // namespace
 
-SupportPosePlugin::SupportPosePlugin () :
-    RobWorkStudioPlugin ("SupportPosePlugin", QIcon (":/SimulationIcon.png")), _miscForces (40),
-    _timeStep (0.03), _nextTime (0.0), _save (true), _simulator (NULL), _ghost (NULL),
-    _simStartTime (0.0), _nrOfSims (0), _restPoseDialog (NULL)
-{
+SupportPosePlugin::SupportPosePlugin() :
+    RobWorkStudioPlugin("SupportPosePlugin", QIcon(":/SimulationIcon.png")), _miscForces(40),
+    _timeStep(0.03), _nextTime(0.0), _save(true), _simulator(NULL), _ghost(NULL),
+    _simStartTime(0.0), _nrOfSims(0), _restPoseDialog(NULL) {
     // Construct layout and widget
-    QWidget* widg       = new QWidget (this);
-    QVBoxLayout* toplay = new QVBoxLayout (widg);
-    widg->setLayout (toplay);
-    this->setWidget (widg);
+    QWidget* widg       = new QWidget(this);
+    QVBoxLayout* toplay = new QVBoxLayout(widg);
+    widg->setLayout(toplay);
+    this->setWidget(widg);
     {
         size_t row     = 0;
-        QGroupBox* box = new QGroupBox ("Settings", this);
-        toplay->addWidget (box);
-        QGridLayout* lay = new QGridLayout (box);
-        box->setLayout (lay);
+        QGroupBox* box = new QGroupBox("Settings", this);
+        toplay->addWidget(box);
+        QGridLayout* lay = new QGridLayout(box);
+        box->setLayout(lay);
         {
-            QPushButton* button = new QPushButton ("&Create simulator");
-            lay->addWidget (button, row++, 0);
-            connect (button, SIGNAL (pressed ()), this, SLOT (createSimulator ()));
+            QPushButton* button = new QPushButton("&Create simulator");
+            lay->addWidget(button, row++, 0);
+            connect(button, SIGNAL(pressed()), this, SLOT(createSimulator()));
         }
 
         {
-            QPushButton* button = new QPushButton ("&Destroy simulator");
-            lay->addWidget (button, row++, 0);
-            connect (button, SIGNAL (pressed ()), this, SLOT (destroySimulator ()));
+            QPushButton* button = new QPushButton("&Destroy simulator");
+            lay->addWidget(button, row++, 0);
+            connect(button, SIGNAL(pressed()), this, SLOT(destroySimulator()));
         }
 
         /*        _cmbDevices = new QComboBox();
@@ -146,84 +140,82 @@ SupportPosePlugin::SupportPosePlugin () :
            )));
         */
 
-        _checkBox = new QCheckBox ("Record state paths", this);
-        lay->addWidget (_checkBox, row++, 0);
+        _checkBox = new QCheckBox("Record state paths", this);
+        lay->addWidget(_checkBox, row++, 0);
 
-        _forceUpdateBox = new QCheckBox ("Force scene update", this);
-        lay->addWidget (_forceUpdateBox, row++, 0);
+        _forceUpdateBox = new QCheckBox("Force scene update", this);
+        lay->addWidget(_forceUpdateBox, row++, 0);
 
         {
-            QLabel* label = new QLabel ("dt: ");
-            lay->addWidget (label, row, 0);
+            QLabel* label = new QLabel("dt: ");
+            lay->addWidget(label, row, 0);
 
-            _dtBox = makeDoubleSpinBox (0, 1);
-            lay->addWidget (_dtBox, row++, 1);    // own _box
-            _dtBox->setValue (0.01);
+            _dtBox = makeDoubleSpinBox(0, 1);
+            lay->addWidget(_dtBox, row++, 1);    // own _box
+            _dtBox->setValue(0.01);
         }
 
         {
-            QLabel* label = new QLabel ("Physics engine");
-            lay->addWidget (label, row++, 0);
-            std::vector< std::string > engineIDs = PhysicsEngineFactory::getEngineIDs ();
-            _engineBox                           = new QComboBox ();
-            for (std::string engineID : engineIDs) {
-                _engineBox->addItem (engineID.c_str ());
-            }
-            lay->addWidget (_engineBox);
+            QLabel* label = new QLabel("Physics engine");
+            lay->addWidget(label, row++, 0);
+            std::vector<std::string> engineIDs = PhysicsEngineFactory::getEngineIDs();
+            _engineBox                         = new QComboBox();
+            for(std::string engineID : engineIDs) { _engineBox->addItem(engineID.c_str()); }
+            lay->addWidget(_engineBox);
         }
     }
     {
         size_t row     = 0;
-        QGroupBox* box = new QGroupBox ("Control", this);
+        QGroupBox* box = new QGroupBox("Control", this);
 
-        toplay->addWidget (box);
-        QGridLayout* lay = new QGridLayout (box);
-        box->setLayout (lay);
+        toplay->addWidget(box);
+        QGridLayout* lay = new QGridLayout(box);
+        box->setLayout(lay);
 
         {
-            QPushButton* button = new QPushButton ("Resting Pose sim");
-            connect (button, SIGNAL (clicked ()), this, SLOT (startRestingPoseSim ()));
-            lay->addWidget (button, row++, 0);
+            QPushButton* button = new QPushButton("Resting Pose sim");
+            connect(button, SIGNAL(clicked()), this, SLOT(startRestingPoseSim()));
+            lay->addWidget(button, row++, 0);
         }
 
         {
-            QPushButton* button = new QPushButton ("Step");
-            connect (button, SIGNAL (clicked ()), this, SLOT (update ()));
-            lay->addWidget (button, row++, 0);
+            QPushButton* button = new QPushButton("Step");
+            connect(button, SIGNAL(clicked()), this, SLOT(update()));
+            lay->addWidget(button, row++, 0);
         }
 
         {
-            QPushButton* button = new QPushButton ("Start");
-            connect (button, SIGNAL (clicked ()), this, SLOT (startSimulation ()));
-            lay->addWidget (button, row, 0);
+            QPushButton* button = new QPushButton("Start");
+            connect(button, SIGNAL(clicked()), this, SLOT(startSimulation()));
+            lay->addWidget(button, row, 0);
         }
 
         {
-            QPushButton* button = new QPushButton ("Stop");
-            connect (button, SIGNAL (clicked ()), this, SLOT (stopSimulation ()));
-            lay->addWidget (button, row++, 1);
+            QPushButton* button = new QPushButton("Stop");
+            connect(button, SIGNAL(clicked()), this, SLOT(stopSimulation()));
+            lay->addWidget(button, row++, 1);
         }
 
         {
-            QPushButton* button = new QPushButton ("Reset");
-            connect (button, SIGNAL (clicked ()), this, SLOT (resetSimulation ()));
-            lay->addWidget (button, row++, 0);
+            QPushButton* button = new QPushButton("Reset");
+            connect(button, SIGNAL(clicked()), this, SLOT(resetSimulation()));
+            lay->addWidget(button, row++, 0);
         }
 
         {
-            QPushButton* button = new QPushButton ("Save state path");
-            connect (button, SIGNAL (clicked ()), this, SLOT (setSave ()));
-            lay->addWidget (button, row++, 0);
+            QPushButton* button = new QPushButton("Save state path");
+            connect(button, SIGNAL(clicked()), this, SLOT(setSave()));
+            lay->addWidget(button, row++, 0);
         }
     }
 
     {
         size_t row     = 0;
-        QGroupBox* box = new QGroupBox ("Status", this);
+        QGroupBox* box = new QGroupBox("Status", this);
 
-        toplay->addWidget (box);
-        QGridLayout* lay = new QGridLayout (box);
-        box->setLayout (lay);
+        toplay->addWidget(box);
+        QGridLayout* lay = new QGridLayout(box);
+        box->setLayout(lay);
 
         /*      {
                     QLabel* button = new QLabel("Step simulation");
@@ -256,240 +248,209 @@ SupportPosePlugin::SupportPosePlugin () :
                 }
         */
         {
-            QLabel* label = new QLabel ("dt: ");
-            lay->addWidget (label, row, 0);
+            QLabel* label = new QLabel("dt: ");
+            lay->addWidget(label, row, 0);
 
-            _timeLabel = makeNumericQLabel (0.0);
-            lay->addWidget (_timeLabel, row++, 1);
+            _timeLabel = makeNumericQLabel(0.0);
+            lay->addWidget(_timeLabel, row++, 1);
         }
 
         {
-            QLabel* label = new QLabel ("Nr of sims: ");
-            lay->addWidget (label, row, 0);
+            QLabel* label = new QLabel("Nr of sims: ");
+            lay->addWidget(label, row, 0);
 
-            _nrOfSimsLabel = makeNumericQLabel (0.0);
-            lay->addWidget (_nrOfSimsLabel, row++, 1);
+            _nrOfSimsLabel = makeNumericQLabel(0.0);
+            lay->addWidget(_nrOfSimsLabel, row++, 1);
         }
     }
 
-    std::ofstream* myfile = new std::ofstream ();
-    myfile->open ("debuglog.txt");
-    rw::core::Log::setWriter ("Debug", new rw::core::LogStreamWriter (myfile));
-    _timer = new QTimer (NULL);
-    connect (_timer, SIGNAL (timeout ()), this, SLOT (saveState ()));
-    toplay->addStretch (1);
+    std::ofstream* myfile = new std::ofstream();
+    myfile->open("debuglog.txt");
+    rw::core::Log::setWriter("Debug", new rw::core::LogStreamWriter(myfile));
+    _timer = new QTimer(NULL);
+    connect(_timer, SIGNAL(timeout()), this, SLOT(saveState()));
+    toplay->addStretch(1);
 }
 
-SupportPosePlugin::~SupportPosePlugin ()
-{}
+SupportPosePlugin::~SupportPosePlugin() {}
 
-void SupportPosePlugin::updateCfgInfo ()
-{
+void SupportPosePlugin::updateCfgInfo() {
     // check if debug draw is checked
-    if (_dBtWorld != NULL) {
-        if (_debugDrawBox->isChecked ())
-            _dBtWorld->setEnabled (true);
-        else
-            _dBtWorld->setEnabled (false);
+    if(_dBtWorld != NULL) {
+        if(_debugDrawBox->isChecked()) _dBtWorld->setEnabled(true);
+        else _dBtWorld->setEnabled(false);
     }
-    getRobWorkStudio ()->updateAndRepaint ();
+    getRobWorkStudio()->updateAndRepaint();
 }
 
-void SupportPosePlugin::setSave ()
-{
-    getRobWorkStudio ()->setTimedStatePath (_statePath);
-    getRobWorkStudio ()->updateAndRepaint ();
+void SupportPosePlugin::setSave() {
+    getRobWorkStudio()->setTimedStatePath(_statePath);
+    getRobWorkStudio()->updateAndRepaint();
 }
 #include <rw/proximity/CollisionDetector.hpp>
-void SupportPosePlugin::startRestingPoseSim ()
-{
-    if (!_restPoseDialog) {
-        State state                               = getRobWorkStudio ()->getState ();
-        rw::proximity::CollisionDetector* colDect = getRobWorkStudio ()->getCollisionDetector ();
-        _restPoseDialog = new RestingPoseDialog (state, _dwc.get (), colDect, this);
-        connect (_restPoseDialog, SIGNAL (updateView ()), this, SLOT (updateViewEvent ()));
+void SupportPosePlugin::startRestingPoseSim() {
+    if(!_restPoseDialog) {
+        State state                               = getRobWorkStudio()->getState();
+        rw::proximity::CollisionDetector* colDect = getRobWorkStudio()->getCollisionDetector();
+        _restPoseDialog = new RestingPoseDialog(state, _dwc.get(), colDect, this);
+        connect(_restPoseDialog, SIGNAL(updateView()), this, SLOT(updateViewEvent()));
     }
 
-    _restPoseDialog->show ();
-    _restPoseDialog->raise ();
-    _restPoseDialog->activateWindow ();
+    _restPoseDialog->show();
+    _restPoseDialog->raise();
+    _restPoseDialog->activateWindow();
 }
 
-void SupportPosePlugin::updateViewEvent ()
-{
-    if (!_restPoseDialog)
-        return;
-    QObject* obj = sender ();
+void SupportPosePlugin::updateViewEvent() {
+    if(!_restPoseDialog) return;
+    QObject* obj = sender();
 
-    if (obj == _restPoseDialog) {
-        State state = _restPoseDialog->getState ();
-        getRobWorkStudio ()->setState (state);
+    if(obj == _restPoseDialog) {
+        State state = _restPoseDialog->getState();
+        getRobWorkStudio()->setState(state);
     }
 }
 
-void SupportPosePlugin::createSimulator ()
-{
-    if (_dwc == NULL) {
-        RW_DEBUG ("dwc is null!");
+void SupportPosePlugin::createSimulator() {
+    if(_dwc == NULL) {
+        RW_DEBUG("dwc is null!");
         return;
     }
 
     // update the bodies that are to be thrown randomly
-    _bodies.clear ();
-    for (Body* body : _dwc->getBodies ()) {
-        if (RigidBody* rbody = dynamic_cast< RigidBody* > (body)) {
-            _bodies.push_back (rbody);
-        }
+    _bodies.clear();
+    for(Body* body : _dwc->getBodies()) {
+        if(RigidBody* rbody = dynamic_cast<RigidBody*>(body)) { _bodies.push_back(rbody); }
     }
 
-    std::cout << "Nr of rigid bodies: " << _bodies.size () << std::endl;
+    std::cout << "Nr of rigid bodies: " << _bodies.size() << std::endl;
 
-    State state = getRobWorkStudio ()->getState ();
+    State state = getRobWorkStudio()->getState();
 
-    std::string engineId = _engineBox->currentText ().toStdString ();
-    RW_DEBUG ("- Selected physics engine: " << engineId);
-    Simulator* sim = PhysicsEngineFactory::newPhysicsEngine (engineId, _dwc.get ());
-    sim->initPhysics (state);
+    std::string engineId = _engineBox->currentText().toStdString();
+    RW_DEBUG("- Selected physics engine: " << engineId);
+    Simulator* sim = PhysicsEngineFactory::newPhysicsEngine(engineId, _dwc.get());
+    sim->initPhysics(state);
 
-    _simulator = new ThreadSimulator (sim, state);
+    _simulator = new ThreadSimulator(sim, state);
 
     _dState     = state;
     _defState   = state;
-    _jointState = getRobWorkStudio ()->getState ();
+    _jointState = getRobWorkStudio()->getState();
 }
 
-void SupportPosePlugin::destroySimulator ()
-{
-    if (_simulator == NULL)
-        return;
+void SupportPosePlugin::destroySimulator() {
+    if(_simulator == NULL) return;
 
-    _simulator->stop ();
-    Simulator* sim = _simulator->getSimulator ();
+    _simulator->stop();
+    Simulator* sim = _simulator->getSimulator();
     delete sim;
     delete _simulator;
     _simulator = NULL;
 }
 
-void SupportPosePlugin::open (rw::models::WorkCell* workcell)
-{
-    RW_DEBUG ("SupportPosePlugin Open");
+void SupportPosePlugin::open(rw::models::WorkCell* workcell) {
+    RW_DEBUG("SupportPosePlugin Open");
     std::cout << "SupportPosePlugin Open" << std::endl;
 
-    if (workcell == NULL) {
-        RW_DEBUG ("workcell is null!");
+    if(workcell == NULL) {
+        RW_DEBUG("workcell is null!");
         return;
     }
 }
 
-void SupportPosePlugin::genericEventListener (const std::string& event)
-{
+void SupportPosePlugin::genericEventListener(const std::string& event) {
     // std::cout << "Generic event: " << event << std::endl;
-    if (event == "DynamicWorkCellLoaded") {
+    if(event == "DynamicWorkCellLoaded") {
         // get the dynamic workcell from the propertymap
-        RW_DEBUG ("Getting dynamic workcell from propertymap!");
-        std::shared_ptr< DynamicWorkCell >* dwc =
-            getRobWorkStudio ()->getPropertyMap ().getPtr< std::shared_ptr< DynamicWorkCell > > (
+        RW_DEBUG("Getting dynamic workcell from propertymap!");
+        std::shared_ptr<DynamicWorkCell>* dwc =
+            getRobWorkStudio()->getPropertyMap().getPtr<std::shared_ptr<DynamicWorkCell>>(
                 "DynamicWorkcell");
-        if (dwc == NULL) {
+        if(dwc == NULL) {
             //// std::cout   << "No dynamic workcell in propertymap!!" << std::endl;
             return;
         }
-        RW_DEBUG ("Setting dynamic workcell!");
+        RW_DEBUG("Setting dynamic workcell!");
         _dwc = *dwc;
     }
 }
 
-void SupportPosePlugin::close ()
-{
-    _engineBox->setDisabled (false);
+void SupportPosePlugin::close() {
+    _engineBox->setDisabled(false);
 
-    if (_simulator == NULL)
-        return;
+    if(_simulator == NULL) return;
 
-    _simulator->stop ();
-    Simulator* sim = _simulator->getSimulator ();
+    _simulator->stop();
+    Simulator* sim = _simulator->getSimulator();
     delete sim;
     delete _simulator;
 }
 
-void SupportPosePlugin::printContactGraph ()
-{
+void SupportPosePlugin::printContactGraph() {
     //_dworkcell->getContactGraph().writeToFile("contactgraph.dot");
 }
 
-void SupportPosePlugin::startSimulation ()
-{
-    if (_simulator == NULL) {
-        std::cout << "Simulator null" << std::endl;
-    }
-    if (_simulator->isRunning ())
-        return;
+void SupportPosePlugin::startSimulation() {
+    if(_simulator == NULL) { std::cout << "Simulator null" << std::endl; }
+    if(_simulator->isRunning()) return;
 
     bool saveToLog = false;
-    if (_checkBox->isChecked ()) {
-        saveToLog = true;
-    }
+    if(_checkBox->isChecked()) { saveToLog = true; }
     _nrOfSims     = 0;
     _simStartTime = 0.0;
     _maxNrOfSims  = 100;
 
-    _simulator->start ();
+    _simulator->start();
     //_btnStart->setDisabled(true);
     //_btnUpdate->setDisabled(true);
-    _checkBox->setDisabled (true);
+    _checkBox->setDisabled(true);
     _nextTime += _timeStep;
-    _timer->start (100);
+    _timer->start(100);
     std::cout << "END start!" << std::endl;
 }
 
-void SupportPosePlugin::stopSimulation ()
-{
+void SupportPosePlugin::stopSimulation() {
     //_btnStart->setDisabled(false);
     //_btnUpdate->setDisabled(false);
-    _checkBox->setDisabled (false);
+    _checkBox->setDisabled(false);
 
-    _simulator->stop ();
+    _simulator->stop();
 
-    _timer->stop ();
+    _timer->stop();
 }
 
-void SupportPosePlugin::resetSimulation ()
-{
-    if (_simulator == NULL)
-        return;
+void SupportPosePlugin::resetSimulation() {
+    if(_simulator == NULL) return;
 
-    _simulator->stop ();
-    State state = getRobWorkStudio ()->getState ();
-    _simulator->getSimulator ()->resetScene (state);
+    _simulator->stop();
+    State state = getRobWorkStudio()->getState();
+    _simulator->getSimulator()->resetScene(state);
     _dState = state;
-    getRobWorkStudio ()->updateAndRepaint ();
+    getRobWorkStudio()->updateAndRepaint();
 }
 
-void grabItem ()
-{
-    Q start (7);
+void grabItem() {
+    Q start(7);
 }
 
-void SupportPosePlugin::update ()
-{
-    if (_simulator == NULL)
-        return;
+void SupportPosePlugin::update() {
+    if(_simulator == NULL) return;
 
-    if (_simulator->isRunning ()) {
-        RW_WARN ("Simulator is already running...");
+    if(_simulator->isRunning()) {
+        RW_WARN("Simulator is already running...");
         return;
     }
-    RW_DEBUG ("getState");
-    _dState = _simulator->getState ();
+    RW_DEBUG("getState");
+    _dState = _simulator->getState();
     // get dt and make a simulation step
-    RW_DEBUG ("get dt");
-    double dt = _dtBox->value ();
-    RW_DEBUG ("step");
-    _simulator->getSimulator ()->step (dt, _dState);
+    RW_DEBUG("get dt");
+    double dt = _dtBox->value();
+    RW_DEBUG("step");
+    _simulator->getSimulator()->step(dt, _dState);
 }
 
-void SupportPosePlugin::saveState ()
-{
+void SupportPosePlugin::saveState() {
     /*if( _simulator==NULL )
         return;
 
@@ -552,11 +513,9 @@ void SupportPosePlugin::saveState ()
     */
 }
 
-void SupportPosePlugin::stateChangedHandler (RobWorkStudioPlugin* sender)
-{}
+void SupportPosePlugin::stateChangedHandler(RobWorkStudioPlugin* sender) {}
 
-void SupportPosePlugin::initialize ()
-{
-    getRobWorkStudio ()->genericEvent ().add (
-        boost::bind (&SupportPosePlugin::genericEventListener, this, boost::arg< 1 > ()), this);
+void SupportPosePlugin::initialize() {
+    getRobWorkStudio()->genericEvent().add(
+        boost::bind(&SupportPosePlugin::genericEventListener, this, boost::arg<1>()), this);
 }

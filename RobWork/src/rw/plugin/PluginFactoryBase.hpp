@@ -37,25 +37,25 @@ namespace rw { namespace plugin {
     {
       public:
         //! smart pointer for this class
-        typedef rw::core::Ptr< PluginFactoryBase > Ptr;
+        typedef rw::core::Ptr<PluginFactoryBase> Ptr;
 
         /**
          * @brief Constructor
          *
          * @param [in] identifier used to identify the plugin
          */
-        PluginFactoryBase (const std::string& identifier);
+        PluginFactoryBase(const std::string& identifier);
 
         /**
          * @brief Destructor
          */
-        virtual ~PluginFactoryBase (void);
+        virtual ~PluginFactoryBase(void);
 
         /**
          * @brief Returns identifier associated with the PluginFactory
          * @return Identifier for the plugin
          */
-        virtual std::string identifier () const;
+        virtual std::string identifier() const;
 
       private:
         std::string _identifier;
@@ -64,7 +64,7 @@ namespace rw { namespace plugin {
     /**
      * @brief Definition of rw::core::Ptr to a PluginFactoryBase
      */
-    typedef rw::core::Ptr< PluginFactoryBase > PluginFactoryBasePtr;
+    typedef rw::core::Ptr<PluginFactoryBase> PluginFactoryBasePtr;
 
     /* @} */
 

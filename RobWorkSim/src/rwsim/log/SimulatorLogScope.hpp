@@ -46,89 +46,89 @@ namespace rwsim { namespace log {
     {
       public:
         //! Smart pointer type of SimulatorLogScope
-        typedef rw::core::Ptr< SimulatorLogScope > Ptr;
+        typedef rw::core::Ptr<SimulatorLogScope> Ptr;
 
         //! @copydoc SimulatorLog::SimulatorLog
-        SimulatorLogScope (SimulatorLogScope* parent = NULL);
+        SimulatorLogScope(SimulatorLogScope* parent = NULL);
 
         //! @brief Destructor.
-        virtual ~SimulatorLogScope ();
+        virtual ~SimulatorLogScope();
 
         //! @copydoc rw::common::Serializable::read
-        virtual void read (class rw::common::InputArchive& iarchive, const std::string& id);
+        virtual void read(class rw::common::InputArchive& iarchive, const std::string& id);
 
         //! @copydoc rw::common::Serializable::write
-        virtual void write (class rw::common::OutputArchive& oarchive, const std::string& id) const;
+        virtual void write(class rw::common::OutputArchive& oarchive, const std::string& id) const;
 
         //! @copydoc SimulatorLog::children
-        virtual std::size_t children () const;
+        virtual std::size_t children() const;
 
         //! @copydoc SimulatorLog::getType
-        virtual std::string getType () const;
+        virtual std::string getType() const;
 
         //! @copydoc SimulatorLog::operator==
-        virtual bool operator== (const SimulatorLog& b) const;
+        virtual bool operator==(const SimulatorLog& b) const;
 
         /**
          * @brief Get the children of this scope.
          * @return a vector of children log items.
          */
-        std::vector< SimulatorLog::Ptr > getChildren () const;
+        std::vector<SimulatorLog::Ptr> getChildren() const;
 
         /**
          * @brief Get a specific child item.
          * @param id [in] the id of the child.
          * @return the child item (or NULL if not found).
          */
-        SimulatorLog::Ptr getChild (std::size_t id) const;
+        SimulatorLog::Ptr getChild(std::size_t id) const;
 
         /**
          * @brief Get the id of a specific log item that is known to be a child.
          * @param child [in] the child item to search for.
          * @return the index of the child (or the number of children if not found).
          */
-        std::size_t indexOf (const SimulatorLog* child) const;
+        std::size_t indexOf(const SimulatorLog* child) const;
 
         /**
          * @brief Add a child to this scope.
          * @param child the child to add.
          */
-        void appendChild (SimulatorLog::Ptr child);
+        void appendChild(SimulatorLog::Ptr child);
 
         /**
          * @brief Get statistics for this scope.
          * @return the statistics.
          */
-        rw::core::Ptr< const SimulatorStatistics > getStatistics ();
+        rw::core::Ptr<const SimulatorStatistics> getStatistics();
 
         /**
          * @brief Get the line in the file where this scope begins.
          * @return the first line.
          */
-        virtual int lineBegin () const;
+        virtual int lineBegin() const;
 
         /**
          * @brief Get the line in the file where this scope ends.
          * @return the last line.
          */
-        virtual int lineEnd () const;
+        virtual int lineEnd() const;
 
         /**
          * @brief Set the line in the file where this scope begins.
          * @param line [in] the first line.
          */
-        virtual void setLineBegin (int line);
+        virtual void setLineBegin(int line);
 
         /**
          * @brief Set the line in the file where this scope ends.
          * @param line [in] the last line.
          */
-        virtual void setLineEnd (int line);
+        virtual void setLineEnd(int line);
 
       private:
-        std::vector< SimulatorLog::Ptr > _children;
-        rw::core::Ptr< SimulatorStatistics > _statistics;
-        std::pair< int, int > _line;
+        std::vector<SimulatorLog::Ptr> _children;
+        rw::core::Ptr<SimulatorStatistics> _statistics;
+        std::pair<int, int> _line;
     };
 
     //! @}

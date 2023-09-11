@@ -22,46 +22,46 @@
 
 namespace rws {
 
-class ChartView: public PlotView
+class ChartView : public PlotView
 {
-    public:
-        ChartView();
-        virtual ~ChartView();
+  public:
+    ChartView();
+    virtual ~ChartView();
 
-        //! @copydoc PlotView::listPlot
-        virtual void listPlot (const std::vector< double >& x, const std::vector< double >& y,
-                       const std::string& title = "", const std::string& xlabel = "",
-                       const std::string& ylabel = "");
+    //! @copydoc PlotView::listPlot
+    virtual void listPlot(const std::vector<double>& x, const std::vector<double>& y,
+                          const std::string& title = "", const std::string& xlabel = "",
+                          const std::string& ylabel = "");
 
-        void addPlot(const std::vector< double >& x, const std::vector< double >& y,std::string name);
+    void addPlot(const std::vector<double>& x, const std::vector<double>& y, std::string name);
 
-        //! @copydoc PlotView::getWidget
-        virtual QGraphicsView* getWidget(QWidget* parent);
+    //! @copydoc PlotView::getWidget
+    virtual QGraphicsView* getWidget(QWidget* parent);
 
-        //! @brief Dispatcher for plots.
-        class Dispatcher: public PlotView::Dispatcher
-        {
-            public:
-                //! @brief Smart pointer type.
-                typedef rw::core::Ptr< const Dispatcher > Ptr;
+    //! @brief Dispatcher for plots.
+    class Dispatcher : public PlotView::Dispatcher
+    {
+      public:
+        //! @brief Smart pointer type.
+        typedef rw::core::Ptr<const Dispatcher> Ptr;
 
-                //! @brief Constructor.
-                Dispatcher();
+        //! @brief Constructor.
+        Dispatcher();
 
-                //! @brief Destructor.
-                virtual ~Dispatcher();
+        //! @brief Destructor.
+        virtual ~Dispatcher();
 
-                /**
-                 * @brief Create a new PlotView.
-                 *
-                 * @return a new PlotView.
-                 */
-                virtual PlotView::Ptr makePlotView() const;
-        };
+        /**
+         * @brief Create a new PlotView.
+         *
+         * @return a new PlotView.
+         */
+        virtual PlotView::Ptr makePlotView() const;
+    };
 
-    private:
-        class PrivateImpl;
-        PrivateImpl* const _impl;
+  private:
+    class PrivateImpl;
+    PrivateImpl* const _impl;
 };
 
 } /* namespace rws */

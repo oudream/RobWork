@@ -16,43 +16,36 @@
  ********************************************************************************/
 
 #include "MultipleFileIterator.hpp"
+
 #include <memory>
 
 using namespace rw::loaders;
 
-MultipleFileIterator::MultipleFileIterator (std::shared_ptr< std::vector< char > > data,
-                                            std::shared_ptr< PosToFileMap > filedata) :
-    _filedata (filedata),
-    _data (data), _pos (_data->begin ()), _filePos (0), _line (0), _index (0)
-{
+MultipleFileIterator::MultipleFileIterator(std::shared_ptr<std::vector<char>> data,
+                                           std::shared_ptr<PosToFileMap> filedata) :
+    _filedata(filedata),
+    _data(data), _pos(_data->begin()), _filePos(0), _line(0), _index(0) {
     // for(int i=0;i< _filedata->size();i++){
     //	std::cout << "index " << i << " data " << (*_filedata)[i].first <<
     //				 " file " << (*_filedata)[i].second.file << std::endl;
     //}
 }
 
-MultipleFileIterator& MultipleFileIterator::operator++ ()
-{
-    if (*_pos == '\n') {
-        _line++;
-    }
+MultipleFileIterator& MultipleFileIterator::operator++() {
+    if(*_pos == '\n') { _line++; }
     ++_pos;
     _index++;
     return *this;
 }
 
-MultipleFileIterator& MultipleFileIterator::operator-- ()
-{
+MultipleFileIterator& MultipleFileIterator::operator--() {
     _index--;
     --_pos;
-    if (*_pos == '\n') {
-        _line--;
-    }
+    if(*_pos == '\n') { _line--; }
     return *this;
 }
 
-MultipleFileIterator& MultipleFileIterator::operator= (const MultipleFileIterator& other)
-{
+MultipleFileIterator& MultipleFileIterator::operator=(const MultipleFileIterator& other) {
     _filedata = other._filedata;
     _data     = other._data;
     _pos      = other._pos;

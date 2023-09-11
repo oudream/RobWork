@@ -21,52 +21,43 @@
 
 using namespace rwlibs::calibration;
 
-FixedFrameCalibration::FixedFrameCalibration (rw::kinematics::FixedFrame::Ptr frame) :
-    _frame (frame)
-{
-    setCorrectedTransform (frame->getFixedTransform ());
-    if (frame.isNull ())
-        RW_THROW ("Unable to construct FixedFrameCalibration for a frame which is NULL");
+FixedFrameCalibration::FixedFrameCalibration(rw::kinematics::FixedFrame::Ptr frame) :
+    _frame(frame) {
+    setCorrectedTransform(frame->getFixedTransform());
+    if(frame.isNull())
+        RW_THROW("Unable to construct FixedFrameCalibration for a frame which is NULL");
 }
 
-FixedFrameCalibration::FixedFrameCalibration (rw::kinematics::FixedFrame::Ptr frame,
-                                              const rw::math::Transform3D<>& correctedTransform) :
-    _frame (frame)
-{
-    if (frame.isNull ())
-        RW_THROW ("Unable to construct FixedFrameCalibration for a frame which is NULL");
+FixedFrameCalibration::FixedFrameCalibration(rw::kinematics::FixedFrame::Ptr frame,
+                                             const rw::math::Transform3D<>& correctedTransform) :
+    _frame(frame) {
+    if(frame.isNull())
+        RW_THROW("Unable to construct FixedFrameCalibration for a frame which is NULL");
 
-    setCorrectedTransform (correctedTransform);
+    setCorrectedTransform(correctedTransform);
 }
 
-FixedFrameCalibration::~FixedFrameCalibration ()
-{}
+FixedFrameCalibration::~FixedFrameCalibration() {}
 
-rw::kinematics::FixedFrame::Ptr FixedFrameCalibration::getFrame () const
-{
+rw::kinematics::FixedFrame::Ptr FixedFrameCalibration::getFrame() const {
     return _frame;
 }
 
-rw::math::Transform3D<> FixedFrameCalibration::getCorrectedTransform () const
-{
+rw::math::Transform3D<> FixedFrameCalibration::getCorrectedTransform() const {
     return _correctedTransform;
 }
 
-void FixedFrameCalibration::setCorrectedTransform (const rw::math::Transform3D<>& transform)
-{
+void FixedFrameCalibration::setCorrectedTransform(const rw::math::Transform3D<>& transform) {
     _correctedTransform = transform;
 }
 
-void FixedFrameCalibration::doApply ()
-{
-    RW_ASSERT (!_frame.isNull ());
-    _originalTransform = _frame->getFixedTransform ();
-    _frame->setTransform (_correctedTransform);
+void FixedFrameCalibration::doApply() {
+    RW_ASSERT(!_frame.isNull());
+    _originalTransform = _frame->getFixedTransform();
+    _frame->setTransform(_correctedTransform);
 }
 
-void FixedFrameCalibration::doRevert ()
-{
-    RW_ASSERT (!_frame.isNull ());
-    if (isApplied ())
-        _frame->setTransform (_originalTransform);
+void FixedFrameCalibration::doRevert() {
+    RW_ASSERT(!_frame.isNull());
+    if(isApplied()) _frame->setTransform(_originalTransform);
 }

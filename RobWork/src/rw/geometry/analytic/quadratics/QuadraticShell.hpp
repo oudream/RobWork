@@ -45,35 +45,35 @@ namespace rw { namespace geometry {
     {
       public:
         //! @brief Smart pointer type to QuadraticShell
-        typedef rw::core::Ptr< QuadraticShell > Ptr;
+        typedef rw::core::Ptr<QuadraticShell> Ptr;
 
         //! @brief Smart pointer type for a const QuadraticShell.
-        typedef rw::core::Ptr< const QuadraticShell > CPtr;
+        typedef rw::core::Ptr<const QuadraticShell> CPtr;
 
         //! @brief Constructor.
-        QuadraticShell () : _resolution (10) {}
+        QuadraticShell() : _resolution(10) {}
 
         //! @brief Destructor.
-        virtual ~QuadraticShell () {}
+        virtual ~QuadraticShell() {}
 
         //! @copydoc Shell::getType
-        virtual GeometryType getType () const { return GeometryData::Quadratic; }
+        virtual GeometryType getType() const { return GeometryData::Quadratic; }
 
         //! @copydoc Shell::isConvex
-        virtual bool isConvex () = 0;
+        virtual bool isConvex() = 0;
 
         //! @copydoc Shell::size
-        virtual std::size_t size () const = 0;
+        virtual std::size_t size() const = 0;
 #if !defined(SWIGJAVA)
         //! @copydoc Shell::getFace
-        virtual rw::core::Ptr< const QuadraticFace > getFace (std::size_t idx) const = 0;
-#endif 
+        virtual rw::core::Ptr<const QuadraticFace> getFace(std::size_t idx) const = 0;
+#endif
         /**
          * @brief Get a surface patch.
          * @param idx [in] index of the patch.
          * @param dst [out] an existing face to write data to.
          */
-        virtual void getFace (std::size_t idx, QuadraticFace& dst) const = 0;
+        virtual void getFace(std::size_t idx, QuadraticFace& dst) const = 0;
 
         /**
          * @brief Set the resolution used for discretization in the getTriMesh and faceTriMesh
@@ -83,7 +83,9 @@ namespace rw { namespace geometry {
          *
          * @param resolution [in] the resolution parameter.
          */
-        void setMeshResolution (double resolution) { _resolution = resolution; }
+        void setMeshResolution(double resolution) {
+            _resolution = resolution;
+        }
 
       private:
 #if defined(RW_MACOS)
@@ -91,7 +93,7 @@ namespace rw { namespace geometry {
         using rw::geometry::Shell::getFace;
 #endif
 
-        virtual rw::core::Ptr< const Face > doGetFace (std::size_t idx) const;
+        virtual rw::core::Ptr<const Face> doGetFace(std::size_t idx) const;
 
       protected:
         //! @brief Resolution to use for discretization into triangle mesh.

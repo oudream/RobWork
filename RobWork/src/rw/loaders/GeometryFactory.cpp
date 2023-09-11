@@ -208,7 +208,7 @@ Geometry::Ptr GeometryFactory::getGeometry(const std::string& raw_filename, bool
                                                    << ": defaults to STL!");
             filetype = ".STL";
         }
-        
+
         std::string moddate = getLastModifiedStr(filename);
         if(useCache && getCache().isInCache(filename, moddate))
             return ownedPtr(new Geometry(getCache().get(filename)));

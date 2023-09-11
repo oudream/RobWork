@@ -32,132 +32,111 @@ class Scanner25DWrapper : public rw::sensor::Scanner25D
   public:
     SimulatedScanner25D* _simscanner;
 
-    Scanner25DWrapper (SimulatedScanner25D* scanner) :
-        Scanner25D (scanner->getSensorModel ()->getName ()), _simscanner (scanner)
-    {}
+    Scanner25DWrapper(SimulatedScanner25D* scanner) :
+        Scanner25D(scanner->getSensorModel()->getName()), _simscanner(scanner) {}
 
     // const Image25D& getImage() const{ return _simscanner->getScan(); };
-    const rw::geometry::PointCloud& getScan () { return _simscanner->getScan (); };
+    const rw::geometry::PointCloud& getScan() { return _simscanner->getScan(); };
 
-    void open () { _simscanner->open (); }
-    bool isOpen () { return _simscanner->isOpen (); }
-    void close () { _simscanner->close (); }
-    void acquire () { _simscanner->acquire (); }
-    bool isScanReady () { return _simscanner->isScanReady (); }
-    std::pair< double, double > getRange () { return _simscanner->getRange (); }
-    double getFrameRate () { return _simscanner->getFrameRate (); }
+    void open() { _simscanner->open(); }
+    bool isOpen() { return _simscanner->isOpen(); }
+    void close() { _simscanner->close(); }
+    void acquire() { _simscanner->acquire(); }
+    bool isScanReady() { return _simscanner->isScanReady(); }
+    std::pair<double, double> getRange() { return _simscanner->getRange(); }
+    double getFrameRate() { return _simscanner->getFrameRate(); }
 };
 
 }    // namespace
 
-SimulatedScanner25D::SimulatedScanner25D (const std::string& name, rw::core::Ptr<rw::kinematics::Frame> frame,
-                                          FrameGrabber25D::Ptr framegrabber) :
-    SimulatedSensor (rw::core::ownedPtr (
-        new Scanner25DModel (name, static_cast< int > (framegrabber->getWidth ()),
-                             static_cast< int > (framegrabber->getHeight ()), frame))),
-    _framegrabber (framegrabber), _frameRate (30), _dtsum (0), _isAcquired (false),
-    _isOpenned (false)
-{}
+SimulatedScanner25D::SimulatedScanner25D(const std::string& name,
+                                         rw::core::Ptr<rw::kinematics::Frame> frame,
+                                         FrameGrabber25D::Ptr framegrabber) :
+    SimulatedSensor(rw::core::ownedPtr(
+        new Scanner25DModel(name, static_cast<int>(framegrabber->getWidth()),
+                            static_cast<int>(framegrabber->getHeight()), frame))),
+    _framegrabber(framegrabber), _frameRate(30), _dtsum(0), _isAcquired(false), _isOpenned(false) {}
 
-SimulatedScanner25D::SimulatedScanner25D (const std::string& name, const std::string& desc,
-                                          rw::core::Ptr<rw::kinematics::Frame> frame,
-                                          FrameGrabber25D::Ptr framegrabber) :
-    SimulatedSensor (rw::core::ownedPtr (
-        new Scanner25DModel (name, static_cast< int > (framegrabber->getWidth ()),
-                             static_cast< int > (framegrabber->getHeight ()), frame))),
-    _framegrabber (framegrabber), _frameRate (30), _dtsum (0), _isAcquired (false),
-    _isOpenned (false)
-{}
+SimulatedScanner25D::SimulatedScanner25D(const std::string& name, const std::string& desc,
+                                         rw::core::Ptr<rw::kinematics::Frame> frame,
+                                         FrameGrabber25D::Ptr framegrabber) :
+    SimulatedSensor(rw::core::ownedPtr(
+        new Scanner25DModel(name, static_cast<int>(framegrabber->getWidth()),
+                            static_cast<int>(framegrabber->getHeight()), frame))),
+    _framegrabber(framegrabber), _frameRate(30), _dtsum(0), _isAcquired(false), _isOpenned(false) {}
 
-SimulatedScanner25D::~SimulatedScanner25D ()
-{}
+SimulatedScanner25D::~SimulatedScanner25D() {}
 
-void SimulatedScanner25D::open ()
-{
+void SimulatedScanner25D::open() {
     _isOpenned = true;
     _dtsum     = 0;
 }
 
-bool SimulatedScanner25D::isOpen ()
-{
+bool SimulatedScanner25D::isOpen() {
     return _isOpenned;
 }
 
-void SimulatedScanner25D::close ()
-{
+void SimulatedScanner25D::close() {
     _isOpenned = false;
 }
 
-void SimulatedScanner25D::acquire ()
-{
-    if (!_isOpenned)
-        RW_THROW ("Scanner has not been openned yet!");
+void SimulatedScanner25D::acquire() {
+    if(!_isOpenned) RW_THROW("Scanner has not been openned yet!");
     _isAcquired = false;
 }
 
-bool SimulatedScanner25D::isScanReady ()
-{
+bool SimulatedScanner25D::isScanReady() {
     return _isAcquired;
 }
 
-std::pair< double, double > SimulatedScanner25D::getRange ()
-{
-    return std::make_pair (_framegrabber->getMinDepth (), _framegrabber->getMaxDepth ());
+std::pair<double, double> SimulatedScanner25D::getRange() {
+    return std::make_pair(_framegrabber->getMinDepth(), _framegrabber->getMaxDepth());
 }
 
-double SimulatedScanner25D::getFrameRate ()
-{
+double SimulatedScanner25D::getFrameRate() {
     return _frameRate;
 }
 
-const rw::geometry::PointCloud& SimulatedScanner25D::getScan ()
-{
-    return _framegrabber->getImage ();
+const rw::geometry::PointCloud& SimulatedScanner25D::getScan() {
+    return _framegrabber->getImage();
 }
 
-void SimulatedScanner25D::update (const Simulator::UpdateInfo& info, rw::kinematics::State& state)
-{
-    if (!_isOpenned || _isAcquired)
-        return;
-    if (_frameRate < 0.00001)
-        return;
+void SimulatedScanner25D::update(const Simulator::UpdateInfo& info, rw::kinematics::State& state) {
+    if(!_isOpenned || _isAcquired) return;
+    if(_frameRate < 0.00001) return;
 
     _dtsum += info.dt;
 
-    if (_dtsum > 1.0 / _frameRate) {
+    if(_dtsum > 1.0 / _frameRate) {
         _dtsum = 0;
-        _framegrabber->grab (getFrame (), state);
+        _framegrabber->grab(getFrame(), state);
         _isAcquired = true;
     }
 }
 
-void SimulatedScanner25D::reset (const rw::kinematics::State& state)
-{}
+void SimulatedScanner25D::reset(const rw::kinematics::State& state) {}
 rw::sensor::Sensor::Ptr
-SimulatedScanner25D::getSensorHandle (rwlibs::simulation::Simulator::Ptr instance)
-{
-    if (instance->hasHandle (this))
-        return instance->getSensorHandle (this).cast< rw::sensor::Scanner25D > ();
+SimulatedScanner25D::getSensorHandle(rwlibs::simulation::Simulator::Ptr instance) {
+    if(instance->hasHandle(this))
+        return instance->getSensorHandle(this).cast<rw::sensor::Scanner25D>();
 
-    rw::core::Ptr< Scanner25DWrapper > handle = rw::core::ownedPtr (new Scanner25DWrapper (this));
+    rw::core::Ptr<Scanner25DWrapper> handle = rw::core::ownedPtr(new Scanner25DWrapper(this));
 
-    instance->addHandle (this, handle);
+    instance->addHandle(this, handle);
     return handle;
 }
 
 rw::sensor::Scanner25D::Ptr
-SimulatedScanner25D::getScanner25DSensor (rwlibs::simulation::Simulator::Ptr instance)
-{
-    if (instance->hasHandle (this))
-        return instance->getSensorHandle (this).cast< rw::sensor::Scanner25D > ();
+SimulatedScanner25D::getScanner25DSensor(rwlibs::simulation::Simulator::Ptr instance) {
+    if(instance->hasHandle(this))
+        return instance->getSensorHandle(this).cast<rw::sensor::Scanner25D>();
 
-    rw::core::Ptr< Scanner25DWrapper > handle = rw::core::ownedPtr (new Scanner25DWrapper (this));
+    rw::core::Ptr<Scanner25DWrapper> handle = rw::core::ownedPtr(new Scanner25DWrapper(this));
 
-    instance->addHandle (this, handle);
+    instance->addHandle(this, handle);
     return handle;
 }
 
-void SimulatedScanner25D::setFrameRate (double rate)
-{
+void SimulatedScanner25D::setFrameRate(double rate) {
     _frameRate = rate;
 }

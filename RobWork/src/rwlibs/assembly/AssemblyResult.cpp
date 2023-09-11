@@ -31,42 +31,34 @@ using namespace rw::trajectory;
 using namespace rwlibs::assembly;
 using namespace rwlibs::task;
 
-AssemblyResult::AssemblyResult () : success (false), error (NONE)
-{}
+AssemblyResult::AssemblyResult() : success(false), error(NONE) {}
 
-AssemblyResult::AssemblyResult (CartesianTask::Ptr task)
-{
-    taskID   = task->getPropertyMap ().get< std::string > ("TaskID", "");
-    resultID = task->getPropertyMap ().get< std::string > ("ResultID", "");
-    success  = task->getPropertyMap ().get< bool > ("Success", false);
-    error    = toError (task->getPropertyMap ().get< std::string > ("Error", ""));
+AssemblyResult::AssemblyResult(CartesianTask::Ptr task) {
+    taskID   = task->getPropertyMap().get<std::string>("TaskID", "");
+    resultID = task->getPropertyMap().get<std::string>("ResultID", "");
+    success  = task->getPropertyMap().get<bool>("Success", false);
+    error    = toError(task->getPropertyMap().get<std::string>("Error", ""));
     femaleTmaleEnd =
-        task->getPropertyMap ().get< Transform3D<> > ("FemaleTmaleEnd", Transform3D<>::identity ());
-    approach =
-        task->getPropertyMap ().get< Transform3D<> > ("Approach", Transform3D<>::identity ());
-    errorMessage = task->getPropertyMap ().get< std::string > ("ErrorMessage", "");
-    realState.clear ();
-    assumedState.clear ();
-    for (CartesianTarget::Ptr target : task->getTargets ()) {
-        AssemblyState state (target);
-        double time = target->getPropertyMap ().get< double > ("Time", 0);
-        Timed< AssemblyState > tstate (time, state);
-        std::string type = target->getPropertyMap ().get< std::string > ("Type", "");
-        if (type == "Real")
-            realState.push_back (tstate);
-        else if (type == "Assumed")
-            assumedState.push_back (tstate);
-        else
-            continue;
+        task->getPropertyMap().get<Transform3D<>>("FemaleTmaleEnd", Transform3D<>::identity());
+    approach     = task->getPropertyMap().get<Transform3D<>>("Approach", Transform3D<>::identity());
+    errorMessage = task->getPropertyMap().get<std::string>("ErrorMessage", "");
+    realState.clear();
+    assumedState.clear();
+    for(CartesianTarget::Ptr target : task->getTargets()) {
+        AssemblyState state(target);
+        double time = target->getPropertyMap().get<double>("Time", 0);
+        Timed<AssemblyState> tstate(time, state);
+        std::string type = target->getPropertyMap().get<std::string>("Type", "");
+        if(type == "Real") realState.push_back(tstate);
+        else if(type == "Assumed") assumedState.push_back(tstate);
+        else continue;
     }
 }
 
-AssemblyResult::~AssemblyResult ()
-{}
+AssemblyResult::~AssemblyResult() {}
 
-AssemblyResult::Ptr AssemblyResult::clone () const
-{
-    AssemblyResult::Ptr res = ownedPtr (new AssemblyResult ());
+AssemblyResult::Ptr AssemblyResult::clone() const {
+    AssemblyResult::Ptr res = ownedPtr(new AssemblyResult());
 
     res->taskID         = taskID;
     res->resultID       = resultID;
@@ -82,128 +74,112 @@ AssemblyResult::Ptr AssemblyResult::clone () const
     return res;
 }
 
-CartesianTask::Ptr AssemblyResult::toCartesianTask ()
-{
-    CartesianTask::Ptr root = ownedPtr (new CartesianTask ());
-    root->getPropertyMap ().set< std::string > ("TaskID", taskID);
-    root->getPropertyMap ().set< std::string > ("ResultID", resultID);
-    root->getPropertyMap ().set< bool > ("Success", success);
-    root->getPropertyMap ().set< std::string > ("Error", toString (error));
-    root->getPropertyMap ().set< rw::math::Transform3D<> > ("FemaleTmaleTargetEnd", femaleTmaleEnd);
-    root->getPropertyMap ().set< rw::math::Transform3D<> > ("Approach", approach);
-    root->getPropertyMap ().set< std::string > ("ErrorMessage", errorMessage);
-    for (const Timed< AssemblyState >& tstate : realState) {
-        AssemblyState state         = tstate.getValue ();
-        double time                 = tstate.getTime ();
-        CartesianTarget::Ptr target = AssemblyState::toCartesianTarget (state);
-        target->getPropertyMap ().set< double > ("Time", time);
-        target->getPropertyMap ().set< std::string > ("Type", "Real");
-        root->addTarget (target);
+CartesianTask::Ptr AssemblyResult::toCartesianTask() {
+    CartesianTask::Ptr root = ownedPtr(new CartesianTask());
+    root->getPropertyMap().set<std::string>("TaskID", taskID);
+    root->getPropertyMap().set<std::string>("ResultID", resultID);
+    root->getPropertyMap().set<bool>("Success", success);
+    root->getPropertyMap().set<std::string>("Error", toString(error));
+    root->getPropertyMap().set<rw::math::Transform3D<>>("FemaleTmaleTargetEnd", femaleTmaleEnd);
+    root->getPropertyMap().set<rw::math::Transform3D<>>("Approach", approach);
+    root->getPropertyMap().set<std::string>("ErrorMessage", errorMessage);
+    for(const Timed<AssemblyState>& tstate : realState) {
+        AssemblyState state         = tstate.getValue();
+        double time                 = tstate.getTime();
+        CartesianTarget::Ptr target = AssemblyState::toCartesianTarget(state);
+        target->getPropertyMap().set<double>("Time", time);
+        target->getPropertyMap().set<std::string>("Type", "Real");
+        root->addTarget(target);
     }
-    for (const Timed< AssemblyState >& tstate : assumedState) {
-        AssemblyState state         = tstate.getValue ();
-        double time                 = tstate.getTime ();
-        CartesianTarget::Ptr target = AssemblyState::toCartesianTarget (state);
-        target->getPropertyMap ().set< double > ("Time", time);
-        target->getPropertyMap ().set< std::string > ("Type", "Assumed");
-        root->addTarget (target);
+    for(const Timed<AssemblyState>& tstate : assumedState) {
+        AssemblyState state         = tstate.getValue();
+        double time                 = tstate.getTime();
+        CartesianTarget::Ptr target = AssemblyState::toCartesianTarget(state);
+        target->getPropertyMap().set<double>("Time", time);
+        target->getPropertyMap().set<std::string>("Type", "Assumed");
+        root->addTarget(target);
     }
     return root;
 }
 
-void AssemblyResult::saveRWResult (AssemblyResult::Ptr result, const std::string& name)
-{
-    std::vector< AssemblyResult::Ptr > vec (1, result);
-    saveRWResult (vec, name);
+void AssemblyResult::saveRWResult(AssemblyResult::Ptr result, const std::string& name) {
+    std::vector<AssemblyResult::Ptr> vec(1, result);
+    saveRWResult(vec, name);
 }
 
-void AssemblyResult::saveRWResult (std::vector< AssemblyResult::Ptr > results,
-                                   const std::string& name)
-{
-    std::ofstream outfile (name.c_str ());
-    CartesianTask::Ptr root = ownedPtr (new CartesianTask ());
-    for (AssemblyResult::Ptr result : results) {
-        CartesianTask::Ptr ctask = result->toCartesianTask ();
-        root->addTask (ctask);
+void AssemblyResult::saveRWResult(std::vector<AssemblyResult::Ptr> results,
+                                  const std::string& name) {
+    std::ofstream outfile(name.c_str());
+    CartesianTask::Ptr root = ownedPtr(new CartesianTask());
+    for(AssemblyResult::Ptr result : results) {
+        CartesianTask::Ptr ctask = result->toCartesianTask();
+        root->addTask(ctask);
     }
     try {
-        const TaskSaver::Ptr saver = TaskSaver::Factory::getTaskSaver ("xml");
-        saver->save (root, outfile);
+        const TaskSaver::Ptr saver = TaskSaver::Factory::getTaskSaver("xml");
+        saver->save(root, outfile);
     }
-    catch (const Exception& exp) {
-        RW_THROW ("Unable to save task: " << exp.what ());
+    catch(const Exception& exp) {
+        RW_THROW("Unable to save task: " << exp.what());
     }
 
-    outfile.close ();
+    outfile.close();
 }
 
-std::vector< AssemblyResult::Ptr > AssemblyResult::load (const std::string& filename)
-{
-    std::string file      = IOUtil::getAbsoluteFileName (filename);
-    std::string firstelem = IOUtil::getFirstXMLElement (file);
+std::vector<AssemblyResult::Ptr> AssemblyResult::load(const std::string& filename) {
+    std::string file      = IOUtil::getAbsoluteFileName(filename);
+    std::string firstelem = IOUtil::getFirstXMLElement(file);
 
     rwlibs::task::CartesianTask::Ptr root;
 
-    if (firstelem == "CartesianTask") {
-        const TaskLoader::Ptr loader = TaskLoader::Factory::getTaskLoader ("xml");
-        loader->load (file);
-        root = loader->getCartesianTask ();
+    if(firstelem == "CartesianTask") {
+        const TaskLoader::Ptr loader = TaskLoader::Factory::getTaskLoader("xml");
+        loader->load(file);
+        root = loader->getCartesianTask();
     }
-    else {
-        RW_THROW ("Could not load AssemblyTasks (must be CartesianTask)");
-    }
+    else { RW_THROW("Could not load AssemblyTasks (must be CartesianTask)"); }
 
-    std::vector< AssemblyResult::Ptr > results;
-    for (CartesianTask::Ptr ctask : root->getTasks ()) {
-        AssemblyResult::Ptr aresult = ownedPtr (new AssemblyResult (ctask));
-        results.push_back (aresult);
+    std::vector<AssemblyResult::Ptr> results;
+    for(CartesianTask::Ptr ctask : root->getTasks()) {
+        AssemblyResult::Ptr aresult = ownedPtr(new AssemblyResult(ctask));
+        results.push_back(aresult);
     }
     return results;
 }
 
-std::vector< AssemblyResult::Ptr > AssemblyResult::load (std::istringstream& inputStream)
-{
+std::vector<AssemblyResult::Ptr> AssemblyResult::load(std::istringstream& inputStream) {
     std::istringstream streamCopy;
-    streamCopy.str (inputStream.str ());
+    streamCopy.str(inputStream.str());
 
-    std::string firstelem = IOUtil::getFirstXMLElement (streamCopy);
+    std::string firstelem = IOUtil::getFirstXMLElement(streamCopy);
 
     rwlibs::task::CartesianTask::Ptr root;
 
-    if (firstelem == "CartesianTask") {
-        const TaskLoader::Ptr loader = TaskLoader::Factory::getTaskLoader ("xml");
-        loader->load (inputStream);
-        root = loader->getCartesianTask ();
+    if(firstelem == "CartesianTask") {
+        const TaskLoader::Ptr loader = TaskLoader::Factory::getTaskLoader("xml");
+        loader->load(inputStream);
+        root = loader->getCartesianTask();
     }
-    else {
-        RW_THROW ("Could not load AssemblyTasks (must be CartesianTask)");
-    }
+    else { RW_THROW("Could not load AssemblyTasks (must be CartesianTask)"); }
 
-    std::vector< AssemblyResult::Ptr > results;
-    for (CartesianTask::Ptr ctask : root->getTasks ()) {
-        AssemblyResult::Ptr aresult = ownedPtr (new AssemblyResult (ctask));
-        results.push_back (aresult);
+    std::vector<AssemblyResult::Ptr> results;
+    for(CartesianTask::Ptr ctask : root->getTasks()) {
+        AssemblyResult::Ptr aresult = ownedPtr(new AssemblyResult(ctask));
+        results.push_back(aresult);
     }
     return results;
 }
 
-std::string AssemblyResult::toString (const Error& error)
-{
-    if (error == NONE)
-        return "";
-    else if (error == SIMULATION_ERROR)
-        return "Simulation";
+std::string AssemblyResult::toString(const Error& error) {
+    if(error == NONE) return "";
+    else if(error == SIMULATION_ERROR) return "Simulation";
     return "OTHER";
 }
 
-AssemblyResult::Error AssemblyResult::toError (const std::string& string)
-{
+AssemblyResult::Error AssemblyResult::toError(const std::string& string) {
     std::string str = string;
-    std::transform (str.begin (), str.end (), str.begin (), ::toupper);
-    if (str == "")
-        return NONE;
-    if (str == "SIMULATION")
-        return SIMULATION_ERROR;
-    else
-        return OTHER;
+    std::transform(str.begin(), str.end(), str.begin(), ::toupper);
+    if(str == "") return NONE;
+    if(str == "SIMULATION") return SIMULATION_ERROR;
+    else return OTHER;
 }

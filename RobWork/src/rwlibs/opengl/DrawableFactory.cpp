@@ -53,104 +53,92 @@ namespace {
 const std::string extensionsArray[] = {
     ".TRI", ".AC", ".AC3D", ".3DS", ".OBJ", ".IVG", ".STL", ".STLA", ".STLB", ".DAE", ".DXF"};
 
-const int extensionCount = sizeof (extensionsArray) / sizeof (extensionsArray[0]);
+const int extensionCount = sizeof(extensionsArray) / sizeof(extensionsArray[0]);
 
-const std::vector< std::string > extensions (extensionsArray, extensionsArray + extensionCount);
+const std::vector<std::string> extensions(extensionsArray, extensionsArray + extensionCount);
 
-std::string getLastModifiedStr (const std::string& file)
-{
+std::string getLastModifiedStr(const std::string& file) {
     struct stat status;
-    stat (file.c_str (), &status);
+    stat(file.c_str(), &status);
     // std::cout << "LAST MODIFIED DATE: " << status.st_mtime << std::endl;
     std::stringstream sstr;
     sstr << status.st_mtime;
-    return sstr.str ();
+    return sstr.str();
 }
 }    // namespace
 
-RWDrawablePtr DrawableFactory::getDrawable (const std::string& str, const std::string& name)
-{
-    if (getCache ().isInCache (str, "")) {
-        return ownedPtr (new Drawable (getCache ().get (str), name));
-    }
-    if (str[0] == '#') {
-        return constructFromGeometry (str, name);
-    }
-    else {
-        return loadDrawableFile (str, name);
-    }
+RWDrawablePtr DrawableFactory::getDrawable(const std::string& str, const std::string& name) {
+    if(getCache().isInCache(str, "")) { return ownedPtr(new Drawable(getCache().get(str), name)); }
+    if(str[0] == '#') { return constructFromGeometry(str, name); }
+    else { return loadDrawableFile(str, name); }
 }
 
-RWDrawablePtr DrawableFactory::constructFromGeometry (const std::string& str,
-                                                      const std::string& name, bool useCache)
-{
-    if (useCache) {
-        if (getCache ().isInCache (str, ""))
-            return ownedPtr (new Drawable (getCache ().get (str), name));
+RWDrawablePtr DrawableFactory::constructFromGeometry(const std::string& str,
+                                                     const std::string& name, bool useCache) {
+    if(useCache) {
+        if(getCache().isInCache(str, "")) return ownedPtr(new Drawable(getCache().get(str), name));
     }
-    rw::core::Ptr< Geometry > geometry = GeometryFactory::getGeometry (str);
-    Render* render                     = new RenderGeometry (geometry);
+    rw::core::Ptr<Geometry> geometry = GeometryFactory::getGeometry(str);
+    Render* render                   = new RenderGeometry(geometry);
 
-    if (useCache) {
-        getCache ().add (str, render, "");
-        return ownedPtr (new Drawable (getCache ().get (str), name));
+    if(useCache) {
+        getCache().add(str, render, "");
+        return ownedPtr(new Drawable(getCache().get(str), name));
     }
 
-    return ownedPtr (new Drawable (ownedPtr (render), name));
+    return ownedPtr(new Drawable(ownedPtr(render), name));
 }
 
-DrawableFactory::FactoryCache& DrawableFactory::getCache ()
-{
+DrawableFactory::FactoryCache& DrawableFactory::getCache() {
     static FactoryCache cache;
     return cache;
 }
 
-RWDrawablePtr DrawableFactory::loadDrawableFile (const std::string& raw_filename,
-                                                 const std::string& name)
-{
-    const std::string& filename = IOUtil::resolveFileName (raw_filename, extensions);
-    const std::string& filetype = StringUtil::toUpper (StringUtil::getFileExtension (filename));
+RWDrawablePtr DrawableFactory::loadDrawableFile(const std::string& raw_filename,
+                                                const std::string& name) {
+    const std::string& filename = IOUtil::resolveFileName(raw_filename, extensions);
+    const std::string& filetype = StringUtil::toUpper(StringUtil::getFileExtension(filename));
 
     // if the file does not exist then throw an exception
-    if (filetype.empty ()) {
-        RW_THROW ("No file type known for file " << StringUtil::quote (raw_filename)
-                                                 << " that was resolved to file name " << filename);
+    if(filetype.empty()) {
+        RW_THROW("No file type known for file " << StringUtil::quote(raw_filename)
+                                                << " that was resolved to file name " << filename);
     }
 
-    std::string moddate = getLastModifiedStr (filename);
-    if (getCache ().isInCache (filename, moddate)) {
-        return ownedPtr (new Drawable (getCache ().get (filename), name));
+    std::string moddate = getLastModifiedStr(filename);
+    if(getCache().isInCache(filename, moddate)) {
+        return ownedPtr(new Drawable(getCache().get(filename), name));
     }
 
     // if not in cache then create new render
     // std::cout<<"File Type = "<<filetype<<std::endl;
     // else check if the file has been loaded before
-    if (filetype == ".STL" || filetype == ".STLA" || filetype == ".STLB") {
+    if(filetype == ".STL" || filetype == ".STLA" || filetype == ".STLB") {
         // create a geometry
 
-        PlainTriMeshN1F::Ptr data = STLFile::load (filename);
+        PlainTriMeshN1F::Ptr data = STLFile::load(filename);
         // STLFile::save(*data,"test_badstl_stuff.stl");
 
-        Model3D::Ptr model = ownedPtr (new Model3D (name));
+        Model3D::Ptr model = ownedPtr(new Model3D(name));
 
-        model->addTriMesh (Model3D::Material ("stlmat", 0.6f, 0.6f, 0.6f), *data);
+        model->addTriMesh(Model3D::Material("stlmat", 0.6f, 0.6f, 0.6f), *data);
 
-        model->optimize (45 * rw::math::Deg2Rad);
+        model->optimize(45 * rw::math::Deg2Rad);
 
-        Render* render = new RenderModel3D (model);
+        Render* render = new RenderModel3D(model);
 
         // Geometry::Ptr geom = GeometryFactory::getGeometry(filename);
         // RenderGeometry *render = new RenderGeometry( geom );
 
-        getCache ().add (filename, render, moddate);
-        return ownedPtr (new Drawable (getCache ().get (filename), name));
+        getCache().add(filename, render, moddate);
+        return ownedPtr(new Drawable(getCache().get(filename), name));
     }
     else {
-        Model3D::Ptr model = Model3DFactory::loadModel (filename, name);
-        Render* render     = new RenderModel3D (model);
-        getCache ().add (filename, render, moddate);
+        Model3D::Ptr model = Model3DFactory::loadModel(filename, name);
+        Render* render     = new RenderModel3D(model);
+        getCache().add(filename, render, moddate);
         // std::cout << "Creating drawable!" << std::endl;
-        return ownedPtr (new Drawable (getCache ().get (filename), name));
+        return ownedPtr(new Drawable(getCache().get(filename), name));
     }
     /*
      if (filetype == ".3DS") {
@@ -205,6 +193,6 @@ RWDrawablePtr DrawableFactory::loadDrawableFile (const std::string& raw_filename
                 << filename);
         }
     */
-    RW_ASSERT (!"Impossible");
+    RW_ASSERT(!"Impossible");
     return NULL;    // To avoid a compiler warning.
 }

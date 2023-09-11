@@ -46,30 +46,30 @@ namespace rw { namespace core {
          *
          * @param stream [in] Stream to write to
          */
-        LogStreamWriter (std::ostream* stream);
+        LogStreamWriter(std::ostream* stream);
 
         /**
          * @brief Destructor
          *
          * Calls flush on the output stream before destruction
          */
-        ~LogStreamWriter ();
+        ~LogStreamWriter();
 
       protected:
         /**
          * @copydoc LogWriter::write(const std::string&)
          */
-        void doWrite (const std::string& str);
+        void doWrite(const std::string& str);
 
         /**
          * @brief Calls flush on the ostream
          */
-        void doFlush ();
+        void doFlush();
 
         /**
          * @copydoc LogWriter::setTabLevel(int)
          */
-        void doSetTabLevel (int tabLevel);
+        void doSetTabLevel(int tabLevel);
 
       private:
         std::ostream* _stream;

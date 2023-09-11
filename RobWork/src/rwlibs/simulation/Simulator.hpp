@@ -39,7 +39,7 @@ namespace rwlibs { namespace simulation {
     {
       public:
         //! smart pointer type of simulator
-        typedef rw::core::Ptr< Simulator > Ptr;
+        typedef rw::core::Ptr<Simulator> Ptr;
 
         /**
          * @brief step info is used when updating controllers, devices and bodies.
@@ -47,9 +47,9 @@ namespace rwlibs { namespace simulation {
         struct UpdateInfo
         {
             //! constructor
-            UpdateInfo () : dt (0.0), dt_prev (0.0), time (0.0), rollback (false) {}
+            UpdateInfo() : dt(0.0), dt_prev(0.0), time(0.0), rollback(false) {}
             //! constructor
-            UpdateInfo (double dt_step) : dt (dt_step), dt_prev (0.0), time (0.0), rollback (false) {}
+            UpdateInfo(double dt_step) : dt(dt_step), dt_prev(0.0), time(0.0), rollback(false) {}
             /**
              * @brief the timestep which is about to take place
              */
@@ -76,35 +76,35 @@ namespace rwlibs { namespace simulation {
         /**
          * @brief
          */
-        virtual ~Simulator (){}
+        virtual ~Simulator() {}
 
         /**
          * @brief take a step forward in time with timestep \b dt.
          * @param dt [in] the time step
          */
-        virtual void step (double dt) = 0;
+        virtual void step(double dt) = 0;
 
         /**
          * @brief reset velocity and acceleration of all bodies to 0. And sets the position of all
          * bodies to that described in state
          */
-        virtual void reset (const rw::kinematics::State& state) = 0;
+        virtual void reset(const rw::kinematics::State& state) = 0;
 
         /**
          * @brief initialize simulator with state variables
          */
-        virtual void init (rw::kinematics::State& state) = 0;
+        virtual void init(rw::kinematics::State& state) = 0;
 
         /**
          * @brief gets the the current simulated time
          */
-        virtual double getTime () = 0;
+        virtual double getTime() = 0;
 
         /**
          * @brief get current state of simulator
          * @return current state of simulator
          */
-        virtual rw::kinematics::State& getState () = 0;
+        virtual rw::kinematics::State& getState() = 0;
 
         /**
          * Enables or disables simulation of a frame
@@ -113,19 +113,18 @@ namespace rwlibs { namespace simulation {
          * @param enabled [in]
          * @endcond
          */
-        virtual void setEnabled (rw::core::Ptr<rw::kinematics::Frame> frame, bool enabled) = 0;
+        virtual void setEnabled(rw::core::Ptr<rw::kinematics::Frame> frame, bool enabled) = 0;
 
         /**
          * @brief get propertymap of this simulator
          */
-        virtual rw::core::PropertyMap& getPropertyMap () = 0;
+        virtual rw::core::PropertyMap& getPropertyMap() = 0;
 
         //! get sensor with specific name
-        virtual rw::sensor::Sensor::Ptr getSensor (const std::string& name) { return nullptr; }
+        virtual rw::sensor::Sensor::Ptr getSensor(const std::string& name) { return nullptr; }
 
         //! get controller with specific name
-        virtual rwlibs::control::Controller::Ptr getController (const std::string& name)
-        {
+        virtual rwlibs::control::Controller::Ptr getController(const std::string& name) {
             return nullptr;
         };
 
@@ -135,10 +134,9 @@ namespace rwlibs { namespace simulation {
          * @param ssensor [in] the simulated sensor for which to retrieve a handle
          * @return handle to simulated sensor instance or null if none exists
          */
-        template< class SIMSENSORTYPE >
-        rw::sensor::Sensor::Ptr getSensorHandle (SIMSENSORTYPE* ssensor)
-        {
-            return getSensorHandle (ssensor, typeid (SIMSENSORTYPE).name ());
+        template<class SIMSENSORTYPE>
+        rw::sensor::Sensor::Ptr getSensorHandle(SIMSENSORTYPE* ssensor) {
+            return getSensorHandle(ssensor, typeid(SIMSENSORTYPE).name());
         }
 
         /**
@@ -146,9 +144,8 @@ namespace rwlibs { namespace simulation {
          * @param ssensor [in] the simulated sensor for which to check if a handle exists
          * @return true if a handle to simulated sensor instance exists, false otherwise
          */
-        template< class SIMSENSORTYPE > bool hasHandle (SIMSENSORTYPE* ssensor)
-        {
-            return hasHandle (ssensor, typeid (SIMSENSORTYPE).name ());
+        template<class SIMSENSORTYPE> bool hasHandle(SIMSENSORTYPE* ssensor) {
+            return hasHandle(ssensor, typeid(SIMSENSORTYPE).name());
         }
 
         /**
@@ -156,20 +153,19 @@ namespace rwlibs { namespace simulation {
          * @param ssensor [in] simulated sensor to add handle to
          * @param sensor [in] handle to statfull instance
          */
-        template< class SIMSENSORTYPE >
-        void addHandle (SIMSENSORTYPE* ssensor, rw::sensor::Sensor::Ptr sensor)
-        {
-            addHandle (ssensor, typeid (SIMSENSORTYPE).name (), sensor);
+        template<class SIMSENSORTYPE>
+        void addHandle(SIMSENSORTYPE* ssensor, rw::sensor::Sensor::Ptr sensor) {
+            addHandle(ssensor, typeid(SIMSENSORTYPE).name(), sensor);
         }
 
       private:
-        rw::sensor::Sensor::Ptr getSensorHandle (SimulatedSensor* ssensor, const std::string& type);
-        bool hasHandle (SimulatedSensor* ssensor, const std::string& type);
-        void addHandle (SimulatedSensor* ssensor, const std::string& type,
-                        rw::sensor::Sensor::Ptr sensor);
+        rw::sensor::Sensor::Ptr getSensorHandle(SimulatedSensor* ssensor, const std::string& type);
+        bool hasHandle(SimulatedSensor* ssensor, const std::string& type);
+        void addHandle(SimulatedSensor* ssensor, const std::string& type,
+                       rw::sensor::Sensor::Ptr sensor);
 
       private:
-        std::map< std::pair< SimulatedSensor*, std::string >, rw::sensor::Sensor::Ptr >
+        std::map<std::pair<SimulatedSensor*, std::string>, rw::sensor::Sensor::Ptr>
             _simsensorToHandle;
     };
     //! @}

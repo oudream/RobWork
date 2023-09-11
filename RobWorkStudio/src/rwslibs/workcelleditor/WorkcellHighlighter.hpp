@@ -32,10 +32,10 @@ class WorkcellHighlighter : public QSyntaxHighlighter
     Q_OBJECT
 
   public:
-    WorkcellHighlighter (QTextDocument* parent = 0);
+    WorkcellHighlighter(QTextDocument* parent = 0);
 
   protected:
-    void highlightBlock (const QString& text);
+    void highlightBlock(const QString& text);
 
   private:
     struct HighlightingRule
@@ -43,9 +43,9 @@ class WorkcellHighlighter : public QSyntaxHighlighter
         QRegularExpression pattern;
         QTextCharFormat format;
     };
-    HighlightingRule makeRule (QString, QColor, int);
+    HighlightingRule makeRule(QString, QColor, int);
 
-    QVector< HighlightingRule > highlightingRules;
+    QVector<HighlightingRule> highlightingRules;
 
     QRegularExpression commentStartExpression;
     QRegularExpression commentEndExpression;

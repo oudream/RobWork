@@ -33,23 +33,23 @@ namespace rwsim { namespace simulator {
     {
       public:
         //! smart pointer type
-        typedef rw::core::Ptr< ThreadSimulator > Ptr;
+        typedef rw::core::Ptr<ThreadSimulator> Ptr;
 
         /**
          * @brief constructor - using the default workcell state as starting state
          */
-        ThreadSimulator (rwlibs::simulation::Simulator::Ptr simulator);
+        ThreadSimulator(rwlibs::simulation::Simulator::Ptr simulator);
 
         /**
          * @brief constructor
          */
-        ThreadSimulator (rwlibs::simulation::Simulator::Ptr simulator,
-                         const rw::kinematics::State& state);
+        ThreadSimulator(rwlibs::simulation::Simulator::Ptr simulator,
+                        const rw::kinematics::State& state);
 
         /**
          * @brief destructor
          */
-        virtual ~ThreadSimulator ();
+        virtual ~ThreadSimulator();
 
         /**
          * @cond
@@ -69,47 +69,47 @@ namespace rwsim { namespace simulator {
          *
          * @param scale [in]
          */
-        void setRealTimeScale (double scale) { _timescale = scale; }
+        void setRealTimeScale(double scale) { _timescale = scale; }
 
         /**
          * @brief sets the timestep that will be used for the calls to
          * the step function of the simulator
          * @param dt
          */
-        void setTimeStep (double dt);
+        void setTimeStep(double dt);
 
         /**
          * @brief starts the simulator constraining it too the specified period
          */
-        void start ();
+        void start();
 
         /**
          * @brief tries to stop the simulation and blocks until the
          * thread is stopped
          */
-        void stop ();
+        void stop();
 
         /**
          * @brief same as stop but this version is non-blocking.
          */
-        void postStop () { _postStop = true; };
+        void postStop() { _postStop = true; };
 
         /**
          * @brief step the simulation one \b timestep
          */
-        void step ();
+        void step();
 
         /**
          * @brief get the current state of the simuation
          * @return
          */
-        rw::kinematics::State getState ();
+        rw::kinematics::State getState();
 
         /**
          * @brief set the state of the simulator
          * @param state [in] the new state
          */
-        void setState (const rw::kinematics::State& state);
+        void setState(const rw::kinematics::State& state);
 
         /**
          * @brief reset the simulator to this state. The difference from the setState is
@@ -117,27 +117,27 @@ namespace rwsim { namespace simulator {
          * will also be updated.
          * @param state [in] the new state
          */
-        void reset (const rw::kinematics::State& state);
+        void reset(const rw::kinematics::State& state);
 
         /**
          * @brief test if this thread simulator is running
          */
-        bool isRunning () { return _thread != NULL && _running == true; };
+        bool isRunning() { return _thread != NULL && _running == true; };
 
         /**
          * @brief get the current simulator time in seconds
          */
-        double getTime ();
+        double getTime();
 
         /**
          * @brief gets a pointer to the simulator. Make sure to stop the simulation
          * before calling this function, otherwise an exception will be thrown.
          * @return pointer to simulator
          */
-        DynamicSimulator::Ptr getSimulator () { return _simulator.cast< DynamicSimulator > (); };
+        DynamicSimulator::Ptr getSimulator() { return _simulator.cast<DynamicSimulator>(); };
 
         //! The callback type for a hook into the step call
-        typedef boost::function< void (ThreadSimulator* sim, rw::kinematics::State&) > StepCallback;
+        typedef boost::function<void(ThreadSimulator* sim, rw::kinematics::State&)> StepCallback;
 
         /**
          * @brief if set this callback function will be called once on start and then
@@ -145,23 +145,23 @@ namespace rwsim { namespace simulator {
          *
          * Set to NULL if no callback is wanted
          */
-        void setStepCallBack (StepCallback cb) { _stepcb = cb; };
+        void setStepCallBack(StepCallback cb) { _stepcb = cb; };
 
         /**
          * @brief the simulator might fail because of too large penetrations. This method tests
          * if the simulator is in an error.
          */
-        bool isInError () { return _inError; }
+        bool isInError() { return _inError; }
 
         /**
          *  @brief this can be used to force the resetting of an error  state.
          * @param inError
          */
-        void setInError (bool inError) { _inError = inError; }
+        void setInError(bool inError) { _inError = inError; }
 
       private:
         //! @brief the stepper loop
-        void stepperLoop ();
+        void stepperLoop();
 
       private:
         rwlibs::simulation::Simulator::Ptr _simulator;

@@ -19,62 +19,56 @@ Copyright 2013 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
 #include "ModRussel_NLP.hpp"
 
 #include <rw/core/macros.hpp>
+
 #include <memory>
 
 using namespace std;
 using namespace Ipopt;
 using namespace rwlibs::softbody;
 
-ModRusselBeamIpopt::ModRusselBeamIpopt (std::shared_ptr< BeamGeometry > geomPtr,
-                                        std::shared_ptr< BeamObstaclePlane > obstaclePtr, int M) :
-    ModRusselBeamBase (geomPtr, obstaclePtr, M)
-{}
+ModRusselBeamIpopt::ModRusselBeamIpopt(std::shared_ptr<BeamGeometry> geomPtr,
+                                       std::shared_ptr<BeamObstaclePlane> obstaclePtr, int M) :
+    ModRusselBeamBase(geomPtr, obstaclePtr, M) {}
 
-ModRusselBeamIpopt::~ModRusselBeamIpopt ()
-{}
+ModRusselBeamIpopt::~ModRusselBeamIpopt() {}
 
-void ModRusselBeamIpopt::solve (Eigen::VectorXd& xinituser, Eigen::VectorXd& U, Eigen::VectorXd& V)
-{
-    vector< int > integralIndices = getIntegralIndices ();
+void ModRusselBeamIpopt::solve(Eigen::VectorXd& xinituser, Eigen::VectorXd& U, Eigen::VectorXd& V) {
+    vector<int> integralIndices = getIntegralIndices();
 
-    _nlp = new ModRussel_NLP (getGeometry (), getObstacle (), get_planeTbeam (), integralIndices);
-    ModRussel_NLP* nlp = static_cast< ModRussel_NLP* > (GetRawPtr< TNLP > (_nlp));
+    _nlp = new ModRussel_NLP(getGeometry(), getObstacle(), get_planeTbeam(), integralIndices);
+    ModRussel_NLP* nlp = static_cast<ModRussel_NLP*>(GetRawPtr<TNLP>(_nlp));
 
-    _app = IpoptApplicationFactory ();
+    _app = IpoptApplicationFactory();
 
     ApplicationReturnStatus status;
-    status = _app->Initialize ();
-    if (status != Solve_Succeeded) {
+    status = _app->Initialize();
+    if(status != Solve_Succeeded) {
         std::cout << std::endl << std::endl << "*** Error during initialization!" << std::endl;
-        RW_THROW ("Error during initialization");
+        RW_THROW("Error during initialization");
     }
 
-    _app->Options ()->SetNumericValue ("tol", getAccuracy ());
-    _app->Options ()->SetNumericValue ("max_cpu_time", 10.0);
-    _app->Options ()->SetIntegerValue ("print_level", 1);
-    _app->Options ()->SetStringValue ("mu_strategy", "adaptive");
-    _app->Options ()->SetStringValue ("hessian_approximation", "limited-memory");
+    _app->Options()->SetNumericValue("tol", getAccuracy());
+    _app->Options()->SetNumericValue("max_cpu_time", 10.0);
+    _app->Options()->SetIntegerValue("print_level", 1);
+    _app->Options()->SetStringValue("mu_strategy", "adaptive");
+    _app->Options()->SetStringValue("hessian_approximation", "limited-memory");
     //      _app->Options()->SetStringValue ( "derivative_test", "first-order" );
 
-    nlp->setStartingGuess (xinituser);
+    nlp->setStartingGuess(xinituser);
 
-    status = _app->OptimizeTNLP (_nlp);
-    if (status == Solve_Succeeded) {
-    }
-    else {
-        std::cout << "*** The problem FAILED!" << std::endl;
-    }
+    status = _app->OptimizeTNLP(_nlp);
+    if(status == Solve_Succeeded) {}
+    else { std::cout << "*** The problem FAILED!" << std::endl; }
 
-    Eigen::VectorXd res = nlp->getSolution ();
-    double Ee           = nlp->getEnergyElastic ();
+    Eigen::VectorXd res = nlp->getSolution();
+    double Ee           = nlp->getEnergyElastic();
     std::cout << "Ee: " << Ee << std::endl;
 
-    int N = res.size ();
+    int N = res.size();
 
-    integrateAngleU (U, res);
-    integrateAngleV (V, res);
+    integrateAngleU(U, res);
+    integrateAngleV(V, res);
 
     xinituser[0] = 0.0;
-    for (int i = 0; i < N; i++)
-        xinituser[i + 1] = res[i];
+    for(int i = 0; i < N; i++) xinituser[i + 1] = res[i];
 }

@@ -83,7 +83,7 @@ namespace rw { namespace loaders {
          * @param schemaFileName [in] Name of the schema to use. If empty it will use the schema
          * specified in the XML-file if available.
          */
-        XMLTrajectoryLoader (const std::string& filename, const std::string& schemaFileName = "");
+        XMLTrajectoryLoader(const std::string& filename, const std::string& schemaFileName = "");
 
         /**
          * @brief Constract XMLTrajectoryLoader and parser input from \b instream
@@ -98,12 +98,12 @@ namespace rw { namespace loaders {
          * @param schemaFileName [in] Name of the schema to use. If empty it will use the schema
          * specified in the XML-file if available.
          */
-        XMLTrajectoryLoader (std::istream& instream, const std::string& schemaFileName = "");
+        XMLTrajectoryLoader(std::istream& instream, const std::string& schemaFileName = "");
 
         /**
          * @brief Destructor
          */
-        virtual ~XMLTrajectoryLoader ();
+        virtual ~XMLTrajectoryLoader();
 
         /**
          * @brief Enumeration specifying which type of trajectory, that has been loaded
@@ -118,7 +118,7 @@ namespace rw { namespace loaders {
         /**
          * @brief Returns the type of the trajectory loaded
          */
-        Type getType ();
+        Type getType();
 
         /**
          * @brief Returns trajectory with template type rw::math::Q.
@@ -127,7 +127,7 @@ namespace rw { namespace loaders {
          *
          * @return Copy of trajectory
          */
-        rw::trajectory::QTrajectory::Ptr getQTrajectory ();
+        rw::trajectory::QTrajectory::Ptr getQTrajectory();
 
         /**
          * @brief Returns trajectory with template type rw::math::Vector3D<>
@@ -136,7 +136,7 @@ namespace rw { namespace loaders {
          *
          * @return Copy of trajectory
          */
-        rw::trajectory::Vector3DTrajectory::Ptr getVector3DTrajectory ();
+        rw::trajectory::Vector3DTrajectory::Ptr getVector3DTrajectory();
 
         /**
          * @brief Returns trajectory with template type rw::math::Rotation3D<>
@@ -145,7 +145,7 @@ namespace rw { namespace loaders {
          *
          * @return Copy of trajectory
          */
-        rw::trajectory::Rotation3DTrajectory::Ptr getRotation3DTrajectory ();
+        rw::trajectory::Rotation3DTrajectory::Ptr getRotation3DTrajectory();
 
         /**
          * @brief Returns trajectory with template type rw::math::Transform3D<>
@@ -154,7 +154,7 @@ namespace rw { namespace loaders {
          *
          * @return Copy of trajectory
          */
-        rw::trajectory::Transform3DTrajectory::Ptr getTransform3DTrajectory ();
+        rw::trajectory::Transform3DTrajectory::Ptr getTransform3DTrajectory();
 
         /**
          * @brief Utility class which initializes local static variables.
@@ -171,7 +171,7 @@ namespace rw { namespace loaders {
         {
           public:
             //! @brief Initializes when constructed.
-            Initializer ();
+            Initializer();
         };
 
       private:
@@ -219,12 +219,12 @@ namespace rw { namespace loaders {
              readTrajectory(elementRoot);
          }*/
 
-        void readTrajectory (xercesc::DOMElement* element);
+        void readTrajectory(xercesc::DOMElement* element);
 
-        rw::core::Ptr< rw::trajectory::Trajectory< rw::math::Q > > _qTrajectory;
-        rw::core::Ptr< rw::trajectory::Trajectory< rw::math::Vector3D<> > > _v3dTrajectory;
-        rw::core::Ptr< rw::trajectory::Trajectory< rw::math::Rotation3D<> > > _r3dTrajectory;
-        rw::core::Ptr< rw::trajectory::Trajectory< rw::math::Transform3D<> > > _t3dTrajectory;
+        rw::core::Ptr<rw::trajectory::Trajectory<rw::math::Q>> _qTrajectory;
+        rw::core::Ptr<rw::trajectory::Trajectory<rw::math::Vector3D<>>> _v3dTrajectory;
+        rw::core::Ptr<rw::trajectory::Trajectory<rw::math::Rotation3D<>>> _r3dTrajectory;
+        rw::core::Ptr<rw::trajectory::Trajectory<rw::math::Transform3D<>>> _t3dTrajectory;
 
         Type _type;
     };

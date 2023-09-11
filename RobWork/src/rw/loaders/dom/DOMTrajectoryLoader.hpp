@@ -66,7 +66,7 @@ namespace rw { namespace loaders {
          * @param schemaFileName [in] Name of the schema to use. If empty it will use the schema
          * specified in the XML-file if available.
          */
-        DOMTrajectoryLoader (const std::string& filename, const std::string& schemaFileName = "");
+        DOMTrajectoryLoader(const std::string& filename, const std::string& schemaFileName = "");
 
         /**
          * @brief Constract DOMTrajectoryLoader and parser input from \b instream
@@ -81,12 +81,12 @@ namespace rw { namespace loaders {
          * @param schemaFileName [in] Name of the schema to use. If empty it will use the schema
          * specified in the XML-file if available.
          */
-        DOMTrajectoryLoader (std::istream& instream, const std::string& schemaFileName = "");
+        DOMTrajectoryLoader(std::istream& instream, const std::string& schemaFileName = "");
 
         /**
          * @brief Destructor
          */
-        virtual ~DOMTrajectoryLoader ();
+        virtual ~DOMTrajectoryLoader();
 
         /**
          * @brief Enumeration specifying which type of trajectory, that has been loaded
@@ -101,7 +101,7 @@ namespace rw { namespace loaders {
         /**
          * @brief Returns the type of the trajectory loaded
          */
-        Type getType ();
+        Type getType();
 
         /**
          * @brief Returns trajectory with template type rw::math::Q.
@@ -110,7 +110,7 @@ namespace rw { namespace loaders {
          *
          * @return Copy of trajectory
          */
-        rw::trajectory::QTrajectory::Ptr getQTrajectory ();
+        rw::trajectory::QTrajectory::Ptr getQTrajectory();
 
         /**
          * @brief Returns trajectory with template type rw::math::Vector3D<>
@@ -119,7 +119,7 @@ namespace rw { namespace loaders {
          *
          * @return Copy of trajectory
          */
-        rw::trajectory::Vector3DTrajectory::Ptr getVector3DTrajectory ();
+        rw::trajectory::Vector3DTrajectory::Ptr getVector3DTrajectory();
 
         /**
          * @brief Returns trajectory with template type rw::math::Rotation3D<>
@@ -128,7 +128,7 @@ namespace rw { namespace loaders {
          *
          * @return Copy of trajectory
          */
-        rw::trajectory::Rotation3DTrajectory::Ptr getRotation3DTrajectory ();
+        rw::trajectory::Rotation3DTrajectory::Ptr getRotation3DTrajectory();
 
         /**
          * @brief Returns trajectory with template type rw::math::Transform3D<>
@@ -137,7 +137,7 @@ namespace rw { namespace loaders {
          *
          * @return Copy of trajectory
          */
-        rw::trajectory::Transform3DTrajectory::Ptr getTransform3DTrajectory ();
+        rw::trajectory::Transform3DTrajectory::Ptr getTransform3DTrajectory();
 
       public:
       public:
@@ -145,124 +145,124 @@ namespace rw { namespace loaders {
          * @brief Identifier for rw::trajectory::Trajectory<rw::math::Q> in the XML format.
          * @return the identifier.
          */
-        static const std::string& idQTrajectory ();
+        static const std::string& idQTrajectory();
 
         /**
          * @brief Identifier for rw::trajectory::Trajectory<rw::math::Vector3D> in the XML format.
          * @return the identifier.
          */
-        static const std::string& idV3DTrajectory ();
+        static const std::string& idV3DTrajectory();
 
         /**
          * @brief Identifier for rw::trajectory::Trajectory<rw::math::Rotation3D> in the XML format.
          * @return the identifier.
          */
-        static const std::string& idR3DTrajectory ();
+        static const std::string& idR3DTrajectory();
 
         /**
          * @brief Identifier for rw::trajectory::Trajectory<rw::math::Transform3D> in the XML
          * format.
          * @return the identifier.
          */
-        static const std::string& idT3DTrajectory ();
+        static const std::string& idT3DTrajectory();
 
         /**
          * @brief Identifier for rw::trajectory::LinearInterpolator<rw::math::Q> in the XML format.
          * @return the identifier.
          */
-        static const std::string& idQLinearInterpolator ();
+        static const std::string& idQLinearInterpolator();
 
         /**
          * @brief Identifier for rw::trajectory::CubicSplineInterpolator<rw::math::Q> in the XML
          * format.
          * @return the identifier.
          */
-        static const std::string& idQCubicSplineInterpolator ();
+        static const std::string& idQCubicSplineInterpolator();
 
         /**
          * @brief Identifier for rw::trajectory::LinearInterpolator<rw::math::Vector3D> in the XML
          * format.
          * @return the identifier.
          */
-        static const std::string& idV3DLinearInterpolator ();
+        static const std::string& idV3DLinearInterpolator();
 
         /**
          * @brief Identifier for rw::trajectory::CubicSplineInterpolator<rw::math::Vector3D<> > in
          * the XML format.
          * @return the identifier.
          */
-        static const std::string& idV3DCubicSplineInterpolator ();
+        static const std::string& idV3DCubicSplineInterpolator();
 
         /**
          * @brief Identifier for rw::trajectory::CircularInterpolator<rw::math::Vector3D<> > in the
          * XML format.
          * @return the identifier.
          */
-        static const std::string& idV3DCircularInterpolator ();
+        static const std::string& idV3DCircularInterpolator();
 
         /**
          * @brief Identifier for rw::trajectory::LinearInterpolator<rw::math::Rotation3D<> > in the
          * XML format.
          * @return the identifier.
          */
-        static const std::string& idR3DLinearInterpolator ();
+        static const std::string& idR3DLinearInterpolator();
 
         /**
          * @brief Identifier for rw::trajectory::CubicSplineInterpolator<rw::math::Rotation3D<> > in
          * the XML format.
          * @return the identifier.
          */
-        static const std::string& idR3DCubicSplineInterpolator ();
+        static const std::string& idR3DCubicSplineInterpolator();
 
         /**
          * @brief Identifier for rw::trajectory::LinearInterpolator<rw::math::Transform3D<> > in the
          * XML format.
          * @return the identifier.
          */
-        static const std::string& idT3DLinearInterpolator ();
+        static const std::string& idT3DLinearInterpolator();
 
         /**
          * @brief Identifier for rw::trajectory::CubicSplineInterpolator<rw::math::Transform3D<> >
          * in the XML format.
          * @return the identifier.
          */
-        static const std::string& idT3DCubicSplineInterpolator ();
+        static const std::string& idT3DCubicSplineInterpolator();
 
         /**
          * @brief Identifier for rw::trajectory::ParabolicBlend in the XML format.
          * @return the identifier.
          */
-        static const std::string& idParabolicBlend ();
+        static const std::string& idParabolicBlend();
 
         /**
          * @brief Identifier for rw::trajectory::LloydHaywardblend in the XML format.
          * @return the identifier.
          */
-        static const std::string& idLloydHaywardBlend ();
+        static const std::string& idLloydHaywardBlend();
 
         /**
          * @brief Identifier for duration specification for interpolators.
          * @return the identifier.
          */
-        static const std::string& idDurationAttribute ();
+        static const std::string& idDurationAttribute();
 
         /**
          * @brief Identifier for duration specification for interpolators.
          * @return the identifier.
          */
-        static const std::string& idStartTimeAttribute ();
+        static const std::string& idStartTimeAttribute();
 
         /**
          * @brief Identifier for the blend time tau used for blends.
          * @return the identifier.
          */
-        static const std::string& idTauAttribute ();
+        static const std::string& idTauAttribute();
 
         /**
          * @brief Identifier for the parameter kappa used in LloydHayward blends.
          * @return the identifier.
          */
-        static const std::string& idKappaAttribute ();
+        static const std::string& idKappaAttribute();
 
         /**
          * @brief Utility class which initializes local static variables.
@@ -279,18 +279,18 @@ namespace rw { namespace loaders {
         {
           public:
             //! @brief Initializes when constructed.
-            Initializer ();
+            Initializer();
         };
 
       private:
         static const Initializer initializer;
 
-        void readTrajectory (rw::core::Ptr< rw::core::DOMElem > element);
+        void readTrajectory(rw::core::Ptr<rw::core::DOMElem> element);
 
-        rw::core::Ptr< rw::trajectory::Trajectory< rw::math::Q > > _qTrajectory;
-        rw::core::Ptr< rw::trajectory::Trajectory< rw::math::Vector3D<> > > _v3dTrajectory;
-        rw::core::Ptr< rw::trajectory::Trajectory< rw::math::Rotation3D<> > > _r3dTrajectory;
-        rw::core::Ptr< rw::trajectory::Trajectory< rw::math::Transform3D<> > > _t3dTrajectory;
+        rw::core::Ptr<rw::trajectory::Trajectory<rw::math::Q>> _qTrajectory;
+        rw::core::Ptr<rw::trajectory::Trajectory<rw::math::Vector3D<>>> _v3dTrajectory;
+        rw::core::Ptr<rw::trajectory::Trajectory<rw::math::Rotation3D<>>> _r3dTrajectory;
+        rw::core::Ptr<rw::trajectory::Trajectory<rw::math::Transform3D<>>> _t3dTrajectory;
 
         Type _type;
     };

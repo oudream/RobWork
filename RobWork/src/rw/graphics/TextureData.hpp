@@ -33,19 +33,18 @@ namespace rw { namespace graphics {
       public:
 #if !defined(SWIG)
         //! @brief Smart pointer type for TextureData.
-        rw::core::Ptr< TextureData > Ptr;
+        rw::core::Ptr<TextureData> Ptr;
 #endif
         //! constructor
-        TextureData () : _name (""), _imageData (NULL){};
+        TextureData() : _name(""), _imageData(NULL){};
 
         /**
          * constructor
          * @param name [in] texture id
          * @param img [in] texture data
          */
-        TextureData (const std::string& name, rw::sensor::Image::Ptr img) :
-            _name (name), _imageData (img)
-        {}
+        TextureData(const std::string& name, rw::sensor::Image::Ptr img) :
+            _name(name), _imageData(img) {}
 
         /**
          * constructor
@@ -54,9 +53,8 @@ namespace rw { namespace graphics {
          * @param g [in] green value [0:1]
          * @param b [in] blue value [0:1]
          */
-        TextureData (const std::string& name, float r, float g, float b) :
-            _name (name), _imageData (NULL)
-        {
+        TextureData(const std::string& name, float r, float g, float b) :
+            _name(name), _imageData(NULL) {
             _rgb[0] = r;
             _rgb[1] = g;
             _rgb[2] = b;
@@ -66,41 +64,44 @@ namespace rw { namespace graphics {
          * @brief check if this texture has image data
          * @return true if it has image data, false otherwise
          */
-        bool hasImageData () const { return _imageData != NULL; };
+        bool hasImageData() const {
+            return _imageData != NULL;
+        };
 
         /**
          * @brief get image data
          * @return
          */
-        rw::core::Ptr<rw::sensor::Image> getImageData () const { return _imageData; }
+        rw::core::Ptr<rw::sensor::Image> getImageData() const {
+            return _imageData;
+        }
 
         /**
          * @brief get RGB data
          * @return
          */
-        rw::math::Vector3D< float > getRGBData () const
-        {
-            return rw::math::Vector3D< float > (_rgb[0], _rgb[1], _rgb[2]);
+        rw::math::Vector3D<float> getRGBData() const {
+            return rw::math::Vector3D<float>(_rgb[0], _rgb[1], _rgb[2]);
         }
 
         /**
          * @brief get id of texture
          * @return
          */
-        const std::string& getName () const { return _name; }
+        const std::string& getName() const {
+            return _name;
+        }
 
         /**
          * @brief Clone the current texture.
          * The image data will be shared with the clone
          * @return rw::core::Ptr<Texture>
          */
-        rw::core::Ptr< rw::geometry::Model3D::Texture > clone () const
-        {
-            rw::core::Ptr< TextureData > tex =
-                rw::core::ownedPtr (new TextureData (_name, _imageData));
-            tex->_rgb[0] = _rgb[0];
-            tex->_rgb[1] = _rgb[1];
-            tex->_rgb[2] = _rgb[2];
+        rw::core::Ptr<rw::geometry::Model3D::Texture> clone() const {
+            rw::core::Ptr<TextureData> tex = rw::core::ownedPtr(new TextureData(_name, _imageData));
+            tex->_rgb[0]                   = _rgb[0];
+            tex->_rgb[1]                   = _rgb[1];
+            tex->_rgb[2]                   = _rgb[2];
             return tex;
         };
 

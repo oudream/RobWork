@@ -43,74 +43,64 @@ using boost::filesystem::path;
 using namespace boost::program_options;
 
 #if defined(RW_CYGWIN)
-#define RWCFGHOMEDIR std::string (std::getenv ("HOME")) + "/.config/robwork/"
-#define RWCFGFILE                                                                            \
-    std::string (std::getenv ("HOME")) + "/.config/robwork/robwork-" + RW_BUILD_TYPE + "-" + \
+#define RWCFGHOMEDIR std::string(std::getenv("HOME")) + "/.config/robwork/"
+#define RWCFGFILE                                                                          \
+    std::string(std::getenv("HOME")) + "/.config/robwork/robwork-" + RW_BUILD_TYPE + "-" + \
         RW_VERSION + ".cfg.xml"
 #elif defined(RW_WIN32)
-#define RWCFGHOMEDIR std::string (std::getenv ("APPDATA")) + SLASH + "robwork" + SLASH
-#define RWCFGFILE                                                                    \
-    std::string (std::getenv ("APPDATA")) + SLASH + "robwork" + SLASH + "robwork-" + \
-        RW_BUILD_TYPE + "-" + RW_VERSION + ".cfg.xml"
-#elif defined(RW_MACOS)
-#define RWCFGHOMEDIR std::string (std::getenv ("HOME")) + "/Library/Preferences/"
-#define RWCFGFILE                                                                              \
-    std::string (std::getenv ("HOME")) + "/Library/Preferences/com.robwork-" + RW_BUILD_TYPE + \
+#define RWCFGHOMEDIR std::string(std::getenv("APPDATA")) + SLASH + "robwork" + SLASH
+#define RWCFGFILE                                                                                  \
+    std::string(std::getenv("APPDATA")) + SLASH + "robwork" + SLASH + "robwork-" + RW_BUILD_TYPE + \
         "-" + RW_VERSION + ".cfg.xml"
+#elif defined(RW_MACOS)
+#define RWCFGHOMEDIR std::string(std::getenv("HOME")) + "/Library/Preferences/"
+#define RWCFGFILE                                                                                  \
+    std::string(std::getenv("HOME")) + "/Library/Preferences/com.robwork-" + RW_BUILD_TYPE + "-" + \
+        RW_VERSION + ".cfg.xml"
 #elif defined(RW_LINUX)
-#define RWCFGHOMEDIR std::string (std::getenv ("HOME")) + "/.config/robwork/"
-#define RWCFGFILE                                                                            \
-    std::string (std::getenv ("HOME")) + "/.config/robwork/robwork-" + RW_BUILD_TYPE + "-" + \
+#define RWCFGHOMEDIR std::string(std::getenv("HOME")) + "/.config/robwork/"
+#define RWCFGFILE                                                                          \
+    std::string(std::getenv("HOME")) + "/.config/robwork/robwork-" + RW_BUILD_TYPE + "-" + \
         RW_VERSION + ".cfg.xml"
 #endif
 
 namespace {
-void appendPluginFolder (const std::string& folder, const std::string& name, PropertyMap& settings)
-{
-    if (exists (folder)) {
-        if (settings.has ("plugins")) {
+void appendPluginFolder(const std::string& folder, const std::string& name, PropertyMap& settings) {
+    if(exists(folder)) {
+        if(settings.has("plugins")) {
             PropertyMap::Ptr plugins;
-            plugins = settings.getPtr< PropertyMap > ("plugins");
-            plugins->add ("Location-linux-default",
-                          "Default plugin location for deb installed plugins",
-                          folder);
+            plugins = settings.getPtr<PropertyMap>("plugins");
+            plugins->add("Location-linux-default",
+                         "Default plugin location for deb installed plugins",
+                         folder);
         }
         else {
             PropertyMap plugins;
-            plugins.add (name, "Default plugin location for deb installed plugins", folder);
-            settings.add ("plugins", "List of plugins or plugin locations", plugins);
+            plugins.add(name, "Default plugin location for deb installed plugins", folder);
+            settings.add("plugins", "List of plugins or plugin locations", plugins);
         }
     }
 }
-void FindAndReplace(std::string& str,
-               const std::string& oldStr,
-               const std::string& newStr)
-{
-  std::string::size_type pos = 0u;
-  while((pos = str.find(oldStr, pos)) != std::string::npos){
-     str.replace(pos, oldStr.length(), newStr);
-     pos += newStr.length();
-  }
+void FindAndReplace(std::string& str, const std::string& oldStr, const std::string& newStr) {
+    std::string::size_type pos = 0u;
+    while((pos = str.find(oldStr, pos)) != std::string::npos) {
+        str.replace(pos, oldStr.length(), newStr);
+        pos += newStr.length();
+    }
 }
 }    // namespace
 
-RobWork::RobWork (void) : _initialized (false)
-{}
+RobWork::RobWork(void) : _initialized(false) {}
 
-RobWork::~RobWork (void)
-{}
+RobWork::~RobWork(void) {}
 
-void RobWork::finalize ()
-{
-    if (!_settingsFile.empty ()) {
-        DOMCorePropertyMapSaver::save (_settings, _settingsFile);
-    }
+void RobWork::finalize() {
+    if(!_settingsFile.empty()) { DOMCorePropertyMapSaver::save(_settings, _settingsFile); }
 }
 
-void RobWork::initialize (const std::vector< std::string >& plugins)
-{
+void RobWork::initialize(const std::vector<std::string>& plugins) {
     _initialized = true;    // must be set before logging to avoid infinite loop
-    Log::debugLog () << "Initializing ROBWORK" << std::endl;
+    Log::debugLog() << "Initializing ROBWORK" << std::endl;
 
     std::string pluginFolder = "libs";
 #if defined(RW_WIN32)
@@ -124,214 +114,203 @@ void RobWork::initialize (const std::vector< std::string >& plugins)
     // 2. search for config file from execution directory
     // 3. search from user home directory (OS specific)
     // 4. check hardcoded build directory
-    path ipath = initial_path ();
+    path ipath = initial_path();
     std::string rwsettingsPath =
-        ipath.string () + "/robwork-" + RW_BUILD_TYPE + "-" + RW_VERSION + ".cfg.xml";
-    char* rwRootVar = getenv ("RW_ROOT");
+        ipath.string() + "/robwork-" + RW_BUILD_TYPE + "-" + RW_VERSION + ".cfg.xml";
+    char* rwRootVar = getenv("RW_ROOT");
 
-    if (rwRootVar != NULL &&
-        exists (std::string (rwRootVar) + SLASH + pluginFolder + SLASH + RW_BUILD_TYPE + "/")) {
-        Log::debugLog () << "Found RobWork root dir in environment variable RW_ROOT..."
-                         << std::endl;
+    if(rwRootVar != NULL &&
+       exists(std::string(rwRootVar) + SLASH + pluginFolder + SLASH + RW_BUILD_TYPE + "/")) {
+        Log::debugLog() << "Found RobWork root dir in environment variable RW_ROOT..." << std::endl;
         // create the file in default current location
         PropertyMap plugins;
 
-        plugins.add ("location-1", "Default plugin location", std::string ("plugins/"));
+        plugins.add("location-1", "Default plugin location", std::string("plugins/"));
 
-        char* rwRootVar = getenv ("RW_ROOT");
-        if (rwRootVar != NULL)
-            plugins.add ("location-2",
-                         "Default plugin location for RobWork",
-                         std::string (rwRootVar) + SLASH + pluginFolder + SLASH + RW_BUILD_TYPE +
-                             "/");
+        char* rwRootVar = getenv("RW_ROOT");
+        if(rwRootVar != NULL)
+            plugins.add("location-2",
+                        "Default plugin location for RobWork",
+                        std::string(rwRootVar) + SLASH + pluginFolder + SLASH + RW_BUILD_TYPE +
+                            "/");
 
-        char* rwsRootVar = getenv ("RWS_ROOT");
-        if (rwsRootVar != NULL)
-            plugins.add ("location-3",
-                         "Default plugin location for RobWorkStudio",
-                         std::string (rwsRootVar) + SLASH + pluginFolder + SLASH + RW_BUILD_TYPE +
-                             "/");
+        char* rwsRootVar = getenv("RWS_ROOT");
+        if(rwsRootVar != NULL)
+            plugins.add("location-3",
+                        "Default plugin location for RobWorkStudio",
+                        std::string(rwsRootVar) + SLASH + pluginFolder + SLASH + RW_BUILD_TYPE +
+                            "/");
 
-        char* rwsimRootVar = getenv ("RWSIM_ROOT");
-        if (rwsimRootVar != NULL)
-            plugins.add ("location-4",
-                         "Default plugin location for RobWorkSim",
-                         std::string (rwsimRootVar) + SLASH + pluginFolder + SLASH + RW_BUILD_TYPE +
-                             "/");
+        char* rwsimRootVar = getenv("RWSIM_ROOT");
+        if(rwsimRootVar != NULL)
+            plugins.add("location-4",
+                        "Default plugin location for RobWorkSim",
+                        std::string(rwsimRootVar) + SLASH + pluginFolder + SLASH + RW_BUILD_TYPE +
+                            "/");
 
-        _settings.add ("plugins", "List of plugins or plugin locations", plugins);
+        _settings.add("plugins", "List of plugins or plugin locations", plugins);
     }
-    else if (exists (rwsettingsPath)) {
-        Log::debugLog () << "Found robwork configuration file in execution directory..."
-                         << std::endl;
-        _settings = DOMCorePropertyMapLoader::load (rwsettingsPath);
-        _settings.add ("cfgfile", "", rwsettingsPath);
+    else if(exists(rwsettingsPath)) {
+        Log::debugLog() << "Found robwork configuration file in execution directory..."
+                        << std::endl;
+        _settings = DOMCorePropertyMapLoader::load(rwsettingsPath);
+        _settings.add("cfgfile", "", rwsettingsPath);
     }
-    else if (exists (RWCFGFILE)) {
-        Log::debugLog ()
-            << "Found robwork configuration file in global configuration directory:\n\t"
-            << std::string (RWCFGFILE) << std::endl;
-        rwsettingsPath = std::string (RWCFGFILE);
-        _settings      = DOMCorePropertyMapLoader::load (rwsettingsPath);
-        _settings.add ("cfgfile", "", rwsettingsPath);
+    else if(exists(RWCFGFILE)) {
+        Log::debugLog() << "Found robwork configuration file in global configuration directory:\n\t"
+                        << std::string(RWCFGFILE) << std::endl;
+        rwsettingsPath = std::string(RWCFGFILE);
+        _settings      = DOMCorePropertyMapLoader::load(rwsettingsPath);
+        _settings.add("cfgfile", "", rwsettingsPath);
     }
-    else if (exists (std::string (RW_BUILD_DIR))) {
+    else if(exists(std::string(RW_BUILD_DIR))) {
         // check if the build directory exist
-        Log::debugLog () << "Found robwork in build directory: \"" << std::string (RW_BUILD_DIR)
-                         << "\"" << std::endl;
-        std::string buildDir (RW_BUILD_DIR);
+        Log::debugLog() << "Found robwork in build directory: \"" << std::string(RW_BUILD_DIR)
+                        << "\"" << std::endl;
+        std::string buildDir(RW_BUILD_DIR);
 
         // create the file in default current location
         PropertyMap plugins;
-        plugins.add ("location-1", "Default plugin location", std::string ("plugins") + SLASH);
-        plugins.add ("location-2",
-                     "Default plugin location for RobWork",
-                     buildDir + SLASH + pluginFolder + SLASH + RW_BUILD_TYPE + SLASH);
+        plugins.add("location-1", "Default plugin location", std::string("plugins") + SLASH);
+        plugins.add("location-2",
+                    "Default plugin location for RobWork",
+                    buildDir + SLASH + pluginFolder + SLASH + RW_BUILD_TYPE + SLASH);
 
-        std::vector< std::string > rws_build_dirs = {
+        std::vector<std::string> rws_build_dirs = {
             "RobWorkStudio", "robworkstudio", "RWS", "rws", "rwstudio", "RWStudio", "RWSTUDIO"};
-        for (std::string& dir : rws_build_dirs) {
+        for(std::string& dir : rws_build_dirs) {
             std::string path = buildDir + SLASH + ".." + SLASH + dir + SLASH + pluginFolder +
                                SLASH + RW_BUILD_TYPE + SLASH;
-            if (exists (path)) {
-                plugins.add ("location-3", "Default plugin location for RobWorkStudio", path);
+            if(exists(path)) {
+                plugins.add("location-3", "Default plugin location for RobWorkStudio", path);
                 break;
             }
         }
 
-        std::vector< std::string > rwsim_build_dirs = {
+        std::vector<std::string> rwsim_build_dirs = {
             "RobWorkSim", "robworksim", "rwsim", "RWSim", "RWSIM"};
-        for (std::string& dir : rwsim_build_dirs) {
+        for(std::string& dir : rwsim_build_dirs) {
             std::string path = buildDir + SLASH + ".." + SLASH + dir + SLASH + pluginFolder +
                                SLASH + RW_BUILD_TYPE + SLASH;
-            if (exists (path)) {
-                plugins.add ("location-4", "Default plugin location for RobWorkSim", path);
+            if(exists(path)) {
+                plugins.add("location-4", "Default plugin location for RobWorkSim", path);
                 break;
             }
         }
-        char * home = std::getenv ("HOME");
+        char* home = std::getenv("HOME");
         if(home != NULL) {
             std::string home_s(home);
             std::string path = home_s + SLASH + std::string(".RobWork") + SLASH;
-            plugins.add("location-5", "Generic Plugin Folder" , path);
+            plugins.add("location-5", "Generic Plugin Folder", path);
         }
-        
-        _settings.add ("plugins", "List of plugins or plugin locations", plugins);
+
+        _settings.add("plugins", "List of plugins or plugin locations", plugins);
     }
 
 #if defined(RW_WIN32)
-    std::vector< std::string > Packs = {"RobWork", "RobWorkStudio", "RobWorkSim"};
+    std::vector<std::string> Packs = {"RobWork", "RobWorkStudio", "RobWorkSim"};
 #else
-    std::vector< std::string > Packs = {""};
+    std::vector<std::string> Packs = {""};
 #endif
 
-    for (const std::string& p : Packs) {
-        std::string loc = OS::InstallPluginLocation (p);
-        if (exists (loc)) {
+    for(const std::string& p : Packs) {
+        std::string loc = OS::InstallPluginLocation(p);
+        if(exists(loc)) {
             std::string name = "Location-install-" + p + "-default";
-            appendPluginFolder (loc, name, _settings);
+            appendPluginFolder(loc, name, _settings);
         }
     }
 
     _settingsFile = rwsettingsPath;
 
     // get all plugin directories and files
-    std::vector< std::string > cfgDirs;
-    PropertyMap pluginsMap = _settings.get< PropertyMap > ("plugins", PropertyMap ());
+    std::vector<std::string> cfgDirs;
+    PropertyMap pluginsMap = _settings.get<PropertyMap>("plugins", PropertyMap());
 
     // add user defined plugin hints
-    Log::debugLog () << "Adding plugins from arguments:\n";
-    for (size_t i = 0; i < plugins.size (); i++) {
+    Log::debugLog() << "Adding plugins from arguments:\n";
+    for(size_t i = 0; i < plugins.size(); i++) {
         std::stringstream sstr;
         sstr << "loc-from-arg-" << i;
-        pluginsMap.add (sstr.str (), "Plugin location from init arguments", plugins[i]);
+        pluginsMap.add(sstr.str(), "Plugin location from init arguments", plugins[i]);
     }
 
-    Log::debugLog () << "Looking for RobWork plugins in following directories:\n";
-    for (PropertyBase::Ptr prop : pluginsMap.getProperties ()) {
+    Log::debugLog() << "Looking for RobWork plugins in following directories:\n";
+    for(PropertyBase::Ptr prop : pluginsMap.getProperties()) {
         // check if its a
-        Property< std::string >::Ptr propstr = prop.cast< Property< std::string > > ();
-        if (propstr == NULL)
-            continue;
+        Property<std::string>::Ptr propstr = prop.cast<Property<std::string>>();
+        if(propstr == NULL) continue;
 
-        cfgDirs.push_back (propstr->getValue ());
-        Log::debugLog () << "\t" << propstr->getValue () << std::endl;
+        cfgDirs.push_back(propstr->getValue());
+        Log::debugLog() << "\t" << propstr->getValue() << std::endl;
     }
 
-    std::vector< std::string > pluginsFiles;
-    Log::debugLog () << "Loading plugins:\n";
-    for (std::string dir : cfgDirs) {
-        path file (dir);
-        Log::debugLog () << " processing hint: " << dir << std::endl;
-#if (BOOST_FILESYSTEM_VERSION == 2)
-        if (!file.has_root_path ()) {
-            file = path (ipath.string () + SLASH + dir);
-        }
+    std::vector<std::string> pluginsFiles;
+    Log::debugLog() << "Loading plugins:\n";
+    for(std::string dir : cfgDirs) {
+        path file(dir);
+        Log::debugLog() << " processing hint: " << dir << std::endl;
+#if(BOOST_FILESYSTEM_VERSION == 2)
+        if(!file.has_root_path()) { file = path(ipath.string() + SLASH + dir); }
 #else
-        if (file.is_relative ()) {
-            file = path (ipath.string () + SLASH + dir);
-        }
+        if(file.is_relative()) { file = path(ipath.string() + SLASH + dir); }
 #endif
-        Log::debugLog () << file.string () << std::endl;
-        if (!exists (file))
-            continue;
+        Log::debugLog() << file.string() << std::endl;
+        if(!exists(file)) continue;
 
         // now initialize plugin repository
 
         // first check if its a directory or a file
-        if (is_directory (file)) {
+        if(is_directory(file)) {
             // find all files in the directory *.rwplugin.xml *.rwplugin.(dll,so)
-            std::vector< std::string > pl_files =
-                IOUtil::getFilesInFolder (file.string (), false, true, "*.rwplugin.*");
-            for (std::string pl_file : pl_files) { 
-                const std::string ext = StringUtil::getFileExtension (pl_file);
-                if (ext == ".xml" || ext == ".dll" || ext == ".so"){
-                #ifdef RW_WIN32
-                    FindAndReplace(pl_file,"\\","/");
-                #endif 
-                    pluginsFiles.push_back (pl_file);
+            std::vector<std::string> pl_files =
+                IOUtil::getFilesInFolder(file.string(), false, true, "*.rwplugin.*");
+            for(std::string pl_file : pl_files) {
+                const std::string ext = StringUtil::getFileExtension(pl_file);
+                if(ext == ".xml" || ext == ".dll" || ext == ".so") {
+#ifdef RW_WIN32
+                    FindAndReplace(pl_file, "\\", "/");
+#endif
+                    pluginsFiles.push_back(pl_file);
                 }
             }
         }
         else {
             std::string theFile = file.string();
-            #ifdef RW_WIN32
-                FindAndReplace(theFile,"\\","/");
-            #endif 
-            pluginsFiles.push_back (theFile);
+#ifdef RW_WIN32
+            FindAndReplace(theFile, "\\", "/");
+#endif
+            pluginsFiles.push_back(theFile);
         }
     }
 
     // make sure not to add duplicates of plugins
-    ExtensionRegistry::Ptr reg = ExtensionRegistry::getInstance ();
+    ExtensionRegistry::Ptr reg = ExtensionRegistry::getInstance();
 
-    for (std::string pfilename : pluginsFiles) {
-        std::time_t time = boost::filesystem::last_write_time (pfilename);
+    for(std::string pfilename : pluginsFiles) {
+        std::time_t time = boost::filesystem::last_write_time(pfilename);
         // check if plugin was allready added
-        path pfile (pfilename);
+        path pfile(pfilename);
 
-        std::string key = pfile.filename ().string ();
-        if (_pluginChangedMap.find (key) != _pluginChangedMap.end ()) {
-            if (_pluginChangedMap[key] >= time)
-                continue;
+        std::string key = pfile.filename().string();
+        if(_pluginChangedMap.find(key) != _pluginChangedMap.end()) {
+            if(_pluginChangedMap[key] >= time) continue;
         }
 
         _pluginChangedMap[key] = time;
-        Log::debugLog () << "\t " << pfilename << std::endl;
+        Log::debugLog() << "\t " << pfilename << std::endl;
         try {
-            rw::core::Ptr< Plugin > plugin = Plugin::load (pfilename);
-            if (!plugin.isNull ()) {
-                reg->registerExtensions (plugin);
-            }
+            rw::core::Ptr<Plugin> plugin = Plugin::load(pfilename);
+            if(!plugin.isNull()) { reg->registerExtensions(plugin); }
             else {
-                Log::errorLog () << "Error loading plugin: \n\t\"" << pfilename << "\" "
-                                 << "\n\t Please fix error, ignoring plugin for now.." << std::endl;
+                Log::errorLog() << "Error loading plugin: \n\t\"" << pfilename << "\" "
+                                << "\n\t Please fix error, ignoring plugin for now.." << std::endl;
             }
         }
-        catch (const std::exception& e) {
-            Log::errorLog () << "Error loading plugin: \n\t\"" << pfilename << "\" "
-                             << "\n\t Error description: " << e.what ()
-                             << "\n\t Please fix error, ignoring plugin for now.." << std::endl;
+        catch(const std::exception& e) {
+            Log::errorLog() << "Error loading plugin: \n\t\"" << pfilename << "\" "
+                            << "\n\t Error description: " << e.what()
+                            << "\n\t Please fix error, ignoring plugin for now.." << std::endl;
         }
     }
 }
@@ -345,15 +324,14 @@ RobWork::Ptr* _newInstance = NULL;    // must be pointer such that lifetime is c
 
 // The instance must be defined as a local static to give us necessary control of the lifetime
 // (RobWork depends on other global static variables):
-RobWork::Ptr rwinstance ()
-{
+RobWork::Ptr rwinstance() {
     // Local static variable used, such that variables used by DOMPropertyMapSaver is still
     // available at destruction of RobWork
     static DOMCorePropertyMapSaver::Initializer
         init;    // make sure that local static variables is destructed after RobWork instance is
                  // destructed.
-    static RobWork::Ptr _rwinstance = ownedPtr (new RobWork ());
-    if (_newInstance != NULL) {
+    static RobWork::Ptr _rwinstance = ownedPtr(new RobWork());
+    if(_newInstance != NULL) {
         // Allow switching with a new instance
         // _newInstance can not be of type Ptr as this would cause RobWork to be destructed too
         // late!
@@ -382,10 +360,9 @@ RobWork::Ptr rwinstance ()
 
 }    // namespace
 
-rw::core::Ptr< rw::core::ExtensionRegistry > RobWork::getExtensionRegistry ()
-{
-    static ExtensionRegistry::Ptr extensionReg = ownedPtr (new ExtensionRegistry ());
-    if (_newExtensionReg != NULL) {
+rw::core::Ptr<rw::core::ExtensionRegistry> RobWork::getExtensionRegistry() {
+    static ExtensionRegistry::Ptr extensionReg = ownedPtr(new ExtensionRegistry());
+    if(_newExtensionReg != NULL) {
         // Allow switching with a new registry
         // _newExtensionReg can not be of type Ptr as this would cause the registry to be destructed
         // too late!
@@ -396,39 +373,35 @@ rw::core::Ptr< rw::core::ExtensionRegistry > RobWork::getExtensionRegistry ()
     return extensionReg;
 }
 
-void RobWork::setExtensionRegistry (rw::core::Ptr< rw::core::ExtensionRegistry > extreg)
-{
-    _newExtensionReg = new rw::core::Ptr< ExtensionRegistry > (extreg);
+void RobWork::setExtensionRegistry(rw::core::Ptr<rw::core::ExtensionRegistry> extreg) {
+    _newExtensionReg = new rw::core::Ptr<ExtensionRegistry>(extreg);
 }
 
-bool RobWork::isInitialized () const
-{
+bool RobWork::isInitialized() const {
     return _initialized;
 }
 
-void RobWork::init (int argc, const char* const* argv)
-{
+void RobWork::init(int argc, const char* const* argv) {
     // get log level, plugins, or plugin directories
 
-    options_description desc ("RobWork options");
-    desc.add_options () ("help",
-                         "produce help message") ("rwloglevel",
-                                                  value< std::string > ()->default_value ("info"),
-                                                  "Set to debug, info, error, fatal") (
+    options_description desc("RobWork options");
+    desc.add_options()("help", "produce help message")("rwloglevel",
+                                                       value<std::string>()->default_value("info"),
+                                                       "Set to debug, info, error, fatal")(
         "rwplugin",
-        value< std::vector< std::string > > ()->multitoken (),
-        "Specific RobWork plugins or plugin directories to load. ") (
+        value<std::vector<std::string>>()->multitoken(),
+        "Specific RobWork plugins or plugin directories to load. ")(
         "rwroot",
-        value< std::string > (),
+        value<std::string>(),
         "Directory of RobWork installation or development environment.");
 
     variables_map vm;
 
-    store (command_line_parser (argc, argv).allow_unregistered ().options (desc).run (), vm);
+    store(command_line_parser(argc, argv).allow_unregistered().options(desc).run(), vm);
 
-    notify (vm);
+    notify(vm);
 
-    if (vm.count ("help")) {
+    if(vm.count("help")) {
         std::cout << "Usage example setting RobWork parameters:\n\n"
                   << "\t" << argv[0]
                   << " --rwloglevel=debug "
@@ -439,94 +412,70 @@ void RobWork::init (int argc, const char* const* argv)
         return;
     }
 
-    std::vector< std::string > plugins;
+    std::vector<std::string> plugins;
 
-    if (vm.count ("rwplugin")) {
-        plugins = vm["rwplugin"].as< std::vector< std::string > > ();
-    }
+    if(vm.count("rwplugin")) { plugins = vm["rwplugin"].as<std::vector<std::string>>(); }
 
-    std::string rwloglevel_arg = vm["rwloglevel"].as< std::string > ();
+    std::string rwloglevel_arg = vm["rwloglevel"].as<std::string>();
 
-    if (rwloglevel_arg == "debug") {
-        Log::getInstance ()->setLevel (Log::Debug);
-    }
-    else if (rwloglevel_arg == "info") {
-        Log::getInstance ()->setLevel (Log::Info);
-    }
-    else if (rwloglevel_arg == "error") {
-        Log::getInstance ()->setLevel (Log::Error);
-    }
-    else if (rwloglevel_arg == "fatal") {
-        Log::getInstance ()->setLevel (Log::Fatal);
-    }
-    else {
-        RW_WARN ("rwloglevel set to unknown value!");
-    }
+    if(rwloglevel_arg == "debug") { Log::getInstance()->setLevel(Log::Debug); }
+    else if(rwloglevel_arg == "info") { Log::getInstance()->setLevel(Log::Info); }
+    else if(rwloglevel_arg == "error") { Log::getInstance()->setLevel(Log::Error); }
+    else if(rwloglevel_arg == "fatal") { Log::getInstance()->setLevel(Log::Fatal); }
+    else { RW_WARN("rwloglevel set to unknown value!"); }
 
     // Some plugins have already been loaded through global initialization - before the user was
     // able to set the debug level
     // - so we print the already loaded plugins to the debug log.
 
-    Log::debugLog () << "Initializing ROBWORK with arguments." << std::endl;
+    Log::debugLog() << "Initializing ROBWORK with arguments." << std::endl;
 
-    const RobWork::Ptr instance = rwinstance ();
-    Log::debugLog () << "Already loaded plugins: " << instance->_pluginChangedMap.size ()
-                     << std::endl;
+    const RobWork::Ptr instance = rwinstance();
+    Log::debugLog() << "Already loaded plugins: " << instance->_pluginChangedMap.size()
+                    << std::endl;
 
-    for (std::map< std::string, std::time_t >::const_iterator it =
-             instance->_pluginChangedMap.begin ();
-         it != instance->_pluginChangedMap.end ();
-         it++) {
-        Log::debugLog () << "\t" << it->first << std::endl;
+    for(std::map<std::string, std::time_t>::const_iterator it = instance->_pluginChangedMap.begin();
+        it != instance->_pluginChangedMap.end();
+        it++) {
+        Log::debugLog() << "\t" << it->first << std::endl;
     }
 
-    instance->initialize (plugins);
+    instance->initialize(plugins);
 }
 
-void RobWork::setLog (rw::core::Log::Ptr log)
-{
+void RobWork::setLog(rw::core::Log::Ptr log) {
     _log = log;
 }
 
-rw::core::Log& RobWork::getLog ()
-{
+rw::core::Log& RobWork::getLog() {
     // test for NULL, to avoid problems with 'static initialization order fiasco'
-    if (_log == NULL)
-        _log = rw::core::ownedPtr (new rw::core::Log ());
+    if(_log == NULL) _log = rw::core::ownedPtr(new rw::core::Log());
     return *_log;
 }
 
-rw::core::Log::Ptr RobWork::getLogPtr ()
-{
-    if (_log == NULL)
-        _log = rw::core::ownedPtr (new rw::core::Log ());
+rw::core::Log::Ptr RobWork::getLogPtr() {
+    if(_log == NULL) _log = rw::core::ownedPtr(new rw::core::Log());
     return _log;
 }
 
-rw::core::PropertyMap& RobWork::getSettings ()
-{
+rw::core::PropertyMap& RobWork::getSettings() {
     return _settings;
 }
 
-void RobWork::init ()
-{
-    rwinstance ()->initialize ();
+void RobWork::init() {
+    rwinstance()->initialize();
 }
 
-void RobWork::finish ()
-{
-    rwinstance ()->finalize ();
+void RobWork::finish() {
+    rwinstance()->finalize();
 }
 
-RobWork::Ptr RobWork::getInstance ()
-{
-    RobWork::Ptr instance = rwinstance ();
-    if (!instance->isInitialized ())
-        instance->initialize ();
+RobWork::Ptr RobWork::getInstance() {
+    RobWork::Ptr instance = rwinstance();
+    if(!instance->isInitialized()) instance->initialize();
     return instance;
 }
 
-void RobWork::setInstance (RobWork::Ptr rw)
-{
-    _newInstance = new Ptr (rw);
+void RobWork::setInstance(RobWork::Ptr rw) {
+    _newInstance = new Ptr(rw);
 }

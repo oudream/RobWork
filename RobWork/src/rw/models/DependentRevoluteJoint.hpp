@@ -24,7 +24,7 @@
 #if !defined(SWIG)
 #include <rw/models/DependentJoint.hpp>
 #include <rw/models/RevoluteJoint.hpp>
-#endif 
+#endif
 namespace rw { namespace kinematics {
     class State;
 }}    // namespace rw::kinematics
@@ -65,71 +65,71 @@ namespace rw { namespace models {
          *
          * @param offset [in] Offset for the controlling joint value.
          */
-        DependentRevoluteJoint (const std::string& name, const rw::math::Transform3D<>& transform,
-                                rw::models::Joint* owner, double scale, double offset);
+        DependentRevoluteJoint(const std::string& name, const rw::math::Transform3D<>& transform,
+                               rw::models::Joint* owner, double scale, double offset);
 
         /**
            @brief The joint controlling the passive revolute frame.
         */
-        const rw::models::Joint& getOwner () const { return *_owner; }
+        const rw::models::Joint& getOwner() const { return *_owner; }
 
         /**
            @brief The joint controlling the passive revolute frame.
         */
-        rw::models::Joint& getOwner () { return *_owner; }
+        rw::models::Joint& getOwner() { return *_owner; }
 
         /**
            @brief The scaling factor for the joint value of the controlling joint.
          */
-        double getScale () const { return _scale; }
+        double getScale() const { return _scale; }
 
         /**
          * @brief get offset of this joint value in relation to controlling joint
          */
-        double getOffset () const { return _offset; }
+        double getOffset() const { return _offset; }
 
         /**
          * @copydoc DependentJoint::isControlledBy
          */
-        bool isControlledBy (const rw::models::Joint* joint) const { return _owner == joint; }
+        bool isControlledBy(const rw::models::Joint* joint) const { return _owner == joint; }
 
         /**
          * @brief calculate the current q of this joint
          * @param state
          * @return
          */
-        double calcQ (const rw::kinematics::State& state);
+        double calcQ(const rw::kinematics::State& state);
 
         //! @copydoc rw::models::Joint::getJacobian
-        void getJacobian (size_t row, size_t col, const rw::math::Transform3D<>& joint,
-                          const rw::math::Transform3D<>& tcp, const rw::kinematics::State& state,
-                          rw::math::Jacobian& jacobian) const;
+        void getJacobian(size_t row, size_t col, const rw::math::Transform3D<>& joint,
+                         const rw::math::Transform3D<>& tcp, const rw::kinematics::State& state,
+                         rw::math::Jacobian& jacobian) const;
 
         //! @copydoc rw::models::Joint::getFixedTransform()
-        rw::math::Transform3D<> getFixedTransform () const { return _helper.getFixedTransform (); };
+        rw::math::Transform3D<> getFixedTransform() const { return _helper.getFixedTransform(); };
 
         //! @copydoc rw::models::Joint::setFixedTransform()
-        void setFixedTransform (const rw::math::Transform3D<>& t3d);
+        void setFixedTransform(const rw::math::Transform3D<>& t3d);
 
         //! @copydoc rw::models::Joint::getJointTransform()
-        rw::math::Transform3D<> getJointTransform (const rw::kinematics::State& state) const;
+        rw::math::Transform3D<> getJointTransform(const rw::kinematics::State& state) const;
 
         //! @copydoc rw::models::Joint::setJointMapping()
-        virtual void setJointMapping (rw::math::Function1Diff<>::Ptr function)
-        {
-            RW_THROW ("setJointMapping is not supported on VirtualJoint");
+        virtual void setJointMapping(rw::math::Function1Diff<>::Ptr function) {
+            RW_THROW("setJointMapping is not supported on VirtualJoint");
         }
 
         //! @copydoc rw::models::Joint::removeJointMapping()
-        virtual void removeJointMapping () {}
+        virtual void removeJointMapping() {}
 
       private:
-        void doMultiplyTransform (const rw::math::Transform3D<>& parent, const rw::kinematics::State& state,
-                                  rw::math::Transform3D<>& result) const;
+        void doMultiplyTransform(const rw::math::Transform3D<>& parent,
+                                 const rw::kinematics::State& state,
+                                 rw::math::Transform3D<>& result) const;
 
-        rw::math::Transform3D<> doGetTransform (const rw::kinematics::State& state) const;
+        rw::math::Transform3D<> doGetTransform(const rw::kinematics::State& state) const;
 
-        virtual rw::math::Jacobian doGetJacobian (const rw::kinematics::State& state) const;
+        virtual rw::math::Jacobian doGetJacobian(const rw::kinematics::State& state) const;
 
       private:
         RevoluteJoint _helper;

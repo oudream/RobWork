@@ -22,10 +22,9 @@
  * @file StablePose0DModel.hpp
  */
 
-#include <rwlibs/algorithms/RANSACModel.hpp>
-
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Rotation3D.hpp>
+#include <rwlibs/algorithms/RANSACModel.hpp>
 
 namespace rwlibs { namespace algorithms {
 
@@ -36,60 +35,59 @@ namespace rwlibs { namespace algorithms {
      *
      * The model requires at least 1 sample.
      */
-    class StablePose0DModel : public RANSACModel< StablePose0DModel, rw::math::Rotation3D<> >
+    class StablePose0DModel : public RANSACModel<StablePose0DModel, rw::math::Rotation3D<>>
     {
       public:
         //! @brief Smart pointer type to this class.
-        typedef rw::core::Ptr< StablePose0DModel > Ptr;
+        typedef rw::core::Ptr<StablePose0DModel> Ptr;
 
       public:    // constructors
         /**
          * @brief Constructor.
          */
-        StablePose0DModel () {}
+        StablePose0DModel() {}
 
         /**
          * @brief Constructor.
          *
          * @param orientation [in] orientation for the model
          */
-        StablePose0DModel (const rw::math::Rotation3D<>& orientation) :
-            _rot (orientation)    // constructs internal quaternion representation using rotation
+        StablePose0DModel(const rw::math::Rotation3D<>& orientation) :
+            _rot(orientation)    // constructs internal quaternion representation using rotation
         {}
 
         //! @brief Destructor.
-        virtual ~StablePose0DModel () {}
+        virtual ~StablePose0DModel() {}
 
       public:    // methods
         /**
          * @copydoc RANSACModel::fitError
          */
-        virtual double fitError (const rw::math::Rotation3D<>& sample) const;
+        virtual double fitError(const rw::math::Rotation3D<>& sample) const;
 
         //! @copydoc RANSACModel::invalid
-        virtual bool invalid () const;
+        virtual bool invalid() const;
 
         /**
          * @copydoc RANSACModel::getMinReqData
          *
          * StablePose0DModel requires at least 1 sample.
          */
-        virtual int getMinReqData () const { return 1; }
+        virtual int getMinReqData() const { return 1; }
 
         //! @copydoc RANSACModel::refit
-        virtual double refit (const std::vector< rw::math::Rotation3D<> >& samples);
+        virtual double refit(const std::vector<rw::math::Rotation3D<>>& samples);
 
         //! @copydoc RANSACModel::same
-        virtual bool same (const StablePose0DModel& model, double threshold) const;
+        virtual bool same(const StablePose0DModel& model, double threshold) const;
 
         //! @brief Get stable pose orientation.
-        inline rw::math::Rotation3D<> orientation () const { return _rot; }
+        inline rw::math::Rotation3D<> orientation() const { return _rot; }
 
         /**
          * @brief Streaming operator.
          */
-        friend std::ostream& operator<< (std::ostream& out, const StablePose0DModel& model)
-        {
+        friend std::ostream& operator<<(std::ostream& out, const StablePose0DModel& model) {
             return out << "StablePose0D(Rotation3D: " << model._rot << ")";
         }
 

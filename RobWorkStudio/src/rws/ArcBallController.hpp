@@ -49,7 +49,7 @@ class ArcBallController : public CameraController
      * @param x [in]
      * @param y [in]
      */
-    rw::math::Vector3D<> mapToSphere (double x, double y) const;
+    rw::math::Vector3D<> mapToSphere(double x, double y) const;
 
     /**
      * @brief project a image position into 3D space using pinhole model
@@ -59,7 +59,7 @@ class ArcBallController : public CameraController
      *
      * @return the projected 3D position
      */
-    rw::math::Vector3D<> unproject (int x, int y, double z);
+    rw::math::Vector3D<> unproject(int x, int y, double z);
 
     /**
      * @brief move the camera in 2D relative to the scene
@@ -67,27 +67,26 @@ class ArcBallController : public CameraController
      * @param x [in] current mouse position in x-axis
      * @param y [in] current mouse position in y-axis
      */
-    void pan (int x, int y);
+    void pan(int x, int y);
 
   public:
     //! @brief Smart pointer type for ArcBallController
-    typedef rw::core::Ptr< ArcBallController > Ptr;
+    typedef rw::core::Ptr<ArcBallController> Ptr;
 
     /**
      * @brief constructor
      */
-    ArcBallController (double NewWidth, double NewHeight);
+    ArcBallController(double NewWidth, double NewHeight);
 
     /**
      * @brief constructor
      */
-    ArcBallController (double NewWidth, double NewHeight, rw::graphics::SceneCamera::Ptr cam);
+    ArcBallController(double NewWidth, double NewHeight, rw::graphics::SceneCamera::Ptr cam);
 
     /**
      * @brief destructor
      */
-    virtual ~ArcBallController ()
-    { /* nothing to do */
+    virtual ~ArcBallController() { /* nothing to do */
     }
 
     /**
@@ -96,7 +95,7 @@ class ArcBallController : public CameraController
      * @param x [in] x-coodinate
      * @param y [in] y-coodinate
      */
-    void click (float x, float y);
+    void click(float x, float y);
 
     /**
      * @brief Calculates the rotation of the object/scene based on
@@ -105,50 +104,50 @@ class ArcBallController : public CameraController
      * @param y [in] the y-coordinate of the current mouse position
      * @return the rotation that should be applied to the object/scene
      */
-    rw::math::Quaternion< double > drag (float x, float y);
+    rw::math::Quaternion<double> drag(float x, float y);
 
     //! @copydoc CameraController::draw
-    void draw ();
+    void draw();
 
     //! @copydoc CameraController::setBounds
-    void setBounds (double NewWidth, double NewHeight);
+    void setBounds(double NewWidth, double NewHeight);
 
     //! @copydoc CameraController::handleEvent
-    virtual void handleEvent (QEvent* event);
+    virtual void handleEvent(QEvent* event);
 
     //! @copydoc CameraController::getTransform
-    virtual rw::math::Transform3D<> getTransform () const;
+    virtual rw::math::Transform3D<> getTransform() const;
 
     //! @copydoc CameraController::setTransform
-    void setTransform (const rw::math::Transform3D<>& t3d);
+    void setTransform(const rw::math::Transform3D<>& t3d);
 
     //! @copydoc CameraController::setCenter
-    void setCenter (const rw::math::Vector3D<>& center, const rw::math::Vector2D<>& screenCenter);
+    void setCenter(const rw::math::Vector3D<>& center, const rw::math::Vector2D<>& screenCenter);
 
     //! @copydoc CameraController::getCenter
-    rw::math::Vector3D<> getCenter () { return _pivotPoint; }
+    rw::math::Vector3D<> getCenter() { return _pivotPoint; }
 
     //! @copydoc CameraController::zoom
-    void zoom (double amount);
+    void zoom(double amount);
 
     //! @copydoc CameraController::autoZoom
-    void autoZoom (rw::core::Ptr< rw::models::WorkCell > workcell,
-                   rw::core::Ptr< const rw::kinematics::State > state, double fovy,
-                   double aspectRatio);
+    void autoZoom(rw::core::Ptr<rw::models::WorkCell> workcell,
+                  rw::core::Ptr<const rw::kinematics::State> state, double fovy,
+                  double aspectRatio);
 
     //! @copydoc CameraController::setZoomTarget
-    void setZoomTarget (rw::math::Vector3D< double > target, bool enable = true);
+    void setZoomTarget(rw::math::Vector3D<double> target, bool enable = true);
 
     //! @copydoc CameraController::setPanTarget
-    void setPanTarget (rw::math::Vector3D< double > target, bool enable = true);
+    void setPanTarget(rw::math::Vector3D<double> target, bool enable = true);
 
     //! @copydoc CameraController::getPanTarget
-    rw::math::Vector3D<> getPanTarget ();
+    rw::math::Vector3D<> getPanTarget();
 
     //! @copydoc CameraController::setDrawable
-    void setDrawable (rw::graphics::DrawableNode::Ptr obj) { _pivotObj = obj; }
+    void setDrawable(rw::graphics::DrawableNode::Ptr obj) { _pivotObj = obj; }
 
-    void zoomScale (double scale = 1){_zoomScale = scale;}
+    void zoomScale(double scale = 1) { _zoomScale = scale; }
 
   private:
     rw::math::Vector2D<> _centerPt;    // Center of the ball
@@ -165,7 +164,7 @@ class ArcBallController : public CameraController
     double _zoomScale;
     bool _advancedZoomEnabled;
     long long _delayRotation;
-    rw::math::Vector3D< double > _zoomTarget;
+    rw::math::Vector3D<double> _zoomTarget;
 
     bool _advancedPanEnabled;
     rw::math::Vector3D<> _initialPanPos;
@@ -176,7 +175,7 @@ class ArcBallController : public CameraController
 
     rw::graphics::SceneCamera::Ptr _cam;
 
-    void setPivotScale ();
+    void setPivotScale();
 };
 
 }    // namespace rws

@@ -23,17 +23,14 @@
 
 using namespace rw::geometry;
 
-void PlainQuadraticShell::getFace (std::size_t idx, QuadraticFace& dst) const
-{
+void PlainQuadraticShell::getFace(std::size_t idx, QuadraticFace& dst) const {
     dst = *_faces[idx];
 }
 
-void PlainQuadraticShell::getFace (std::size_t idx, GenericFace& face) const
-{
+void PlainQuadraticShell::getFace(std::size_t idx, GenericFace& face) const {
     face = *_faces[idx];
 }
 
-Face::CPtr PlainQuadraticShell::doGetFace (std::size_t idx) const
-{
+Face::CPtr PlainQuadraticShell::doGetFace(std::size_t idx) const {
     return _faces[idx];
 }

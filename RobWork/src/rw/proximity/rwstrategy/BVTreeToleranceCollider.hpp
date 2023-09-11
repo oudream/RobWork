@@ -22,7 +22,7 @@
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/proximity/CollisionStrategy.hpp>
-#endif 
+#endif
 namespace rw { namespace proximity {
 
     /**
@@ -35,17 +35,17 @@ namespace rw { namespace proximity {
      * multiple threads. The state is small so there is only little to no overhead
      * cloning the TreeCollider.
      */
-    template< class BVTREE > class BVTreeToleranceCollider
+    template<class BVTREE> class BVTreeToleranceCollider
     {
       private:
       public:
         //! @brief smart pointer for this class
-        typedef rw::core::Ptr< BVTreeToleranceCollider< BVTREE > > Ptr;
+        typedef rw::core::Ptr<BVTreeToleranceCollider<BVTREE>> Ptr;
 
         /**
          * @brief destructor
          */
-        virtual ~BVTreeToleranceCollider (){};
+        virtual ~BVTreeToleranceCollider(){};
 
         /**
          * @brief tests if two BV trees are colliding.
@@ -56,20 +56,23 @@ namespace rw { namespace proximity {
          * @param tolerance documentation missing !
          * @param collidingPrimitives documentation missing !
          */
-        virtual bool collides (
-            const rw::math::Transform3D< typename BVTREE::value_type >& fTA, const BVTREE& treeA,
-            const rw::math::Transform3D< typename BVTREE::value_type >& fTB, const BVTREE& treeB,
-            double tolerance, std::vector< std::pair< int, int > >* collidingPrimitives = NULL) = 0;
+        virtual bool collides(const rw::math::Transform3D<typename BVTREE::value_type>& fTA,
+                              const BVTREE& treeA,
+                              const rw::math::Transform3D<typename BVTREE::value_type>& fTB,
+                              const BVTREE& treeB, double tolerance,
+                              std::vector<std::pair<int, int>>* collidingPrimitives = NULL) = 0;
 
         /**
          * @brief set the query type
          */
-        virtual void setQueryType (rw::proximity::CollisionStrategy::QueryType type) { _queryType = type; };
+        virtual void setQueryType(rw::proximity::CollisionStrategy::QueryType type) {
+            _queryType = type;
+        };
 
         /**
          * @brief get the collision query type
          */
-        virtual rw::proximity::CollisionStrategy::QueryType getQueryType () { return _queryType; };
+        virtual rw::proximity::CollisionStrategy::QueryType getQueryType() { return _queryType; };
 
         //! type of the primitive in collision callb ack function
         // typedef boost::function<void(int,int)> PrimitivesInCollisionCB;
@@ -79,13 +82,13 @@ namespace rw { namespace proximity {
          * @brief returns the amount of heap memmory used by the tree collider.
          * @return nr of bytes used
          */
-        virtual int getMemUsage () = 0;
+        virtual int getMemUsage() = 0;
 
-        virtual int getNrOfTestedBVs () { return -1; };
-        virtual int getNrOfCollidingBVs () { return -1; };
+        virtual int getNrOfTestedBVs() { return -1; };
+        virtual int getNrOfCollidingBVs() { return -1; };
 
-        virtual int getNrOfTestedPrimitives () { return -1; };
-        virtual int getNrOfCollidingPrimitives () { return -1; };
+        virtual int getNrOfTestedPrimitives() { return -1; };
+        virtual int getNrOfCollidingPrimitives() { return -1; };
 
         // TreeCollider* makeBalancedBFSCollider();
 
@@ -118,33 +121,30 @@ namespace rw { namespace proximity {
     class BVTreeToleranceColliderFactory
     {
       public:
-        template< class DERIVED, class DESCENTSTATE, class BVTREE > struct BVDescentStrategy
+        template<class DERIVED, class DESCENTSTATE, class BVTREE> struct BVDescentStrategy
         {
             typedef typename BVTREE::Node BVNODE;
             typedef DESCENTSTATE State;
 
-            bool descentIntoA (const BVNODE& bvA, const BVNODE& bvB, DESCENTSTATE& state)
-            {
-                return static_cast< DERIVED* > (this)->descentIntoA (bvA, bvB, state);
+            bool descentIntoA(const BVNODE& bvA, const BVNODE& bvB, DESCENTSTATE& state) {
+                return static_cast<DERIVED*>(this)->descentIntoA(bvA, bvB, state);
             }
         };
 
         struct BalancedDescentState
         {
-            BalancedDescentState () : previousRes (true){};
+            BalancedDescentState() : previousRes(true){};
             bool previousRes;
         };
 
-        template< class BVTREE >
-        struct BalancedDescentStrategy
-            : public BVDescentStrategy< BalancedDescentStrategy< BVTREE >, BalancedDescentState,
-                                        BVTREE >
+        template<class BVTREE>
+        struct BalancedDescentStrategy : public BVDescentStrategy<BalancedDescentStrategy<BVTREE>,
+                                                                  BalancedDescentState, BVTREE>
         {
             typedef typename BVTREE::Node BVNODE;
             typedef BalancedDescentState State;
-            BalancedDescentStrategy () {}
-            bool descentIntoA (const BVNODE& bvA, const BVNODE& bvB, BalancedDescentState& state)
-            {
+            BalancedDescentStrategy() {}
+            bool descentIntoA(const BVNODE& bvA, const BVNODE& bvB, BalancedDescentState& state) {
                 state.previousRes = !state.previousRes;
                 return state.previousRes;
             }
@@ -156,15 +156,14 @@ namespace rw { namespace proximity {
          * balanced in the way that it equally switches between descending in the
          * trees.
          */
-        template< class BVTREE >
-        static BVTreeToleranceCollider< BVTREE >* makeBalancedDFSToleranceColliderOBB ()
-        {
-            rw::geometry::OBBCollider< typename BVTREE::value_type >* bvcollider =
-                new rw::geometry::OBBCollider< typename BVTREE::value_type > ();
-            BalancedDescentStrategy< BVTREE >* dstrategy = new BalancedDescentStrategy< BVTREE > ();
-            return makeDFSCollider< rw::geometry::OBBCollider< typename BVTREE::value_type >,
-                                    BalancedDescentStrategy< BVTREE >,
-                                    BVTREE > (bvcollider, dstrategy);
+        template<class BVTREE>
+        static BVTreeToleranceCollider<BVTREE>* makeBalancedDFSToleranceColliderOBB() {
+            rw::geometry::OBBCollider<typename BVTREE::value_type>* bvcollider =
+                new rw::geometry::OBBCollider<typename BVTREE::value_type>();
+            BalancedDescentStrategy<BVTREE>* dstrategy = new BalancedDescentStrategy<BVTREE>();
+            return makeDFSCollider<rw::geometry::OBBCollider<typename BVTREE::value_type>,
+                                   BalancedDescentStrategy<BVTREE>,
+                                   BVTREE>(bvcollider, dstrategy);
         }
 
         /**
@@ -173,24 +172,22 @@ namespace rw { namespace proximity {
          * @param dstrat
          * @return
          */
-        template< class COLLIDER, class DESCENT_STRATEGY, class BVTREE >
-        static BVTreeToleranceCollider< BVTREE >* makeDFSCollider (COLLIDER* bvcollider,
-                                                                   DESCENT_STRATEGY* dstrat)
-        {
-            return new OBVTreeDFSCollider< BVTREE, COLLIDER, DESCENT_STRATEGY > (bvcollider,
-                                                                                 dstrat);
+        template<class COLLIDER, class DESCENT_STRATEGY, class BVTREE>
+        static BVTreeToleranceCollider<BVTREE>* makeDFSCollider(COLLIDER* bvcollider,
+                                                                DESCENT_STRATEGY* dstrat) {
+            return new OBVTreeDFSCollider<BVTREE, COLLIDER, DESCENT_STRATEGY>(bvcollider, dstrat);
         }
 
-        static BVTreeToleranceCollider< BinaryOBBPtrTreeD >* makeOBBPtrTreeBDFSColliderD ();
+        static BVTreeToleranceCollider<BinaryOBBPtrTreeD>* makeOBBPtrTreeBDFSColliderD();
 
-        static BVTreeToleranceCollider< BinaryOBBPtrTreeF >* makeOBBPtrTreeBDFSColliderF ();
+        static BVTreeToleranceCollider<BinaryOBBPtrTreeF>* makeOBBPtrTreeBDFSColliderF();
 
       private:
         /**
          * @brief this tree collider is used for oriented bounding volumes.
          */
-        template< class BVTREE, class BVCOLLIDER, class DESCENTSTRATEGY >
-        class OBVTreeDFSToleranceCollider : public BVTreeToleranceCollider< BVTREE >
+        template<class BVTREE, class BVCOLLIDER, class DESCENTSTRATEGY>
+        class OBVTreeDFSToleranceCollider : public BVTreeToleranceCollider<BVTREE>
         {
           public:
             struct Job
@@ -200,13 +197,12 @@ namespace rw { namespace proximity {
                 typename DESCENTSTRATEGY::State _state;
                 // int aIdx,bIdx;
 
-                Job () {}
+                Job() {}
 
-                Job (typename BVTREE::node_iterator tA, typename BVTREE::node_iterator tB,
-                     const typename DESCENTSTRATEGY::State& state) :
-                    nodeA (tA),
-                    nodeB (tB), _state (state)
-                {}
+                Job(typename BVTREE::node_iterator tA, typename BVTREE::node_iterator tB,
+                    const typename DESCENTSTRATEGY::State& state) :
+                    nodeA(tA),
+                    nodeB(tB), _state(state) {}
                 /*
                                 BVJob(BVTREE::node_iterator tA, BVTREE::node_iterator tB, int ai,
                    int bi): nodeA(tA),nodeB(tB),aIdx(ai),bIdx(bi)
@@ -218,38 +214,36 @@ namespace rw { namespace proximity {
             typedef typename BVTREE::BVType BV;
             typedef typename BV::value_type T;
 
-            OBVTreeDFSToleranceCollider (BVCOLLIDER* bvcollider, DESCENTSTRATEGY* descendStrat,
-                                         int n = 200) :
-                _bvCollider (bvcollider),
-                _descendStrat (descendStrat), _BVstack (n), _BVstackIdx (0), _firstContact (true)
-            {
-                _primCollider = new rw::geometry::TriTriIntersectDeviller< T > ();
-                initVars ();
+            OBVTreeDFSToleranceCollider(BVCOLLIDER* bvcollider, DESCENTSTRATEGY* descendStrat,
+                                        int n = 200) :
+                _bvCollider(bvcollider),
+                _descendStrat(descendStrat), _BVstack(n), _BVstackIdx(0), _firstContact(true) {
+                _primCollider = new rw::geometry::TriTriIntersectDeviller<T>();
+                initVars();
             }
 
-            virtual ~OBVTreeDFSToleranceCollider () { delete _primCollider; };
+            virtual ~OBVTreeDFSToleranceCollider() { delete _primCollider; };
 
-            bool collides (const rw::math::Transform3D< typename BV::value_type >& fTA,
-                           const BVTREE& treeA,
-                           const rw::math::Transform3D< typename BV::value_type >& fTB,
-                           const BVTREE& treeB,
-                           std::vector< std::pair< int, int > >* collidingPrimitives = NULL)
-            {
+            bool collides(const rw::math::Transform3D<typename BV::value_type>& fTA,
+                          const BVTREE& treeA,
+                          const rw::math::Transform3D<typename BV::value_type>& fTB,
+                          const BVTREE& treeB,
+                          std::vector<std::pair<int, int>>* collidingPrimitives = NULL) {
                 using namespace rw::math;
                 using namespace rw::geometry;
 
                 bool incollision = false;
                 // std::cout << fTA << std::endl;
                 // std::cout << fTB << std::endl;
-                initVars ();
+                initVars();
 
                 typename DESCENTSTRATEGY::State descendState;
-                typename BVTREE::node_iterator nodeA = treeA.getRootIterator ();
-                typename BVTREE::node_iterator nodeB = treeB.getRootIterator ();
+                typename BVTREE::node_iterator nodeA = treeA.getRootIterator();
+                typename BVTREE::node_iterator nodeB = treeB.getRootIterator();
 
                 // RW_DEBUG("Collides...");
-                Transform3D< typename BV::value_type > tATtB;
-                Transform3D< typename BV::value_type >::invMult (fTA, fTB, tATtB);
+                Transform3D<typename BV::value_type> tATtB;
+                Transform3D<typename BV::value_type>::invMult(fTA, fTB, tATtB);
                 // const Transform3D<typename BV::value_type> tBTtA = inverse(tATtB);
 
                 // Transform3D<typename BV::value_type> tATtB = inverse(fTA)*fTB;
@@ -258,58 +252,56 @@ namespace rw { namespace proximity {
                 _nrOfCollidingBVs = 0;
                 // std::cout << tATtB << std::endl;
 
-                push (Job (nodeA, nodeB, descendState));
+                push(Job(nodeA, nodeB, descendState));
                 int nodeIdx = 0;
                 // std::cout << "graph CollisionTree {\n";
                 // std::cout << "{\n 1 -- 2 -- 3 -- 4 -- 5 -- 6 -- 7 -- 8 -- 9 -- 10 ;\n }\n"
                 // RW_DEBUG("Process children of root");
-                while (!empty ()) {
+                while(!empty()) {
                     // RW_DEBUG("Get JOB: " << _BVstackIdx);
-                    Job job = *top ();
+                    Job job = *top();
                     // std::cout << "\t" << job.nodeA.getId() <<" [style=filled,color=red, rank=" <<
                     // (int)job.nodeA.depth() << "]; \n"; std::cout << "\t" << job.nodeB.getId() <<"
                     // [style=filled,color=blue, rank=" << (int)job.nodeB.depth() << "]; \n";
                     // std::cout << "\t" << job.nodeA.getId() << " -- " << job.nodeB.getId() <<"
                     // [style=dotted]; \n";
 
-                    pop ();
+                    pop();
                     // std::cout << "\nJ" << _BVstackIdx;
 
                     // RW_DEBUG("after Get JOB: " << _BVstackIdx);
-                    const BV& cbvA = job.nodeA.getBV ();
-                    const BV& cbvB = job.nodeB.getBV ();
+                    const BV& cbvA = job.nodeA.getBV();
+                    const BV& cbvB = job.nodeB.getBV();
 
-                    Transform3D< typename BV::value_type > aATtB;
-                    Transform3D< typename BV::value_type >::invMult (
-                        cbvA.getTransform (), tATtB, aATtB);
+                    Transform3D<typename BV::value_type> aATtB;
+                    Transform3D<typename BV::value_type>::invMult(
+                        cbvA.getTransform(), tATtB, aATtB);
                     // Transform3D<typename BV::value_type> aATtB = inverse(cbvA.getTransform()) *
                     // tATtB;
-                    bool incol =
-                        _bvCollider->inCollision (cbvA, cbvB, aATtB * cbvB.getTransform ());
+                    bool incol = _bvCollider->inCollision(cbvA, cbvB, aATtB * cbvB.getTransform());
                     nodeIdx++;
 
-                    if (incol) {
-                        if (job.nodeA.isLeaf () && job.nodeB.isLeaf ()) {
+                    if(incol) {
+                        if(job.nodeA.isLeaf() && job.nodeB.isLeaf()) {
                             // std::cout << "\t" << job.nodeA.getId() << "" << job.nodeB.getId() <<"
                             // [style=filled,color=green, label= \"" << nodeIdx << "\"] \n";
-                            const size_t nrTrisA = treeA.getNrTriangles (job.nodeA);
-                            const size_t nrTrisB = treeB.getNrTriangles (job.nodeB);
-                            Triangle< T > tria, trib;
+                            const size_t nrTrisA = treeA.getNrTriangles(job.nodeA);
+                            const size_t nrTrisB = treeB.getNrTriangles(job.nodeB);
+                            Triangle<T> tria, trib;
 
-                            for (size_t ai = 0; ai < nrTrisA; ai++) {
-                                int triaidx = treeA.getTriangle (job.nodeA, tria, ai);
-                                for (size_t bi = 0; bi < nrTrisB; bi++) {
-                                    int tribidx = treeB.getTriangle (job.nodeB, trib, bi);
+                            for(size_t ai = 0; ai < nrTrisA; ai++) {
+                                int triaidx = treeA.getTriangle(job.nodeA, tria, ai);
+                                for(size_t bi = 0; bi < nrTrisB; bi++) {
+                                    int tribidx = treeB.getTriangle(job.nodeB, trib, bi);
                                     _nrOfPrimTests++;
-                                    if (_primCollider->inCollision (tria, trib, tATtB)) {
+                                    if(_primCollider->inCollision(tria, trib, tATtB)) {
                                         incollision = true;
                                         // if(collidingPrimitives)
                                         //    collidingPrimitives->push_back(
                                         //    std::make_pair(triaidx, tribidx) );
 
                                         // add triangle indicies to result
-                                        if (_firstContact)
-                                            return true;
+                                        if(_firstContact) return true;
                                     }
                                 }
                             }
@@ -326,12 +318,12 @@ namespace rw { namespace proximity {
                         _nrOfCollidingBVs++;
 
                         // push back new jobs, handle if one of the bounding volumes are leaf nodes
-                        bool descentA = _descendStrat->descentIntoA (cbvA, cbvB, job._state);
-                        if ((descentA && !job.nodeA.isLeaf ()) || job.nodeB.isLeaf ()) {
+                        bool descentA = _descendStrat->descentIntoA(cbvA, cbvB, job._state);
+                        if((descentA && !job.nodeA.isLeaf()) || job.nodeB.isLeaf()) {
                             // TODO: optimize such that only 1 is pushed on stack, the other is kept
                             // in local variables
-                            if (job.nodeA.hasRight ()) {
-                                push ();
+                            if(job.nodeA.hasRight()) {
+                                push();
                                 // std::cout << "\t" << job.nodeA.getId() << "" << job.nodeB.getId()
                                 // <<" -- "
                                 //          << job.nodeA.right().getId() << "" << job.nodeB.getId()
@@ -339,51 +331,51 @@ namespace rw { namespace proximity {
 
                                 // std::cout << "\t" << job.nodeA.getId() << " -- " <<
                                 // job.nodeA.right().getId() <<";\n";
-                                top ()->nodeA  = job.nodeA.right ();
-                                top ()->nodeB  = job.nodeB;
-                                top ()->_state = job._state;
+                                top()->nodeA  = job.nodeA.right();
+                                top()->nodeB  = job.nodeB;
+                                top()->_state = job._state;
                             }
 
-                            if (job.nodeA.hasLeft ()) {
+                            if(job.nodeA.hasLeft()) {
                                 // std::cout << "\t" << job.nodeA.getId() << " -- " <<
                                 // job.nodeA.left().getId() <<";\n"; std::cout << "\t" <<
                                 // job.nodeA.getId() << "" << job.nodeB.getId() <<" -- "
                                 //          << job.nodeA.left().getId() << "" << job.nodeB.getId()
                                 //          << "\n";
 
-                                push ();
-                                top ()->nodeA  = job.nodeA.left ();
-                                top ()->nodeB  = job.nodeB;
-                                top ()->_state = job._state;
+                                push();
+                                top()->nodeA  = job.nodeA.left();
+                                top()->nodeB  = job.nodeB;
+                                top()->_state = job._state;
                             }
                         }
                         else {
                             // push( Job(job.nodeA, job.nodeB.right(), job._state) );
                             // push( Job(job.nodeA, job.nodeB.left(), job._state) );
-                            if (job.nodeB.hasRight ()) {
-                                push ();
+                            if(job.nodeB.hasRight()) {
+                                push();
                                 // std::cout << "\t" << job.nodeB.getId() << " -- " <<
                                 // job.nodeB.right().getId() <<";\n"; std::cout << "\t" <<
                                 // job.nodeA.getId() << "" << job.nodeB.getId() <<" -- "
                                 //          << job.nodeA.getId() << "" << job.nodeB.right().getId()
                                 //          << "\n";
 
-                                top ()->nodeA  = job.nodeA;
-                                top ()->nodeB  = job.nodeB.right ();
-                                top ()->_state = job._state;
+                                top()->nodeA  = job.nodeA;
+                                top()->nodeB  = job.nodeB.right();
+                                top()->_state = job._state;
                             }
 
-                            if (job.nodeB.hasLeft ()) {
-                                push ();
+                            if(job.nodeB.hasLeft()) {
+                                push();
                                 // std::cout << "\t" << job.nodeB.getId() << " -- " <<
                                 // job.nodeB.left().getId() <<";\n"; std::cout << "\t" <<
                                 // job.nodeA.getId() << "" << job.nodeB.getId() <<" -- "
                                 //          << job.nodeA.getId() << "" << job.nodeB.left().getId()
                                 //          << "\n";
 
-                                top ()->nodeA  = job.nodeA;
-                                top ()->nodeB  = job.nodeB.left ();
-                                top ()->_state = job._state;
+                                top()->nodeA  = job.nodeA;
+                                top()->nodeB  = job.nodeB.left();
+                                top()->_state = job._state;
                             }
                         }
                     }
@@ -399,67 +391,54 @@ namespace rw { namespace proximity {
                 return incollision;
             }
 
-            Job* top ()
-            {
-                if (_BVstackIdx == 0)
-                    return NULL;
+            Job* top() {
+                if(_BVstackIdx == 0) return NULL;
                 return &_BVstack[_BVstackIdx - 1];
             }
-            void pop ()
-            {
+            void pop() {
                 // RW_ASSERT(_BVstackIdx!=0);
                 _BVstackIdx--;
             }
-            bool empty () { return _BVstackIdx == 0; }
-            void push ()
-            {
-                if (_BVstackIdx + 1 >= (int) _BVstack.size ()) {
-                    _BVstack.resize (_BVstackIdx * 2);
-                }
+            bool empty() { return _BVstackIdx == 0; }
+            void push() {
+                if(_BVstackIdx + 1 >= (int) _BVstack.size()) { _BVstack.resize(_BVstackIdx * 2); }
                 _BVstackIdx++;
             }
 
-            void push (const Job& job)
-            {
-                if (_BVstackIdx + 1 >= (int) _BVstack.size ()) {
-                    _BVstack.resize (_BVstackIdx * 2);
-                }
+            void push(const Job& job) {
+                if(_BVstackIdx + 1 >= (int) _BVstack.size()) { _BVstack.resize(_BVstackIdx * 2); }
                 _BVstack[_BVstackIdx] = job;
                 _BVstackIdx++;
             }
 
-            int size () { return _BVstackIdx; }
+            int size() { return _BVstackIdx; }
 
-            Job& getJob (int idx)
-            {
-                if (idx >= (int) _BVstack.size ()) {
-                    _BVstack.resize (idx * 2);
-                }
+            Job& getJob(int idx) {
+                if(idx >= (int) _BVstack.size()) { _BVstack.resize(idx * 2); }
                 return _BVstack[idx];
             }
 
-            int getMemUsage () { return _BVstackIdx * sizeof (Job); }
+            int getMemUsage() { return _BVstackIdx * sizeof(Job); }
 
-            virtual int getNrOfTestedBVs () { return _nrOfBVTests; };
-            virtual int getNrOfCollidingBVs () { return _nrOfCollidingBVs; };
-            virtual int getNrOfTestedPrimitives () { return _nrOfPrimTests; };
-            virtual int getNrOfCollidingPrimitives () { return _nrOfCollidingPrims; };
+            virtual int getNrOfTestedBVs() { return _nrOfBVTests; };
+            virtual int getNrOfCollidingBVs() { return _nrOfCollidingBVs; };
+            virtual int getNrOfTestedPrimitives() { return _nrOfPrimTests; };
+            virtual int getNrOfCollidingPrimitives() { return _nrOfCollidingPrims; };
 
-            void initVars ()
-            {
+            void initVars() {
                 _BVstackIdx         = 0;
                 _nrOfBVTests        = 0;
                 _nrOfCollidingBVs   = 0;
                 _nrOfPrimTests      = 0;
                 _nrOfCollidingPrims = 0;
-                _firstContact =
-                    rw::proximity::BVTreeCollider< BVTREE >::_queryType == rw::proximity::CollisionStrategy::FirstContact;
+                _firstContact       = rw::proximity::BVTreeCollider<BVTREE>::_queryType ==
+                                rw::proximity::CollisionStrategy::FirstContact;
             }
 
             BVCOLLIDER* _bvCollider;
-            rw::geometry::TRIDeviller< T >* _primCollider;
+            rw::geometry::TRIDeviller<T>* _primCollider;
             DESCENTSTRATEGY* _descendStrat;
-            std::vector< Job > _BVstack;
+            std::vector<Job> _BVstack;
             int _BVstackIdx;
             bool _firstContact;
 

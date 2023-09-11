@@ -21,31 +21,26 @@
 
 using namespace rw::common;
 
-LogBufferedMsg::LogBufferedMsg (std::ostream* stream) : _stream (stream), _tabLevel (0)
-{}
+LogBufferedMsg::LogBufferedMsg(std::ostream* stream) : _stream(stream), _tabLevel(0) {}
 
-LogBufferedMsg::~LogBufferedMsg ()
-{
-    flush ();
+LogBufferedMsg::~LogBufferedMsg() {
+    flush();
 }
 
-void LogBufferedMsg::doWrite (const std::string& msg)
-{
-    _buffer.push_back (std::make_pair (msg, _tabLevel));
+void LogBufferedMsg::doWrite(const std::string& msg) {
+    _buffer.push_back(std::make_pair(msg, _tabLevel));
 }
 
-void LogBufferedMsg::doFlush ()
-{
-    typedef std::pair< std::string, int > StringIntPair;
-    for (const StringIntPair& pair : _buffer) {
-        *_stream << std::setw (pair.second) << std::setfill (' ');
+void LogBufferedMsg::doFlush() {
+    typedef std::pair<std::string, int> StringIntPair;
+    for(const StringIntPair& pair : _buffer) {
+        *_stream << std::setw(pair.second) << std::setfill(' ');
         *_stream << pair.first;
     }
-    _stream->flush ();
-    _buffer.clear ();
+    _stream->flush();
+    _buffer.clear();
 }
 
-void LogBufferedMsg::doSetTabLevel (int tablevel)
-{
+void LogBufferedMsg::doSetTabLevel(int tablevel) {
     _tabLevel = tablevel;
 }

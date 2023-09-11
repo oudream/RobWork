@@ -6,17 +6,14 @@ using namespace rw::loaders;
 using namespace rw::geometry;
 using namespace rw::core;
 
-rw::graphics::Model3D::Ptr LoaderSTL::load (const std::string& filename)
-{
+rw::graphics::Model3D::Ptr LoaderSTL::load(const std::string& filename) {
     std::string name = _defaultName;
-    if (name.empty ()) {
-        name = boost::filesystem::path (filename).filename ().string ();
-    }
+    if(name.empty()) { name = boost::filesystem::path(filename).filename().string(); }
 
-    rw::geometry::PlainTriMeshN1F::Ptr mesh = STLFile::load (filename);
-    Model3D::Ptr model                      = rw::core::ownedPtr (new Model3D (name));
+    rw::geometry::PlainTriMeshN1F::Ptr mesh = STLFile::load(filename);
+    Model3D::Ptr model                      = rw::core::ownedPtr(new Model3D(name));
 
-    model->addTriMesh (_defaultMat, *mesh);
+    model->addTriMesh(_defaultMat, *mesh);
 
     return model;
 }

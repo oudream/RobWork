@@ -1,7 +1,7 @@
 /********************************************************************************
- * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute, 
- * Faculty of Engineering, University of Southern Denmark 
- * 
+ * Copyright 2009 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
+ * Faculty of Engineering, University of Southern Denmark
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ********************************************************************************/
-
 
 #ifndef CONVERTUTIL_HPP_
 #define CONVERTUTIL_HPP_
@@ -37,13 +36,8 @@ class ConvertUtil
         unsigned char data[4];
     };
 
-public:
-    static float toFloat32(
-        unsigned char b0,
-        unsigned char b1,
-        unsigned char b2,
-        unsigned char b3 )
-    {
+  public:
+    static float toFloat32(unsigned char b0, unsigned char b1, unsigned char b2, unsigned char b3) {
         ToData tofloat(1);
         tofloat.data[0] = b0;
         tofloat.data[1] = b1;
@@ -52,18 +46,12 @@ public:
         return tofloat.float_val;
     };
 
-    static float toFloat32(unsigned char arr[], int offset)
-    {
+    static float toFloat32(unsigned char arr[], int offset) {
         int i = offset;
-        return toFloat32(arr[i], arr[i+1],arr[i+2], arr[i+3]);
+        return toFloat32(arr[i], arr[i + 1], arr[i + 2], arr[i + 3]);
     };
 
-    static int toInt32(
-        unsigned char b0,
-        unsigned char b1,
-        unsigned char b2,
-        unsigned char b3 )
-    {
+    static int toInt32(unsigned char b0, unsigned char b1, unsigned char b2, unsigned char b3) {
         ToData toint(1);
         toint.data[0] = b0;
         toint.data[1] = b1;
@@ -72,27 +60,24 @@ public:
         return toint.int_val;
     };
 
-    static int toInt32(unsigned char arr[], int offset)
-    {
+    static int toInt32(unsigned char arr[], int offset) {
         int i = offset;
-        return toInt32(arr[i], arr[i+1],arr[i+2], arr[i+3]);
+        return toInt32(arr[i], arr[i + 1], arr[i + 2], arr[i + 3]);
     };
 
-    static int toInt16(unsigned char b0, unsigned char b1)
-    {
+    static int toInt16(unsigned char b0, unsigned char b1) {
         ToData toint(1);
         toint.data[0] = b0;
         toint.data[1] = b1;
         return toint.int_val;
     };
 
-    static int toInt16(unsigned char arr[], int offset)
-    {
+    static int toInt16(unsigned char arr[], int offset) {
         int i = offset;
-        return toInt16(arr[i], arr[i+1]);
+        return toInt16(arr[i], arr[i + 1]);
     };
 };
 
 /// @endcond SHOW_ALL
 
-#endif // end namespaces
+#endif    // end namespaces

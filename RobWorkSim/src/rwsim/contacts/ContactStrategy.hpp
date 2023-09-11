@@ -60,13 +60,13 @@ namespace rwsim { namespace contacts {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< ContactStrategy > Ptr;
+        typedef rw::core::Ptr<ContactStrategy> Ptr;
 
         //! @brief Create new contact strategy.
-        ContactStrategy (){}
+        ContactStrategy() {}
 
         //! @brief Destruct contact strategy.
-        virtual ~ContactStrategy (){}
+        virtual ~ContactStrategy() {}
 
         /**
          * @brief Test is this strategy can be used for the given geometries.
@@ -75,8 +75,8 @@ namespace rwsim { namespace contacts {
          * @param geoB [in] geometry data for the second object.
          * @return true if this strategy can be used for the given geometries.
          */
-        virtual bool match (rw::core::Ptr< const rw::geometry::GeometryData > geoA,
-                            rw::core::Ptr< const rw::geometry::GeometryData > geoB) = 0;
+        virtual bool match(rw::core::Ptr<const rw::geometry::GeometryData> geoA,
+                           rw::core::Ptr<const rw::geometry::GeometryData> geoB) = 0;
 
         /**
          * @brief Check if there is contact between two contact models.
@@ -87,10 +87,10 @@ namespace rwsim { namespace contacts {
          * @param wTb [in] transform of model b.
          * @return a list of contacts.
          */
-        virtual std::vector< Contact > findContacts (rw::proximity::ProximityModel::Ptr a,
-                                                     const rw::math::Transform3D<>& wTa,
-                                                     rw::proximity::ProximityModel::Ptr b,
-                                                     const rw::math::Transform3D<>& wTb) const;
+        virtual std::vector<Contact> findContacts(rw::proximity::ProximityModel::Ptr a,
+                                                  const rw::math::Transform3D<>& wTa,
+                                                  rw::proximity::ProximityModel::Ptr b,
+                                                  const rw::math::Transform3D<>& wTb) const;
 
         /**
          * @brief Check if there is contact between two contact models using additional data.
@@ -106,11 +106,11 @@ namespace rwsim { namespace contacts {
          * and makes it possible for detection algorithms to exploit spatial and temporal coherence.
          * @return a list of contacts.
          */
-        virtual std::vector< Contact > findContacts (rw::proximity::ProximityModel::Ptr a,
-                                                     const rw::math::Transform3D<>& wTa,
-                                                     rw::proximity::ProximityModel::Ptr b,
-                                                     const rw::math::Transform3D<>& wTb,
-                                                     ContactStrategyData& data) const;
+        virtual std::vector<Contact> findContacts(rw::proximity::ProximityModel::Ptr a,
+                                                  const rw::math::Transform3D<>& wTa,
+                                                  rw::proximity::ProximityModel::Ptr b,
+                                                  const rw::math::Transform3D<>& wTb,
+                                                  ContactStrategyData& data) const;
 
         /**
          * @brief Check if there is contact between two contact models using additional data and
@@ -129,11 +129,11 @@ namespace rwsim { namespace contacts {
          * @param log [in/out] (optional) store detailed logging information.
          * @return a list of contacts.
          */
-        virtual std::vector< Contact >
-        findContacts (rw::proximity::ProximityModel::Ptr a, const rw::math::Transform3D<>& wTa,
-                      rw::proximity::ProximityModel::Ptr b, const rw::math::Transform3D<>& wTb,
-                      ContactStrategyData& data, ContactStrategyTracking& tracking,
-                      rwsim::log::SimulatorLogScope* log = NULL) const = 0;
+        virtual std::vector<Contact>
+        findContacts(rw::proximity::ProximityModel::Ptr a, const rw::math::Transform3D<>& wTa,
+                     rw::proximity::ProximityModel::Ptr b, const rw::math::Transform3D<>& wTb,
+                     ContactStrategyData& data, ContactStrategyTracking& tracking,
+                     rwsim::log::SimulatorLogScope* log = NULL) const = 0;
 
         /**
          * @brief Update known contacts between two contact models.
@@ -148,65 +148,67 @@ namespace rwsim { namespace contacts {
          * @param log [in/out] (optional) store detailed logging information.
          * @return a list of updated contacts.
          */
-        virtual std::vector< Contact >
-        updateContacts (rw::proximity::ProximityModel::Ptr a, const rw::math::Transform3D<>& wTa,
-                        rw::proximity::ProximityModel::Ptr b, const rw::math::Transform3D<>& wTb,
-                        ContactStrategyData& data, ContactStrategyTracking& tracking,
-                        rwsim::log::SimulatorLogScope* log = NULL) const = 0;
+        virtual std::vector<Contact>
+        updateContacts(rw::proximity::ProximityModel::Ptr a, const rw::math::Transform3D<>& wTa,
+                       rw::proximity::ProximityModel::Ptr b, const rw::math::Transform3D<>& wTb,
+                       ContactStrategyData& data, ContactStrategyTracking& tracking,
+                       rwsim::log::SimulatorLogScope* log = NULL) const = 0;
 
         /**
          * @brief Get the name of the strategy as a string.
          *
          * @return name of the strategy.
          */
-        virtual std::string getName () = 0;
+        virtual std::string getName() = 0;
 
         //! @copydoc rw::proximity::ProximityStrategy::createModel
-        virtual rw::proximity::ProximityModel::Ptr createModel () = 0;
+        virtual rw::proximity::ProximityModel::Ptr createModel() = 0;
 
         //! @copydoc rw::proximity::ProximityStrategy::destroyModel
-        virtual void destroyModel (rw::proximity::ProximityModel* model) = 0;
+        virtual void destroyModel(rw::proximity::ProximityModel* model) = 0;
 
-        //! @copydoc rw::proximity::ProximityStrategy::addGeometry(rw::proximity::ProximityModel*,const rw::geometry::Geometry&)
-        virtual bool addGeometry (rw::proximity::ProximityModel* model,
-                                  const rw::geometry::Geometry& geom) = 0;
+        //! @copydoc
+        //! rw::proximity::ProximityStrategy::addGeometry(rw::proximity::ProximityModel*,const
+        //! rw::geometry::Geometry&)
+        virtual bool addGeometry(rw::proximity::ProximityModel* model,
+                                 const rw::geometry::Geometry& geom) = 0;
 
-        //! @copydoc rw::proximity::ProximityStrategy::addGeometry(rw::proximity::ProximityModel*,rw::core::Ptr<rw::geometry::Geometry>,bool)
-        virtual bool addGeometry (rw::proximity::ProximityModel* model,
-                                  rw::core::Ptr< rw::geometry::Geometry > geom,
-                                  bool forceCopy = false) = 0;
+        //! @copydoc
+        //! rw::proximity::ProximityStrategy::addGeometry(rw::proximity::ProximityModel*,rw::core::Ptr<rw::geometry::Geometry>,bool)
+        virtual bool addGeometry(rw::proximity::ProximityModel* model,
+                                 rw::core::Ptr<rw::geometry::Geometry> geom,
+                                 bool forceCopy = false) = 0;
 
         //! @copydoc rw::proximity::ProximityStrategy::removeGeometry
-        virtual bool removeGeometry (rw::proximity::ProximityModel* model,
-                                     const std::string& geomId) = 0;
+        virtual bool removeGeometry(rw::proximity::ProximityModel* model,
+                                    const std::string& geomId) = 0;
 
         //! @copydoc rw::proximity::ProximityStrategy::getGeometryIDs
-        virtual std::vector< std::string >
-        getGeometryIDs (rw::proximity::ProximityModel* model) = 0;
+        virtual std::vector<std::string> getGeometryIDs(rw::proximity::ProximityModel* model) = 0;
 
         //! @copydoc rw::proximity::ProximityStrategy::clear
-        virtual void clear () = 0;
+        virtual void clear() = 0;
 
         /**
          * @brief Get the properties used by the contact strategy.
          *
          * @return reference to the property map.
          */
-        virtual rw::core::PropertyMap& getPropertyMap ();
+        virtual rw::core::PropertyMap& getPropertyMap();
 
         /**
          * @brief Get the properties used by the contact strategy.
          *
          * @return the property map.
          */
-        virtual const rw::core::PropertyMap& getPropertyMap () const;
+        virtual const rw::core::PropertyMap& getPropertyMap() const;
 
         /**
          * @brief Set which properties the contact strategy should use.
          *
          * @param map [in] the property map to get properties from.
          */
-        virtual void setPropertyMap (const rw::core::PropertyMap& map);
+        virtual void setPropertyMap(const rw::core::PropertyMap& map);
 
       protected:
         //! @brief Properties for strategy.

@@ -27,30 +27,30 @@ namespace rwsim { namespace util {
     class SupportPose
     {
       public:
-        SupportPose (rw::math::Vector3D<> rotAxis, double h = 0) :
-            _degree (1), _rotAxes (1, rotAxis), _posAxes (1), _rotAxesTable (1), _probability (-1),
-            _quality(0.0), _height (h){}
+        SupportPose(rw::math::Vector3D<> rotAxis, double h = 0) :
+            _degree(1), _rotAxes(1, rotAxis), _posAxes(1), _rotAxesTable(1), _probability(-1),
+            _quality(0.0), _height(h) {}
 
-        SupportPose (int degree, double prob) :
-            _degree (degree), _rotAxes (1), _posAxes (1), _rotAxesTable (1), _probability (prob),
-            _quality(0.0), _height (0.0){}
+        SupportPose(int degree, double prob) :
+            _degree(degree), _rotAxes(1), _posAxes(1), _rotAxesTable(1), _probability(prob),
+            _quality(0.0), _height(0.0) {}
 
-        virtual ~SupportPose (){}
+        virtual ~SupportPose() {}
 
         // redundant, since length of _rotAxes is also the degree.
         // though its nice to have
         int _degree;
         // invariant rotation axes
-        std::vector< rw::math::Vector3D<> > _rotAxes;    // relative to own coordinate frame
-                                                         // invariant position
-        std::vector< rw::math::Vector3D<> >
+        std::vector<rw::math::Vector3D<>> _rotAxes;    // relative to own coordinate frame
+                                                       // invariant position
+        std::vector<rw::math::Vector3D<>>
             _posAxes;    // position of contact relative to own coordinate frame
 
-        std::vector< rw::math::Vector3D<> >
+        std::vector<rw::math::Vector3D<>>
             _rotAxesTable;    // relative to supporting structures frame
 
         // each rotation axis can be valid in a number of angle intervals
-        std::vector< std::vector< std::pair< double, double > > > _segments;
+        std::vector<std::vector<std::pair<double, double>>> _segments;
 
         // the height from
 

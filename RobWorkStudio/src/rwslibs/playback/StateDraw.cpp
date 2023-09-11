@@ -23,16 +23,14 @@ namespace {
 class EmptyStateDraw : public StateDraw
 {
   public:
-    EmptyStateDraw () {}
+    EmptyStateDraw() {}
 
-    void draw (const rw::kinematics::State& state) const
-    {
+    void draw(const rw::kinematics::State& state) const {
         // We simply don't do any drawing.
     }
 };
 }    // namespace
 
-StateDrawPtr makeEmptyStateDraw ()
-{
-    return ownedPtr (new EmptyStateDraw ());
+StateDrawPtr makeEmptyStateDraw() {
+    return ownedPtr(new EmptyStateDraw());
 }

@@ -44,9 +44,9 @@ namespace rw { namespace models {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< SerialDevice > Ptr;
+        typedef rw::core::Ptr<SerialDevice> Ptr;
         //! @brief smart pointer type to this const class
-        typedef rw::core::Ptr< const SerialDevice > CPtr;
+        typedef rw::core::Ptr<const SerialDevice> CPtr;
 
         /**
          * @brief Constructor
@@ -56,11 +56,12 @@ namespace rw { namespace models {
          * @param name [in] name of device
          * @param state [in] the connectedness of the frames
          */
-        SerialDevice (rw::core::Ptr<rw::kinematics::Frame> first, rw::core::Ptr<rw::kinematics::Frame> last,
-                      const std::string& name, const rw::kinematics::State& state);
+        SerialDevice(rw::core::Ptr<rw::kinematics::Frame> first,
+                     rw::core::Ptr<rw::kinematics::Frame> last, const std::string& name,
+                     const rw::kinematics::State& state);
 
         //! @brief destructor
-        virtual ~SerialDevice () {}
+        virtual ~SerialDevice() {}
 
         /**
          * @brief Frames of the device.
@@ -71,7 +72,7 @@ namespace rw { namespace models {
          *
          * @return list of raw Frame pointers.
          */
-        const std::vector< rw::kinematics::Frame* >& frames () const;
+        const std::vector<rw::kinematics::Frame*>& frames() const;
 
         /**
          * @brief Creates object
@@ -86,11 +87,11 @@ namespace rw { namespace models {
          *
          * @param state [in] the initial state of everything
          */
-        SerialDevice (const std::vector< rw::kinematics::Frame* >& serialChain,
-                      const std::string& name, const rw::kinematics::State& state);
+        SerialDevice(const std::vector<rw::kinematics::Frame*>& serialChain,
+                     const std::string& name, const rw::kinematics::State& state);
 
       private:
-        std::vector< rw::kinematics::Frame* > _kinematicChain;
+        std::vector<rw::kinematics::Frame*> _kinematicChain;
     };
 #if !defined(SWIG)
 //! @}

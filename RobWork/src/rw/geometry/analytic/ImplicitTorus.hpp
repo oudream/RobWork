@@ -25,9 +25,8 @@
  */
 
 #if !defined(SWIG)
-#include <rw/geometry/analytic/ImplicitSurface.hpp>
-
 #include <rw/geometry/PlainTriMesh.hpp>
+#include <rw/geometry/analytic/ImplicitSurface.hpp>
 #endif
 namespace rw { namespace geometry {
 
@@ -41,8 +40,8 @@ namespace rw { namespace geometry {
      *
      * The torus is described as an implicit surface of the form:
      *
-     * \f$ \left(x^T x + R^2 - r^2 \right)^2 - 4 R^2 x^T \begin{bmatrix} 1 & 0 & 0\\ 0 & 1 & 0 \\ 0 & 0 & 0
-     * \end{bmatrix} x = 0\f$
+     * \f$ \left(x^T x + R^2 - r^2 \right)^2 - 4 R^2 x^T \begin{bmatrix} 1 & 0 & 0\\ 0 & 1 & 0 \\ 0
+     * & 0 & 0 \end{bmatrix} x = 0\f$
      *
      * or equivalently:
      *
@@ -56,15 +55,15 @@ namespace rw { namespace geometry {
      * Alternatively, a torus with an elliptic tube can be specified.
      * This surface has the more generic form:
      *
-     * \f$ \left( x^T \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & \frac{{r_1}^2}{{r_2}^2} \end{bmatrix} x +
-     * R^2 - {r_1}^2 \right)^2 - 4 R^2 x^T \begin{bmatrix} 1 & 0 & 0\\ 0 & 1 & 0 \\ 0 & 0 & 0 \end{bmatrix} x =
-     * 0\f$
+     * \f$ \left( x^T \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & \frac{{r_1}^2}{{r_2}^2}
+     * \end{bmatrix} x + R^2 - {r_1}^2 \right)^2 - 4 R^2 x^T \begin{bmatrix} 1 & 0 & 0\\ 0 & 1 & 0
+     * \\ 0 & 0 & 0 \end{bmatrix} x = 0\f$
      *
      * or equivalently:
      *
-     * \f$ \left( x^T \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & \frac{{r_1}^2}{{r_2}^2} \end{bmatrix} x -
-     * R^2 - {r_1}^2 \right)^2 - 4 R^2 \left({r_1}^2 - \frac{{r_1}^2}{{r_2}^2} {x_3}^2 \right) =
-     * 0\f$
+     * \f$ \left( x^T \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & \frac{{r_1}^2}{{r_2}^2}
+     * \end{bmatrix} x - R^2 - {r_1}^2 \right)^2 - 4 R^2 \left({r_1}^2 - \frac{{r_1}^2}{{r_2}^2}
+     * {x_3}^2 \right) = 0\f$
      *
      * \image html geometry/torus_elliptic.png "Circular torus with elliptic tube."
      *
@@ -82,19 +81,19 @@ namespace rw { namespace geometry {
      * Notice that many functions are not yet implemented for this last type of
      * elliptic torus. These functions might throw an exception.
      */
-     #endif 
+#endif
 #if !defined(SWIGJAVA)
     class ImplicitTorus : public ImplicitSurface
-    #else 
+#else
     class ImplicitTorus
-    #endif 
+#endif
     {
       public:
         //! @brief Smart pointer type for ImplicitTorus
-        typedef rw::core::Ptr< ImplicitTorus > Ptr;
+        typedef rw::core::Ptr<ImplicitTorus> Ptr;
 
         //! @brief Smart pointer type for const ImplicitTorus
-        typedef rw::core::Ptr< const ImplicitTorus > CPtr;
+        typedef rw::core::Ptr<const ImplicitTorus> CPtr;
 
         /**
          * @brief A trimming region is defined using an ImplicitSurface.
@@ -109,7 +108,7 @@ namespace rw { namespace geometry {
          * @param R [in] distance from center of torus to center of tube.
          * @param r [in] radius of the tube.
          */
-        ImplicitTorus (double R, double r);
+        ImplicitTorus(double R, double r);
 
         /**
          * @brief Construct elliptic torus.
@@ -118,71 +117,72 @@ namespace rw { namespace geometry {
          * @param r1 [in] radius of the tube in first direction.
          * @param r2 [in] radius of the tube in second direction.
          */
-        ImplicitTorus (double R1, double R2, double r1, double r2);
+        ImplicitTorus(double R1, double R2, double r1, double r2);
 
         //! @brief Destructor.
-        virtual ~ImplicitTorus ();
+        virtual ~ImplicitTorus();
 
         // From ImplicitSurface
         //! @copydoc ImplicitSurface::transform(const rw::math::Transform3D<double>&) const
-        ImplicitTorus::Ptr transform (const rw::math::Transform3D<double>& T) const;
+        ImplicitTorus::Ptr transform(const rw::math::Transform3D<double>& T) const;
 
         //! @copydoc ImplicitSurface::transform(const rw::math::Vector3D<double>&) const
-        ImplicitTorus::Ptr transform (const rw::math::Vector3D<double>& P) const;
+        ImplicitTorus::Ptr transform(const rw::math::Vector3D<double>& P) const;
 
         //! @copydoc ImplicitSurface::scale
-        ImplicitTorus::Ptr scale (double factor) const;
+        ImplicitTorus::Ptr scale(double factor) const;
 
         //! @copydoc ImplicitSurface::clone
-        ImplicitTorus::Ptr clone () const;
+        ImplicitTorus::Ptr clone() const;
 
         //! @copydoc ImplicitSurface::extremums
-        virtual std::pair< double, double > extremums (const rw::math::Vector3D<double>& direction) const;
+        virtual std::pair<double, double>
+        extremums(const rw::math::Vector3D<double>& direction) const;
 
         //! @copydoc ImplicitSurface::getTriMesh
-        virtual rw::core::Ptr< TriMesh >
-        getTriMesh (const std::vector< rw::math::Vector3D<double> >& border =
-                        std::vector< rw::math::Vector3D<double> > ()) const;
+        virtual rw::core::Ptr<TriMesh>
+        getTriMesh(const std::vector<rw::math::Vector3D<double>>& border =
+                       std::vector<rw::math::Vector3D<double>>()) const;
 
         //! @copydoc ImplicitSurface::setDiscretizationResolution
-        virtual void setDiscretizationResolution (double resolution)
-        {
+        virtual void setDiscretizationResolution(double resolution) {
             _stepsPerRevolution = resolution;
         }
 
         //! @copydoc ImplicitSurface::equals
-        virtual bool equals (const Surface& surface, double threshold) const;
+        virtual bool equals(const Surface& surface, double threshold) const;
 #if !defined(SWIG)
         //! @copydoc ImplicitSurface::operator()(const rw::math::Vector3D<double>&) const
-        virtual double operator() (const rw::math::Vector3D<double>& x) const;
-#else 
-        CALLOPERATOR(double,const rw::math::Vector3D<double>& );
-#endif 
+        virtual double operator()(const rw::math::Vector3D<double>& x) const;
+#else
+        CALLOPERATOR(double, const rw::math::Vector3D<double>&);
+#endif
         //! @copydoc ImplicitSurface::insideTrimmingRegion
-        virtual bool insideTrimmingRegion (const rw::math::Vector3D<double>& P) const;
+        virtual bool insideTrimmingRegion(const rw::math::Vector3D<double>& P) const;
 
         //! @copydoc ImplicitSurface::normal
-        virtual rw::math::Vector3D<double> normal (const rw::math::Vector3D<double>& x) const;
+        virtual rw::math::Vector3D<double> normal(const rw::math::Vector3D<double>& x) const;
 
         //! @copydoc ImplicitSurface::gradient
-        virtual rw::math::Vector3D<double> gradient (const rw::math::Vector3D<double>& x) const;
+        virtual rw::math::Vector3D<double> gradient(const rw::math::Vector3D<double>& x) const;
 
         //! @copydoc ImplicitSurface::reuseTrimmingRegions
-        virtual void reuseTrimmingRegions (rw::geometry::ImplicitSurface::Ptr surface) const;
+        virtual void reuseTrimmingRegions(rw::geometry::ImplicitSurface::Ptr surface) const;
 
         /**
          * @brief Get the trimming conditions for the surface.
          * @return ImplicitSurface vector specifying the boundary of the surface. If surface is
          * unbounded, the length of the vector is zero.
          */
-        const std::vector< TrimmingRegion >& getTrimmingConditions () const { return _conditions; }
+        const std::vector<TrimmingRegion>& getTrimmingConditions() const {
+            return _conditions;
+        }
 
         /**
          * @brief Set the trimming conditions of this surface.
          * @param conditions [in] a vector of conditions.
          */
-        void setTrimmingConditions (const std::vector< TrimmingRegion >& conditions)
-        {
+        void setTrimmingConditions(const std::vector<TrimmingRegion>& conditions) {
             _conditions = conditions;
         }
 
@@ -190,55 +190,54 @@ namespace rw { namespace geometry {
          * @brief Add a trimming condition to this surface.
          * @param condition [in] the condition to add.
          */
-        void addTrimmingCondition (const TrimmingRegion& condition)
-        {
-            _conditions.push_back (condition);
+        void addTrimmingCondition(const TrimmingRegion& condition) {
+            _conditions.push_back(condition);
         }
 
       private:
-        ImplicitTorus (double R1, double R2, double r1, double r2,
-                       const rw::math::Transform3D<>& transform,
-                       const std::vector< TrimmingRegion >& conditions, double stepsPerRevolution);
-        rw::core::Ptr< TriMesh > getTriMeshNormalForm (
-            const std::vector< rw::math::Vector3D<double> >& border,
-            const rw::math::Transform3D<>& transform = rw::math::Transform3D<>::identity ()) const;
+        ImplicitTorus(double R1, double R2, double r1, double r2,
+                      const rw::math::Transform3D<>& transform,
+                      const std::vector<TrimmingRegion>& conditions, double stepsPerRevolution);
+        rw::core::Ptr<TriMesh> getTriMeshNormalForm(
+            const std::vector<rw::math::Vector3D<double>>& border,
+            const rw::math::Transform3D<>& transform = rw::math::Transform3D<>::identity()) const;
         typedef enum Place { FRONT, BACK, BOTH } Place;
-        void makeSurface (const std::vector< rw::math::Vector3D<double> > fullPolygon, Place place,
-                          rw::geometry::PlainTriMeshN1D::Ptr mesh) const;
+        void makeSurface(const std::vector<rw::math::Vector3D<double>> fullPolygon, Place place,
+                         rw::geometry::PlainTriMeshN1D::Ptr mesh) const;
 
-        #if !defined(SWIGJAVA)
+#if !defined(SWIGJAVA)
         // From ImplicitSurface
         inline rw::geometry::ImplicitSurface::Ptr
-        doTransformImplicitSurface (const rw::math::Transform3D<>& T) const
-        {
-            return transform (T);
+        doTransformImplicitSurface(const rw::math::Transform3D<>& T) const {
+            return transform(T);
         }
-        inline rw::geometry::ImplicitSurface::Ptr doTransformImplicitSurface (const rw::math::Vector3D<double>& P) const
-        {
-            return transform (P);
+        inline rw::geometry::ImplicitSurface::Ptr
+        doTransformImplicitSurface(const rw::math::Vector3D<double>& P) const {
+            return transform(P);
         }
-        inline rw::geometry::ImplicitSurface::Ptr doScaleImplicitSurface (double factor) const
-        {
-            return scale (factor);
+        inline rw::geometry::ImplicitSurface::Ptr doScaleImplicitSurface(double factor) const {
+            return scale(factor);
         }
-        inline rw::geometry::ImplicitSurface::Ptr doCloneImplicitSurface () const { return clone (); }
-        #endif 
-        
+        inline rw::geometry::ImplicitSurface::Ptr doCloneImplicitSurface() const {
+            return clone();
+        }
+#endif
+
         const double _R1;
         const double _R2;
         const double _r1;
         const double _r2;
 
-        std::vector< TrimmingRegion > _conditions;
+        std::vector<TrimmingRegion> _conditions;
 
         double _stepsPerRevolution;
 
         rw::math::Transform3D<> _transform;
         bool _isNormalForm;
     };
-    #if !defined(SWIG)
-    //! @}
-    #endif
+#if !defined(SWIG)
+//! @}
+#endif
 
 }}    // namespace rw::geometry
 

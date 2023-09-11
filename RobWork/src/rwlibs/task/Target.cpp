@@ -20,6 +20,6 @@
 using namespace rw::math;
 
 namespace rwlibs { namespace task {
-    template class Target< Q >;
-    template class Target< Transform3D<> >;
+    template class Target<Q>;
+    template class Target<Transform3D<>>;
 }}    // namespace rwlibs::task

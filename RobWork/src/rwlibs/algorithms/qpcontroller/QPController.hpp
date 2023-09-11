@@ -54,12 +54,12 @@ namespace rwlibs { namespace algorithms {
          * @param state [in] state of the workcell
          * @param device [in] device to control
          */
-        QPController (double h, const rw::kinematics::State& state, rw::models::Device* device);
+        QPController(double h, const rw::kinematics::State& state, rw::models::Device* device);
 
         /**
          * @brief destructor
          */
-        virtual ~QPController ();
+        virtual ~QPController();
 
         /**
          * @brief Computes joint velocities for a tool velocity
@@ -76,17 +76,17 @@ namespace rwlibs { namespace algorithms {
          *
          * @return the optimal joint velocity
          */
-        rw::math::Q solve (const rw::math::Q& q, const rw::math::Q& dq,
-                           const rw::math::VelocityScrew6D<>& tcpscrew);
+        rw::math::Q solve(const rw::math::Q& q, const rw::math::Q& dq,
+                          const rw::math::VelocityScrew6D<>& tcpscrew);
 
       private:
         typedef rw::math::Q::Base VectorBase;
 
-        VectorBase inequalitySolve (const Eigen::MatrixXd& G, const VectorBase& b,
-                                    const VectorBase& lower, const VectorBase& upper);
+        VectorBase inequalitySolve(const Eigen::MatrixXd& G, const VectorBase& b,
+                                   const VectorBase& lower, const VectorBase& upper);
 
-        void calculateVelocityLimits (VectorBase& lower, VectorBase& upper, const VectorBase& q,
-                                      const VectorBase& dq);
+        void calculateVelocityLimits(VectorBase& lower, VectorBase& upper, const VectorBase& q,
+                                     const VectorBase& dq);
 
         double _h;
         size_t _n;

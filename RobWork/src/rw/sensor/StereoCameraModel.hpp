@@ -22,13 +22,12 @@
  * @file StereoCameraModel.hpp
  */
 #if !defined(SWIG)
-#include <rw/sensor/Image.hpp>
-#include <rw/sensor/SensorModel.hpp>
-
 #include <rw/core/Ptr.hpp>
 #include <rw/math/ProjectionMatrix.hpp>
 #include <rw/math/Transform3D.hpp>
-#endif 
+#include <rw/sensor/Image.hpp>
+#include <rw/sensor/SensorModel.hpp>
+#endif
 namespace rw { namespace sensor {
 
     /** @addtogroup sensor */
@@ -50,7 +49,7 @@ namespace rw { namespace sensor {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< StereoCameraModel > Ptr;
+        typedef rw::core::Ptr<StereoCameraModel> Ptr;
 
         //! @brief output calibration file format for SaveCalibration()
         enum CalibrationFormat { OPENCV };
@@ -69,25 +68,26 @@ namespace rw { namespace sensor {
          * @param frame [in] sensor frame
          * @param modelInfo [in] info string
          */
-        StereoCameraModel (const std::string& name, double fov, double width, double height,
-                           const rw::math::Transform3D<>& TL, const rw::math::Transform3D<>& TR,
-                           rw::core::Ptr<rw::kinematics::Frame> frame, const std::string& modelInfo = "");
+        StereoCameraModel(const std::string& name, double fov, double width, double height,
+                          const rw::math::Transform3D<>& TL, const rw::math::Transform3D<>& TR,
+                          rw::core::Ptr<rw::kinematics::Frame> frame,
+                          const std::string& modelInfo = "");
         /**
          * @brief destructor
          */
-        virtual ~StereoCameraModel ();
+        virtual ~StereoCameraModel();
 
         //! get left image
-        Image::Ptr getLeftImage (const rw::kinematics::State& state);
+        Image::Ptr getLeftImage(const rw::kinematics::State& state);
 
         //! set left image
-        void setLeftImage (Image::Ptr img, rw::kinematics::State& state);
+        void setLeftImage(Image::Ptr img, rw::kinematics::State& state);
 
         //! get right image
-        Image::Ptr getRightImage (const rw::kinematics::State& state);
+        Image::Ptr getRightImage(const rw::kinematics::State& state);
 
         //! set right image
-        void setRightImage (Image::Ptr img, rw::kinematics::State& state);
+        void setRightImage(Image::Ptr img, rw::kinematics::State& state);
 
         /**
          * @brief utility function for saving a stereo calibration to a file
@@ -102,11 +102,11 @@ namespace rw { namespace sensor {
          * @param format [in] calibration file format to use
          * @return true if the file was successfully saved, false otherwise
          */
-        static bool SaveCalibration (const std::string& filename, double fov, double wx, double wy,
-                                     const rw::math::Transform3D<>& TL,
-                                     const rw::math::Transform3D<>& TR,
-                                     FOVDirection direction   = HORIZONTAL,
-                                     CalibrationFormat format = OPENCV);
+        static bool SaveCalibration(const std::string& filename, double fov, double wx, double wy,
+                                    const rw::math::Transform3D<>& TL,
+                                    const rw::math::Transform3D<>& TR,
+                                    FOVDirection direction   = HORIZONTAL,
+                                    CalibrationFormat format = OPENCV);
 
         /**
          * @brief utility function for writing a camera calibration to a stream
@@ -120,49 +120,45 @@ namespace rw { namespace sensor {
          * @param direction [in] the direction of the specified FOV
          * @param format [in] calibration file format to use
          */
-        static void
-        WriteCalibration (std::ostream& os, double fov, double wx, double wy,
-                          const rw::math::Transform3D<>& T,
-                          const std::vector< double >& dist = std::vector< double > (4, 0.0),
-                          FOVDirection direction = HORIZONTAL, CalibrationFormat format = OPENCV);
+        static void WriteCalibration(std::ostream& os, double fov, double wx, double wy,
+                                     const rw::math::Transform3D<>& T,
+                                     const std::vector<double>& dist = std::vector<double>(4, 0.0),
+                                     FOVDirection direction          = HORIZONTAL,
+                                     CalibrationFormat format        = OPENCV);
 
       private:
         //! cache to allow storing state information
         class StereoCameraModelCache : public rw::kinematics::StateCache
         {
           public:
-            typedef rw::core::Ptr< StereoCameraModelCache > Ptr;
-            rw::core::Ptr< rw::sensor::Image > _leftImage, _rightImage;
+            typedef rw::core::Ptr<StereoCameraModelCache> Ptr;
+            rw::core::Ptr<rw::sensor::Image> _leftImage, _rightImage;
 
             //! constructor
-            StereoCameraModelCache (){};
+            StereoCameraModelCache(){};
 
             //! @copydoc rw::kinematics::StateCache::size
-            size_t size () const
-            {
+            size_t size() const {
                 size_t stmp = 0;
-                if (_leftImage != NULL)
-                    stmp += _leftImage->getDataSize ();
-                if (_rightImage != NULL)
-                    stmp += _rightImage->getDataSize ();
+                if(_leftImage != NULL) stmp += _leftImage->getDataSize();
+                if(_rightImage != NULL) stmp += _rightImage->getDataSize();
                 return stmp;
             };
 
             //! @copydoc rw::kinematics::StateCache::clone
-            virtual rw::core::Ptr< StateCache > clone () const
-            {
+            virtual rw::core::Ptr<StateCache> clone() const {
                 StereoCameraModelCache::Ptr cache =
-                    rw::core::ownedPtr (new StereoCameraModelCache (*this));
-                if (_leftImage != NULL)
-                    cache->_leftImage = rw::core::ownedPtr (new Image (*_leftImage));
-                if (_rightImage != NULL)
-                    cache->_rightImage = rw::core::ownedPtr (new Image (*_rightImage));
+                    rw::core::ownedPtr(new StereoCameraModelCache(*this));
+                if(_leftImage != NULL)
+                    cache->_leftImage = rw::core::ownedPtr(new Image(*_leftImage));
+                if(_rightImage != NULL)
+                    cache->_rightImage = rw::core::ownedPtr(new Image(*_rightImage));
                 return cache;
             };
         };
 
         //! name of camera model information
-        rw::kinematics::StatelessData< int > _sdata;
+        rw::kinematics::StatelessData<int> _sdata;
         rw::math::ProjectionMatrix _pmatrix;
         rw::math::Transform3D<> _TR, _TL;
     };

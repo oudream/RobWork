@@ -24,66 +24,50 @@
 
 using namespace rw::core;
 
-bool DOMElem::getValueAsBool ()
-{
-    std::string val  = getValue ();
-    std::string valu = rw::core::StringUtil::toUpper (val);
-    if (valu == "TRUE")
-        return true;
-    if (valu == "FALSE")
-        return false;
-    return boost::lexical_cast< bool > (val);
+bool DOMElem::getValueAsBool() {
+    std::string val  = getValue();
+    std::string valu = rw::core::StringUtil::toUpper(val);
+    if(valu == "TRUE") return true;
+    if(valu == "FALSE") return false;
+    return boost::lexical_cast<bool>(val);
 }
 
-void DOMElem::setValue (bool val)
-{
-    setValue (boost::lexical_cast< std::string > (val));
+void DOMElem::setValue(bool val) {
+    setValue(boost::lexical_cast<std::string>(val));
 }
 
-void DOMElem::setValue (int val)
-{
-    setValue (boost::lexical_cast< std::string > (val));
+void DOMElem::setValue(int val) {
+    setValue(boost::lexical_cast<std::string>(val));
 }
 
-void DOMElem::setValue (double val)
-{
-    setValue (boost::lexical_cast< std::string > (val));
+void DOMElem::setValue(double val) {
+    setValue(boost::lexical_cast<std::string>(val));
 }
 
-void DOMElem::setValue (const char* val)
-{
-    setValue (std::string (val));
+void DOMElem::setValue(const char* val) {
+    setValue(std::string(val));
 }
 
-void DOMElem::setValueString (std::string val)
-{
-    setValue (val);
+void DOMElem::setValueString(std::string val) {
+    setValue(val);
 }
 
-std::string DOMElem::getAttributeValue (const std::string& name, const std::string& default_value)
-{
-    if (DOMElem::Ptr attrib = getAttribute (name, true))
-        return attrib->getValue ();
+std::string DOMElem::getAttributeValue(const std::string& name, const std::string& default_value) {
+    if(DOMElem::Ptr attrib = getAttribute(name, true)) return attrib->getValue();
     return default_value;
 }
 
-bool DOMElem::getAttributeValueAsBool (const std::string& name, bool default_value)
-{
-    if (DOMElem::Ptr attrib = getAttribute (name, true))
-        return attrib->getValueAsBool ();
+bool DOMElem::getAttributeValueAsBool(const std::string& name, bool default_value) {
+    if(DOMElem::Ptr attrib = getAttribute(name, true)) return attrib->getValueAsBool();
     return default_value;
 }
 
-double DOMElem::getAttributeValueAsDouble (const std::string& name, double default_value)
-{
-    if (DOMElem::Ptr attrib = getAttribute (name, true))
-        return attrib->getValueAsDouble ();
+double DOMElem::getAttributeValueAsDouble(const std::string& name, double default_value) {
+    if(DOMElem::Ptr attrib = getAttribute(name, true)) return attrib->getValueAsDouble();
     return default_value;
 }
 
-int DOMElem::getAttributeValueAsInt (const std::string& name, int default_value)
-{
-    if (DOMElem::Ptr attrib = getAttribute (name, true))
-        return attrib->getValueAsInt ();
+int DOMElem::getAttributeValueAsInt(const std::string& name, int default_value) {
+    if(DOMElem::Ptr attrib = getAttribute(name, true)) return attrib->getValueAsInt();
     return default_value;
 }

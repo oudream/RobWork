@@ -34,44 +34,44 @@ namespace rw { namespace loaders {
          * @brief Identifier for rw::core::PropertyMap in the XML format.
          * @return the identifier.
          */
-        static const XMLCh* idPropertyMap ();
+        static const XMLCh* idPropertyMap();
 
         /**
          * @brief Identifier for rw::core::Property in the XML format.
          * @return the identifier.
          */
-        static const XMLCh* idProperty ();
+        static const XMLCh* idProperty();
 
         /**
          * @brief Identifier for the name of a rw::core::Property.
          * @return the identifier.
          */
-        static const XMLCh* idPropertyName ();
+        static const XMLCh* idPropertyName();
 
         /**
          * @brief Identifier for the description of a rw::core::Property.
          * @return the identifier.
          */
-        static const XMLCh* idPropertyDescription ();
+        static const XMLCh* idPropertyDescription();
 
         /**
          * @brief Identifier for the type of a rw::core::Property.
          * @return the identifier.
          */
-        static const XMLCh* idPropertyType ();
+        static const XMLCh* idPropertyType();
 
         /**
          * @brief Identifier for the value of a rw::core::Property.
          * @return the identifier.
          */
-        static const XMLCh* idPropertyValue ();
+        static const XMLCh* idPropertyValue();
 
         /**
          * @brief Get identifier for the value of a
          * std::vector< PropertyValueBase::Ptr >.
          * @return the identifier.
          */
-        static const XMLCh* idPropertyValueList ();
+        static const XMLCh* idPropertyValueList();
 
         /**
          * @brief Utility class which initializes local static variables.
@@ -88,7 +88,7 @@ namespace rw { namespace loaders {
         {
           public:
             //! @brief Initializes when constructed.
-            Initializer ();
+            Initializer();
         };
 
       private:

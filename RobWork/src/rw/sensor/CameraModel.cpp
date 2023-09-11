@@ -20,53 +20,43 @@
 using namespace rw::sensor;
 using namespace rw::kinematics;
 
-CameraModel::CameraModel (const rw::math::ProjectionMatrix& projection, const std::string& name,
-                          rw::core::Ptr<rw::kinematics::Frame> frame, const std::string& modelInfo) :
-    SensorModel (name, frame, modelInfo),
-    _pmatrix (projection),
-    _sdata (1, rw::core::ownedPtr (new CameraModelCache ()).cast< StateCache > ())
-{
-    add (_sdata);
+CameraModel::CameraModel(const rw::math::ProjectionMatrix& projection, const std::string& name,
+                         rw::core::Ptr<rw::kinematics::Frame> frame, const std::string& modelInfo) :
+    SensorModel(name, frame, modelInfo),
+    _pmatrix(projection), _sdata(1, rw::core::ownedPtr(new CameraModelCache()).cast<StateCache>()) {
+    add(_sdata);
 }
 
-CameraModel::~CameraModel ()
-{}
+CameraModel::~CameraModel() {}
 
-double CameraModel::getFarClippingPlane () const
-{
-    return _pmatrix.getClipPlanes ().second;
+double CameraModel::getFarClippingPlane() const {
+    return _pmatrix.getClipPlanes().second;
 }
 
-double CameraModel::getNearClippingPlane () const
-{
-    return _pmatrix.getClipPlanes ().first;
+double CameraModel::getNearClippingPlane() const {
+    return _pmatrix.getClipPlanes().first;
 }
 
-Image::Ptr CameraModel::getImage (const rw::kinematics::State& state)
-{
-    return _sdata.getStateCache< CameraModelCache > (state)->_image;
+Image::Ptr CameraModel::getImage(const rw::kinematics::State& state) {
+    return _sdata.getStateCache<CameraModelCache>(state)->_image;
 }
 
-void CameraModel::setImage (Image::Ptr img, rw::kinematics::State& state)
-{
-    _sdata.getStateCache< CameraModelCache > (state)->_image = img;
+void CameraModel::setImage(Image::Ptr img, rw::kinematics::State& state) {
+    _sdata.getStateCache<CameraModelCache>(state)->_image = img;
 }
 
-rw::math::ProjectionMatrix CameraModel::getProjectionMatrix () const
-{
+rw::math::ProjectionMatrix CameraModel::getProjectionMatrix() const {
     return _pmatrix;
 }
 
-double CameraModel::getFieldOfViewX () const
-{
+double CameraModel::getFieldOfViewX() const {
     double fovy, aspect, znear, zfar;
-    _pmatrix.getPerspective (fovy, aspect, znear, zfar);
+    _pmatrix.getPerspective(fovy, aspect, znear, zfar);
     return fovy * aspect;
 }
 
-double CameraModel::getFieldOfViewY () const
-{
+double CameraModel::getFieldOfViewY() const {
     double fovy, aspect, znear, zfar;
-    _pmatrix.getPerspective (fovy, aspect, znear, zfar);
+    _pmatrix.getPerspective(fovy, aspect, znear, zfar);
     return fovy;
 }

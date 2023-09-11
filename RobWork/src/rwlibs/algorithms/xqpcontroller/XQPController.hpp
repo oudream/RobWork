@@ -48,7 +48,7 @@ namespace rwlibs { namespace algorithms {
         /**
          * @brief Definition of smart pointer to XQPController
          */
-        typedef rw::core::Ptr< XQPController > Ptr;
+        typedef rw::core::Ptr<XQPController> Ptr;
 
         /**
          * @brief Constraint for the XQPController
@@ -70,7 +70,7 @@ namespace rwlibs { namespace algorithms {
              * @param a [in] the \b a part
              * @param b [in] the \b b part
              */
-            Constraint (const rw::math::Q& a, double b) : _a (a), _b (b) {}
+            Constraint(const rw::math::Q& a, double b) : _a(a), _b(b) {}
         };
 
         /**
@@ -80,14 +80,14 @@ namespace rwlibs { namespace algorithms {
          * @param state [in] State specifying how frames are assempled
          * @param dt [in] time step size
          */
-        XQPController (rw::core::Ptr< rw::models::Device > device,
-                       rw::core::Ptr<rw::kinematics::Frame> controlFrame, const rw::kinematics::State& state,
-                       double dt);
+        XQPController(rw::core::Ptr<rw::models::Device> device,
+                      rw::core::Ptr<rw::kinematics::Frame> controlFrame,
+                      const rw::kinematics::State& state, double dt);
 
         /**
          * @brief Destructor
          */
-        virtual ~XQPController ();
+        virtual ~XQPController();
 
         /**
          * @brief Solves the inverse kinematics problem
@@ -100,9 +100,9 @@ namespace rwlibs { namespace algorithms {
          * @param tcpvel [in] Desired tool velocity seen in base frame
          * @param constraints [in] List of constraints
          */
-        rw::math::Q solve (const rw::math::Q& q, const rw::math::Q& dq,
-                           const rw::math::VelocityScrew6D<>& tcpvel,
-                           const std::list< Constraint >& constraints);
+        rw::math::Q solve(const rw::math::Q& q, const rw::math::Q& dq,
+                          const rw::math::VelocityScrew6D<>& tcpvel,
+                          const std::list<Constraint>& constraints);
 
         /**
          * @brief Enumeration used to specify frame associated with the projection
@@ -143,7 +143,7 @@ namespace rwlibs { namespace algorithms {
          * @param P [in] The projection matrix
          * @param space [in] The space in which to apply the projection
          */
-        void setProjection (const Eigen::MatrixXd& P, ProjectionFrame space);
+        void setProjection(const Eigen::MatrixXd& P, ProjectionFrame space);
 
         /**
          * @brief Sets a scale for the acceleration limits
@@ -151,7 +151,7 @@ namespace rwlibs { namespace algorithms {
          * Use this method to scale the acceleration limit e.g. to reduce the
          * power with which it can accelerate.
          */
-        void setAccScale (double scale);
+        void setAccScale(double scale);
 
         /**
          * @brief Sets a scale for the velocity limits
@@ -159,10 +159,10 @@ namespace rwlibs { namespace algorithms {
          * Use this method to scale the velocity limits e.g. to reduce the
          * speed of the robot
          */
-        void setVelScale (double scale);
+        void setVelScale(double scale);
 
       private:
-        rw::core::Ptr< rw::models::Device > _device;
+        rw::core::Ptr<rw::models::Device> _device;
         rw::core::Ptr<rw::kinematics::Frame> _controlFrame;
         rw::kinematics::State _state;
         double _dt;
@@ -180,16 +180,16 @@ namespace rwlibs { namespace algorithms {
          * Solves the inequality problem 1/2 x^T.G.x+b^T.x subject to lower <= x <= upper
          * and the constraints in the constraint list
          */
-        rw::math::Q inequalitySolve (const Eigen::MatrixXd& G, const Eigen::VectorXd& b,
-                                     const Eigen::VectorXd& lower, const Eigen::VectorXd& upper,
-                                     const std::list< Constraint >& constraints);
+        rw::math::Q inequalitySolve(const Eigen::MatrixXd& G, const Eigen::VectorXd& b,
+                                    const Eigen::VectorXd& lower, const Eigen::VectorXd& upper,
+                                    const std::list<Constraint>& constraints);
 
       public:
         /**
          * Calculates the velocity limits
          */
-        void calculateVelocityLimits (Eigen::VectorXd& lower, Eigen::VectorXd& upper,
-                                      const rw::math::Q& q, const rw::math::Q& dq);
+        void calculateVelocityLimits(Eigen::VectorXd& lower, Eigen::VectorXd& upper,
+                                     const rw::math::Q& q, const rw::math::Q& dq);
     };
 
 }}    // namespace rwlibs::algorithms

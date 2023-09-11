@@ -38,7 +38,7 @@ namespace rw { namespace common {
     // Forward declarations
     class ThreadPool;
 
-    template< typename T > class ThreadSafeVariable;
+    template<typename T> class ThreadSafeVariable;
 
     //! @addtogroup common
 #if !defined(SWIG)
@@ -87,7 +87,7 @@ namespace rw { namespace common {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< ThreadTask > Ptr;
+        typedef rw::core::Ptr<ThreadTask> Ptr;
 
         /**
          * @brief The different execution states of a task.
@@ -111,19 +111,19 @@ namespace rw { namespace common {
          *
          * @param parent [in] the parent task to take the thread pool from.
          */
-        ThreadTask (ThreadTask::Ptr parent);
+        ThreadTask(ThreadTask::Ptr parent);
 
         /**
          * @brief Create task that will use a specific thread pool.
          * If no thread pool is given, the task will not use parallelization.
          * @param pool [in] (optional) a pointer to the ThreadPool to use.
          */
-        ThreadTask (rw::core::Ptr< ThreadPool > pool = NULL);
+        ThreadTask(rw::core::Ptr<ThreadPool> pool = NULL);
 
         /**
          * @brief Destruct this task.
          */
-        virtual ~ThreadTask ();
+        virtual ~ThreadTask();
 
         /**
          * @brief Set which ThreadPool to use to do the actual execution of work.
@@ -131,14 +131,14 @@ namespace rw { namespace common {
          * @param pool [in] pointer to the pool
          * @return true if change was successful, false otherwise.
          */
-        bool setThreadPool (rw::core::Ptr< ThreadPool > pool);
+        bool setThreadPool(rw::core::Ptr<ThreadPool> pool);
 
         /**
          * @brief Get the ThreadPool that is used by this task currently.
          *
          * @return pointer to the ThreadPool.
          */
-        rw::core::Ptr< ThreadPool > getThreadPool ();
+        rw::core::Ptr<ThreadPool> getThreadPool();
 
         /**
          * @name Functions that can be implemented by subclasses.
@@ -153,7 +153,7 @@ namespace rw { namespace common {
          *  @brief Function is the first function executed to do the actual work (new subtasks can
          * be added in this function).
          */
-        virtual void run ();
+        virtual void run();
 
         /**
          * @brief Function is executed each time a subtask has finished (new subtasks can be added
@@ -168,19 +168,19 @@ namespace rw { namespace common {
          *
          * @param subtask [in] the subtask that just finished.
          */
-        virtual void subTaskDone (ThreadTask* subtask);
+        virtual void subTaskDone(ThreadTask* subtask);
 
         /**
          * @brief Function is executed when the task becomes idle (new subtasks can be added in
          * this function).
          */
-        virtual void idle ();
+        virtual void idle();
 
         /**
          * @brief Function is executed when work is finished (at this point new subtasks can NOT be
          * added).
          */
-        virtual void done ();
+        virtual void done();
 
 #if !defined(SWIG)
 
@@ -196,7 +196,7 @@ namespace rw { namespace common {
          * @return true if execution started successfully, false if already running or thread has
          * finished.
          */
-        bool execute ();
+        bool execute();
 
         /**
          * @brief Wait until state of task changes (blocking).
@@ -206,16 +206,16 @@ namespace rw { namespace common {
          * @param previous [in] the previous state (wait for changes from this)
          * @return the new TaskState
          */
-        TaskState wait (ThreadTask::TaskState previous);
+        TaskState wait(ThreadTask::TaskState previous);
 
         //! @brief Wait until state of task changes to DONE (blocking).
-        void waitUntilDone ();
+        void waitUntilDone();
 
         /**
          * @brief Get the current state of the task (non-blocking).
          * @return the current TaskState.
          */
-        TaskState getState ();
+        TaskState getState();
 
         /**
          * @brief Add a child task to this task.
@@ -226,13 +226,13 @@ namespace rw { namespace common {
          * @param subtask the ThreadTask to add as child.
          * @return true if child was added successfully (only if task has not already ended)
          */
-        bool addSubTask (ThreadTask::Ptr subtask);
+        bool addSubTask(ThreadTask::Ptr subtask);
 
         /**
          * @brief Get the subtasks currently added to the ThreadTask.
          * @return a vector of subtasks.
          */
-        std::vector< ThreadTask::Ptr > getSubTasks ();
+        std::vector<ThreadTask::Ptr> getSubTasks();
 
         /**
          * @brief Choose if the thread should exit automatically when all work and children has
@@ -243,13 +243,13 @@ namespace rw { namespace common {
          *
          * @param enable [in] true if the thread should NOT finish automatically.
          */
-        void setKeepAlive (bool enable);
+        void setKeepAlive(bool enable);
 
         /**
          * @brief Check is the task has keep alive option enabled.
          * @return true if task should be kept alive, false otherwise.
          */
-        bool keepAlive ();
+        bool keepAlive();
 
         /**
          * @brief Mark the task as a failure by registering an exception.
@@ -259,32 +259,32 @@ namespace rw { namespace common {
          *
          * @param e [in] an exception describing the problem.
          */
-        void registerFailure (const rw::core::Exception& e);
+        void registerFailure(const rw::core::Exception& e);
 #if !defined(SWIG)
         /**
          * @brief Get a list of exceptions registered in task and subtasks.
          * @return a list of exceptions.
          */
-        std::list< rw::core::Exception > getExceptions () const;
+        std::list<rw::core::Exception> getExceptions() const;
 #endif
       private:
-        typedef boost::function< void (ThreadTask*) > ParentCallback;
+        typedef boost::function<void(ThreadTask*)> ParentCallback;
 
-        void runWrap (ThreadPool* pool);
-        void doneWrap (ThreadPool* pool);
-        void callbackParent (ThreadTask* task);
-        void tryIdle ();
-        void finish ();
+        void runWrap(ThreadPool* pool);
+        void doneWrap(ThreadPool* pool);
+        void callbackParent(ThreadTask* task);
+        void tryIdle();
+        void finish();
 
         // Thread-safe data
-        ThreadSafeVariable< rw::core::Ptr< ThreadPool > >* _pool;
-        ThreadSafeVariable< TaskState >* _state;
-        ThreadSafeVariable< bool >* _keepAlive;
-        ThreadSafeVariable< bool >* _blockFinalize;
-        ThreadSafeVariable< std::vector< rw::core::Ptr< ThreadTask > > >* _children;
-        ThreadSafeVariable< unsigned int >* _childrenMissing;
-        ThreadSafeVariable< ParentCallback >* _parentCallback;
-        ThreadSafeVariable< std::list< rw::core::Exception > >* _exceptions;
+        ThreadSafeVariable<rw::core::Ptr<ThreadPool>>* _pool;
+        ThreadSafeVariable<TaskState>* _state;
+        ThreadSafeVariable<bool>* _keepAlive;
+        ThreadSafeVariable<bool>* _blockFinalize;
+        ThreadSafeVariable<std::vector<rw::core::Ptr<ThreadTask>>>* _children;
+        ThreadSafeVariable<unsigned int>* _childrenMissing;
+        ThreadSafeVariable<ParentCallback>* _parentCallback;
+        ThreadSafeVariable<std::list<rw::core::Exception>>* _exceptions;
 
         // Mutex for exclusive access to atomic manipulation of all data
         boost::mutex _mutex;

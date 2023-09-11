@@ -49,23 +49,23 @@ class QTimer;
 class GTaskVisPlugin : public rws::RobWorkStudioPlugin, private Ui::GTaskVisPlugin
 {
     Q_OBJECT
-    Q_INTERFACES (rws::RobWorkStudioPlugin)
-    Q_PLUGIN_METADATA (IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "plugin.json")
+    Q_INTERFACES(rws::RobWorkStudioPlugin)
+    Q_PLUGIN_METADATA(IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "plugin.json")
   public:
     //! @brief Constructor.
-    GTaskVisPlugin ();
+    GTaskVisPlugin();
 
     //! @brief Destructor.
-    virtual ~GTaskVisPlugin ();
+    virtual ~GTaskVisPlugin();
 
     //! @copydoc rws::RobWorkStudioPlugin::open
-    virtual void open (rw::models::WorkCell* workcell);
+    virtual void open(rw::models::WorkCell* workcell);
 
     //! @copydoc rws::RobWorkStudioPlugin::close
-    virtual void close ();
+    virtual void close();
 
     //! @copydoc rws::RobWorkStudioPlugin::initialize
-    virtual void initialize ();
+    virtual void initialize();
 
     /**
      * @brief Allows sending events from other plugins.
@@ -81,13 +81,13 @@ class GTaskVisPlugin : public rws::RobWorkStudioPlugin, private Ui::GTaskVisPlug
      * @param event
      * @param data
      */
-    void genericAnyEventListener (const std::string& event, boost::any data);
+    void genericAnyEventListener(const std::string& event, boost::any data);
 
     /**
      * @brief Load task file.
      * @param automatic [in] if false a dialog is shown to choose the file.
      */
-    void loadTasks (bool automatic);
+    void loadTasks(bool automatic);
 
     // void saveTasks(bool automatic);
     // void loadConfig(bool automatic);
@@ -98,25 +98,25 @@ class GTaskVisPlugin : public rws::RobWorkStudioPlugin, private Ui::GTaskVisPlug
      * @brief Get the settings.
      * @return the settings.
      */
-    rw::core::PropertyMap& settings ();
+    rw::core::PropertyMap& settings();
 
   private Q_SLOTS:
-    void updateVis ();
-    void loadTasks (QString taskFile);
-    void btnPressed ();
-    void stateChangedListener (const rw::kinematics::State& state);
-    void selectGrasp (int i);
-    void on_btnRecordVideo_clicked ();
+    void updateVis();
+    void loadTasks(QString taskFile);
+    void btnPressed();
+    void stateChangedListener(const rw::kinematics::State& state);
+    void selectGrasp(int i);
+    void on_btnRecordVideo_clicked();
 
   private:
     rw::models::WorkCell* _wc;
     int _nrOfExperiments, _totalNrOfExperiments;
 
     QTimer* _timer;
-    rw::core::Ptr< rwlibs::task::GraspTask > _graspTask;
-    std::vector< std::pair< rwlibs::task::GraspSubTask*, rwlibs::task::GraspTarget* > > _ymtargets;
-    rw::core::Ptr< rw::graphics::Render > _render;
-    rw::core::Ptr< rw::graphics::DrawableNode > _targetDrawable;
+    rw::core::Ptr<rwlibs::task::GraspTask> _graspTask;
+    std::vector<std::pair<rwlibs::task::GraspSubTask*, rwlibs::task::GraspTarget*>> _ymtargets;
+    rw::core::Ptr<rw::graphics::Render> _render;
+    rw::core::Ptr<rw::graphics::DrawableNode> _targetDrawable;
 };
 
 #endif

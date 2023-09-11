@@ -30,61 +30,54 @@ using namespace rw::kinematics;
 using namespace rw::math;
 
 namespace {
-bool isActiveJoint (const Frame& frame)
-{
-    const Joint* j = dynamic_cast< const Joint* > (&frame);
-    if (j != NULL)
-        return j->isActive ();
+bool isActiveJoint(const Frame& frame) {
+    const Joint* j = dynamic_cast<const Joint*>(&frame);
+    if(j != NULL) return j->isActive();
     return false;
 }
 
-bool isDependentJoint (const Frame& frame)
-{
-    if (dynamic_cast< const DependentJoint* > (&frame) != NULL)
-        return true;
+bool isDependentJoint(const Frame& frame) {
+    if(dynamic_cast<const DependentJoint*>(&frame) != NULL) return true;
     return false;
 }
 
-std::vector< Joint* > getJointsFromFrames (const std::vector< Frame* >& frames)
-{
-    std::vector< Joint* > active;
+std::vector<Joint*> getJointsFromFrames(const std::vector<Frame*>& frames) {
+    std::vector<Joint*> active;
 
-    typedef std::vector< Frame* >::const_iterator I;
-    for (I p = frames.begin (); p != frames.end (); ++p) {
+    typedef std::vector<Frame*>::const_iterator I;
+    for(I p = frames.begin(); p != frames.end(); ++p) {
         rw::core::Ptr<Frame> frame = *p;
 
         // But how do we know that isActiveJoint() implies Joint*? Why don't
         // we use a dynamic cast here for safety?
-        if (isActiveJoint (*frame) || isDependentJoint (*frame))
-            active.push_back (frame.cast<Joint>().get());
+        if(isActiveJoint(*frame) || isDependentJoint(*frame))
+            active.push_back(frame.cast<Joint>().get());
     }
 
     return active;
 }
 
 // From the root 'first' to the child 'last', but with 'last' excluded.
-std::vector< Frame* > getChain (rw::core::Ptr<Frame> first, rw::core::Ptr<Frame> last, const State& state)
-{
-    return Kinematics::reverseChildToParentChain (last, first, state);
+std::vector<Frame*> getChain(rw::core::Ptr<Frame> first, rw::core::Ptr<Frame> last,
+                             const State& state) {
+    return Kinematics::reverseChildToParentChain(last, first, state);
 }
 
-std::vector< Frame* > getKinematicTree (rw::core::Ptr<Frame> first, const std::vector< Frame* >& last,
-                                        const State& state)
-{
-    RW_ASSERT (first);
+std::vector<Frame*> getKinematicTree(rw::core::Ptr<Frame> first, const std::vector<Frame*>& last,
+                                     const State& state) {
+    RW_ASSERT(first);
 
-    typedef std::vector< Frame* > V;
+    typedef std::vector<Frame*> V;
     typedef V::const_iterator I;
 
     V kinematicChain;
-    kinematicChain.push_back (first.get());
-    for (I p = last.begin (); p != last.end (); ++p) {
-        std::vector< Frame* > chain = getChain (first, *p, state);
-        for (Frame* frame : chain) {
-            std::vector< Frame* >::iterator it =
-                std::find (kinematicChain.begin (), kinematicChain.end (), frame);
-            if (it == kinematicChain.end ())
-                kinematicChain.push_back (frame);
+    kinematicChain.push_back(first.get());
+    for(I p = last.begin(); p != last.end(); ++p) {
+        std::vector<Frame*> chain = getChain(first, *p, state);
+        for(Frame* frame : chain) {
+            std::vector<Frame*>::iterator it =
+                std::find(kinematicChain.begin(), kinematicChain.end(), frame);
+            if(it == kinematicChain.end()) kinematicChain.push_back(frame);
         }
         // kinematicChain.insert(
         //    kinematicChain.end(), chain.begin(), chain.end());
@@ -93,27 +86,24 @@ std::vector< Frame* > getKinematicTree (rw::core::Ptr<Frame> first, const std::v
 }
 }    // namespace
 
-TreeDevice::TreeDevice (rw::core::Ptr<Frame> base, const std::vector< Frame* >& ends, const std::string& name,
-                        const State& state) :
-    JointDevice (name, base, ends.front (),
-                 getJointsFromFrames (getKinematicTree (base, ends, state)), state),
+TreeDevice::TreeDevice(rw::core::Ptr<Frame> base, const std::vector<Frame*>& ends,
+                       const std::string& name, const State& state) :
+    JointDevice(name, base, ends.front(), getJointsFromFrames(getKinematicTree(base, ends, state)),
+                state),
 
-    _kinematicChain (getKinematicTree (base, ends, state)),
+    _kinematicChain(getKinematicTree(base, ends, state)),
 
-    _ends (ends),
+    _ends(ends),
 
-    _djmulti (baseJCframes (ends, state))
-{}
+    _djmulti(baseJCframes(ends, state)) {}
 
-TreeDevice::~TreeDevice ()
-{}
+TreeDevice::~TreeDevice() {}
 
 // Jacobians
 
-Jacobian TreeDevice::baseJends (const State& state) const
-{
-    FKTable fk (state);
-    const Transform3D<>& start = fk.get (*getBase ());
+Jacobian TreeDevice::baseJends(const State& state) const {
+    FKTable fk(state);
+    const Transform3D<>& start = fk.get(*getBase());
     // return inverse(start.R()) * _djmulti->get(fk);
-    return inverse (start.R ()) * _djmulti->get (state);
+    return inverse(start.R()) * _djmulti->get(state);
 }

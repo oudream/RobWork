@@ -23,7 +23,7 @@
  */
 #if !defined(SWIG)
 #include <rw/models/Joint.hpp>
-#endif 
+#endif
 namespace rw { namespace kinematics {
     class State;
 }}    // namespace rw::kinematics
@@ -46,7 +46,7 @@ namespace rw { namespace models {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< VirtualJoint > Ptr;
+        typedef rw::core::Ptr<VirtualJoint> Ptr;
 
         /**
          * @brief A virtual joint with a displacement transform of \b transform.
@@ -54,37 +54,36 @@ namespace rw { namespace models {
          * @param transform [in] The displacement transform of the joint.
          * @param dof [in] Number of degrees of freedom of the joint
          */
-        VirtualJoint (const std::string& name, const rw::math::Transform3D<>& transform, size_t dof);
+        VirtualJoint(const std::string& name, const rw::math::Transform3D<>& transform, size_t dof);
 
         //! @copydoc Joint::getJacobian
-        void getJacobian (size_t row, size_t col, const rw::math::Transform3D<>& joint,
-                          const rw::math::Transform3D<>& tcp, const rw::kinematics::State& state,
-                          rw::math::Jacobian& jacobian) const
-        {}
+        void getJacobian(size_t row, size_t col, const rw::math::Transform3D<>& joint,
+                         const rw::math::Transform3D<>& tcp, const rw::kinematics::State& state,
+                         rw::math::Jacobian& jacobian) const {}
 
         //! @copydoc Joint::getFixedTransform()
-        rw::math::Transform3D<> getFixedTransform () const { return _transform; };
+        rw::math::Transform3D<> getFixedTransform() const { return _transform; };
 
         //! @copydoc Joint::getFixedTransform()
-        void setFixedTransform (const rw::math::Transform3D<>& t3d);
+        void setFixedTransform(const rw::math::Transform3D<>& t3d);
 
         //! @copydoc Joint::getJointTransform()
-        rw::math::Transform3D<> getJointTransform (const rw::kinematics::State& state) const;
+        rw::math::Transform3D<> getJointTransform(const rw::kinematics::State& state) const;
 
         //! @copydoc Joint::setJointMapping()
-        virtual void setJointMapping (rw::math::Function1Diff<>::Ptr function)
-        {
-            RW_THROW ("setJointMapping is not supported on VirtualJoint");
+        virtual void setJointMapping(rw::math::Function1Diff<>::Ptr function) {
+            RW_THROW("setJointMapping is not supported on VirtualJoint");
         }
 
         //! @copydoc Joint::removeJointMapping()
-        virtual void removeJointMapping () {}
+        virtual void removeJointMapping() {}
 
       protected:
-        rw::math::Transform3D<> doGetTransform (const rw::kinematics::State& state) const;
+        rw::math::Transform3D<> doGetTransform(const rw::kinematics::State& state) const;
 
-        void doMultiplyTransform (const rw::math::Transform3D<>& parent, const rw::kinematics::State& state,
-                                  rw::math::Transform3D<>& result) const;
+        void doMultiplyTransform(const rw::math::Transform3D<>& parent,
+                                 const rw::kinematics::State& state,
+                                 rw::math::Transform3D<>& result) const;
 
       private:
         rw::math::Transform3D<> _transform;

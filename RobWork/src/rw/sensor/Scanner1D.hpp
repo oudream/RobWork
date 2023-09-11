@@ -29,7 +29,7 @@ namespace rw { namespace sensor {
     class Scanner1D : public Scanner
     {
       public:
-        virtual ~Scanner1D ();
+        virtual ~Scanner1D();
     };
 
 }}    // namespace rw::sensor

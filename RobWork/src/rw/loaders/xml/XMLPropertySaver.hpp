@@ -25,7 +25,7 @@
 
 namespace rw { namespace core {
     class PropertyValueBase;
-}}
+}}    // namespace rw::core
 
 XERCES_CPP_NAMESPACE_BEGIN
 class DOMDocument;
@@ -56,8 +56,8 @@ namespace rw { namespace loaders {
          * @param doc [in] DOMDocument which should contain the property representation
          * @return DOMElement representing \b property and belonging to \b doc.
          */
-        static xercesc::DOMElement* save (rw::core::PropertyBase::Ptr property,
-                                          xercesc::DOMDocument* doc);
+        static xercesc::DOMElement* save(rw::core::PropertyBase::Ptr property,
+                                         xercesc::DOMDocument* doc);
 
         /**
          * @brief Writes PropertyMap to a DOMElement
@@ -71,8 +71,8 @@ namespace rw { namespace loaders {
          * @param doc [in] DOMDocument which should contain the properties
          * @return DOMElement representing \b map and belonging to \b doc
          */
-        static xercesc::DOMElement* save (const rw::core::PropertyMap& map,
-                                          xercesc::DOMDocument* doc);
+        static xercesc::DOMElement* save(const rw::core::PropertyMap& map,
+                                         xercesc::DOMDocument* doc);
 
         /**
          * @brief Saves properties of a PropertyMap as childs to \b element.
@@ -87,8 +87,8 @@ namespace rw { namespace loaders {
          * @param doc [in] DOMDocument containing element and which should contain the individual
          * properties
          */
-        static void save (const rw::core::PropertyMap& map, xercesc::DOMElement* element,
-                          xercesc::DOMDocument* doc);
+        static void save(const rw::core::PropertyMap& map, xercesc::DOMElement* element,
+                         xercesc::DOMDocument* doc);
 
         /**
          * @brief Saves the properties of \b map to file named \b filename
@@ -98,7 +98,7 @@ namespace rw { namespace loaders {
          * @param map [in] Map of properties to save
          * @param filename [in] Filename
          */
-        static void save (const rw::core::PropertyMap& map, const std::string& filename);
+        static void save(const rw::core::PropertyMap& map, const std::string& filename);
 
         /**
          * @brief Writes the properties of \b map to \b outstream
@@ -108,7 +108,7 @@ namespace rw { namespace loaders {
          * @param map [in] Map of properties to save
          * @param outstream [in] Output stream
          */
-        static void write (const rw::core::PropertyMap& map, std::ostream& outstream);
+        static void write(const rw::core::PropertyMap& map, std::ostream& outstream);
 
         /**
          * @brief Creates DOMDocument for \b map
@@ -118,7 +118,7 @@ namespace rw { namespace loaders {
          * @param map [in] Map of properties
          * @return DOMDocument containing properties.
          */
-        static xercesc::DOMDocument* createDOMDocument (const rw::core::PropertyMap& map);
+        static xercesc::DOMDocument* createDOMDocument(const rw::core::PropertyMap& map);
 
         /**
          * @brief Utility class which initializes local static variables.
@@ -135,16 +135,16 @@ namespace rw { namespace loaders {
         {
           public:
             //! @brief Initializes when constructed.
-            Initializer ();
+            Initializer();
         };
 
       private:
         static const Initializer initializer;
 
-        XMLPropertySaver (){}
+        XMLPropertySaver() {}
 
-        static void save (const rw::core::PropertyValueBase& property,
-                xercesc::DOMElement* parent, xercesc::DOMDocument* doc);
+        static void save(const rw::core::PropertyValueBase& property, xercesc::DOMElement* parent,
+                         xercesc::DOMDocument* doc);
     };
 
     /* @} */

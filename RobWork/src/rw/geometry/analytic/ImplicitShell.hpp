@@ -25,9 +25,8 @@
  */
 
 #if !defined(SWIG)
-#include <rw/geometry/analytic/Shell.hpp>
-
 #include <rw/core/os.hpp>
+#include <rw/geometry/analytic/Shell.hpp>
 #endif
 
 namespace rw { namespace geometry {
@@ -43,43 +42,43 @@ namespace rw { namespace geometry {
      * all curves are of type ParametricCurve.
      */
 
-    #if !defined(SWIGJAVA)
+#if !defined(SWIGJAVA)
     class ImplicitShell : public Shell
-    #else 
+#else
     class ImplicitShell : public rw::geometry::GeometryData
-    #endif 
+#endif
     {
       public:
         //! @brief Smart pointer type to ImplicitShell
-        typedef rw::core::Ptr< ImplicitShell > Ptr;
+        typedef rw::core::Ptr<ImplicitShell> Ptr;
 
         //! @brief Smart pointer type for a const ImplicitShell.
-        typedef rw::core::Ptr< const ImplicitShell > CPtr;
+        typedef rw::core::Ptr<const ImplicitShell> CPtr;
 
         //! @brief Constructor.
-        ImplicitShell () : _resolution (10) {}
+        ImplicitShell() : _resolution(10) {}
 
         //! @brief Destructor.
-        virtual ~ImplicitShell () {}
+        virtual ~ImplicitShell() {}
 
         //! @copydoc Shell::getType
-        virtual GeometryType getType () const { return GeometryData::Implicit; }
+        virtual GeometryType getType() const { return GeometryData::Implicit; }
 
         //! @copydoc Shell::isConvex
-        virtual bool isConvex () = 0;
+        virtual bool isConvex() = 0;
 
         //! @copydoc Shell::size
-        virtual std::size_t size () const = 0;
+        virtual std::size_t size() const = 0;
 
         //! @copydoc Shell::getFace
-        virtual rw::core::Ptr< const ImplicitFace > getFace (std::size_t idx) const = 0;
+        virtual rw::core::Ptr<const ImplicitFace> getFace(std::size_t idx) const = 0;
 
         /**
          * @brief Get a surface patch.
          * @param idx [in] index of the patch.
          * @param dst [out] an existing face to write data to.
          */
-        virtual void getFace (std::size_t idx, ImplicitFace& dst) const = 0;
+        virtual void getFace(std::size_t idx, ImplicitFace& dst) const = 0;
 
         /**
          * @brief Set the resolution used for discretization in the getTriMesh and faceTriMesh
@@ -89,15 +88,15 @@ namespace rw { namespace geometry {
          *
          * @param resolution [in] the resolution parameter.
          */
-        void setMeshResolution (double resolution) { _resolution = resolution; }
+        void setMeshResolution(double resolution) { _resolution = resolution; }
 
       private:
-#if defined(RW_MACOS) && ! defined(SWIGJAVA)
+#if defined(RW_MACOS) && !defined(SWIGJAVA)
         // This line is here to tell the compiler that it is a intentional override further up
         using rw::geometry::Shell::getFace;
 #endif
 
-        virtual rw::core::Ptr< const Face > doGetFace (std::size_t idx) const = 0;
+        virtual rw::core::Ptr<const Face> doGetFace(std::size_t idx) const = 0;
 
       protected:
         //! @brief Resolution to use for discretization into triangle mesh.

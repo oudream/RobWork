@@ -6,6 +6,3 @@
  */
 
 #include "BVTree.hpp"
-
-
-

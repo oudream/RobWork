@@ -98,7 +98,7 @@ namespace swig {
     //! @copydoc rw::trajectory::TimedStatePath
     typedef rw::trajectory::TimedStatePath PathTimedState;
     //! @copydoc rw::trajectory::Timed
-    typedef rw::trajectory::Timed< AssemblyState > TimedAssemblyState;
+    typedef rw::trajectory::Timed<AssemblyState> TimedAssemblyState;
     ///@}
 
     // rwlibs algorithms
@@ -170,7 +170,7 @@ namespace swig {
      */
     ///@{
     //! @copydoc rwlibs::task::Task
-    typedef rwlibs::task::Task< rw::math::Transform3D< double > > TaskSE3;
+    typedef rwlibs::task::Task<rw::math::Transform3D<double>> TaskSE3;
     //! @copydoc rwlibs::task::GraspTask
     typedef rwlibs::task::GraspTask GraspTask;
     //! @copydoc rwlibs::task::GraspSubTask
@@ -188,26 +188,26 @@ namespace swig {
      * @brief Write message to log.
      * @param msg [in] message to write.
      */
-    void writelog (const std::string& msg);
+    void writelog(const std::string& msg);
 
     /**
      * @brief Set the writer to write log to.
      * @param writer [in] the writer.
      */
-    void setlog (::rw::core::LogWriter::Ptr writer);
+    void setlog(::rw::core::LogWriter::Ptr writer);
 
     /**
      * @brief Math helper function to obtain random rotation.
      * @return a random rotation.
      */
-    //Rotation3Dd getRandomRotation3D ();
+    // Rotation3Dd getRandomRotation3D ();
 
     /**
      * @brief Math helper function to obtain random transform.
      * @param translationLength [in] (optional) the length to translate - default is one meter.
      * @return a random transform.
      */
-    //Transform3Dd getRandomTransform3D (const double translationLength = 1);
+    // Transform3Dd getRandomTransform3D (const double translationLength = 1);
     /*@}*/
 }    // namespace swig
 }    // namespace rwlibs

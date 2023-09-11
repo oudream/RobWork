@@ -24,22 +24,22 @@ namespace rwsim { namespace drawable {
         /**
          * @brief constructor
          */
-        RenderPlanes (float planesize = 1.0);
+        RenderPlanes(float planesize = 1.0);
 
         /**
          * @brief destructor
          */
-        virtual ~RenderPlanes ();
+        virtual ~RenderPlanes();
 
         /**
          * @brief adds planes to the renerer
          */
-        void addPlanes (const std::vector< rwsim::util::PlaneModel >& planes);
+        void addPlanes(const std::vector<rwsim::util::PlaneModel>& planes);
 
         /**
          * @brief clear the list of planes
          */
-        void clear ();
+        void clear();
 
         /**
          * @brief set the color used for the model
@@ -47,14 +47,14 @@ namespace rwsim { namespace drawable {
          * @param g [in] green color value
          * @param b [in] blue color value
          */
-        void setColor (double r, double g, double b);
+        void setColor(double r, double g, double b);
 
         //! Render::draw
-        void draw (const rw::graphics::DrawableNode::RenderInfo& info,
-                   rw::graphics::DrawableNode::DrawType type, double alpha) const;
+        void draw(const rw::graphics::DrawableNode::RenderInfo& info,
+                  rw::graphics::DrawableNode::DrawType type, double alpha) const;
 
       private:
-        std::vector< util::PlaneModel > _planes;
+        std::vector<util::PlaneModel> _planes;
         float _planesize;
         float _color[3];
     };

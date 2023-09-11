@@ -45,36 +45,36 @@ class SensorView : public QWidget
     Q_OBJECT
   public:
     //! @brief Smart pointer type for SensorView.
-    typedef rw::core::Ptr< SensorView > Ptr;
+    typedef rw::core::Ptr<SensorView> Ptr;
 
     /**
      * @brief Construct new widget.
      * @param parent [in] owner widget.
      */
-    SensorView (QWidget* parent = NULL) : QWidget (parent) {}
+    SensorView(QWidget* parent = NULL) : QWidget(parent) {}
 
     //! @brief Destructor.
-    virtual ~SensorView () {}
+    virtual ~SensorView() {}
 
     //! @brief Update the view.
-    virtual void update () = 0;
+    virtual void update() = 0;
 
     //! @brief Make the widget current.
-    virtual void makeCurrent () = 0;
+    virtual void makeCurrent() = 0;
 
   protected:
     /**
      * @brief Handle close event.
      * @param event [in] the event.
      */
-    void closeEvent (QCloseEvent* event);
+    void closeEvent(QCloseEvent* event);
 
   Q_SIGNALS:
     /**
      * @brief Signal emitted when view is closed.
      * @param widget [in] the view just closed.
      */
-    void viewClosed (SensorView* widget);
+    void viewClosed(SensorView* widget);
 };
 
 //! @brief a view to visualize output of a camera
@@ -86,16 +86,16 @@ class CameraView : public SensorView
      * @param camera [in] the camera sensor.
      * @param parent [in] owner widget.
      */
-    CameraView (rw::core::Ptr< rw::sensor::Camera > camera, QWidget* parent = NULL);
+    CameraView(rw::core::Ptr<rw::sensor::Camera> camera, QWidget* parent = NULL);
 
     //! @copydoc SensorView::update
-    virtual void update ();
+    virtual void update();
 
     //! @copydoc SensorView::makeCurrent
-    virtual void makeCurrent () {}
+    virtual void makeCurrent() {}
 
   private:
-    rw::core::Ptr< rw::sensor::Camera > _camera;
+    rw::core::Ptr<rw::sensor::Camera> _camera;
     ImageView* _pImageView;
 };
 
@@ -107,23 +107,23 @@ class Scan25DView : public SensorView
      * @brief Create a 2.5D scanner view.
      * @param parent [in] owner widget.
      */
-    Scan25DView (QWidget* parent = NULL);
+    Scan25DView(QWidget* parent = NULL);
 
     /**
      * @brief Initialize view.
      * @param scanner [in] the simulated scanner.
      */
-    virtual void initialize (rw::core::Ptr< rwlibs::simulation::SimulatedScanner25D > scanner);
+    virtual void initialize(rw::core::Ptr<rwlibs::simulation::SimulatedScanner25D> scanner);
 
     //! @copydoc SensorView::update
-    virtual void update ();
+    virtual void update();
 
     //! @copydoc SensorView::makeCurrent
-    virtual void makeCurrent ();
+    virtual void makeCurrent();
 
   private:
-    rw::core::Ptr< rwlibs::simulation::SimulatedScanner25D > _scanner;
-    rw::core::Ptr< rwlibs::opengl::RenderScan > _scanRender;
+    rw::core::Ptr<rwlibs::simulation::SimulatedScanner25D> _scanner;
+    rw::core::Ptr<rwlibs::opengl::RenderScan> _scanRender;
     ImageView* _pImageView;
 };
 
@@ -135,23 +135,23 @@ class Scan2DView : public SensorView
      * @brief Create a 2D scanner view.
      * @param parent [in] owner widget.
      */
-    Scan2DView (QWidget* parent = NULL);
+    Scan2DView(QWidget* parent = NULL);
 
     /**
      * @brief Initialize view.
      * @param scanner [in] the simulated scanner.
      */
-    virtual void initialize (rw::core::Ptr< rwlibs::simulation::SimulatedScanner2D > scanner);
+    virtual void initialize(rw::core::Ptr<rwlibs::simulation::SimulatedScanner2D> scanner);
 
     //! @copydoc SensorView::update
-    virtual void update ();
+    virtual void update();
 
     //! @copydoc SensorView::makeCurrent
-    virtual void makeCurrent ();
+    virtual void makeCurrent();
 
   private:
-    rw::core::Ptr< rwlibs::simulation::SimulatedScanner2D > _scanner;
-    rw::core::Ptr< rwlibs::opengl::RenderScan > _scanRender;
+    rw::core::Ptr<rwlibs::simulation::SimulatedScanner2D> _scanner;
+    rw::core::Ptr<rwlibs::opengl::RenderScan> _scanRender;
     ImageView* _pImageView;
 };
 

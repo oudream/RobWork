@@ -31,9 +31,9 @@
 #include <rw/core/PropertyBase.hpp>
 #include <rw/core/PropertyMap.hpp>
 #include <rw/core/Ptr.hpp>
+#include <rw/geometry/AABB.hpp>
 #include <rw/models/WorkCell.hpp>
 #include <rw/trajectory/Path.hpp>
-#include <rw/geometry/AABB.hpp>
 
 #include <QMainWindow>
 #include <boost/any.hpp>
@@ -71,83 +71,82 @@ class RobWorkStudio : public QMainWindow
 {
     Q_OBJECT
   public:
-
-    typedef rw::core::Ptr< RobWorkStudio > Ptr;
+    typedef rw::core::Ptr<RobWorkStudio> Ptr;
 
     /**
        @brief RobWorkStudio object with a number of plugins loaded elsewhere.
     */
-    RobWorkStudio (const rw::core::PropertyMap& map);
+    RobWorkStudio(const rw::core::PropertyMap& map);
 
     /**
      * @brief destructor
      * @return
      */
-    ~RobWorkStudio ();
+    ~RobWorkStudio();
 
     /**
      * @brief Opens either a workcell file, device file or a CAD file. Supported formats
      * are STL, STLA, STLB, 3DS, AC, AC3D, TRI, OBJ, WU, WC, DEV, XML
      * @param filename [in] name of file
      */
-    void openFile (const std::string& filename);
+    void openFile(const std::string& filename);
 
     /**
      * @brief returns the property map of this instance of robwork studio
      * @return propertymap
      */
-    rw::core::PropertyMap& getPropertyMap () { return _propMap; }
+    rw::core::PropertyMap& getPropertyMap() { return _propMap; }
 
     /**
      * @brief sets the workcell of robwork studio. If another workcell is currently
      * loaded it will be closed.
      * @param workcell [in] the workcell
      */
-    void setWorkcell (rw::models::WorkCell::Ptr workcell);
+    void setWorkcell(rw::models::WorkCell::Ptr workcell);
 
     //! @copydoc setWorkcell
-    void setWorkCell (rw::models::WorkCell::Ptr workcell) { setWorkcell (workcell); }
+    void setWorkCell(rw::models::WorkCell::Ptr workcell) { setWorkcell(workcell); }
 
     /**
      * @copybrief setWorkcell(rw::models::WorkCell::Ptr)
      * @param workcell_file [in] the filename of the workcell
      */
-    void setWorkcell (std::string workcell_file) { openWorkCellFile (workcell_file.c_str ()); }
+    void setWorkcell(std::string workcell_file) { openWorkCellFile(workcell_file.c_str()); }
 
     //! @copydoc setWorkcell(std::string)
-    void setWorkCell (std::string workcell_file) { openWorkCellFile (workcell_file.c_str ()); }
+    void setWorkCell(std::string workcell_file) { openWorkCellFile(workcell_file.c_str()); }
 
     /**
      * @brief close the workcell
      */
-    void closeWorkCell ();
+    void closeWorkCell();
 
     /**
      * @copydoc setWorkcell
      *
      * Use this if request comes from non-GUI thread.
      */
-    void postWorkCell (rw::models::WorkCell::Ptr workcell);
+    void postWorkCell(rw::models::WorkCell::Ptr workcell);
 
     /**
      * @brief Request loading of a new workcell. Use this if request comes from non-GUI thread.
      * @param string [in] the filename.
      */
-    void postOpenWorkCell (const std::string& string);
+    void postOpenWorkCell(const std::string& string);
 
     /**
      * @brief Request closing a workcell. Use this if request comes from non-GUI thread.
      */
-    void postCloseWorkCell ();
+    void postCloseWorkCell();
 
     /**
      * @brief Returns the workcell opened in RobWorkStudio
      * @return the workcell.
      */
-    rw::models::WorkCell::Ptr getWorkcell ();
+    rw::models::WorkCell::Ptr getWorkcell();
 
     //! @copydoc getWorkcell
-    rw::models::WorkCell::Ptr getWorkCell () { return getWorkcell (); }
+    rw::models::WorkCell::Ptr getWorkCell() { return getWorkcell(); }
 
     /**
      * @brief Returns the collision detector used in the user interface
@@ -157,7 +156,7 @@ class RobWorkStudio : public QMainWindow
      *
      * @return CollisionDetector
      */
-    rw::proximity::CollisionDetector::Ptr getCollisionDetector () { return _detector; }
+    rw::proximity::CollisionDetector::Ptr getCollisionDetector() { return _detector; }
 
     /**
      * @brief Returns the component controlling the drawing
@@ -165,7 +164,7 @@ class RobWorkStudio : public QMainWindow
      * Through the WorkCellGLDrawer the user can control the geometry
      * associated to frames.
      */
-    rw::graphics::WorkCellScene::Ptr getWorkCellScene () { return _view->getWorkCellScene (); }
+    rw::graphics::WorkCellScene::Ptr getWorkCellScene() { return _view->getWorkCellScene(); }
 
     /**
      * @brief Returns reference to the common TimedStatePath
@@ -175,7 +174,7 @@ class RobWorkStudio : public QMainWindow
      *
      * @return Reference to TimedStatePath
      */
-    const rw::trajectory::TimedStatePath& getTimedStatePath () { return *_timedStatePath; }
+    const rw::trajectory::TimedStatePath& getTimedStatePath() { return *_timedStatePath; }
 
     /**
      * @brief Returns pointer to the common TimedStatePath
@@ -185,8 +184,7 @@ class RobWorkStudio : public QMainWindow
      *
      * @return pointer to TimedStatePath
      */
-    const rw::core::Ptr< rw::trajectory::TimedStatePath > getTimedStatePathPtr ()
-    {
+    const rw::core::Ptr<rw::trajectory::TimedStatePath> getTimedStatePathPtr() {
         return _timedStatePath;
     }
 
@@ -198,7 +196,7 @@ class RobWorkStudio : public QMainWindow
      *
      * @param path [in] The new TimedStatePath
      */
-    void setTimedStatePath (const rw::trajectory::TimedStatePath& path);
+    void setTimedStatePath(const rw::trajectory::TimedStatePath& path);
 
     /**
      * @brief Sets the common TimedStatePath
@@ -208,26 +206,24 @@ class RobWorkStudio : public QMainWindow
      *
      * @param path [in] The new TimedStatePath
      */
-    void setTimedStatePath (const rw::trajectory::TimedStatePath::Ptr path);
+    void setTimedStatePath(const rw::trajectory::TimedStatePath::Ptr path);
 
     /**
      * @copydoc setTimedStatePath
      *
      * Use this version if request comes from non-GUI thread.
      */
-    void postTimedStatePath (const rw::trajectory::TimedStatePath& path);
+    void postTimedStatePath(const rw::trajectory::TimedStatePath& path);
 
     /**
      * @copydoc setTimedStatePath
      *
      * Use this version if request comes from non-GUI thread.
      */
-    void postTimedStatePath (const rw::trajectory::TimedStatePath::Ptr& path);
-
-
+    void postTimedStatePath(const rw::trajectory::TimedStatePath::Ptr& path);
 
     //! @brief Request program termination.
-    void postExit ();
+    void postExit();
 
     /**
      * @brief Sets the current state of for RobWorkStudio
@@ -236,41 +232,41 @@ class RobWorkStudio : public QMainWindow
      *
      * @param state [in] The new state
      */
-    void setState (const rw::kinematics::State& state);
+    void setState(const rw::kinematics::State& state);
 
     /**
      * @copydoc setState
      *
      * This function can be called from other threads.
      */
-    void postState (const rw::kinematics::State& state);
+    void postState(const rw::kinematics::State& state);
 
     /**
      * @copydoc updateAndRepaint
      *
      * This function can be called from other threads.
      */
-    void postUpdateAndRepaint ();
+    void postUpdateAndRepaint();
 
     /**
      * @copydoc saveViewGL
      *
      * This function can be called from other threads.
      */
-    void postSaveViewGL (const std::string& str);
+    void postSaveViewGL(const std::string& str);
 
     /**
      * @brief Post a generic event.
      * @param id [in] identifier for the event.
      */
-    void postGenericEvent (const std::string& id);
+    void postGenericEvent(const std::string& id);
 
     /**
      * @brief Post a generic event.
      * @param id [in] identifier for the event.
      * @param data [in] the data for the event.
      */
-    void postGenericAnyEvent (const std::string& id, boost::any data);
+    void postGenericAnyEvent(const std::string& id, boost::any data);
 
     /**
      * @brief Returns the current state
@@ -278,26 +274,26 @@ class RobWorkStudio : public QMainWindow
      * Returns the current state of the workcell
      * @return Current state
      */
-    const rw::kinematics::State& getState () { return _state; }
+    const rw::kinematics::State& getState() { return _state; }
 
     /**
      * @brief the log of RobWorkStudio.
      * @return a reference to the log.
      */
-    rw::core::Log& log ();
+    rw::core::Log& log();
 
     /**
      * @brief the log of RobWorkStudio.
      * @return a smart pointer to the log.
      */
-    rw::core::Log::Ptr logPtr ();
+    rw::core::Log::Ptr logPtr();
 
     /**
      * @brief Handle an event.
      * @param event [in] the Qt event.
      * @return true if handled, false otherwise.
      */
-    bool event (QEvent* event);
+    bool event(QEvent* event);
 
     ///////////////////////////////
     // Listener Interface
@@ -324,7 +320,7 @@ class RobWorkStudio : public QMainWindow
      * }
      * \endcode
      */
-    typedef boost::function< void (const rw::kinematics::State&) > StateChangedListener;
+    typedef boost::function<void(const rw::kinematics::State&)> StateChangedListener;
 
     /**
      * @brief Defines event for state changes.
@@ -332,13 +328,13 @@ class RobWorkStudio : public QMainWindow
      * This event is fired when setState is called, or when a user (plugin)
      * manually calls fire.
      */
-    typedef rw::core::Event< StateChangedListener, const rw::kinematics::State& > StateChangedEvent;
+    typedef rw::core::Event<StateChangedListener, const rw::kinematics::State&> StateChangedEvent;
 
     /**
      * @brief Returns StateChangeEvent needed for subscribing and firing the event.
      * @return Reference to the StateChangedEvent
      */
-    StateChangedEvent& stateChangedEvent () { return _stateChangedEvent; }
+    StateChangedEvent& stateChangedEvent() { return _stateChangedEvent; }
 
     /**
      * @brief Defines a frame selected listener.
@@ -349,20 +345,20 @@ class RobWorkStudio : public QMainWindow
      *
      * Example usage in a plugin, see RobWorkStudio::StateChangedListener
      */
-    typedef boost::function< void (rw::kinematics::Frame*) > FrameSelectedListener;
+    typedef boost::function<void(rw::kinematics::Frame*)> FrameSelectedListener;
 
     /**
      * @brief Defines event for frame selection
      *
      * The selected rw::kinematics::Frame* is provided as an argument
      */
-    typedef rw::core::Event< FrameSelectedListener, rw::kinematics::Frame* > FrameSelectedEvent;
+    typedef rw::core::Event<FrameSelectedListener, rw::kinematics::Frame*> FrameSelectedEvent;
 
     /**
      * @brief Returns FrameSelectedEvent needed for subscription and firing of events
      * @return Reference to the FrameSelectedEvent
      */
-    FrameSelectedEvent& frameSelectedEvent () { return _frameSelectedEvent; }
+    FrameSelectedEvent& frameSelectedEvent() { return _frameSelectedEvent; }
 
     /**
      * @brief Defines a generic event listener.
@@ -374,18 +370,18 @@ class RobWorkStudio : public QMainWindow
      *
      * Example usage in a plugin, see RobWorkStudio::StateChangedListener
      */
-    typedef boost::function< void (const std::string&) > GenericEventListener;
+    typedef boost::function<void(const std::string&)> GenericEventListener;
 
     /**
      * @brief Defines event for generic user events
      */
-    typedef rw::core::Event< GenericEventListener, const std::string& > GenericEvent;
+    typedef rw::core::Event<GenericEventListener, const std::string&> GenericEvent;
 
     /**
      * @brief Returns GenericEvent needed for subscription and firing of events
      * @return Reference to the GenericEvent
      */
-    GenericEvent& genericEvent () { return _genericEvent; }
+    GenericEvent& genericEvent() { return _genericEvent; }
 
     /**
      * @brief Defines a generic event listener with data.
@@ -395,12 +391,12 @@ class RobWorkStudio : public QMainWindow
      * GenericAnyEventListener describes the signature of a callback method, used for generic
      * (user defined) event containing a string message and data.
      */
-    typedef boost::function< void (const std::string&, boost::any) > GenericAnyEventListener;
+    typedef boost::function<void(const std::string&, boost::any)> GenericAnyEventListener;
 
     /**
      * @brief Defines event for generic user events
      */
-    typedef rw::core::Event< GenericAnyEventListener, const std::string&, boost::any >
+    typedef rw::core::Event<GenericAnyEventListener, const std::string&, boost::any>
         GenericAnyEvent;
 
     /**
@@ -408,7 +404,7 @@ class RobWorkStudio : public QMainWindow
      * any data to the event message.
      * @return Reference to the GenericAnyEvent
      */
-    GenericAnyEvent& genericAnyEvent () { return _genericAnyEvent; }
+    GenericAnyEvent& genericAnyEvent() { return _genericAnyEvent; }
 
     /**
      * @brief this will block until an anyevent with id \b id is emitted or timeout
@@ -417,7 +413,7 @@ class RobWorkStudio : public QMainWindow
      * @param timeout [in] timeout in seconds
      * @return
      */
-    boost::any waitForAnyEvent (const std::string& id, double timeout = -1.0);
+    boost::any waitForAnyEvent(const std::string& id, double timeout = -1.0);
 
     /**
      * @brief Defines a key pressed event listener.
@@ -439,18 +435,18 @@ class RobWorkStudio : public QMainWindow
      * }
      * \endcode
      */
-    typedef boost::function< void (int, Qt::KeyboardModifiers) > KeyEventListener;
+    typedef boost::function<void(int, Qt::KeyboardModifiers)> KeyEventListener;
 
     /**
      * @brief Defines event for key pressed events
      */
-    typedef rw::core::Event< KeyEventListener, int, Qt::KeyboardModifiers > KeyEvent;
+    typedef rw::core::Event<KeyEventListener, int, Qt::KeyboardModifiers> KeyEvent;
 
     /**
      * @brief Returns KeyEvent needed for subscription and firing of events
      * @return Reference to the KeyEvent
      */
-    KeyEvent& keyEvent () { return _keyEvent; }
+    KeyEvent& keyEvent() { return _keyEvent; }
 
     /**
      * @brief Defines a Mouse pressed event
@@ -458,18 +454,18 @@ class RobWorkStudio : public QMainWindow
      * MousePressedEventListener defines the signature of a callback method.
      * Example usage in a plugin: See RobWorkStudio::StateChangedListener
      */
-    typedef boost::function< void (QMouseEvent*) > MousePressedEventListener;
+    typedef boost::function<void(QMouseEvent*)> MousePressedEventListener;
 
     /**
      * @brief Defines event for mouse pressed events
      */
-    typedef rw::core::Event< MousePressedEventListener, QMouseEvent* > MousePressedEvent;
+    typedef rw::core::Event<MousePressedEventListener, QMouseEvent*> MousePressedEvent;
 
     /**
      * @brief Returns MousePressedEvent needed for subscription and firing of events
      * @return Reference to the MousePressedEvent
      */
-    MousePressedEvent& mousePressedEvent () { return _mousePressedEvent; }
+    MousePressedEvent& mousePressedEvent() { return _mousePressedEvent; }
 
     /**
      * @brief Defines a StateTrajectory changed event
@@ -477,21 +473,20 @@ class RobWorkStudio : public QMainWindow
      * StateTrajectoryListener defines the signature of a callback method.
      * Example usage in a plugin: See RobWorkStudio::StateChangedListener
      */
-    typedef boost::function< void (const rw::trajectory::TimedStatePath&) >
+    typedef boost::function<void(const rw::trajectory::TimedStatePath&)>
         StateTrajectoryChangedListener;
 
     /**
      * @brief Defines event for key pressed events
      */
-    typedef rw::core::Event< StateTrajectoryChangedListener, const rw::trajectory::TimedStatePath& >
+    typedef rw::core::Event<StateTrajectoryChangedListener, const rw::trajectory::TimedStatePath&>
         StateTrajectoryChangedEvent;
 
     /**
      * @brief Returns stateTrajectoryChangedEvent needed for subscription and firing of event
      * @return Reference to the stateTrajectoryChangedEvent
      */
-    StateTrajectoryChangedEvent& stateTrajectoryChangedEvent ()
-    {
+    StateTrajectoryChangedEvent& stateTrajectoryChangedEvent() {
         return _stateTrajectoryChangedEvent;
     }
 
@@ -501,22 +496,21 @@ class RobWorkStudio : public QMainWindow
      * StateTrajectoryListener defines the signature of a callback method.
      * Example usage in a plugin: See RobWorkStudio::StateChangedListener
      */
-    typedef boost::function< void (const rw::trajectory::TimedStatePath::Ptr) >
+    typedef boost::function<void(const rw::trajectory::TimedStatePath::Ptr)>
         StateTrajectoryPtrChangedListener;
 
     /**
      * @brief Defines event for key pressed events
      */
-    typedef rw::core::Event< StateTrajectoryPtrChangedListener,
-                             const rw::trajectory::TimedStatePath::Ptr >
+    typedef rw::core::Event<StateTrajectoryPtrChangedListener,
+                            const rw::trajectory::TimedStatePath::Ptr>
         StateTrajectoryPtrChangedEvent;
 
     /**
      * @brief Returns stateTrajectoryChangedEvent needed for subscription and firing of event
      * @return Reference to the stateTrajectoryChangedEvent
      */
-    StateTrajectoryPtrChangedEvent& stateTrajectoryPtrChangedEvent ()
-    {
+    StateTrajectoryPtrChangedEvent& stateTrajectoryPtrChangedEvent() {
         return _stateTrajectoryPtrChangedEvent;
     }
 
@@ -530,19 +524,19 @@ class RobWorkStudio : public QMainWindow
      *
      * Example use in a plugin: See RobWorkStudio::StateChangedListener
      */
-    typedef boost::function< void (const rw::math::Vector3D<>&) > PositionSelectedListener;
+    typedef boost::function<void(const rw::math::Vector3D<>&)> PositionSelectedListener;
 
     /**
      * @brief Defines event for PositionChanged.
      */
-    typedef rw::core::Event< PositionSelectedListener, const rw::math::Vector3D<>& >
+    typedef rw::core::Event<PositionSelectedListener, const rw::math::Vector3D<>&>
         PositionSelectedEvent;
 
     /**
      * @brief Returns PositionChangedEvent object needed for subscription to and firing of event
      * @return Reference to the PositionSelectedEvent
      */
-    PositionSelectedEvent& positionSelectedEvent () { return _positionSelectedEvent; }
+    PositionSelectedEvent& positionSelectedEvent() { return _positionSelectedEvent; }
 
     /**
      * @brief Saves the current opengl view
@@ -550,31 +544,29 @@ class RobWorkStudio : public QMainWindow
      * The filename should end with either ".png", ".jpg" or ".bmp" to specify the format
      * used to save the file.
      */
-    void saveViewGL (const QString& filename);
+    void saveViewGL(const QString& filename);
 
     /**
      * @brief a method for updating the opengl graphics output
      */
 
-    void updateAndRepaint ()
-    {
+    void updateAndRepaint() {
         // update();
-        _view->update ();
+        _view->update();
     }
 
     /**
      * @brief Returns the instance of the ViewGL class
      */
-    RWStudioView3D::Ptr getView () { return _view; }
+    RWStudioView3D::Ptr getView() { return _view; }
 
     /**
      * @brief Returns the current view transform.
      *
      * Convenience function.
      */
-    rw::math::Transform3D<> getViewTransform ()
-    {
-        return getView ()->getSceneViewer ()->getTransform ();
+    rw::math::Transform3D<> getViewTransform() {
+        return getView()->getSceneViewer()->getTransform();
     }
 
     /**
@@ -582,30 +574,29 @@ class RobWorkStudio : public QMainWindow
      *
      * Convenience function. Performs update & repaint as well.
      */
-    void setViewTransform (rw::math::Transform3D<> nviewT3D)
-    {
-        getView ()->getSceneViewer ()->setTransform (nviewT3D);
-        updateAndRepaint ();
+    void setViewTransform(rw::math::Transform3D<> nviewT3D) {
+        getView()->getSceneViewer()->setTransform(nviewT3D);
+        updateAndRepaint();
     }
 
     /**
      * @brief Handles a Qt key event.
      * @param e [in] the event.
      */
-    void keyPressEvent (QKeyEvent* e);
+    void keyPressEvent(QKeyEvent* e);
 
     /**
      * @return Returns the about box for RobWorkStudio
      *
      * Plugins can add their own tab to the about box.
      */
-    AboutBox* getAboutBox () { return _aboutBox; };
+    AboutBox* getAboutBox() { return _aboutBox; };
 
     /**
      * @brief Handles changed properties.
      * @param base [in] the changed property.
      */
-    void propertyChangedListener (rw::core::PropertyBase* base);
+    void propertyChangedListener(rw::core::PropertyBase* base);
 
     /**
      * @brief Add a plugin.
@@ -613,20 +604,20 @@ class RobWorkStudio : public QMainWindow
      * @param visible [in] true if the plugin should be visible.
      * @param area [in] the area for the widget.
      */
-    void addPlugin (RobWorkStudioPlugin* plugin, bool visible,
-                    Qt::DockWidgetArea area = Qt::LeftDockWidgetArea);
+    void addPlugin(RobWorkStudioPlugin* plugin, bool visible,
+                   Qt::DockWidgetArea area = Qt::LeftDockWidgetArea);
 
     /**
      * @brief Get the list of currently loaded plugins.
      * @return A reference to the vector of plugin pointers.
      */
-    const std::vector< RobWorkStudioPlugin* >& getPlugins () const { return _plugins; }
+    const std::vector<RobWorkStudioPlugin*>& getPlugins() const { return _plugins; }
 
     /**
      * @brief Restore the RobWorkStudio settings from a file.
      * @param file [in] the filename.
      */
-    void loadSettingsSetupPlugins (const std::string& file);
+    void loadSettingsSetupPlugins(const std::string& file);
 
     /**
      *  @brief Load a plugin file
@@ -634,7 +625,7 @@ class RobWorkStudio : public QMainWindow
      * 	@param visible [in] Sets wether the plugin is UI is opened upon load
      *  @param dock [in] The area where the uis will be placed
      */
-    void loadPlugin (std::string pluginFile, bool visible = false, int dock = 1);
+    void loadPlugin(std::string pluginFile, bool visible = false, int dock = 1);
 
     /**
      * @brief Unload the plugin from RobWorkStudio
@@ -642,20 +633,20 @@ class RobWorkStudio : public QMainWindow
      * @return true if succesfull
      * @return false if an error was encountered while unloading
      */
-    bool unloadPlugin (RobWorkStudioPlugin* pl);
+    bool unloadPlugin(RobWorkStudioPlugin* pl);
 
     /**
      * @brief Load Workcell into RobWork Studio based on settings file
      * @param file [in] the filename.
      * @return workcell file path
      */
-    std::string loadSettingsWorkcell (const std::string& file);
+    std::string loadSettingsWorkcell(const std::string& file);
 
     /**
      * @brief Get the current RobWorkStudio settings.
      * @return a reference to the settings.
      */
-    rw::core::PropertyMap& getSettings () { return *_settingsMap; }
+    rw::core::PropertyMap& getSettings() { return *_settingsMap; }
 
   private:
     // all events are defined here
@@ -674,65 +665,65 @@ class RobWorkStudio : public QMainWindow
      * @brief Slot for changing the common timed state path.
      * @param path [in] the path.
      */
-    void setTStatePath (rw::trajectory::TimedStatePath path);
+    void setTStatePath(rw::trajectory::TimedStatePath path);
 
   private Q_SLOTS:
-    void newWorkCell ();
-    void reloadWorkCell ();
-    void open ();
-    void setCheckAction ();
-    void onCloseWorkCell () { closeWorkCell (); }
-    void saveWorkCell ();
-    void showSolidTriggered ();
-    void showWireTriggered ();
-    void showBothTriggered ();
-    void showPropertyEditor ();
+    void newWorkCell();
+    void reloadWorkCell();
+    void open();
+    void setCheckAction();
+    void onCloseWorkCell() { closeWorkCell(); }
+    void saveWorkCell();
+    void showSolidTriggered();
+    void showWireTriggered();
+    void showBothTriggered();
+    void showPropertyEditor();
 
-    void updateHandler ();
-    void updateViewHandler ();
+    void updateHandler();
+    void updateViewHandler();
 
-    void dragMoveEvent (QDragMoveEvent* event);
-    void dragEnterEvent (QDragEnterEvent* event);
-    void dropEvent (QDropEvent* event);
-    void showDocumentation ();
+    void dragMoveEvent(QDragMoveEvent* event);
+    void dragEnterEvent(QDragEnterEvent* event);
+    void dropEvent(QDropEvent* event);
+    void showDocumentation();
 
-    void showAboutBox ();
-    void printCollisions ();
-    void loadPlugin ();
+    void showAboutBox();
+    void printCollisions();
+    void loadPlugin();
 
-    void unloadPlugin ();
+    void unloadPlugin();
 
   protected:
     //! Close Event inherited from QT
-    void closeEvent (QCloseEvent* e);
+    void closeEvent(QCloseEvent* e);
 
   private:
-    void updateLastFiles ();
+    void updateLastFiles();
 
-    void setupFileActions ();
-    void setupToolActions ();
-    void setupViewGL ();
+    void setupFileActions();
+    void setupToolActions();
+    void setupViewGL();
 
     /**
      * @brief create a new menu bar or reset the existing one
      * @param create [in] if true create new
      */
-    void setupPluginsMenu (bool create = true);
-    void setupHelpMenu ();
+    void setupPluginsMenu(bool create = true);
+    void setupHelpMenu();
 
-    void createPlugins ();
+    void createPlugins();
 
-    void setupPlugin (const QString& pathname, const QString& filename, bool visible, int dock);
-    void setupPlugin (const QString& fullname, bool visible, int dock);
-    void setupPlugins (QSettings& settings);
-    void setupPyPlugin (const QString& pathname, const QString& filename, bool visible, int dock);
+    void setupPlugin(const QString& pathname, const QString& filename, bool visible, int dock);
+    void setupPlugin(const QString& fullname, bool visible, int dock);
+    void setupPlugins(QSettings& settings);
+    void setupPyPlugin(const QString& pathname, const QString& filename, bool visible, int dock);
 
-    void openDrawable (const QString& filename);
-    void openWorkCellFile (const QString& filename);
+    void openDrawable(const QString& filename);
+    void openWorkCellFile(const QString& filename);
 
-    rw::geometry::AABB< double > calculateWorkCellSize ();
+    rw::geometry::AABB<double> calculateWorkCellSize();
 
-    rw::core::Ptr< rw::core::RobWork > _robwork;
+    rw::core::Ptr<rw::core::RobWork> _robwork;
 
     RWStudioView3D* _view;
     AboutBox* _aboutBox;
@@ -741,7 +732,7 @@ class RobWorkStudio : public QMainWindow
     rw::kinematics::State _state;
     rw::proximity::CollisionDetector::Ptr _detector;
 
-    std::vector< RobWorkStudioPlugin* > _plugins;
+    std::vector<RobWorkStudioPlugin*> _plugins;
 
     QMenu *_pluginsMenu, *_fileMenu, *_viewMenu, *_toolMenu;
     QToolBar* _pluginsToolBar;
@@ -754,24 +745,24 @@ class RobWorkStudio : public QMainWindow
 
     rw::core::PropertyMap _propMap;
     rw::core::PropertyMap* _settingsMap;
-    std::vector< std::pair< QAction*, std::string > > _lastFilesActions;
+    std::vector<std::pair<QAction*, std::string>> _lastFilesActions;
     HelpAssistant* _assistant;
 
-    std::map< std::string, bool > _plugins_loaded;
-    std::map< std::string, std::string > _plugin2fileName;
+    std::map<std::string, bool> _plugins_loaded;
+    std::map<std::string, std::string> _plugin2fileName;
 
   private:
-    void openAllPlugins ();
-    void closeAllPlugins ();
+    void openAllPlugins();
+    void closeAllPlugins();
 
     // These all forward to the plugin and catch any exceptions.
-    void openPlugin (RobWorkStudioPlugin& plugin);
-    void closePlugin (RobWorkStudioPlugin& plugin);
+    void openPlugin(RobWorkStudioPlugin& plugin);
+    void closePlugin(RobWorkStudioPlugin& plugin);
     // void sendStateUpdate(RobWorkStudioPlugin& plugin);
 
   private:
-    RobWorkStudio (const RobWorkStudio&);
-    RobWorkStudio& operator= (const RobWorkStudio&);
+    RobWorkStudio(const RobWorkStudio&);
+    RobWorkStudio& operator=(const RobWorkStudio&);
 };
 
 //! @}

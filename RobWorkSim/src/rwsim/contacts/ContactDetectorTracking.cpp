@@ -21,81 +21,72 @@
 
 using namespace rwsim::contacts;
 
-ContactDetectorTracking::ContactDetectorTracking ()
-{}
+ContactDetectorTracking::ContactDetectorTracking() {}
 
-ContactDetectorTracking::ContactDetectorTracking (const ContactDetectorTracking& data)
-{
+ContactDetectorTracking::ContactDetectorTracking(const ContactDetectorTracking& data) {
     _info = data._info;
     // Copy the map
-    std::map< const ContactModel*,
-              std::map< const ContactModel*, ContactStrategyTracking > >::const_iterator itFirst;
-    for (itFirst = data._modelPairToTracking.begin (); itFirst != data._modelPairToTracking.end ();
-         itFirst++) {
-        std::map< const ContactModel*, ContactStrategyTracking >::const_iterator itSecond;
-        for (itSecond = (*itFirst).second.begin (); itSecond != (*itFirst).second.end ();
-             itSecond++) {
-            RW_ASSERT ((*itSecond).second.isInitialized ());
+    std::map<const ContactModel*,
+             std::map<const ContactModel*, ContactStrategyTracking>>::const_iterator itFirst;
+    for(itFirst = data._modelPairToTracking.begin(); itFirst != data._modelPairToTracking.end();
+        itFirst++) {
+        std::map<const ContactModel*, ContactStrategyTracking>::const_iterator itSecond;
+        for(itSecond = (*itFirst).second.begin(); itSecond != (*itFirst).second.end(); itSecond++) {
+            RW_ASSERT((*itSecond).second.isInitialized());
             _modelPairToTracking[(*itFirst).first][(*itSecond).first] = (*itSecond).second;
         }
     }
     // Update the tracking references to point to the new map
-    for (ContactInfo& info : _info) {
-        info.tracking = &getStrategyTracking (info.models.first, info.models.second);
+    for(ContactInfo& info : _info) {
+        info.tracking = &getStrategyTracking(info.models.first, info.models.second);
     }
 }
 
-ContactDetectorTracking::~ContactDetectorTracking ()
-{
-    clear ();
+ContactDetectorTracking::~ContactDetectorTracking() {
+    clear();
 }
 
-ContactDetectorTracking& ContactDetectorTracking::operator= (const ContactDetectorTracking& data)
-{
-    if (this != &data) {
-        clear ();
+ContactDetectorTracking& ContactDetectorTracking::operator=(const ContactDetectorTracking& data) {
+    if(this != &data) {
+        clear();
         _info = data._info;
         // Copy the map
-        std::map< const ContactModel*,
-                  std::map< const ContactModel*, ContactStrategyTracking > >::const_iterator
-            itFirst;
-        for (itFirst = data._modelPairToTracking.begin ();
-             itFirst != data._modelPairToTracking.end ();
-             itFirst++) {
-            std::map< const ContactModel*, ContactStrategyTracking >::const_iterator itSecond;
-            for (itSecond = (*itFirst).second.begin (); itSecond != (*itFirst).second.end ();
-                 itSecond++) {
-                RW_ASSERT ((*itSecond).second.isInitialized ());
+        std::map<const ContactModel*,
+                 std::map<const ContactModel*, ContactStrategyTracking>>::const_iterator itFirst;
+        for(itFirst = data._modelPairToTracking.begin(); itFirst != data._modelPairToTracking.end();
+            itFirst++) {
+            std::map<const ContactModel*, ContactStrategyTracking>::const_iterator itSecond;
+            for(itSecond = (*itFirst).second.begin(); itSecond != (*itFirst).second.end();
+                itSecond++) {
+                RW_ASSERT((*itSecond).second.isInitialized());
                 _modelPairToTracking[(*itFirst).first][(*itSecond).first] = (*itSecond).second;
             }
         }
         // Update the tracking references to point to the new map
-        for (ContactInfo& info : _info) {
-            info.tracking = &getStrategyTracking (info.models.first, info.models.second);
+        for(ContactInfo& info : _info) {
+            info.tracking = &getStrategyTracking(info.models.first, info.models.second);
         }
     }
     return *this;
 }
 
-void ContactDetectorTracking::clear ()
-{
-    _modelPairToTracking.clear ();
+void ContactDetectorTracking::clear() {
+    _modelPairToTracking.clear();
 }
 
-void ContactDetectorTracking::remove (std::size_t index)
-{
-    RW_ASSERT (index < _info.size ());
-    std::vector< ContactInfo >::iterator it = _info.begin () + index;
-    const ContactInfo& info                 = *it;
+void ContactDetectorTracking::remove(std::size_t index) {
+    RW_ASSERT(index < _info.size());
+    std::vector<ContactInfo>::iterator it = _info.begin() + index;
+    const ContactInfo& info               = *it;
     ContactStrategyTracking& stratTracking =
-        getStrategyTracking (info.models.first, info.models.second);
-    stratTracking.remove (info.id);
+        getStrategyTracking(info.models.first, info.models.second);
+    stratTracking.remove(info.id);
     // Remove info
     const std::size_t total = it->total;
     const std::size_t id    = it->id;
-    it                      = _info.erase (it);
+    it                      = _info.erase(it);
     it                      = it - id;
-    for (std::size_t i = 0; i < total - 1; i++) {
+    for(std::size_t i = 0; i < total - 1; i++) {
         it->total--;
         it->id = i;
         it++;
@@ -103,62 +94,50 @@ void ContactDetectorTracking::remove (std::size_t index)
 }
 
 ContactStrategyTracking::UserData::Ptr
-ContactDetectorTracking::getUserData (std::size_t index) const
-{
-    RW_ASSERT (index < _info.size ());
+ContactDetectorTracking::getUserData(std::size_t index) const {
+    RW_ASSERT(index < _info.size());
     const ContactInfo& info = _info[index];
-    RW_ASSERT (info.tracking != NULL);
-    RW_ASSERT (info.tracking->isInitialized ());
-    return info.tracking->getUserData (info.id);
+    RW_ASSERT(info.tracking != NULL);
+    RW_ASSERT(info.tracking->isInitialized());
+    return info.tracking->getUserData(info.id);
 }
 
-std::vector< ContactStrategyTracking::UserData::Ptr > ContactDetectorTracking::getUserData () const
-{
-    std::vector< ContactStrategyTracking::UserData::Ptr > res (_info.size ());
-    for (std::size_t i = 0; i < _info.size (); i++) {
-        res[i] = getUserData (i);
-    }
+std::vector<ContactStrategyTracking::UserData::Ptr> ContactDetectorTracking::getUserData() const {
+    std::vector<ContactStrategyTracking::UserData::Ptr> res(_info.size());
+    for(std::size_t i = 0; i < _info.size(); i++) { res[i] = getUserData(i); }
     return res;
 }
 
-void ContactDetectorTracking::setUserData (std::size_t index,
-                                           ContactStrategyTracking::UserData::Ptr data)
-{
+void ContactDetectorTracking::setUserData(std::size_t index,
+                                          ContactStrategyTracking::UserData::Ptr data) {
     ContactInfo& info = _info[index];
-    RW_ASSERT (info.tracking != NULL);
-    RW_ASSERT (info.tracking->isInitialized ());
-    info.tracking->setUserData (info.id, data);
+    RW_ASSERT(info.tracking != NULL);
+    RW_ASSERT(info.tracking->isInitialized());
+    info.tracking->setUserData(info.id, data);
 }
 
-void ContactDetectorTracking::setUserData (
-    const std::vector< ContactStrategyTracking::UserData::Ptr >& data)
-{
-    for (std::size_t i = 0; i < data.size (); i++) {
-        setUserData (i, data[i]);
-    }
+void ContactDetectorTracking::setUserData(
+    const std::vector<ContactStrategyTracking::UserData::Ptr>& data) {
+    for(std::size_t i = 0; i < data.size(); i++) { setUserData(i, data[i]); }
 }
 
-std::size_t ContactDetectorTracking::getSize () const
-{
-    return _info.size ();
+std::size_t ContactDetectorTracking::getSize() const {
+    return _info.size();
 }
 
-std::vector< ContactDetectorTracking::ContactInfo >& ContactDetectorTracking::getInfo ()
-{
+std::vector<ContactDetectorTracking::ContactInfo>& ContactDetectorTracking::getInfo() {
     return _info;
 }
 
-const std::vector< ContactDetectorTracking::ContactInfo >& ContactDetectorTracking::getInfo () const
-{
+const std::vector<ContactDetectorTracking::ContactInfo>& ContactDetectorTracking::getInfo() const {
     return _info;
 }
 
-ContactStrategyTracking& ContactDetectorTracking::getStrategyTracking (const ContactModel* modelA,
-                                                                       const ContactModel* modelB)
-{
+ContactStrategyTracking& ContactDetectorTracking::getStrategyTracking(const ContactModel* modelA,
+                                                                      const ContactModel* modelB) {
     const ContactModel* first  = modelA;
     const ContactModel* second = modelB;
-    if (modelA > modelB) {
+    if(modelA > modelB) {
         first  = modelB;
         second = modelA;
     }

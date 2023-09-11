@@ -34,41 +34,41 @@ namespace rwlibs { namespace calibration {
     class Calibration
     {
       public:
-        typedef rw::core::Ptr< Calibration > Ptr;
+        typedef rw::core::Ptr<Calibration> Ptr;
 
         /**
          * @brief Default constructor
          */
-        Calibration ();
+        Calibration();
 
         /**
          * @brief Destructor.
          */
-        virtual ~Calibration ();
+        virtual ~Calibration();
 
         /**
          * @brief Test if calibration is applied.
          * @return True if applied, false otherwise
          */
-        bool isApplied () const;
+        bool isApplied() const;
 
         /**
          * @brief Apply calibration.
          *
          * Exception is thrown if calibration is already applied.
          */
-        void apply ();
+        void apply();
 
         /**
          * @brief Revert calibration.
          *
          * Exception is thrown if calibration is not applied.
          */
-        void revert ();
+        void revert();
 
       protected:
-        virtual void doApply ()  = 0;
-        virtual void doRevert () = 0;
+        virtual void doApply()  = 0;
+        virtual void doRevert() = 0;
 
       private:
         bool _isApplied;

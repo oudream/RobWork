@@ -47,24 +47,23 @@ namespace rwsim { namespace util {
          * @param qsampler [in] the configuration sampler
          * @param initState [in] the initial state
          */
-        PreshapeSampler (rw::models::Device* dev,
-                         rw::core::Ptr< rw::pathplanning::QSampler > qsampler,
-                         rw::kinematics::State& initState);
+        PreshapeSampler(rw::models::Device* dev, rw::core::Ptr<rw::pathplanning::QSampler> qsampler,
+                        rw::kinematics::State& initState);
 
         /**
          * @brief destructor
          */
-        virtual ~PreshapeSampler ();
+        virtual ~PreshapeSampler();
 
         //! @copydoc StateSampler::sample
-        bool sample (rw::kinematics::State& state);
+        bool sample(rw::kinematics::State& state);
 
         //! @copydoc StateSampler::sample
-        bool empty () const { return false; };
+        bool empty() const { return false; };
 
       private:
         rw::models::Device* _dev;
-        rw::core::Ptr< rw::pathplanning::QSampler > _qsampler;
+        rw::core::Ptr<rw::pathplanning::QSampler> _qsampler;
         rw::kinematics::State _initState;
     };
 }}    // namespace rwsim::util

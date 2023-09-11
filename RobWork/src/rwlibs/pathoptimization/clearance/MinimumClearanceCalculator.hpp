@@ -20,7 +20,7 @@
 
 #if !defined(SWIG)
 #include <rwlibs/pathoptimization/clearance/ClearanceCalculator.hpp>
-#endif 
+#endif
 namespace rw { namespace models {
     class WorkCell;
 }}    // namespace rw::models
@@ -43,9 +43,9 @@ namespace rwlibs { namespace pathoptimization {
     {
       public:
         //! A pointer to a MinimumClearanceCalculator.
-        typedef typename rw::core::Ptr< MinimumClearanceCalculator > Ptr;
+        typedef typename rw::core::Ptr<MinimumClearanceCalculator> Ptr;
         //! A pointer to a const MinimumClearanceCalculator.
-        typedef typename rw::core::Ptr< const MinimumClearanceCalculator > CPtr;
+        typedef typename rw::core::Ptr<const MinimumClearanceCalculator> CPtr;
 
         /**
          * @brief Constructs a MinimumClearanceCalculator using the \b DistanceCalculator provided.
@@ -54,29 +54,29 @@ namespace rwlibs { namespace pathoptimization {
          *
          * @param distancecalculator [in] The distance calculator to use
          */
-        MinimumClearanceCalculator (
-            const rw::core::Ptr< const rw::proximity::DistanceCalculator >& distancecalculator);
+        MinimumClearanceCalculator(
+            const rw::core::Ptr<const rw::proximity::DistanceCalculator>& distancecalculator);
 
         /**
          * @brief Constructs a MinimumClearanceCalculator for a workcell
          * @param workcell [in] WorkCell for which to calculate the minimum clearance
          * @param state [in] State of the workcell
          */
-        MinimumClearanceCalculator (const rw::core::Ptr< rw::models::WorkCell >& workcell,
-                                    const rw::kinematics::State& state);
+        MinimumClearanceCalculator(const rw::core::Ptr<rw::models::WorkCell>& workcell,
+                                   const rw::kinematics::State& state);
 
         /**
          * @brief Destructor
          */
-        virtual ~MinimumClearanceCalculator ();
+        virtual ~MinimumClearanceCalculator();
 
         /**
          * @copydoc ClearanceCalculator::clearance
          */
-        double clearance (const rw::kinematics::State& state) const;
+        double clearance(const rw::kinematics::State& state) const;
 
       private:
-        rw::core::Ptr< const rw::proximity::DistanceCalculator > _distancecalculator;
+        rw::core::Ptr<const rw::proximity::DistanceCalculator> _distancecalculator;
     };
 
     /* @} */

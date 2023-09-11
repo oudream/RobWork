@@ -24,35 +24,29 @@
 using namespace boost;
 using namespace rw::loaders;
 
-void DependencyGraph::addDependency (const std::string& from, const std::string& to)
-{
+void DependencyGraph::addDependency(const std::string& from, const std::string& to) {
     int fromi, toi;
-    std::map< std::string, int >::iterator fromindex = _map.find (from);
-    if (fromindex == _map.end ()) {
-        fromi      = (int) _map.size ();
+    std::map<std::string, int>::iterator fromindex = _map.find(from);
+    if(fromindex == _map.end()) {
+        fromi      = (int) _map.size();
         _map[from] = fromi;
     }
-    else {
-        fromi = (*fromindex).second;
-    }
+    else { fromi = (*fromindex).second; }
 
-    std::map< std::string, int >::iterator toindex = _map.find (to);
-    if (toindex == _map.end ()) {
-        toi      = (int) _map.size ();
+    std::map<std::string, int>::iterator toindex = _map.find(to);
+    if(toindex == _map.end()) {
+        toi      = (int) _map.size();
         _map[to] = toi;
     }
-    else {
-        toi = (*toindex).second;
-    }
+    else { toi = (*toindex).second; }
     //    std::cout << "fromi: " << fromi << " toi: "<< toi << std::endl;
-    boost::add_edge (fromi, toi, _g);
+    boost::add_edge(fromi, toi, _g);
 }
 
-bool DependencyGraph::hasCycleDependency ()
-{
+bool DependencyGraph::hasCycleDependency() {
     bool has_cycle = false;
-    cycle_detector vis (has_cycle);
-    depth_first_search (_g, visitor (vis));
+    cycle_detector vis(has_cycle);
+    depth_first_search(_g, visitor(vis));
     //    std::cout << "The graph has a cycle? " << has_cycle << std::endl;
     return has_cycle;
 }

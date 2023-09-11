@@ -26,8 +26,8 @@
  * @deprecated use rw::core not rw::common
  */
 namespace rw { namespace common {
-    template< class ExtensionInterface >
-    using ExtensionPoint = rw::core::ExtensionPoint< ExtensionInterface >;
+    template<class ExtensionInterface>
+    using ExtensionPoint = rw::core::ExtensionPoint<ExtensionInterface>;
 }}    // namespace rw::common
 
 #ifdef RW_WIN32

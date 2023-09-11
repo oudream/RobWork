@@ -13,36 +13,36 @@ namespace rws {
 class PyEditor : public rws::RobWorkStudioPlugin
 {
     Q_OBJECT
-    Q_INTERFACES (rws::RobWorkStudioPlugin)
-    Q_PLUGIN_METADATA (IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "plugin.json")
+    Q_INTERFACES(rws::RobWorkStudioPlugin)
+    Q_PLUGIN_METADATA(IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "plugin.json")
   public:
     /**
      * @brief constructor
      */
-    PyEditor ();
+    PyEditor();
 
     /**
      * @brief destructor
      */
-    virtual ~PyEditor ();
+    virtual ~PyEditor();
 
     /**
      * @copydoc RobWorkStudioPlugin::open
      */
-    virtual void open (rw::models::WorkCell* workcell);
+    virtual void open(rw::models::WorkCell* workcell);
 
-      /**
+    /**
      * @copydoc RobWorkStudioPlugin::close
      */
-    virtual void close ();
+    virtual void close();
 
-      /**
+    /**
      * @copydoc RobWorkStudioPlugin::initialize
      */
-    virtual void initialize ();
+    virtual void initialize();
 
   private Q_SLOTS:
-    void stateChangedListener (const rw::kinematics::State& state);
+    void stateChangedListener(const rw::kinematics::State& state);
 
     void runCode();
 

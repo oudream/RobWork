@@ -26,11 +26,10 @@
 
 #if !defined(SWIG)
 #include <rw/geometry/IndexedTriMesh.hpp>
-
 #include <rw/math/Vector2D.hpp>
 
 #include <vector>
-#endif 
+#endif
 
 namespace rw { namespace geometry {
     //! @addtogroup geometry
@@ -59,12 +58,12 @@ namespace rw { namespace geometry {
          * \b values if given.
          */
         static rw::geometry::IndexedTriMesh<>::Ptr
-        triangulate (const std::vector< rw::math::Vector2D<> >& vertices,
-                     const std::vector< double >& values = std::vector< double > ());
+        triangulate(const std::vector<rw::math::Vector2D<>>& vertices,
+                    const std::vector<double>& values = std::vector<double>());
 
       private:
-        Delaunay ();
-        virtual ~Delaunay ();
+        Delaunay();
+        virtual ~Delaunay();
     };
 #if !defined(SWIG)
     //! @}

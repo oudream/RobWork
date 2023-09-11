@@ -55,19 +55,19 @@ namespace rw { namespace kinematics {
      */
     class Frame : public rw::kinematics::StateData
     {
-        typedef std::vector< rw::kinematics::Frame* > ChildList;
+        typedef std::vector<rw::kinematics::Frame*> ChildList;
 
       public:
         //! @brief Smart pointer type for a Frame object
-        typedef rw::core::Ptr< Frame > Ptr;
+        typedef rw::core::Ptr<Frame> Ptr;
 
         //! @brief Smart pointer type for a constant Frame object
-        typedef rw::core::Ptr< const Frame > CPtr;
+        typedef rw::core::Ptr<const Frame> CPtr;
 
         /**
          * @brief Destructor for the frame.
          */
-        virtual ~Frame () {}
+        virtual ~Frame() {}
 
         /**
          * @brief Post-multiply the transform of the frame to the parent transform.
@@ -81,11 +81,10 @@ namespace rw { namespace kinematics {
          * @param state [in] Joint values for the forward kinematics tree.
          * @param result [in] The transform of the frame in the world frame.
          */
-        void multiplyTransform (const rw::math::Transform3D<>& parent,
-                                const rw::kinematics::State& state,
-                                rw::math::Transform3D<>& result) const
-        {
-            doMultiplyTransform (parent, state, result);
+        void multiplyTransform(const rw::math::Transform3D<>& parent,
+                               const rw::kinematics::State& state,
+                               rw::math::Transform3D<>& result) const {
+            doMultiplyTransform(parent, state, result);
         }
 
         /**
@@ -100,9 +99,8 @@ namespace rw { namespace kinematics {
          *
          * @return The transform of the frame relative to its parent.
          */
-        rw::math::Transform3D<> getTransform (const rw::kinematics::State& state) const
-        {
-            return doGetTransform (state);
+        rw::math::Transform3D<> getTransform(const rw::kinematics::State& state) const {
+            return doGetTransform(state);
         }
 
         /**
@@ -120,12 +118,12 @@ namespace rw { namespace kinematics {
          *
          * @return The property map of the frame.
          */
-        const rw::core::PropertyMap& getPropertyMap () const { return _propertyMap; }
+        const rw::core::PropertyMap& getPropertyMap() const { return _propertyMap; }
 
         /**
          * @copydoc getPropertyMap
          */
-        rw::core::PropertyMap& getPropertyMap () { return _propertyMap; }
+        rw::core::PropertyMap& getPropertyMap() { return _propertyMap; }
 
         /**
          * @brief The number of degrees of freedom (dof) of the frame.
@@ -139,19 +137,19 @@ namespace rw { namespace kinematics {
          *
          * @return The number of degrees of freedom of the frame.
          */
-        int getDOF () const { return size (); }
+        int getDOF() const { return size(); }
 
         // The parents
 
         /**
          * @brief The parent of the frame or NULL if the frame is a DAF.
          */
-        const rw::kinematics::Frame* getParent () const { return _parent.get (); }
+        const rw::kinematics::Frame* getParent() const { return _parent.get(); }
 
         /**
          * @brief The parent of the frame or NULL if the frame is a DAF.
          */
-        rw::kinematics::Frame* getParent () { return _parent.get (); }
+        rw::kinematics::Frame* getParent() { return _parent.get(); }
 
         /**
          * @brief Returns the parent of the frame
@@ -162,83 +160,83 @@ namespace rw { namespace kinematics {
          * @param state [in] the state to consider
          * @return the parent
          */
-        rw::kinematics::Frame* getParent (const rw::kinematics::State& state);
+        rw::kinematics::Frame* getParent(const rw::kinematics::State& state);
 
         /**
          * @copydoc getParent(const State&)
          */
-        const rw::kinematics::Frame* getParent (const rw::kinematics::State& state) const;
+        const rw::kinematics::Frame* getParent(const rw::kinematics::State& state) const;
 
         /**
          * @brief The dynamically attached parent or NULL if the frame is not a
          * DAF.
          */
-        const rw::kinematics::Frame* getDafParent (const rw::kinematics::State& state) const;
+        const rw::kinematics::Frame* getDafParent(const rw::kinematics::State& state) const;
 
         /**
          * @copydoc getDafParent
          */
-        rw::kinematics::Frame* getDafParent (const rw::kinematics::State& state);
+        rw::kinematics::Frame* getDafParent(const rw::kinematics::State& state);
 
         // The children.
 
         /**
          * @brief Forward iterator for frames.
          */
-        typedef rw::common::ConcatVectorIterator< Frame > iterator;
+        typedef rw::common::ConcatVectorIterator<Frame> iterator;
 
         /**
          * @brief Forward iterator for const frames.
          */
-        typedef rw::common::ConstConcatVectorIterator< Frame > const_iterator;
+        typedef rw::common::ConstConcatVectorIterator<Frame> const_iterator;
 
         /**
          * @brief Pair of iterators
          */
-        typedef rw::core::iter_pair< iterator > iterator_pair;
+        typedef rw::core::iter_pair<iterator> iterator_pair;
 
         /**
          * @brief Pair of const iterators
          */
-        typedef rw::core::iter_pair< const_iterator > const_iterator_pair;
+        typedef rw::core::iter_pair<const_iterator> const_iterator_pair;
 
         /**
          * @brief Iterator pair for the fixed children of the frame.
          */
-        const_iterator_pair getChildren () const { return makeConstIteratorPair (_children); }
+        const_iterator_pair getChildren() const { return makeConstIteratorPair(_children); }
 
         /**
          * @copydoc getChildren
          */
-        iterator_pair getChildren () { return makeIteratorPair (_children); }
+        iterator_pair getChildren() { return makeIteratorPair(_children); }
 
         /**
          * @brief Iterator pair for all children of the frame.
          */
-        const_iterator_pair getChildren (const rw::kinematics::State& state) const;
+        const_iterator_pair getChildren(const rw::kinematics::State& state) const;
 
         /**
          * @brief Iterator pair for all children of the frame.
          */
-        iterator_pair getChildren (const rw::kinematics::State& state);
+        iterator_pair getChildren(const rw::kinematics::State& state);
 
         /**
          *  @brief get a list of all frame children
          *  @param state [in] the state of to look for children in.
          *  @return a vector with the children
          */
-        std::vector< Frame::Ptr > getChildrenList (const rw::kinematics::State& state);
+        std::vector<Frame::Ptr> getChildrenList(const rw::kinematics::State& state);
 
         /**
          * @brief Iterator pair for the dynamically attached children of the
          * frame.
          */
-        const_iterator_pair getDafChildren (const rw::kinematics::State& state) const;
+        const_iterator_pair getDafChildren(const rw::kinematics::State& state) const;
 
         /**
          * @copydoc getDafChildren
          */
-        iterator_pair getDafChildren (const rw::kinematics::State& state);
+        iterator_pair getDafChildren(const rw::kinematics::State& state);
 
         // Dynamic frame attachments.
 
@@ -254,20 +252,20 @@ namespace rw { namespace kinematics {
          * @param parent [in] The frame to attach \b frame to.
          * @param state [inout] The state to which the attachment is written.
          */
-        void attachTo (const Ptr& parent, rw::kinematics::State& state);
+        void attachTo(const Ptr& parent, rw::kinematics::State& state);
 
         /**
          * @brief Test if this frame is a Dynamically Attachable Frame
          * @return true if this frame is a DAF, false otherwise
          */
-        bool isDAF ();
+        bool isDAF();
 
         /**
          * @brief Get the transform relative to world.
          * @param state [in] the state.
          * @return transform relative to world.
          */
-        rw::math::Transform3D<> wTf (const rw::kinematics::State& state) const;
+        rw::math::Transform3D<> wTf(const rw::kinematics::State& state) const;
 
         /**
          * @brief Get the transform of other frame relative to this frame.
@@ -275,7 +273,7 @@ namespace rw { namespace kinematics {
          * @param state [in] the state.
          * @return transform of frame \b to relative to this frame.
          */
-        rw::math::Transform3D<> fTf (const CPtr& to, const rw::kinematics::State& state) const;
+        rw::math::Transform3D<> fTf(const CPtr& to, const rw::kinematics::State& state) const;
 
         /**
          * @brief Compares the Frame to see if they are the same
@@ -284,7 +282,7 @@ namespace rw { namespace kinematics {
          * @return true if equal
          * @return false if not equal
          */
-        bool operator== (const Frame& rhs);
+        bool operator==(const Frame& rhs);
 
         /**
          * @brief Check if not equal
@@ -292,15 +290,15 @@ namespace rw { namespace kinematics {
          * @return true if not equal
          * @return false if equal
          */
-        bool operator!= (const Frame& rhs) { return !(*this == rhs); }
+        bool operator!=(const Frame& rhs) { return !(*this == rhs); }
 
 #if !defined(SWIG)
         /**
            @brief Streaming operator.
         */
-        friend std::ostream& operator<< (std::ostream& out, const Frame& frame);
+        friend std::ostream& operator<<(std::ostream& out, const Frame& frame);
 #else
-        TOSTRING (rw::kinematics::Frame);
+        TOSTRING(rw::kinematics::Frame);
 #endif
 
       protected:
@@ -318,32 +316,33 @@ namespace rw { namespace kinematics {
          *
          * @param name [in] The name of the frame.
          */
-        Frame (int dof, const std::string& name);
+        Frame(int dof, const std::string& name);
 
       protected:
         /**
          * @brief Subclass implementation of the getTransform() method.
          */
-        virtual void doMultiplyTransform (const rw::math::Transform3D<>& parent,
-                                          const rw::kinematics::State& state,
-                                          rw::math::Transform3D<>& result) const = 0;
+        virtual void doMultiplyTransform(const rw::math::Transform3D<>& parent,
+                                         const rw::kinematics::State& state,
+                                         rw::math::Transform3D<>& result) const = 0;
 
         /**
          * brief Subclass implementation of the multiplyTransform() method
          */
         virtual rw::math::Transform3D<>
-        doGetTransform (const rw::kinematics::State& state) const = 0;
+        doGetTransform(const rw::kinematics::State& state) const = 0;
 
       private:
         friend class StateStructure;
 
-        void setParent (Ptr frame) { _parent = frame; }
+        void setParent(Ptr frame) {
+            _parent = frame;
+        }
 
-        void removeChild (const CPtr& frame)
-        {
-            for (ChildList::iterator it = _children.begin (); it != _children.end (); ++it)
-                if ((*it) == frame) {
-                    _children.erase (it);
+        void removeChild(const CPtr& frame) {
+            for(ChildList::iterator it = _children.begin(); it != _children.end(); ++it)
+                if((*it) == frame) {
+                    _children.erase(it);
                     return;
                 }
         }
@@ -357,75 +356,73 @@ namespace rw { namespace kinematics {
         Ptr _parent;
         ChildList _children;
 
-        void addChild (const Ptr& child) { _children.push_back (child.get ()); }
-
-        static iterator_pair makeIteratorPair (const ChildList& children)
-        {
-            return std::make_pair (iterator (&children, children.begin (), NULL),
-                                   iterator (&children, children.end (), NULL));
+        void addChild(const Ptr& child) {
+            _children.push_back(child.get());
         }
 
-        static const_iterator_pair makeConstIteratorPair (const ChildList& children)
-        {
-            return std::make_pair (const_iterator (iterator (&children, children.begin (), NULL)),
-                                   const_iterator (iterator (&children, children.end (), NULL)));
+        static iterator_pair makeIteratorPair(const ChildList& children) {
+            return std::make_pair(iterator(&children, children.begin(), NULL),
+                                  iterator(&children, children.end(), NULL));
         }
 
-        static iterator_pair makeIteratorPair (const ChildList& first, const ChildList& next)
-        {
-            return std::make_pair (iterator (&first, first.begin (), &next),
-                                   iterator (&next, next.end (), NULL));
+        static const_iterator_pair makeConstIteratorPair(const ChildList& children) {
+            return std::make_pair(const_iterator(iterator(&children, children.begin(), NULL)),
+                                  const_iterator(iterator(&children, children.end(), NULL)));
         }
 
-        static const_iterator_pair makeConstIteratorPair (const ChildList& first,
-                                                          const ChildList& next)
-        {
-            if (first.size () == 0)
-                return std::make_pair (const_iterator (iterator (&next, next.begin (), NULL)),
-                                       const_iterator (iterator (&next, next.end (), NULL)));
+        static iterator_pair makeIteratorPair(const ChildList& first, const ChildList& next) {
+            return std::make_pair(iterator(&first, first.begin(), &next),
+                                  iterator(&next, next.end(), NULL));
+        }
+
+        static const_iterator_pair makeConstIteratorPair(const ChildList& first,
+                                                         const ChildList& next) {
+            if(first.size() == 0)
+                return std::make_pair(const_iterator(iterator(&next, next.begin(), NULL)),
+                                      const_iterator(iterator(&next, next.end(), NULL)));
             else
-                return std::make_pair (const_iterator (iterator (&first, first.begin (), &next)),
-                                       const_iterator (iterator (&next, next.end (), NULL)));
+                return std::make_pair(const_iterator(iterator(&first, first.begin(), &next)),
+                                      const_iterator(iterator(&next, next.end(), NULL)));
         }
 
       private:
         // Frames should not be copied.
-        Frame (const Frame&);
-        Frame& operator= (const Frame&);
+        Frame(const Frame&);
+        Frame& operator=(const Frame&);
     };
 
     /**
        @brief A pair of frames
      */
-    typedef std::pair< rw::kinematics::Frame*, rw::kinematics::Frame* > FramePair;
+    typedef std::pair<rw::kinematics::Frame*, rw::kinematics::Frame*> FramePair;
 
     /**
        @brief A pair of constant frames
      */
-    typedef std::pair< const rw::kinematics::Frame*, const rw::kinematics::Frame* > ConstFramePair;
+    typedef std::pair<const rw::kinematics::Frame*, const rw::kinematics::Frame*> ConstFramePair;
 
     /**
        @brief A set of frames.
     */
-    typedef std::set< kinematics::Frame* > FrameSet;
+    typedef std::set<kinematics::Frame*> FrameSet;
 
     /**
        @brief A list of frames
     */
-    typedef std::vector< kinematics::Frame* > FrameList;
+    typedef std::vector<kinematics::Frame*> FrameList;
 
     //! @brief A list of const frames
-    typedef std::vector< const rw::kinematics::Frame* > ConstFrameList;
+    typedef std::vector<const rw::kinematics::Frame*> ConstFrameList;
 
     /**
        @brief A set of frame pairs.
     */
-    typedef std::set< kinematics::FramePair > FramePairSet;
+    typedef std::set<kinematics::FramePair> FramePairSet;
 
     /**
      * @brief A list of frame pairs
      */
-    typedef std::vector< kinematics::FramePair > FramePairList;
+    typedef std::vector<kinematics::FramePair> FramePairList;
 
     /*@}*/
 }}        // namespace rw::kinematics

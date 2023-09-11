@@ -44,44 +44,44 @@ namespace rwsim { namespace simulator {
         /**
          * @brief constructor
          */
-        ODEVelocityDevice (ODEBody* base, dynamics::RigidDevice* rdev,
-                           const rw::kinematics::State& state, ODESimulator* sim);
+        ODEVelocityDevice(ODEBody* base, dynamics::RigidDevice* rdev,
+                          const rw::kinematics::State& state, ODESimulator* sim);
 
         /**
          * @brief destructor
          */
-        virtual ~ODEVelocityDevice ();
+        virtual ~ODEVelocityDevice();
 
         /**
          * @copydoc ODEDevice::reset
          */
-        void reset (rw::kinematics::State& state);
+        void reset(rw::kinematics::State& state);
 
         /**
          * @copydoc ODEDevice::update
          */
-        void update (const rwlibs::simulation::Simulator::UpdateInfo& dt,
-                     rw::kinematics::State& state);
+        void update(const rwlibs::simulation::Simulator::UpdateInfo& dt,
+                    rw::kinematics::State& state);
 
         /**
          * @copydoc ODEDevice::postUpdate
          */
-        void postUpdate (rw::kinematics::State& state);
+        void postUpdate(rw::kinematics::State& state);
 
         //! @copydoc ODEDevice::getBodies
-        std::vector< ODEBody* > getBodies () { return _ode_bodies; }
+        std::vector<ODEBody*> getBodies() { return _ode_bodies; }
 
         // static ODEVelocityDevice* makeDevice(dynamics::RigidDevice *rdev, dBodyID base, dSpaceID
         // space, dWorldID worldId);
       private:
-        void init (dynamics::RigidDevice* rdev, const rw::kinematics::State& state,
-                   dSpaceID spaceId, ODEBody* baseODEBody);
+        void init(dynamics::RigidDevice* rdev, const rw::kinematics::State& state, dSpaceID spaceId,
+                  ODEBody* baseODEBody);
 
       private:
         dynamics::RigidDevice* _rdev;
-        std::vector< ODEJoint* > _odeJoints;
-        std::vector< ODEBody* > _ode_bodies;
-        std::vector< rwsim::dynamics::RigidDevice::MotorControlMode > _modes;
+        std::vector<ODEJoint*> _odeJoints;
+        std::vector<ODEBody*> _ode_bodies;
+        std::vector<rwsim::dynamics::RigidDevice::MotorControlMode> _modes;
 
         rw::math::Q _maxForce;
         rw::math::Q _lastQ;

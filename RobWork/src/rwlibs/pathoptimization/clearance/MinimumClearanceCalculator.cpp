@@ -30,30 +30,24 @@ using namespace rw::models;
 using namespace rw::core;
 
 namespace {
-DistanceCalculator::Ptr getDistanceCalculator (const WorkCell::Ptr& workcell, const State& state)
-{
-    DistanceStrategy::Ptr strat = ProximityStrategyFactory::makeDefaultDistanceStrategy ();
-    if (strat == NULL)
-        RW_THROW ("Requires a valid distance strategy!");
-    return ownedPtr (new DistanceCalculator (workcell->getWorldFrame (), workcell, strat, state));
+DistanceCalculator::Ptr getDistanceCalculator(const WorkCell::Ptr& workcell, const State& state) {
+    DistanceStrategy::Ptr strat = ProximityStrategyFactory::makeDefaultDistanceStrategy();
+    if(strat == NULL) RW_THROW("Requires a valid distance strategy!");
+    return ownedPtr(new DistanceCalculator(workcell->getWorldFrame(), workcell, strat, state));
 }
 }    // namespace
 
-MinimumClearanceCalculator::MinimumClearanceCalculator (
+MinimumClearanceCalculator::MinimumClearanceCalculator(
     const DistanceCalculator::CPtr& distancecalculator) :
-    _distancecalculator (distancecalculator)
-{}
+    _distancecalculator(distancecalculator) {}
 
-MinimumClearanceCalculator::MinimumClearanceCalculator (const WorkCell::Ptr& workcell,
-                                                        const State& state) :
-    _distancecalculator (getDistanceCalculator (workcell, state))
-{}
+MinimumClearanceCalculator::MinimumClearanceCalculator(const WorkCell::Ptr& workcell,
+                                                       const State& state) :
+    _distancecalculator(getDistanceCalculator(workcell, state)) {}
 
-MinimumClearanceCalculator::~MinimumClearanceCalculator ()
-{}
+MinimumClearanceCalculator::~MinimumClearanceCalculator() {}
 
-double MinimumClearanceCalculator::clearance (const State& state) const
-{
-    DistanceStrategy::Result result = _distancecalculator->distance (state);
+double MinimumClearanceCalculator::clearance(const State& state) const {
+    DistanceStrategy::Result result = _distancecalculator->distance(state);
     return result.distance;
 }

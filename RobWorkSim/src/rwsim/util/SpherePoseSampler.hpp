@@ -50,8 +50,8 @@ namespace rwsim { namespace util {
          * @param wPc [in] the origo of the sphere
          * @param radi [in] radius of sphere
          */
-        SpherePoseSampler (rw::kinematics::MovableFrame* mframe, const rw::math::Vector3D<>& wPc,
-                           double radi);
+        SpherePoseSampler(rw::kinematics::MovableFrame* mframe, const rw::math::Vector3D<>& wPc,
+                          double radi);
 
         /**
          * @brief constructor \b frame will be set in random poses on
@@ -62,13 +62,13 @@ namespace rwsim { namespace util {
          * @param wPc [in] the origo of the sphere
          * @param initState [in] the initial state
          */
-        SpherePoseSampler (rw::kinematics::MovableFrame* mframe, const rw::math::Vector3D<>& wPc,
-                           rw::kinematics::State& initState);
+        SpherePoseSampler(rw::kinematics::MovableFrame* mframe, const rw::math::Vector3D<>& wPc,
+                          rw::kinematics::State& initState);
 
         /**
          * @brief destructor
          */
-        virtual ~SpherePoseSampler ();
+        virtual ~SpherePoseSampler();
 
         /**
          * @brief sets the bounds of the rotation noise(small random deviation)
@@ -76,7 +76,7 @@ namespace rwsim { namespace util {
          * @param low [in] lower bound RPY values
          * @param upper [in] upper bound RPY values
          */
-        void setRPYNoiseBound (const rw::math::RPY<>& low, const rw::math::RPY<>& upper);
+        void setRPYNoiseBound(const rw::math::RPY<>& low, const rw::math::RPY<>& upper);
 
         /**
          * @brief sets the bounds of the position noise(small random deviation)
@@ -84,13 +84,13 @@ namespace rwsim { namespace util {
          * @param low [in] lower bound position values
          * @param upper [in] upper bound position values
          */
-        void setPosNoiseBound (const rw::math::Vector3D<>& low, const rw::math::Vector3D<>& upper);
+        void setPosNoiseBound(const rw::math::Vector3D<>& low, const rw::math::Vector3D<>& upper);
 
         //! @copydoc StateSampler::sample
-        bool sample (rw::kinematics::State& state);
+        bool sample(rw::kinematics::State& state);
 
         //! @copydoc StateSampler::empty
-        bool empty () const;
+        bool empty() const;
 
       private:
         rw::kinematics::MovableFrame* _mframe;

@@ -47,18 +47,18 @@ namespace rw { namespace plugin {
          * If the library cannot be opened an exception is thrown
          * @param filename [in] Library filename
          */
-        DynamicLibraryLoaderBase (const std::string& filename);
+        DynamicLibraryLoaderBase(const std::string& filename);
 
         /**
          * @brief Closes the handle to the library
          */
-        virtual ~DynamicLibraryLoaderBase ();
+        virtual ~DynamicLibraryLoaderBase();
 
         /**
          * @brief Returns pointer to object loaded using the factory function \b funcname
          * @param funcname [in] Name of factory function in library (usually factory0)
          */
-        void* getObject (const std::string& funcname);
+        void* getObject(const std::string& funcname);
 
         /**
          * @brief Returns file extension of dynamic libraries on the current platform
@@ -68,7 +68,7 @@ namespace rw { namespace plugin {
          * Unix/Linux: ".so"
          * MacOSX: ".dylib"
          */
-        virtual std::string getFileExtension () const;
+        virtual std::string getFileExtension() const;
 
       private:
         char* _err;
@@ -79,7 +79,7 @@ namespace rw { namespace plugin {
         void* _handle;
 #endif
 
-        bool getSymbol (void** v, const char* sym_name);
+        bool getSymbol(void** v, const char* sym_name);
     };
 
     /* @} */

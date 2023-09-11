@@ -4,30 +4,33 @@
 #if !defined(SWIG)
 #include <cstddef>
 #include <vector>
-#endif 
+#endif
 
-template< class OBJ, class T = int > class IndexedArray
+template<class OBJ, class T = int> class IndexedArray
 {
   private:
-    const std::vector< OBJ >* _objArr;
-    const std::vector< T >& _idxArr;
+    const std::vector<OBJ>* _objArr;
+    const std::vector<T>& _idxArr;
 
   public:
-    IndexedArray (const std::vector< OBJ >* objArr, const std::vector< T >& idxArr) :
-        _objArr (objArr), _idxArr (idxArr)
-    {}
+    IndexedArray(const std::vector<OBJ>* objArr, const std::vector<T>& idxArr) :
+        _objArr(objArr), _idxArr(idxArr) {}
 
-    virtual ~IndexedArray () {}
+    virtual ~IndexedArray() {}
 
-    const std::vector< T >& getIndexes () const { return _idxArr; }
+    const std::vector<T>& getIndexes() const { return _idxArr; }
 
 #if !defined(SWIG)
-    const OBJ& operator[] (T i) const { return (*_objArr)[_idxArr[i]]; }
-#else 
+    const OBJ& operator[](T i) const {
+        return (*_objArr)[_idxArr[i]];
+    }
+#else
     ARRAYOPERATOR(OBJ);
 #endif
 
-    size_t size () const { return _idxArr.size (); }
+    size_t size() const {
+        return _idxArr.size();
+    }
 };
 
 #endif /*INDEXEDARRAY_HPP_*/

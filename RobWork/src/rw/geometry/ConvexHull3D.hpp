@@ -22,7 +22,6 @@
 #if !defined(SWIG)
 #include <rw/geometry/PlainTriMesh.hpp>
 #include <rw/geometry/Triangle.hpp>
-
 #include <rw/math/Vector3D.hpp>
 #endif
 
@@ -37,21 +36,21 @@ namespace rw { namespace geometry {
     {
       public:
         //! smart pointer type of this class
-        typedef rw::core::Ptr< ConvexHull3D > Ptr;
+        typedef rw::core::Ptr<ConvexHull3D> Ptr;
 
         //! destructor
-        virtual ~ConvexHull3D (){};
+        virtual ~ConvexHull3D(){};
 
         /**
          * @brief rebuilts the hull
          * @param vertices
          */
-        virtual void rebuild (const std::vector< rw::math::Vector3D<double> >& vertices) = 0;
+        virtual void rebuild(const std::vector<rw::math::Vector3D<double>>& vertices) = 0;
 
         /**
          * @brief test if the given vertex is inside the convex hull
          */
-        virtual bool isInside (const rw::math::Vector3D<double>& vertex) = 0;
+        virtual bool isInside(const rw::math::Vector3D<double>& vertex) = 0;
 
         /**
          * @brief If the vertex is inside the convex hull the minimum distance
@@ -60,7 +59,7 @@ namespace rw { namespace geometry {
          * @param vertex
          * @return minimum distance to vertex
          */
-        virtual double getMinDistInside (const rw::math::Vector3D<double>& vertex) = 0;
+        virtual double getMinDistInside(const rw::math::Vector3D<double>& vertex) = 0;
 
         /**
          * @brief If the vertex is outside the convex hull the minimum distance
@@ -68,13 +67,14 @@ namespace rw { namespace geometry {
          * @param vertex
          * @return minimum distance to vertex
          */
-        virtual double getMinDistOutside (const rw::math::Vector3D<double>& vertex) = 0;
+        virtual double getMinDistOutside(const rw::math::Vector3D<double>& vertex) = 0;
 
         /**
          * @brief create a plain trimesh from the hull facets
          * @return the hull facets as a plain triangle mesh with normal information
          */
-        virtual rw::core::Ptr<rw::geometry::PlainTriMesh< rw::geometry::TriangleN1<double> >> toTriMesh () = 0;
+        virtual rw::core::Ptr<rw::geometry::PlainTriMesh<rw::geometry::TriangleN1<double>>>
+        toTriMesh() = 0;
     };
     //! @}
 

@@ -53,7 +53,7 @@ namespace rw { namespace core {
          *
          * @param result [out] Buffer to which the file contents are written.
          */
-        static void readFile (const std::string& file_name, std::vector< char >& result);
+        static void readFile(const std::string& file_name, std::vector<char>& result);
 
         /** @brief Attach to \b filename the proper extension.
          *
@@ -75,8 +75,8 @@ namespace rw { namespace core {
          *
          * @return The filename with extension
          */
-        static std::string resolveFileName (const std::string& filename,
-                                            const std::vector< std::string >& extensions);
+        static std::string resolveFileName(const std::string& filename,
+                                           const std::vector<std::string>& extensions);
 
         /**
          * @brief Emit an assertion message and kill the program.
@@ -91,7 +91,7 @@ namespace rw { namespace core {
          *
          * @param line [in] The originating line number.
          */
-        static void rwAssert (const char* expression, const char* file, int line);
+        static void rwAssert(const char* expression, const char* file, int line);
 
         /**
          * @brief returns the absolute filename of file. If file is
@@ -99,13 +99,13 @@ namespace rw { namespace core {
          * working directory path is appended to \b file.
          * @param file [in] the relative or absolute filename
          */
-        static std::string getAbsoluteFileName (const std::string& file);
+        static std::string getAbsoluteFileName(const std::string& file);
 
         /**
          * @brief tests if this machine use little or big endian.
          * @return true if machine
          */
-        static bool isLittleEndian ();
+        static bool isLittleEndian();
 
         /**
          * @brief Returns files in the folder specified by path
@@ -119,9 +119,9 @@ namespace rw { namespace core {
          * @param mask [in] Mask to filter filenames. Example: "*.dll" to return all DLL files.
          * @return Files located at \b path.
          */
-        static std::vector< std::string > getFilesInFolder (const std::string& path, bool recursive,
-                                                            bool addPath            = true,
-                                                            const std::string& mask = "*");
+        static std::vector<std::string> getFilesInFolder(const std::string& path, bool recursive,
+                                                         bool addPath            = true,
+                                                         const std::string& mask = "*");
 
         /**
          * @brief get all files in a folder
@@ -131,23 +131,23 @@ namespace rw { namespace core {
          * @param addPath [in] if true then folder paths are added to solution
          * @param result [out] all files and if \b addPath
          */
-        static void getFilesInFolder (const std::string& path, const std::string& fileMask,
-                                      bool recursive, bool addPath,
-                                      std::vector< std::string >& result);
+        static void getFilesInFolder(const std::string& path, const std::string& fileMask,
+                                     bool recursive, bool addPath,
+                                     std::vector<std::string>& result);
 
         /**
          * @brief get size of file
          * @param filename [in] name of file
          * @return the size of file in bytes
          */
-        static size_t getFileSize (const std::string& filename);
+        static size_t getFileSize(const std::string& filename);
 
         /**
          * @brief get the last date of writing of the file \b filename
          * @param filename [in] name of file
          * @return time of modification
          */
-        static std::time_t getLastFileWrite (const std::string& filename);
+        static std::time_t getLastFileWrite(const std::string& filename);
 
         /**
          * @brief extracts the first element tag in any xml document.
@@ -156,7 +156,7 @@ namespace rw { namespace core {
          * @param filename [in] name of the xml file
          * @return name of first xml element
          */
-        static std::string getFirstXMLElement (const std::string& filename);
+        static std::string getFirstXMLElement(const std::string& filename);
 
         /**
          * @brief extracts the first element tag in any xml document.
@@ -165,7 +165,7 @@ namespace rw { namespace core {
          * @param inputStream [in] ifstream containing the xml document
          * @return name of first xml element
          */
-        static std::string getFirstXMLElement (std::istream& inputStream);
+        static std::string getFirstXMLElement(std::istream& inputStream);
     };
 
     /* @} */

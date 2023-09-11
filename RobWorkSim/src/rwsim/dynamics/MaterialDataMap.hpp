@@ -31,7 +31,7 @@ namespace rwsim { namespace dynamics {
     typedef enum { Coulomb, Custom } FrictionType;
 
     //! @brief Definition of a parameter for a friction model.
-    typedef std::pair< std::string, rw::math::Q > FrictionParam;
+    typedef std::pair<std::string, rw::math::Q> FrictionParam;
 
     //! @brief Definition of a friction model.
     struct FrictionData
@@ -41,7 +41,7 @@ namespace rwsim { namespace dynamics {
         //! @brief The name of the model.
         std::string typeName;
         //! @brief The parameters for the model.
-        std::vector< FrictionParam > parameters;
+        std::vector<FrictionParam> parameters;
     };
 
     /**
@@ -51,50 +51,52 @@ namespace rwsim { namespace dynamics {
     {
       public:
         //! @brief Constructor
-        MaterialDataMap ();
+        MaterialDataMap();
 
         //! @brief Destructor
-        virtual ~MaterialDataMap ();
+        virtual ~MaterialDataMap();
 
         /**
          * @brief Add a material name with a description.
          * @param name [in] name of material.
          * @param desc [in] description of material.
          */
-        void add (const std::string& name, const std::string& desc);
+        void add(const std::string& name, const std::string& desc);
 
         /**
          * @brief Converts a string of material type name to an int identifier.
          * @param material [in] name of material.
          * @return the id of the material.
          */
-        int getDataID (const std::string& material) const;
+        int getDataID(const std::string& material) const;
 
         /**
          * @brief Convert an id of a material to the name of the material.
          * @param id [in] the id of the material.
          * @return the name of the material.
          */
-        const std::string& getMaterialName (int id) const;
+        const std::string& getMaterialName(int id) const;
 
         /**
          * @brief Get a list of the names of all materials.
          * @return a list of material names.
          */
-        const std::vector< std::string >& getMaterials ();
+        const std::vector<std::string>& getMaterials();
 
         /**
          * @brief Get Material Description
          * @param matId the MAterial ID
          * @return a string Description of the Material
          */
-        std::string getDescription (const std::string& matId) { return _matToDesc[getDataID(matId)]; }
+        std::string getDescription(const std::string& matId) {
+            return _matToDesc[getDataID(matId)];
+        }
 
         /**
          * @brief Get the number of materials.
          * @return the maximum id of a material.
          */
-        int getMaxMatID () const;
+        int getMaxMatID() const;
 
         /**
          * @brief Test if the given material pair has friction data in map.
@@ -103,7 +105,7 @@ namespace rwsim { namespace dynamics {
          * @param dataType [in] the type of friction data (default is Coulomb).
          * @return true if friction data exists - false otherwise.
          */
-        bool hasFrictionData (int matAID, int matBID, int dataType = Coulomb) const;
+        bool hasFrictionData(int matAID, int matBID, int dataType = Coulomb) const;
 
         /**
          * @brief Test if the given material pair has friction data in map.
@@ -112,8 +114,8 @@ namespace rwsim { namespace dynamics {
          * @param dataType [in] the type of friction data (default is Coulomb).
          * @return true if friction data exists - false otherwise.
          */
-        bool hasFrictionData (const std::string& matAID, const std::string& matBID,
-                              int dataType = Coulomb) const;
+        bool hasFrictionData(const std::string& matAID, const std::string& matBID,
+                             int dataType = Coulomb) const;
 
         /**
          * @brief Get a specific friction model for a pair of materials.
@@ -122,7 +124,7 @@ namespace rwsim { namespace dynamics {
          * @param dataType [in] the type of friction data (default is Coulomb).
          * @return the friction data.
          */
-        const FrictionData& getFrictionData (int matAID, int matBID, int dataType = Coulomb) const;
+        const FrictionData& getFrictionData(int matAID, int matBID, int dataType = Coulomb) const;
 
         /**
          * @brief Get all friction data associated to the given pair of materials.
@@ -130,7 +132,7 @@ namespace rwsim { namespace dynamics {
          * @param matBID [in] the id of the second material.
          * @return a vector of friction data.
          */
-        const std::vector< FrictionData > getFrictionDatas (int matAID, int matBID) const;
+        const std::vector<FrictionData> getFrictionDatas(int matAID, int matBID) const;
 
         /**
          * @brief Get a specific friction model for a pair of materials.
@@ -139,8 +141,8 @@ namespace rwsim { namespace dynamics {
          * @param dataType [in] the type of friction data (default is Coulomb).
          * @return the friction data.
          */
-        const FrictionData& getFrictionData (const std::string& matAID, const std::string& matBID,
-                                             int dataType = Coulomb) const;
+        const FrictionData& getFrictionData(const std::string& matAID, const std::string& matBID,
+                                            int dataType = Coulomb) const;
 
         /**
          * @brief Get all friction data associated to the given pair of materials.
@@ -148,8 +150,8 @@ namespace rwsim { namespace dynamics {
          * @param matBID [in] the name of the second material.
          * @return a vector of friction data.
          */
-        const std::vector< FrictionData > getFrictionDatas (const std::string& matAID,
-                                                            const std::string& matBID) const;
+        const std::vector<FrictionData> getFrictionDatas(const std::string& matAID,
+                                                         const std::string& matBID) const;
 
         /**
          * @brief Add friction data for the given pair of materials.
@@ -157,25 +159,25 @@ namespace rwsim { namespace dynamics {
          * @param materialB [in] the name of the second material.
          * @param data [in] the data to add.
          */
-        void addFrictionData (const std::string& materialA, const std::string& materialB,
-                              const FrictionData& data);
+        void addFrictionData(const std::string& materialA, const std::string& materialB,
+                             const FrictionData& data);
 
         /**
          * @brief Get the default friction model.
          * @param type [in] the type of model.
          * @return the default friction data.
          */
-        const FrictionData& getDefaultFriction (int type) const;
+        const FrictionData& getDefaultFriction(int type) const;
 
       private:
-        std::map< std::string, int > _strToIntID;
+        std::map<std::string, int> _strToIntID;
 
-        typedef std::pair< int, int > MatIDPair;
-        typedef std::map< MatIDPair, std::vector< FrictionData > > FrictionMap;
+        typedef std::pair<int, int> MatIDPair;
+        typedef std::map<MatIDPair, std::vector<FrictionData>> FrictionMap;
         FrictionMap _frictionMap;
-        std::vector< std::string > _mat;
-        std::map< std::string, int > _matToMatID;
-        std::map< int, std::string > _matToDesc;
+        std::vector<std::string> _mat;
+        std::map<std::string, int> _matToMatID;
+        std::map<int, std::string> _matToDesc;
         FrictionData _defaultFrictionData;
         int _matCnt;
     };

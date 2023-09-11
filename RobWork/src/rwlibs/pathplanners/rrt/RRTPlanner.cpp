@@ -27,31 +27,29 @@ using namespace rw::pathplanning;
 using namespace rw::math;
 using namespace rw::models;
 
-QToQPlanner::Ptr RRTPlanner::makeQToQPlanner (const PlannerConstraint& constraint,
-                                              const QSampler::Ptr& sampler,
-                                              const QMetric::CPtr& metric, double extend,
-                                              PlannerType type)
-{
-    switch (type) {
-        case RRTBasic: return RRTQToQPlanner::makeBasic (constraint, sampler, metric, extend);
-        case RRTConnect: return RRTQToQPlanner::makeConnect (constraint, sampler, metric, extend);
+QToQPlanner::Ptr RRTPlanner::makeQToQPlanner(const PlannerConstraint& constraint,
+                                             const QSampler::Ptr& sampler,
+                                             const QMetric::CPtr& metric, double extend,
+                                             PlannerType type) {
+    switch(type) {
+        case RRTBasic: return RRTQToQPlanner::makeBasic(constraint, sampler, metric, extend);
+        case RRTConnect: return RRTQToQPlanner::makeConnect(constraint, sampler, metric, extend);
         case RRTBidirectional:
-            return RRTQToQPlanner::makeBidirectional (constraint, sampler, metric, extend);
+            return RRTQToQPlanner::makeBidirectional(constraint, sampler, metric, extend);
         case RRTBalancedBidirectional:
-            return RRTQToQPlanner::makeBalancedBidirectional (constraint, sampler, metric, extend);
+            return RRTQToQPlanner::makeBalancedBidirectional(constraint, sampler, metric, extend);
     }
-    RW_ASSERT (0);
+    RW_ASSERT(0);
     return 0;
 }
 
-QToQPlanner::Ptr RRTPlanner::makeQToQPlanner (const PlannerConstraint& constraint,
-                                              const Device::Ptr& device, PlannerType type)
-{
+QToQPlanner::Ptr RRTPlanner::makeQToQPlanner(const PlannerConstraint& constraint,
+                                             const Device::Ptr& device, PlannerType type) {
     const double extend = 0.05;
 
-    return makeQToQPlanner (constraint,
-                            QSampler::makeUniform (device),
-                            PlannerUtil::normalizingInfinityMetric (device->getBounds ()),
-                            extend,
-                            type);
+    return makeQToQPlanner(constraint,
+                           QSampler::makeUniform(device),
+                           PlannerUtil::normalizingInfinityMetric(device->getBounds()),
+                           extend,
+                           type);
 }

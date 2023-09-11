@@ -50,8 +50,8 @@ namespace rwsim { namespace util {
     class RestingPoseGenerator
     {
       public:
-        typedef boost::function< void (const rw::kinematics::State&) > RestingPoseCallback;
-        typedef boost::function< void (const rw::kinematics::State&) > UpdateEventCallback;
+        typedef boost::function<void(const rw::kinematics::State&)> RestingPoseCallback;
+        typedef boost::function<void(const rw::kinematics::State&)> UpdateEventCallback;
 
         // typedef Event<StateChangedListener, StateChangedListener> StateChangedEvent;
 
@@ -62,9 +62,9 @@ namespace rwsim { namespace util {
          * @param initState
          * @param restConstraint
          */
-        RestingPoseGenerator (rw::core::Ptr< rwsim::simulator::DynamicSimulator > sim,
-                              const rw::kinematics::State& initState,
-                              rw::core::Ptr< SimStateConstraint > restConstraint);
+        RestingPoseGenerator(rw::core::Ptr<rwsim::simulator::DynamicSimulator> sim,
+                             const rw::kinematics::State& initState,
+                             rw::core::Ptr<SimStateConstraint> restConstraint);
 
         /**
          *
@@ -74,28 +74,27 @@ namespace rwsim { namespace util {
          * @param restConstraint
          * @return
          */
-        RestingPoseGenerator (rw::core::Ptr< rwsim::simulator::DynamicSimulator > sim,
-                              const rw::kinematics::State& initState,
-                              rw::core::Ptr< StateSampler > sampler,
-                              rw::core::Ptr< SimStateConstraint > restConstraint);
+        RestingPoseGenerator(rw::core::Ptr<rwsim::simulator::DynamicSimulator> sim,
+                             const rw::kinematics::State& initState,
+                             rw::core::Ptr<StateSampler> sampler,
+                             rw::core::Ptr<SimStateConstraint> restConstraint);
 
         /**
          * @brief destructor
          */
-        virtual ~RestingPoseGenerator ();
+        virtual ~RestingPoseGenerator();
 
         /**
          * @brief set the sampler used for initial state
          * @param sampler [in] state sampler
          */
-        void setInitStateSample (rw::core::Ptr< StateSampler > sampler) { _sampler = sampler; }
+        void setInitStateSample(rw::core::Ptr<StateSampler> sampler) { _sampler = sampler; }
 
         /**
          * @brief resting state contraint
          * @param restconstraint [in] constraint
          */
-        void setRestingCriteria (rw::core::Ptr< SimStateConstraint > restconstraint)
-        {
+        void setRestingCriteria(rw::core::Ptr<SimStateConstraint> restconstraint) {
             _restConstraint = restconstraint;
         }
 
@@ -103,61 +102,61 @@ namespace rwsim { namespace util {
          * @brief set the callback for when a resting pose is found.
          * @param callback [in] callback funtion
          */
-        void setResultCallback (RestingPoseCallback callback) { _restCallback = callback; }
+        void setResultCallback(RestingPoseCallback callback) { _restCallback = callback; }
 
         /**
          * @brief set the callback for when a simulation step has been carried out.
          * @param callback [in] callback funtion
          */
-        void setUpdateEventCallback (UpdateEventCallback callback) { _updateCallback = callback; }
+        void setUpdateEventCallback(UpdateEventCallback callback) { _updateCallback = callback; }
 
         /**
          * @brief start resting pose generation
          * @param nrOfTests [in] number of resting poses to find.
          */
-        void start (int nrOfTests);
+        void start(int nrOfTests);
 
         /**
          * @brief pause the execution
          */
-        void proceed ();
+        void proceed();
 
         /**
          * @brief stop the execution
          */
-        void stop ();
+        void stop();
 
         /**
          * @brief the generator is finished if the specified nr of resting
          * poses has been generated.
          * @return true if all rest poses has been generated, false otherwise
          */
-        bool isFinished ();
+        bool isFinished();
 
         /**
          * @brief returns the number of samples that has been simulated.
          */
-        int getNrOfSamplesDone ();
+        int getNrOfSamplesDone();
 
         /**
          * @brief returns the number of samples that has yet to be simulated.
          */
-        int getNrOfSamplesLeft ();
+        int getNrOfSamplesLeft();
 
         /**
          * @brief a simple status.
          * @return
          */
-        std::string getStatusString ();
+        std::string getStatusString();
 
       protected:
-        void stepperLoop ();
+        void stepperLoop();
 
       private:
-        rw::core::Ptr< rwsim::simulator::ThreadSimulator > _sim;
+        rw::core::Ptr<rwsim::simulator::ThreadSimulator> _sim;
 
-        rw::core::Ptr< StateSampler > _sampler;
-        rw::core::Ptr< SimStateConstraint > _restConstraint;
+        rw::core::Ptr<StateSampler> _sampler;
+        rw::core::Ptr<SimStateConstraint> _restConstraint;
 
         bool _running, _stopRunning;
 
@@ -186,7 +185,7 @@ namespace rwsim { namespace util {
 
         rw::kinematics::State _initState;
 
-        std::vector< rw::kinematics::State > _initStates, _resultStates;
+        std::vector<rw::kinematics::State> _initStates, _resultStates;
     };
 }}    // namespace rwsim::util
 

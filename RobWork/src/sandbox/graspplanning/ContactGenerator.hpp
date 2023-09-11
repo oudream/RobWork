@@ -21,47 +21,43 @@
 #include <rw/geometry/IndexedTriMesh.hpp>
 #include <rw/sensor/Contact3D.hpp>
 
-namespace rw {
-namespace graspplanning {
-
-/**
- * @brief generates candidate contact point sets for grasping a given object.
- *
- * The method used identify
- *
- */
-class ContactGenerator {
+namespace rw { namespace graspplanning {
 
     /**
-     * @brief
+     * @brief generates candidate contact point sets for grasping a given object.
+     *
+     * The method used identify
+     *
      */
-    ContactGenerator(const rw::geometry::IndexedTriMesh& obj, int nrOfContacts);
+    class ContactGenerator
+    {
+        /**
+         * @brief
+         */
+        ContactGenerator(const rw::geometry::IndexedTriMesh& obj, int nrOfContacts);
 
-    /**
-     * @brief destructor
-     */
-    virtual ~ContactGenerator(){};
+        /**
+         * @brief destructor
+         */
+        virtual ~ContactGenerator(){};
 
-    /**
-     * @brief generates a contact set from some heuristic
-     */
-    std::vector<Contact3D> generateContactSet( );
+        /**
+         * @brief generates a contact set from some heuristic
+         */
+        std::vector<Contact3D> generateContactSet();
 
-    /**
-     * @brief generate next contact
-     * @return
-     */
-    Contact3D generateNext();
+        /**
+         * @brief generate next contact
+         * @return
+         */
+        Contact3D generateNext();
 
-private:
+      private:
+        const rw::geometry::IndexedTriMesh& _obj;
+        const int _nrOfContacts;
 
-    const rw::geometry::IndexedTriMesh& _obj;
-    const int _nrOfContacts;
+        ContactGenerator();
+    };
 
-    ContactGenerator();
-};
-
-}
-}
+}}     // namespace rw::graspplanning
 #endif /*POSEGENERATOR_HPP_*/
-

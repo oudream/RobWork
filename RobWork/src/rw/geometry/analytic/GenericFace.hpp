@@ -31,7 +31,7 @@ namespace rw { namespace geometry {
     //! @addtogroup geometry
 #if !defined(SWIG)
     //! @{
-      #endif
+#endif
     /**
      * @brief The GenericFace implementation is a type of Face that consist of abstract Surfaces and
      * Curves.
@@ -40,84 +40,86 @@ namespace rw { namespace geometry {
     {
       public:
         //! @brief Smart pointer type to GenericFace
-        typedef rw::core::Ptr< GenericFace > Ptr;
+        typedef rw::core::Ptr<GenericFace> Ptr;
 
         //! @brief Constructor.
-        GenericFace ();
+        GenericFace();
 
         /**
          * @brief Copy constructor.
          * @param face [in] other face to copy.
          */
-        GenericFace (const Face& face);
+        GenericFace(const Face& face);
 
         //! @brief Destructor.
-        virtual ~GenericFace ();
+        virtual ~GenericFace();
 
         //! @copydoc Face::surface
-        virtual const Surface& surface () const;
+        virtual const Surface& surface() const;
 
         //! @copydoc Face::curveCount
-        virtual std::size_t curveCount () const { return _curves.size (); }
+        virtual std::size_t curveCount() const { return _curves.size(); }
 
         //! @copydoc Face::getCurve
-        virtual const Curve& getCurve (std::size_t i) const;
+        virtual const Curve& getCurve(std::size_t i) const;
 
         //! @copydoc Face::vertices
-        virtual const std::vector< rw::math::Vector3D<double> >& vertices () const { return _vertices; }
+        virtual const std::vector<rw::math::Vector3D<double>>& vertices() const {
+            return _vertices;
+        }
 
         //! @copydoc Face::transform(const rw::math::Vector3D<double>&)
-        virtual void transform (const rw::math::Vector3D<double>& P);
+        virtual void transform(const rw::math::Vector3D<double>& P);
 
         //! @copydoc Face::transform(const rw::math::Transform3D<>&)
-        virtual void transform (const rw::math::Transform3D<>& T);
+        virtual void transform(const rw::math::Transform3D<>& T);
 
         /**
          * @brief Set surface.
          * @param surface [in] the surface.
          */
-        void setSurface (rw::core::Ptr< const Surface > surface) { _surface = surface; }
+        void setSurface(rw::core::Ptr<const Surface> surface) { _surface = surface; }
 
         /**
          * @brief Set surface.
          * @param surface [in] the surface.
          */
-        void setSurface (const Surface& surface);
+        void setSurface(const Surface& surface);
 
         /**
          * @brief Set curve (a curve has direction)
          * @param vertex [in] the start vertex.
          * @param curve [in] the curve.
          */
-        void setCurve (std::size_t vertex, rw::core::Ptr< const Curve > curve);
+        void setCurve(std::size_t vertex, rw::core::Ptr<const Curve> curve);
 
         /**
          * @brief Set the curves.
          * @param curves [in] vector of directed curves.
          */
-        void setCurves (const std::vector< rw::core::Ptr< const Curve > >& curves);
+        void setCurves(const std::vector<rw::core::Ptr<const Curve>>& curves);
 
         /**
          * @brief Set vertex.
          * @param index [in] vertex index to set.
          * @param vertex [in] the vertex point.
          */
-        void setVertex (std::size_t index, const rw::math::Vector3D<double>& vertex);
+        void setVertex(std::size_t index, const rw::math::Vector3D<double>& vertex);
 
         /**
          * @brief Set the vertices.
          * @param vertices [in] vector of vertices.
          */
-        void setVertices (const std::vector< rw::math::Vector3D<double> >& vertices);
+        void setVertices(const std::vector<rw::math::Vector3D<double>>& vertices);
 
       private:
-        rw::core::Ptr< const Surface > _surface;
-        std::vector< rw::core::Ptr< const Curve > > _curves;
-        std::vector< rw::math::Vector3D<double> > _vertices;
+        rw::core::Ptr<const Surface> _surface;
+        std::vector<rw::core::Ptr<const Curve>> _curves;
+        std::vector<rw::math::Vector3D<double>> _vertices;
     };
-    #if !defined(SWIG)
-    //! @}
-    #endif
+#if !defined(SWIG)
+//! @}
+#endif
 }}    // namespace rw::geometry
 
 #endif /* RW_GEOMETRY_ANALYTIC_GENERICFACE_HPP_ */

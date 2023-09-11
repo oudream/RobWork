@@ -20,7 +20,7 @@
 
 #if !defined(SWIG)
 #include <rw/graspplanning/GraspValidateFilter.hpp>
-#endif 
+#endif
 namespace rw { namespace sensor {
     class Contact3D;
 }}    // namespace rw::sensor
@@ -44,20 +44,18 @@ namespace rw { namespace graspplanning {
          * @param allowCloseWhenOpposite [in] if true small distances are allowed when contact
          * normals are in opposite directions
          */
-        ContactDistThresFilter (double minDist, double maxDist,
-                                bool allowCloseWhenOpposite = true) :
-            _minDist (minDist),
-            _maxDist (maxDist), _allowCloseWhenOpposite (allowCloseWhenOpposite){};
+        ContactDistThresFilter(double minDist, double maxDist, bool allowCloseWhenOpposite = true) :
+            _minDist(minDist), _maxDist(maxDist), _allowCloseWhenOpposite(allowCloseWhenOpposite){};
 
         /**
          * @brief destructor
          */
-        virtual ~ContactDistThresFilter (){};
+        virtual ~ContactDistThresFilter(){};
 
         /**
          * @copydoc GraspValidateFilter::isValid
          */
-        bool isValid (const Grasp3D& grasp);
+        bool isValid(const Grasp3D& grasp);
 
         /**
          * @brief tests if the contact pair is valid according to this filter
@@ -65,7 +63,7 @@ namespace rw { namespace graspplanning {
          * @param c2 [in] 3d contact
          * @return true if contact pair is within filter criterias, false otherwise
          */
-        bool isContactPairValid (const rw::sensor::Contact3D& c1, const rw::sensor::Contact3D& c2);
+        bool isContactPairValid(const rw::sensor::Contact3D& c1, const rw::sensor::Contact3D& c2);
 
       private:
         double _minDist;

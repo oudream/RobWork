@@ -48,20 +48,20 @@ namespace rw { namespace math {
      * \theta k_z)@f$ describes the orientation in equal angle axis (EAA)
      * format.
      */
-    template< class T = double >
+    template<class T = double>
 
     class Pose2D
     {
       public:
         //! @brief Zero-initialized Pose2D.
-        Pose2D () : _pos (0, 0), _theta (0) {}
+        Pose2D() : _pos(0, 0), _theta(0) {}
 
         /**
          * @brief Constructor.
          * @param pos [in] the position.
          * @param theta [in] the angle.
          */
-        Pose2D (rw::math::Vector2D< T > pos, T theta) : _pos (pos), _theta (theta) {}
+        Pose2D(rw::math::Vector2D<T> pos, T theta) : _pos(pos), _theta(theta) {}
 
         /**
          * @brief Constructor.
@@ -69,53 +69,52 @@ namespace rw { namespace math {
          * @param y [in] the value of the second position dimension.
          * @param theta [in] the angle.
          */
-        Pose2D (T x, T y, T theta) : _pos (x, y), _theta (theta) {}
+        Pose2D(T x, T y, T theta) : _pos(x, y), _theta(theta) {}
 
         /**
          * @brief Constructor.
          * @param transform [in] a 2D transform giving the pose.
          */
-        Pose2D (const rw::math::Transform2D< T >& transform) :
-            _pos (transform.P ()), _theta (
-                                       // Sigh.
-                                       atan2 (transform.R () (1, 0), transform.R () (0, 0)))
-        {}
+        Pose2D(const rw::math::Transform2D<T>& transform) :
+            _pos(transform.P()), _theta(
+                                     // Sigh.
+                                     atan2(transform.R()(1, 0), transform.R()(0, 0))) {}
 
         /**
          * @brief Get the first dimension of the position vector.
          * @return the position in the first dimension.
          */
-        T& x () { return _pos[0]; }
+        T& x() { return _pos[0]; }
 
         /**
          * @brief Get the second dimension of the position vector.
          * @return the position in the second dimension.
          */
-        T& y () { return _pos[1]; }
+        T& y() { return _pos[1]; }
 
         /**
          * @brief Get the angle.
          * @return the angle.
          */
-        T& theta () { return _theta; }
+        T& theta() { return _theta; }
 
         /**
          * @brief Get the position vector.
          * @return the position.
          */
-        rw::math::Vector2D< T >& getPos () { return _pos; }
+        rw::math::Vector2D<T>& getPos() { return _pos; }
 
         //! @copydoc x()
-        T x () const { return _pos[0]; }
+        T x() const { return _pos[0]; }
 
         //! @copydoc y()
-        T y () const { return _pos[1]; }
+        T y() const { return _pos[1]; }
 
         //! @copydoc theta()
-        T theta () const { return _theta; }
+        T theta() const { return _theta; }
 
         //! @copydoc getPos()
-        const rw::math::Vector2D< T >& getPos () const { return _pos; }
+        const rw::math::Vector2D<T>& getPos() const { return _pos; }
 
 #if !defined(SWIG)
         /**
@@ -125,10 +124,8 @@ namespace rw { namespace math {
          *
          * @return const reference to element
          */
-        const T& operator() (size_t i) const
-        {
-            if (i < 2)
-                return _pos[i];
+        const T& operator()(size_t i) const {
+            if(i < 2) return _pos[i];
             return _theta;
         }
 
@@ -139,10 +136,8 @@ namespace rw { namespace math {
          *
          * @return reference to element
          */
-        T& operator() (size_t i)
-        {
-            if (i < 2)
-                return _pos[i];
+        T& operator()(size_t i) {
+            if(i < 2) return _pos[i];
             return _theta;
         }
 
@@ -151,10 +146,8 @@ namespace rw { namespace math {
          * @param i [in] index in the vector \f$i\in \{0,1,2\} \f$
          * @return const reference to element
          */
-        const T& operator[] (size_t i) const
-        {
-            if (i < 2)
-                return _pos[i];
+        const T& operator[](size_t i) const {
+            if(i < 2) return _pos[i];
             return _theta;
         }
 
@@ -163,24 +156,21 @@ namespace rw { namespace math {
          * @param i [in] index in the vector \f$i\in \{0,1,2\} \f$
          * @return reference to element
          */
-        T& operator[] (size_t i)
-        {
-            if (i < 2)
-                return _pos[i];
+        T& operator[](size_t i) {
+            if(i < 2) return _pos[i];
             return _theta;
         }
 #else
-        ARRAYOPERATOR (T);
+        ARRAYOPERATOR(T);
 #endif
         /**
          * @brief The transform corresponding to the pose.
          * @param pose [in] the pose.
          * @return equivalent 2D transform.
          */
-        static rw::math::Transform2D< T > transform (const Pose2D< T >& pose)
-        {
-            return rw::math::Transform2D< T > (rw::math::Vector2D< T > (pose.x (), pose.y ()),
-                                               rw::math::Rotation2D< T > (pose.theta ()));
+        static rw::math::Transform2D<T> transform(const Pose2D<T>& pose) {
+            return rw::math::Transform2D<T>(rw::math::Vector2D<T>(pose.x(), pose.y()),
+                                            rw::math::Rotation2D<T>(pose.theta()));
         }
 #if !defined(SWIG)
         /**
@@ -189,13 +179,12 @@ namespace rw { namespace math {
          * @param pose [in] pose to output.
          * @return the resulting stream
          */
-        friend std::ostream& operator<< (std::ostream& os, const Pose2D< T >& pose)
-        {
-            return os << " Ppse2D { x: " << pose.x () << ", y: " << pose.y ()
-                      << ", th: " << pose.theta () << "}";
+        friend std::ostream& operator<<(std::ostream& os, const Pose2D<T>& pose) {
+            return os << " Ppse2D { x: " << pose.x() << ", y: " << pose.y()
+                      << ", th: " << pose.theta() << "}";
         }
 #else
-        TOSTRING (rw::math::Pose2D< T >);
+        TOSTRING(rw::math::Pose2D<T>);
 #endif
 
         /**
@@ -203,36 +192,35 @@ namespace rw { namespace math {
          * @return Eigen vector.
          */
         // template<class T>
-        Eigen::Matrix< T, 3, 1 > e () const
-        {
-            Eigen::Matrix< T, 3, 1 > vec;
-            vec (0) = _pos (0);
-            vec (1) = _pos (1);
-            vec (2) = _theta;
+        Eigen::Matrix<T, 3, 1> e() const {
+            Eigen::Matrix<T, 3, 1> vec;
+            vec(0) = _pos(0);
+            vec(1) = _pos(1);
+            vec(2) = _theta;
             return vec;
         }
 
       private:
-        rw::math::Vector2D< T > _pos;
+        rw::math::Vector2D<T> _pos;
         T _theta;
     };
 
 #if !defined(SWIG)
-    extern template class rw::math::Pose2D< double >;
-    extern template class rw::math::Pose2D< float >;
+    extern template class rw::math::Pose2D<double>;
+    extern template class rw::math::Pose2D<float>;
 #else
 
 #if SWIG_VERSION < 0x040000
-    SWIG_DECLARE_TEMPLATE (Pose2Dd, rw::math::Pose2D< double >);
-    ADD_DEFINITION (Pose2Dd, Pose2D,sdurw_math)
+    SWIG_DECLARE_TEMPLATE(Pose2Dd, rw::math::Pose2D<double>);
+    ADD_DEFINITION(Pose2Dd, Pose2D, sdurw_math)
 #else
-    SWIG_DECLARE_TEMPLATE (Pose2D, rw::math::Pose2D< double >);
-#endif        
-
-    SWIG_DECLARE_TEMPLATE (Pose2Df, rw::math::Pose2D< float >);
+    SWIG_DECLARE_TEMPLATE(Pose2D, rw::math::Pose2D<double>);
 #endif
-    using Pose2Dd = Pose2D< double >;
-    using Pose2Df = Pose2D< float >;
+
+    SWIG_DECLARE_TEMPLATE(Pose2Df, rw::math::Pose2D<float>);
+#endif
+    using Pose2Dd = Pose2D<double>;
+    using Pose2Df = Pose2D<float>;
 
     /*@}*/
 }}    // namespace rw::math
@@ -246,23 +234,15 @@ namespace rw { namespace common {
          * @relatedalso rw::math::Pose2D
          */
         template<>
-        void write (const rw::math::Pose2D< double >& sobject, rw::common::OutputArchive& oarchive,
-                    const std::string& id);
+        void write(const rw::math::Pose2D<double>& sobject, rw::common::OutputArchive& oarchive,
+                   const std::string& id);
 
         /**
          * @copydoc rw::common::serialization::write
          * @relatedalso rw::math::Pose2D
          */
         template<>
-        void write (const rw::math::Pose2D< float >& sobject, rw::common::OutputArchive& oarchive,
-                    const std::string& id);
-
-        /**
-         * @copydoc rw::common::serialization::read
-         * @relatedalso rw::math::Pose2D
-         */
-        template<>
-        void read (rw::math::Pose2D< double >& sobject, rw::common::InputArchive& iarchive,
+        void write(const rw::math::Pose2D<float>& sobject, rw::common::OutputArchive& oarchive,
                    const std::string& id);
 
         /**
@@ -270,8 +250,16 @@ namespace rw { namespace common {
          * @relatedalso rw::math::Pose2D
          */
         template<>
-        void read (rw::math::Pose2D< float >& sobject, rw::common::InputArchive& iarchive,
-                   const std::string& id);
+        void read(rw::math::Pose2D<double>& sobject, rw::common::InputArchive& iarchive,
+                  const std::string& id);
+
+        /**
+         * @copydoc rw::common::serialization::read
+         * @relatedalso rw::math::Pose2D
+         */
+        template<>
+        void read(rw::math::Pose2D<float>& sobject, rw::common::InputArchive& iarchive,
+                  const std::string& id);
 
     }    // namespace serialization
 }}       // namespace rw::common

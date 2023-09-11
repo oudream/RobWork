@@ -1,4 +1,1 @@
 #include "ParallelGraspPlanner.hpp"
-
-
-

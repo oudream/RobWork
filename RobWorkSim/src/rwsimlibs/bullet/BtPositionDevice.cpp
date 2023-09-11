@@ -28,25 +28,21 @@ using namespace rw::math;
 using namespace rwsim::dynamics;
 using namespace rwsimlibs::bullet;
 
-BtPositionDevice::BtPositionDevice (rw::core::Ptr< KinematicDevice > dev,
-                                    const std::vector< FrameBodyPair >& frameToBtBody) :
-    _kdev (dev),
-    _frameToBtBody (frameToBtBody)
-{}
+BtPositionDevice::BtPositionDevice(rw::core::Ptr<KinematicDevice> dev,
+                                   const std::vector<FrameBodyPair>& frameToBtBody) :
+    _kdev(dev),
+    _frameToBtBody(frameToBtBody) {}
 
-BtPositionDevice::~BtPositionDevice ()
-{}
+BtPositionDevice::~BtPositionDevice() {}
 
-void BtPositionDevice::update (double dt, State& state)
-{
-    _kdev->getModel ().setQ (_kdev->getQ (state), state);
+void BtPositionDevice::update(double dt, State& state) {
+    _kdev->getModel().setQ(_kdev->getQ(state), state);
     // for each joint update the position of the corresponding btRigidBody
 
-    for (const FrameBodyPair& pair : _frameToBtBody) {
-        const Transform3D<> t3d = Kinematics::worldTframe (pair.first, state);
-        pair.second->getMotionState ()->setWorldTransform (BtUtil::makeBtTransform (t3d));
+    for(const FrameBodyPair& pair : _frameToBtBody) {
+        const Transform3D<> t3d = Kinematics::worldTframe(pair.first, state);
+        pair.second->getMotionState()->setWorldTransform(BtUtil::makeBtTransform(t3d));
     }
 }
 
-void BtPositionDevice::postUpdate (State& state)
-{}
+void BtPositionDevice::postUpdate(State& state) {}

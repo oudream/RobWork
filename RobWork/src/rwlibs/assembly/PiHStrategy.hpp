@@ -24,10 +24,9 @@
  * \copydoc rwlibs::assembly::PiHStrategy
  */
 
-#include <rwlibs/assembly/AssemblyControlStrategy.hpp>
-
 #include <rw/core/Ptr.hpp>
 #include <rw/trajectory/Trajectory.hpp>
+#include <rwlibs/assembly/AssemblyControlStrategy.hpp>
 
 namespace rw { namespace core {
     class PropertyMap;
@@ -71,42 +70,42 @@ namespace rwlibs { namespace assembly {
          * peg towards the hole, the transform from the body frame to the end of the peg should be
          * given here.
          */
-        PiHStrategy (
+        PiHStrategy(
             const rw::math::Transform3D<>& worldTfemale,
-            const rw::math::Transform3D<>& femaleTfemaleTcp = rw::math::Transform3D<>::identity (),
-            const rw::math::Transform3D<>& maleTmaleTcp     = rw::math::Transform3D<>::identity ());
+            const rw::math::Transform3D<>& femaleTfemaleTcp = rw::math::Transform3D<>::identity(),
+            const rw::math::Transform3D<>& maleTmaleTcp     = rw::math::Transform3D<>::identity());
 
         //! @brief Destructor.
-        virtual ~PiHStrategy ();
+        virtual ~PiHStrategy();
 
         //! @copydoc AssemblyControlStrategy::createState
-        ControlState::Ptr createState () const;
+        ControlState::Ptr createState() const;
 
         //! @copydoc AssemblyControlStrategy::update
-        virtual rw::core::Ptr< AssemblyControlResponse >
-        update (rw::core::Ptr< AssemblyParameterization > parameters,
-                rw::core::Ptr< AssemblyState > real, rw::core::Ptr< AssemblyState > assumed,
-                ControlState::Ptr controlState, rw::kinematics::State& state,
-                rw::sensor::FTSensor* ftSensor, double time) const;
+        virtual rw::core::Ptr<AssemblyControlResponse>
+        update(rw::core::Ptr<AssemblyParameterization> parameters,
+               rw::core::Ptr<AssemblyState> real, rw::core::Ptr<AssemblyState> assumed,
+               ControlState::Ptr controlState, rw::kinematics::State& state,
+               rw::sensor::FTSensor* ftSensor, double time) const;
 
         //! @copydoc AssemblyControlStrategy::getApproach
         virtual rw::math::Transform3D<>
-        getApproach (rw::core::Ptr< AssemblyParameterization > parameters);
+        getApproach(rw::core::Ptr<AssemblyParameterization> parameters);
 
         //! @copydoc AssemblyControlStrategy::getID
-        virtual std::string getID ();
+        virtual std::string getID();
 
         //! @copydoc AssemblyControlStrategy::getDescription
-        virtual std::string getDescription ();
+        virtual std::string getDescription();
 
         //! @copydoc AssemblyControlStrategy::createParameterization
-        virtual rw::core::Ptr< AssemblyParameterization >
-        createParameterization (const rw::core::Ptr< rw::core::PropertyMap > map);
+        virtual rw::core::Ptr<AssemblyParameterization>
+        createParameterization(const rw::core::Ptr<rw::core::PropertyMap> map);
 
       private:
-        rw::core::Ptr< rw::trajectory::Transform3DTrajectory >
-        generateTrajectory (rw::core::Ptr< PiHParameterization > p,
-                            rw::core::Ptr< AssemblyState > assumed) const;
+        rw::core::Ptr<rw::trajectory::Transform3DTrajectory>
+        generateTrajectory(rw::core::Ptr<PiHParameterization> p,
+                           rw::core::Ptr<AssemblyState> assumed) const;
 
         rw::math::Transform3D<> _worldTfemale;
         rw::math::Transform3D<> _femaleTfemaleTcp;

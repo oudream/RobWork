@@ -34,13 +34,13 @@ namespace rwsim { namespace dynamics {
     {
       public:
         //! @brief Construct empty contact point.
-        ContactPoint () :
-            isFirstContact (true), nImpulse (0.0), tImpulse (0.0), dist (100), bias (0),
-            penetrationA (0.0), penetrationB (0.0), nForce (0), tForce (0), penetration (0.0),
-            K (1.0, 1.0, 1.0), KInv (1.0, 1.0, 1.0), userdata (0), mu (0.4){};
+        ContactPoint() :
+            isFirstContact(true), nImpulse(0.0), tImpulse(0.0), dist(100), bias(0),
+            penetrationA(0.0), penetrationB(0.0), nForce(0), tForce(0), penetration(0.0),
+            K(1.0, 1.0, 1.0), KInv(1.0, 1.0, 1.0), userdata(0), mu(0.4){};
 
         //! @brief Destructor.
-        virtual ~ContactPoint () {}
+        virtual ~ContactPoint() {}
 
         //! @brief true if first contact
         bool isFirstContact;

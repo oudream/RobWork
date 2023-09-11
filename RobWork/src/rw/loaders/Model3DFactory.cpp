@@ -35,7 +35,6 @@
 #include <rw/loaders/model3d/LoaderTRI.hpp>
 #include <rw/loaders/model3d/STLFile.hpp>
 
-
 #include <sstream>
 #include <string>
 #include <sys/stat.h>
@@ -47,114 +46,103 @@ using namespace rw::graphics;
 using namespace rw::sensor;
 using namespace rw::loaders;
 namespace {
-std::string getLastModifiedStr (const std::string& file)
-{
+std::string getLastModifiedStr(const std::string& file) {
     struct stat status;
-    stat (file.c_str (), &status);
+    stat(file.c_str(), &status);
     // std::cout << "LAST MODIFIED DATE: " << status.st_mtime << std::endl;
     std::stringstream sstr;
     sstr << status.st_mtime;
-    return sstr.str ();
+    return sstr.str();
 }
 }    // namespace
 
-Model3D::Ptr Model3DFactory::getModel (const std::string& str, const std::string& name,
-                                       bool useCache, Model3D::Material mat)
-{
-    if (useCache && getCache ().isInCache (str, "")) {
-        Model3D::Ptr res = ownedPtr (new Model3D (*getCache ().get (str)));
-        res->setName (name);
+Model3D::Ptr Model3DFactory::getModel(const std::string& str, const std::string& name,
+                                      bool useCache, Model3D::Material mat) {
+    if(useCache && getCache().isInCache(str, "")) {
+        Model3D::Ptr res = ownedPtr(new Model3D(*getCache().get(str)));
+        res->setName(name);
         return res;
     }
-    if (str[0] == '#') {
-        return constructFromGeometry (str, name, useCache, mat);
-    }
-    else {
-        return loadModel (str, name, useCache, mat);
-    }
+    if(str[0] == '#') { return constructFromGeometry(str, name, useCache, mat); }
+    else { return loadModel(str, name, useCache, mat); }
 }
 
-Model3D::Ptr Model3DFactory::constructFromGeometry (const std::string& str, const std::string& name,
-                                                    bool useCache, Model3D::Material mat)
-{
-    if (useCache) {
-        if (getCache ().isInCache (str, "")) {
-            Model3D::Ptr res = ownedPtr (new Model3D (*getCache ().get (str)));
-            res->setName (name);
+Model3D::Ptr Model3DFactory::constructFromGeometry(const std::string& str, const std::string& name,
+                                                   bool useCache, Model3D::Material mat) {
+    if(useCache) {
+        if(getCache().isInCache(str, "")) {
+            Model3D::Ptr res = ownedPtr(new Model3D(*getCache().get(str)));
+            res->setName(name);
             return res;
         }
     }
-    Geometry::Ptr geometry = GeometryFactory::getGeometry (str);
-    Model3D* model         = new Model3D (name);
-    model->addTriMesh (mat, *geometry->getGeometryData ()->getTriMesh ());
+    Geometry::Ptr geometry = GeometryFactory::getGeometry(str);
+    Model3D* model         = new Model3D(name);
+    model->addTriMesh(mat, *geometry->getGeometryData()->getTriMesh());
 
-    return ownedPtr (model);
+    return ownedPtr(model);
 }
 
-Model3DFactory::FactoryCache& Model3DFactory::getCache ()
-{
+Model3DFactory::FactoryCache& Model3DFactory::getCache() {
     static FactoryCache cache;
     return cache;
 }
 
-Model3D::Ptr Model3DFactory::loadModel (const std::string& raw_filename, const std::string& name,
-                                        bool useCache, Model3D::Material mat)
-{
-    std::vector< std::string > extensions = Model3DLoader::Factory::getSupportedFormats ();
+Model3D::Ptr Model3DFactory::loadModel(const std::string& raw_filename, const std::string& name,
+                                       bool useCache, Model3D::Material mat) {
+    std::vector<std::string> extensions = Model3DLoader::Factory::getSupportedFormats();
 
-    const std::string& filename = IOUtil::resolveFileName (raw_filename, extensions);
-    const std::string& filetype = StringUtil::toUpper (StringUtil::getFileExtension (filename));
+    const std::string& filename = IOUtil::resolveFileName(raw_filename, extensions);
+    const std::string& filetype = StringUtil::toUpper(StringUtil::getFileExtension(filename));
     // if the file does not exist then throw an exception
-    if (filetype.empty ()) {
-        RW_THROW ("No file type known for file " << StringUtil::quote (raw_filename)
-                                                 << " that was resolved to file name " << filename);
+    if(filetype.empty()) {
+        RW_THROW("No file type known for file " << StringUtil::quote(raw_filename)
+                                                << " that was resolved to file name " << filename);
     }
 
-    std::string moddate = getLastModifiedStr (filename);
-    if (useCache && getCache ().isInCache (filename, moddate)) {
-        Model3D::Ptr res = ownedPtr (new Model3D (*getCache ().get (filename)));
-        res->setName (name);
+    std::string moddate = getLastModifiedStr(filename);
+    if(useCache && getCache().isInCache(filename, moddate)) {
+        Model3D::Ptr res = ownedPtr(new Model3D(*getCache().get(filename)));
+        res->setName(name);
         return res;
     }
 
     bool gotThrow = false;
     Exception exception;
 
-    if (Model3DLoader::Factory::hasModel3DLoader (filetype)) {
+    if(Model3DLoader::Factory::hasModel3DLoader(filetype)) {
         bool foundLoader = true;
         size_t i         = 0;
-        while (foundLoader) {
+        while(foundLoader) {
             Model3DLoader::Ptr loader;
             try {
-                loader = Model3DLoader::Factory::getModel3DLoader (filetype, i++);
+                loader = Model3DLoader::Factory::getModel3DLoader(filetype, i++);
             }
-            catch (...) {
+            catch(...) {
                 foundLoader = false;
                 break;
             }
 
-            loader->setDefaultMaterial (mat);
-            loader->setDefaultName (name);
+            loader->setDefaultMaterial(mat);
+            loader->setDefaultName(name);
 
             try {
-                Model3D::Ptr model = loader->load (filename);
-                getCache ().add (filename, model, moddate);
-                return ownedPtr(new Model3D(*(getCache ().get (filename))));
+                Model3D::Ptr model = loader->load(filename);
+                getCache().add(filename, model, moddate);
+                return ownedPtr(new Model3D(*(getCache().get(filename))));
             }
-            catch (const Exception& e) {
+            catch(const Exception& e) {
                 gotThrow  = true;
                 exception = e;
             }
         }
     }
 
-    if (gotThrow) {
-        throw exception;
-    }
-    RW_THROW ("Unknown extension " << StringUtil::quote (StringUtil::getFileExtension (filename))
-                                   << " for file " << StringUtil::quote (raw_filename)
-                                   << " that was resolved to file name " << filename);
+    if(gotThrow) { throw exception; }
+    RW_THROW("Unknown extension " << StringUtil::quote(StringUtil::getFileExtension(filename))
+                                  << " for file " << StringUtil::quote(raw_filename)
+                                  << " that was resolved to file name " << filename);
 
-    RW_ASSERT (!"Impossible");
+    RW_ASSERT(!"Impossible");
     return NULL;    // To avoid a compiler warning.
 }

@@ -20,13 +20,13 @@
 using namespace rw::math;
 using namespace rwlibs::task;
 
-template class rwlibs::task::Motion< Q >;
-template class rwlibs::task::Motion< Transform3D<> >;
+template class rwlibs::task::Motion<Q>;
+template class rwlibs::task::Motion<Transform3D<>>;
 
-template class rwlibs::task::P2PMotion< Q >;
-template class rwlibs::task::P2PMotion< Transform3D<> >;
+template class rwlibs::task::P2PMotion<Q>;
+template class rwlibs::task::P2PMotion<Transform3D<>>;
 
-template class rwlibs::task::LinearMotion< Q >;
-template class rwlibs::task::LinearMotion< Transform3D<> >;
+template class rwlibs::task::LinearMotion<Q>;
+template class rwlibs::task::LinearMotion<Transform3D<>>;
 
-template class rwlibs::task::CircularMotion< Transform3D<> >;
+template class rwlibs::task::CircularMotion<Transform3D<>>;

@@ -39,49 +39,49 @@ namespace rwsim { namespace sensor {
     {
       public:
         //! @brief Smart pointer type for BodyContactSensor.
-        typedef rw::core::Ptr< BodyContactSensor > Ptr;
+        typedef rw::core::Ptr<BodyContactSensor> Ptr;
 
         /**
          * @brief constructor
          * @param name [in] the sensor name
          * @param frame [in] the frame of this sensor.
          */
-        BodyContactSensor (const std::string& name,rw::core::Ptr<rw::kinematics::Frame> frame);
+        BodyContactSensor(const std::string& name, rw::core::Ptr<rw::kinematics::Frame> frame);
 
         //! @brief Destructor.
-        virtual ~BodyContactSensor ();
+        virtual ~BodyContactSensor();
 
         //// Interface inherited from SimulatedSensor
 
         //! @copydoc rwlibs::simulation::SimulatedSensor::update
-        void update (const rwlibs::simulation::Simulator::UpdateInfo& info,
-                     rw::kinematics::State& state);
+        void update(const rwlibs::simulation::Simulator::UpdateInfo& info,
+                    rw::kinematics::State& state);
 
         //! @copydoc rwlibs::simulation::SimulatedSensor::reset
-        void reset (const rw::kinematics::State& state);
+        void reset(const rw::kinematics::State& state);
 
         /**
          * @brief Get sensor (should not be used).
          * @return NULL always.
          */
-        rw::sensor::Sensor::Ptr getSensor ();
+        rw::sensor::Sensor::Ptr getSensor();
 
         //// Inherited from SimulatedTactileSensor
-        void addForceW (const rw::math::Vector3D<>& point, const rw::math::Vector3D<>& force,
-                        const rw::math::Vector3D<>& cnormal, rw::kinematics::State& state,
-                        rw::core::Ptr< rwsim::dynamics::Body > body = NULL);
-
-        void addForce (const rw::math::Vector3D<>& point, const rw::math::Vector3D<>& force,
+        void addForceW(const rw::math::Vector3D<>& point, const rw::math::Vector3D<>& force,
                        const rw::math::Vector3D<>& cnormal, rw::kinematics::State& state,
-                       rw::core::Ptr< rwsim::dynamics::Body > = NULL);
+                       rw::core::Ptr<rwsim::dynamics::Body> body = NULL);
 
-        void addWrenchToCOM (const rw::math::Vector3D<>& force, const rw::math::Vector3D<>& torque,
+        void addForce(const rw::math::Vector3D<>& point, const rw::math::Vector3D<>& force,
+                      const rw::math::Vector3D<>& cnormal, rw::kinematics::State& state,
+                      rw::core::Ptr<rwsim::dynamics::Body> = NULL);
+
+        void addWrenchToCOM(const rw::math::Vector3D<>& force, const rw::math::Vector3D<>& torque,
+                            rw::kinematics::State& state,
+                            rw::core::Ptr<rwsim::dynamics::Body> body = NULL){};
+
+        void addWrenchWToCOM(const rw::math::Vector3D<>& force, const rw::math::Vector3D<>& torque,
                              rw::kinematics::State& state,
-                             rw::core::Ptr< rwsim::dynamics::Body > body = NULL){};
-
-        void addWrenchWToCOM (const rw::math::Vector3D<>& force, const rw::math::Vector3D<>& torque,
-                              rw::kinematics::State& state,
-                              rw::core::Ptr< rwsim::dynamics::Body > body = NULL){};
+                             rw::core::Ptr<rwsim::dynamics::Body> body = NULL){};
 
         // now for the functions belonging to this class
         /**
@@ -91,10 +91,9 @@ namespace rwsim { namespace sensor {
          * @param state [in] the state.
          * @return a vector of contacts.
          */
-        const std::vector< rw::sensor::Contact3D >&
-        getContacts (const rw::kinematics::State& state) const
-        {
-            return _sdata.getStateCache< ClassState > (state)->_contacts;
+        const std::vector<rw::sensor::Contact3D>&
+        getContacts(const rw::kinematics::State& state) const {
+            return _sdata.getStateCache<ClassState>(state)->_contacts;
         }
 
         /**
@@ -102,10 +101,9 @@ namespace rwsim { namespace sensor {
          * @param state [in] the state.
          * @return a list of bodies.
          */
-        std::vector< rw::core::Ptr< rwsim::dynamics::Body > >
-        getBodies (const rw::kinematics::State& state)
-        {
-            return _sdata.getStateCache< ClassState > (state)->_bodies;
+        std::vector<rw::core::Ptr<rwsim::dynamics::Body>>
+        getBodies(const rw::kinematics::State& state) {
+            return _sdata.getStateCache<ClassState>(state)->_bodies;
         }
 
       public:    // stateless stuff
@@ -114,40 +112,38 @@ namespace rwsim { namespace sensor {
         {
           public:
             //! @brief The contacts detected by the sensor (temporary).
-            std::vector< rw::sensor::Contact3D > _contactsTmp;
+            std::vector<rw::sensor::Contact3D> _contactsTmp;
             //! @brief The contacts detected by the sensor.
-            std::vector< rw::sensor::Contact3D > _contacts;
+            std::vector<rw::sensor::Contact3D> _contacts;
             //! @brief The bodies in contact with the sensor (temporary).
-            std::vector< rw::core::Ptr< rwsim::dynamics::Body > > _bodiesTmp;
+            std::vector<rw::core::Ptr<rwsim::dynamics::Body>> _bodiesTmp;
             //! @brief The bodies in contact with the sensor (temporary).
-            std::vector< rw::core::Ptr< rwsim::dynamics::Body > > _bodies;
+            std::vector<rw::core::Ptr<rwsim::dynamics::Body>> _bodies;
 
             //! @copydoc rw::kinematics::StateCache::size
-            size_t size () const
-            {
-                return (_contacts.size () + _contactsTmp.size ()) * sizeof (rw::sensor::Contact3D) +
-                       (_bodiesTmp.size () + _bodies.size ()) *
-                           sizeof (rw::core::Ptr< rwsim::dynamics::Body >);
+            size_t size() const {
+                return (_contacts.size() + _contactsTmp.size()) * sizeof(rw::sensor::Contact3D) +
+                       (_bodiesTmp.size() + _bodies.size()) *
+                           sizeof(rw::core::Ptr<rwsim::dynamics::Body>);
             }
 
             //! @copydoc rw::kinematics::StateCache::clone
-            rw::core::Ptr< rw::kinematics::StateCache > clone () const
-            {
-                return rw::core::ownedPtr (new ClassState (*this));
+            rw::core::Ptr<rw::kinematics::StateCache> clone() const {
+                return rw::core::ownedPtr(new ClassState(*this));
             }
         };
 
       private:
         // hmm,
         rw::math::Transform3D<> _wTf, _fTw;
-        rw::kinematics::StatelessData< int > _sdata;
+        rw::kinematics::StatelessData<int> _sdata;
     };
 
     /**
      * @brief Old smart pointer type.
      * @deprecated Please use BodyContactSensor::Ptr instead.
      */
-    typedef rw::core::Ptr< BodyContactSensor > BodyContactSensorPtr;
+    typedef rw::core::Ptr<BodyContactSensor> BodyContactSensorPtr;
     //! @}
 }}     // namespace rwsim::sensor
 #endif /* BODYFORCESENSOR_HPP_ */

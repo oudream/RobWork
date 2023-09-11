@@ -18,9 +18,8 @@
 #ifndef RWLIBS_TASK_ACTION_HPP
 #define RWLIBS_TASK_ACTION_HPP
 
-#include <rwlibs/task/Entity.hpp>
-
 #include <rw/core/Ptr.hpp>
+#include <rwlibs/task/Entity.hpp>
 
 namespace rwlibs { namespace task {
 
@@ -54,14 +53,14 @@ namespace rwlibs { namespace task {
          *
          * @param type [in] The type id
          */
-        ActionType (int type = Undefined) : _type (type) {}
+        ActionType(int type = Undefined) : _type(type) {}
 
         /**
          * @brief Cast operator enable implicit conversion to int
          *
          * This operator enables using ActionType in a switch statement.
          */
-        operator int () const { return _type; }
+        operator int() const { return _type; }
 
       private:
         int _type;
@@ -79,32 +78,31 @@ namespace rwlibs { namespace task {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< Action > Ptr;
+        typedef rw::core::Ptr<Action> Ptr;
 
         /**
          * @brief Construct an Action with a given type
          *
          * @param actionType [in] Type of the action
          */
-        Action (ActionType actionType) : Entity (EntityType::Action), _actionType (actionType) {}
+        Action(ActionType actionType) : Entity(EntityType::Action), _actionType(actionType) {}
 
         /**
          * @brief Destructor
          */
-        virtual ~Action () {}
+        virtual ~Action() {}
 
         /**
          * @brief Returns the type of the action.
          */
-        ActionType actionType () const { return _actionType; }
+        ActionType actionType() const { return _actionType; }
 
         /**
          * @brief Make a copy of the action.
          * @return new identical action.
          */
-        virtual rw::core::Ptr< Action > clone ()
-        {
-            return rw::core::ownedPtr (new Action (_actionType));
+        virtual rw::core::Ptr<Action> clone() {
+            return rw::core::ownedPtr(new Action(_actionType));
         }
 
       private:

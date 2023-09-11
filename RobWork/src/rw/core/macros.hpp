@@ -44,16 +44,16 @@
  *
  * Exception messages can be intercepted via exceptionLog().
  */
-#define RW_THROW(ostreamExpression)                                            \
-    do {                                                                       \
-        int RW__line = __LINE__;                                               \
-        std::stringstream RW__stream;                                          \
-        RW__stream << ostreamExpression;                                       \
-        rw::core::Message RW__message (__FILE__, RW__line, RW__stream.str ()); \
-        if (rw::core::Log::log ().isEnabled (rw::core::Log::Debug))            \
-            rw::core::Log::debugLog ().write (RW__message);                    \
-        throw rw::core::Exception (RW__message);                               \
-    } while (0)
+#define RW_THROW(ostreamExpression)                                          \
+    do {                                                                     \
+        int RW__line = __LINE__;                                             \
+        std::stringstream RW__stream;                                        \
+        RW__stream << ostreamExpression;                                     \
+        rw::core::Message RW__message(__FILE__, RW__line, RW__stream.str()); \
+        if(rw::core::Log::log().isEnabled(rw::core::Log::Debug))             \
+            rw::core::Log::debugLog().write(RW__message);                    \
+        throw rw::core::Exception(RW__message);                              \
+    } while(0)
 // We use the weird RW__ names to (hopefully) avoid name crashes.
 
 /**
@@ -67,17 +67,17 @@
  *
  * Exception data can be intercepted via exceptionLog().
  */
-#define RW_THROW2(id, ostreamExpression)                                       \
-    do {                                                                       \
-        int RW__line = __LINE__;                                               \
-        std::stringstream RW__stream;                                          \
-        RW__stream << ostreamExpression;                                       \
-        rw::core::Message RW__message (__FILE__, RW__line, RW__stream.str ()); \
-        rw::core::Exception exp (id, RW__message);                             \
-        if (rw::core::Log::log ().isEnabled (rw::core::Log::Error))            \
-            rw::core::Log::errorLog ().write (exp.what ());                    \
-        throw exp;                                                             \
-    } while (0)
+#define RW_THROW2(id, ostreamExpression)                                     \
+    do {                                                                     \
+        int RW__line = __LINE__;                                             \
+        std::stringstream RW__stream;                                        \
+        RW__stream << ostreamExpression;                                     \
+        rw::core::Message RW__message(__FILE__, RW__line, RW__stream.str()); \
+        rw::core::Exception exp(id, RW__message);                            \
+        if(rw::core::Log::log().isEnabled(rw::core::Log::Error))             \
+            rw::core::Log::errorLog().write(exp.what());                     \
+        throw exp;                                                           \
+    } while(0)
 // We use the weird RW__ names to (hopefully) avoid name crashes.
 
 /**
@@ -90,15 +90,15 @@ RW_WARN("The value of x is " << x << ". x should be less than zero.");
  *
  * Warning messages can be intercepted via warningLog().
  */
-#define RW_WARN(ostreamExpression)                                             \
-    do {                                                                       \
-        int RW__line = __LINE__;                                               \
-        std::stringstream RW__stream;                                          \
-        RW__stream << ostreamExpression;                                       \
-        rw::core::Message RW__message (__FILE__, RW__line, RW__stream.str ()); \
-        if (rw::core::Log::log ().isEnabled (rw::core::Log::Warning))          \
-            rw::core::Log::warningLog () << RW__message << std::endl;          \
-    } while (0)
+#define RW_WARN(ostreamExpression)                                           \
+    do {                                                                     \
+        int RW__line = __LINE__;                                             \
+        std::stringstream RW__stream;                                        \
+        RW__stream << ostreamExpression;                                     \
+        rw::core::Message RW__message(__FILE__, RW__line, RW__stream.str()); \
+        if(rw::core::Log::log().isEnabled(rw::core::Log::Warning))           \
+            rw::core::Log::warningLog() << RW__message << std::endl;         \
+    } while(0)
 
 /**
  * @brief Emit debug message.
@@ -114,11 +114,11 @@ RW_DEBUG("The value of x is " << x << ". x should be less than zero.");
 #define RW_DEBUG(ostreamExpression)                                                      \
     do {                                                                                 \
         int RW__line = __LINE__;                                                         \
-        if (rw::core::Log::log ().isEnabled (rw::core::Log::Debug)) {                    \
-            rw::core::Log::debugLog ()                                                   \
+        if(rw::core::Log::log().isEnabled(rw::core::Log::Debug)) {                       \
+            rw::core::Log::debugLog()                                                    \
                 << __FILE__ << ":" << RW__line << " " << ostreamExpression << std::endl; \
         }                                                                                \
-    } while (0)
+    } while(0)
 #else
 #define RW_DEBUG(ostreamExpression)
 #endif
@@ -126,12 +126,12 @@ RW_DEBUG("The value of x is " << x << ". x should be less than zero.");
 /**
  * @brief For internal use only.
  */
-#define RW_ASSERT_IMPL(e, ostreamExpression, file, line)                                        \
-    do {                                                                                        \
-        std::stringstream RW__stream;                                                           \
-        RW__stream << ostreamExpression;                                                        \
-        ((e) ? (void) 0 : rw::core::IOUtil::rwAssert (RW__stream.str ().c_str (), file, line)); \
-    } while (0)
+#define RW_ASSERT_IMPL(e, ostreamExpression, file, line)                                     \
+    do {                                                                                     \
+        std::stringstream RW__stream;                                                        \
+        RW__stream << ostreamExpression;                                                     \
+        ((e) ? (void) 0 : rw::core::IOUtil::rwAssert(RW__stream.str().c_str(), file, line)); \
+    } while(0)
 
 /**
  * @brief RobWork assertions.
@@ -145,12 +145,12 @@ RW_DEBUG("The value of x is " << x << ". x should be less than zero.");
  * are sure that a run time sanity check will be a performance issue.
  */
 #ifdef RW_ENABLE_ASSERT
-#define RW_ASSERT(e) RW_ASSERT_IMPL (e, std::string (#e), __FILE__, __LINE__)
+#define RW_ASSERT(e) RW_ASSERT_IMPL(e, std::string(#e), __FILE__, __LINE__)
 #else
 #ifdef NDEBUG
 #define RW_ASSERT(e)
 #else
-#define RW_ASSERT(e) RW_ASSERT_IMPL (e, std::string (#e), __FILE__, __LINE__)
+#define RW_ASSERT(e) RW_ASSERT_IMPL(e, std::string(#e), __FILE__, __LINE__)
 #endif
 #endif
 
@@ -165,12 +165,12 @@ RW_DEBUG("The value of x is " << x << ". x should be less than zero.");
  * error message if assertion fails.
  */
 #ifdef RW_ENABLE_ASSERT
-#define RW_ASSERT_MSG(e, msg) RW_ASSERT_IMPL (e, msg, __FILE__, __LINE__)
+#define RW_ASSERT_MSG(e, msg) RW_ASSERT_IMPL(e, msg, __FILE__, __LINE__)
 #else
 #ifdef NDEBUG
 #define RW_ASSERT_MSG(e, msg)
 #else
-#define RW_ASSERT_MSG(e, msg) RW_ASSERT_IMPL (e, msg, __FILE__, __LINE__)
+#define RW_ASSERT_MSG(e, msg) RW_ASSERT_IMPL(e, msg, __FILE__, __LINE__)
 #endif
 #endif
 
@@ -190,40 +190,38 @@ RW_DEBUG("The value of x is " << x << ". x should be less than zero.");
  * @param id [in] log level to write to.
  * @param ostreamExpression [in] Stream expression which should be written to the log
  */
-#define RW_LOG(id, ostreamExpression)                                     \
-    do {                                                                  \
-        rw::core::Log::log ().get (id) << ostreamExpression << std::endl; \
-    } while (0)
+#define RW_LOG(id, ostreamExpression) \
+    do { rw::core::Log::log().get(id) << ostreamExpression << std::endl; } while(0)
 
 /**
  * @brief Writes \b ostreamExpression to error log.
  * @param ostreamExpression [in] Stream expression which should be written to the log
  */
-#define RW_LOG_ERROR(ostreamExpression) RW_LOG (rw::core::Log::Error, ostreamExpression)
+#define RW_LOG_ERROR(ostreamExpression) RW_LOG(rw::core::Log::Error, ostreamExpression)
 
 /**
  * @brief Writes \b ostreamExpression to warning log.
  * @param ostreamExpression [in] Stream expression which should be written to the log
  */
-#define RW_LOG_WARNING(ostreamExpression) RW_LOG (rw::core::Log::Warning, ostreamExpression)
+#define RW_LOG_WARNING(ostreamExpression) RW_LOG(rw::core::Log::Warning, ostreamExpression)
 
 /**
  * @brief Writes \b ostreamExpression to debug log.
  * @param ostreamExpression [in] Stream expression which should be written to the log
  */
-#define RW_LOG_DEBUG(ostreamExpression) RW_LOG (rw::core::Log::Debug, ostreamExpression)
+#define RW_LOG_DEBUG(ostreamExpression) RW_LOG(rw::core::Log::Debug, ostreamExpression)
 
 /**
  * @brief Writes \b ostreamExpression to info log.
  * @param ostreamExpression [in] Stream expression which should be written to the log
  */
-#define RW_LOG_INFO(ostreamExpression) RW_LOG (rw::core::Log::Info, ostreamExpression)
+#define RW_LOG_INFO(ostreamExpression) RW_LOG(rw::core::Log::Info, ostreamExpression)
 
 /**
  * @brief Convenient convertion of a string expression into a Message.
  * @param ostreamExpression [in] stream expression which should be converted to a Message.
  */
-#define RW_MSG(ostreamExpression) (Message (__FILE__, __LINE__) << ostreamExpression)
+#define RW_MSG(ostreamExpression) (Message(__FILE__, __LINE__) << ostreamExpression)
 
 #define PRINT_HERE std::cout << __FILE__ << ":" << __LINE__ << std::endl << std::flush;
 
@@ -235,7 +233,7 @@ RW_DEBUG("The value of x is " << x << ". x should be less than zero.");
 #if __cplusplus >= 201703L
 #define FALLTHROUGH [[fallthrough]]
 #elif defined(__GNUC__)
-#define FALLTHROUGH __attribute__ ((fallthrough))
+#define FALLTHROUGH __attribute__((fallthrough))
 #else
 #define FALLTHROUGH
 #endif
@@ -246,9 +244,9 @@ RW_DEBUG("The value of x is " << x << ". x should be less than zero.");
  */
 #ifndef RW_IGNORE_DEPRECATED
 #if defined(__GNUC__) || defined(__clang__)
-#define DEPRECATED(warning) __attribute__ ((deprecated (warning)))
+#define DEPRECATED(warning) __attribute__((deprecated(warning)))
 #elif defined(_MSC_VER)
-#define DEPRECATED(warning) __declspec(deprecated (warning))
+#define DEPRECATED(warning) __declspec(deprecated(warning))
 #else
 #pragma message("WARNING: You need to implement DEPRECATED for this compiler")
 #define DEPRECATED(text)

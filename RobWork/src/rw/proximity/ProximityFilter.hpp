@@ -26,32 +26,32 @@ namespace rw { namespace proximity {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< ProximityFilter > Ptr;
+        typedef rw::core::Ptr<ProximityFilter> Ptr;
 
         /**
          * @brief pop the current front.
          */
-        virtual void pop () = 0;
+        virtual void pop() = 0;
 
         /**
          * @brief returns the current front and pops it afterwards
          * @return the current front element
          */
-        virtual rw::kinematics::FramePair frontAndPop () = 0;
+        virtual rw::kinematics::FramePair frontAndPop() = 0;
 
         /**
          * @brief if there are any more possibly colliding framepairs since last
          * call to update then this will return true, else false will be returned.
          */
-        virtual rw::kinematics::FramePair front () = 0;
+        virtual rw::kinematics::FramePair front() = 0;
 
         /**
          * @brief if there are any more possibly colliding framepairs since last
          * call to update then this will return true, else false will be returned.
          */
-        virtual bool isEmpty () = 0;
+        virtual bool isEmpty() = 0;
 
-        virtual ~ProximityFilter (){};
+        virtual ~ProximityFilter(){};
     };
 
 }}    // namespace rw::proximity

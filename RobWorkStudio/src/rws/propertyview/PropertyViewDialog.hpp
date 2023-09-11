@@ -34,11 +34,11 @@ class PropertyViewDialog : public QDialog
      * @param map [in] the property map to show.
      * @param parent [in] the parent widget that owns the dialog.
      */
-    PropertyViewDialog (rw::core::PropertyMap::Ptr map, QWidget* parent);
+    PropertyViewDialog(rw::core::PropertyMap::Ptr map, QWidget* parent);
 
   private Q_SLOTS:
-    void acceptPressed ();
-    void rejectPressed ();
+    void acceptPressed();
+    void rejectPressed();
 
   private:
     class Ui_PropertyViewDialog* ui;

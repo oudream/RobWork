@@ -22,10 +22,9 @@
  * @file StablePose1DModel.hpp
  */
 
-#include <rwlibs/algorithms/RANSACModel.hpp>
-
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Rotation3D.hpp>
+#include <rwlibs/algorithms/RANSACModel.hpp>
 
 namespace rwlibs { namespace algorithms {
 
@@ -42,19 +41,18 @@ namespace rwlibs { namespace algorithms {
      *
      * At least 4 samples are required for this model.
      */
-    class StablePose1DModel : public RANSACModel< StablePose1DModel, rw::math::Rotation3D<> >
+    class StablePose1DModel : public RANSACModel<StablePose1DModel, rw::math::Rotation3D<>>
     {
       public:
         //! @brief Smart pointer type to this class.
-        typedef rw::core::Ptr< StablePose1DModel > Ptr;
+        typedef rw::core::Ptr<StablePose1DModel> Ptr;
 
       public:    // constructors
         /**
          * @brief Constructor.
          */
-        StablePose1DModel () :
-            _normal (rw::math::Vector3D<>::z ()), _dx (0.0), _dy (0.0), _dz (1.0), _invalid (false)
-        {}
+        StablePose1DModel() :
+            _normal(rw::math::Vector3D<>::z()), _dx(0.0), _dy(0.0), _dz(1.0), _invalid(false) {}
 
         /**
          * @brief Constructor.
@@ -62,11 +60,10 @@ namespace rwlibs { namespace algorithms {
          * @param normal [in] normal for x, y and z planes
          * @param distances [in] Dx, Dy and Dz distances for the respective planes
          */
-        StablePose1DModel (const rw::math::Vector3D<>& normal,
-                           const rw::math::Vector3D<> distances) :
-            _normal (normalize (normal)),
-            _dx (distances[0]), _dy (distances[1]), _dz (distances[2]), _invalid (false)
-        {}
+        StablePose1DModel(const rw::math::Vector3D<>& normal,
+                          const rw::math::Vector3D<> distances) :
+            _normal(normalize(normal)),
+            _dx(distances[0]), _dy(distances[1]), _dz(distances[2]), _invalid(false) {}
 
         /**
          * @brief Constructs stable pose from an axis of rotation described in the object frame of
@@ -75,21 +72,20 @@ namespace rwlibs { namespace algorithms {
          * @param local [in] rotation axis in the body frame of reference
          * @param global [in] location of the axis of rotation in the world coordinate frame
          */
-        static StablePose1DModel fromAxes (const rw::math::Vector3D<>& local,
-                                           const rw::math::Vector3D<>& global)
-        {
-            rw::math::Vector3D<> normal = normalize (global);
-            rw::math::Vector3D<> loc    = normalize (local);
+        static StablePose1DModel fromAxes(const rw::math::Vector3D<>& local,
+                                          const rw::math::Vector3D<>& global) {
+            rw::math::Vector3D<> normal = normalize(global);
+            rw::math::Vector3D<> loc    = normalize(local);
 
-            double dx = dot (rw::math::Vector3D<>::x (), loc);
-            double dy = dot (rw::math::Vector3D<>::y (), loc);
-            double dz = dot (rw::math::Vector3D<>::z (), loc);
+            double dx = dot(rw::math::Vector3D<>::x(), loc);
+            double dy = dot(rw::math::Vector3D<>::y(), loc);
+            double dz = dot(rw::math::Vector3D<>::z(), loc);
 
-            return StablePose1DModel (normal, rw::math::Vector3D<> (dx, dy, dz));
+            return StablePose1DModel(normal, rw::math::Vector3D<>(dx, dy, dz));
         }
 
         //! @brief Destructor.
-        virtual ~StablePose1DModel () {}
+        virtual ~StablePose1DModel() {}
 
       public:    // methods
         /**
@@ -99,35 +95,34 @@ namespace rwlibs { namespace algorithms {
          * versor end points to respective planes. In case the particular plane was not found (i.e.
          * Di = NaN), distance to this plane is assumed to be 0.
          */
-        virtual double fitError (const rw::math::Rotation3D<>& sample) const;
+        virtual double fitError(const rw::math::Rotation3D<>& sample) const;
 
         //! @copydoc RANSACModel::invalid
-        virtual bool invalid () const;
+        virtual bool invalid() const;
 
         /**
          * @copydoc RANSACModel::getMinReqData
          *
          * StablePose1DModel requires at least 4 samples.
          */
-        virtual int getMinReqData () const { return 3; }
+        virtual int getMinReqData() const { return 3; }
 
         //! @copydoc RANSACModel::refit
-        virtual double refit (const std::vector< rw::math::Rotation3D<> >& samples);
+        virtual double refit(const std::vector<rw::math::Rotation3D<>>& samples);
 
         //! @copydoc RANSACModel::same
-        virtual bool same (const StablePose1DModel& model, double threshold) const;
+        virtual bool same(const StablePose1DModel& model, double threshold) const;
 
         //! @brief Get stable pose normal.
-        inline rw::math::Vector3D<> normal () const { return _normal; }
+        inline rw::math::Vector3D<> normal() const { return _normal; }
 
         //! @brief Get stable pose plane distances.
-        inline rw::math::Vector3D<> d () const { return rw::math::Vector3D<> (_dx, _dy, _dz); }
+        inline rw::math::Vector3D<> d() const { return rw::math::Vector3D<>(_dx, _dy, _dz); }
 
         /**
          * @brief Streaming operator.
          */
-        friend std::ostream& operator<< (std::ostream& out, const StablePose1DModel& model)
-        {
+        friend std::ostream& operator<<(std::ostream& out, const StablePose1DModel& model) {
             return out << "StablePose1D(normal: " << model._normal << ", distances: (" << model._dx
                        << ", " << model._dy << ", " << model._dz << "))";
         }

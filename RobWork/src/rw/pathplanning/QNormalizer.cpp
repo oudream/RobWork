@@ -20,32 +20,28 @@
 using namespace rw::math;
 using namespace rw::pathplanning;
 
-Q QNormalizer::fromNormalized (const Q& q) const
-{
-    Q r (q);
-    setFromNormalized (r);
+Q QNormalizer::fromNormalized(const Q& q) const {
+    Q r(q);
+    setFromNormalized(r);
     return r;
 }
 
-Q QNormalizer::toNormalized (const Q& q) const
-{
-    Q r (q);
-    setToNormalized (r);
+Q QNormalizer::toNormalized(const Q& q) const {
+    Q r(q);
+    setToNormalized(r);
     return r;
 }
 
-void QNormalizer::setFromNormalized (Q& q) const
-{
-    if (!_bounds.first.empty ()) {
-        for (size_t i = 0; i < q.size (); i++)
+void QNormalizer::setFromNormalized(Q& q) const {
+    if(!_bounds.first.empty()) {
+        for(size_t i = 0; i < q.size(); i++)
             q[i] = q[i] * (_bounds.second[i] - _bounds.first[i]) + _bounds.first[i];
     }
 }
 
-void QNormalizer::setToNormalized (Q& q) const
-{
-    if (!_bounds.first.empty ()) {
-        for (size_t i = 0; i < q.size (); i++)
+void QNormalizer::setToNormalized(Q& q) const {
+    if(!_bounds.first.empty()) {
+        for(size_t i = 0; i < q.size(); i++)
             q[i] = (q[i] - _bounds.first[i]) / (_bounds.second[i] - _bounds.first[i]);
     }
 }

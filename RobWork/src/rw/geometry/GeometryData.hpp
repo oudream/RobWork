@@ -38,9 +38,9 @@ namespace rw { namespace geometry {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< GeometryData > Ptr;
+        typedef rw::core::Ptr<GeometryData> Ptr;
         //! @brief const smart pointer type to this class
-        typedef rw::core::Ptr< const GeometryData > CPtr;
+        typedef rw::core::Ptr<const GeometryData> CPtr;
 
         //! @brief geometry data types
         typedef enum {
@@ -66,12 +66,12 @@ namespace rw { namespace geometry {
             UserType
         } GeometryType;
         //! @brief Destructor
-        virtual ~GeometryData () {}
+        virtual ~GeometryData() {}
 
         /**
          * @brief the type of this primitive
          */
-        virtual GeometryType getType () const = 0;
+        virtual GeometryType getType() const = 0;
 
         /**
          * @brief gets a trimesh representation of this geometry data.
@@ -84,19 +84,19 @@ namespace rw { namespace geometry {
          *
          * @return TriMesh representation of this GeometryData
          */
-        virtual rw::core::Ptr< TriMesh > getTriMesh (bool forceCopy = true) = 0;
+        virtual rw::core::Ptr<TriMesh> getTriMesh(bool forceCopy = true) = 0;
 
         /**
          * @brief test if this geometry data is convex
          * @return true if convex
          */
-        virtual bool isConvex () { return false; }
+        virtual bool isConvex() { return false; }
 
         /**
          * @brief format GeometryType to string
          * @param type
          */
-        static std::string toString (GeometryType type);
+        static std::string toString(GeometryType type);
     };
     //! @}
 }}     // namespace rw::geometry

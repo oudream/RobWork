@@ -19,45 +19,35 @@
 
 #include <QStringList>
 
-WCECompleter::WCECompleter (QObject* parent) : QCompleter (parent)
-{}
+WCECompleter::WCECompleter(QObject* parent) : QCompleter(parent) {}
 
-WCECompleter::WCECompleter (QAbstractItemModel* model, QObject* parent) : QCompleter (model, parent)
-{}
+WCECompleter::WCECompleter(QAbstractItemModel* model, QObject* parent) :
+    QCompleter(model, parent) {}
 
-WCECompleter::WCECompleter (QStringList list, QObject* parent) : QCompleter (list, parent)
-{}
+WCECompleter::WCECompleter(QStringList list, QObject* parent) : QCompleter(list, parent) {}
 
-void WCECompleter::setSeparator (const QString& separator)
-{
+void WCECompleter::setSeparator(const QString& separator) {
     sep = separator;
 }
 
-QString WCECompleter::separator () const
-{
+QString WCECompleter::separator() const {
     return sep;
 }
 
-QStringList WCECompleter::splitPath (const QString& path) const
-{
-    if (sep.isNull ()) {
-        return QCompleter::splitPath (path);
-    }
+QStringList WCECompleter::splitPath(const QString& path) const {
+    if(sep.isNull()) { return QCompleter::splitPath(path); }
 
-    return path.split (sep);
+    return path.split(sep);
 }
 
-QString WCECompleter::pathFromIndex (const QModelIndex& index) const
-{
-    if (sep.isNull ()) {
-        return QCompleter::pathFromIndex (index);
-    }
+QString WCECompleter::pathFromIndex(const QModelIndex& index) const {
+    if(sep.isNull()) { return QCompleter::pathFromIndex(index); }
 
     // navigate up and accumulate data
     QStringList dataList;
-    for (QModelIndex i = index; i.isValid (); i = i.parent ()) {
-        dataList.prepend (model ()->data (i, completionRole ()).toString ());
+    for(QModelIndex i = index; i.isValid(); i = i.parent()) {
+        dataList.prepend(model()->data(i, completionRole()).toString());
     }
 
-    return dataList.join (sep);
+    return dataList.join(sep);
 }

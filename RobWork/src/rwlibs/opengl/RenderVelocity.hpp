@@ -38,72 +38,73 @@ namespace rwlibs { namespace opengl {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< RenderVelocity > Ptr;
+        typedef rw::core::Ptr<RenderVelocity> Ptr;
 
         //! @brief Constructor
-        RenderVelocity ();
+        RenderVelocity();
 
         //! @brief Destructor
-        virtual ~RenderVelocity ();
+        virtual ~RenderVelocity();
 
-        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info, DrawableNode::DrawType type, double alpha) const
-        void draw (const rw::graphics::DrawableNode::RenderInfo& info,
-                   rw::graphics::DrawableNode::DrawType type, double alpha) const;
+        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info,
+        //! DrawableNode::DrawType type, double alpha) const
+        void draw(const rw::graphics::DrawableNode::RenderInfo& info,
+                  rw::graphics::DrawableNode::DrawType type, double alpha) const;
 
         /**
          * @brief Get the currently set velocity.
          * @return the velocity.
          */
-        rw::math::VelocityScrew6D<> getVelocity () const;
+        rw::math::VelocityScrew6D<> getVelocity() const;
 
         /**
          * @brief Get the current scaling of the linear velocity in meters per meter per second.
          * @return the scale factor.
          */
-        float getScaleLinear () const;
+        float getScaleLinear() const;
 
         /**
          * @brief Get the angular scaling of the angular velocity in meters per radians per second.
          * @return the scale factor.
          */
-        float getScaleAngular () const;
+        float getScaleAngular() const;
 
         /**
          * @brief Set the velocity.
          * @param velocity [in] the velocity.
          */
-        void setVelocity (rw::math::VelocityScrew6D<> velocity);
+        void setVelocity(rw::math::VelocityScrew6D<> velocity);
 
         /**
          * @brief Set the scaling of the linear velocity in meters per meter per second.
          * @param scale [in] the scale factor.
          */
-        void setScaleLinear (float scale);
+        void setScaleLinear(float scale);
 
         /**
          * @brief Set the angular scaling of the angular velocity in meters per radians per second.
          * @param scale [in] the scale factor.
          */
-        void setScaleAngular (float scale);
+        void setScaleAngular(float scale);
 
         /**
          * @brief Set the current scaling of the linar and angular velocity arrows.
          * @param scaleLinear [in] the scale factor for linear velocity.
          * @param scaleAngular [in] the scale factor for angular velocity.
          */
-        void setScales (float scaleLinear, float scaleAngular);
+        void setScales(float scaleLinear, float scaleAngular);
 
         /**
          * @brief Get the current color used for the linear velocity arrow.
          * @return the color as (r,g,b) vector.
          */
-        rw::math::Vector3D< float > getColorLinear () const;
+        rw::math::Vector3D<float> getColorLinear() const;
 
         /**
          * @brief Get the current color used for the angular velocity arrow.
          * @return the color as (r,g,b) vector.
          */
-        rw::math::Vector3D< float > getColorAngular () const;
+        rw::math::Vector3D<float> getColorAngular() const;
 
         /**
          * @brief Sets color of the linear velocity arrow.
@@ -111,7 +112,7 @@ namespace rwlibs { namespace opengl {
          * @param g [in] green color component.
          * @param b [in] blue color component.
          */
-        void setColorLinear (float r, float g, float b);
+        void setColorLinear(float r, float g, float b);
 
         /**
          * @brief Sets color of the angular velocity arrow.
@@ -119,7 +120,7 @@ namespace rwlibs { namespace opengl {
          * @param g [in] green color component.
          * @param b [in] blue color component.
          */
-        void setColorAngular (float r, float g, float b);
+        void setColorAngular(float r, float g, float b);
 
         /**
          * @brief Set the resolution of the rendering.
@@ -129,12 +130,12 @@ namespace rwlibs { namespace opengl {
          *
          * @param resolution
          */
-        void setResolution (unsigned int resolution);
+        void setResolution(unsigned int resolution);
 
       private:
         rw::math::VelocityScrew6D<> _velocity;
         float _scaleLin, _scaleAng;
-        rw::math::Vector3D< float > _colorLinear, _colorAngular;
+        rw::math::Vector3D<float> _colorLinear, _colorAngular;
         unsigned int _resolution;
         mutable GLUquadricObj* _quadratic;
     };

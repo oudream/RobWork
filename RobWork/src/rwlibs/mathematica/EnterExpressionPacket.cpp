@@ -20,32 +20,26 @@
 using namespace rw::core;
 using namespace rwlibs::mathematica;
 
-EnterExpressionPacket::EnterExpressionPacket (const Mathematica::Expression& expression) :
-    Packet ("EnterExpressionPacket", Mathematica::EnterExpression),
-    _expression (expression.clone ())
-{}
+EnterExpressionPacket::EnterExpressionPacket(const Mathematica::Expression& expression) :
+    Packet("EnterExpressionPacket", Mathematica::EnterExpression), _expression(expression.clone()) {
+}
 
-EnterExpressionPacket::EnterExpressionPacket (
-    rw::core::Ptr< const Mathematica::Expression > expression) :
-    Packet ("EnterExpressionPacket", Mathematica::EnterExpression),
-    _expression (expression)
-{}
+EnterExpressionPacket::EnterExpressionPacket(
+    rw::core::Ptr<const Mathematica::Expression> expression) :
+    Packet("EnterExpressionPacket", Mathematica::EnterExpression),
+    _expression(expression) {}
 
-EnterExpressionPacket::~EnterExpressionPacket ()
-{}
+EnterExpressionPacket::~EnterExpressionPacket() {}
 
-const rw::core::Ptr< const Mathematica::Expression > EnterExpressionPacket::expression ()
-{
+const rw::core::Ptr<const Mathematica::Expression> EnterExpressionPacket::expression() {
     return _expression;
 }
 
-std::list< rw::core::Ptr< const Mathematica::Expression > >
-EnterExpressionPacket::getArguments () const
-{
-    return std::list< rw::core::Ptr< const Mathematica::Expression > > (1, _expression);
+std::list<rw::core::Ptr<const Mathematica::Expression>>
+EnterExpressionPacket::getArguments() const {
+    return std::list<rw::core::Ptr<const Mathematica::Expression>>(1, _expression);
 }
 
-Mathematica::Expression::Ptr EnterExpressionPacket::clone () const
-{
-    return ownedPtr (new EnterExpressionPacket (*_expression));
+Mathematica::Expression::Ptr EnterExpressionPacket::clone() const {
+    return ownedPtr(new EnterExpressionPacket(*_expression));
 }

@@ -58,57 +58,57 @@ class WorkcellEditorWindow : public QMainWindow
      * @param rwstudio [in] instance of RobWorkStudio
      * @param parent [in] the Qt parent widget
      */
-    WorkcellEditorWindow (rw::core::Ptr< rw::core::Log > output, rws::RobWorkStudio* rwstudio,
-                          QWidget* parent);
+    WorkcellEditorWindow(rw::core::Ptr<rw::core::Log> output, rws::RobWorkStudio* rwstudio,
+                         QWidget* parent);
 
     //! @brief destructor
-    virtual ~WorkcellEditorWindow ();
+    virtual ~WorkcellEditorWindow();
 
     /**
      * @brief used to open a workcell file
      * @param fileName [in] the full file name of the workcell
      * @return did loading the workcell succeed
      */
-    bool openWorkCell (const QString& fileName);
+    bool openWorkCell(const QString& fileName);
 
   public Q_SLOTS:
 
-    void on_actionNew_triggered (bool);
+    void on_actionNew_triggered(bool);
 
-    void on_actionOpen_triggered (bool);
+    void on_actionOpen_triggered(bool);
 
-    void on_actionSave_triggered (bool);
+    void on_actionSave_triggered(bool);
 
-    void on_actionSave_As_triggered (bool);
+    void on_actionSave_As_triggered(bool);
 
-    void on_actionRun_triggered (bool);
+    void on_actionRun_triggered(bool);
 
-    void on_actionReload_triggered (bool);
+    void on_actionReload_triggered(bool);
 
-    void on_actionClose_triggered (bool);
+    void on_actionClose_triggered(bool);
 
-    void on_actionCloseTriggered (int);
+    void on_actionCloseTriggered(int);
 
-    void on_actionAdd_Frame_triggered (bool);
+    void on_actionAdd_Frame_triggered(bool);
 
-    void on_actionAdd_Drawable_triggered (bool);
+    void on_actionAdd_Drawable_triggered(bool);
 
-    void on_actionAdd_CollisionModel_triggered (bool);
+    void on_actionAdd_CollisionModel_triggered(bool);
 
-    void textChanged ();
+    void textChanged();
 
-    void runFinished ();
+    void runFinished();
 
-    void ShowContextMenu (const QPoint& p);
+    void ShowContextMenu(const QPoint& p);
 
-    void setCheckAction (QAction*);
+    void setCheckAction(QAction*);
 
   private:
-    QAbstractItemModel* modelFromFile (const QString& fileName, WCECompleter* completer);
+    QAbstractItemModel* modelFromFile(const QString& fileName, WCECompleter* completer);
 
     struct EditorTab
     {
-        typedef rw::core::Ptr< EditorTab > Ptr;
+        typedef rw::core::Ptr<EditorTab> Ptr;
         std::string _id;
         WCCodeEditor* _editor;
         WorkcellHighlighter* _highlighter;
@@ -116,25 +116,25 @@ class WorkcellEditorWindow : public QMainWindow
         std::string _filename;
     };
 
-    EditorTab::Ptr makeEditor ();
+    EditorTab::Ptr makeEditor();
 
-    bool save ();
+    bool save();
 
-    bool saveAs ();
+    bool saveAs();
 
-    bool save (const std::string& filename);
+    bool save(const std::string& filename);
 
-    EditorTab::Ptr getCurrentTab ();
+    EditorTab::Ptr getCurrentTab();
 
-    QStringList getRefFrameList ();
+    QStringList getRefFrameList();
 
   private:
     //! hold
-    std::map< QWidget*, EditorTab::Ptr > _editors;
+    std::map<QWidget*, EditorTab::Ptr> _editors;
 
     class Ui::WorkcellEditorWindow* _ui;
 
-    rw::core::Ptr< rw::core::Log > _output;
+    rw::core::Ptr<rw::core::Log> _output;
     rw::core::PropertyMap _pmap;
 
     bool _isRunning;

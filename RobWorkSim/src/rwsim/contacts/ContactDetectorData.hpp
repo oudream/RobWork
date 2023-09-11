@@ -50,26 +50,26 @@ namespace rwsim { namespace contacts {
     {
       public:
         //! @brief Smart pointer type.
-        typedef rw::core::Ptr< ContactDetectorData > Ptr;
+        typedef rw::core::Ptr<ContactDetectorData> Ptr;
 
         //! @brief Constructor.
-        ContactDetectorData ();
+        ContactDetectorData();
 
         //! @brief Copy data to new container.
-        ContactDetectorData (const ContactDetectorData& data);
+        ContactDetectorData(const ContactDetectorData& data);
 
         //! @brief Destructor.
-        virtual ~ContactDetectorData ();
+        virtual ~ContactDetectorData();
 
         /**
          * @brief Assign data from other container to this container.
          * @param data [in] the data to copy.
          * @return reference to this container.
          */
-        ContactDetectorData& operator= (const ContactDetectorData& data);
+        ContactDetectorData& operator=(const ContactDetectorData& data);
 
         //! @brief Remove all data.
-        void clear ();
+        void clear();
 
         /**
          * @brief Get the stored ContactStrategyData for a specific pair of ContactModels.
@@ -77,11 +77,11 @@ namespace rwsim { namespace contacts {
          * @param modelB [in] the second ContactModel.
          * @return a reference to the ContactStrategyData.
          */
-        ContactStrategyData& getStrategyData (const ContactModel* modelA,
-                                              const ContactModel* modelB);
+        ContactStrategyData& getStrategyData(const ContactModel* modelA,
+                                             const ContactModel* modelB);
 
       private:
-        std::map< const ContactModel*, std::map< const ContactModel*, ContactStrategyData > >
+        std::map<const ContactModel*, std::map<const ContactModel*, ContactStrategyData>>
             _modelPairToData;
     };
     //! @}

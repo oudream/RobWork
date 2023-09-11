@@ -22,10 +22,9 @@
  * @file Scanner2DModel.hpp
  */
 #if !defined(SWIG)
-#include <rw/sensor/SensorModel.hpp>
-
 #include <rw/geometry/PointCloud.hpp>
-#endif 
+#include <rw/sensor/SensorModel.hpp>
+#endif
 namespace rw { namespace sensor {
 
     /** @addtogroup sensor */
@@ -48,7 +47,7 @@ namespace rw { namespace sensor {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< Scanner2DModel > Ptr;
+        typedef rw::core::Ptr<Scanner2DModel> Ptr;
 
         /**
          * @brief constructor
@@ -58,26 +57,26 @@ namespace rw { namespace sensor {
          * @param maxDataPoints [in] the number of scan points
          * @param frame [in] the sensor frame
          */
-        Scanner2DModel (const std::string& name, double angularRangeInRad, int maxDataPoints,
-                        rw::core::Ptr<rw::kinematics::Frame> frame);
+        Scanner2DModel(const std::string& name, double angularRangeInRad, int maxDataPoints,
+                       rw::core::Ptr<rw::kinematics::Frame> frame);
 
         /**
          * @brief Destructor. Closes scanner connection if not already closed.
          */
-        virtual ~Scanner2DModel ();
+        virtual ~Scanner2DModel();
 
         /**
          * @brief get handle to point cloud data in state.
          * @param state [in] the state with point cloud data
          */
-        rw::geometry::PointCloud& getScan (const rw::kinematics::State& state);
+        rw::geometry::PointCloud& getScan(const rw::kinematics::State& state);
 
         /**
          * @brief set point cloud data in state
          * @param data [in] point cloud data to set
          * @param state [in] state in which to set the point cloud
          */
-        void setScan (const rw::geometry::PointCloud& data, const rw::kinematics::State& state);
+        void setScan(const rw::geometry::PointCloud& data, const rw::kinematics::State& state);
 
         /**
          * @brief Returns the min and max angular range of the scanner, where
@@ -87,59 +86,56 @@ namespace rw { namespace sensor {
          *
          * @return Angular range in radians
          */
-        std::pair< double, double > getAngularRange () const { return _angleRange; }
+        std::pair<double, double> getAngularRange() const { return _angleRange; }
 
         /**
          * @brief Returns the number of scan points
          */
-        size_t getMeasurementCount () const { return _width; }
+        size_t getMeasurementCount() const { return _width; }
 
         /**
          * @brief get the min an max range in meters that is scannable by the 2D scanner
          * @return range in meters
          */
-        std::pair< double, double > getDistanceRange () const { return _distRange; }
+        std::pair<double, double> getDistanceRange() const { return _distRange; }
 
         /**
          * @brief set distance range
          * @param range
          */
-        void setDistanceRange (const std::pair< double, double >& range) { _distRange = range; }
+        void setDistanceRange(const std::pair<double, double>& range) { _distRange = range; }
 
         /**
          * @brief set distance range
          * @param min documentation missing !
          * @param max documentation missing !
          */
-        void setDistanceRange (double min, double max) { _distRange = std::make_pair (min, max); }
+        void setDistanceRange(double min, double max) { _distRange = std::make_pair(min, max); }
 
       protected:
         //! cache to allow storing state information
         class Scanner2DModelCache : public rw::kinematics::StateCache
         {
           public:
-            typedef rw::core::Ptr< Scanner2DModelCache > Ptr;
+            typedef rw::core::Ptr<Scanner2DModelCache> Ptr;
             rw::geometry::PointCloud _cloud;
 
             //! constructor
-            Scanner2DModelCache (int width) : _cloud (width, 1){};
+            Scanner2DModelCache(int width) : _cloud(width, 1){};
             //! @copydoc rw::kinematics::StateCache::size
-            size_t size () const
-            {
-                return _cloud.size () * sizeof (rw::geometry::PointCloud::point_type);
+            size_t size() const {
+                return _cloud.size() * sizeof(rw::geometry::PointCloud::point_type);
             };
             //! @copydoc rw::kinematics::StateCache::clone
-            virtual rw::core::Ptr< StateCache > clone () const
-            {
-                Scanner2DModelCache::Ptr cache =
-                    rw::core::ownedPtr (new Scanner2DModelCache (*this));
+            virtual rw::core::Ptr<StateCache> clone() const {
+                Scanner2DModelCache::Ptr cache = rw::core::ownedPtr(new Scanner2DModelCache(*this));
                 return cache;
             };
         };
 
-        rw::kinematics::StatelessData< int > _sstate;
+        rw::kinematics::StatelessData<int> _sstate;
         size_t _width;
-        std::pair< double, double > _angleRange, _distRange;
+        std::pair<double, double> _angleRange, _distRange;
     };
     /*@}*/
 

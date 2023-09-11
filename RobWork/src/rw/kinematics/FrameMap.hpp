@@ -33,15 +33,14 @@ namespace rw { namespace kinematics {
      *
      * @note A requirement is that all frames must be registered in the same StateStructure.
      */
-    template< class T > class FrameMap
+    template<class T> class FrameMap
     {
       public:
         /**
          * @brief creates a framemap
          * @param s [in] the default value of new instances of T
          */
-        FrameMap (int s = 20) : _initialSize (s), _defaultVal (false, T ()), _map (s, _defaultVal)
-        {}
+        FrameMap(int s = 20) : _initialSize(s), _defaultVal(false, T()), _map(s, _defaultVal) {}
 
         /**
          * @brief creates a framemap with an initial size of s
@@ -50,31 +49,29 @@ namespace rw { namespace kinematics {
          */
 
 #if defined(SWIGLUA)
-        FrameMap (const T& defaultVal, int s) :
+        FrameMap(const T& defaultVal, int s) :
 #else
-        FrameMap (const T& defaultVal, int s = 20) :
+        FrameMap(const T& defaultVal, int s = 20) :
 #endif
-            _initialSize (s), _defaultVal (false, defaultVal), _map (s, _defaultVal)
-        {}
+            _initialSize(s), _defaultVal(false, defaultVal), _map(s, _defaultVal) {
+        }
 
         /**
          * @brief inserts a value into the frame map
          * @param frame [in] the frame for which the value is to be associated
          * @param value [in] the value that is to be associated to the frame
          */
-        void insert (const rw::kinematics::Frame& frame, const T& value)
-        {
-            operator[] (frame) = value;
+        void insert(const rw::kinematics::Frame& frame, const T& value) {
+            operator[](frame) = value;
         }
 
         /**
            @brief True iff a value for \b frame has been inserted in the map (or
            accessed using non-const operator[]).
         */
-        bool has (const rw::kinematics::Frame& frame)
-        {
-            const int idx = frame.getID ();
-            resizeIfNeeded (idx);
+        bool has(const rw::kinematics::Frame& frame) {
+            const int idx = frame.getID();
+            resizeIfNeeded(idx);
             return _map[idx].first;
         }
 #if !defined(SWIG)
@@ -89,10 +86,9 @@ namespace rw { namespace kinematics {
            @param frame [in] the frame for which to find its associated values.
            @return reference to the value associated to frame.
         */
-        const T& operator[] (const rw::kinematics::Frame& frame) const
-        {
-            const int idx = frame.getID ();
-            resizeIfNeeded (idx);
+        const T& operator[](const rw::kinematics::Frame& frame) const {
+            const int idx = frame.getID();
+            resizeIfNeeded(idx);
             return _map[idx].second;
         }
 
@@ -106,60 +102,56 @@ namespace rw { namespace kinematics {
            @param frame [in] the frame for which to find its associated values.
            @return reference to the value associated to frame.
         */
-        T& operator[] (const rw::kinematics::Frame& frame)
-        {
-            const int idx = frame.getID ();
-            resizeIfNeeded (idx);
+        T& operator[](const rw::kinematics::Frame& frame) {
+            const int idx = frame.getID();
+            resizeIfNeeded(idx);
             OkVal& val = _map[idx];
             val.first  = true;
             return val.second;
         }
 #else
-        MAPOPERATOR (T, const rw::kinematics::Frame&);
+        MAPOPERATOR(T, const rw::kinematics::Frame&);
 #endif
         /**
          * @brief Erase an element from the map
          */
-        void erase (const rw::kinematics::Frame& frame)
-        {
-            const int idx   = frame.getID ();
+        void erase(const rw::kinematics::Frame& frame) {
+            const int idx   = frame.getID();
             _map[idx].first = false;
         }
 
         /**
            @brief Clear the frame map.
         */
-        void clear ()
-        {
-            _map.clear ();
-            _map.resize (_initialSize, _defaultVal);
+        void clear() {
+            _map.clear();
+            _map.resize(_initialSize, _defaultVal);
         }
 
       private:
-        void resizeIfNeeded (int idx) const
-        {
-            const int n = (int) _map.size ();
-            if (idx >= n) {
+        void resizeIfNeeded(int idx) const {
+            const int n = (int) _map.size();
+            if(idx >= n) {
                 const int newSize = idx >= 2 * n ? idx + 1 : 2 * n;
-                _map.resize (newSize, _defaultVal);
+                _map.resize(newSize, _defaultVal);
             }
         }
 
       private:
-        typedef std::pair< bool, T > OkVal;
+        typedef std::pair<bool, T> OkVal;
 
         int _initialSize;
         OkVal _defaultVal;
-        mutable std::vector< OkVal > _map;
+        mutable std::vector<OkVal> _map;
     };
 #if !defined(SWIG)
-    extern template class rw::kinematics::FrameMap< rw::math::Transform3D< double > >;
+    extern template class rw::kinematics::FrameMap<rw::math::Transform3D<double>>;
 #else
-    #if SWIG_VERSION < 0x040000
-    SWIG_DECLARE_TEMPLATE (FrameMap_d, rw::kinematics::FrameMap< double >);
-    ADD_DEFINITION (FrameMap_d, FrameMap,sdurw_geometry)
+#if SWIG_VERSION < 0x040000
+    SWIG_DECLARE_TEMPLATE(FrameMap_d, rw::kinematics::FrameMap<double>);
+    ADD_DEFINITION(FrameMap_d, FrameMap, sdurw_geometry)
 #else
-    SWIG_DECLARE_TEMPLATE (FrameMap, rw::kinematics::FrameMap< double >);
+    SWIG_DECLARE_TEMPLATE(FrameMap, rw::kinematics::FrameMap<double>);
 #endif
 #endif
 }}    // namespace rw::kinematics

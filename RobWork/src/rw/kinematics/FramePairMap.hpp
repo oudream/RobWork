@@ -31,14 +31,15 @@ namespace rw { namespace kinematics {
     /*@{*/
 
     //! @brief A map from an unordered pair of frames to some value.
-    template< class T > class FramePairMap : public rw::common::PairMap< rw::core::Ptr<const Frame>, T >
+    template<class T> class FramePairMap : public rw::common::PairMap<rw::core::Ptr<const Frame>, T>
     {
       public:
         //! @copydoc rw::common::PairMap::PairMap()
-        FramePairMap () : rw::common::PairMap< rw::core::Ptr<const Frame>, T > () {}
+        FramePairMap() : rw::common::PairMap<rw::core::Ptr<const Frame>, T>() {}
 
         //! @copydoc rw::common::PairMap::PairMap(const T2&)
-        FramePairMap (const T& defaultVal) : rw::common::PairMap< rw::core::Ptr<const Frame>, T > (defaultVal) {}
+        FramePairMap(const T& defaultVal) :
+            rw::common::PairMap<rw::core::Ptr<const Frame>, T>(defaultVal) {}
     };
     /* @} */
 

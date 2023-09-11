@@ -21,7 +21,7 @@
 #if !defined(SWIG)
 #include <rw/math/Vector2D.hpp>
 #include <rw/sensor/Contact2D.hpp>
-#endif 
+#endif
 namespace rw { namespace graspplanning {
 
     /**
@@ -32,18 +32,16 @@ namespace rw { namespace graspplanning {
     class Grasp2D
     {
       public:
-        Grasp2D (int nrOfContacts) : contacts (nrOfContacts), approach (nrOfContacts) {}
+        Grasp2D(int nrOfContacts) : contacts(nrOfContacts), approach(nrOfContacts) {}
 
-        void scale (double clerance)
-        {
-            for (int i = 0; i < 3; i++)
-                contacts[i].p += normalize (approach[i]) * clerance;
+        void scale(double clerance) {
+            for(int i = 0; i < 3; i++) contacts[i].p += normalize(approach[i]) * clerance;
         }
 
         double phi, psi;
         rw::math::Vector2D<> center;
-        std::vector< rw::sensor::Contact2D > contacts;
-        std::vector< rw::math::Vector2D<> > approach;
+        std::vector<rw::sensor::Contact2D> contacts;
+        std::vector<rw::math::Vector2D<>> approach;
     };
 }}    // namespace rw::graspplanning
 

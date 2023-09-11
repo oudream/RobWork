@@ -28,13 +28,13 @@ namespace rwsim { namespace util {
         /**
          * @brief a list of available strategies.
          */
-        static std::vector< std::string > getAvailableStrategies ();
+        static std::vector<std::string> getAvailableStrategies();
 
         /**
          * @brief instantiate a strategy with ID \b id.
          * @param id [in] id of strategy
          */
-        static GraspStrategy::Ptr makeStrategy (const std::string& id);
+        static GraspStrategy::Ptr makeStrategy(const std::string& id);
     };
 }}     // namespace rwsim::util
 #endif /* GRASPSTRATEGYFACTORY_HPP_ */

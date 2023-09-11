@@ -22,7 +22,7 @@
 #include <rw/sensor/Contact3D.hpp>
 
 #include <vector>
-#endif 
+#endif
 namespace rw { namespace kinematics {
     class State;
 }}    // namespace rw::kinematics
@@ -44,9 +44,9 @@ namespace rw { namespace sensor {
          * force and not just noise.
          * @return All estimated contacts
          */
-        static std::vector< rw::sensor::Contact3D >
-        estimateContacts (const rw::sensor::TactileArrayModel& arraySensor,
-                          const rw::kinematics::State& state, double minContactForce);
+        static std::vector<rw::sensor::Contact3D>
+        estimateContacts(const rw::sensor::TactileArrayModel& arraySensor,
+                         const rw::kinematics::State& state, double minContactForce);
     };
 
 }}     // namespace rw::sensor

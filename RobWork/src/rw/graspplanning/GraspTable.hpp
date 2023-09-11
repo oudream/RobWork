@@ -19,14 +19,13 @@
 #define RW_GRASPPLANNING_GRASPTABLE_HPP_
 
 #if !defined(SWIG)
-#include <rw/graspplanning/Grasp3D.hpp>
-
 #include <rw/core/PropertyMap.hpp>
+#include <rw/graspplanning/Grasp3D.hpp>
 #include <rw/math/Pose6D.hpp>
 #include <rw/math/Q.hpp>
 #include <rw/math/Vector3D.hpp>
 #include <rw/sensor/TactileArray.hpp>
-#endif 
+#endif
 namespace rw { namespace graspplanning {
 
     /**
@@ -37,7 +36,7 @@ namespace rw { namespace graspplanning {
     class GraspTable
     {
       public:
-        typedef rw::core::Ptr< GraspTable > Ptr;
+        typedef rw::core::Ptr<GraspTable> Ptr;
 
         //! @brief this version increase each time the file format is changed
         static const unsigned int GTABLE_VERSION = 0x00001;
@@ -48,7 +47,7 @@ namespace rw { namespace graspplanning {
         struct GraspData
         {
             //! constructor
-            GraspData () : hp (0, 0, 0, 0, 0, 0), op (0, 0, 0, 0, 0, 0) {}
+            GraspData() : hp(0, 0, 0, 0, 0, 0), op(0, 0, 0, 0, 0, 0) {}
             //! approach relative to object
             rw::math::Vector3D<> approach;
             //! contact configuration
@@ -64,9 +63,9 @@ namespace rw { namespace graspplanning {
             //! quality or value list
             rw::math::Q quality;
             //! tactile array data
-            std::vector< rw::sensor::TactileArray::ValueMatrix > _tactiledata;
+            std::vector<rw::sensor::TactileArray::ValueMatrix> _tactiledata;
             //! tactile contacts
-            std::vector< std::vector< rw::sensor::Contact3D > > tactileContacts;
+            std::vector<std::vector<rw::sensor::Contact3D>> tactileContacts;
         };
 
       public:
@@ -75,86 +74,86 @@ namespace rw { namespace graspplanning {
          * @param handName [in] name of robot hand
          * @param objectId [in] name of object that is being grasped
          */
-        GraspTable (const std::string& handName, const std::string& objectId);
+        GraspTable(const std::string& handName, const std::string& objectId);
 
         //! @brief destructor
-        virtual ~GraspTable (){};
+        virtual ~GraspTable(){};
 
         /**
          * @brief gets the index of the calibration force if its used. The calibration force is
          * stored in the 'quality' list in the GraspData objects.
          * @return index of calibration force if used, -1 otherwise
          */
-        int getCalibForceIndex ();
+        int getCalibForceIndex();
 
         /**
          * @brief set the index of the calibration force
          * @param idx [in] calibration force index
          */
-        void setCalibForceIndex (int idx) { _calibForceIndex = idx; };
+        void setCalibForceIndex(int idx) { _calibForceIndex = idx; };
 
         /**
          * @brief add a grasp to this GraspTable
          * @param data [in] Grasp data
          */
-        void addGrasp (GraspData& data);
+        void addGrasp(GraspData& data);
 
         /**
          * @brief get the nr of grasps in this GraspTable
          * @return nr of grasps in this GraspTable
          */
-        size_t size () { return _graspData.size (); };
+        size_t size() { return _graspData.size(); };
 
         /**
          * @brief get all grasp data
          * @return vector of grasps
          */
-        std::vector< GraspData >& getData () { return _graspData; };
+        std::vector<GraspData>& getData() { return _graspData; };
 
         /**
          * @brief get name of hand
          * @return name of hand
          */
-        const std::string& getHandName () { return _handName; };
+        const std::string& getHandName() { return _handName; };
 
         /**
          * @brief get name of object
          * @return name of object
          */
-        const std::string& getObjectName () { return _objectId; };
+        const std::string& getObjectName() { return _objectId; };
 
         /**
          * @brief get the number of tactile arrays on this hand
          * @return
          */
-        int nrTactileArrayGrasp ();
+        int nrTactileArrayGrasp();
 
         /**
          * @brief get the dimensions of the i'th tactile array
          * @param i [in] the tactile array id
          * @return
          */
-        std::pair< int, int > getTactileArrayDim (int i);
+        std::pair<int, int> getTactileArrayDim(int i);
 
         /**
          * @brief check if this table has calib force data
          * @return true if this table has calib force data (equal to getCalibForceIndex()>=0), false
          * otherwise
          */
-        bool hasCalibForce ();
+        bool hasCalibForce();
 
         /**
          * @brief load a grasp table from file
          * @param filename [in] name of file
          * @return GraspTable
          */
-        static rw::core::Ptr< GraspTable > load (const std::string& filename);
+        static rw::core::Ptr<GraspTable> load(const std::string& filename);
 
         /**
          * @brief save this grasp table to file \b filename
          * @param filename [in] name of file
          */
-        void save (const std::string& filename);
+        void save(const std::string& filename);
 
         /**
          *
@@ -173,7 +172,7 @@ namespace rw { namespace graspplanning {
         int _calibForceIndex;
 
         rw::core::PropertyMap _properties;
-        std::vector< GraspData > _graspData;
+        std::vector<GraspData> _graspData;
     };
 
 }}    // namespace rw::graspplanning

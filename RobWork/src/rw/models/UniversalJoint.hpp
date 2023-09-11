@@ -25,7 +25,7 @@
  */
 #if !defined(SWIG)
 #include <rw/models/Joint.hpp>
-#endif 
+#endif
 
 namespace rw { namespace models {
     //! @addtogroup models
@@ -42,50 +42,49 @@ namespace rw { namespace models {
     {
       public:
         //! @brief Smart pointer type of UniversalJoint
-        typedef rw::core::Ptr< UniversalJoint > Ptr;
+        typedef rw::core::Ptr<UniversalJoint> Ptr;
 
         /**
          * @brief Construct a universal joint.
          * @param name [in] name of the joint.
          * @param transform [in] static transform of the joint.
          */
-        UniversalJoint (const std::string& name, const rw::math::Transform3D<>& transform);
+        UniversalJoint(const std::string& name, const rw::math::Transform3D<>& transform);
 
         //! @brief Destructor.
-        virtual ~UniversalJoint ();
+        virtual ~UniversalJoint();
 
         // From Frame
         //! @brief Frame::doMultiplyTransform
-        virtual void doMultiplyTransform (const rw::math::Transform3D<>& parent,
-                                          const rw::kinematics::State& state,
-                                          rw::math::Transform3D<>& result) const;
+        virtual void doMultiplyTransform(const rw::math::Transform3D<>& parent,
+                                         const rw::kinematics::State& state,
+                                         rw::math::Transform3D<>& result) const;
 
         //! @brief Frame::doGetTransform
-        virtual rw::math::Transform3D<> doGetTransform (const rw::kinematics::State& state) const;
+        virtual rw::math::Transform3D<> doGetTransform(const rw::kinematics::State& state) const;
 
         // From Joint
         //! @copydoc Joint::getJacobian
-        virtual void getJacobian (std::size_t row, std::size_t col,
-                                  const rw::math::Transform3D<>& joint,
-                                  const rw::math::Transform3D<>& tcp,
-                                  const rw::kinematics::State& state,
-                                  rw::math::Jacobian& jacobian) const;
+        virtual void getJacobian(std::size_t row, std::size_t col,
+                                 const rw::math::Transform3D<>& joint,
+                                 const rw::math::Transform3D<>& tcp,
+                                 const rw::kinematics::State& state,
+                                 rw::math::Jacobian& jacobian) const;
 
         //! @copydoc Joint::getFixedTransform
-        virtual rw::math::Transform3D<> getFixedTransform () const;
+        virtual rw::math::Transform3D<> getFixedTransform() const;
 
         //! @copydoc Joint::setFixedTransform
-        virtual void setFixedTransform (const rw::math::Transform3D<>& t3d);
+        virtual void setFixedTransform(const rw::math::Transform3D<>& t3d);
 
         //! @copydoc Joint::getJointTransform
-        virtual rw::math::Transform3D<>
-        getJointTransform (const rw::kinematics::State& state) const;
+        virtual rw::math::Transform3D<> getJointTransform(const rw::kinematics::State& state) const;
 
         //! @copydoc Joint::setJointMapping
-        virtual void setJointMapping (rw::math::Function1Diff<>::Ptr function);
+        virtual void setJointMapping(rw::math::Function1Diff<>::Ptr function);
 
         //! @copydoc Joint::removeJointMapping
-        virtual void removeJointMapping ();
+        virtual void removeJointMapping();
 
       private:
         rw::math::Transform3D<> _T;

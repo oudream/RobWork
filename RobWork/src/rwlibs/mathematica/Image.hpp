@@ -24,9 +24,8 @@
  * \copydoc rwlibs::mathematica::Image
  */
 
-#include <rwlibs/mathematica/Mathematica.hpp>
-
 #include <rw/core/Ptr.hpp>
+#include <rwlibs/mathematica/Mathematica.hpp>
 
 namespace rw { namespace core {
     class PropertyMap;
@@ -47,20 +46,20 @@ namespace rwlibs { namespace mathematica {
     {
       public:
         //! @brief Smart pointer type.
-        typedef rw::core::Ptr< Image > Ptr;
+        typedef rw::core::Ptr<Image> Ptr;
 
         /**
          * @brief Construct a Image expression from a RobWork image.
          * @param image [in] the image.
          */
-        Image (rw::core::Ptr< const rw::sensor::Image > image);
+        Image(rw::core::Ptr<const rw::sensor::Image> image);
 
         /**
          * @brief Construct a Image expression.
          * @param data [in] the data expression (e.g. a variable name, table/list expression, or
          * data array).
          */
-        Image (const Mathematica::Expression& data);
+        Image(const Mathematica::Expression& data);
 
         /**
          * @brief Construct a Image expression.
@@ -68,23 +67,23 @@ namespace rwlibs { namespace mathematica {
          * data array).
          * @param options [in] the options to use (such as ColorSpace, ImageSize etc.)
          */
-        Image (const Mathematica::Expression& data, const rw::core::PropertyMap& options);
+        Image(const Mathematica::Expression& data, const rw::core::PropertyMap& options);
 
         //! @brief Destructor.
-        virtual ~Image ();
+        virtual ~Image();
 
         //! @copydoc Mathematica::FunctionBase::getArguments
-        virtual std::list< rw::core::Ptr< const Mathematica::Expression > > getArguments () const;
+        virtual std::list<rw::core::Ptr<const Mathematica::Expression>> getArguments() const;
 
         //! @copydoc Mathematica::Expression::clone
-        virtual Mathematica::Expression::Ptr clone () const;
+        virtual Mathematica::Expression::Ptr clone() const;
 
         /**
          * @brief Set ImageSize option.
          * @param width [in] the width.
          * @param height [in] the height.
          */
-        void setImageSize (std::size_t width, std::size_t height);
+        void setImageSize(std::size_t width, std::size_t height);
 
         /**
          * @brief Construct RobWork Image from Mathematica Image expression.
@@ -92,16 +91,16 @@ namespace rwlibs { namespace mathematica {
          * @return the parsed Image expression.
          * @throws rw::core::Exception if parsing fails.
          */
-        static rw::core::Ptr< rw::sensor::Image >
-        toRobWorkImage (const Mathematica::Expression& expression);
+        static rw::core::Ptr<rw::sensor::Image>
+        toRobWorkImage(const Mathematica::Expression& expression);
 
       private:
-        Image ();
+        Image();
 
       private:
         Mathematica::Expression::Ptr _data;
         Mathematica::String::Ptr _type;
-        std::list< rw::core::Ptr< Rule > > _rules;
+        std::list<rw::core::Ptr<Rule>> _rules;
     };
     //! @}
 }}     // namespace rwlibs::mathematica

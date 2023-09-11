@@ -40,42 +40,43 @@ namespace rwsim { namespace contacts {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< RenderContacts > Ptr;
+        typedef rw::core::Ptr<RenderContacts> Ptr;
 
         /**
          * @brief Construct render with no initial contacts.
          */
-        RenderContacts ();
+        RenderContacts();
 
         /**
          * @brief Constructs a render for a list of contacts.
          *
          * @param contacts [in] the list of contacts to draw.
          */
-        RenderContacts (const std::vector< Contact >& contacts);
+        RenderContacts(const std::vector<Contact>& contacts);
 
         /**
          * @brief Destructor
          */
-        virtual ~RenderContacts ();
+        virtual ~RenderContacts();
 
         /**
          * @brief Set which contacts to draw.
          *
          * @param contacts [in] contacts to draw.
          */
-        void setContacts (const std::vector< Contact >& contacts);
+        void setContacts(const std::vector<Contact>& contacts);
 
         /**
          * @brief Get list of contacts that are currently used by the render.
          *
          * @return list of contacts.
          */
-        std::vector< Contact > getContacts () const;
+        std::vector<Contact> getContacts() const;
 
-        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info, DrawableNode::DrawType type, double alpha) const
-        void draw (const rw::graphics::DrawableNode::RenderInfo& info,
-                   rw::graphics::DrawableNode::DrawType type, double alpha) const;
+        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info,
+        //! DrawableNode::DrawType type, double alpha) const
+        void draw(const rw::graphics::DrawableNode::RenderInfo& info,
+                  rw::graphics::DrawableNode::DrawType type, double alpha) const;
 
         /**
          * @brief Sets color of contact points.
@@ -84,7 +85,7 @@ namespace rwsim { namespace contacts {
          * @param g [in] green color component in [0:1]
          * @param b [in] blue color component in [0:1]
          */
-        void setColorPoints (float r, float g, float b);
+        void setColorPoints(float r, float g, float b);
 
         /**
          * @brief Sets color of normal arrows.
@@ -93,87 +94,83 @@ namespace rwsim { namespace contacts {
          * @param g [in] green color component in [0:1]
          * @param b [in] blue color component in [0:1]
          */
-        void setColorNormal (float r, float g, float b);
+        void setColorNormal(float r, float g, float b);
 
         /**
          * @brief Get color of contact points.
          *
          * @return color of contact point as 3D vector for r-, g-, and b-components (in [0:1]).
          */
-        rw::math::Vector3D< float > getColorPoint () const;
+        rw::math::Vector3D<float> getColorPoint() const;
 
         /**
          * @brief Get color of contact points.
          *
          * @return color of contact point as 3D vector for r-, g-, and b-components (in [0:1]).
          */
-        rw::math::Vector3D< float > getColorNormal () const;
+        rw::math::Vector3D<float> getColorNormal() const;
 
         /**
          * @brief Get the sphere radius.
          * @return the sphere radius (in meters).
          */
-        double getSphereRadius () const { return _sphereRadius; }
+        double getSphereRadius() const { return _sphereRadius; }
 
         /**
          * @brief Get the normal length.
          * @return the normal length (in meters).
          */
-        double getNormalLength () const { return _normalLength; }
+        double getNormalLength() const { return _normalLength; }
 
         /**
          * @brief Check if contact points are shown.
          * @return a pair with the status for the first and second contact point respectively.
          */
-        std::pair< bool, bool > showPoints () const { return _showPoints; }
+        std::pair<bool, bool> showPoints() const { return _showPoints; }
 
         /**
          * @brief Check if contact normals are shown.
          * @return a pair with the status for the first and second contact normal respectively.
          */
-        std::pair< bool, bool > showNormals () const { return _showNormals; }
+        std::pair<bool, bool> showNormals() const { return _showNormals; }
 
         /**
          * @brief Set the sphere radius for the contact points.
          * @param radius [in] the new radius (default is 5 mm)
          */
-        void setSphereRadius (double radius = 0.005) { _sphereRadius = (radius > 0) ? radius : 0; }
+        void setSphereRadius(double radius = 0.005) { _sphereRadius = (radius > 0) ? radius : 0; }
 
         /**
          * @brief Set the normal length for the contact normals.
          * @param length [in] the new length (default is 5 cm)
          */
-        void setNormalLength (double length = 0.05) { _normalLength = (length > 0) ? length : 0; }
+        void setNormalLength(double length = 0.05) { _normalLength = (length > 0) ? length : 0; }
 
         /**
          * @brief Set if the contact points should be shown.
          * @param pointA [in] true if point on first object should be shown.
          * @param pointB [in] true if point on second object should be shown.
          */
-        void showPoints (bool pointA, bool pointB)
-        {
-            _showPoints = std::make_pair (pointA, pointB);
-        }
+        void showPoints(bool pointA, bool pointB) { _showPoints = std::make_pair(pointA, pointB); }
 
         /**
          * @brief Set if the contact normals should be shown.
          * @param normalA [in] true if first contact normal should be shown.
          * @param normalB [in] true if second contact normal should be shown.
          */
-        void showNormals (bool normalA, bool normalB)
-        {
-            _showNormals = std::make_pair (normalA, normalB);
+        void showNormals(bool normalA, bool normalB) {
+            _showNormals = std::make_pair(normalA, normalB);
         }
 
       private:
-        std::vector< Contact > _contacts;
-        rw::math::Vector3D< float > _colorPoint, _colorNormal;
+        std::vector<Contact> _contacts;
+        rw::math::Vector3D<float> _colorPoint, _colorNormal;
         struct GLData;
         const GLData* const _gl;
         double _sphereRadius;
         double _normalLength;
-        std::pair< bool, bool > _showPoints;
-        std::pair< bool, bool > _showNormals;
+        std::pair<bool, bool> _showPoints;
+        std::pair<bool, bool> _showNormals;
     };
     //! @}
 }}     // namespace rwsim::contacts

@@ -37,65 +37,65 @@ namespace rwlibs { namespace csg {
     {
       public:
         //! @brief Smart pointer type for CSGModel.
-        typedef rw::core::Ptr< CSGModel > Ptr;
+        typedef rw::core::Ptr<CSGModel> Ptr;
 
       public:
         //! @brief Constructor.
-        CSGModel ();
+        CSGModel();
 
         //! @brief Destructor.
-        virtual ~CSGModel () {}
+        virtual ~CSGModel() {}
 
         /**
          * @brief Copy constructor.
          * @param csgmodel [in] other CSGModel to copy.
          */
-        CSGModel (const CSGModel& csgmodel);
+        CSGModel(const CSGModel& csgmodel);
 
         /** @brief Constructs CSGModel from TriMesh. */
-        CSGModel (const rw::geometry::TriMesh& trimesh);
+        CSGModel(const rw::geometry::TriMesh& trimesh);
 
         /* TRANSFORMATIONS */
         /** @brief Translates the model. */
-        void translate (float x, float y, float z);
+        void translate(float x, float y, float z);
 
         /** @brief Rotates the model. */
-        void rotate (float r, float p, float y);
+        void rotate(float r, float p, float y);
 
         /** @brief Applies RobWork transformation to the model. */
-        void transform (const rw::math::Transform3D<>& T);
+        void transform(const rw::math::Transform3D<>& T);
 
         /* OPERATIONS */
         /**
          * @brief Adds a volume.
          */
-        void add (CSGModel::Ptr model);
+        void add(CSGModel::Ptr model);
 
         /**
          * @brief Subtracts a volume.
          */
-        void subtract (CSGModel::Ptr model);
+        void subtract(CSGModel::Ptr model);
 
         /**
          * @brief Intersects volumes.
          */
-        void intersect (CSGModel::Ptr model);
+        void intersect(CSGModel::Ptr model);
 
         /* UTILITIES */
         /** @brief Returns RobWork geometry representation. */
-        rw::geometry::TriMesh::Ptr getTriMesh ();
+        rw::geometry::TriMesh::Ptr getTriMesh();
 
         /** @brief Saves the CSGModel in Stl format. */
-        void saveToStl (const std::string& filename);
+        void saveToStl(const std::string& filename);
 
       protected:
         /** @brief Converts internal csgjs geometry representation to TriMesh. */
-        void _convertToTriMesh ();
+        void _convertToTriMesh();
 
         bool _needsConversion;    // is it neccessary to convert to TriMesh?
 
-        rw::core::Ptr< csgjs_model > _model;    // csgjs library geometry representation
-        rw::geometry::TriMesh::Ptr _mesh;       // RobWork geometry representation
+        rw::core::Ptr<csgjs_model> _model;    // csgjs library geometry representation
+        rw::geometry::TriMesh::Ptr _mesh;     // RobWork geometry representation
     };
 
 }}    // namespace rwlibs::csg

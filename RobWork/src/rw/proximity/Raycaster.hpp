@@ -19,12 +19,11 @@
 #define RW_PROXIMITY_RAYCASTER_HPP_
 
 #if !defined(SWIG)
-#include <rw/proximity/ProximityModel.hpp>
-#include <rw/proximity/ProximityStrategyData.hpp>
-
 #include <rw/core/Ptr.hpp>
 #include <rw/geometry/PlainTriMesh.hpp>
 #include <rw/math/Vector3D.hpp>
+#include <rw/proximity/ProximityModel.hpp>
+#include <rw/proximity/ProximityStrategyData.hpp>
 #endif
 
 namespace rw { namespace kinematics {
@@ -60,12 +59,12 @@ namespace rw { namespace proximity {
             rw::math::Vector3D<double> normal;
 
             // all contact points and normals (if normals enabled)
-            std::vector< rw::math::Vector3D<double> > points;
-            std::vector< rw::math::Vector3D<double> > normals;
+            std::vector<rw::math::Vector3D<double>> points;
+            std::vector<rw::math::Vector3D<double>> normals;
 
             // the models that where in contact and an associated int that indexes into the
             // starting of points,normals for the object.
-            std::vector< std::pair< rw::proximity::ProximityModel::Ptr, int > > models;
+            std::vector<std::pair<rw::proximity::ProximityModel::Ptr, int>> models;
 
             rw::proximity::ProximityStrategyData data;
         };
@@ -77,26 +76,28 @@ namespace rw { namespace proximity {
          * @brief constructor - only the frames in the vector are tested against each
          * other.
          */
-        Raycaster (double ray_length = 100.0);
+        Raycaster(double ray_length = 100.0);
 #endif
         /**
          * @brief constructor - only the frames in the vector are tested against each
          * other.
          */
-        Raycaster (rw::proximity::CollisionStrategy::Ptr cdstrategy, double ray_length = 100.0);
+        Raycaster(rw::proximity::CollisionStrategy::Ptr cdstrategy, double ray_length = 100.0);
 
         //! @brief destructor
-        virtual ~Raycaster ();
+        virtual ~Raycaster();
 
-        void setRayFrame (rw::core::Ptr< rw::kinematics::Frame > rayframe) { _rayFrame = rayframe; }
+        void setRayFrame(rw::core::Ptr<rw::kinematics::Frame> rayframe) {
+            _rayFrame = rayframe;
+        }
 
 #if !defined(SWIG)
         // TODO THESE FUNCTIONS ARE NOT IMPLEMENTED
-        void add (rw::core::Ptr< rw::geometry::Geometry > geom);
+        void add(rw::core::Ptr<rw::geometry::Geometry> geom);
 
-        void add (rw::core::Ptr< rw::models::Object > object);
+        void add(rw::core::Ptr<rw::models::Object> object);
 
-        void add (rw::core::Ptr< rw::models::WorkCell > wc);
+        void add(rw::core::Ptr<rw::models::WorkCell> wc);
 #endif
 
         /**
@@ -105,28 +106,30 @@ namespace rw { namespace proximity {
          * first by the ray is returned along with the intersection point described in
          * world frame.
          */
-        bool shoot (const rw::math::Vector3D< double >& pos,
-                    const rw::math::Vector3D< double >& direction, QueryResult& result,
-                    const rw::kinematics::State& state);
+        bool shoot(const rw::math::Vector3D<double>& pos,
+                   const rw::math::Vector3D<double>& direction, QueryResult& result,
+                   const rw::kinematics::State& state);
 
         /**
          * @brief set to true if normals should also be calculated
          * @param enabled
          */
-        void setCalculateNormals (bool enabled) { _calculateNormals = enabled; };
+        void setCalculateNormals(bool enabled) {
+            _calculateNormals = enabled;
+        };
 
       private:
         bool _calculateNormals;
 
         // rw::proximity::CollisionDetectorPtr _detector;
-        std::vector< rw::kinematics::Frame* > _frames;
-        rw::core::Ptr< rw::proximity::CollisionStrategy > _cdstrategy;
+        std::vector<rw::kinematics::Frame*> _frames;
+        rw::core::Ptr<rw::proximity::CollisionStrategy> _cdstrategy;
         rw::geometry::PlainTriMeshF::Ptr _ray;
-        rw::core::Ptr< rw::kinematics::Frame > _rayFrame;
+        rw::core::Ptr<rw::kinematics::Frame> _rayFrame;
 
         rw::proximity::ProximityModel::Ptr _rayModel;
 
-        std::vector< rw::proximity::ProximityModel::Ptr > _obstacles;
+        std::vector<rw::proximity::ProximityModel::Ptr> _obstacles;
 
         QueryType _queryType;
     };

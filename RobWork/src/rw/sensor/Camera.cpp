@@ -20,29 +20,23 @@
 using namespace rw::sensor;
 using namespace rw::kinematics;
 
-Camera::Camera (const std::string& name, const std::string& modelInfo) :
-    Sensor (name, modelInfo), _modelInfo (modelInfo), _initialized (false), _started (false)
-{}
+Camera::Camera(const std::string& name, const std::string& modelInfo) :
+    Sensor(name, modelInfo), _modelInfo(modelInfo), _initialized(false), _started(false) {}
 
-Camera::~Camera ()
-{}
+Camera::~Camera() {}
 
-bool Camera::removeListener (CameraListener& listener)
-{
-    typedef std::vector< CameraListener* >::iterator I;
-    const I p     = std::find (_listeners.begin (), _listeners.end (), &listener);
-    const bool ok = p != _listeners.end ();
-    if (ok)
-        _listeners.erase (p);
+bool Camera::removeListener(CameraListener& listener) {
+    typedef std::vector<CameraListener*>::iterator I;
+    const I p     = std::find(_listeners.begin(), _listeners.end(), &listener);
+    const bool ok = p != _listeners.end();
+    if(ok) _listeners.erase(p);
     return ok;
 }
 
-bool Camera::addListener (CameraListener& listener)
-{
-    typedef std::vector< CameraListener* >::iterator I;
-    const I p     = std::find (_listeners.begin (), _listeners.end (), &listener);
-    const bool ok = p != _listeners.end ();
-    if (ok)
-        _listeners.push_back (&listener);
+bool Camera::addListener(CameraListener& listener) {
+    typedef std::vector<CameraListener*>::iterator I;
+    const I p     = std::find(_listeners.begin(), _listeners.end(), &listener);
+    const bool ok = p != _listeners.end();
+    if(ok) _listeners.push_back(&listener);
     return ok;
 }

@@ -19,28 +19,27 @@
 
 using namespace rwlibs::mathematica;
 
-std::size_t RawArrayUtil::detectDimensions (const Mathematica::FunctionBase& exp)
-{
-    if (exp.getName () != "RawArray")
-        RW_THROW ("Expected function with name RawArray, not " << exp.getName () << ".");
-    const std::list< rw::core::Ptr< const Mathematica::Expression > >& args = exp.getArguments ();
-    if (args.size () != 2)
-        RW_THROW ("Expected two arguments for RawArray, not " << args.size () << ".");
-    rw::core::Ptr< const Mathematica::Expression > array = args.back ();
-    std::size_t dim                                      = 0;
-    rw::core::Ptr< const Mathematica::FunctionBase > fct;
+std::size_t RawArrayUtil::detectDimensions(const Mathematica::FunctionBase& exp) {
+    if(exp.getName() != "RawArray")
+        RW_THROW("Expected function with name RawArray, not " << exp.getName() << ".");
+    const std::list<rw::core::Ptr<const Mathematica::Expression>>& args = exp.getArguments();
+    if(args.size() != 2)
+        RW_THROW("Expected two arguments for RawArray, not " << args.size() << ".");
+    rw::core::Ptr<const Mathematica::Expression> array = args.back();
+    std::size_t dim                                    = 0;
+    rw::core::Ptr<const Mathematica::FunctionBase> fct;
     bool cont = true;
     ;
     do {
-        fct  = array.cast< const Mathematica::FunctionBase > ();
+        fct  = array.cast<const Mathematica::FunctionBase>();
         cont = false;
-        if (!fct.isNull ()) {
+        if(!fct.isNull()) {
             dim++;
-            if (fct->getArguments ().size () > 0) {
-                array = fct->getArguments ().front ();
+            if(fct->getArguments().size() > 0) {
+                array = fct->getArguments().front();
                 cont  = true;
             }
         }
-    } while (cont);
+    } while(cont);
     return dim;
 }

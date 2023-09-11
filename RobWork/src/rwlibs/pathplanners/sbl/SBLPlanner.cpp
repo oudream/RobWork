@@ -32,17 +32,16 @@ namespace {
 class SBLQToQSamplerPlanner : public rw::pathplanning::QToQSamplerPlanner
 {
   public:
-    SBLQToQSamplerPlanner (const SBLSetup& setup) : _options (SBLInternal::getOptions (setup)) {}
+    SBLQToQSamplerPlanner(const SBLSetup& setup) : _options(SBLInternal::getOptions(setup)) {}
 
   private:
-    bool doQuery (const Q& from, QSampler& to, QPath& result, const StopCriteria& stop)
-    {
+    bool doQuery(const Q& from, QSampler& to, QPath& result, const StopCriteria& stop) {
         const SBLInternal::Motion path =
-            SBLInternal::findApproach (from, Q (), SBLInternal::Motion (), to, _options, stop);
+            SBLInternal::findApproach(from, Q(), SBLInternal::Motion(), to, _options, stop);
 
-        result.insert (result.end (), path.begin (), path.end ());
+        result.insert(result.end(), path.begin(), path.end());
 
-        return !path.empty ();
+        return !path.empty();
     }
 
   private:
@@ -50,18 +49,15 @@ class SBLQToQSamplerPlanner : public rw::pathplanning::QToQSamplerPlanner
 };
 }    // namespace
 
-QToQSamplerPlanner::Ptr SBLPlanner::makeQToQSamplerPlanner (const SBLSetup& setup)
-{
-    return ownedPtr (new SBLQToQSamplerPlanner (setup));
+QToQSamplerPlanner::Ptr SBLPlanner::makeQToQSamplerPlanner(const SBLSetup& setup) {
+    return ownedPtr(new SBLQToQSamplerPlanner(setup));
 }
 
-QToQPlanner::Ptr SBLPlanner::makeQToQPlanner (const SBLSetup& setup)
-{
-    return QToQPlanner::make (makeQToQSamplerPlanner (setup));
+QToQPlanner::Ptr SBLPlanner::makeQToQPlanner(const SBLSetup& setup) {
+    return QToQPlanner::make(makeQToQSamplerPlanner(setup));
 }
 
 rw::pathplanning::QToTPlanner::Ptr
-SBLPlanner::makeQToTPlanner (const SBLSetup& setup, rw::core::Ptr< QIKSampler > ikSampler)
-{
-    return QToTPlanner::make (makeQToQSamplerPlanner (setup), ikSampler);
+SBLPlanner::makeQToTPlanner(const SBLSetup& setup, rw::core::Ptr<QIKSampler> ikSampler) {
+    return QToTPlanner::make(makeQToQSamplerPlanner(setup), ikSampler);
 }

@@ -48,23 +48,22 @@ namespace rwsimlibs { namespace bullet {
          * @brief Construct new collision configuration.
          * @param detector [in] the RobWork ContactDetector to use.
          */
-        BtRWCollisionConfiguration (
-            rw::core::Ptr< const rwsim::contacts::ContactDetector > detector);
+        BtRWCollisionConfiguration(rw::core::Ptr<const rwsim::contacts::ContactDetector> detector);
 
         //! @brief Destructor.
-        virtual ~BtRWCollisionConfiguration ();
+        virtual ~BtRWCollisionConfiguration();
 
         /**
          * @brief Get pool of allocated manifolds.
          * @return the allocator.
          */
-        virtual btPoolAllocator* getPersistentManifoldPool ();
+        virtual btPoolAllocator* getPersistentManifoldPool();
 
         /**
          * @brief Get algorithm allocator.
          * @return the allocator.
          */
-        virtual btPoolAllocator* getCollisionAlgorithmPool ();
+        virtual btPoolAllocator* getCollisionAlgorithmPool();
 
 #if BT_BULLET_VERSION < 282
         /**
@@ -72,7 +71,7 @@ namespace rwsimlibs { namespace bullet {
          * @return pointer to the stack allocator.
          * @deprecated Only defined for backwards compatibility with Bullet 2.81.
          */
-        virtual btStackAlloc* getStackAllocator ();
+        virtual btStackAlloc* getStackAllocator();
 #endif
 
         /**
@@ -85,8 +84,8 @@ namespace rwsimlibs { namespace bullet {
          * @param proxyType1 [in] the type of second object.
          * @return the collision algorithm allocator.
          */
-        virtual btCollisionAlgorithmCreateFunc* getCollisionAlgorithmCreateFunc (int proxyType0,
-                                                                                 int proxyType1);
+        virtual btCollisionAlgorithmCreateFunc* getCollisionAlgorithmCreateFunc(int proxyType0,
+                                                                                int proxyType1);
 
 #if BT_BULLET_VERSION >= 286
         /**
@@ -95,8 +94,8 @@ namespace rwsimlibs { namespace bullet {
          * @param proxyType1 [in] the type of second object.
          * @return the collision algorithm allocator.
          */
-        virtual btCollisionAlgorithmCreateFunc*
-        getClosestPointsAlgorithmCreateFunc (int proxyType0, int proxyType1);
+        virtual btCollisionAlgorithmCreateFunc* getClosestPointsAlgorithmCreateFunc(int proxyType0,
+                                                                                    int proxyType1);
 #endif
 
       private:

@@ -39,8 +39,8 @@ namespace rwsim { namespace drawable {
          * @param drawer [in] the workcell drawer
          * @param N [in] max nr of states that is to be rendered
          */
-        RenderGhost (rw::core::Ptr<rw::kinematics::Frame> frame,
-                     rw::core::Ptr< rw::graphics::WorkCellScene > drawer, size_t N);
+        RenderGhost(rw::core::Ptr<rw::kinematics::Frame> frame,
+                    rw::core::Ptr<rw::graphics::WorkCellScene> drawer, size_t N);
 
         /**
          * @brief constructor - for rendering multiple frames
@@ -48,24 +48,24 @@ namespace rwsim { namespace drawable {
          * @param drawer [in] the workcell drawer
          * @param N [in] max nr of states that is to be rendered
          */
-        RenderGhost (std::list< rw::kinematics::Frame* > frames,
-                     rw::core::Ptr< rw::graphics::WorkCellScene > drawer, size_t N);
+        RenderGhost(std::list<rw::kinematics::Frame*> frames,
+                    rw::core::Ptr<rw::graphics::WorkCellScene> drawer, size_t N);
 
         /**
          * @brief destructor
          */
-        virtual ~RenderGhost ();
+        virtual ~RenderGhost();
 
         /**
          * @brief add new state that is to be rendered
          * @param state [in] state that is to be rendered
          */
-        void addState (const rw::kinematics::State& state);
+        void addState(const rw::kinematics::State& state);
 
         /**
          * @brief clear all states
          */
-        void clear ();
+        void clear();
 
         /**
          * @brief sets the max number of states that is rendered
@@ -73,19 +73,20 @@ namespace rwsim { namespace drawable {
          * @note be carefull setting this too high, since rendering typically
          * is performance wise quite expensive.
          */
-        void setMaxBufferSize (size_t size);
+        void setMaxBufferSize(size_t size);
 
-        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info, DrawableNode::DrawType type, double alpha) const
-        void draw (const rw::graphics::DrawableNode::RenderInfo& info,
-                   rw::graphics::DrawableNode::DrawType type, double alpha) const;
+        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info,
+        //! DrawableNode::DrawType type, double alpha) const
+        void draw(const rw::graphics::DrawableNode::RenderInfo& info,
+                  rw::graphics::DrawableNode::DrawType type, double alpha) const;
 
       private:
-        std::list< rw::kinematics::Frame* > _frames;
-        rw::core::Ptr< rw::graphics::WorkCellScene > _drawer;
+        std::list<rw::kinematics::Frame*> _frames;
+        rw::core::Ptr<rw::graphics::WorkCellScene> _drawer;
         // std::vector<rw::kinematics::State> _states;
         rwlibs::opengl::RenderFrame* _drawFrame;
 
-        boost::circular_buffer< rw::kinematics::State > _states;
+        boost::circular_buffer<rw::kinematics::State> _states;
     };
     //! @}
 }}    // namespace rwsim::drawable

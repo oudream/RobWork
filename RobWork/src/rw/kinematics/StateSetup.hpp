@@ -22,11 +22,10 @@
  * @file StateSetup.hpp
  */
 #if !defined(SWIG)
+#include <rw/core/Ptr.hpp>
 #include <rw/kinematics/Frame.hpp>
 #include <rw/kinematics/StateData.hpp>
 #include <rw/kinematics/StateStructure.hpp>
-
-#include <rw/core/Ptr.hpp>
 #endif
 
 namespace rw { namespace kinematics {
@@ -49,10 +48,9 @@ namespace rw { namespace kinematics {
         /**
          * @brief Creates an empty StateSetup
          */
-        StateSetup () :
-            _version (-1), _tree (NULL), _dof (0), _nrOfDAF (0), _nrOfValidFrames (0),
-            _initMaxID (0), _nrCaches (0)
-        {}
+        StateSetup() :
+            _version(-1), _tree(NULL), _dof(0), _nrOfDAF(0), _nrOfValidFrames(0), _initMaxID(0),
+            _nrCaches(0) {}
 
         /**
          * @brief Creates a StateSetup from a StateStructure and a number of
@@ -61,21 +59,19 @@ namespace rw { namespace kinematics {
          * @param tree [in]
          * @param stateDatas [in] a list of valid statedatas for this version
          */
-        explicit StateSetup (int version, StateStructure& tree,
-                             const std::vector< rw::core::Ptr< StateData > >& stateDatas);
+        explicit StateSetup(int version, StateStructure& tree,
+                            const std::vector<rw::core::Ptr<StateData>>& stateDatas);
 
         //! @brief destructor
-        ~StateSetup () {}
+        ~StateSetup() {}
 
         /**
          * @brief The position in QState at which the configuration for \b frame
          * is stored.
          */
-        inline int getOffset (const StateData& data) const
-        {
-            const int id = data.getID ();
-            if (id < 0 || id >= _initMaxID)
-                return -1;
+        inline int getOffset(const StateData& data) const {
+            const int id = data.getID();
+            if(id < 0 || id >= _initMaxID) return -1;
             return _offsets[id];
         }
 
@@ -84,11 +80,9 @@ namespace rw { namespace kinematics {
          * @param data [in] the data to look for.
          * @return the id or a negative value if not found.
          */
-        inline int getCacheIdx (const StateData& data) const
-        {
-            const int id = data.getID ();
-            if (id < 0 || id >= _initMaxID)
-                return -1;
+        inline int getCacheIdx(const StateData& data) const {
+            const int id = data.getID();
+            if(id < 0 || id >= _initMaxID) return -1;
             return _sdataTCacheIdx[id];
         }
 
@@ -98,27 +92,27 @@ namespace rw { namespace kinematics {
          * @return the total number of allocated doubles
          * @note This number equals the length of the QState array.
          */
-        inline int size () const { return _dof; }
+        inline int size() const { return _dof; }
 
         /**
          * @brief gets the version of the StateSetup
          * @return the version of the state setup
          */
-        inline int getVersion () const { return _version; }
+        inline int getVersion() const { return _version; }
 
         /**
          * @brief gets the frame with index idx
          * @param id [in] the unique id of the frame
          * @return the frame with id id, else NULL
          */
-        inline const Frame* getFrame (int id) const { return _tree->getFrames ()[id]; }
+        inline const Frame* getFrame(int id) const { return _tree->getFrames()[id]; }
 
         /**
          * @brief gets the frame with index idx
          * @param id [in] the unique id of the frame
          * @return the frame with id id, else NULL
          */
-        inline Frame* getFrame (int id) { return _tree->getFrames ()[id]; }
+        inline Frame* getFrame(int id) { return _tree->getFrames()[id]; }
 
         /**
          * @brief gets the index that maps a frame parent into
@@ -126,24 +120,22 @@ namespace rw { namespace kinematics {
          * @param parent [in] the parent to the children list
          * @return index into the childlist array in tree state
          */
-        int getChildListIdx (rw::core::Ptr<const Frame> parent) const
-        {
-            const int id = parent->getID ();
-            if (id < 0 || id >= _initMaxID)
-                return -1;
-            return _dafChildidx[parent->getID ()];
+        int getChildListIdx(rw::core::Ptr<const Frame> parent) const {
+            const int id = parent->getID();
+            if(id < 0 || id >= _initMaxID) return -1;
+            return _dafChildidx[parent->getID()];
         }
 
         /**
          * @brief gets the number of valid frames in the state setup
          */
-        int getMaxChildListIdx () const { return _nrOfValidFrames; }
+        int getMaxChildListIdx() const { return _nrOfValidFrames; }
 
         /**
          * @brief gets the list of DAFs that are valid in this state setup
          * @return list of DAFs
          */
-        const std::vector< Frame* >& getDafs () const { return _dafs; }
+        const std::vector<Frame*>& getDafs() const { return _dafs; }
 
         /**
          * @brief gets the index that maps a DAF into its
@@ -151,53 +143,51 @@ namespace rw { namespace kinematics {
          * @param daf [in] the daf frame
          * @return index into the TreeState daf list
          */
-        int getDAFIdx (rw::core::Ptr<const Frame> daf) const
-        {
-            const int id = daf->getID ();
-            if (id < 0 || id >= _initMaxID)
-                return -1;
-            return _dafidx[daf->getID ()];
+        int getDAFIdx(rw::core::Ptr<const Frame> daf) const {
+            const int id = daf->getID();
+            if(id < 0 || id >= _initMaxID) return -1;
+            return _dafidx[daf->getID()];
         }
 
         /**
          * @brief gets the nr of valid DAFs in the state setup
          * @return nr of valid DAFs
          */
-        int getMaxDAFIdx () const { return _nrOfDAF; }
+        int getMaxDAFIdx() const { return _nrOfDAF; }
 
         /**
          * @brief gets the state structure that the state setup is part
          * of.
          * @return state structure
          */
-        const StateStructure* getTree () const { return _tree; }
+        const StateStructure* getTree() const { return _tree; }
 
         /**
          * @brief gets the state structure that the state setup is part
          * of.
          * @return state structure
          */
-        StateStructure* getTree () { return _tree; }
+        StateStructure* getTree() { return _tree; }
 
         /**
          * @brief gets all valid state data of the state setup.
          * @return list of valid state datas
          * @note elements in the list is invalid if they are NULL
          */
-        const std::vector< rw::core::Ptr< StateData > >& getStateData () const { return _datas; }
+        const std::vector<rw::core::Ptr<StateData>>& getStateData() const { return _datas; }
 
         /**
          * @brief Get the position in cache list where state data with \b id is stored.
          * @param id [in] state data id.
          * @return the id or a negative value if not found.
          */
-        inline int getCacheIdx (int id) const { return _sdataTCacheIdx[id]; }
+        inline int getCacheIdx(int id) const { return _sdataTCacheIdx[id]; }
 
         /**
          * @brief Get the maximum number of caches possible.
          * @return number of caches.
          */
-        inline int getMaxCacheIdx () const { return _nrCaches; }
+        inline int getMaxCacheIdx() const { return _nrCaches; }
 
       private:
         friend class StateData;
@@ -208,14 +198,14 @@ namespace rw { namespace kinematics {
         // pointer to the complete set of frames
         StateStructure* _tree;
 
-        std::vector< rw::core::Ptr< StateData > > _datas;
+        std::vector<rw::core::Ptr<StateData>> _datas;
 
-        std::vector< Frame* > _dafs;
+        std::vector<Frame*> _dafs;
 
         ////////////////////////////////// QState stuff
         // Offsets into the QState array.
         // size == <nr of state datas>
-        std::vector< int > _offsets;
+        std::vector<int> _offsets;
 
         // The total sum of the dofs of the frames.
         int _dof;
@@ -230,21 +220,21 @@ namespace rw { namespace kinematics {
         ////////////////////////////////// TreeState stuff
         // indexes into the DAF parents, if -1 then no DAF parent exist
         // size == <nr of statedata>
-        std::vector< int > _dafidx;
+        std::vector<int> _dafidx;
 
         // indexes into the DAF children array,
         // size==<nr of statedata>
-        std::vector< int > _dafChildidx;
+        std::vector<int> _dafChildidx;
 
         // indexes into the StateCache array,
         // size==<nr of statedata>
-        std::vector< int > _sdataTCacheIdx;
+        std::vector<int> _sdataTCacheIdx;
 
       private:
         // You _can_ go around copying StateSetup without memory leaks or other
         // infelicities, but we don't expect to do that so we disallow it.
-        StateSetup (const StateSetup&);
-        StateSetup& operator= (const StateSetup&);
+        StateSetup(const StateSetup&);
+        StateSetup& operator=(const StateSetup&);
     };
     /*@}*/
 }}    // namespace rw::kinematics

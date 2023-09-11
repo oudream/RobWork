@@ -32,71 +32,69 @@ class WCCodeEditor : public QPlainTextEdit
     Q_OBJECT
 
   public:
-    WCCodeEditor (QWidget* parent = 0);
+    WCCodeEditor(QWidget* parent = 0);
 
-    void lineNumberAreaPaintEvent (QPaintEvent* event);
+    void lineNumberAreaPaintEvent(QPaintEvent* event);
 
-    int lineNumberAreaWidth ();
+    int lineNumberAreaWidth();
 
-    void setCompleter (QCompleter* c);
+    void setCompleter(QCompleter* c);
 
-    QCompleter* completer () const;
+    QCompleter* completer() const;
 
     typedef enum { Nothing, Executed, ExecutedError, HighLighted } LineState;
 
-    void setLineState (size_t linenr, LineState state)
-    {
-        if (_executedLines.size () <= linenr)
-            _executedLines.resize (linenr + 100);
+    void setLineState(size_t linenr, LineState state) {
+        if(_executedLines.size() <= linenr) _executedLines.resize(linenr + 100);
         _executedLines[linenr] = state;
     }
 
-    WCCodeEditor::LineState getLineState (int lineNr);
+    WCCodeEditor::LineState getLineState(int lineNr);
 
   protected:
-    void resizeEvent (QResizeEvent* event);
+    void resizeEvent(QResizeEvent* event);
 
-    void keyPressEvent (QKeyEvent* e);
+    void keyPressEvent(QKeyEvent* e);
 
-    void focusInEvent (QFocusEvent* e);
+    void focusInEvent(QFocusEvent* e);
 
   public Q_SLOTS:
 
-    void insertCompletion (const QString& completion);
+    void insertCompletion(const QString& completion);
 
-    void insertXMLTextUnderCursor (const QString& text);
+    void insertXMLTextUnderCursor(const QString& text);
 
   private Q_SLOTS:
 
-    void updateLineNumberAreaWidth (int newBlockCount);
+    void updateLineNumberAreaWidth(int newBlockCount);
 
-    void highlightCurrentLine ();
+    void highlightCurrentLine();
 
-    void updateLineNumberArea (const QRect&, int);
+    void updateLineNumberArea(const QRect&, int);
 
   private:
-    QString textUnderCursor () const;
+    QString textUnderCursor() const;
 
-    bool hasExecuted (int lineNr);
+    bool hasExecuted(int lineNr);
 
-    void indentSelection ();
-    void unIndentSelection ();
+    void indentSelection();
+    void unIndentSelection();
 
   private:
     QWidget* lineNumberArea;
     QCompleter* _c;
-    std::vector< LineState > _executedLines;
+    std::vector<LineState> _executedLines;
 };
 
 class LineNumberArea : public QWidget
 {
   public:
-    LineNumberArea (WCCodeEditor* editor) : QWidget (editor) { codeEditor = editor; }
+    LineNumberArea(WCCodeEditor* editor) : QWidget(editor) { codeEditor = editor; }
 
-    QSize sizeHint () const { return QSize (codeEditor->lineNumberAreaWidth (), 0); }
+    QSize sizeHint() const { return QSize(codeEditor->lineNumberAreaWidth(), 0); }
 
   protected:
-    void paintEvent (QPaintEvent* event) { codeEditor->lineNumberAreaPaintEvent (event); }
+    void paintEvent(QPaintEvent* event) { codeEditor->lineNumberAreaPaintEvent(event); }
 
   private:
     WCCodeEditor* codeEditor;

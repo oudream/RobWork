@@ -26,58 +26,55 @@ using namespace rw::sensor;
 using namespace rw::graphics;
 using namespace rwlibs::opengl;
 
-void TactileArrayRender::draw (const DrawableNode::RenderInfo& info, Render::DrawType type,
-                               double alpha) const
-{
+void TactileArrayRender::draw(const DrawableNode::RenderInfo& info, Render::DrawType type,
+                              double alpha) const {
     // if( _force.norm2()<0.001 )
     //    return;
-    if (_sensor == NULL)
-        return;
+    if(_sensor == NULL) return;
 
-    if (info._state == NULL)
-        return;
-    Eigen::MatrixXf values = _sensor->getTexelData (*info._state);
+    if(info._state == NULL) return;
+    Eigen::MatrixXf values = _sensor->getTexelData(*info._state);
 
-    const TactileArrayModel::VertexMatrix& verts = _sensor->getVertexGrid ();
-    Transform3D<> fTverts                        = _sensor->getTransform ();
-    double maxForce                              = _sensor->getPressureLimit ().second;
+    const TactileArrayModel::VertexMatrix& verts = _sensor->getVertexGrid();
+    Transform3D<> fTverts                        = _sensor->getTransform();
+    double maxForce                              = _sensor->getPressureLimit().second;
     // draw all texels
-    glPushMatrix ();
+    glPushMatrix();
     float gltrans[16];
-    DrawableUtil::transform3DToGLTransform (fTverts, gltrans);
-    glMultMatrixf (gltrans);
-    glPolygonMode (GL_FRONT_AND_BACK, GL_FILL);
+    DrawableUtil::transform3DToGLTransform(fTverts, gltrans);
+    glMultMatrixf(gltrans);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-    for (int x = 0; x < (int) values.rows (); x++) {
-        for (int y = 0; y < (int) values.cols (); y++) {
-            float col = (float) (values (x, y) / maxForce);
-            glBegin (GL_QUADS);
-            glColor3f (col, 0.0, 1 - col);
+    for(int x = 0; x < (int) values.rows(); x++) {
+        for(int y = 0; y < (int) values.cols(); y++) {
+            float col = (float) (values(x, y) / maxForce);
+            glBegin(GL_QUADS);
+            glColor3f(col, 0.0, 1 - col);
             Vector3D<> v = verts[x][y];
-            glVertex3d (v (0), v (1), v (2));    // Bottom Left
+            glVertex3d(v(0), v(1), v(2));    // Bottom Left
             v = verts[x][y + 1];
-            glVertex3d (v (0), v (1), v (2));    // Bottom Left
+            glVertex3d(v(0), v(1), v(2));    // Bottom Left
             v = verts[x + 1][y + 1];
-            glVertex3d (v (0), v (1), v (2));    // Bottom Left
+            glVertex3d(v(0), v(1), v(2));    // Bottom Left
             v = verts[x + 1][y];
-            glVertex3d (v (0), v (1), v (2));    // Bottom Left
-            glEnd ();
+            glVertex3d(v(0), v(1), v(2));    // Bottom Left
+            glEnd();
         }
     }
 
     // now draw the normals
 
-    const TactileArrayModel::VertexMatrix& normals = _sensor->getNormals ();
-    const TactileArrayModel::VertexMatrix& centers = _sensor->getCenters ();
-    glBegin (GL_LINES);
-    for (int x = 0; x < (int) values.rows (); x++) {
-        for (int y = 0; y < (int) values.cols (); y++) {
-            float col = (float) (values (x, y) / maxForce);
-            glColor3f (col, 0.0, 1 - col);
-            DrawableUtil::drawGLVertex (centers[x][y]);
-            DrawableUtil::drawGLVertex (centers[x][y] + normals[x][y] * 0.01);
+    const TactileArrayModel::VertexMatrix& normals = _sensor->getNormals();
+    const TactileArrayModel::VertexMatrix& centers = _sensor->getCenters();
+    glBegin(GL_LINES);
+    for(int x = 0; x < (int) values.rows(); x++) {
+        for(int y = 0; y < (int) values.cols(); y++) {
+            float col = (float) (values(x, y) / maxForce);
+            glColor3f(col, 0.0, 1 - col);
+            DrawableUtil::drawGLVertex(centers[x][y]);
+            DrawableUtil::drawGLVertex(centers[x][y] + normals[x][y] * 0.01);
         }
     }
-    glEnd ();
-    glPopMatrix ();
+    glEnd();
+    glPopMatrix();
 }

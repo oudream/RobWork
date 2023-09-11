@@ -33,17 +33,17 @@ namespace {
 class EmptySampler : public QSampler
 {
   private:
-    Q doSample () { return Q (); }
-    bool doEmpty () const { return true; }
+    Q doSample() { return Q(); }
+    bool doEmpty() const { return true; }
 };
 
 class FixedSampler : public QSampler
 {
   public:
-    FixedSampler (const Q& q) : _q (q) {}
+    FixedSampler(const Q& q) : _q(q) {}
 
   private:
-    Q doSample () { return _q; }
+    Q doSample() { return _q; }
 
   private:
     Q _q;
@@ -52,42 +52,36 @@ class FixedSampler : public QSampler
 class FiniteSampler : public QSampler
 {
   public:
-    FiniteSampler (const std::vector< Q >& qs) : _qs (qs.rbegin (), qs.rend ()) {}
+    FiniteSampler(const std::vector<Q>& qs) : _qs(qs.rbegin(), qs.rend()) {}
 
   private:
-    Q doSample ()
-    {
-        if (_qs.empty ())
-            return Q ();
+    Q doSample() {
+        if(_qs.empty()) return Q();
         else {
-            const Q result = _qs.back ();
-            _qs.pop_back ();
+            const Q result = _qs.back();
+            _qs.pop_back();
             return result;
         }
     }
 
-    bool doEmpty () const { return _qs.empty (); }
+    bool doEmpty() const { return _qs.empty(); }
 
   private:
-    std::vector< Q > _qs;
+    std::vector<Q> _qs;
 };
 
 class AbridgedSampler : public QSampler
 {
   public:
-    AbridgedSampler (QSampler::Ptr sampler, int cnt) : _sampler (sampler), _cnt (0), _maxCnt (cnt)
-    {}
+    AbridgedSampler(QSampler::Ptr sampler, int cnt) : _sampler(sampler), _cnt(0), _maxCnt(cnt) {}
 
   private:
-    Q doSample ()
-    {
-        if (_cnt++ < _maxCnt)
-            return _sampler->sample ();
-        else
-            return Q ();
+    Q doSample() {
+        if(_cnt++ < _maxCnt) return _sampler->sample();
+        else return Q();
     }
 
-    bool doEmpty () const { return _cnt >= _maxCnt || _sampler->empty (); }
+    bool doEmpty() const { return _cnt >= _maxCnt || _sampler->empty(); }
 
   private:
     QSampler::Ptr _sampler;
@@ -98,10 +92,10 @@ class AbridgedSampler : public QSampler
 class BoundsSampler : public QSampler
 {
   public:
-    BoundsSampler (const Device::QBox& bounds) : _bounds (bounds) {}
+    BoundsSampler(const Device::QBox& bounds) : _bounds(bounds) {}
 
   private:
-    Q doSample () { return Math::ranQ (_bounds.first, _bounds.second); }
+    Q doSample() { return Math::ranQ(_bounds.first, _bounds.second); }
 
   private:
     Device::QBox _bounds;
@@ -110,16 +104,13 @@ class BoundsSampler : public QSampler
 class NormalizedSampler : public QSampler
 {
   public:
-    NormalizedSampler (QSampler::Ptr sampler, const QNormalizer& normalizer) :
-        _sampler (sampler), _normalizer (normalizer)
-    {}
+    NormalizedSampler(QSampler::Ptr sampler, const QNormalizer& normalizer) :
+        _sampler(sampler), _normalizer(normalizer) {}
 
   private:
-    Q doSample ()
-    {
-        Q q = _sampler->sample ();
-        if (!q.empty ())
-            _normalizer.setToNormalized (q);
+    Q doSample() {
+        Q q = _sampler->sample();
+        if(!q.empty()) _normalizer.setToNormalized(q);
         return q;
     }
 
@@ -131,14 +122,13 @@ class NormalizedSampler : public QSampler
 class IKSampler : public QSampler
 {
   public:
-    IKSampler (QIKSampler::Ptr sampler, const Transform3D<>& target) :
-        _sampler (sampler), _target (target)
-    {}
+    IKSampler(QIKSampler::Ptr sampler, const Transform3D<>& target) :
+        _sampler(sampler), _target(target) {}
 
   private:
-    Q doSample () { return _sampler->sample (_target); }
+    Q doSample() { return _sampler->sample(_target); }
 
-    bool doEmpty () const { return _sampler->empty (); }
+    bool doEmpty() const { return _sampler->empty(); }
 
   private:
     QIKSampler::Ptr _sampler;
@@ -148,23 +138,20 @@ class IKSampler : public QSampler
 class ConstrainedSampler : public QSampler
 {
   public:
-    ConstrainedSampler (QSampler::Ptr sampler, QConstraint::CPtr constraint, int maxAttempts) :
-        _sampler (sampler), _constraint (constraint), _maxAttempts (maxAttempts)
-    {}
+    ConstrainedSampler(QSampler::Ptr sampler, QConstraint::CPtr constraint, int maxAttempts) :
+        _sampler(sampler), _constraint(constraint), _maxAttempts(maxAttempts) {}
 
   private:
-    Q doSample ()
-    {
-        for (int cnt = 0; !_sampler->empty () && (_maxAttempts < 0 || cnt < _maxAttempts); ++cnt) {
-            const Q q = _sampler->sample ();
-            if (!q.empty () && !_constraint->inCollision (q))
-                return q;
+    Q doSample() {
+        for(int cnt = 0; !_sampler->empty() && (_maxAttempts < 0 || cnt < _maxAttempts); ++cnt) {
+            const Q q = _sampler->sample();
+            if(!q.empty() && !_constraint->inCollision(q)) return q;
         }
 
-        return Q ();
+        return Q();
     }
 
-    bool doEmpty () const { return _sampler->empty (); }
+    bool doEmpty() const { return _sampler->empty(); }
 
   private:
     QSampler::Ptr _sampler;
@@ -175,75 +162,61 @@ class ConstrainedSampler : public QSampler
 //	typedef QSampler::Ptr T;
 }    // namespace
 
-bool QSampler::empty () const
-{
-    return doEmpty ();
+bool QSampler::empty() const {
+    return doEmpty();
 }
 
-bool QSampler::doEmpty () const
-{
+bool QSampler::doEmpty() const {
     return false;
 }
 
-QSampler::Ptr QSampler::makeEmpty ()
-{
-    return ownedPtr (new EmptySampler ());
+QSampler::Ptr QSampler::makeEmpty() {
+    return ownedPtr(new EmptySampler());
 }
 
-QSampler::Ptr QSampler::makeFixed (const Q& q)
-{
-    return ownedPtr (new FixedSampler (q));
+QSampler::Ptr QSampler::makeFixed(const Q& q) {
+    return ownedPtr(new FixedSampler(q));
 }
 
-QSampler::Ptr QSampler::makeFinite (const std::vector< Q >& qs)
-{
-    return ownedPtr (new FiniteSampler (qs));
+QSampler::Ptr QSampler::makeFinite(const std::vector<Q>& qs) {
+    return ownedPtr(new FiniteSampler(qs));
 }
 
-QSampler::Ptr QSampler::makeFinite (QSampler::Ptr sampler, int cnt)
-{
-    return ownedPtr (new AbridgedSampler (sampler, cnt));
+QSampler::Ptr QSampler::makeFinite(QSampler::Ptr sampler, int cnt) {
+    return ownedPtr(new AbridgedSampler(sampler, cnt));
 }
 
-QSampler::Ptr QSampler::makeSingle (const Q& q)
-{
-    return makeFinite (std::vector< Q > (1, q));
+QSampler::Ptr QSampler::makeSingle(const Q& q) {
+    return makeFinite(std::vector<Q>(1, q));
 }
 
-QSampler::Ptr QSampler::makeUniform (const Device::QBox& bounds)
-{
-    return ownedPtr (new BoundsSampler (bounds));
+QSampler::Ptr QSampler::makeUniform(const Device::QBox& bounds) {
+    return ownedPtr(new BoundsSampler(bounds));
 }
 
-QSampler::Ptr QSampler::makeUniform (const Device& device)
-{
-    return makeUniform (device.getBounds ());
+QSampler::Ptr QSampler::makeUniform(const Device& device) {
+    return makeUniform(device.getBounds());
 }
 
-QSampler::Ptr QSampler::makeUniform (Device::CPtr device)
-{
-    return makeUniform (device->getBounds ());
+QSampler::Ptr QSampler::makeUniform(Device::CPtr device) {
+    return makeUniform(device->getBounds());
 }
 
-QSampler::Ptr QSampler::makeNormalized (QSampler::Ptr sampler, const QNormalizer& normalizer)
-{
-    return ownedPtr (new NormalizedSampler (sampler, normalizer));
+QSampler::Ptr QSampler::makeNormalized(QSampler::Ptr sampler, const QNormalizer& normalizer) {
+    return ownedPtr(new NormalizedSampler(sampler, normalizer));
 }
 
-QSampler::Ptr QSampler::make (QIKSampler::Ptr sampler, const rw::math::Transform3D<>& target)
-{
-    return ownedPtr (new IKSampler (sampler, target));
+QSampler::Ptr QSampler::make(QIKSampler::Ptr sampler, const rw::math::Transform3D<>& target) {
+    return ownedPtr(new IKSampler(sampler, target));
 }
 
-QSampler::Ptr QSampler::makeConstrained (QSampler::Ptr sampler, QConstraint::CPtr constraint,
-                                         int maxAttempts)
-{
-    return ownedPtr (new ConstrainedSampler (sampler, constraint, maxAttempts));
+QSampler::Ptr QSampler::makeConstrained(QSampler::Ptr sampler, QConstraint::CPtr constraint,
+                                        int maxAttempts) {
+    return ownedPtr(new ConstrainedSampler(sampler, constraint, maxAttempts));
 }
 
-QSampler::Ptr QSampler::makeBoxDirectionSampler (const Device::QBox& bounds)
-{
+QSampler::Ptr QSampler::makeBoxDirectionSampler(const Device::QBox& bounds) {
     const Q center = 0.5 * (bounds.first + bounds.second);
-    const Device::QBox dirBounds (bounds.first - center, bounds.second - center);
-    return QSampler::makeUniform (dirBounds);
+    const Device::QBox dirBounds(bounds.first - center, bounds.second - center);
+    return QSampler::makeUniform(dirBounds);
 }

@@ -35,57 +35,55 @@ class CodeEditor : public QPlainTextEdit
     Q_OBJECT
 
   public:
-    CodeEditor (QWidget* parent = 0);
+    CodeEditor(QWidget* parent = 0);
 
-    void lineNumberAreaPaintEvent (QPaintEvent* event);
-    int lineNumberAreaWidth ();
+    void lineNumberAreaPaintEvent(QPaintEvent* event);
+    int lineNumberAreaWidth();
 
-    void setCompleter (QCompleter* c);
-    QCompleter* completer () const;
+    void setCompleter(QCompleter* c);
+    QCompleter* completer() const;
 
     typedef enum { Nothing, Executed, ExecutedError, HighLighted } LineState;
-    void setLineState (size_t linenr, LineState state)
-    {
+    void setLineState(size_t linenr, LineState state) {
         // std::cout << "setLineState: " << linenr << std::endl;
-        if (_executedLines.size () <= linenr)
-            _executedLines.resize (linenr + 100);
+        if(_executedLines.size() <= linenr) _executedLines.resize(linenr + 100);
         _executedLines[linenr] = state;
     }
-    CodeEditor::LineState getLineState (int lineNr);
+    CodeEditor::LineState getLineState(int lineNr);
 
   protected:
-    void resizeEvent (QResizeEvent* event);
+    void resizeEvent(QResizeEvent* event);
 
-    void keyPressEvent (QKeyEvent* e);
-    void focusInEvent (QFocusEvent* e);
+    void keyPressEvent(QKeyEvent* e);
+    void focusInEvent(QFocusEvent* e);
 
   public Q_SLOTS:
-    void insertCompletion (const QString& completion);
+    void insertCompletion(const QString& completion);
 
   private Q_SLOTS:
-    void updateLineNumberAreaWidth (int newBlockCount);
-    void highlightCurrentLine ();
-    void updateLineNumberArea (const QRect&, int);
+    void updateLineNumberAreaWidth(int newBlockCount);
+    void highlightCurrentLine();
+    void updateLineNumberArea(const QRect&, int);
 
   private:
-    QString textUnderCursor () const;
-    bool hasExecuted (int lineNr);
+    QString textUnderCursor() const;
+    bool hasExecuted(int lineNr);
 
   private:
     QWidget* lineNumberArea;
     QCompleter* _c;
-    std::vector< LineState > _executedLines;
+    std::vector<LineState> _executedLines;
 };
 
 class LineNumberArea : public QWidget
 {
   public:
-    LineNumberArea (CodeEditor* editor) : QWidget (editor) { codeEditor = editor; }
+    LineNumberArea(CodeEditor* editor) : QWidget(editor) { codeEditor = editor; }
 
-    QSize sizeHint () const { return QSize (codeEditor->lineNumberAreaWidth (), 0); }
+    QSize sizeHint() const { return QSize(codeEditor->lineNumberAreaWidth(), 0); }
 
   protected:
-    void paintEvent (QPaintEvent* event) { codeEditor->lineNumberAreaPaintEvent (event); }
+    void paintEvent(QPaintEvent* event) { codeEditor->lineNumberAreaPaintEvent(event); }
 
   private:
     CodeEditor* codeEditor;

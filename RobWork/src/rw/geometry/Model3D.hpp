@@ -57,7 +57,7 @@ namespace rw { namespace geometry {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< Model3D > Ptr;
+        typedef rw::core::Ptr<Model3D> Ptr;
 
         class Texture;
         //! @brief The data type for the texture list
@@ -67,17 +67,17 @@ namespace rw { namespace geometry {
          * Constructor.
          * @param name [in] name of the model.
          */
-        Model3D (const std::string& name);
+        Model3D(const std::string& name);
 
         /**
          * @brief Copy constructor, make a copy of the 3D object
          *
          * @param model
          */
-        Model3D (const Model3D& model);
+        Model3D(const Model3D& model);
 
         //! @brief destructor
-        virtual ~Model3D ();
+        virtual ~Model3D();
 
         /**
          * @brief describes material properties. A material can be either simple or "advanced"
@@ -89,22 +89,22 @@ namespace rw { namespace geometry {
         struct Material
         {
             //! @brief default constructor
-            Material ();
+            Material();
 
             //! @brief constructor for simple material
-            Material (const std::string& nam, float r, float g, float b, float a = 1.0);
+            Material(const std::string& nam, float r, float g, float b, float a = 1.0);
 
             /**
              * @brief Check if material has texture.
              * @return true if material has texture.
              */
-            bool hasTexture () const { return texId >= 0; }
+            bool hasTexture() const { return texId >= 0; }
 
             /**
              * @brief Get id of the texture for this material.
              * @return the texture id.
              */
-            int getTextureID () const { return texId; }
+            int getTextureID() const { return texId; }
 
             //! @brief material name, not necesarily unique
             std::string name;
@@ -127,9 +127,9 @@ namespace rw { namespace geometry {
             float transparency;
         };
 
-        using MaterialPolys   = rw::geometry::Object3DGeneric::MaterialPolys;
-        using Object3DGeneric = rw::geometry::Object3DGeneric;
-        template< class T = uint16_t > using Object3D = rw::geometry::Object3D< T >;
+        using MaterialPolys                         = rw::geometry::Object3DGeneric::MaterialPolys;
+        using Object3DGeneric                       = rw::geometry::Object3DGeneric;
+        template<class T = uint16_t> using Object3D = rw::geometry::Object3D<T>;
 
         //! @brief Method to do smoothing.
         typedef enum {
@@ -145,39 +145,38 @@ namespace rw { namespace geometry {
         class Texture
         {
           public:
-
             //! @brief default destructure
             virtual ~Texture() {}
-            
+
             /**
              * @brief check if this texture has image data
              * @return true if it has image data, false otherwise
              */
-            virtual bool hasImageData () const = 0;
+            virtual bool hasImageData() const = 0;
 #ifndef SWIGJAVA
             /**
              * @brief get image data
              * @return
              */
-            virtual rw::core::Ptr<rw::sensor::Image> getImageData () const = 0;
+            virtual rw::core::Ptr<rw::sensor::Image> getImageData() const = 0;
 #endif
             /**
              * @brief get RGB data
              * @return
              */
-            virtual rw::math::Vector3D< float > getRGBData () const = 0;
+            virtual rw::math::Vector3D<float> getRGBData() const = 0;
 
             /**
              * @brief get id of texture
              * @return
              */
-            virtual const std::string& getName () const = 0;
+            virtual const std::string& getName() const = 0;
 
             /**
              * @brief Clone the current texture
              * @return rw::core::Ptr<Texture>
              */
-            virtual rw::core::Ptr< Texture > clone () const = 0;
+            virtual rw::core::Ptr<Texture> clone() const = 0;
         };
 
         /**
@@ -188,114 +187,139 @@ namespace rw { namespace geometry {
          * @param smooth_angle
          * @param method
          */
-        void
-        optimize (double smooth_angle, SmoothMethod method = WEIGHTED_NORMALS);
+        void optimize(double smooth_angle, SmoothMethod method = WEIGHTED_NORMALS);
 
         /**
          * @brief add an Object to this Model3D
          * @param obj [in] the geometric object to add.
          * @return index of object in model3d
          */
-        int addObject (Object3DGeneric::Ptr obj);
+        int addObject(Object3DGeneric::Ptr obj);
 
         /**
          * @brief add geometry to this model3d
          * @param mat [in] the material properties to use for the geometry.
          * @param geom [in] the geometry to add.
          */
-        void addGeometry (const Material& mat, rw::core::Ptr< class rw::geometry::Geometry > geom);
+        void addGeometry(const Material& mat, rw::core::Ptr<class rw::geometry::Geometry> geom);
 
         /**
          * @brief add a triangle mesh to this model3d
          * @param mat [in] the material properties to use for the mesh.
          * @param mesh [in] the mesh geometry.
          */
-        void addTriMesh (const Material& mat, const rw::geometry::TriMesh& mesh);
+        void addTriMesh(const Material& mat, const rw::geometry::TriMesh& mesh);
 
         /**
          * @brief add a triangle mesh to this model3d
          * @param mat [in] the material properties to use for the mesh.
          * @param geom [in] the mesh geometry.
          */
-        void addTriMesh (const Material& mat, rw::core::Ptr< const rw::geometry::TriMesh > geom);
+        void addTriMesh(const Material& mat, rw::core::Ptr<const rw::geometry::TriMesh> geom);
 
         /**
          * @brief all objects in a model use the materials defined on the model
          * @param mat [in] material to add.
          * @return id of the newly added material.
          */
-        int addMaterial (const Material& mat);
+        int addMaterial(const Material& mat);
 
         /**
          * @brief get material with string id matid
          * @param matid [in] string id
          * @return pointer to Matrial data
          */
-        Material* getMaterial (const std::string& matid);
+        Material* getMaterial(const std::string& matid);
 
         /**
          * @brief check if model has material with id matid
          * @param matid [in] string id of material
          * @return true if exists in model
          */
-        bool hasMaterial (const std::string& matid);
+        bool hasMaterial(const std::string& matid);
 
         /**
          * @brief remove object with string id name
          * @param name [in] name of object to remove
          */
-        void removeObject (const std::string& name);
+        void removeObject(const std::string& name);
 
         //! @copydoc Object3DGeneric::scale
-        void scale (float scale);
+        void scale(float scale);
 
         //! @brief get all materials that are available in this model
-        std::vector< Material >& getMaterials () { return _materials; }
+        std::vector<Material>& getMaterials() {
+            return _materials;
+        }
 
         //! @brief get all objects that make out this model
-        std::vector< Object3DGeneric::Ptr >& getObjects () { return _objects; }
+        std::vector<Object3DGeneric::Ptr>& getObjects() {
+            return _objects;
+        }
 
         //! get pose of this Model3D
-        const rw::math::Transform3D<>& getTransform () { return _transform; }
+        const rw::math::Transform3D<>& getTransform() {
+            return _transform;
+        }
         //! set the pose of this Model3D
-        void setTransform (const rw::math::Transform3D<>& t3d) { _transform = t3d; }
+        void setTransform(const rw::math::Transform3D<>& t3d) {
+            _transform = t3d;
+        }
 
         //! get string identifier of this model3d
-        const std::string& getName () { return _name; }
+        const std::string& getName() {
+            return _name;
+        }
         //! get filePath of this model3d
-        const std::string& getFilePath () { return _filePath; }
+        const std::string& getFilePath() {
+            return _filePath;
+        }
         //! set string identifier of this model3d
-        void setName (const std::string& name) { _name = name; }
+        void setName(const std::string& name) {
+            _name = name;
+        }
         //! set filePath this model3d
-        void setFilePath (const std::string& name) { _filePath = name; }
+        void setFilePath(const std::string& name) {
+            _filePath = name;
+        }
 
         //! get mask of this model3d
-        int getMask () { return _mask; }
+        int getMask() {
+            return _mask;
+        }
         //! set mask of this model3d
-        void setMask (int mask) { _mask = mask; }
+        void setMask(int mask) {
+            _mask = mask;
+        }
 
         /**
          * @brief convert this model3d to a geometry. Notice that geometry does not hold any
          * color information.
          * @return a geometry of this model3d
          */
-        rw::geometry::GeometryData::Ptr toGeometryData ();
+        rw::geometry::GeometryData::Ptr toGeometryData();
 
         //! true if data in the model are expected to change
-        bool isDynamic () const { return _isDynamic; }
+        bool isDynamic() const {
+            return _isDynamic;
+        }
         //! set to true if data in the model are expected to change
-        void setDynamic (bool dynamic) { _isDynamic = dynamic; }
+        void setDynamic(bool dynamic) {
+            _isDynamic = dynamic;
+        }
 
         /**
          * @brief Get/set the object Textures
          * @return std::vector< rw::core::Ptr< Texture > >&
          */
-        std::vector< rw::core::Ptr< Texture > >& getTextures () { return _textures; }
+        std::vector<rw::core::Ptr<Texture>>& getTextures() {
+            return _textures;
+        }
 
         //! @brief The array of materials.
-        std::vector< Material > _materials;
+        std::vector<Material> _materials;
         //! @brief The array of objects in the model
-        std::vector< Object3DGeneric::Ptr > _objects;
+        std::vector<Object3DGeneric::Ptr> _objects;
 
       protected:
         //! @brief The transform of the model.
@@ -310,7 +334,7 @@ namespace rw { namespace geometry {
         bool _isDynamic;
 
       private:
-        std::vector< rw::core::Ptr< Texture > > _textures;
+        std::vector<rw::core::Ptr<Texture>> _textures;
     };
     //! @}
 }}    // namespace rw::geometry

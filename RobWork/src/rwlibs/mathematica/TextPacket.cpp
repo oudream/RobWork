@@ -20,24 +20,19 @@
 using namespace rw::core;
 using namespace rwlibs::mathematica;
 
-TextPacket::TextPacket (const Mathematica::String& string) :
-    Packet ("TextPacket", Mathematica::Text), _string (string)
-{}
+TextPacket::TextPacket(const Mathematica::String& string) :
+    Packet("TextPacket", Mathematica::Text), _string(string) {}
 
-TextPacket::~TextPacket ()
-{}
+TextPacket::~TextPacket() {}
 
-const Mathematica::String& TextPacket::string ()
-{
+const Mathematica::String& TextPacket::string() {
     return _string;
 }
 
-std::list< rw::core::Ptr< const Mathematica::Expression > > TextPacket::getArguments () const
-{
-    return std::list< rw::core::Ptr< const Mathematica::Expression > > (1, _string.clone ());
+std::list<rw::core::Ptr<const Mathematica::Expression>> TextPacket::getArguments() const {
+    return std::list<rw::core::Ptr<const Mathematica::Expression>>(1, _string.clone());
 }
 
-Mathematica::Expression::Ptr TextPacket::clone () const
-{
-    return ownedPtr (new TextPacket (_string));
+Mathematica::Expression::Ptr TextPacket::clone() const {
+    return ownedPtr(new TextPacket(_string));
 }

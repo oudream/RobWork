@@ -26,15 +26,14 @@
 
 #include <rw/graphics/Plot.hpp>
 
-namespace rwlibs {
-namespace plots {
-//! @addtogroup plots
+namespace rwlibs { namespace plots {
+    //! @addtogroup plots
 
-//! @{
-//! @brief MathGL based implementation of a plot.
-class MathGLPlot: public rw::graphics::Plot
-{
-    public:
+    //! @{
+    //! @brief MathGL based implementation of a plot.
+    class MathGLPlot : public rw::graphics::Plot
+    {
+      public:
         //! @brief Constructor.
         MathGLPlot();
 
@@ -42,20 +41,19 @@ class MathGLPlot: public rw::graphics::Plot
         virtual ~MathGLPlot();
 
         //! @coypdoc Plot::listPlot
-        virtual void listPlot (const std::vector< double >& x, const std::vector< double >& y,
-                       const std::string& title = "", const std::string& xlabel = "",
-                       const std::string& ylabel = "");
+        virtual void listPlot(const std::vector<double>& x, const std::vector<double>& y,
+                              const std::string& title = "", const std::string& xlabel = "",
+                              const std::string& ylabel = "");
 
         //! @coypdoc Plot::render
         virtual rw::core::Ptr<rw::sensor::Image> render(unsigned int width, unsigned int height);
 
-    private:
+      private:
         struct PlotData;
         PlotData* const _data;
-};
-//! @}
+    };
+    //! @}
 
-} /* namespace plots */
-} /* namespace rwlibs */
+}}    // namespace rwlibs::plots
 
 #endif /* RWLIBS_PLOTS_MATHGLPLOT_HPP_ */

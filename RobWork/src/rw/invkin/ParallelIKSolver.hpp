@@ -22,14 +22,13 @@
  * @file ParallelIKSolver.hpp
  */
 #if !defined(SWIG)
-#include <rw/invkin/IterativeIK.hpp>
-
 #include <rw/core/PropertyMap.hpp>
+#include <rw/invkin/IterativeIK.hpp>
 #include <rw/kinematics/FrameMap.hpp>
 #include <rw/kinematics/FramePairMap.hpp>
 #include <rw/math/Transform3D.hpp>
 #include <rw/math/VectorND.hpp>
-#endif 
+#endif
 namespace rw { namespace kinematics {
     class Frame;
 }}    // namespace rw::kinematics
@@ -60,18 +59,18 @@ namespace rw { namespace invkin {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< ParallelIKSolver > Ptr;
+        typedef rw::core::Ptr<ParallelIKSolver> Ptr;
 
         /**
          * @brief Construct new solver.
          * @param device [in] pointer to the parallel device.
          */
-        ParallelIKSolver (const rw::models::ParallelDevice* device);
+        ParallelIKSolver(const rw::models::ParallelDevice* device);
 
         /**
          * @brief Destructor
          */
-        virtual ~ParallelIKSolver ();
+        virtual ~ParallelIKSolver();
 
         /**
          * @copybrief IterativeIK::solve
@@ -98,17 +97,15 @@ namespace rw { namespace invkin {
          * end frames will normally be the first and last frames of the first leg of
          * the first junction.
          */
-        virtual std::vector< rw::math::Q > solve (const rw::math::Transform3D<double>& baseTend,
-                                              const kinematics::State& state) const;
+        virtual std::vector<rw::math::Q> solve(const rw::math::Transform3D<double>& baseTend,
+                                               const kinematics::State& state) const;
 
         //! @brief A target definition used in the multi-target solve function.
         struct Target
         {
             //! @brief Constructor with all directions enabled initially.
-            Target () : refFrame (NULL), tcpFrame (NULL)
-            {
-                for (std::size_t i = 0; i < 6; i++)
-                    enabled[i] = true;
+            Target() : refFrame(NULL), tcpFrame(NULL) {
+                for(std::size_t i = 0; i < 6; i++) enabled[i] = true;
             }
 
             /**
@@ -118,11 +115,11 @@ namespace rw { namespace invkin {
              * @param refTtcp [in] the target base to frame transformation.
              */
 
-            Target (rw::core::Ptr<const rw::kinematics::Frame> frame, const rw::math::Transform3D<double>& refTtcp) :
-                refFrame (NULL), tcpFrame (frame), refTtcp (refTtcp)
-            {
-                for (std::size_t i = 0; i < 6; i++)
-                    enabled[i] = true;
+            Target(rw::core::Ptr<const rw::kinematics::Frame> frame,
+                   const rw::math::Transform3D<double>& refTtcp) :
+                refFrame(NULL),
+                tcpFrame(frame), refTtcp(refTtcp) {
+                for(std::size_t i = 0; i < 6; i++) enabled[i] = true;
             }
 
             /**
@@ -134,22 +131,20 @@ namespace rw { namespace invkin {
              * should be enabled.
              */
 
-            Target (rw::core::Ptr<const rw::kinematics::Frame> frame, const rw::math::Transform3D<double>& refTtcp,
-                    const rw::math::VectorND< 6, bool >& enabled) :
-                refFrame (NULL),
-                tcpFrame (frame), refTtcp (refTtcp), enabled (enabled)
-            {}
+            Target(rw::core::Ptr<const rw::kinematics::Frame> frame,
+                   const rw::math::Transform3D<double>& refTtcp,
+                   const rw::math::VectorND<6, bool>& enabled) :
+                refFrame(NULL),
+                tcpFrame(frame), refTtcp(refTtcp), enabled(enabled) {}
 
             /**
              * @brief Get the number directions enabled.
              * @return number of directions enabled.
              */
-            std::size_t dof () const
-            {
+            std::size_t dof() const {
                 std::size_t dof = 0;
-                for (std::size_t i = 0; i < 6; i++) {
-                    if (enabled[i])
-                        dof++;
+                for(std::size_t i = 0; i < 6; i++) {
+                    if(enabled[i]) dof++;
                 }
                 return dof;
             }
@@ -165,7 +160,7 @@ namespace rw { namespace invkin {
 
             //! @brief Directions of \b baseTtcp to enable. The 6 values specify x, y, z and EAA x,
             //! y, z directions.
-            rw::math::VectorND< 6, bool > enabled;
+            rw::math::VectorND<6, bool> enabled;
         };
 
         /**
@@ -187,40 +182,38 @@ namespace rw { namespace invkin {
          * @param state [in] state containing the current configuration of the device.
          * @return vector with one solution if found, otherwise vector is empty.
          */
-        virtual std::vector< rw::math::Q > solve (const std::vector< Target >& targets,
-                                                  const rw::kinematics::State& state) const;
+        virtual std::vector<rw::math::Q> solve(const std::vector<Target>& targets,
+                                               const rw::kinematics::State& state) const;
 
         //! @copydoc InvKinSolver::setCheckJointLimits
-        virtual void setCheckJointLimits (bool check);
+        virtual void setCheckJointLimits(bool check);
 
         /**
          * @brief enables clamping of the solution such that solution always is within joint limits
          * @param enableClamping [in] true to enable clamping, false otherwise
          */
-        void setClampToBounds (bool enableClamping);
+        void setClampToBounds(bool enableClamping);
 
         /**
          * @copydoc InvKinSolver::getTCP
          */
-        virtual rw::core::Ptr< const rw::kinematics::Frame > getTCP () const;
+        virtual rw::core::Ptr<const rw::kinematics::Frame> getTCP() const;
 
       private:
-        void updateDeltaX (
-            const std::vector< Target >& targets,
-            const rw::kinematics::FramePairMap< rw::core::Ptr< rw::models::ParallelLeg > >&
-                targetLegs,
+        void updateDeltaX(
+            const std::vector<Target>& targets,
+            const rw::kinematics::FramePairMap<rw::core::Ptr<rw::models::ParallelLeg>>& targetLegs,
             const rw::kinematics::State& state, rw::math::Q& deltaX,
             const Eigen::MatrixXd::Index nCon) const;
-        void updateJacobian (
-            const std::vector< Target >& targets,
-            const rw::kinematics::FramePairMap< rw::core::Ptr< rw::models::ParallelLeg > >&
-                targetLegs,
+        void updateJacobian(
+            const std::vector<Target>& targets,
+            const rw::kinematics::FramePairMap<rw::core::Ptr<rw::models::ParallelLeg>>& targetLegs,
             const rw::kinematics::State& state, rw::math::Jacobian& jacobian) const;
 
         const models::ParallelDevice* _device;
-        std::vector< std::vector< rw::models::ParallelLeg* > > _junctions;
+        std::vector<std::vector<rw::models::ParallelLeg*>> _junctions;
 
-        rw::kinematics::FrameMap< Eigen::MatrixXd::Index > _jointIndex;
+        rw::kinematics::FrameMap<Eigen::MatrixXd::Index> _jointIndex;
 
         bool _useJointClamping;
         bool _checkJointLimits;

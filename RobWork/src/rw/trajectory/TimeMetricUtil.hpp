@@ -47,9 +47,9 @@ namespace rw { namespace trajectory {
          * @param workcell [in] Workcell associated with the states
          * @return The time
          */
-        static double timeDistance (const rw::kinematics::State& from,
-                                    const rw::kinematics::State& to,
-                                    const rw::models::WorkCell& workcell);
+        static double timeDistance(const rw::kinematics::State& from,
+                                   const rw::kinematics::State& to,
+                                   const rw::models::WorkCell& workcell);
 
         /**
          * @brief The time it takes to move from \b from to \b to in a straight line
@@ -62,8 +62,8 @@ namespace rw { namespace trajectory {
          * @param velocity [in] Max velocity of the joints
          * @return The time
          */
-        static double timeDistance (const rw::math::Q& from, const rw::math::Q& to,
-                                    const rw::math::Q& velocity);
+        static double timeDistance(const rw::math::Q& from, const rw::math::Q& to,
+                                   const rw::math::Q& velocity);
 
         /**
          * @brief The time it takes to move from \b from to \b to in a straight
@@ -74,8 +74,8 @@ namespace rw { namespace trajectory {
          * @param device [in] The device to time for
          * @return The time
          */
-        static double timeDistance (const rw::math::Q& from, const rw::math::Q& to,
-                                    const rw::models::Device& device);
+        static double timeDistance(const rw::math::Q& from, const rw::math::Q& to,
+                                   const rw::models::Device& device);
 
         /**
          * @brief The time it takes to move from \b from to \b to in a straight
@@ -86,9 +86,9 @@ namespace rw { namespace trajectory {
          * @param device [in] The device to time for
          * @return The time
          */
-        static double timeDistance (const rw::kinematics::State& from,
-                                    const rw::kinematics::State& to,
-                                    const rw::models::Device& device);
+        static double timeDistance(const rw::kinematics::State& from,
+                                   const rw::kinematics::State& to,
+                                   const rw::models::Device& device);
     };
 
 }}    // namespace rw::trajectory

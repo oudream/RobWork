@@ -19,13 +19,11 @@
 
 namespace rwlibs { namespace simulation {
 
-    SimulatedSensor::~SimulatedSensor () {}
+    SimulatedSensor::~SimulatedSensor() {}
 
     rw::sensor::Sensor::Ptr
-    SimulatedSensor::getSensorHandle (rwlibs::simulation::Simulator::Ptr instance)
-    {
-        if (instance->hasHandle (this))
-            return instance->getSensorHandle (this);
+    SimulatedSensor::getSensorHandle(rwlibs::simulation::Simulator::Ptr instance) {
+        if(instance->hasHandle(this)) return instance->getSensorHandle(this);
         return NULL;
     }
 

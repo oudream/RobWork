@@ -35,14 +35,12 @@ namespace rwlibs { namespace softbody {
          * @param h the stepsize
          * @return the evaluated integral
          **/
-        template< class T > static double inline trapezMethod (T& func, const int M, const double h)
-        {
-            const double f0 = func (0);
-            const double fL = func ((M - 1));
+        template<class T> static double inline trapezMethod(T& func, const int M, const double h) {
+            const double f0 = func(0);
+            const double fL = func((M - 1));
 
             double sum = 0.0;
-            for (int i = 1; i < M - 1; i++)
-                sum += func (i);
+            for(int i = 1; i < M - 1; i++) sum += func(i);
 
             return (h / 2.0) * (f0 + fL) + h * sum;
         }

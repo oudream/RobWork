@@ -62,14 +62,14 @@ namespace rw { namespace kinematics {
          *
          * @param type [in] The type of frame.
          */
-        FrameType (const Type& type) : _type (type) {}
+        FrameType(const Type& type) : _type(type) {}
 
         /**
          * @brief The frame type.
          *
          * @return The frame type.
          */
-        Type get () const { return _type; }
+        Type get() const { return _type; }
 
       private:
         Type _type;

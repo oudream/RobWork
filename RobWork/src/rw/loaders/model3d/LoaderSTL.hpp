@@ -18,10 +18,9 @@
 #ifndef RW_LOADER_LOADERSTL_HPP_
 #define RW_LOADER_LOADERSTL_HPP_
 
+#include <rw/core/Ptr.hpp>
 #include <rw/loaders/Model3DLoader.hpp>
 #include <rw/loaders/model3d/STLFile.hpp>
-#include <rw/core/Ptr.hpp>
-
 
 namespace rw { namespace loaders {
     //! @addtogroup geometry
@@ -31,27 +30,25 @@ namespace rw { namespace loaders {
      * @brief static methods for reading and writing geometry to and from
      * STL files.
      */
-    class LoaderSTL: public Model3DLoader
+    class LoaderSTL : public Model3DLoader
     {
       public:
-              public:
+      public:
         /**
          * @brief constructor
          */
-        LoaderSTL (){};
+        LoaderSTL(){};
 
         /**
          * @brief destructor
          */
-        virtual ~LoaderSTL (){};
+        virtual ~LoaderSTL(){};
 
         //! @copydoc Model3DLoader::load
-        rw::graphics::Model3D::Ptr load (const std::string& filename);
+        rw::graphics::Model3D::Ptr load(const std::string& filename);
 
         //! @copydoc Model3DLoader::getModelFormats
-        std::vector< std::string > getModelFormats () { return {".STL", ".STLA", ".STLB"}; }
-
-    
+        std::vector<std::string> getModelFormats() { return {".STL", ".STLA", ".STLB"}; }
     };
     // @}
 }}    // namespace rw::loaders

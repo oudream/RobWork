@@ -67,16 +67,16 @@ namespace rwlibs { namespace pathoptimization {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< ClearanceOptimizer > Ptr;
+        typedef rw::core::Ptr<ClearanceOptimizer> Ptr;
         //! @brief smart pointer type to this const class
-        typedef rw::core::Ptr< const ClearanceOptimizer > CPtr;
+        typedef rw::core::Ptr<const ClearanceOptimizer> CPtr;
 
         /**
          * @brief Deleted default constructor.
          *
          * @todo Implement required functionality (setters) for this to be usable.
          */
-        ClearanceOptimizer () = delete;
+        ClearanceOptimizer() = delete;
 
         /**
          * @brief Constructs clearance optimizer
@@ -90,15 +90,15 @@ namespace rwlibs { namespace pathoptimization {
          * @param metric [in] Metric to use for computing distance betweem configurations
          * @param clearanceCalculator [in] Calculator for calculating the clearance
          */
-        ClearanceOptimizer (const rw::core::Ptr< const rw::models::Device >& device,
-                            const rw::kinematics::State& state,
-                            const rw::math::QMetric::CPtr& metric,
-                            const rw::core::Ptr< const ClearanceCalculator >& clearanceCalculator);
+        ClearanceOptimizer(const rw::core::Ptr<const rw::models::Device>& device,
+                           const rw::kinematics::State& state,
+                           const rw::math::QMetric::CPtr& metric,
+                           const rw::core::Ptr<const ClearanceCalculator>& clearanceCalculator);
 
         /**
          * @brief Destructor
          */
-        ~ClearanceOptimizer ();
+        ~ClearanceOptimizer();
 
         /**
          * @brief Runs optimization algorithm
@@ -115,8 +115,8 @@ namespace rwlibs { namespace pathoptimization {
          * maxcount will be used
          * @return The optimized path with node no further than \b stepsize apart
          */
-        rw::trajectory::QPath optimize (const rw::trajectory::QPath& path, double stepsize,
-                                        size_t maxcount, double maxtime);
+        rw::trajectory::QPath optimize(const rw::trajectory::QPath& path, double stepsize,
+                                       size_t maxcount, double maxtime);
 
         /**
          * @brief Runs optimization algorithm
@@ -126,7 +126,7 @@ namespace rwlibs { namespace pathoptimization {
          * @param path [in] Path to optimize
          * @return The optimized path
          */
-        rw::trajectory::QPath optimize (const rw::trajectory::QPath& path);
+        rw::trajectory::QPath optimize(const rw::trajectory::QPath& path);
 
         //! Property key for the maximal number of loops. Set LOOPCOUNT=0 to deactivate it
         static const std::string PROP_LOOPCOUNT;
@@ -134,7 +134,6 @@ namespace rwlibs { namespace pathoptimization {
         static const std::string PROP_MAXTIME;
         //! Property key for step size
         static const std::string PROP_STEPSIZE;
-
 
         /**
          * @brief Returns the PropertyMap associated with the optimizer.
@@ -149,14 +148,14 @@ namespace rwlibs { namespace pathoptimization {
          *
          * @return The PropertyMap
          */
-        rw::core::PropertyMap& getPropertyMap ();
+        rw::core::PropertyMap& getPropertyMap();
 
         /**
          * @brief Returns the ClearanceCalculator associated with the optimizer.
          *
          * @return Const reference to the ClearanceCalculator.
          */
-        const rw::core::Ptr< const ClearanceCalculator >& getClearanceCalculator () const;
+        const rw::core::Ptr<const ClearanceCalculator>& getClearanceCalculator() const;
 
         /**
          * @brief Sets the minimum clearance optimized for.
@@ -165,13 +164,13 @@ namespace rwlibs { namespace pathoptimization {
          *
          * @param dist [in] Minimum clearance.
          */
-        void setMinimumClearance (const double dist);
+        void setMinimumClearance(const double dist);
 
         /**
          * @brief Returns the minimum clearance optimized for.
          * @return The minimum clearance.
          */
-        double getMinimumClearance () const;
+        double getMinimumClearance() const;
 
         /**
          * @brief Set a state constraint in the clearance optimizer.
@@ -181,8 +180,8 @@ namespace rwlibs { namespace pathoptimization {
          *
          * @param stateConstraint [in] the constraint.
          */
-        void setStateConstraint (
-            const rw::core::Ptr< const rw::pathplanning::StateConstraint >& stateConstraint);
+        void setStateConstraint(
+            const rw::core::Ptr<const rw::pathplanning::StateConstraint>& stateConstraint);
 
         /**
          * @brief Set a configuration constraint in the clearance optimizer.
@@ -192,60 +191,59 @@ namespace rwlibs { namespace pathoptimization {
          *
          * @param qConstraint [in] the constraint.
          */
-        void
-        setQConstraint (const rw::core::Ptr< const rw::pathplanning::QConstraint >& qConstraint);
+        void setQConstraint(const rw::core::Ptr<const rw::pathplanning::QConstraint>& qConstraint);
 
       private:
         // AugmentedQ is a configuration and its clearance
-        typedef std::pair< rw::math::Q, double > AugmentedQ;
+        typedef std::pair<rw::math::Q, double> AugmentedQ;
 
         // Path of AugmentedQ's
 #ifndef RW_HAVE_OMP
-        typedef std::list< AugmentedQ > AugmentedPath;
+        typedef std::list<AugmentedQ> AugmentedPath;
 #else
-        typedef std::vector< AugmentedQ > AugmentedPath;
+        typedef std::vector<AugmentedQ> AugmentedPath;
 #endif
 
         // Calculated the clearance for a configuration q
-        double clearance (const rw::math::Q& q);
+        double clearance(const rw::math::Q& q);
 
         // Performs a subdivision of the path and augments all configs with the clearance
-        void subDivideAndAugmentPath (const rw::trajectory::QPath& inputPath, AugmentedPath& path);
+        void subDivideAndAugmentPath(const rw::trajectory::QPath& inputPath, AugmentedPath& path);
 
         // Validates the path, by going through it and insert node where they are further than
         // stepsize apart
-        AugmentedPath validatePath (const AugmentedPath& newPath, const AugmentedPath& orgPath);
+        AugmentedPath validatePath(const AugmentedPath& newPath, const AugmentedPath& orgPath);
 
         // Removed branches
-        void removeBranches (AugmentedPath& path) const;
+        void removeBranches(AugmentedPath& path) const;
 
         // Calculates the avarage clearance of the path
-        double calcAvgClearance (const AugmentedPath& path) const;
+        double calcAvgClearance(const AugmentedPath& path) const;
 
         // Performs an interpolator of two configurations.
-        rw::math::Q interpolate (const rw::math::Q& q1, const rw::math::Q& q2, double ratio) const;
+        rw::math::Q interpolate(const rw::math::Q& q1, const rw::math::Q& q2, double ratio) const;
 
         // Returns a random direction
-        rw::math::Q randomDirection () const;
+        rw::math::Q randomDirection() const;
 
         rw::core::PropertyMap _propertymap;
 
         // rw::models::WorkCell::Ptr _workcell;
-        rw::core::Ptr< const rw::models::Device > _device = nullptr;
+        rw::core::Ptr<const rw::models::Device> _device = nullptr;
         rw::kinematics::State _state;
-        rw::math::QMetric::CPtr _metric                                 = nullptr;
-        rw::core::Ptr< const ClearanceCalculator > _clearanceCalculator = nullptr;
+        rw::math::QMetric::CPtr _metric                               = nullptr;
+        rw::core::Ptr<const ClearanceCalculator> _clearanceCalculator = nullptr;
         double _stepsize;
         size_t _dof;
 
         //! @brief Value determining the clearance needed for a path being OK.
         double _minClearance = 0.1;
         //! @brief Used to determine if a state is allowed or not.
-        rw::core::Ptr< const rw::pathplanning::StateConstraint > _stateConstraint = nullptr;
+        rw::core::Ptr<const rw::pathplanning::StateConstraint> _stateConstraint = nullptr;
         //! @brief Used to determine if a configuration is allowed or not.
-        rw::core::Ptr< const rw::pathplanning::QConstraint > _qConstraintUser = nullptr;
+        rw::core::Ptr<const rw::pathplanning::QConstraint> _qConstraintUser = nullptr;
         //! @brief Used to determine if a configuration is within device limits.
-        rw::core::Ptr< const rw::pathplanning::QConstraint > _qConstraint = nullptr;
+        rw::core::Ptr<const rw::pathplanning::QConstraint> _qConstraint = nullptr;
     };
 
     /* @} */

@@ -24,6 +24,7 @@
 #if !defined(SWIG)
 #include <rw/core/PropertyBase.hpp>
 #include <rw/core/PropertyValue.hpp>
+
 #include <functional>
 #endif
 namespace rw { namespace core {
@@ -37,11 +38,11 @@ namespace rw { namespace core {
      * is characterized by a string identifier, string description and a value of the
      * template specified type.
      */
-    template< class T > class Property : public PropertyBase
+    template<class T> class Property : public PropertyBase
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< Property > Ptr;
+        typedef rw::core::Ptr<Property> Ptr;
 
         /**
          * @brief Constructs Property.
@@ -52,11 +53,11 @@ namespace rw { namespace core {
          * @param description [in] description
          * @param value [in] value
          */
-        Property (const std::string& identifier, const std::string& description, T value) :
-            PropertyBase (identifier, description, PropertyType::getType (value)), _value (value)
-        {
+        Property(const std::string& identifier, const std::string& description, T value) :
+            PropertyBase(identifier, description, PropertyType::getType(value)), _value(value) {
 #if !defined(SWIGJAVA)
-            _value.changedEvent().add(std::bind(&Property::valueChanged, this, std::placeholders::_1), this);
+            _value.changedEvent().add(
+                std::bind(&Property::valueChanged, this, std::placeholders::_1), this);
 #endif
         }
 
@@ -67,13 +68,13 @@ namespace rw { namespace core {
          * @param type [in] type of property
          * @param value [in] value
          */
-        Property (const std::string& identifier, const std::string& description,
-                  const PropertyType& type, T value) :
-            PropertyBase (identifier, description, type),
-            _value (value)
-        {
+        Property(const std::string& identifier, const std::string& description,
+                 const PropertyType& type, T value) :
+            PropertyBase(identifier, description, type),
+            _value(value) {
 #if !defined(SWIGJAVA)
-            _value.changedEvent().add(std::bind(&Property::valueChanged, this, std::placeholders::_1), this);
+            _value.changedEvent().add(
+                std::bind(&Property::valueChanged, this, std::placeholders::_1), this);
 #endif
         }
 
@@ -81,8 +82,7 @@ namespace rw { namespace core {
          * @brief Destroys Property
          * If the property value is a pointer, the object pointed to will NOT be destroyed.
          */
-        virtual ~Property ()
-        {
+        virtual ~Property() {
 #if !defined(SWIGJAVA)
             _value.changedEvent().remove(this);
 #endif
@@ -98,25 +98,33 @@ namespace rw { namespace core {
          *
          * @return reference to the property value.
          */
-        T& getValue () { return _value.getValue(); }
+        T& getValue() {
+            return _value.getValue();
+        }
 
         /**
          * @brief Returns a constant reference to the property value.
          * @return constant reference to the property value.
          */
-        const T& getValue () const { return _value.getValue(); }
+        const T& getValue() const {
+            return _value.getValue();
+        }
 
         /**
          * @brief returns reference to the property value
          * @return value
          */
-        PropertyValue<T>& getPropertyValue () { return _value; }
+        PropertyValue<T>& getPropertyValue() {
+            return _value;
+        }
 
         /**
          * @brief returns const reference to the property value
          * @return value
          */
-        const PropertyValue<T>& getPropertyValue () const { return _value; }
+        const PropertyValue<T>& getPropertyValue() const {
+            return _value;
+        }
 
         /**
          * @brief Sets the property value.
@@ -125,24 +133,26 @@ namespace rw { namespace core {
          *
          * @param value [in] the new value of the Property
          */
-        void setValue (const T& value) { _value.setValue(value); }
+        void setValue(const T& value) {
+            _value.setValue(value);
+        }
 
         /**
          *  @copydoc rw::core::PropertyBase::clone
          */
-        Property< T >* clone () const
-        {
-            return new Property< T > (
-                this->getIdentifier (), this->getDescription (), this->getType (), this->_value.getValue());
+        Property<T>* clone() const {
+            return new Property<T>(this->getIdentifier(),
+                                   this->getDescription(),
+                                   this->getType(),
+                                   this->_value.getValue());
         }
 
       private:
-          void valueChanged(PropertyValueBase* pbase)
-          {
-              this->changedEvent().fire(this);
-          }
+        void valueChanged(PropertyValueBase* pbase) {
+            this->changedEvent().fire(this);
+        }
 
-          PropertyValue<T> _value;
+        PropertyValue<T> _value;
     };
 
     /**
@@ -151,9 +161,8 @@ namespace rw { namespace core {
      * @param base [in] property base pointer
      * @return property of type \b T or null if property is of another type
      */
-    template< class T > Property< T >* toProperty (PropertyBase::Ptr base)
-    {
-        Property< T >* p = dynamic_cast< Property< T >* > (base.get ());
+    template<class T> Property<T>* toProperty(PropertyBase::Ptr base) {
+        Property<T>* p = dynamic_cast<Property<T>*>(base.get());
         return p;
     }
 

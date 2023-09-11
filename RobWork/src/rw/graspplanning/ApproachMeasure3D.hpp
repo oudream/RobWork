@@ -20,7 +20,7 @@
 
 #if !defined(SWIG)
 #include <rw/graspplanning/GraspQualityMeasure3D.hpp>
-#endif 
+#endif
 
 namespace rw { namespace graspplanning {
     /**
@@ -36,18 +36,18 @@ namespace rw { namespace graspplanning {
          * surface normal. Grasps violating this will recieve high penalty on
          * quality.
          */
-        ApproachMeasure3D (double maxAngle) : _maxAngle (maxAngle) {}
+        ApproachMeasure3D(double maxAngle) : _maxAngle(maxAngle) {}
 
         /**
          * @brief destructor
          */
-        virtual ~ApproachMeasure3D (){};
+        virtual ~ApproachMeasure3D(){};
 
         /**
          * @brief computes the quality of the grasp such that the quality
          * is in the interval [0;1] with 1 being the highest quality.
          */
-        virtual double quality (const Grasp3D& grasp) const;
+        virtual double quality(const Grasp3D& grasp) const;
 
       private:
         double _maxAngle;

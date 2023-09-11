@@ -45,14 +45,14 @@ namespace rwsim { namespace simulator {
     class ODEThreading
     {
       public:
-        virtual ~ODEThreading ();
+        virtual ~ODEThreading();
 
         /**
          * @brief Make sure that threading is supported.
          * @throws Exception if Open Dynamics Engine does not support threading.
          * @see isSupported
          */
-        static void assertSupported ();
+        static void assertSupported();
 
         /**
          * @brief Check if threading is supported.
@@ -63,7 +63,7 @@ namespace rwsim { namespace simulator {
          * @return true if supported, false otherwise.
          * @see assertSupported
          */
-        static bool isSupported ();
+        static bool isSupported();
 
         /**
          * @brief If multiple threads try to execute dWorldStep or dWorldQuickStep simultaneously,
@@ -71,13 +71,13 @@ namespace rwsim { namespace simulator {
          * This will give user-friendly errors if threading is not supported.
          * @throws Exception if threading is not supported and this has been called more than once.
          */
-        static void checkSecureStepBegin ();
+        static void checkSecureStepBegin();
 
         /**
          * @brief Call this after all dWorldStep and dWorldQuickStep.
          * @see checkSecureStepBegin
          */
-        static void checkSecureStepEnd ();
+        static void checkSecureStepEnd();
 
         /**
          * @brief Initialize threading structures (only used in ODE 0.13 and newer).
@@ -86,19 +86,19 @@ namespace rwsim { namespace simulator {
          *
          * @param world [in] the world id.
          */
-        static void initThreading (dWorldID world);
+        static void initThreading(dWorldID world);
 
         /**
          * @brief Destruct threading structures.
          * @param world [in] the world id.
          */
-        static void destroyThreading (dWorldID world);
+        static void destroyThreading(dWorldID world);
 
       private:
-        ODEThreading ();
+        ODEThreading();
 
         struct ThreadImpl;
-        static rw::core::Ptr< ThreadImpl > data ();
+        static rw::core::Ptr<ThreadImpl> data();
     };
     //! @}
 }}    // namespace rwsim::simulator

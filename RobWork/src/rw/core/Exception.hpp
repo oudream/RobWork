@@ -49,14 +49,14 @@ namespace rw { namespace core {
         /**
          * @brief This constructor creates an empty Exception and should not be used
          */
-        Exception () : _id (-1), _message ("unknown", -1) {}
+        Exception() : _id(-1), _message("unknown", -1) {}
 
         /**
          * @brief Constructor
          *
          * @param message [in] A message for a user.
          */
-        Exception (const rw::core::Message& message);
+        Exception(const rw::core::Message& message);
 
         /**
          * @brief Constructor
@@ -64,22 +64,22 @@ namespace rw { namespace core {
          * @param id [in] Integer Id to identify the exception
          * @param message [in] A message for a user.
          */
-        Exception (int id, const rw::core::Message& message);
+        Exception(int id, const rw::core::Message& message);
 
-        virtual ~Exception () throw (){};
+        virtual ~Exception() throw(){};
 
         /**
          * @brief The message for the user describing the reason for the error.
          *
          * @return  The message for the user.
          */
-        const rw::core::Message& getMessage () const { return _message; }
+        const rw::core::Message& getMessage() const { return _message; }
 
         /**
          * @brief get id of this exception message
          * @return id
          */
-        int getId () const { return _id; }
+        int getId() const { return _id; }
 
         /**
          * @brief readable description of this esception
@@ -93,7 +93,7 @@ namespace rw { namespace core {
          * @brief readable description of this esception
          * @return string description
          */
-        const char* what () const throw () { return _whatMsg.c_str (); }
+        const char* what() const throw() { return _whatMsg.c_str(); }
 
 #if !defined(SWIG)
         /**
@@ -105,13 +105,12 @@ namespace rw { namespace core {
          *	\endcode
          * @return The stream \b out.
          */
-        friend std::ostream& operator<< (std::ostream& out, const Exception& exp)
-        {
-            out << exp.getMessage ();
+        friend std::ostream& operator<<(std::ostream& out, const Exception& exp) {
+            out << exp.getMessage();
             return out;
         }
 #else
-        TOSTRING (rw::core::Exception);
+        TOSTRING(rw::core::Exception);
 #endif
 
       private:

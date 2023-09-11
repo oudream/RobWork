@@ -34,25 +34,25 @@ class SceneViewerWidget : public rw::graphics::SceneViewer
 {
   public:
     //! @brief Smart pointer type for a SceneViewerWidget.
-    typedef rw::core::Ptr< SceneViewerWidget > Ptr;
+    typedef rw::core::Ptr<SceneViewerWidget> Ptr;
 
     /**
      * @brief Get rendering info for the scene.
      * @return the render info.
      */
-    virtual rw::graphics::SceneGraph::RenderInfo& getRenderInfo () = 0;
+    virtual rw::graphics::SceneGraph::RenderInfo& getRenderInfo() = 0;
 
     /**
      * @brief Get the drawable used for pivoting.
      * @return the drawable node.
      */
-    virtual rw::graphics::DrawableNode::Ptr getPivotDrawable () = 0;
+    virtual rw::graphics::DrawableNode::Ptr getPivotDrawable() = 0;
 
     /**
      * @brief Get the Qt widget for visualization of the scene.
      * @return the Qt widget.
      */
-    virtual QWidget* getWidget () = 0;
+    virtual QWidget* getWidget() = 0;
 };
 }    // namespace rws
 

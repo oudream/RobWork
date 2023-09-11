@@ -66,32 +66,32 @@ class StrategyLibraryDialog : public QDialog
      * @brief Construct new dialog.
      * @param parent the Qt widget owning this dialog.
      */
-    StrategyLibraryDialog (QWidget* parent = 0);
+    StrategyLibraryDialog(QWidget* parent = 0);
 
     //! @brief Destructor.
-    virtual ~StrategyLibraryDialog ();
+    virtual ~StrategyLibraryDialog();
 
     /**
      * @brief Set a workcell. This will allow configuration of a concrete assembly task for the
      * given workcell, using the TaskSetupDialog.
      * @param wc [in] the workcell.
      */
-    void setWorkCell (rw::core::Ptr< const rw::models::WorkCell > wc);
+    void setWorkCell(rw::core::Ptr<const rw::models::WorkCell> wc);
 
   private Q_SLOTS:
-    void step ();
-    void configure ();
+    void step();
+    void configure();
 
   private:
     struct Cell;
-    Cell makeCell (rwlibs::assembly::AssemblyControlStrategy* strategy) const;
+    Cell makeCell(rwlibs::assembly::AssemblyControlStrategy* strategy) const;
 
     rw::sensor::FTSensor* const _dummyFTSensor;
-    rw::core::Ptr< const rw::models::WorkCell > _wc;
+    rw::core::Ptr<const rw::models::WorkCell> _wc;
 
     Ui::StrategyLibraryDialog* const _ui;
-    rw::core::Ptr< rwlibs::assembly::AssemblyRegistry > _registry;
-    std::vector< Cell > _cells;
+    rw::core::Ptr<rwlibs::assembly::AssemblyRegistry> _registry;
+    std::vector<Cell> _cells;
     QTimer* const _timer;
 };
 //! @}

@@ -25,24 +25,17 @@ using namespace rw::core;
 using namespace rw::proximity;
 
 namespace {
-std::regex convertToRegEx (const std::string& ex)
-{
-    if (ex.size () > 5 && ex.substr (0, 5) == "REGEX") {
-        return std::regex (ex.substr (5, ex.size () - 5));
+std::regex convertToRegEx(const std::string& ex) {
+    if(ex.size() > 5 && ex.substr(0, 5) == "REGEX") {
+        return std::regex(ex.substr(5, ex.size() - 5));
     }
-    else {
-        return std::regex (StringUtil::patternToRegEx (ex));
-    }
+    else { return std::regex(StringUtil::patternToRegEx(ex)); }
 }
 }    // namespace
 
-ProximitySetupRule::ProximitySetupRule():
-    _type(ProximitySetupRule::EXCLUDE_RULE)
-{
-}
+ProximitySetupRule::ProximitySetupRule() : _type(ProximitySetupRule::EXCLUDE_RULE) {}
 
-ProximitySetupRule::ProximitySetupRule (const std::string& patternA, const std::string& patternB,
-                                        RuleType type) :
-    _patterns (patternA, patternB),
-    _regex1 (convertToRegEx (patternA)), _regex2 (convertToRegEx (patternB)), _type (type)
-{}
+ProximitySetupRule::ProximitySetupRule(const std::string& patternA, const std::string& patternB,
+                                       RuleType type) :
+    _patterns(patternA, patternB),
+    _regex1(convertToRegEx(patternA)), _regex2(convertToRegEx(patternB)), _type(type) {}

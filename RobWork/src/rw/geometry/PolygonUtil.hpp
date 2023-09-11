@@ -58,16 +58,16 @@ namespace rw { namespace geometry {
          * @return a vector of indexed polygons. Each indexed polygon is returned as an ordered
          * vector of indices.
          */
-        static std::vector< std::vector< std::size_t > >
-        convexDecompositionIndexed (const Polygon< rw::math::Vector2D<> >& polygon);
+        static std::vector<std::vector<std::size_t>>
+        convexDecompositionIndexed(const Polygon<rw::math::Vector2D<>>& polygon);
 
         /**
          * @brief Convex decomposition of a polygon.
          * @param polygon [in] the polygon to decompose into convex subpolygons.
          * @return a vector of convex polygons.
          */
-        static std::vector< Polygon< rw::math::Vector2D<> > >
-        convexDecomposition (const Polygon< rw::math::Vector2D<> >& polygon);
+        static std::vector<Polygon<rw::math::Vector2D<>>>
+        convexDecomposition(const Polygon<rw::math::Vector2D<>>& polygon);
 
         /**
          * @brief Check if point lies inside convex polygon.
@@ -77,8 +77,8 @@ namespace rw { namespace geometry {
          * @return true if \b point is strictly inside the \b polygon, or false if on the border or
          * outside.
          */
-        static bool isInsideConvex (const rw::math::Vector2D<>& point,
-                                    const Polygon< rw::math::Vector2D<> >& polygon, double eps);
+        static bool isInsideConvex(const rw::math::Vector2D<>& point,
+                                   const Polygon<rw::math::Vector2D<>>& polygon, double eps);
 
         /**
          * @brief Get the signed area of a 2D polygon.
@@ -86,11 +86,11 @@ namespace rw { namespace geometry {
          * @return area of the polygon, with negative sign if vertices are given clockwise, or
          * positive sign if given counter-clockwise.
          */
-        static double area (const Polygon< rw::math::Vector2D<> >& polygon);
+        static double area(const Polygon<rw::math::Vector2D<>>& polygon);
 
       private:
-        PolygonUtil ();
-        virtual ~PolygonUtil ();
+        PolygonUtil();
+        virtual ~PolygonUtil();
     };
 #if !defined(SWIG)
 //! @}

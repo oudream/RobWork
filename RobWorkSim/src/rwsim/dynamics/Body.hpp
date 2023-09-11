@@ -46,7 +46,7 @@ namespace rwsim { namespace dynamics {
     {
       public:
         //! @brief Construct empty body info.
-        BodyInfo () : material (""), objectType (""), mass (0), masscenter (0, 0, 0){}
+        BodyInfo() : material(""), objectType(""), mass(0), masscenter(0, 0, 0) {}
 
         //! @brief The type of material of the body. This determines the frictional effects.
         std::string material;
@@ -62,11 +62,10 @@ namespace rwsim { namespace dynamics {
         //! highly dependent on the PhysicsEngine used.
         std::string integratorType;
         //! @brief The objects that compose the body.
-        std::vector< rw::models::Object::Ptr > objects;
+        std::vector<rw::models::Object::Ptr> objects;
 
         //! @brief Output body info to std output.
-        void print () const
-        {
+        void print() const {
             std::cout << "Material: " << material << "\n";
             std::cout << "Mass    : " << mass << "\n";
             // std::cout << "Frames: \n";
@@ -82,8 +81,7 @@ namespace rwsim { namespace dynamics {
          * @brief Output body info to output stream.
          * @param ostr [out] the stream to output to.
          */
-        void print (std::ostream& ostr) const
-        {
+        void print(std::ostream& ostr) const {
             ostr << "Material: " << material << "\n";
             ostr << "Mass    : " << mass << "\n";
             // ostr << "Frames: \n";
@@ -112,43 +110,46 @@ namespace rwsim { namespace dynamics {
          * @param info [in] general information about the dynamic properties of this body.
          * @param obj [in] information about the body reference frame and geometry.
          */
-        Body (const BodyInfo& info, rw::models::Object::Ptr obj);
+        Body(const BodyInfo& info, rw::models::Object::Ptr obj);
 
       public:
         //! @brief Smart pointer type for a Body.
-        typedef rw::core::Ptr< Body > Ptr;
+        typedef rw::core::Ptr<Body> Ptr;
 
         //! @brief Destructor.
-        virtual ~Body (){}
+        virtual ~Body() {}
 
         /**
          * @brief name of body which is the name of the BodyFrame
          * @return the name.
          */
-        const std::string& getName () const { return _bodyframe->getName (); }
+        const std::string& getName() const { return _bodyframe->getName(); }
 
 #ifdef RW_USE_PTR
         /**
          * @brief Returns the frame that the bodies dynamic variables are described relative to.
          * @return pointer to the body reference frame.
          */
-        rw::kinematics::Frame::Ptr getBodyFrame () const { return _obj->getBase (); }
+        rw::kinematics::Frame::Ptr getBodyFrame() const {
+            return _obj->getBase();
+        }
 #else
         /**
          * @brief Returns the frame that the bodies dynamic variables are described relative to.
          * @return pointer to the body reference frame.
          */
-        rw::kinematics::Frame* getBodyFrame () const { return _obj->getBase (); }
+        rw::kinematics::Frame* getBodyFrame() const {
+            return _obj->getBase();
+        }
 #endif
         /**
          * @brief Get all geometry associated with this body.
          * @param state [in] the current state (for deformable bodies).
          * @return a vector of all geometries for the body.
          */
-        const std::vector< rw::geometry::Geometry::Ptr >&
-        getGeometry (const rw::kinematics::State& state)
-        {
-            return _obj->getGeometry (state);
+        const std::vector<rw::geometry::Geometry::Ptr>&
+        getGeometry(const rw::kinematics::State& state) {
+            return _obj->getGeometry(state);
         }
 
         /**
@@ -156,42 +157,51 @@ namespace rwsim { namespace dynamics {
          * @return a vector of all geometries for the body.
          * @deprecated please use getGeometry(rw::kinematics::State&) instead.
          */
-        const std::vector< rw::geometry::Geometry::Ptr >& getGeometry ()
-        {
-            return getGeometry (_obj->getStateStructure ()->getDefaultState ());
+        const std::vector<rw::geometry::Geometry::Ptr>& getGeometry() {
+            return getGeometry(_obj->getStateStructure()->getDefaultState());
         }
 
         /**
          * @brief gets all frames that is staticly connected to this Body
          * @return list of frames
          */
-        const std::vector< rw::kinematics::Frame* >& getFrames () { return _frames; }
+        const std::vector<rw::kinematics::Frame*>& getFrames() {
+            return _frames;
+        }
 
         /**
          * @brief get the body info
          * @return the body info.
          */
-        const BodyInfo& getInfo () const { return _info; }
+        const BodyInfo& getInfo() const {
+            return _info;
+        }
 
         /**
          * @brief retrieve body information
          * @return the body information.
          * @note changing this will not force a changed event.
          */
-        BodyInfo& getInfo () { return _info; }
+        BodyInfo& getInfo() {
+            return _info;
+        }
 
         /**
          * @brief Material identifier of this object.
          * @return the identifier.
          */
-        const std::string& getMaterialID () const { return _info.material; }
+        const std::string& getMaterialID() const {
+            return _info.material;
+        }
 
         /**
          * @brief get the inertia matrix of this body. The inertia is described
          * around the center of mass and relative to the parent frame.
          * @return the inertia matrix.
          */
-        const rw::math::InertiaMatrix<>& getInertia () const { return _info.inertia; }
+        const rw::math::InertiaMatrix<>& getInertia() const {
+            return _info.inertia;
+        }
 
         //! @brief Types of events a body can emit.
         typedef enum {
@@ -219,16 +229,18 @@ namespace rwsim { namespace dynamics {
          * }
          * \endcode
          */
-        typedef boost::function< void (BodyEventType) > BodyChangedListener;
+        typedef boost::function<void(BodyEventType)> BodyChangedListener;
 
         //! @brief Type for body events.
-        typedef rw::core::Event< BodyChangedListener, BodyEventType > BodyChangedEvent;
+        typedef rw::core::Event<BodyChangedListener, BodyEventType> BodyChangedEvent;
 
         /**
          * @brief Returns StateChangeEvent needed for subscribing and firing the event.
          * @return Reference to the StateChangedEvent
          */
-        BodyChangedEvent& changedEvent () { return _bodyChangedEvent; }
+        BodyChangedEvent& changedEvent() {
+            return _bodyChangedEvent;
+        }
         //! @brief The event where listeners can be registered.
         BodyChangedEvent _bodyChangedEvent;
 
@@ -237,10 +249,9 @@ namespace rwsim { namespace dynamics {
          * @note a BodyChangedEvent is fired.
          * @param m [in] the new mass of the body.
          */
-        void setMass (double m)
-        {
+        void setMass(double m) {
             _info.mass = m;
-            _bodyChangedEvent.fire (MassChangedEvent);
+            _bodyChangedEvent.fire(MassChangedEvent);
         }
 
         /**
@@ -249,11 +260,10 @@ namespace rwsim { namespace dynamics {
          * @param m [in] the new mass of the body.
          * @param inertia [in] the new inertia of the body.
          */
-        void setMass (double m, const rw::math::InertiaMatrix<>& inertia)
-        {
+        void setMass(double m, const rw::math::InertiaMatrix<>& inertia) {
             _info.mass    = m;
             _info.inertia = inertia;
-            _bodyChangedEvent.fire (MassChangedEvent);
+            _bodyChangedEvent.fire(MassChangedEvent);
         }
 
         /**
@@ -263,13 +273,12 @@ namespace rwsim { namespace dynamics {
          * @param inertia [in] the new inertia of the body.
          * @param com [in] the new center of mass.
          */
-        void setMass (double m, const rw::math::InertiaMatrix<>& inertia,
-                      const rw::math::Vector3D<>& com)
-        {
+        void setMass(double m, const rw::math::InertiaMatrix<>& inertia,
+                     const rw::math::Vector3D<>& com) {
             _info.mass       = m;
             _info.inertia    = inertia;
             _info.masscenter = com;
-            _bodyChangedEvent.fire (MassChangedEvent);
+            _bodyChangedEvent.fire(MassChangedEvent);
         }
 
         /**
@@ -281,15 +290,15 @@ namespace rwsim { namespace dynamics {
          * @todo Make BodyInfo adjust automatically.
          * @param obj [in] the new object.
          */
-        void setObject (rw::models::Object::Ptr obj);
+        void setObject(rw::models::Object::Ptr obj);
 
         //--------------------------- interface functions ------------------
         /**
          * @brief calculates the relative velocity of a point p on the body
          * described in world frames.
          */
-        virtual rw::math::Vector3D<> getPointVelW (const rw::math::Vector3D<>& p,
-                                                   const rw::kinematics::State& state) const;
+        virtual rw::math::Vector3D<> getPointVelW(const rw::math::Vector3D<>& p,
+                                                  const rw::kinematics::State& state) const;
 
         /**
          * @brief gets the velocity of this body relative to the parent frame
@@ -297,46 +306,42 @@ namespace rwsim { namespace dynamics {
          * @return
          */
         virtual rw::math::VelocityScrew6D<>
-        getVelocity (const rw::kinematics::State& state) const = 0;
+        getVelocity(const rw::kinematics::State& state) const = 0;
 
         /**
          * @brief returns the linear velocity described in parent frame
          */
-        virtual rw::math::Vector3D<> getLinVel (const rw::kinematics::State& state) const
-        {
-            return rw::math::Vector3D<> (0, 0, 0);
+        virtual rw::math::Vector3D<> getLinVel(const rw::kinematics::State& state) const {
+            return rw::math::Vector3D<>(0, 0, 0);
         }
 
         /**
          * @brief returns the angular velocity described in parent frame
          */
-        virtual rw::math::Vector3D<> getAngVel (const rw::kinematics::State& state) const
-        {
-            return rw::math::Vector3D<> (0, 0, 0);
+        virtual rw::math::Vector3D<> getAngVel(const rw::kinematics::State& state) const {
+            return rw::math::Vector3D<>(0, 0, 0);
         }
 
         /**
          * @brief returns the linear velocity described in world frame
          */
-        rw::math::Vector3D<> getLinVelW (const rw::kinematics::State& state) const
-        {
-            return rw::kinematics::Kinematics::worldTframe (getParentFrame (state), state).R () *
-                   getLinVel (state);
+        rw::math::Vector3D<> getLinVelW(const rw::kinematics::State& state) const {
+            return rw::kinematics::Kinematics::worldTframe(getParentFrame(state), state).R() *
+                   getLinVel(state);
         }
 
         /**
          * @brief returns the angular velocity described in world frame
          */
-        rw::math::Vector3D<> getAngVelW (const rw::kinematics::State& state) const
-        {
-            return rw::kinematics::Kinematics::worldTframe (getParentFrame (state), state).R () *
-                   getAngVel (state);
+        rw::math::Vector3D<> getAngVelW(const rw::kinematics::State& state) const {
+            return rw::kinematics::Kinematics::worldTframe(getParentFrame(state), state).R() *
+                   getAngVel(state);
         }
 
         /**
          * @brief reset the state variables of this body
          */
-        virtual void reset (rw::kinematics::State& state) = 0;
+        virtual void reset(rw::kinematics::State& state) = 0;
 
         /**
          * @brief Calculates the total energy of the body.
@@ -347,53 +352,52 @@ namespace rwsim { namespace dynamics {
          * @return the total energy of the body.
          */
         virtual double
-        calcEnergy (const rw::kinematics::State& state,
-                    const rw::math::Vector3D<>& gravity = rw::math::Vector3D<>::zero (),
-                    const rw::math::Vector3D<>& potZero = rw::math::Vector3D<>::zero ()) const = 0;
+        calcEnergy(const rw::kinematics::State& state,
+                   const rw::math::Vector3D<>& gravity = rw::math::Vector3D<>::zero(),
+                   const rw::math::Vector3D<>& potZero = rw::math::Vector3D<>::zero()) const = 0;
 
         /**
          * @brief Sets the force described in parent frame acting on
          * the center mass of this body.
          */
-        virtual void setForce (const rw::math::Vector3D<>& f, rw::kinematics::State& state) = 0;
+        virtual void setForce(const rw::math::Vector3D<>& f, rw::kinematics::State& state) = 0;
 
         /**
          * @brief Gets the force described in parent frame acting on
          * the center mass of this body.
          */
-        virtual rw::math::Vector3D<> getForce (const rw::kinematics::State& state) const = 0;
+        virtual rw::math::Vector3D<> getForce(const rw::kinematics::State& state) const = 0;
 
         /**
          * @brief Adds a force described in parent frame to the
          * center of mass of this body
          */
-        virtual void addForce (const rw::math::Vector3D<>& force, rw::kinematics::State& state) = 0;
+        virtual void addForce(const rw::math::Vector3D<>& force, rw::kinematics::State& state) = 0;
 
         /**
          * @brief set the torque of this body with torque t, where t is
          * described in body frame
          */
-        virtual void setTorque (const rw::math::Vector3D<>& t, rw::kinematics::State& state) = 0;
+        virtual void setTorque(const rw::math::Vector3D<>& t, rw::kinematics::State& state) = 0;
 
         /**
          * @brief Adds a force described in parent frame to the
          * center of mass of this body
          */
-        virtual void addTorque (const rw::math::Vector3D<>& t, rw::kinematics::State& state) = 0;
+        virtual void addTorque(const rw::math::Vector3D<>& t, rw::kinematics::State& state) = 0;
 
         /**
          * @brief returns torque described in body frame
          */
-        virtual rw::math::Vector3D<> getTorque (const rw::kinematics::State& state) const = 0;
+        virtual rw::math::Vector3D<> getTorque(const rw::kinematics::State& state) const = 0;
 
         /**
          * @brief Get the parent frame of this body.
          * @param state [in] the state.
          * @return a pointer to the parent frame.
          */
-        virtual rw::kinematics::Frame* getParentFrame (const rw::kinematics::State& state) const
-        {
-            return getBodyFrame ()->getParent (state);
+        virtual rw::kinematics::Frame* getParentFrame(const rw::kinematics::State& state) const {
+            return getBodyFrame()->getParent(state);
         }
 
         /**
@@ -402,23 +406,21 @@ namespace rwsim { namespace dynamics {
          *
          * @note more efficient to use setForce()
          */
-        virtual void setForceW (const rw::math::Vector3D<>& f, rw::kinematics::State& state)
-        {
-            setForce (rw::math::inverse (
-                          rw::kinematics::Kinematics::worldTframe (getParentFrame (state), state))
-                              .R () *
-                          f,
-                      state);
+        virtual void setForceW(const rw::math::Vector3D<>& f, rw::kinematics::State& state) {
+            setForce(rw::math::inverse(
+                         rw::kinematics::Kinematics::worldTframe(getParentFrame(state), state))
+                             .R() *
+                         f,
+                     state);
         }
 
         /**
          * @brief Gets the force described in world frame acting on
          * the center mass of this body.
          */
-        virtual rw::math::Vector3D<> getForceW (const rw::kinematics::State& state) const
-        {
-            return rw::kinematics::Kinematics::worldTframe (getParentFrame (state), state).R () *
-                   getForce (state);
+        virtual rw::math::Vector3D<> getForceW(const rw::kinematics::State& state) const {
+            return rw::kinematics::Kinematics::worldTframe(getParentFrame(state), state).R() *
+                   getForce(state);
             // return rw::kinematics::Kinematics::worldTframe(_bodyframe, state).R() *
             // getForce(state);
         }
@@ -427,13 +429,12 @@ namespace rwsim { namespace dynamics {
          * @brief Adds a force described in world frame to the
          * center of mass of this body
          */
-        virtual void addForceW (const rw::math::Vector3D<>& force, rw::kinematics::State& state)
-        {
-            addForce (rw::math::inverse (
-                          rw::kinematics::Kinematics::worldTframe (getParentFrame (state), state))
-                              .R () *
-                          force,
-                      state);
+        virtual void addForceW(const rw::math::Vector3D<>& force, rw::kinematics::State& state) {
+            addForce(rw::math::inverse(
+                         rw::kinematics::Kinematics::worldTframe(getParentFrame(state), state))
+                             .R() *
+                         force,
+                     state);
         }
 
         /**
@@ -441,14 +442,13 @@ namespace rwsim { namespace dynamics {
          * which is working on a specific position pos that is described relative to
          * this body.
          */
-        void addForceToPos (const rw::math::Vector3D<>& force, const rw::math::Vector3D<>& pos,
-                            rw::kinematics::State& state)
-        {
+        void addForceToPos(const rw::math::Vector3D<>& force, const rw::math::Vector3D<>& pos,
+                           rw::kinematics::State& state) {
             // calculate the center force contribution
-            addForce (force, state);
+            addForce(force, state);
 
             // calculate the torque contribution
-            addTorque (cross (pos, force), state);
+            addTorque(cross(pos, force), state);
         }
 
         /**
@@ -456,33 +456,31 @@ namespace rwsim { namespace dynamics {
          * which is worked on a specific position pos that is described
          * relative to world
          */
-        virtual void addForceWToPosW (const rw::math::Vector3D<>& force,
-                                      const rw::math::Vector3D<>& pos, rw::kinematics::State& state)
-        {
+        virtual void addForceWToPosW(const rw::math::Vector3D<>& force,
+                                     const rw::math::Vector3D<>& pos,
+                                     rw::kinematics::State& state) {
             using namespace rw::kinematics;
             rw::math::Transform3D<> pTw =
-                inverse (Kinematics::worldTframe (getParentFrame (state), state));
-            rw::math::Transform3D<> wTb = Kinematics::worldTframe (getBodyFrame (), state);
+                inverse(Kinematics::worldTframe(getParentFrame(state), state));
+            rw::math::Transform3D<> wTb = Kinematics::worldTframe(getBodyFrame(), state);
 
             // transform the force into body frame description
-            rw::math::Vector3D<> forcebody = pTw.R () * force;
+            rw::math::Vector3D<> forcebody = pTw.R() * force;
             // calculate the center force contribution
-            addForce (forcebody, state);
+            addForce(forcebody, state);
 
-            rw::math::Vector3D<> posOnBody = pTw.R () * (pos - wTb.P ());
+            rw::math::Vector3D<> posOnBody = pTw.R() * (pos - wTb.P());
             // calculate the torque contribution
-            addTorque (cross (posOnBody, forcebody), state);
+            addTorque(cross(posOnBody, forcebody), state);
         }
 
         /**
          * @brief set the torque of this body with torque t, where t is
          * described in world frame
          */
-        virtual void setTorqueW (const rw::math::Vector3D<>& t, rw::kinematics::State& state)
-        {
-            setTorque (
-                inverse (rw::kinematics::Kinematics::worldTframe (getParentFrame (state), state))
-                        .R () *
+        virtual void setTorqueW(const rw::math::Vector3D<>& t, rw::kinematics::State& state) {
+            setTorque(
+                inverse(rw::kinematics::Kinematics::worldTframe(getParentFrame(state), state)).R() *
                     t,
                 state);
         }
@@ -493,11 +491,9 @@ namespace rwsim { namespace dynamics {
          * @param state [in] the state giving the current pose of the object relative to the world
          * frame.
          */
-        virtual void addTorqueW (const rw::math::Vector3D<>& t, rw::kinematics::State& state)
-        {
-            addTorque (
-                inverse (rw::kinematics::Kinematics::worldTframe (getParentFrame (state), state))
-                        .R () *
+        virtual void addTorqueW(const rw::math::Vector3D<>& t, rw::kinematics::State& state) {
+            addTorque(
+                inverse(rw::kinematics::Kinematics::worldTframe(getParentFrame(state), state)).R() *
                     t,
                 state);
         }
@@ -505,10 +501,9 @@ namespace rwsim { namespace dynamics {
         /**
          * @brief returns torque described in world frame
          */
-        virtual rw::math::Vector3D<> getTorqueW (const rw::kinematics::State& state) const
-        {
-            return rw::kinematics::Kinematics::worldTframe (getParentFrame (state), state).R () *
-                   getTorque (state);
+        virtual rw::math::Vector3D<> getTorqueW(const rw::kinematics::State& state) const {
+            return rw::kinematics::Kinematics::worldTframe(getParentFrame(state), state).R() *
+                   getTorque(state);
         }
 
         /**
@@ -517,9 +512,8 @@ namespace rwsim { namespace dynamics {
          * @param state [in] the state giving the current pose.
          * @return the pose of the body frame relative to the world frame.
          */
-        virtual rw::math::Transform3D<> getTransformW (const rw::kinematics::State& state) const
-        {
-            return rw::kinematics::Kinematics::worldTframe (_bodyframe, state);
+        virtual rw::math::Transform3D<> getTransformW(const rw::kinematics::State& state) const {
+            return rw::kinematics::Kinematics::worldTframe(_bodyframe, state);
         }
 
         /**
@@ -528,9 +522,8 @@ namespace rwsim { namespace dynamics {
          * @param state [in] the state giving the current pose.
          * @return the pose of the body frame relative to the body parent frame.
          */
-        rw::math::Transform3D<> pTbf (const rw::kinematics::State& state) const
-        {
-            return _bodyframe->getTransform (state);
+        rw::math::Transform3D<> pTbf(const rw::kinematics::State& state) const {
+            return _bodyframe->getTransform(state);
         }
 
         /**
@@ -539,10 +532,9 @@ namespace rwsim { namespace dynamics {
          * @param state [in] the state giving the current pose.
          * @return the position of the body center of mass relative to the body parent frame.
          */
-        rw::math::Transform3D<> pTcom (const rw::kinematics::State& state) const
-        {
-            rw::math::Transform3D<> t3d = _bodyframe->getTransform (state);
-            t3d.P () += _info.masscenter;
+        rw::math::Transform3D<> pTcom(const rw::kinematics::State& state) const {
+            rw::math::Transform3D<> t3d = _bodyframe->getTransform(state);
+            t3d.P() += _info.masscenter;
             return t3d;
         }
 
@@ -550,9 +542,8 @@ namespace rwsim { namespace dynamics {
          * @copydoc getTransformW
          * @note This is equivalent to getTransformW()
          */
-        rw::math::Transform3D<> wTbf (const rw::kinematics::State& state) const
-        {
-            return rw::kinematics::Kinematics::worldTframe (_bodyframe, state);
+        rw::math::Transform3D<> wTbf(const rw::kinematics::State& state) const {
+            return rw::kinematics::Kinematics::worldTframe(_bodyframe, state);
         }
 
         /**
@@ -560,22 +551,23 @@ namespace rwsim { namespace dynamics {
          * @param state [in] the state giving the current pose.
          * @return the position of the body center of mass relative to the world frame.
          */
-        rw::math::Transform3D<> wTcom (const rw::kinematics::State& state) const
-        {
+        rw::math::Transform3D<> wTcom(const rw::kinematics::State& state) const {
             rw::math::Transform3D<> t3d =
-                rw::kinematics::Kinematics::worldTframe (_bodyframe, state);
-            return rw::math::Transform3D<> (t3d.P () + t3d.R () * _info.masscenter, t3d.R ());
+                rw::kinematics::Kinematics::worldTframe(_bodyframe, state);
+            return rw::math::Transform3D<>(t3d.P() + t3d.R() * _info.masscenter, t3d.R());
         }
 
         /**
          * @brief Get the geometry information for the body.
          * @return the object.
          */
-        rw::models::Object::Ptr getObject () const { return _obj; }
+        rw::models::Object::Ptr getObject() const {
+            return _obj;
+        }
 
       private:
         rw::core::Ptr<rw::kinematics::Frame> _bodyframe;
-        std::vector< rw::kinematics::Frame* > _frames;
+        std::vector<rw::kinematics::Frame*> _frames;
 
         rw::models::Object::Ptr _obj;
 

@@ -24,27 +24,23 @@ using namespace rw::pathplanning;
 using namespace rw::math;
 using namespace rw::models;
 
-SBLSetup SBLSetup::make (
+SBLSetup SBLSetup::make(
     // const PlannerConstraint& constraint,
     QConstraint::Ptr qconstraint, QEdgeConstraintIncremental::Ptr edgeConstraint,
-    SBLExpand::Ptr expansion, QMetric::Ptr metric, double connectRadius)
-{
-    return SBLSetup (SBLOptions (qconstraint, edgeConstraint, expansion, metric, connectRadius));
+    SBLExpand::Ptr expansion, QMetric::Ptr metric, double connectRadius) {
+    return SBLSetup(SBLOptions(qconstraint, edgeConstraint, expansion, metric, connectRadius));
 }
 
-SBLSetup SBLSetup::make (QConstraint::Ptr qconstraint,
-                         QEdgeConstraintIncremental::Ptr edgeConstraint, Device::Ptr device,
-                         double expandRadius, double connectRadius)
-{
-    if (expandRadius < 0)
-        expandRadius = 0.25;
-    if (connectRadius < 0)
-        connectRadius = 0.5;
+SBLSetup SBLSetup::make(QConstraint::Ptr qconstraint,
+                        QEdgeConstraintIncremental::Ptr edgeConstraint, Device::Ptr device,
+                        double expandRadius, double connectRadius) {
+    if(expandRadius < 0) expandRadius = 0.25;
+    if(connectRadius < 0) connectRadius = 0.5;
 
-    return make (
+    return make(
         qconstraint,
         edgeConstraint,
-        SBLExpand::makeShrinkingUniformBox (qconstraint, device->getBounds (), 2 * expandRadius),
-        PlannerUtil::normalizingInfinityMetric (device->getBounds ()),
+        SBLExpand::makeShrinkingUniformBox(qconstraint, device->getBounds(), 2 * expandRadius),
+        PlannerUtil::normalizingInfinityMetric(device->getBounds()),
         connectRadius);
 }

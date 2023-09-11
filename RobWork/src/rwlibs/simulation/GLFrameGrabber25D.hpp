@@ -20,11 +20,10 @@
 
 //! @file GLFrameGrabber25D.hpp
 #if !defined(SWIG)
-#include <rwlibs/simulation/FrameGrabber25D.hpp>
-
 #include <rw/core/Ptr.hpp>
 #include <rw/graphics/SceneViewer.hpp>
 #include <rw/math/Transform3D.hpp>
+#include <rwlibs/simulation/FrameGrabber25D.hpp>
 #endif
 namespace rw { namespace kinematics {
     class Frame;
@@ -53,7 +52,7 @@ namespace rwlibs { namespace simulation {
     {
       public:
         //! @brief Smart pointer type for GLFrameGrabber25D.
-        typedef rw::core::Ptr< GLFrameGrabber25D > Ptr;
+        typedef rw::core::Ptr<GLFrameGrabber25D> Ptr;
 
         /**
          * @brief constructor
@@ -63,13 +62,13 @@ namespace rwlibs { namespace simulation {
          * @param mindepth [in] the minimum depth of camera.
          * @param maxdepth [in] the maximum depth of camera.
          */
-        GLFrameGrabber25D (int width, int height, double fov, double mindepth = 0.1,
-                           double maxdepth = 10.0);
+        GLFrameGrabber25D(int width, int height, double fov, double mindepth = 0.1,
+                          double maxdepth = 10.0);
 
         /**
          * @brief destructor
          */
-        virtual ~GLFrameGrabber25D ();
+        virtual ~GLFrameGrabber25D();
 
         /**
          * @brief initialize the grabber with a scene viewer. This registers the grabber
@@ -78,7 +77,7 @@ namespace rwlibs { namespace simulation {
          * @return true if initialization succeeded, false otherwise (depends on the capabilities of
          * the SceneViewer).
          */
-        bool init (rw::core::Ptr<rw::graphics::SceneViewer> drawer);
+        bool init(rw::core::Ptr<rw::graphics::SceneViewer> drawer);
 
         /**
          * @brief set the maximum depth that is percieved by this frame grabber.
@@ -86,7 +85,7 @@ namespace rwlibs { namespace simulation {
          * perception will become bad. Hence keep the range realistic.
          * @param depth [in] max depth
          */
-        void setMaxDepth (double depth);
+        void setMaxDepth(double depth);
 
         /**
          * @brief set the minimum depth that is percieved by this frame grabber.
@@ -94,30 +93,30 @@ namespace rwlibs { namespace simulation {
          * perception will become bad. Hence keep the range realistic.
          * @param depth [in] min depth
          */
-        void setMinDepth (double depth);
+        void setMinDepth(double depth);
 
         //! @copydoc FrameGrabber::grab
-        void grab (rw::core::Ptr<rw::kinematics::Frame> frame, const rw::kinematics::State& state);
+        void grab(rw::core::Ptr<rw::kinematics::Frame> frame, const rw::kinematics::State& state);
 
         //! @copydoc FrameGrabber25D::getMaxDepth()
-        double getMaxDepth () { return _maxDepth; };
+        double getMaxDepth() { return _maxDepth; };
 
         //! @copydoc FrameGrabber25D::getMinDepth()
-        double getMinDepth () { return _minDepth; };
+        double getMinDepth() { return _minDepth; };
 
         /**
          * @copydoc FrameGrabber25D::getFieldOfViewY()
          */
-        virtual double getFieldOfViewY ();
+        virtual double getFieldOfViewY();
 
       private:
         double _fieldOfView;    // in the y-axis
         rw::graphics::SceneViewer::Ptr _drawer;
-        rw::math::Transform3D< double > _perspTrans;
+        rw::math::Transform3D<double> _perspTrans;
         rw::graphics::SceneViewer::View::Ptr _view;
 
         double _minDepth, _maxDepth;
-        std::vector< float > _depthData;
+        std::vector<float> _depthData;
     };
 
     /* @} */

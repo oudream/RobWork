@@ -38,128 +38,115 @@ using rwsim::log::SimulatorLogScope;
 using rwsimlibs::gui::SimulatorLogWidget;
 using rwsimlibs::tools::SimulatorLogViewer;
 
-SimulatorLogViewer::SimulatorLogViewer () :
-    QMainWindow (), _ui (new Ui::SimulatorLogViewer ()), _dwc (NULL), _log (NULL),
-    _widget (new SimulatorLogWidget (this))
-{
-    _ui->setupUi (this);
-    setCentralWidget (_widget);
+SimulatorLogViewer::SimulatorLogViewer() :
+    QMainWindow(), _ui(new Ui::SimulatorLogViewer()), _dwc(NULL), _log(NULL),
+    _widget(new SimulatorLogWidget(this)) {
+    _ui->setupUi(this);
+    setCentralWidget(_widget);
 }
 
-SimulatorLogViewer::~SimulatorLogViewer ()
-{}
+SimulatorLogViewer::~SimulatorLogViewer() {}
 
-void SimulatorLogViewer::setDWC (rw::core::Ptr< const DynamicWorkCell > dwc)
-{
+void SimulatorLogViewer::setDWC(rw::core::Ptr<const DynamicWorkCell> dwc) {
     _dwc = dwc;
-    if (_dwc == NULL) {
-        _ui->_actionClose->setEnabled (false);
-        _ui->_actionOpen->setEnabled (true);
+    if(_dwc == NULL) {
+        _ui->_actionClose->setEnabled(false);
+        _ui->_actionOpen->setEnabled(true);
     }
     else {
-        _ui->_actionClose->setEnabled (true);
-        _ui->_actionOpen->setEnabled (false);
+        _ui->_actionClose->setEnabled(true);
+        _ui->_actionOpen->setEnabled(false);
     }
-    _widget->setDWC (_dwc);
-    emit dwcChanged (_dwc);
+    _widget->setDWC(_dwc);
+    emit dwcChanged(_dwc);
 }
 
-void SimulatorLogViewer::setLog (SimulatorLogScope::Ptr log)
-{
+void SimulatorLogViewer::setLog(SimulatorLogScope::Ptr log) {
     _log = log;
-    if (!_log.isNull ())
-        _ui->_actionCompare->setEnabled (true);
-    else
-        _ui->_actionCompare->setEnabled (false);
-    _widget->setLog (_log);
+    if(!_log.isNull()) _ui->_actionCompare->setEnabled(true);
+    else _ui->_actionCompare->setEnabled(false);
+    _widget->setLog(_log);
 }
 
-void SimulatorLogViewer::openDWC ()
-{
+void SimulatorLogViewer::openDWC() {
     QString selectedFilter;
-    const QString filename = QFileDialog::getOpenFileName (this,
-                                                           "Open Dynamic Workcell",    // Title
-                                                           QDir::currentPath (),       // Directory
-                                                           "DWC XML files ( *.dwc.xml )"
-                                                           "\nAll supported ( *.xml )"
-                                                           "\n All ( *.* )",
-                                                           &selectedFilter);
+    const QString filename = QFileDialog::getOpenFileName(this,
+                                                          "Open Dynamic Workcell",    // Title
+                                                          QDir::currentPath(),        // Directory
+                                                          "DWC XML files ( *.dwc.xml )"
+                                                          "\nAll supported ( *.xml )"
+                                                          "\n All ( *.* )",
+                                                          &selectedFilter);
 
-    const std::string dwcFile = filename.toStdString ();
-    if (dwcFile.empty ())
-        return;
+    const std::string dwcFile = filename.toStdString();
+    if(dwcFile.empty()) return;
 
-    rw::core::Ptr< DynamicWorkCell > dwc = NULL;
+    rw::core::Ptr<DynamicWorkCell> dwc = NULL;
     try {
-        dwc = DynamicWorkCellLoader::load (dwcFile);
+        dwc = DynamicWorkCellLoader::load(dwcFile);
     }
-    catch (const Exception& exp) {
-        QMessageBox::information (
-            NULL, "Exception", exp.getMessage ().getText ().c_str (), QMessageBox::Ok);
+    catch(const Exception& exp) {
+        QMessageBox::information(
+            NULL, "Exception", exp.getMessage().getText().c_str(), QMessageBox::Ok);
         return;
     }
-    if (dwc == NULL)
-        RW_THROW ("Dynamic workcell is null");
+    if(dwc == NULL) RW_THROW("Dynamic workcell is null");
 
-    setDWC (dwc);
+    setDWC(dwc);
 }
 
-void SimulatorLogViewer::closeDWC ()
-{
-    setDWC (NULL);
+void SimulatorLogViewer::closeDWC() {
+    setDWC(NULL);
 }
 
-void SimulatorLogViewer::openCompare ()
-{
+void SimulatorLogViewer::openCompare() {
     QString selectedFilter;
-    const QString filename = QFileDialog::getOpenFileName (this,
-                                                           "Open log for comparison",    // Title
-                                                           QDir::currentPath (),    // Directory
-                                                           "Binary log files ( *.bin )"
-                                                           "Ini log files ( *.ini )"
-                                                           "\nAll supported ( *.bin *.ini )"
-                                                           "\n All ( *.* )",
-                                                           &selectedFilter);
+    const QString filename = QFileDialog::getOpenFileName(this,
+                                                          "Open log for comparison",    // Title
+                                                          QDir::currentPath(),          // Directory
+                                                          "Binary log files ( *.bin )"
+                                                          "Ini log files ( *.ini )"
+                                                          "\nAll supported ( *.bin *.ini )"
+                                                          "\n All ( *.* )",
+                                                          &selectedFilter);
 
-    const std::string file = filename.toStdString ();
-    if (file.empty ())
-        return;
+    const std::string file = filename.toStdString();
+    if(file.empty()) return;
 
     SimulatorLogScope::Ptr scope = NULL;
-    if (StringUtil::toUpper (StringUtil::getFileExtension (file)) == "BIN") {
-        std::ifstream fstr (file.c_str (), std::ios::in);
+    if(StringUtil::toUpper(StringUtil::getFileExtension(file)) == "BIN") {
+        std::ifstream fstr(file.c_str(), std::ios::in);
         BINArchive archive;
-        archive.open (fstr);
-        if (!archive.isOpen ())
-            QMessageBox::information (NULL,
-                                      "Exception",
-                                      "Could not open the given file: " +
-                                          QString::fromStdString (file),
-                                      QMessageBox::Ok);
+        archive.open(fstr);
+        if(!archive.isOpen())
+            QMessageBox::information(NULL,
+                                     "Exception",
+                                     "Could not open the given file: " +
+                                         QString::fromStdString(file),
+                                     QMessageBox::Ok);
         else {
-            scope = rw::core::ownedPtr (new SimulatorLogScope ());
-            scope->read (archive, "");
+            scope = rw::core::ownedPtr(new SimulatorLogScope());
+            scope->read(archive, "");
         }
     }
     else {
-        std::ifstream fstr (file.c_str (), std::ios::in);
+        std::ifstream fstr(file.c_str(), std::ios::in);
         INIArchive archive;
-        archive.open (fstr);
-        if (!archive.isOpen ())
-            QMessageBox::information (NULL,
-                                      "Exception",
-                                      "Could not open the given file: " +
-                                          QString::fromStdString (file),
-                                      QMessageBox::Ok);
+        archive.open(fstr);
+        if(!archive.isOpen())
+            QMessageBox::information(NULL,
+                                     "Exception",
+                                     "Could not open the given file: " +
+                                         QString::fromStdString(file),
+                                     QMessageBox::Ok);
         else {
-            scope = rw::core::ownedPtr (new SimulatorLogScope ());
-            scope->read (archive, "");
+            scope = rw::core::ownedPtr(new SimulatorLogScope());
+            scope->read(archive, "");
         }
     }
-    if (scope.isNull ())
-        return;
+    if(scope.isNull()) return;
 
-    _widget->compare (scope);
+    _widget->compare(scope);
 }
 
 // Main Program
@@ -172,31 +159,28 @@ void SimulatorLogViewer::openCompare ()
 
 using namespace boost::program_options;
 
-int main (int argc, char** argv)
-{
-    QApplication app (argc, argv);
+int main(int argc, char** argv) {
+    QApplication app(argc, argv);
 
-    options_description desc ("Allowed options");
-    desc.add_options () ("help", "Produce this help message.") (
-        "dwc,d", value< std::string > (), "The dynamic workcell (optional).") (
-        "file,f", value< std::string > (), "The input file (optional).") (
-        "ini,i", "Input file is in ini format (default).") (
+    options_description desc("Allowed options");
+    desc.add_options()("help", "Produce this help message.")(
+        "dwc,d", value<std::string>(), "The dynamic workcell (optional).")(
+        "file,f", value<std::string>(), "The input file (optional).")(
+        "ini,i", "Input file is in ini format (default).")(
         "bin,b", "Input file is in binary format (optional).");
 
     // Let QApplication parse arguments first, and then parse remaining arguments
-    QStringList qargs = app.arguments ();
-    std::vector< std::string > args (qargs.size ());
-    for (int i = 0; i < qargs.size (); i++) {
-        args[i] = qargs[i].toStdString ();
-    }
+    QStringList qargs = app.arguments();
+    std::vector<std::string> args(qargs.size());
+    for(int i = 0; i < qargs.size(); i++) { args[i] = qargs[i].toStdString(); }
 
     variables_map vm;
-    command_line_parser parser (args);
-    parser.options (desc).style (0).extra_parser (ext_parser ());
-    store (parser.run (), vm);
-    notify (vm);
+    command_line_parser parser(args);
+    parser.options(desc).style(0).extra_parser(ext_parser());
+    store(parser.run(), vm);
+    notify(vm);
 
-    if (vm.count ("help")) {
+    if(vm.count("help")) {
         std::cout << "Usage:\n\n"
                   << "\t" << argv[0] << " [options]\n"
                   << "\n";
@@ -204,74 +188,72 @@ int main (int argc, char** argv)
         return 1;
     }
 
-    rw::core::Ptr< DynamicWorkCell > dwc = NULL;
-    if (vm.count ("dwc")) {
+    rw::core::Ptr<DynamicWorkCell> dwc = NULL;
+    if(vm.count("dwc")) {
         try {
-            dwc = DynamicWorkCellLoader::load (vm["dwc"].as< std::string > ());
+            dwc = DynamicWorkCellLoader::load(vm["dwc"].as<std::string>());
         }
-        catch (const Exception& exp) {
-            QMessageBox::information (
-                NULL, "Exception", exp.getMessage ().getText ().c_str (), QMessageBox::Ok);
+        catch(const Exception& exp) {
+            QMessageBox::information(
+                NULL, "Exception", exp.getMessage().getText().c_str(), QMessageBox::Ok);
         }
     }
 
     std::string file;
     SimulatorLogScope::Ptr scope = NULL;
-    if (vm.count ("file")) {
-        file           = IOUtil::getAbsoluteFileName (vm["file"].as< std::string > ());
-        const bool bin = vm.count ("bin") > 0;
-        if (!boost::filesystem::exists (file)) {
-            QMessageBox::information (NULL,
-                                      "No such file",
-                                      "File does not exist: " + QString::fromStdString (file),
-                                      QMessageBox::Ok);
+    if(vm.count("file")) {
+        file           = IOUtil::getAbsoluteFileName(vm["file"].as<std::string>());
+        const bool bin = vm.count("bin") > 0;
+        if(!boost::filesystem::exists(file)) {
+            QMessageBox::information(NULL,
+                                     "No such file",
+                                     "File does not exist: " + QString::fromStdString(file),
+                                     QMessageBox::Ok);
         }
         try {
-            if (bin) {
-                std::ifstream fstr (file.c_str (), std::ios::in);
+            if(bin) {
+                std::ifstream fstr(file.c_str(), std::ios::in);
                 BINArchive archive;
-                archive.open (fstr);
-                if (!archive.isOpen ())
-                    QMessageBox::information (NULL,
-                                              "Exception",
-                                              "Could not open the given file: " +
-                                                  QString::fromStdString (file),
-                                              QMessageBox::Ok);
+                archive.open(fstr);
+                if(!archive.isOpen())
+                    QMessageBox::information(NULL,
+                                             "Exception",
+                                             "Could not open the given file: " +
+                                                 QString::fromStdString(file),
+                                             QMessageBox::Ok);
                 else {
-                    scope = rw::core::ownedPtr (new SimulatorLogScope ());
-                    scope->read (archive, "");
+                    scope = rw::core::ownedPtr(new SimulatorLogScope());
+                    scope->read(archive, "");
                 }
             }
             else {
-                std::ifstream fstr (file.c_str (), std::ios::in);
-                fstr.precision (17);
+                std::ifstream fstr(file.c_str(), std::ios::in);
+                fstr.precision(17);
                 INIArchive archive;
-                archive.open (fstr);
-                if (!archive.isOpen ())
-                    QMessageBox::information (NULL,
-                                              "Exception",
-                                              "Could not open the given file: " +
-                                                  QString::fromStdString (file),
-                                              QMessageBox::Ok);
+                archive.open(fstr);
+                if(!archive.isOpen())
+                    QMessageBox::information(NULL,
+                                             "Exception",
+                                             "Could not open the given file: " +
+                                                 QString::fromStdString(file),
+                                             QMessageBox::Ok);
                 else {
-                    scope = rw::core::ownedPtr (new SimulatorLogScope ());
-                    scope->read (archive, "");
+                    scope = rw::core::ownedPtr(new SimulatorLogScope());
+                    scope->read(archive, "");
                 }
             }
         }
-        catch (const Exception& e) {
+        catch(const Exception& e) {
             std::stringstream msg;
-            msg << "Could not open the given file: " << e.what () << std::endl;
-            QMessageBox::information (
-                NULL, "Exception", QString::fromStdString (msg.str ()), QMessageBox::Ok);
+            msg << "Could not open the given file: " << e.what() << std::endl;
+            QMessageBox::information(
+                NULL, "Exception", QString::fromStdString(msg.str()), QMessageBox::Ok);
         }
     }
 
     SimulatorLogViewer viewer;
-    if (dwc != NULL)
-        viewer.setDWC (dwc);
-    if (scope != NULL)
-        viewer.setLog (scope);
-    viewer.show ();
-    return app.exec ();
+    if(dwc != NULL) viewer.setDWC(dwc);
+    if(scope != NULL) viewer.setLog(scope);
+    viewer.show();
+    return app.exec();
 }

@@ -25,7 +25,7 @@ namespace rwlibs { namespace task {
     {
       public:
         /// Smart pointer to this type of class
-        typedef rw::core::Ptr< GraspResult > Ptr;
+        typedef rw::core::Ptr<GraspResult> Ptr;
 
         //! the possible discrete outcomes of a single task simulation
         enum TestStatus {
@@ -52,33 +52,31 @@ namespace rwlibs { namespace task {
 
       public:
         /// Constructor
-        GraspResult () : testStatus (UnInitialized), liftresult (0.0), interference (0.0) {}
+        GraspResult() : testStatus(UnInitialized), liftresult(0.0), interference(0.0) {}
 
         /// Destructor
-        virtual ~GraspResult () {}
+        virtual ~GraspResult() {}
 
         /// Copy constructor
-        GraspResult (const GraspResult& gresult) :
-            testStatus (gresult.testStatus), liftresult (gresult.liftresult),
-            gripperConfigurationGrasp (gresult.gripperConfigurationGrasp),
-            gripperConfigurationLift (gresult.gripperConfigurationLift),
-            qualityBeforeLifting (gresult.qualityBeforeLifting),
-            qualityAfterLifting (gresult.qualityAfterLifting),
-            objectTtcpTarget (gresult.objectTtcpTarget),
-            objectTtcpApproach (gresult.objectTtcpApproach),
-            objectTtcpGrasp (gresult.objectTtcpGrasp), objectTtcpLift (gresult.objectTtcpLift),
-            gripperTobjects (gresult.gripperTobjects), contactsGrasp (gresult.contactsGrasp),
-            contactsLift (gresult.contactsLift),
-            interferenceDistances (gresult.interferenceDistances),
-            interferenceAngles (gresult.interferenceAngles), interferences (gresult.interferences),
-            interference (gresult.interference)
-        {}
+        GraspResult(const GraspResult& gresult) :
+            testStatus(gresult.testStatus), liftresult(gresult.liftresult),
+            gripperConfigurationGrasp(gresult.gripperConfigurationGrasp),
+            gripperConfigurationLift(gresult.gripperConfigurationLift),
+            qualityBeforeLifting(gresult.qualityBeforeLifting),
+            qualityAfterLifting(gresult.qualityAfterLifting),
+            objectTtcpTarget(gresult.objectTtcpTarget),
+            objectTtcpApproach(gresult.objectTtcpApproach),
+            objectTtcpGrasp(gresult.objectTtcpGrasp), objectTtcpLift(gresult.objectTtcpLift),
+            gripperTobjects(gresult.gripperTobjects), contactsGrasp(gresult.contactsGrasp),
+            contactsLift(gresult.contactsLift),
+            interferenceDistances(gresult.interferenceDistances),
+            interferenceAngles(gresult.interferenceAngles), interferences(gresult.interferences),
+            interference(gresult.interference) {}
 
         /**
          * @brief Returns textual representation of given TestStatus.
          */
-        static std::string toString (GraspResult::TestStatus status)
-        {
+        static std::string toString(GraspResult::TestStatus status) {
             static std::string strArr[] = {"UnInitialized",
                                            "Success",
                                            "CollisionInitially",
@@ -128,15 +126,15 @@ namespace rwlibs { namespace task {
         rw::math::Transform3D<> objectTtcpLift;
 
         // transform after approach
-        std::vector< rw::math::Transform3D<> > gripperTobjects;
+        std::vector<rw::math::Transform3D<>> gripperTobjects;
         // all contacts
-        std::vector< rw::sensor::Contact3D > contactsGrasp, contactsLift;
+        std::vector<rw::sensor::Contact3D> contactsGrasp, contactsLift;
 
         // measure of object interference
-        std::vector< rw::math::Transform3D<> > interferenceTs;
-        std::vector< double > interferenceDistances;
-        std::vector< double > interferenceAngles;
-        std::vector< double >
+        std::vector<rw::math::Transform3D<>> interferenceTs;
+        std::vector<double> interferenceDistances;
+        std::vector<double> interferenceAngles;
+        std::vector<double>
             interferences;      // interferences for each of the interference objects separately
         double interference;    // total interference for this target
     };

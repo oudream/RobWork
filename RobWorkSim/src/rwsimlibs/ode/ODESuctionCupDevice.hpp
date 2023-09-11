@@ -61,8 +61,8 @@ namespace rwsim { namespace simulator {
          * @param odesim [in] the simulator.
          * @param state [in] the state.
          */
-        ODESuctionCupDevice (ODEBody* base, rwsim::dynamics::SuctionCup* dev, ODESimulator* odesim,
-                             rw::kinematics::State& state);
+        ODESuctionCupDevice(ODEBody* base, rwsim::dynamics::SuctionCup* dev, ODESimulator* odesim,
+                            rw::kinematics::State& state);
 
         /**
          * @brief Initialize the device.
@@ -71,17 +71,17 @@ namespace rwsim { namespace simulator {
          * @param odesim [in] the simulator.
          * @param state [in] the state.
          */
-        void init (ODEBody* base, rwsim::dynamics::SuctionCup* dev, ODESimulator* odesim,
-                   rw::kinematics::State& state);
+        void init(ODEBody* base, rwsim::dynamics::SuctionCup* dev, ODESimulator* odesim,
+                  rw::kinematics::State& state);
 
         //! @brief Destructor.
-        virtual ~ODESuctionCupDevice ();
+        virtual ~ODESuctionCupDevice();
 
         /**
          * @brief resets the ODE device to the state values of the RWSim device.
          * @param state
          */
-        virtual void reset (rw::kinematics::State& state);
+        virtual void reset(rw::kinematics::State& state);
 
         /**
          * @brief the update call is made prior to the simulation step. In this
@@ -90,8 +90,8 @@ namespace rwsim { namespace simulator {
          * @param dt
          * @param state [out] ODEDevice state values are copied to \b state
          */
-        virtual void update (const rwlibs::simulation::Simulator::UpdateInfo& dt,
-                             rw::kinematics::State& state);
+        virtual void update(const rwlibs::simulation::Simulator::UpdateInfo& dt,
+                            rw::kinematics::State& state);
 
         /**
          * @brief The post update is called after a simulation step has
@@ -99,7 +99,7 @@ namespace rwsim { namespace simulator {
          * of the ODE device is written back to the \b state object.
          * @param state
          */
-        virtual void postUpdate (rw::kinematics::State& state);
+        virtual void postUpdate(rw::kinematics::State& state);
 
         // static ODESuctionCupDevice* makeSuctionCup(rwsim::dynamics::SuctionCup* scup,
         // ODESimulator *sim, rw::kinematics::State &state);
@@ -108,20 +108,20 @@ namespace rwsim { namespace simulator {
          * @brief Get spiked mesh.
          * @return the mesh.
          */
-        rw::geometry::TriMesh::Ptr getSpikedMesh () { return _spikedCupMesh; }
+        rw::geometry::TriMesh::Ptr getSpikedMesh() { return _spikedCupMesh; }
 
         /**
          * @brief Get the end body.
          * @return the end body.
          */
-        ODEBody* getEndBody () { return _odeEnd; }
+        ODEBody* getEndBody() { return _odeEnd; }
 
         //! @copydoc ODEDevice::getBodies
-        std::vector< ODEBody* > getBodies () { return _ode_bodies; };
+        std::vector<ODEBody*> getBodies() { return _ode_bodies; };
 
       private:
-        void updateNoRollBack (const rwlibs::simulation::Simulator::UpdateInfo& dt,
-                               rw::kinematics::State& state);
+        void updateNoRollBack(const rwlibs::simulation::Simulator::UpdateInfo& dt,
+                              rw::kinematics::State& state);
 
       private:
         // rwsim::dynamics::SuctionCup::Ptr _dev;
@@ -131,19 +131,19 @@ namespace rwsim { namespace simulator {
         // std::vector<std::pair<rwsim::dynamics::Body*,rwsim::dynamics::Body*> > _bodyPairs;
         // std::vector<rw::math::Transform3D<> > _bodyTransforms;
         std::string _name;
-        rw::core::Ptr< rwsim::dynamics::SuctionCup > _dev;
-        rw::core::Ptr< rwsim::sensor::BodyContactSensor > _sensor;
-        rw::core::Ptr< rwsim::dynamics::Body > _tcp;
+        rw::core::Ptr<rwsim::dynamics::SuctionCup> _dev;
+        rw::core::Ptr<rwsim::sensor::BodyContactSensor> _sensor;
+        rw::core::Ptr<rwsim::dynamics::Body> _tcp;
         double _v;
 
         bool _isInContact;
-        rw::core::Ptr< rwsim::dynamics::Body > _object;
+        rw::core::Ptr<rwsim::dynamics::Body> _object;
 
         rw::geometry::TriMesh::Ptr _spikedCupMesh;
         rw::geometry::Geometry::Ptr _spikedCup;
-        rw::core::Ptr< rw::proximity::ProximityModel > _spikedCupModel;
+        rw::core::Ptr<rw::proximity::ProximityModel> _spikedCupModel;
 
-        rw::core::Ptr< rwlibs::proximitystrategies::ProximityStrategyPQP > _narrowStrategy;
+        rw::core::Ptr<rwlibs::proximitystrategies::ProximityStrategyPQP> _narrowStrategy;
         rw::proximity::ProximityStrategyData _pdata;
         ODESimulator* _odesim;
         dWorldID _worldId;
@@ -153,8 +153,8 @@ namespace rwsim { namespace simulator {
         dJointFeedback _feedback;
         ODEBody *_odeBase, *_odeEnd;
         double _lastX, _lastAng;
-        std::vector< dContact > _contacts;
-        std::vector< ODEBody* > _ode_bodies;
+        std::vector<dContact> _contacts;
+        std::vector<ODEBody*> _ode_bodies;
     };
 }}     // namespace rwsim::simulator
 #endif /* ODEDEVICE_HPP_ */

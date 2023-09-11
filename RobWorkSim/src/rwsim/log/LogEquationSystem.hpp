@@ -44,71 +44,71 @@ namespace rwsim { namespace log {
     {
       public:
         //! Smart pointer type of LogEquationSystem
-        typedef rw::core::Ptr< LogEquationSystem > Ptr;
+        typedef rw::core::Ptr<LogEquationSystem> Ptr;
 
         //! @copydoc SimulatorLogEntry::SimulatorLogEntry
-        LogEquationSystem (SimulatorLogScope* parent);
+        LogEquationSystem(SimulatorLogScope* parent);
 
         //! @brief Destructor.
-        virtual ~LogEquationSystem ();
+        virtual ~LogEquationSystem();
 
         //! @copydoc SimulatorLogEntry::read
-        virtual void read (class rw::common::InputArchive& iarchive, const std::string& id);
+        virtual void read(class rw::common::InputArchive& iarchive, const std::string& id);
 
         //! @copydoc SimulatorLogEntry::write
-        virtual void write (class rw::common::OutputArchive& oarchive, const std::string& id) const;
+        virtual void write(class rw::common::OutputArchive& oarchive, const std::string& id) const;
 
         //! @copydoc SimulatorLogEntry::getType
-        virtual std::string getType () const;
+        virtual std::string getType() const;
 
         //! @copydoc SimulatorLogEntry::operator==
-        virtual bool operator== (const SimulatorLog& b) const;
+        virtual bool operator==(const SimulatorLog& b) const;
 
         //! @copydoc SimulatorLogEntry::getLinkedEntries
-        virtual std::list< SimulatorLogEntry::Ptr > getLinkedEntries () const;
+        virtual std::list<SimulatorLogEntry::Ptr> getLinkedEntries() const;
 
         //! @copydoc SimulatorLogEntry::autoLink
-        virtual bool autoLink ();
+        virtual bool autoLink();
 
         //! @copydoc SimulatorLogEntry::createNew
-        virtual SimulatorLogEntry::Ptr createNew (SimulatorLogScope* parent) const;
+        virtual SimulatorLogEntry::Ptr createNew(SimulatorLogScope* parent) const;
 
         /**
          * @brief Get the type id of this entry type.
          * @return the type id.
          */
-        static std::string getTypeID ();
+        static std::string getTypeID();
 
         /**
          * @brief Set the equation system.
          * @param A [in] the matrix.
          * @param b [in] the right-hand-side.
          */
-        void set (const Eigen::MatrixXd& A, const Eigen::VectorXd& b);
+        void set(const Eigen::MatrixXd& A, const Eigen::VectorXd& b);
 
         /**
          * @brief Set the solution to the system.
          * @param x [in] the solution.
          */
-        void setSolution (const Eigen::VectorXd& x);
+        void setSolution(const Eigen::VectorXd& x);
 
         /**
          * @brief Get the matrix for the linear equation system.
          * @return a reference to the matrix.
          */
-        const Eigen::MatrixXd& A () const;
+        const Eigen::MatrixXd& A() const;
 
         /**
          * @brief Get the right-hand side of the equation system.
          * @return a reference to the right-hand side.
          */
-        const Eigen::VectorXd& b () const;
+        const Eigen::VectorXd& b() const;
 
         /**
          * @brief Get the solution.
          * @return a reference to the solution.
          */
-        const Eigen::VectorXd& x () const;
+        const Eigen::VectorXd& x() const;
 
       private:
         Eigen::MatrixXd _A;

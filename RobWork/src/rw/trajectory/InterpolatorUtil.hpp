@@ -22,10 +22,9 @@
  * @file InterpolatorUtil.hpp
  */
 #if !defined(SWIG)
-#include <rw/trajectory/Interpolator.hpp>
-
 #include <rw/math/Quaternion.hpp>
 #include <rw/math/Transform3D.hpp>
+#include <rw/trajectory/Interpolator.hpp>
 #endif
 namespace rw { namespace trajectory {
 
@@ -46,15 +45,13 @@ namespace rw { namespace trajectory {
          * The vector defined by V must have a default constructor initializing it to
          * be 7 long and support the "(size_t i)" to assign its elements.
          */
-        template< class V, class T > static V transToVec (const rw::math::Transform3D< T >& t)
-        {
+        template<class V, class T> static V transToVec(const rw::math::Transform3D<T>& t) {
             V v;
-            v (0) = t.P () (0);
-            v (1) = t.P () (1);
-            v (2) = t.P () (2);
-            rw::math::Quaternion< T > q (t.R ());
-            for (int i = 0; i < 4; i++)
-                v (i + 3) = q (i);
+            v(0) = t.P()(0);
+            v(1) = t.P()(1);
+            v(2) = t.P()(2);
+            rw::math::Quaternion<T> q(t.R());
+            for(int i = 0; i < 4; i++) v(i + 3) = q(i);
             return v;
         }
 
@@ -64,22 +61,19 @@ namespace rw { namespace trajectory {
          * The vector defined by V must support the "(size_t i)" to access its elements.
          * The first 3 elements must be position and the last 4 a quaternion
          */
-        template< class V, class T > static rw::math::Transform3D< T > vecToTrans (const V& v)
-        {
-            rw::math::Transform3D< T > res;
-            res.P () (0) = v (0);
-            res.P () (1) = v (1);
-            res.P () (2) = v (2);
-            rw::math::Quaternion< T > quar (v (3), v (4), v (5), v (6));
+        template<class V, class T> static rw::math::Transform3D<T> vecToTrans(const V& v) {
+            rw::math::Transform3D<T> res;
+            res.P()(0) = v(0);
+            res.P()(1) = v(1);
+            res.P()(2) = v(2);
+            rw::math::Quaternion<T> quar(v(3), v(4), v(5), v(6));
 
-            if (quar.getLength () > 1e-15) {
-                quar.normalize ();
+            if(quar.getLength() > 1e-15) {
+                quar.normalize();
                 std::cout << "Normalized Quar = " << quar << std::endl;
-                res.R () = quar.toRotation3D ();
+                res.R() = quar.toRotation3D();
             }
-            else {
-                res.R () = rw::math::Rotation3D<T>::identity ();
-            }
+            else { res.R() = rw::math::Rotation3D<T>::identity(); }
             return res;
         }
 
@@ -90,54 +84,48 @@ namespace rw { namespace trajectory {
          * The vector returned contains the position followed by a quaternion for
          * the orientation.
          */
-        template< class V, class T > class Transform2VectorWrapper : public Interpolator< V >
+        template<class V, class T> class Transform2VectorWrapper : public Interpolator<V>
         {
           public:
             /**
              * @brief Constructs wrapper
              * @param interpolator [in] interpolator to wrap (ownership is NOT transferred)
              */
-            Transform2VectorWrapper (Interpolator< rw::math::Transform3D< T > >* interpolator)
-            {
+            Transform2VectorWrapper(Interpolator<rw::math::Transform3D<T>>* interpolator) {
                 _interpolator = interpolator;
             }
 
             /**
              * @copydoc Interpolator::x()
              */
-            V x (double t) const
-            {
-                return InterpolatorUtil::transToVec< V, T > (_interpolator->x (t));
-            }
+            V x(double t) const { return InterpolatorUtil::transToVec<V, T>(_interpolator->x(t)); }
 
             /**
              * @copydoc Interpolator::dx()
              */
-            V dx (double t) const
-            {
-                return InterpolatorUtil::transToVec< V, T > (_interpolator->dx (t));
+            V dx(double t) const {
+                return InterpolatorUtil::transToVec<V, T>(_interpolator->dx(t));
             }
 
             /**
              * @copydoc Interpolator::ddx()
              */
-            V ddx (double t) const
-            {
-                return InterpolatorUtil::transToVec< V, T > (_interpolator->ddx (t));
+            V ddx(double t) const {
+                return InterpolatorUtil::transToVec<V, T>(_interpolator->ddx(t));
             }
 
             /**
              * @copydoc Interpolator::duration()
              */
-            double duration () const { return _interpolator->duration (); }
+            double duration() const { return _interpolator->duration(); }
 
           private:
-            Interpolator< rw::math::Transform3D< T > >* _interpolator;
+            Interpolator<rw::math::Transform3D<T>>* _interpolator;
         };
 
       private:
-        InterpolatorUtil ();
-        virtual ~InterpolatorUtil ();
+        InterpolatorUtil();
+        virtual ~InterpolatorUtil();
     };
 
     /* @} */

@@ -32,10 +32,10 @@ namespace {
 class ElementCreator
 {
   public:
-    ElementCreator (DOMElem::Ptr root)    // :	_root(root)
+    ElementCreator(DOMElem::Ptr root)    // :	_root(root)
     {}
 
-    template< class T > DOMElem::Ptr createElement (T object, DOMElem::Ptr parent);
+    template<class T> DOMElem::Ptr createElement(T object, DOMElem::Ptr parent);
 
   private:
     // DOMElem::Ptr _root;
@@ -43,16 +43,15 @@ class ElementCreator
 
 template<>
 DOMElem::Ptr
-ElementCreator::createElement< FixedFrameCalibration::Ptr > (FixedFrameCalibration::Ptr calibration,
-                                                             DOMElem::Ptr parent)
-{
-    DOMElem::Ptr element = parent->addChild ("FixedFrameCalibration");
-    element->addAttribute ("frame")->setValue (calibration->getFrame ()->getName ());
+ElementCreator::createElement<FixedFrameCalibration::Ptr>(FixedFrameCalibration::Ptr calibration,
+                                                          DOMElem::Ptr parent) {
+    DOMElem::Ptr element = parent->addChild("FixedFrameCalibration");
+    element->addAttribute("frame")->setValue(calibration->getFrame()->getName());
     DOMElem::Ptr transformElement =
-        element->addChild ("Transform3D");    // Name does not matter, it is overwritten in the
-                                              // DOMBasisTypes::write anyway.
-    rw::math::Transform3D<> corrected = calibration->getCorrectedTransform ();
-    DOMBasisTypes::write (corrected, transformElement, true);
+        element->addChild("Transform3D");    // Name does not matter, it is overwritten in the
+                                             // DOMBasisTypes::write anyway.
+    rw::math::Transform3D<> corrected = calibration->getCorrectedTransform();
+    DOMBasisTypes::write(corrected, transformElement, true);
 
     // Add the rotation in RPY just to make it easier for the user to see it.
     // DOMElem::Ptr rpyElement = element->addChild("RPY");//Name does not matter, it is overwritten
@@ -61,43 +60,40 @@ ElementCreator::createElement< FixedFrameCalibration::Ptr > (FixedFrameCalibrati
     return element;
 }
 
-void createDOMDocument (DOMElem::Ptr rootDoc, WorkCellCalibration::Ptr calibration)
-{
+void createDOMDocument(DOMElem::Ptr rootDoc, WorkCellCalibration::Ptr calibration) {
     // rootElement->setName("SerialDeviceCalibration");
-    DOMElem::Ptr rootElement = rootDoc->addChild ("WorkCellCalibration");
+    DOMElem::Ptr rootElement = rootDoc->addChild("WorkCellCalibration");
 
-    ElementCreator creator (rootElement);
+    ElementCreator creator(rootElement);
 
-    for (Calibration::Ptr calib : calibration->getCalibrations ()) {
-        calib.cast< FixedFrameCalibration > ();
-        if (calib.cast< FixedFrameCalibration > () != NULL) {
-            DOMElem::Ptr element = rootElement->addChild ("FixedFrameCalibration");
-            creator.createElement< FixedFrameCalibration::Ptr > (
-                calib.cast< FixedFrameCalibration > (), element);
+    for(Calibration::Ptr calib : calibration->getCalibrations()) {
+        calib.cast<FixedFrameCalibration>();
+        if(calib.cast<FixedFrameCalibration>() != NULL) {
+            DOMElem::Ptr element = rootElement->addChild("FixedFrameCalibration");
+            creator.createElement<FixedFrameCalibration::Ptr>(calib.cast<FixedFrameCalibration>(),
+                                                              element);
         }
     }
 }
 
 }    // End anonymous namespace
 
-void XmlCalibrationSaver::save (WorkCellCalibration::Ptr calibration, std::string fileName)
-{
-    DOMParser::Ptr doc = DOMParser::make ();
-    DOMElem::Ptr root  = doc->getRootElement ();
+void XmlCalibrationSaver::save(WorkCellCalibration::Ptr calibration, std::string fileName) {
+    DOMParser::Ptr doc = DOMParser::make();
+    DOMElem::Ptr root  = doc->getRootElement();
 
-    createDOMDocument (root, calibration);
+    createDOMDocument(root, calibration);
 
     // save to file
-    doc->save (fileName);
+    doc->save(fileName);
 }
 
-void XmlCalibrationSaver::save (WorkCellCalibration::Ptr calibration, std::ostream& ostream)
-{
-    DOMParser::Ptr doc = DOMParser::make ();
-    DOMElem::Ptr root  = doc->getRootElement ();
+void XmlCalibrationSaver::save(WorkCellCalibration::Ptr calibration, std::ostream& ostream) {
+    DOMParser::Ptr doc = DOMParser::make();
+    DOMElem::Ptr root  = doc->getRootElement();
 
-    createDOMDocument (root, calibration);
+    createDOMDocument(root, calibration);
 
     // save to stream
-    doc->save (ostream);
+    doc->save(ostream);
 }

@@ -28,21 +28,20 @@
 #include <rw/core/Ptr.hpp>
 #include <rw/graphics/Plot.hpp>
 
-namespace rw {
-namespace graphics {
-//! @addtogroup graphics
+namespace rw { namespace graphics {
+    //! @addtogroup graphics
 
-//! @{
-//! @brief Interface for for plot generators.
-class PlotGenerator
-{
-    protected:
+    //! @{
+    //! @brief Interface for for plot generators.
+    class PlotGenerator
+    {
+      protected:
         //! @brief Constructor.
         PlotGenerator() {}
 
-    public:
+      public:
         //! @brief Smart pointer type.
-        typedef rw::core::Ptr< PlotGenerator > Ptr;
+        typedef rw::core::Ptr<PlotGenerator> Ptr;
 
         //! @brief Destructor.
         virtual ~PlotGenerator() {}
@@ -57,8 +56,9 @@ class PlotGenerator
 #if !defined(SWIG)
         /**
          * @addtogroup extensionpoints
-         * @extensionpoint{ rw::graphics::PlotGenerator::Factory,rw::graphics::PlotGenerator,rw.graphics.PlotGenerator }
-         * \class PlotGenerator
+         * @extensionpoint{
+         * rw::graphics::PlotGenerator::Factory,rw::graphics::PlotGenerator,rw.graphics.PlotGenerator
+         * } \class PlotGenerator
          */
 #endif
         /**
@@ -69,10 +69,10 @@ class PlotGenerator
          * extension descriptor with a property called "generator" giving
          * a unique identifier for that particular generator.
          */
-        class Factory : public rw::core::ExtensionPoint< PlotGenerator >
+        class Factory : public rw::core::ExtensionPoint<PlotGenerator>
         {
           private:
-                Factory ();
+            Factory();
 
           public:
             /**
@@ -80,25 +80,24 @@ class PlotGenerator
              * @param implementation [in] name of the implementation to use.
              * @return a PlotGenerator if found, nullptr otherwise.
              */
-            static rw::core::Ptr< PlotGenerator > getPlotGenerator (const std::string& implementation);
+            static rw::core::Ptr<PlotGenerator> getPlotGenerator(const std::string& implementation);
 
             /**
              * @brief Check if the factory has a specific PlotGenerator.
              * @param implementation [in] name of the implementation.
              * @return true if implementation was found, false otherwise.
              */
-            static bool hasPlotGenerator (const std::string& implementation);
+            static bool hasPlotGenerator(const std::string& implementation);
 
             /**
              * @brief Get a list of PlotGenerator.
              * @return a list of names for generator implementaitons.
              */
-            static std::vector< std::string > getPlotGenerators ();
+            static std::vector<std::string> getPlotGenerators();
         };
-};
-//! @}
+    };
+    //! @}
 
-} /* namespace graphics */
-} /* namespace rw */
+}}    // namespace rw::graphics
 
 #endif /* RW_GRAPHICS_PLOTGENERATOR_HPP_ */

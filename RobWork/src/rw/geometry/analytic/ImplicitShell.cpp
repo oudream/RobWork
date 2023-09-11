@@ -21,7 +21,6 @@
 
 using namespace rw::geometry;
 
-Face::CPtr ImplicitShell::doGetFace (std::size_t idx) const
-{
-    return getFace (idx);
+Face::CPtr ImplicitShell::doGetFace(std::size_t idx) const {
+    return getFace(idx);
 }

@@ -27,6 +27,7 @@
 */
 
 #include <rw/common.hpp>
+#include <rw/core.hpp>
 #include <rw/geometry.hpp>
 #include <rw/graspplanning.hpp>
 #include <rw/invkin.hpp>
@@ -38,7 +39,5 @@
 #include <rw/proximity.hpp>
 #include <rw/sensor.hpp>
 #include <rw/trajectory.hpp>
-
-#include <rw/core.hpp>
 
 #endif    // end include guard

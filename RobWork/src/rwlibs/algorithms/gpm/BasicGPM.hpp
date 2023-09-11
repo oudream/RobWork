@@ -53,13 +53,13 @@ namespace rwlibs { namespace algorithms {
          * which the joints should move
          * @param dt [in] Step size
          */
-        BasicGPM (rw::models::Device* device, rw::core::Ptr<rw::kinematics::Frame> controlFrame,
-                  const rw::kinematics::State& state, const rw::math::Q& qhome, double dt);
+        BasicGPM(rw::models::Device* device, rw::core::Ptr<rw::kinematics::Frame> controlFrame,
+                 const rw::kinematics::State& state, const rw::math::Q& qhome, double dt);
 
         /**
          * @brief Destructor
          */
-        virtual ~BasicGPM ();
+        virtual ~BasicGPM();
 
         /**
          * @brief Solves for joint velocities given a desired tool velocity
@@ -68,8 +68,8 @@ namespace rwlibs { namespace algorithms {
          * @param dq [in] The current joint velocity
          * @param tcpvel [in] The desired tool velocity seen in the base frame
          */
-        rw::math::Q solve (const rw::math::Q& q, const rw::math::Q& dq,
-                           const rw::math::VelocityScrew6D<>& tcpvel);
+        rw::math::Q solve(const rw::math::Q& q, const rw::math::Q& dq,
+                          const rw::math::VelocityScrew6D<>& tcpvel);
 
         /**
          * @brief Specifies whether to use joint limit avoidance
@@ -78,7 +78,7 @@ namespace rwlibs { namespace algorithms {
          *
          * @param use [in] True to use joint limit avoidance
          */
-        void setUseJointLimitsCost (bool use);
+        void setUseJointLimitsCost(bool use);
 
         /**
          * @brief Specifies whether to use singularity avoidance
@@ -87,14 +87,14 @@ namespace rwlibs { namespace algorithms {
          *
          * @param use [in] True to use singularity avoidance
          */
-        void setUseSingularityCost (bool use);
+        void setUseSingularityCost(bool use);
 
         /**
          * @brief Sets the weight of the joint limits
          *
          * @param w [in] Weight of the joint limit
          */
-        void setJointLimitsWeight (double w);
+        void setJointLimitsWeight(double w);
 
         /**
          * @brief Sets the threshold for the joint limits
@@ -107,14 +107,14 @@ namespace rwlibs { namespace algorithms {
          * @param thresholdLowerRatio [in] Relative threshold for the lower joint limits
          * @param thresholdUpperRatio [in] Relative threshold for the upper joint limits
          */
-        void setJointLimitThreshold (double thresholdLowerRatio, double thresholdUpperRatio);
+        void setJointLimitThreshold(double thresholdLowerRatio, double thresholdUpperRatio);
 
         /**
          * @brief Sets the weight of the singularity avoidance task
          *
          * @param w [in] The weight
          */
-        void setSingularityWeight (double w);
+        void setSingularityWeight(double w);
 
         /**
          * @brief Enumeration used to specify frame associated with the projection
@@ -147,7 +147,7 @@ namespace rwlibs { namespace algorithms {
          * @param P [in] The projection matrix
          * @param space [in] The space in which to apply the projection
          */
-        void setProjection (const Eigen::MatrixXd& P, ProjectionFrame space);
+        void setProjection(const Eigen::MatrixXd& P, ProjectionFrame space);
 
       private:
         rw::models::Device* _device;
@@ -174,13 +174,13 @@ namespace rwlibs { namespace algorithms {
         rw::math::Q _thresholdLower;
         rw::math::Q _thresholdUpper;
 
-        Eigen::VectorXd getCostGradient (const rw::math::Q& q, const Eigen::MatrixXd& jac);
+        Eigen::VectorXd getCostGradient(const rw::math::Q& q, const Eigen::MatrixXd& jac);
 
-        rw::math::Q applyJointVelocityConstraint (const rw::math::Q& q, const rw::math::Q& dq,
-                                                  const rw::math::Q& dqnew);
+        rw::math::Q applyJointVelocityConstraint(const rw::math::Q& q, const rw::math::Q& dq,
+                                                 const rw::math::Q& dqnew);
 
-        void calculatePosAndVelLimits (Eigen::VectorXd& lower, Eigen::VectorXd& upper,
-                                       const rw::math::Q& q, const rw::math::Q& dq);
+        void calculatePosAndVelLimits(Eigen::VectorXd& lower, Eigen::VectorXd& upper,
+                                      const rw::math::Q& q, const rw::math::Q& dq);
     };
 
 }}    // namespace rwlibs::algorithms

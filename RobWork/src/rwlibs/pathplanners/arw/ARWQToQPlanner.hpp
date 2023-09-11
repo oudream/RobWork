@@ -22,10 +22,9 @@
    @file ARWQToQPlanner.hpp
 */
 
-#include <rwlibs/pathplanners/arw/ARWExpand.hpp>
-
 #include <rw/pathplanning/PlannerConstraint.hpp>
 #include <rw/pathplanning/QToQPlanner.hpp>
+#include <rwlibs/pathplanners/arw/ARWExpand.hpp>
 
 #include <vector>
 
@@ -57,12 +56,12 @@ namespace rwlibs { namespace pathplanners {
            distance to the node is less than \b nearDistance when measured by \b
            metric.
         */
-        ARWQToQPlanner (const rw::pathplanning::PlannerConstraint& constraint,
-                        ARWExpand::Ptr expand, rw::math::QMetric::Ptr metric, double nearDistance);
+        ARWQToQPlanner(const rw::pathplanning::PlannerConstraint& constraint, ARWExpand::Ptr expand,
+                       rw::math::QMetric::Ptr metric, double nearDistance);
 
       private:
-        bool doQuery (const rw::math::Q& qInit, const rw::math::Q& qGoal,
-                      rw::trajectory::QPath& path, const rw::pathplanning::StopCriteria& stop);
+        bool doQuery(const rw::math::Q& qInit, const rw::math::Q& qGoal,
+                     rw::trajectory::QPath& path, const rw::pathplanning::StopCriteria& stop);
 
       private:
         rw::pathplanning::PlannerConstraint _constraint;
@@ -71,8 +70,8 @@ namespace rwlibs { namespace pathplanners {
         double _nearDistance;
 
       private:
-        bool nearGoal (const rw::math::Q& q, const rw::math::Q& goal) const;
-        bool planPathStep (ARWExpand& expand, const std::vector< rw::math::Q >& goals) const;
+        bool nearGoal(const rw::math::Q& q, const rw::math::Q& goal) const;
+        bool planPathStep(ARWExpand& expand, const std::vector<rw::math::Q>& goals) const;
     };
 
     /*\}*/

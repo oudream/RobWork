@@ -64,7 +64,7 @@ namespace rw { namespace core {
          *
          * @param message [in] A message for a user.
          */
-        Message (const std::string& file, int line, const std::string& message = "");
+        Message(const std::string& file, int line, const std::string& message = "");
 
         /**
          * @brief The name of source file within which the message was
@@ -72,7 +72,7 @@ namespace rw { namespace core {
          *
          * @return The exception file name.
          */
-        const std::string& getFile () const { return _file; }
+        const std::string& getFile() const { return _file; }
 
         /**
          * @brief The line number for the file at where the message was
@@ -80,34 +80,32 @@ namespace rw { namespace core {
          *
          * @return The exception line number.
          */
-        int getLine () const { return _line; }
+        int getLine() const { return _line; }
 
         /**
          * @brief The message text meant for the user.
          *
          * @return The message text.
          */
-        const std::string& getText () const { return _message; }
+        const std::string& getText() const { return _message; }
 
         /**
          * @brief Returns a full description of the message containing file, line number and
          * message.
          */
-        std::string getFullText () const
-        {
+        std::string getFullText() const {
             std::stringstream sstr;
             sstr << _file << ":" << _line << " : " << _message;
-            return sstr.str ();
+            return sstr.str();
         }
 
         /**
          * @brief general stream operator
          */
-        template< class T > Message& operator<< (T t)
-        {
+        template<class T> Message& operator<<(T t) {
             std::stringstream tmp;
             tmp << t;
-            _message = _message + tmp.str ();
+            _message = _message + tmp.str();
             return *this;
             // return this->operator<<( tmp.str() );
         }
@@ -144,7 +142,7 @@ namespace rw { namespace core {
         std::string _message;
     };
 
-// #if !defined(SWIG)
+    // #if !defined(SWIG)
     /** @brief Format to \b out the message \b msg.
      *
      * The format for the exception is
@@ -153,15 +151,15 @@ namespace rw { namespace core {
         \endcode
      * @return The stream \b out.
      */
-    std::ostream& operator<< (std::ostream& out, const Message& msg);
+    std::ostream& operator<<(std::ostream& out, const Message& msg);
 
-// #endif
+    // #endif
 
     /*@}*/
 }}    // namespace rw::core
 
 #if defined(SWIG)
-TOSTRING_OUTOFCLASSDEF (rw::core::Message)
+TOSTRING_OUTOFCLASSDEF(rw::core::Message)
 #endif
 
 #endif    // end include guard

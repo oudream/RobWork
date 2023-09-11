@@ -41,44 +41,44 @@ namespace rw { namespace loaders {
          * @brief Identifier for rw::proximity::ProximitySetup in the XML format.
          * @return the identifier.
          */
-        static const XMLCh* idProximitySetup ();
+        static const XMLCh* idProximitySetup();
 
         /**
          * @brief Identifier for exclude rule in the XML format.
          * @return the identifier.
          */
-        static const XMLCh* idExcludeRule ();
+        static const XMLCh* idExcludeRule();
 
         /**
          * @brief Identifier for include rule in the XML format.
          * @return the identifier.
          */
-        static const XMLCh* idIncludeRule ();
+        static const XMLCh* idIncludeRule();
 
         /**
          * @brief Identifier for the attribute specifying whether to include all frame pairs.
          * @return the identifier.
          */
-        static const XMLCh* idIncludeAllAttribute ();
+        static const XMLCh* idIncludeAllAttribute();
 
         /**
          * @brief Identifier for the attribute specifying whether to exclude frame pairs with static
          * transformation.
          * @return the identifier.
          */
-        static const XMLCh* idExcludeStaticAttributePairs ();
+        static const XMLCh* idExcludeStaticAttributePairs();
 
         /**
          * @brief Identifier for the attributed specifying the first pattern in rule.
          * @return the identifier.
          */
-        static const XMLCh* idPatternAAttribute ();
+        static const XMLCh* idPatternAAttribute();
 
         /**
          * @brief Identifier for the attributed specifying the second pattern in rule.
          * @return the identifier.
          */
-        static const XMLCh* idPatternBAttribute ();
+        static const XMLCh* idPatternBAttribute();
 
         /**
          * @brief Utility class which initializes local static variables.
@@ -95,13 +95,13 @@ namespace rw { namespace loaders {
         {
           public:
             //! @brief Initializes when constructed.
-            Initializer ();
+            Initializer();
         };
 
       private:
         static const Initializer initializer;
 
-        XMLProximitySetupFormat (){};
+        XMLProximitySetupFormat(){};
     };
 
     /**
@@ -121,8 +121,8 @@ namespace rw { namespace loaders {
          * @param schemaFileName [in] Optional name of schema file to be used for verification
          * @return The ProximitySetup
          */
-        static rw::proximity::ProximitySetup load (const std::string& filename,
-                                                   const std::string& schemaFileName = "");
+        static rw::proximity::ProximitySetup load(const std::string& filename,
+                                                  const std::string& schemaFileName = "");
 
         /**
          * @brief Loads ProximitySetup from \b instream
@@ -133,8 +133,8 @@ namespace rw { namespace loaders {
          * @param schemaFileName [in] Optional name of schema file to be used for verification
          * @return The ProximitySetup
          */
-        static rw::proximity::ProximitySetup load (std::istream& instream,
-                                                   const std::string& schemaFileName = "");
+        static rw::proximity::ProximitySetup load(std::istream& instream,
+                                                  const std::string& schemaFileName = "");
 
         /**
          * @brief Reads ProximitySetup from \b element
@@ -144,7 +144,7 @@ namespace rw { namespace loaders {
          * @param element [in] Element containing ProximitySetup
          * @return The ProximitySetup
          */
-        static rw::proximity::ProximitySetup readProximitySetup (xercesc::DOMElement* element);
+        static rw::proximity::ProximitySetup readProximitySetup(xercesc::DOMElement* element);
 
         /**
          * @brief Utility class which initializes local static variables.
@@ -161,14 +161,14 @@ namespace rw { namespace loaders {
         {
           public:
             //! @brief Initializes when constructed.
-            Initializer ();
+            Initializer();
         };
 
       private:
         static const Initializer initializer;
 
-        static std::pair< std::string, std::string >
-        readFramePatternAttributes (xercesc::DOMElement* element);
+        static std::pair<std::string, std::string>
+        readFramePatternAttributes(xercesc::DOMElement* element);
     };
 
     /* @} */

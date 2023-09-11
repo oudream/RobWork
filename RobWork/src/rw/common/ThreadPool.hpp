@@ -29,13 +29,13 @@
 #include <boost/thread/thread.hpp>
 #endif
 namespace rw { namespace core {
-    template< class T > class Ptr;
+    template<class T> class Ptr;
 }}    // namespace rw::core
 namespace rw { namespace common {
 
     // Forward declarations
 
-    template< typename T > class ThreadSafeVariable;
+    template<typename T> class ThreadSafeVariable;
 
     //! @addtogroup common
 #if !defined(SWIG)
@@ -53,7 +53,7 @@ namespace rw { namespace common {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< ThreadPool > Ptr;
+        typedef rw::core::Ptr<ThreadPool> Ptr;
 
         /**
          * @brief Create new thread pool using the given number of threads.
@@ -67,13 +67,13 @@ namespace rw { namespace common {
          * @param threads number of threads to use - default is the number of hardware threads
          * available on the system.
          */
-        ThreadPool (int threads = -1);
+        ThreadPool(int threads = -1);
 
         //! @brief Destruct the pool and all threads (this calls the stop function first).
-        virtual ~ThreadPool ();
+        virtual ~ThreadPool();
 
         //! @brief Get number of threads in the pool.
-        unsigned int getNumberOfThreads () const;
+        unsigned int getNumberOfThreads() const;
 
         /**
          * @brief Stop processing more work in the queue, and try to stop running work if possible.
@@ -84,7 +84,7 @@ namespace rw { namespace common {
          * Interrupts are issued, so if there is interruption points in the WorkFunction,
          * the work should check for boost::thread_interrupted exceptions and shut down gracefully.
          */
-        void stop ();
+        void stop();
 
         /**
          * @brief Check if work tasks are supposed to shut itself down.
@@ -94,33 +94,33 @@ namespace rw { namespace common {
          *
          * @return true if thread should shut down.
          */
-        bool isStopping ();
+        bool isStopping();
 
         //! @brief The type for a work function that can be assigned to the pool.
-        typedef boost::function< void (ThreadPool*) > WorkFunction;
+        typedef boost::function<void(ThreadPool*)> WorkFunction;
 
         //! @brief Add work to the thread pool.
-        void addWork (WorkFunction work);
+        void addWork(WorkFunction work);
 
         /**
          * @brief Get the number of current tasks in the queue (tasks are removed from queue when
          * done).
          * @return the number of current tasks.
          */
-        unsigned int getQueueSize ();
+        unsigned int getQueueSize();
 
         //! @brief Wait until the task queue becomes empty.
-        void waitForEmptyQueue ();
+        void waitForEmptyQueue();
 
       private:
-        void runWrap (WorkFunction work);
+        void runWrap(WorkFunction work);
 
         struct Internals;
         Internals* _internals;
         boost::thread_group _threads;
         const unsigned int _threadsNumber;
-        ThreadSafeVariable< bool >* _postStop;
-        ThreadSafeVariable< unsigned int >* _queueSize;
+        ThreadSafeVariable<bool>* _postStop;
+        ThreadSafeVariable<unsigned int>* _queueSize;
         boost::mutex _queueSizeMutex;
     };
 #if !defined(SWIG)

@@ -31,7 +31,7 @@ namespace rwlibs { namespace csg {
     {
       public:
         /** @brief Saves the CSGModel in Stl format. */
-        static void saveToStl (const std::string& filename, CSGModel& csgmodel);
+        static void saveToStl(const std::string& filename, CSGModel& csgmodel);
     };
 
 }}    // namespace rwlibs::csg

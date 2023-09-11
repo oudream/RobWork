@@ -20,9 +20,10 @@
 using namespace rw::sensor;
 using namespace rw::kinematics;
 
-SensorModel::SensorModel (const std::string& name, rw::core::Ptr<Frame> frame, const std::string& description) :
-    _name (name), _description (description), _frame (frame)
-{}
+SensorModel::SensorModel(const std::string& name, rw::core::Ptr<Frame> frame,
+                         const std::string& description) :
+    _name(name),
+    _description(description), _frame(frame) {}
 
-SensorModel::SensorModel (const std::string& name, rw::core::Ptr<Frame> frame) : _name (name), _frame (frame)
-{}
+SensorModel::SensorModel(const std::string& name, rw::core::Ptr<Frame> frame) :
+    _name(name), _frame(frame) {}

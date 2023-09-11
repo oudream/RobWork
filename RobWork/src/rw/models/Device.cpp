@@ -24,48 +24,41 @@ using namespace rw::models;
 using namespace rw::math;
 using namespace rw::kinematics;
 
-Transform3D< double > Device::baseTframe (rw::core::Ptr<const Frame> f, const State& state) const
-{
-    return Kinematics::frameTframe (getBase (), f, state);
+Transform3D<double> Device::baseTframe(rw::core::Ptr<const Frame> f, const State& state) const {
+    return Kinematics::frameTframe(getBase(), f, state);
 }
 
-Transform3D< double > Device::worldTbase (const State& state) const
-{
-    return Kinematics::worldTframe (getBase (), state);
+Transform3D<double> Device::worldTbase(const State& state) const {
+    return Kinematics::worldTframe(getBase(), state);
 }
 
-Transform3D< double > Device::baseTend (const State& state) const
-{
-    return Kinematics::frameTframe (getBase (), getEnd (), state);
+Transform3D<double> Device::baseTend(const State& state) const {
+    return Kinematics::frameTframe(getBase(), getEnd(), state);
 }
 
 // Jacobians
 
-Jacobian Device::baseJend (const State& state) const
-{
-    return baseJframe (getEnd (), state);
+Jacobian Device::baseJend(const State& state) const {
+    return baseJframe(getEnd(), state);
 }
 
-Jacobian Device::baseJframe (rw::core::Ptr<const Frame> frame, const State& state) const
-{
-    std::vector< Frame* > frames (1, const_cast< Frame* > (frame.get()));    // Dirty.
-    return baseJframes (frames, state);
+Jacobian Device::baseJframe(rw::core::Ptr<const Frame> frame, const State& state) const {
+    std::vector<Frame*> frames(1, const_cast<Frame*>(frame.get()));    // Dirty.
+    return baseJframes(frames, state);
 }
 
-JacobianCalculator::Ptr Device::baseJCend (const State& state) const
-{
-    return baseJCframe (getEnd (), state);
+JacobianCalculator::Ptr Device::baseJCend(const State& state) const {
+    return baseJCframe(getEnd(), state);
 }
 
-JacobianCalculator::Ptr Device::baseJCframe (rw::core::Ptr<const Frame> frame, const State& state) const
-{
-    std::vector< Frame* > frames (1,const_cast< Frame* > ( frame.get()));    // Dirty.
-    return baseJCframes (frames, state);
+JacobianCalculator::Ptr Device::baseJCframe(rw::core::Ptr<const Frame> frame,
+                                            const State& state) const {
+    std::vector<Frame*> frames(1, const_cast<Frame*>(frame.get()));    // Dirty.
+    return baseJCframes(frames, state);
 }
 
 // Streaming operator
 
-std::ostream& rw::models::operator<< (std::ostream& out, const Device& device)
-{
-    return out << "Device[" << device.getName () << "]";
+std::ostream& rw::models::operator<<(std::ostream& out, const Device& device) {
+    return out << "Device[" << device.getName() << "]";
 }

@@ -21,151 +21,123 @@
 
 using namespace rw::core;
 
-PropertyMap::PropertyMap ()
-{}
+PropertyMap::PropertyMap() {}
 
-PropertyMap::~PropertyMap ()
-{
-    _properties.clear ();
+PropertyMap::~PropertyMap() {
+    _properties.clear();
 }
 
-PropertyMap::PropertyMap (const PropertyMap& other):
-    _name(other.getName())
-{
+PropertyMap::PropertyMap(const PropertyMap& other) : _name(other.getName()) {
     // Clone all property base objects.
-    for (MapType::iterator it = other._properties.begin (); it != other._properties.end (); it++) {
+    for(MapType::iterator it = other._properties.begin(); it != other._properties.end(); it++) {
         const PropertyBase::Ptr base = *it;
-        this->insert (ownedPtr (base->clone ()));
+        this->insert(ownedPtr(base->clone()));
     }
 }
 
-bool PropertyMap::add (PropertyBase::Ptr property)
-{
-    return insert (property);
+bool PropertyMap::add(PropertyBase::Ptr property) {
+    return insert(property);
 }
 
-PropertyMap& PropertyMap::operator= (const PropertyMap& other)
-{
+PropertyMap& PropertyMap::operator=(const PropertyMap& other) {
     // Assignment operator by the swap-idiom.
-    if (this != &other) {
+    if(this != &other) {
         PropertyMap copy = other;
-        swap (copy);
+        swap(copy);
         _name = other.getName();
     }
     return *this;
 }
 
-void PropertyMap::swap (PropertyMap& other)
-{
+void PropertyMap::swap(PropertyMap& other) {
     using std::placeholders::_1;
-    _properties.swap (other._properties);
-    for (const PropertyBase::Ptr& p : _properties) {
+    _properties.swap(other._properties);
+    for(const PropertyBase::Ptr& p : _properties) {
         p->changedEvent().remove(&other);
-        p->changedEvent().add(std::bind(&PropertyMap::propertyChangedListener, this, _1), this );
+        p->changedEvent().add(std::bind(&PropertyMap::propertyChangedListener, this, _1), this);
         propertyChangedListener(p.get());
     }
-    for (const PropertyBase::Ptr& p : other.getProperties()) {
+    for(const PropertyBase::Ptr& p : other.getProperties()) {
         p->changedEvent().remove(this);
-        p->changedEvent().add(std::bind(&PropertyMap::propertyChangedListener, &other, _1), &other );
+        p->changedEvent().add(std::bind(&PropertyMap::propertyChangedListener, &other, _1), &other);
         other.propertyChangedListener(p.get());
     }
 }
 
-bool PropertyMap::has (const std::string& identifier) const
-{
-    return findPropertyBase (identifier) != NULL;
+bool PropertyMap::has(const std::string& identifier) const {
+    return findPropertyBase(identifier) != NULL;
 }
 
-bool PropertyMap::erase (const std::string& identifier)
-{
-    Property< int > key (identifier, "", 0);
+bool PropertyMap::erase(const std::string& identifier) {
+    Property<int> key(identifier, "", 0);
 
     typedef MapType::iterator I;
-    const I p = _properties.find (&key);
-    if (p != _properties.end ()) {
+    const I p = _properties.find(&key);
+    if(p != _properties.end()) {
         (*p)->changedEvent().remove(this);
-        _properties.erase (p);
+        _properties.erase(p);
         return true;
     }
-    else {
-        return false;
-    }
+    else { return false; }
 }
 
-void PropertyMap::clear ()
-{
-    for (const PropertyBase::Ptr& p : _properties) {
-        p->changedEvent().remove(this);
-    }
-    _properties.clear ();
+void PropertyMap::clear() {
+    for(const PropertyBase::Ptr& p : _properties) { p->changedEvent().remove(this); }
+    _properties.clear();
 }
 
-size_t PropertyMap::size () const
-{
-    return _properties.size ();
+size_t PropertyMap::size() const {
+    return _properties.size();
 }
 
-bool PropertyMap::empty () const
-{
-    return _properties.empty ();
+bool PropertyMap::empty() const {
+    return _properties.empty();
 }
 
-bool PropertyMap::insert (PropertyBase::Ptr property)
-{
+bool PropertyMap::insert(PropertyBase::Ptr property) {
     using std::placeholders::_1;
-    if (_properties.insert (property).second) {
+    if(_properties.insert(property).second) {
         // add to changed listener
-        property->changedEvent().add(
-                std::bind(&PropertyMap::propertyChangedListener, this, _1),
-                this
-        );
+        property->changedEvent().add(std::bind(&PropertyMap::propertyChangedListener, this, _1),
+                                     this);
         propertyChangedListener(property.get());
         return true;
     }
     return false;
 }
 
-PropertyBase::Ptr PropertyMap::findPropertyBase (const std::string& identifier)
-{
-    Property< int > key (identifier, "", 0);
+PropertyBase::Ptr PropertyMap::findPropertyBase(const std::string& identifier) {
+    Property<int> key(identifier, "", 0);
     typedef MapType::iterator I;
-    const I p = _properties.find (&key);
-    if (p != _properties.end ())
-        return *p;
+    const I p = _properties.find(&key);
+    if(p != _properties.end()) return *p;
     return NULL;
 }
 
-const PropertyBase::Ptr PropertyMap::findPropertyBase (const std::string& identifier) const
-{
-    return const_cast< PropertyMap* > (this)->findPropertyBase (identifier);
+const PropertyBase::Ptr PropertyMap::findPropertyBase(const std::string& identifier) const {
+    return const_cast<PropertyMap*>(this)->findPropertyBase(identifier);
 }
 
-rw::core::iter_pair< PropertyMap::iterator > PropertyMap::getProperties () const
-{
-    return rw::core::iter_pair< PropertyMap::iterator > (
-        std::make_pair (_properties.begin (), _properties.end ()));
+rw::core::iter_pair<PropertyMap::iterator> PropertyMap::getProperties() const {
+    return rw::core::iter_pair<PropertyMap::iterator>(
+        std::make_pair(_properties.begin(), _properties.end()));
 }
 
-void PropertyMap::notifyListeners (PropertyBase* base)
-{
-    for(const PropertyChangedListener& listener : _listeners) {
-        listener(this, base);
-    }
+void PropertyMap::notifyListeners(PropertyBase* base) {
+    for(const PropertyChangedListener& listener : _listeners) { listener(this, base); }
 }
 
-void PropertyMap::addChangedListener (PropertyChangedListener callback)
-{
-    _listeners.push_back (callback);
+void PropertyMap::addChangedListener(PropertyChangedListener callback) {
+    _listeners.push_back(callback);
 }
 
-void PropertyMap::propertyChangedListener (PropertyBase* base)
-{
-    std::string id = base->getIdentifier ();
+void PropertyMap::propertyChangedListener(PropertyBase* base) {
+    std::string id = base->getIdentifier();
     // std::cout << "PropertyMap: Property Changed Listerner: " << id << std::endl;
     // notify all listeners
-    notifyListeners (base);
+    notifyListeners(base);
 }
 
-void PropertyMap::clearChangedListeners (){
+void PropertyMap::clearChangedListeners() {
     _listeners.clear();
 }

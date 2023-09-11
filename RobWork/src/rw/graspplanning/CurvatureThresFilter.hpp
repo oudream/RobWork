@@ -21,7 +21,7 @@
 #if !defined(SWIG)
 #include <rw/graspplanning/ContactValidateFilter.hpp>
 #include <rw/graspplanning/GraspValidateFilter.hpp>
-#endif 
+#endif
 namespace rw { namespace graspplanning {
 
     /**
@@ -41,17 +41,17 @@ namespace rw { namespace graspplanning {
          * @param maxCurvature [in] maximum curvature
          * @return
          */
-        CurvatureThresFilter (double minCurvature, double maxCurvature) : 
-            _minCurvature (minCurvature), _maxCurvature (maxCurvature){};
+        CurvatureThresFilter(double minCurvature, double maxCurvature) :
+            _minCurvature(minCurvature), _maxCurvature(maxCurvature){};
 
         //! destructor
-        virtual ~CurvatureThresFilter (){};
+        virtual ~CurvatureThresFilter(){};
 
         //! @copydoc GraspValidateFilter::isValid
-        virtual bool isValid (const Grasp3D& grasp) = 0;
+        virtual bool isValid(const Grasp3D& grasp) = 0;
 
         //! @copydoc ContactValidateFilter::isValid
-        virtual bool isValid (const rw::sensor::Contact3D& contact) = 0;
+        virtual bool isValid(const rw::sensor::Contact3D& contact) = 0;
 
       private:
         double _minCurvature;

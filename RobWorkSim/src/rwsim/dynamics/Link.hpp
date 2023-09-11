@@ -22,6 +22,7 @@
 
 #include "Body.hpp"
 
+#include <rw/core/Ptr.hpp>
 #include <rw/kinematics/Frame.hpp>
 #include <rw/kinematics/Kinematics.hpp>
 #include <rw/kinematics/State.hpp>
@@ -32,7 +33,6 @@
 #include <rw/math/VelocityScrew6D.hpp>
 #include <rw/models/Device.hpp>
 #include <rw/models/Joint.hpp>
-#include <rw/core/Ptr.hpp>
 namespace rwsim { namespace dynamics {
 
     class DynamicDevice;
@@ -50,8 +50,8 @@ namespace rwsim { namespace dynamics {
     class Link : public Body
     {
       public:
-      //! @brief Smart pointer type for a Link.
-        typedef rw::core::Ptr< Link > Ptr;
+        //! @brief Smart pointer type for a Link.
+        typedef rw::core::Ptr<Link> Ptr;
         /**
          * @brief Construct a new link.
          * @param info [in] the dynamic properties of the link.
@@ -59,54 +59,53 @@ namespace rwsim { namespace dynamics {
          * @param ddev [in] the dynamic device the link belongs to.
          * @param id [in] id of the link.
          */
-        Link (const BodyInfo& info, rw::models::Object::Ptr obj, DynamicDevice* ddev, size_t id);
+        Link(const BodyInfo& info, rw::models::Object::Ptr obj, DynamicDevice* ddev, size_t id);
 
         //! @brief Destructor.
-        virtual ~Link ();
+        virtual ~Link();
 
       public:    // functions that need to be implemented by specialized class
         //! @copydoc Body::getVelocity
-        virtual rw::math::VelocityScrew6D<>
-        getVelocity (const rw::kinematics::State& state) const;
+        virtual rw::math::VelocityScrew6D<> getVelocity(const rw::kinematics::State& state) const;
 
         //! @copydoc Body::reset
-        virtual void reset (rw::kinematics::State& state);
+        virtual void reset(rw::kinematics::State& state);
 
         //! @copydoc Body::calcEnergy
         virtual double
-        calcEnergy (const rw::kinematics::State& state,
-                    const rw::math::Vector3D<>& gravity = rw::math::Vector3D<>::zero (),
-                    const rw::math::Vector3D<>& potZero = rw::math::Vector3D<>::zero ()) const;
+        calcEnergy(const rw::kinematics::State& state,
+                   const rw::math::Vector3D<>& gravity = rw::math::Vector3D<>::zero(),
+                   const rw::math::Vector3D<>& potZero = rw::math::Vector3D<>::zero()) const;
 
         //! @copydoc Body::setForce
-        virtual void setForce (const rw::math::Vector3D<>& f, rw::kinematics::State& state);
+        virtual void setForce(const rw::math::Vector3D<>& f, rw::kinematics::State& state);
 
         //! @copydoc Body::getForce
-        virtual rw::math::Vector3D<> getForce (const rw::kinematics::State& state) const;
+        virtual rw::math::Vector3D<> getForce(const rw::kinematics::State& state) const;
 
         //! @copydoc Body::addForce
-        virtual void addForce (const rw::math::Vector3D<>& force, rw::kinematics::State& state);
+        virtual void addForce(const rw::math::Vector3D<>& force, rw::kinematics::State& state);
 
         //! @copydoc Body::setTorque
-        virtual void setTorque (const rw::math::Vector3D<>& t, rw::kinematics::State& state);
+        virtual void setTorque(const rw::math::Vector3D<>& t, rw::kinematics::State& state);
 
         //! @copydoc Body::addTorque
-        virtual void addTorque (const rw::math::Vector3D<>& t, rw::kinematics::State& state);
+        virtual void addTorque(const rw::math::Vector3D<>& t, rw::kinematics::State& state);
 
         //! @copydoc Body::getTorque
-        virtual rw::math::Vector3D<> getTorque (const rw::kinematics::State& state) const;
+        virtual rw::math::Vector3D<> getTorque(const rw::kinematics::State& state) const;
 
         /**
          * @brief Get the dynamic device.
          * @return a pointer to the dynamic device.
          */
-        DynamicDevice* getDynamicDevice () { return _ddev; }
+        DynamicDevice* getDynamicDevice() { return _ddev; }
 
         /**
          * @brief Get the id of the link.
          * @return the id.
          */
-        size_t getID () { return _id; }
+        size_t getID() { return _id; }
 
       private:
         rw::models::Object::Ptr _obj;

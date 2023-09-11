@@ -33,44 +33,44 @@ namespace rwsim { namespace simulator {
          * @param pool [in] all initial nodes in the graph and all initial constraints in the graph
          * @param factory [in] a factory for finding collision constraints
          */
-        ContactGraph (CNodePool* pool, ContactModelFactory& factory);
+        ContactGraph(CNodePool* pool, ContactModelFactory& factory);
 
         /**
          * @brief Destructor
          */
-        virtual ~ContactGraph ();
+        virtual ~ContactGraph();
 
         /**
          * @brief updates overlab information. updates, inserts and removes edges.
          * Also applies logical and coherence testing.
          */
-        void broadPhase (rw::kinematics::State& state, bool shortCircuit);
+        void broadPhase(rw::kinematics::State& state, bool shortCircuit);
 
         /**
          * @brief apply narrow phase collision detection, and update
          * edge states. If shortCircuit is set to true then narrowPhase will
          * stop when penetration is detected.
          */
-        bool narrowPhase (rw::kinematics::State& state, bool shortCircuit);
+        bool narrowPhase(rw::kinematics::State& state, bool shortCircuit);
 
         /**
          * @brief calculates contact information from cached broadphase
          * and narrowphase results.
          */
-        void updateContacts (rw::kinematics::State& state);
+        void updateContacts(rw::kinematics::State& state);
 
-        void applyLogicalCoherenceTest (bool shortCircuit);
+        void applyLogicalCoherenceTest(bool shortCircuit);
 
         /**
          * @brief Roll state back to previous state
          * @param state
          */
-        void rollBack (rw::kinematics::State& state);
+        void rollBack(rw::kinematics::State& state);
 
         /**
          * @brief save current state
          */
-        void saveState ();
+        void saveState();
 
         /**
          * @brief all nodes that are connected to \b n through a
@@ -78,29 +78,28 @@ namespace rwsim { namespace simulator {
          * @param n
          * @return
          */
-        std::vector< ConstraintNode* > getStaticConnectedNodes (ConstraintNode* n);
+        std::vector<ConstraintNode*> getStaticConnectedNodes(ConstraintNode* n);
 
-        std::vector< ConstraintNode* > getConnectedNodes (ConstraintNode* n,
-                                                          ConstraintEdge::EdgeType type);
+        std::vector<ConstraintNode*> getConnectedNodes(ConstraintNode* n,
+                                                       ConstraintEdge::EdgeType type);
 
-        std::vector< std::vector< ConstraintEdge* > > computeGroups ();
+        std::vector<std::vector<ConstraintEdge*>> computeGroups();
 
-        std::vector< std::vector< ConstraintEdge* > > getPhysicalGroups ();
+        std::vector<std::vector<ConstraintEdge*>> getPhysicalGroups();
 
-        void writeToFile (std::string filename);
+        void writeToFile(std::string filename);
 
-        void resetState (rw::kinematics::State& state)
-        {
-            _oFrames.clear ();
-            _fEdges.clear ();
+        void resetState(rw::kinematics::State& state) {
+            _oFrames.clear();
+            _fEdges.clear();
         }
 
       private:
-        void narrowPhaseCalc (ConstraintEdge& edge, rw::kinematics::State& state);
+        void narrowPhaseCalc(ConstraintEdge& edge, rw::kinematics::State& state);
 
-        void traverseGroup (ConstraintEdge& edge, std::vector< ConstraintEdge* >& group);
+        void traverseGroup(ConstraintEdge& edge, std::vector<ConstraintEdge*>& group);
 
-        void remove (ConstraintNode* node);
+        void remove(ConstraintNode* node);
 
       private:
         // maps containing edges and nodes
@@ -108,14 +107,14 @@ namespace rwsim { namespace simulator {
         // std::map< NodePair, ConstraintEdge* > _nodeToEdge;
         ContactModelFactory& _factory;
         CNodePool* _pool;
-        CNodePairMap< ConstraintEdge* > _pairToEdge;
-        rw::kinematics::FrameMap< ConstraintNode* > _frameToNode;
+        CNodePairMap<ConstraintEdge*> _pairToEdge;
+        rw::kinematics::FrameMap<ConstraintNode*> _frameToNode;
 
         // std::vector<ConstraintNode*> _nodes;
         rw::kinematics::FramePairSet _oFrames;
 
       public:
-        std::vector< ConstraintEdge* > _fEdges;    // filtered edges
+        std::vector<ConstraintEdge*> _fEdges;    // filtered edges
     };
 
 }}    // namespace rwsim::simulator

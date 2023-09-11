@@ -3,7 +3,7 @@
 
 #if !defined(SWIG)
 #include <rw/math/Vector2D.hpp>
-#endif 
+#endif
 namespace rw { namespace sensor {
 
     /**
@@ -13,10 +13,10 @@ namespace rw { namespace sensor {
     {
       public:
         //! @brief Contact position
-        rw::math::Vector2D< double > p;
+        rw::math::Vector2D<double> p;
 
         //! @brief Surface contact normal
-        rw::math::Vector2D< double > n;
+        rw::math::Vector2D<double> n;
 
         //! @brief surface curvature
         double curvature;

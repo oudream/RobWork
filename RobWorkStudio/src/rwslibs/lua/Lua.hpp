@@ -39,44 +39,44 @@ class Lua : public RobWorkStudioPlugin
 {
     Q_OBJECT
 #ifndef RWS_USE_STATIC_LINK_PLUGINS
-    Q_INTERFACES (rws::RobWorkStudioPlugin)
-    Q_PLUGIN_METADATA (IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "plugin.json")
+    Q_INTERFACES(rws::RobWorkStudioPlugin)
+    Q_PLUGIN_METADATA(IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE "plugin.json")
 #endif
   public:
     //! @brief constructor
-    Lua ();
+    Lua();
 
     //! @brief destructor
-    virtual ~Lua ();
+    virtual ~Lua();
 
     //! @copydoc RobWorkStudioPlugin::initialize
-    void initialize ();
+    void initialize();
 
     //! @copydoc RobWorkStudioPlugin::open
-    void open (rw::models::WorkCell* workcell);
+    void open(rw::models::WorkCell* workcell);
 
     //! @copydoc RobWorkStudioPlugin::close
-    void close ();
+    void close();
 
     //! @copydoc RobWorkStudioPlugin::setupMenu
-    void setupMenu (QMenu* menu);
+    void setupMenu(QMenu* menu);
 
   private:
     // This listens for changes to the state of RobWorkStudio.
-    void stateChangedListener (const rw::kinematics::State& state);
+    void stateChangedListener(const rw::kinematics::State& state);
 
     // This listens for changes to the state of the Lua interpreter.
-    void luaStateChangedListener (const rw::kinematics::State& state);
+    void luaStateChangedListener(const rw::kinematics::State& state);
 
     // This listens for changes to the path of the Lua interpreter.
-    void luaPathChangedListener (const rw::trajectory::StatePath& path);
+    void luaPathChangedListener(const rw::trajectory::StatePath& path);
 
   private Q_SLOTS:
-    void startEditor ();
-    void resetLua ();
+    void startEditor();
+    void resetLua();
 
   private:
-    rw::core::Ptr< rwlibs::swig::LuaState > _lua;
+    rw::core::Ptr<rwlibs::swig::LuaState> _lua;
     rw::kinematics::State _state;
     std::string _previousOpenDirectory;
 

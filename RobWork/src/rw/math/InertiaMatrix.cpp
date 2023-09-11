@@ -25,50 +25,44 @@
 using namespace rw::math;
 
 // some explicit template specifications
-template class rw::math::InertiaMatrix< double >;
-template class rw::math::InertiaMatrix< float >;
+template class rw::math::InertiaMatrix<double>;
+template class rw::math::InertiaMatrix<float>;
 
 namespace rw { namespace common { namespace serialization {
 
-    template< class T >
-    void writeImpl (const rw::math::InertiaMatrix< T >& tmp, rw::common::OutputArchive& oar,
-                    const std::string& id)
-    {
-        std::vector< double > data = rw::math::Math::toStdVector (tmp, 3, 3);
-        oar.write (data, id);
+    template<class T>
+    void writeImpl(const rw::math::InertiaMatrix<T>& tmp, rw::common::OutputArchive& oar,
+                   const std::string& id) {
+        std::vector<double> data = rw::math::Math::toStdVector(tmp, 3, 3);
+        oar.write(data, id);
     }
 
-    template< class T >
-    void readImpl (rw::math::InertiaMatrix< T >& tmp, rw::common::InputArchive& iar,
-                   const std::string& id)
-    {
-        std::vector< T > data;
-        iar.read (data, id);
-        rw::math::Math::fromStdVectorToMat (data, tmp, 3, 3);
+    template<class T>
+    void readImpl(rw::math::InertiaMatrix<T>& tmp, rw::common::InputArchive& iar,
+                  const std::string& id) {
+        std::vector<T> data;
+        iar.read(data, id);
+        rw::math::Math::fromStdVectorToMat(data, tmp, 3, 3);
     }
 
     // we need these to explicitly instantiate these functions
     template<>
-    void write (const InertiaMatrix< double >& tmp, rw::common::OutputArchive& oar,
-                const std::string& id)
-    {
-        writeImpl (tmp, oar, id);
+    void write(const InertiaMatrix<double>& tmp, rw::common::OutputArchive& oar,
+               const std::string& id) {
+        writeImpl(tmp, oar, id);
     }
     template<>
-    void write (const InertiaMatrix< float >& tmp, rw::common::OutputArchive& oar,
-                const std::string& id)
-    {
-        writeImpl (tmp, oar, id);
+    void write(const InertiaMatrix<float>& tmp, rw::common::OutputArchive& oar,
+               const std::string& id) {
+        writeImpl(tmp, oar, id);
     }
     template<>
-    void read (InertiaMatrix< double >& tmp, rw::common::InputArchive& iar, const std::string& id)
-    {
-        readImpl (tmp, iar, id);
+    void read(InertiaMatrix<double>& tmp, rw::common::InputArchive& iar, const std::string& id) {
+        readImpl(tmp, iar, id);
     }
     template<>
-    void read (InertiaMatrix< float >& tmp, rw::common::InputArchive& iar, const std::string& id)
-    {
-        readImpl (tmp, iar, id);
+    void read(InertiaMatrix<float>& tmp, rw::common::InputArchive& iar, const std::string& id) {
+        readImpl(tmp, iar, id);
     }
 
 }}}    // namespace rw::common::serialization

@@ -23,7 +23,8 @@ using namespace rw::math;
 using namespace rwlibs::opengl;
 using namespace rw::graphics;
 
-RenderPointCloud::RenderPointCloud () : _r (1), _g (0), _b (0), _alpha (1), _pointSize (2)
+RenderPointCloud::RenderPointCloud() :
+    _r(1), _g(0), _b(0), _alpha(1), _pointSize(2)
 
 {
     // Using displaylists in the constructor is a HUGE NONO. The opengl context must be initialized
@@ -33,80 +34,65 @@ RenderPointCloud::RenderPointCloud () : _r (1), _g (0), _b (0), _alpha (1), _poi
     // rerender();
 }
 
-RenderPointCloud::RenderPointCloud (const std::vector< Vector3D< float > >& points) :
-    _points (points), _r (1), _g (0), _b (0), _alpha (1), _pointSize (2)
-{
+RenderPointCloud::RenderPointCloud(const std::vector<Vector3D<float>>& points) :
+    _points(points), _r(1), _g(0), _b(0), _alpha(1), _pointSize(2) {
     //_displayListId = glGenLists(1);
     // rerender();
 }
 
-RenderPointCloud::~RenderPointCloud ()
-{
+RenderPointCloud::~RenderPointCloud() {
     // glDeleteLists(_displayListId, 1);
 }
 
-void RenderPointCloud::draw (const DrawableNode::RenderInfo& info, DrawableNode::DrawType type,
-                             double alpha) const
-{
+void RenderPointCloud::draw(const DrawableNode::RenderInfo& info, DrawableNode::DrawType type,
+                            double alpha) const {
     // the draw type has no effect on Rendering of lines
-    glPushAttrib (GL_CURRENT_BIT | GL_LINE_BIT);
+    glPushAttrib(GL_CURRENT_BIT | GL_LINE_BIT);
 
-    glColor4f (_r, _g, _b, _alpha);
-    glPointSize (_pointSize);
+    glColor4f(_r, _g, _b, _alpha);
+    glPointSize(_pointSize);
 
-    glBegin (GL_POINTS);
+    glBegin(GL_POINTS);
     // Draw all faces.
-    for (const Vector3D< float >& point : _points) {
-        glVertex3f (point (0), point (1), point (2));
-    }
-    glEnd ();
+    for(const Vector3D<float>& point : _points) { glVertex3f(point(0), point(1), point(2)); }
+    glEnd();
 
-    glPopAttrib ();
+    glPopAttrib();
 }
 
-void RenderPointCloud::rerender ()
-{
+void RenderPointCloud::rerender() {
     // glNewList(_displayListId, GL_COMPILE);
 
     // glEndList();
 }
 
-void RenderPointCloud::addPoint (const Vector3D< float >& point)
-{
-    _points.push_back (point);
+void RenderPointCloud::addPoint(const Vector3D<float>& point) {
+    _points.push_back(point);
 }
 
-void RenderPointCloud::addPoint (const Vector3D< double >& point)
-{
-    _points.push_back (cast< float > (point));
+void RenderPointCloud::addPoint(const Vector3D<double>& point) {
+    _points.push_back(cast<float>(point));
 }
 
-void RenderPointCloud::addPoints (const std::vector< Vector3D< float > >& points)
-{
-    _points.insert (_points.end (), points.begin (), points.end ());
+void RenderPointCloud::addPoints(const std::vector<Vector3D<float>>& points) {
+    _points.insert(_points.end(), points.begin(), points.end());
 }
 
-void RenderPointCloud::addPoints (const std::vector< rw::math::Vector3D< double > >& points)
-{
-    for (Vector3D< double > v : points) {
-        addPoint (v);
-    }
+void RenderPointCloud::addPoints(const std::vector<rw::math::Vector3D<double>>& points) {
+    for(Vector3D<double> v : points) { addPoint(v); }
 }
 
-void RenderPointCloud::setColor (float r, float g, float b, float alpha)
-{
+void RenderPointCloud::setColor(float r, float g, float b, float alpha) {
     _r     = r;
     _g     = g;
     _b     = b;
     _alpha = alpha;
 }
 
-void RenderPointCloud::setPointSize (float pointSize)
-{
+void RenderPointCloud::setPointSize(float pointSize) {
     _pointSize = pointSize;
 }
 
-void RenderPointCloud::clear ()
-{
-    _points.clear ();
+void RenderPointCloud::clear() {
+    _points.clear();
 }

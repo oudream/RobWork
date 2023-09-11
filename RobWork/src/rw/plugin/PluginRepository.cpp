@@ -27,55 +27,46 @@ using namespace rw::plugin;
 
 // PluginRepository PluginRepository::_repository;
 
-void PluginRepository::load (const std::string& filename)
-{
+void PluginRepository::load(const std::string& filename) {
     PluginFactoryBasePtr constructor;
     try {
-        DynamicLibraryLoader< PluginFactoryBase >* loader =
-            new DynamicLibraryLoader< PluginFactoryBase > (filename);
-        constructor = ownedPtr (loader->get ());
+        DynamicLibraryLoader<PluginFactoryBase>* loader =
+            new DynamicLibraryLoader<PluginFactoryBase>(filename);
+        constructor = ownedPtr(loader->get());
     }
-    catch (const Exception& exp) {
-        RW_THROW ("Unable to load plugin: " << filename << ". Failed with message: "
-                                            << exp.getMessage ().getText ());
+    catch(const Exception& exp) {
+        RW_THROW("Unable to load plugin: " << filename << ". Failed with message: "
+                                           << exp.getMessage().getText());
     }
 
-    if (constructor != NULL) {
-        const std::string id = constructor->identifier ();
-        if (_str2constructorMap.find (id) == _str2constructorMap.end ()) {
+    if(constructor != NULL) {
+        const std::string id = constructor->identifier();
+        if(_str2constructorMap.find(id) == _str2constructorMap.end()) {
             _str2constructorMap[id] = constructor;
             // Log::debugLog()<<"Loaded Plugin "<<id<<std::endl;
         }
-        else {
-            RW_THROW ("A Plugin with identifier " << id << " has already been loaded!");
-        }
+        else { RW_THROW("A Plugin with identifier " << id << " has already been loaded!"); }
     }
-    else {
-        RW_THROW ("Unable to load plugin: " << filename);
-    }
+    else { RW_THROW("Unable to load plugin: " << filename); }
 }
 
-void PluginRepository::addPlugin (PluginFactoryBase::Ptr plugin, bool force)
-{
-    const std::string id = plugin->identifier ();
-    if (force || (_str2constructorMap.find (id) == _str2constructorMap.end ())) {
+void PluginRepository::addPlugin(PluginFactoryBase::Ptr plugin, bool force) {
+    const std::string id = plugin->identifier();
+    if(force || (_str2constructorMap.find(id) == _str2constructorMap.end())) {
         _str2constructorMap[id] = plugin;
         // Log::debugLog()<<"Loaded Plugin "<<id<<std::endl;
     }
-    else {
-        RW_WARN ("A Plugin with identifier " << id << " has already been loaded!");
-    }
+    else { RW_WARN("A Plugin with identifier " << id << " has already been loaded!"); }
 }
 
-void PluginRepository::loadFilesInFolder (const std::string& path, bool searchSubFolders)
-{
-    std::vector< std::string > files =
-        IOUtil::getFilesInFolder (path, true, true, "*." + OS::getDLLExtension ());
+void PluginRepository::loadFilesInFolder(const std::string& path, bool searchSubFolders) {
+    std::vector<std::string> files =
+        IOUtil::getFilesInFolder(path, true, true, "*." + OS::getDLLExtension());
     //    std::vector<std::string> files = IOUtil::getFilesInFolder(path, true, "*.dll");
 
-    for (std::string str : files) {
+    for(std::string str : files) {
         // std::cout<<"DLL File = "<<str<<std::endl;
-        load (str);
+        load(str);
     }
 }
 
@@ -90,13 +81,11 @@ type) { result.push_back((*it).second);
 }
 */
 
-const std::map< std::string, PluginFactoryBasePtr >& PluginRepository::getAllPlugins () const
-{
+const std::map<std::string, PluginFactoryBasePtr>& PluginRepository::getAllPlugins() const {
     return _str2constructorMap;
 }
 
-std::map< std::string, PluginFactoryBasePtr >& PluginRepository::getAllPlugins ()
-{
+std::map<std::string, PluginFactoryBasePtr>& PluginRepository::getAllPlugins() {
     return _str2constructorMap;
 }
 

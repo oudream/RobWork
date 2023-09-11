@@ -33,7 +33,6 @@ namespace rwlibs { namespace proximitystrategies {
     class ProximityStrategyFCL;
 }}    // namespace rwlibs::proximitystrategies
 
-
 namespace rwsim { namespace contacts {
 
     //! @addtogroup rwsim_contacts
@@ -52,62 +51,67 @@ namespace rwsim { namespace contacts {
         } ContactFilter;
 
         //! @brief Create new strategy.
-        ContactStrategyDMS ();
+        ContactStrategyDMS();
 
         //! @brief Destructor
-        virtual ~ContactStrategyDMS ();
+        virtual ~ContactStrategyDMS();
 
         //! @copydoc rwsim::contacts::ContactStrategy::match
-        virtual bool match (rw::core::Ptr< const rw::geometry::GeometryData > geoA,
-                            rw::core::Ptr< const rw::geometry::GeometryData > geoB);
+        virtual bool match(rw::core::Ptr<const rw::geometry::GeometryData> geoA,
+                           rw::core::Ptr<const rw::geometry::GeometryData> geoB);
 
-        //! @copydoc rwsim::contacts::ContactStrategy::findContacts(rw::proximity::ProximityModel::Ptr,const rw::math::Transform3D<>&,rw::proximity::ProximityModel::Ptr,const rw::math::Transform3D<>&,ContactStrategyData&,ContactStrategyTracking&,rwsim::log::SimulatorLogScope* log) const
-        virtual std::vector< Contact >
-        findContacts (rw::proximity::ProximityModel::Ptr a, const rw::math::Transform3D<>& wTa,
-                      rw::proximity::ProximityModel::Ptr b, const rw::math::Transform3D<>& wTb,
-                      ContactStrategyData& data, ContactStrategyTracking& tracking,
-                      rwsim::log::SimulatorLogScope* log = NULL) const;
+        //! @copydoc
+        //! rwsim::contacts::ContactStrategy::findContacts(rw::proximity::ProximityModel::Ptr,const
+        //! rw::math::Transform3D<>&,rw::proximity::ProximityModel::Ptr,const
+        //! rw::math::Transform3D<>&,ContactStrategyData&,ContactStrategyTracking&,rwsim::log::SimulatorLogScope*
+        //! log) const
+        virtual std::vector<Contact>
+        findContacts(rw::proximity::ProximityModel::Ptr a, const rw::math::Transform3D<>& wTa,
+                     rw::proximity::ProximityModel::Ptr b, const rw::math::Transform3D<>& wTb,
+                     ContactStrategyData& data, ContactStrategyTracking& tracking,
+                     rwsim::log::SimulatorLogScope* log = NULL) const;
 
         //! @copydoc rwsim::contacts::ContactStrategy::updateContacts
-        virtual std::vector< Contact >
-        updateContacts (rw::proximity::ProximityModel::Ptr a, const rw::math::Transform3D<>& wTa,
-                        rw::proximity::ProximityModel::Ptr b, const rw::math::Transform3D<>& wTb,
-                        ContactStrategyData& data, ContactStrategyTracking& tracking,
-                        rwsim::log::SimulatorLogScope* log = NULL) const;
+        virtual std::vector<Contact>
+        updateContacts(rw::proximity::ProximityModel::Ptr a, const rw::math::Transform3D<>& wTa,
+                       rw::proximity::ProximityModel::Ptr b, const rw::math::Transform3D<>& wTb,
+                       ContactStrategyData& data, ContactStrategyTracking& tracking,
+                       rwsim::log::SimulatorLogScope* log = NULL) const;
 
         //! @copydoc rwsim::contacts::ContactStrategy::getName
-        virtual std::string getName ();
+        virtual std::string getName();
 
         //! @copydoc rwsim::contacts::ContactStrategy::createModel
-        virtual rw::proximity::ProximityModel::Ptr createModel ();
+        virtual rw::proximity::ProximityModel::Ptr createModel();
 
         //! @copydoc rwsim::contacts::ContactStrategy::destroyModel
-        virtual void destroyModel (rw::proximity::ProximityModel* model);
+        virtual void destroyModel(rw::proximity::ProximityModel* model);
 
-        //! @copydoc rwsim::contacts::ContactStrategy::addGeometry(rw::proximity::ProximityModel*,const rw::geometry::Geometry&)
-        virtual bool addGeometry (rw::proximity::ProximityModel* model,
-                                  const rw::geometry::Geometry& geom);
+        //! @copydoc
+        //! rwsim::contacts::ContactStrategy::addGeometry(rw::proximity::ProximityModel*,const
+        //! rw::geometry::Geometry&)
+        virtual bool addGeometry(rw::proximity::ProximityModel* model,
+                                 const rw::geometry::Geometry& geom);
 
-        //! @copydoc rwsim::contacts::ContactStrategy::addGeometry(rw::proximity::ProximityModel*,rw::core::Ptr<rw::geometry::Geometry>,bool)
-        virtual bool addGeometry (rw::proximity::ProximityModel* model,
-                                  rw::core::Ptr< rw::geometry::Geometry > geom,
-                                  bool forceCopy = false);
+        //! @copydoc
+        //! rwsim::contacts::ContactStrategy::addGeometry(rw::proximity::ProximityModel*,rw::core::Ptr<rw::geometry::Geometry>,bool)
+        virtual bool addGeometry(rw::proximity::ProximityModel* model,
+                                 rw::core::Ptr<rw::geometry::Geometry> geom,
+                                 bool forceCopy = false);
 
         //! @copydoc rwsim::contacts::ContactStrategy::removeGeometry
-        virtual bool removeGeometry (rw::proximity::ProximityModel* model,
-                                     const std::string& geomId);
+        virtual bool removeGeometry(rw::proximity::ProximityModel* model,
+                                    const std::string& geomId);
 
         //! @copydoc rwsim::contacts::ContactStrategy::getGeometryIDs
-        virtual std::vector< std::string > getGeometryIDs (rw::proximity::ProximityModel* model);
-
+        virtual std::vector<std::string> getGeometryIDs(rw::proximity::ProximityModel* model);
 
         //! @copydoc rwsim::contacts::ContactStrategy::getGeometries
-        virtual std::vector< rw::core::Ptr< rw::geometry::Geometry > >
-        getGeometries (rw::proximity::ProximityModel* model);
-
+        virtual std::vector<rw::core::Ptr<rw::geometry::Geometry>>
+        getGeometries(rw::proximity::ProximityModel* model);
 
         //! @copydoc rwsim::contacts::ContactStrategy::clear
-        virtual void clear ();
+        virtual void clear();
 
         /**
          * @brief If strategy should convert all geometry to meshes, or only work on geometry that
@@ -116,7 +120,7 @@ namespace rwsim { namespace contacts {
          * @param matchAll [in] true if strategy should match all geometries (default), false
          * otherwise.
          */
-        virtual void setMatchAll (bool matchAll = true);
+        virtual void setMatchAll(bool matchAll = true);
 
         /**
          * @brief Set the method used to filter contacts (condenses many contacts into fewer
@@ -124,7 +128,7 @@ namespace rwsim { namespace contacts {
          *
          * @param filter [in] the strategy to use - default is the OBRManifold-strategy.
          */
-        virtual void setContactFilter (ContactFilter filter = MANIFOLD);
+        virtual void setContactFilter(ContactFilter filter = MANIFOLD);
 
         /**
          * @brief The current distance threshold used by the simulator.
@@ -135,7 +139,7 @@ namespace rwsim { namespace contacts {
          *
          * @return the threshold (positive).
          */
-        virtual double getThreshold () const;
+        virtual double getThreshold() const;
 
         /**
          * @brief The current update threshold used for contact tracking.
@@ -147,7 +151,7 @@ namespace rwsim { namespace contacts {
          *
          * @return the threshold.
          */
-        virtual double getUpdateThresholdAbsolute () const;
+        virtual double getUpdateThresholdAbsolute() const;
 
         /**
          * @brief The current update threshold used for contact tracking.
@@ -164,7 +168,7 @@ namespace rwsim { namespace contacts {
          *
          * @return the factor.
          */
-        virtual double getUpdateThresholdLinear () const;
+        virtual double getUpdateThresholdLinear() const;
 
         /**
          * @brief The current update threshold used for contact tracking.
@@ -181,13 +185,12 @@ namespace rwsim { namespace contacts {
          *
          * @return the factor.
          */
-        virtual double getUpdateThresholdAngular () const;
+        virtual double getUpdateThresholdAngular() const;
 
       private:
         struct Model;
         class TriMeshModel;
         class DMSData;
-
 
         /**
          * @brief Reduce the number of contacts by creating surface manifolds with contacts that are
@@ -195,12 +198,12 @@ namespace rwsim { namespace contacts {
          * @param contacts [in] the input normals.
          * @return a (possibly) reduced set of contacts.
          */
-        static std::vector< Contact > manifoldFilter (const std::vector< Contact >& contacts);
+        static std::vector<Contact> manifoldFilter(const std::vector<Contact>& contacts);
 
-        virtual void findContact (std::vector< Contact >& contacts, const Model& a,
-                                  const rw::math::Transform3D<>& wTa, const Model& b,
-                                  const rw::math::Transform3D<>& wTb, DMSData* data,
-                                  bool distCheck = true) const;
+        virtual void findContact(std::vector<Contact>& contacts, const Model& a,
+                                 const rw::math::Transform3D<>& wTa, const Model& b,
+                                 const rw::math::Transform3D<>& wTb, DMSData* data,
+                                 bool distCheck = true) const;
 
         bool _matchAll;
         T* _narrowStrategy;
@@ -208,7 +211,9 @@ namespace rwsim { namespace contacts {
     };
     //! @}
 
-    using ContactStrategyFCL = ContactStrategyDMS<rwlibs::proximitystrategies::ProximityStrategyFCL>;
-    using ContactStrategyPQP = ContactStrategyDMS<rwlibs::proximitystrategies::ProximityStrategyPQP>;
+    using ContactStrategyFCL =
+        ContactStrategyDMS<rwlibs::proximitystrategies::ProximityStrategyFCL>;
+    using ContactStrategyPQP =
+        ContactStrategyDMS<rwlibs::proximitystrategies::ProximityStrategyPQP>;
 }}     // namespace rwsim::contacts
 #endif /* RWSIM_CONTACTS_CONTACTSTRATEGYDMS_HPP_ */

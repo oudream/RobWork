@@ -37,14 +37,14 @@ namespace rwsim { namespace contacts {
      * @brief Generic contact model for strategies that find contacts between two different types of
      * geometry.
      */
-    template< class A, class B > class ContactModelGeometry : public rwsim::contacts::ContactModel
+    template<class A, class B> class ContactModelGeometry : public rwsim::contacts::ContactModel
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< ContactModelGeometry< A, B > > Ptr;
+        typedef rw::core::Ptr<ContactModelGeometry<A, B>> Ptr;
 
         //! @brief Model for each geometry.
-        template< class T > struct GeometryModel
+        template<class T> struct GeometryModel
         {
             //! The geometry id.
             std::string geoId;
@@ -60,29 +60,29 @@ namespace rwsim { namespace contacts {
         };
 
         //! @brief The type of GeometryModel for geometry A.
-        typedef GeometryModel< A > TypeA;
+        typedef GeometryModel<A> TypeA;
 
         //! @brief The type of GeometryModel for geometry B.
-        typedef GeometryModel< B > TypeB;
+        typedef GeometryModel<B> TypeB;
 
         /**
          * @brief Construct new model for contacts between geometries.
          * @param owner [in] the strategy that owns this model.
          */
-        ContactModelGeometry (ContactStrategy* owner) : ContactModel (owner) {}
+        ContactModelGeometry(ContactStrategy* owner) : ContactModel(owner) {}
 
         //! @brief Destructor
-        virtual ~ContactModelGeometry (){}
+        virtual ~ContactModelGeometry() {}
 
         //! @copydoc rwsim::contacts::ContactModel::getName
-        virtual std::string getName () const { return "ContactModelGeometry"; }
+        virtual std::string getName() const { return "ContactModelGeometry"; }
 
       public:
         //! @brief List of geometry models belonging to this model.
-        std::vector< GeometryModel< A > > modelsA;
+        std::vector<GeometryModel<A>> modelsA;
 
         //! @brief List of hole models belonging to this model.
-        std::vector< GeometryModel< B > > modelsB;
+        std::vector<GeometryModel<B>> modelsB;
     };
     //! @}
 }}     // namespace rwsim::contacts

@@ -50,45 +50,44 @@ namespace rw { namespace geometry {
     {
       public:
         //! @brief Smart pointer type to Shell
-        typedef rw::core::Ptr< Shell > Ptr;
+        typedef rw::core::Ptr<Shell> Ptr;
 
         //! @brief Smart pointer type to const Shell
-        typedef rw::core::Ptr< const Shell > CPtr;
+        typedef rw::core::Ptr<const Shell> CPtr;
 
         //! @brief Constructor.
-        Shell ();
+        Shell();
 
         //! @brief Destructor.
-        virtual ~Shell ();
+        virtual ~Shell();
 
         //! @copydoc GeometryData::getType
-        virtual GeometryType getType () const = 0;
+        virtual GeometryType getType() const = 0;
 
         //! @copydoc GeometryData::getTriMesh
-        virtual rw::core::Ptr< TriMesh > getTriMesh (bool forceCopy = true);
+        virtual rw::core::Ptr<TriMesh> getTriMesh(bool forceCopy = true);
 
 #if !defined(SWIGJAVA)
         //! @copydoc GeometryData::getTriMesh
-        virtual rw::core::Ptr< TriMesh > getTriMesh (bool forceCopy = true) const;
-#endif 
+        virtual rw::core::Ptr<TriMesh> getTriMesh(bool forceCopy = true) const;
+#endif
 
         //! @copydoc GeometryData::isConvex
-        virtual bool isConvex () = 0;
+        virtual bool isConvex() = 0;
 
         /**
          * @brief Get the number of surface patches in this shell.
          * @return the number of surface patches.
          */
-        virtual std::size_t size () const = 0;
+        virtual std::size_t size() const = 0;
 
         /**
          * @brief Get a surface patch.
          * @param idx [in] index of patch.
          * @return a copy of the surface patch.
          */
-        inline rw::core::Ptr< const Face > getFace (std::size_t idx) const
-        {
-            return doGetFace (idx);
+        inline rw::core::Ptr<const Face> getFace(std::size_t idx) const {
+            return doGetFace(idx);
         }
 
         /**
@@ -96,23 +95,23 @@ namespace rw { namespace geometry {
          * @param idx [in] index of patch.
          * @param face [out] existing face to copy data into.
          */
-        virtual void getFace (std::size_t idx, GenericFace& face) const;
+        virtual void getFace(std::size_t idx, GenericFace& face) const;
 
         /**
          * @brief Get the minimum and maximum values of the shell in a certain direction.
          * @param dir [in] the direction to find extremums for.
          * @return the minimum and maximum as a pair of values.
          */
-        virtual std::pair< double, double > extremums (const rw::math::Vector3D<double>& dir) const;
+        virtual std::pair<double, double> extremums(const rw::math::Vector3D<double>& dir) const;
 
         /**
          * @brief Create Oriented Bounding Box (OBB) as a bounding volume for the shell.
          * @return the OBB.
          */
-        virtual OBB<> obb () const;
+        virtual OBB<> obb() const;
 
       private:
-        virtual rw::core::Ptr< const Face > doGetFace (std::size_t idx) const = 0;
+        virtual rw::core::Ptr<const Face> doGetFace(std::size_t idx) const = 0;
     };
 #if !defined(SWIG)
 //! @}

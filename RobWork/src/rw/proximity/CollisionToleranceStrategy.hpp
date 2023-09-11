@@ -23,11 +23,10 @@
  */
 
 #if !defined(SWIG)
-#include <rw/proximity/ProximityStrategy.hpp>
-
 #include <rw/core/ExtensionPoint.hpp>
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Transform3D.hpp>
+#include <rw/proximity/ProximityStrategy.hpp>
 
 #include <string>
 #endif
@@ -49,12 +48,12 @@ namespace rw { namespace proximity {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< CollisionToleranceStrategy > Ptr;
+        typedef rw::core::Ptr<CollisionToleranceStrategy> Ptr;
 
         /**
          * @brief Destroys object
          */
-        virtual ~CollisionToleranceStrategy ();
+        virtual ~CollisionToleranceStrategy();
 
         /**
          * @brief Checks to see if the geometry attached to two given frames @f$ \mathcal{F}_a @f$
@@ -70,9 +69,10 @@ namespace rw { namespace proximity {
          * @return true if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * colliding, false otherwise.
          */
-        bool isWithinDistance (const rw::core::Ptr<kinematics::Frame> a, const math::Transform3D<double>& wTa,
-                               const rw::core::Ptr<kinematics::Frame> b, const math::Transform3D<double>& wTb,
-                               double tolerance);
+        bool isWithinDistance(const rw::core::Ptr<kinematics::Frame> a,
+                              const math::Transform3D<double>& wTa,
+                              const rw::core::Ptr<kinematics::Frame> b,
+                              const math::Transform3D<double>& wTb, double tolerance);
 
         /**
          * @brief Checks to see if the geometry attached to two given frames @f$ \mathcal{F}_a @f$
@@ -88,9 +88,11 @@ namespace rw { namespace proximity {
          * @return true if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * colliding, false otherwise.
          */
-        bool isWithinDistance (const rw::core::Ptr<kinematics::Frame> a, const math::Transform3D<double>& wTa,
-                               const rw::core::Ptr<kinematics::Frame> b, const math::Transform3D<double>& wTb,
-                               double distance, class ProximityStrategyData& data);
+        bool isWithinDistance(const rw::core::Ptr<kinematics::Frame> a,
+                              const math::Transform3D<double>& wTa,
+                              const rw::core::Ptr<kinematics::Frame> b,
+                              const math::Transform3D<double>& wTb, double distance,
+                              class ProximityStrategyData& data);
 
         /**
          * @brief Checks to see if two proximity models @f$ \mathcal{F}_a @f$ and
@@ -106,11 +108,10 @@ namespace rw { namespace proximity {
          * @return true if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * colliding, false otherwise.
          */
-        bool isWithinDistance (ProximityModel::Ptr a, const math::Transform3D<double>& wTa,
-                               ProximityModel::Ptr b, const math::Transform3D<double>& wTb,
-                               double tolerance, class ProximityStrategyData& data)
-        {
-            return doIsWithinDistance (a, wTa, b, wTb, tolerance, data);
+        bool isWithinDistance(ProximityModel::Ptr a, const math::Transform3D<double>& wTa,
+                              ProximityModel::Ptr b, const math::Transform3D<double>& wTb,
+                              double tolerance, class ProximityStrategyData& data) {
+            return doIsWithinDistance(a, wTa, b, wTb, tolerance, data);
         }
 
         /**
@@ -130,31 +131,31 @@ namespace rw { namespace proximity {
          *  - Bullet - rwlibs::proximitystrategies::ProximityStrategyBullet - Bullet Physics
          *  - PQP - rwlibs::proximitystrategies::ProximityStrategyPQP - Proximity Query Package
          */
-        class Factory : public rw::core::ExtensionPoint< CollisionToleranceStrategy >
+        class Factory : public rw::core::ExtensionPoint<CollisionToleranceStrategy>
         {
           public:
             /**
              * @brief Get the available strategies.
              * @return a vector of identifiers for strategies.
              */
-            static std::vector< std::string > getStrategies ();
+            static std::vector<std::string> getStrategies();
 
             /**
              * @brief Check if strategy is available.
              * @param strategy [in] the name of the strategy.
              * @return true if available, false otherwise.
              */
-            static bool hasStrategy (const std::string& strategy);
+            static bool hasStrategy(const std::string& strategy);
 
             /**
              * @brief Create a new strategy.
              * @param strategy [in] the name of the strategy.
              * @return a pointer to a new CollisionToleranceStrategy.
              */
-            static CollisionToleranceStrategy::Ptr makeStrategy (const std::string& strategy);
+            static CollisionToleranceStrategy::Ptr makeStrategy(const std::string& strategy);
 
           private:
-            Factory ();
+            Factory();
         };
 
       protected:
@@ -172,19 +173,19 @@ namespace rw { namespace proximity {
          * @return true if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * colliding, false otherwise.
          */
-        virtual bool doIsWithinDistance (ProximityModel::Ptr a, const math::Transform3D<double>& wTa,
-                                         ProximityModel::Ptr b, const math::Transform3D<double>& wTb,
-                                         double tolerance, class ProximityStrategyData& data) = 0;
+        virtual bool doIsWithinDistance(ProximityModel::Ptr a, const math::Transform3D<double>& wTa,
+                                        ProximityModel::Ptr b, const math::Transform3D<double>& wTb,
+                                        double tolerance, class ProximityStrategyData& data) = 0;
 
       private:
-        CollisionToleranceStrategy (const CollisionToleranceStrategy&);
-        CollisionToleranceStrategy& operator= (const CollisionToleranceStrategy&);
+        CollisionToleranceStrategy(const CollisionToleranceStrategy&);
+        CollisionToleranceStrategy& operator=(const CollisionToleranceStrategy&);
 
       protected:
         /**
          * @brief Creates object
          */
-        CollisionToleranceStrategy ();
+        CollisionToleranceStrategy();
     };
 
     /*@}*/

@@ -22,9 +22,8 @@
    @file QToQPlanner.hpp
 */
 #if !defined(SWIG)
-#include <rw/pathplanning/PathPlanner.hpp>
-
 #include <rw/core/Ptr.hpp>
+#include <rw/pathplanning/PathPlanner.hpp>
 #endif
 namespace rw { namespace pathplanning {
     class PlannerConstraint;
@@ -39,13 +38,13 @@ namespace rw { namespace pathplanning {
        A path planner plans a path in the configuration space from a start
        configuration to a goal configuration.
     */
-    class QToQPlanner : public PathPlanner< rw::math::Q, const rw::math::Q >
+    class QToQPlanner : public PathPlanner<rw::math::Q, const rw::math::Q>
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< QToQPlanner > Ptr;
+        typedef rw::core::Ptr<QToQPlanner> Ptr;
         //! @brief smart pointer type to this const class
-        typedef rw::core::Ptr< const QToQPlanner > CPtr;
+        typedef rw::core::Ptr<const QToQPlanner> CPtr;
 
         /**
            @brief Construct a path planner from a region planner.
@@ -55,7 +54,7 @@ namespace rw { namespace pathplanning {
 
            @param planner [in] A planner for a region given by a QSampler.
         */
-        static QToQPlanner::Ptr make (rw::core::Ptr< QToQSamplerPlanner > planner);
+        static QToQPlanner::Ptr make(rw::core::Ptr<QToQSamplerPlanner> planner);
 
         /**
            @brief Construct a path planner from an edge constraint.
@@ -69,7 +68,7 @@ namespace rw { namespace pathplanning {
            @param constraint [in] Planner constraint.
            @return A planner that attempts the directly connecting edge only.
         */
-        static QToQPlanner::Ptr make (const PlannerConstraint& constraint);
+        static QToQPlanner::Ptr make(const PlannerConstraint& constraint);
     };
 
     /*@}*/

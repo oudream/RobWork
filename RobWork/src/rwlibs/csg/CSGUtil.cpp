@@ -24,7 +24,6 @@
 using namespace rw::loaders;
 using namespace rwlibs::csg;
 
-void CSGUtil::saveToStl (const std::string& filename, CSGModel& csgmodel)
-{
-    STLFile::save (*csgmodel.getTriMesh (), filename);
+void CSGUtil::saveToStl(const std::string& filename, CSGModel& csgmodel) {
+    STLFile::save(*csgmodel.getTriMesh(), filename);
 }

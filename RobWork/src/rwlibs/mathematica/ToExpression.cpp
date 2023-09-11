@@ -20,27 +20,21 @@
 using namespace rw::core;
 using namespace rwlibs::mathematica;
 
-ToExpression::ToExpression (const char* expression) :
-    FunctionBase ("ToExpression"), _expression (ownedPtr (new Mathematica::String (expression)))
-{}
+ToExpression::ToExpression(const char* expression) :
+    FunctionBase("ToExpression"), _expression(ownedPtr(new Mathematica::String(expression))) {}
 
-ToExpression::ToExpression (const std::string& expression) :
-    FunctionBase ("ToExpression"), _expression (ownedPtr (new Mathematica::String (expression)))
-{}
+ToExpression::ToExpression(const std::string& expression) :
+    FunctionBase("ToExpression"), _expression(ownedPtr(new Mathematica::String(expression))) {}
 
-ToExpression::ToExpression (const Mathematica::String& expression) :
-    FunctionBase ("ToExpression"), _expression (expression.clone ().cast< Mathematica::String > ())
-{}
+ToExpression::ToExpression(const Mathematica::String& expression) :
+    FunctionBase("ToExpression"), _expression(expression.clone().cast<Mathematica::String>()) {}
 
-ToExpression::~ToExpression ()
-{}
+ToExpression::~ToExpression() {}
 
-std::list< rw::core::Ptr< const Mathematica::Expression > > ToExpression::getArguments () const
-{
-    return std::list< rw::core::Ptr< const Mathematica::Expression > > (1, _expression);
+std::list<rw::core::Ptr<const Mathematica::Expression>> ToExpression::getArguments() const {
+    return std::list<rw::core::Ptr<const Mathematica::Expression>>(1, _expression);
 }
 
-Mathematica::Expression::Ptr ToExpression::clone () const
-{
-    return ownedPtr (new ToExpression (*_expression));
+Mathematica::Expression::Ptr ToExpression::clone() const {
+    return ownedPtr(new ToExpression(*_expression));
 }

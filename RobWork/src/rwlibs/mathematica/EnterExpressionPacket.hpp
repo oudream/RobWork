@@ -24,9 +24,8 @@
  * \copydoc rwlibs::mathematica::EnterExpressionPacket
  */
 
-#include <rwlibs/mathematica/Mathematica.hpp>
-
 #include <rw/core/Ptr.hpp>
+#include <rwlibs/mathematica/Mathematica.hpp>
 
 namespace rwlibs { namespace mathematica {
     //! @addtogroup mathematica
@@ -37,37 +36,37 @@ namespace rwlibs { namespace mathematica {
     {
       public:
         //! @brief Smart pointer type.
-        typedef rw::core::Ptr< EnterExpressionPacket > Ptr;
+        typedef rw::core::Ptr<EnterExpressionPacket> Ptr;
 
         /**
          * @brief Construct a new packet.
          * @param expression [in] the expression.
          */
-        EnterExpressionPacket (const Mathematica::Expression& expression);
+        EnterExpressionPacket(const Mathematica::Expression& expression);
 
         /**
          * @brief Construct a new packet.
          * @param expression [in] the expression.
          */
-        EnterExpressionPacket (rw::core::Ptr< const Mathematica::Expression > expression);
+        EnterExpressionPacket(rw::core::Ptr<const Mathematica::Expression> expression);
 
         //! @brief Destructor.
-        virtual ~EnterExpressionPacket ();
+        virtual ~EnterExpressionPacket();
 
         /**
          * @brief Get the expression stored in the packet.
          * @return the expression.
          */
-        const rw::core::Ptr< const Mathematica::Expression > expression ();
+        const rw::core::Ptr<const Mathematica::Expression> expression();
 
         //! @copydoc Mathematica::FunctionBase::getArguments
-        std::list< rw::core::Ptr< const Mathematica::Expression > > getArguments () const;
+        std::list<rw::core::Ptr<const Mathematica::Expression>> getArguments() const;
 
         //! @copydoc Mathematica::Expression::clone
-        Mathematica::Expression::Ptr clone () const;
+        Mathematica::Expression::Ptr clone() const;
 
       private:
-        const rw::core::Ptr< const Mathematica::Expression > _expression;
+        const rw::core::Ptr<const Mathematica::Expression> _expression;
     };
     //! @}
 }}     // namespace rwlibs::mathematica

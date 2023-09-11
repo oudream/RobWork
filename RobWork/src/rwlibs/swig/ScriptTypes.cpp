@@ -23,18 +23,15 @@ namespace {
 ::rw::core::LogWriter::Ptr _writer;
 }
 
-void rwlibs::swig::writelog (const std::string& msg)
-{
-    ::rw::core::Log::log ().setEnable (::rw::core::Log::User8Mask);
-    if (_writer.isNull ())
-        rwlibs::swig::setlog (&rw::core::Log::infoLog ());
-    ::rw::core::Log::log ().write (::rw::core::Log::User8, msg);
+void rwlibs::swig::writelog(const std::string& msg) {
+    ::rw::core::Log::log().setEnable(::rw::core::Log::User8Mask);
+    if(_writer.isNull()) rwlibs::swig::setlog(&rw::core::Log::infoLog());
+    ::rw::core::Log::log().write(::rw::core::Log::User8, msg);
 }
 
-void rwlibs::swig::setlog (::rw::core::LogWriter::Ptr writer)
-{
+void rwlibs::swig::setlog(::rw::core::LogWriter::Ptr writer) {
     _writer = writer;
-    ::rw::core::Log::log ().setWriter (::rw::core::Log::User8, writer);
+    ::rw::core::Log::log().setWriter(::rw::core::Log::User8, writer);
 }
 /*
 rw::math::Rotation3D<> rwlibs::swig::getRandomRotation3D ()

@@ -34,33 +34,32 @@ namespace rw { namespace geometry {
     {
       public:
         //! constructor
-        Sphere (const rw::math::Q& initQ, int levels = 16) :
-            Primitive (levels), _radius (initQ (0)){};
+        Sphere(const rw::math::Q& initQ, int levels = 16) : Primitive(levels), _radius(initQ(0)){};
 
         //! @brief constructor
-        Sphere (double radi, int levels = 16) : Primitive (levels), _radius (radi){};
+        Sphere(double radi, int levels = 16) : Primitive(levels), _radius(radi){};
 
         //! @brief destructor
-        virtual ~Sphere () {}
+        virtual ~Sphere() {}
 
         //! @brief get sphere radius
-        double getRadius () const { return _radius; }
+        double getRadius() const { return _radius; }
 
         // inherited from Primitive
         //! @copydoc Primitive::createMesh
-        TriMesh::Ptr createMesh (int resolution) const;
+        TriMesh::Ptr createMesh(int resolution) const;
 
         //! @copydoc Primitive::getParameters
-        virtual rw::math::Q getParameters () const { return rw::math::Q (1, _radius); };
+        virtual rw::math::Q getParameters() const { return rw::math::Q(1, _radius); };
 
         //! @copydoc Primitive::setParameters
-        virtual void setParameters (const rw::math::Q& q);
+        virtual void setParameters(const rw::math::Q& q);
 
         //! @copydoc GeometryData::getType
-        GeometryData::GeometryType getType () const { return GeometryData::SpherePrim; };
+        GeometryData::GeometryType getType() const { return GeometryData::SpherePrim; };
 
       protected:
-        bool doIsInside (const rw::math::Vector3D<double>& point) { return point.norm2 () < _radius; }
+        bool doIsInside(const rw::math::Vector3D<double>& point) { return point.norm2() < _radius; }
 
       private:
         double _radius;

@@ -22,10 +22,9 @@
  * @file Scanner2D.hpp
  */
 #if !defined(SWIG)
-#include <rw/sensor/Scanner.hpp>
-
 #include <rw/geometry/PointCloud.hpp>
-#endif 
+#include <rw/sensor/Scanner.hpp>
+#endif
 namespace rw { namespace sensor {
 
     /** @addtogroup sensor */
@@ -44,7 +43,7 @@ namespace rw { namespace sensor {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< Scanner2D > Ptr;
+        typedef rw::core::Ptr<Scanner2D> Ptr;
 
       protected:
         /**
@@ -52,33 +51,32 @@ namespace rw { namespace sensor {
          * @param name [in] name of scanner sensor
          * @param description [in] description of scanner sensor
          */
-        Scanner2D (const std::string& name, const std::string& description = "") :
-            Scanner (name, description)
-        {}
+        Scanner2D(const std::string& name, const std::string& description = "") :
+            Scanner(name, description) {}
 
       public:
         /**
          * @brief destructor
          */
-        virtual ~Scanner2D ();
+        virtual ~Scanner2D();
 
         /**
          * @brief gets the last acquired scan as a depth image
          * of height 1.
          */
-        virtual const rw::geometry::PointCloud& getScan () const = 0;
+        virtual const rw::geometry::PointCloud& getScan() const = 0;
 
         /**
          * @brief Returns the angular range of the scanner.
          *
          * @return Angular range in radians
          */
-        virtual double getAngularRange () const = 0;
+        virtual double getAngularRange() const = 0;
 
         /**
          * @brief Returns the number of scan points
          */
-        virtual size_t getMeasurementCount () const = 0;
+        virtual size_t getMeasurementCount() const = 0;
     };
 
     /*@}*/

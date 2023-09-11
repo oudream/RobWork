@@ -54,10 +54,10 @@ namespace rw { namespace geometry {
     {
       public:
         //! @brief Smart pointer type for QuadraticCurve.
-        typedef rw::core::Ptr< QuadraticCurve > Ptr;
+        typedef rw::core::Ptr<QuadraticCurve> Ptr;
 
         //! @brief Smart pointer type for a const QuadraticCurve.
-        typedef rw::core::Ptr< const QuadraticCurve > CPtr;
+        typedef rw::core::Ptr<const QuadraticCurve> CPtr;
 
         //! @brief The four possible curve types.
         typedef enum Type {
@@ -77,149 +77,155 @@ namespace rw { namespace geometry {
          * @param v [in] second direction.
          * @param type [in] the type of curve.
          */
-        QuadraticCurve (const rw::math::Vector3D<double>& c, const rw::math::Vector3D<double>& u,
-                        const rw::math::Vector3D<double>& v, const Type& type);
+        QuadraticCurve(const rw::math::Vector3D<double>& c, const rw::math::Vector3D<double>& u,
+                       const rw::math::Vector3D<double>& v, const Type& type);
 
-
-        QuadraticCurve ():_type(Type::Parabola){}
+        QuadraticCurve() : _type(Type::Parabola) {}
 
         //! @brief Destrcutor.
-        virtual ~QuadraticCurve ();
+        virtual ~QuadraticCurve();
 
         // Curve interface
         //! @copydoc ParametricCurve::transform(const rw::math::Transform3D<double>&) const
-        QuadraticCurve::Ptr transform (const rw::math::Transform3D< double>& T) const;
+        QuadraticCurve::Ptr transform(const rw::math::Transform3D<double>& T) const;
 
         //! @copydoc ParametricCurve::transform(const rw::math::Vector3D<double>&) const
-        QuadraticCurve::Ptr transform (const rw::math::Vector3D< double >& P) const;
+        QuadraticCurve::Ptr transform(const rw::math::Vector3D<double>& P) const;
 
         //! @copydoc ParametricCurve::scale
-        QuadraticCurve::Ptr scale (double factor) const;
+        QuadraticCurve::Ptr scale(double factor) const;
 
         //! @copydoc ParametricCurve::reverse
-        QuadraticCurve::Ptr reverse () const;
+        QuadraticCurve::Ptr reverse() const;
 
         //! @copydoc ParametricCurve::clone
-        QuadraticCurve::Ptr clone () const;
+        QuadraticCurve::Ptr clone() const;
 
         //! @copydoc ParametricCurve::extremums
-        virtual std::pair< double, double > extremums (const rw::math::Vector3D<double>& dir) const;
+        virtual std::pair<double, double> extremums(const rw::math::Vector3D<double>& dir) const;
 
         //! @copydoc ParametricCurve::discretizeAdaptive
-        virtual std::list< rw::math::Vector3D< double > >
-        discretizeAdaptive (double stepsPerRevolution) const;
+        virtual std::list<rw::math::Vector3D<double>>
+        discretizeAdaptive(double stepsPerRevolution) const;
 
         //! @copydoc ParametricCurve::obr
-        virtual OBB<> obr () const;
+        virtual OBB<> obr() const;
 
         //! @copydoc ParametricCurve::closestPoints
-        virtual std::vector< rw::math::Vector3D<double> >
-        closestPoints (const rw::math::Vector3D<double>& p) const;
+        virtual std::vector<rw::math::Vector3D<double>>
+        closestPoints(const rw::math::Vector3D<double>& p) const;
 
         //! @copydoc ParametricCurve::equals
-        virtual bool equals (rw::core::Ptr<const rw::geometry::Curve> curve, double eps) const;
+        virtual bool equals(rw::core::Ptr<const rw::geometry::Curve> curve, double eps) const;
 
         // ParametricCurve interface
         //! @copydoc ParametricCurve::x
-        virtual rw::math::Vector3D<double> x (double t) const;
+        virtual rw::math::Vector3D<double> x(double t) const;
 
         //! @copydoc ParametricCurve::dx
-        virtual rw::math::Vector3D<double> dx (double t) const;
+        virtual rw::math::Vector3D<double> dx(double t) const;
 
         //! @copydoc ParametricCurve::ddx
-        virtual rw::math::Vector3D<double> ddx (double t) const;
+        virtual rw::math::Vector3D<double> ddx(double t) const;
 
 #if !defined(SWIG)
         //! @copydoc ParametricCurve::x(double) const
-        virtual rw::math::Vector3D<double> operator() (double t) const;
-#else 
-        CALLOPERATOR(rw::math::Vector3D<double>,double );
-#endif 
+        virtual rw::math::Vector3D<double> operator()(double t) const;
+#else
+        CALLOPERATOR(rw::math::Vector3D<double>, double);
+#endif
 
         //! @copydoc ParametricCurve::hasLimits
-        virtual bool hasLimits () const { return _hasLimits; }
+        virtual bool hasLimits() const {
+            return _hasLimits;
+        }
 
         //! @copydoc ParametricCurve::limits
-        virtual const std::pair< double, double >& limits () const { return _limits; }
+        virtual const std::pair<double, double>& limits() const {
+            return _limits;
+        }
 
         //! @copydoc ParametricCurve::inLimits
-        virtual bool inLimits (double t) const;
+        virtual bool inLimits(double t) const;
 
         //! @copydoc ParametricCurve::setLimits
-        virtual void setLimits (const std::pair< double, double >& limits);
+        virtual void setLimits(const std::pair<double, double>& limits);
 
         //! @copydoc ParametricCurve::curvature
-        virtual double curvature (double t) const;
+        virtual double curvature(double t) const;
 
         //! @copydoc ParametricCurve::closestTimes
-        virtual std::vector< double > closestTimes (const rw::math::Vector3D<double>& p) const;
+        virtual std::vector<double> closestTimes(const rw::math::Vector3D<double>& p) const;
 
         //! @copydoc ParametricCurve::closestTime
-        virtual double closestTime (const rw::math::Vector3D<double>& p) const;
+        virtual double closestTime(const rw::math::Vector3D<double>& p) const;
 
         // QuadraticCurve
         /**
          * @brief The point c.
          * @return the point \f$ c \in \mathbb{R}^3 \f$.
          */
-        const rw::math::Vector3D<double>& c () const { return _c; }
+        const rw::math::Vector3D<double>& c() const {
+            return _c;
+        }
 
         /**
          * @brief The vector u.
          * @return the vector \f$ u \in \mathbb{R}^3 \f$.
          */
-        const rw::math::Vector3D< double>& u () const { return _u; }
+        const rw::math::Vector3D<double>& u() const {
+            return _u;
+        }
 
         /**
          * @brief The vector v.
          * @return the vector \f$ v \in \mathbb{R}^3 \f$.
          */
-        const rw::math::Vector3D<double>& v () const { return _v; }
+        const rw::math::Vector3D<double>& v() const {
+            return _v;
+        }
 
         /**
          * @brief Get the type of curve.
          * @return the type of curve.
          */
-        Type type () const { return _type; }
+        Type type() const {
+            return _type;
+        }
 
-        QuadraticCurve & operator=(const QuadraticCurve &rhs){
-            this->_c = rhs._c;
-            this->_u = rhs._u;
-            this->_v = rhs._v;
+        QuadraticCurve& operator=(const QuadraticCurve& rhs) {
+            this->_c    = rhs._c;
+            this->_u    = rhs._u;
+            this->_v    = rhs._v;
             this->_type = rhs._type;
 
             this->_hasLimits = rhs._hasLimits;
-            this->_limits = rhs._limits;
+            this->_limits    = rhs._limits;
             return *this;
         }
 
       private:
-        double r (double t) const;
-        double s (double t) const;
+        double r(double t) const;
+        double s(double t) const;
 
-        std::list< double > discretizeEllipse (double stepsPerRevolution) const;
+        std::list<double> discretizeEllipse(double stepsPerRevolution) const;
 #if !defined(SWIGJAVA)
-        virtual rw::geometry::ParametricCurve::Ptr doScaleParametricCurve (double factor) const
-        {
-            return scale (factor);
+        virtual rw::geometry::ParametricCurve::Ptr doScaleParametricCurve(double factor) const {
+            return scale(factor);
         }
         virtual rw::geometry::ParametricCurve::Ptr
-        doTransformParametricCurve (const rw::math::Vector3D<double>& P) const
-        {
-            return transform (P);
+        doTransformParametricCurve(const rw::math::Vector3D<double>& P) const {
+            return transform(P);
         }
         virtual rw::geometry::ParametricCurve::Ptr
-        doTransformParametricCurve (const rw::math::Transform3D<>& T) const
-        {
-            return transform (T);
+        doTransformParametricCurve(const rw::math::Transform3D<>& T) const {
+            return transform(T);
         }
-        virtual rw::geometry::ParametricCurve::Ptr doReverseParametricCurve () const
-        {
-            return reverse ();
+        virtual rw::geometry::ParametricCurve::Ptr doReverseParametricCurve() const {
+            return reverse();
         }
-        virtual rw::geometry::ParametricCurve::Ptr doCloneParametricCurve () const
-        {
-            return clone ();
+        virtual rw::geometry::ParametricCurve::Ptr doCloneParametricCurve() const {
+            return clone();
         }
 #endif
         rw::math::Vector3D<double> _c;
@@ -228,7 +234,7 @@ namespace rw { namespace geometry {
         Type _type;
 
         bool _hasLimits;
-        std::pair< double, double > _limits;
+        std::pair<double, double> _limits;
     };
 #if !defined(SWIG)
 //! @}

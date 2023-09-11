@@ -45,81 +45,78 @@ namespace rwsim { namespace dynamics {
     {
       public:
         //! @brief Smart pointer type for a FixedLink.
-        typedef rw::core::Ptr< FixedLink > Ptr;
+        typedef rw::core::Ptr<FixedLink> Ptr;
 
-        FixedLink (const BodyInfo& info, rw::core::Ptr< rw::kinematics::Frame > base,
-                   std::vector< FixedLink* > parents, rw::models::Device& dev, rw::models::Joint& j,
-                   const std::vector< rw::kinematics::Frame* >& frames,
-                   rw::kinematics::State& state);
+        FixedLink(const BodyInfo& info, rw::core::Ptr<rw::kinematics::Frame> base,
+                  std::vector<FixedLink*> parents, rw::models::Device& dev, rw::models::Joint& j,
+                  const std::vector<rw::kinematics::Frame*>& frames, rw::kinematics::State& state);
 
-        virtual ~FixedLink ();
+        virtual ~FixedLink();
 
       public:    // functions that need to be implemented by specialized class
-        virtual void saveState (double h, rw::kinematics::State& state);
+        virtual void saveState(double h, rw::kinematics::State& state);
 
-        virtual void rollBack (rw::kinematics::State& state);
+        virtual void rollBack(rw::kinematics::State& state);
 
-        virtual void updateVelocity (double h, rw::kinematics::State& state);
+        virtual void updateVelocity(double h, rw::kinematics::State& state);
 
-        virtual void updatePosition (double h, rw::kinematics::State& state);
+        virtual void updatePosition(double h, rw::kinematics::State& state);
 
-        virtual void updateImpulse ();
+        virtual void updateImpulse();
 
-        rw::math::Vector3D<> getPointVelW (const rw::math::Vector3D<>& wPp);
+        rw::math::Vector3D<> getPointVelW(const rw::math::Vector3D<>& wPp);
 
-        rw::math::InertiaMatrix<> getEffectiveMassW (const rw::math::Vector3D<>& wPc);
+        rw::math::InertiaMatrix<> getEffectiveMassW(const rw::math::Vector3D<>& wPc);
 
-        void resetState (rw::kinematics::State& state);
+        void resetState(rw::kinematics::State& state);
 
-        virtual void reset ()
-        {
-            rw::math::Vector3D<> zeroVec = rw::math::Vector3D<> (0.0, 0.0, 0.0);
+        virtual void reset() {
+            rw::math::Vector3D<> zeroVec = rw::math::Vector3D<>(0.0, 0.0, 0.0);
             _force                       = zeroVec;
             _torque                      = zeroVec;
         }
 
-        void calcAuxVarialbles (rw::kinematics::State& state) {}
+        void calcAuxVarialbles(rw::kinematics::State& state) {}
 
-        double calcEnergy () { return 0; };
+        double calcEnergy() { return 0; };
 
       public:
-        rw::math::InertiaMatrix<> getEffectiveMass ();
+        rw::math::InertiaMatrix<> getEffectiveMass();
 
-        void addQd (double vel);
+        void addQd(double vel);
 
-        void addTorque (double t);
+        void addTorque(double t);
 
-        double getQd () { return _vel; }
+        double getQd() { return _vel; }
 
-        void setAcc (double acc) { _acc = acc; }
+        void setAcc(double acc) { _acc = acc; }
 
-        const std::string& getMaterial () { return _materialID; }
+        const std::string& getMaterial() { return _materialID; }
 
         /**
          * @brief Adds a force described in parent frame to the
          * center of mass of this body
          */
-        virtual void addForce (const rw::math::Vector3D<>& force) { _force += force; }
+        virtual void addForce(const rw::math::Vector3D<>& force) { _force += force; }
 
         /**
          * @brief Adds a force described in world frame to the
          * center of mass of this body
          */
-        virtual void addForceW (const rw::math::Vector3D<>& force) { _force += _bTw.R () * force; }
+        virtual void addForceW(const rw::math::Vector3D<>& force) { _force += _bTw.R() * force; }
 
         /**
          * @brief Adds a force described in parent frame to this body
          * which is working on a specific position pos that is described relative to
          * this body.
          */
-        virtual void addForceToPos (const rw::math::Vector3D<>& force,
-                                    const rw::math::Vector3D<>& pos)
-        {
+        virtual void addForceToPos(const rw::math::Vector3D<>& force,
+                                   const rw::math::Vector3D<>& pos) {
             // calculate the center force contribution
             _force += force;
 
             // calculate the torque contribution
-            _torque += cross (pos, force);
+            _torque += cross(pos, force);
         }
 
         /**
@@ -127,22 +124,21 @@ namespace rwsim { namespace dynamics {
          * which is worked on a specific position pos that is described
          * relative to world
          */
-        virtual void addForceWToPosW (const rw::math::Vector3D<>& force,
-                                      const rw::math::Vector3D<>& pos);
+        virtual void addForceWToPosW(const rw::math::Vector3D<>& force,
+                                     const rw::math::Vector3D<>& pos);
 
         /**
          * @brief Adds a impulse described in parent frame to this body
          * which is working on a specific position pos that is described relative to
          * this body.
          */
-        virtual void addImpulseToPos (const rw::math::Vector3D<>& impulse,
-                                      const rw::math::Vector3D<>& pos)
-        {
+        virtual void addImpulseToPos(const rw::math::Vector3D<>& impulse,
+                                     const rw::math::Vector3D<>& pos) {
             // calculate the center force contribution
             _linImpulse += impulse;
 
             // calculate the torque contribution
-            _angImpulse += cross (pos, impulse);
+            _angImpulse += cross(pos, impulse);
         }
 
         /**
@@ -150,14 +146,14 @@ namespace rwsim { namespace dynamics {
          * which is worked on a specific position pos that is described
          * relative to world
          */
-        virtual void addImpulseWToPosW (const rw::math::Vector3D<>& impulse,
-                                        const rw::math::Vector3D<>& pos);
+        virtual void addImpulseWToPosW(const rw::math::Vector3D<>& impulse,
+                                       const rw::math::Vector3D<>& pos);
 
         /**
          * @brief adds gravitation to the body where the gravitation is
          * described in body frame
          */
-        virtual void addGravitation (const rw::math::Vector3D<>& grav){
+        virtual void addGravitation(const rw::math::Vector3D<>& grav){
             //_force += grav * _mass;
 
         };
@@ -166,32 +162,32 @@ namespace rwsim { namespace dynamics {
          * @brief adds gravitation to the body where the gravitation is
          * described in world frame
          */
-        virtual void addGravitationW (const rw::math::Vector3D<>& grav){
+        virtual void addGravitationW(const rw::math::Vector3D<>& grav){
             //_force += (_pTw.R() * grav) * _mass;
         };
 
         /**
          * @brief
          */
-        void addChild (FixedLink* child) { _children.push_back (child); }
+        void addChild(FixedLink* child) { _children.push_back(child); }
 
         /**
          * @brief get the body inertia of the link
          */
-        rw::math::InertiaMatrix<> getInertia () { return rw::math::InertiaMatrix<> (1, 1, 1); }
+        rw::math::InertiaMatrix<> getInertia() { return rw::math::InertiaMatrix<>(1, 1, 1); }
 
-        void setTargetVel (double vel) { _targetVel = vel; }
+        void setTargetVel(double vel) { _targetVel = vel; }
         /*
         void setAcc(double acc){
                 _maxAcc = acc;
         }*/
 
-        rw::models::Joint* getJoint () { return &_jointFrame; }
+        rw::models::Joint* getJoint() { return &_jointFrame; }
 
       private:
         std::string _materialID;
 
-        std::vector< FixedLink* > _children, _parents;
+        std::vector<FixedLink*> _children, _parents;
 
         rw::models::Joint& _jointFrame;
 
@@ -218,7 +214,7 @@ namespace rwsim { namespace dynamics {
 
         double _targetVel;
 
-        rw::core::Ptr< rw::kinematics::Frame > _base;
+        rw::core::Ptr<rw::kinematics::Frame> _base;
 
         int _impulseIterations;
 

@@ -15,7 +15,6 @@
  * limitations under the License.
  ********************************************************************************/
 
-
 #ifndef RWSIM_CONTACTS_CONTACTSTRATEGYPQP_HPP_
 #define RWSIM_CONTACTS_CONTACTSTRATEGYPQP_HPP_
 
@@ -23,9 +22,11 @@
 #include <rwsim/contacts/ContactStrategyDMS.hpp>
 
 #ifdef RW_WIN32
-#pragma message(" <rwsim/contacts/ContactStrategyPQP.hpp> is deprecated use  <rwsim/contacts/ContactStrategyDMS.hpp> instead")
+#pragma message( \
+    " <rwsim/contacts/ContactStrategyPQP.hpp> is deprecated use  <rwsim/contacts/ContactStrategyDMS.hpp> instead")
 #else
-#warning " <rwsim/contacts/ContactStrategyPQP.hpp> is deprecated use  <rwsim/contacts/ContactStrategyDMS.hpp> instead"
+#warning \
+    " <rwsim/contacts/ContactStrategyPQP.hpp> is deprecated use  <rwsim/contacts/ContactStrategyDMS.hpp> instead"
 #endif
 
 #endif

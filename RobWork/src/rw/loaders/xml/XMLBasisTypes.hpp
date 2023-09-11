@@ -57,137 +57,137 @@ namespace rw { namespace loaders {
          * @brief Identifier for rw::math::Q in the XML format.
          * @return the identifier.
          */
-        static const XMLCh* idQ ();
+        static const XMLCh* idQ();
         /**
          * @brief Identifier for rw::math::Vector3D<> in the XML format.
          * @return the identifier.
          */
-        static const XMLCh* idVector3D ();
+        static const XMLCh* idVector3D();
         /**
          * @brief Identifier for rw::math::Vector2D<> in the XML format.
          * @return the identifier.
          */
-        static const XMLCh* idVector2D ();
+        static const XMLCh* idVector2D();
         /**
          * @brief Identifier for rw::math::Rotation3D<> in the XML format.
          * @return the identifier.
          */
-        static const XMLCh* idRotation3D ();
+        static const XMLCh* idRotation3D();
         /**
          * @brief Identifier for rw::math::RPY<> in the XML format.
          * @return the identifier.
          */
-        static const XMLCh* idRPY ();
+        static const XMLCh* idRPY();
         /**
          * @brief Identifier for rw::math::EAA<> in the XML format.
          * @return the identifier.
          */
-        static const XMLCh* idEAA ();
+        static const XMLCh* idEAA();
         /**
          * @brief Identifier for rw::math::Quaternion<> in the XML format.
          * @return the identifier.
          */
-        static const XMLCh* idQuaternion ();
+        static const XMLCh* idQuaternion();
         /**
          * @brief Identifier for rw::math::Rotation2D<> in the XML format.
          * @return the identifier.
          */
-        static const XMLCh* idRotation2D ();
+        static const XMLCh* idRotation2D();
         /**
          * @brief Identifier for rw::math::Transform3D<> in the XML format.
          * @return the identifier.
          */
-        static const XMLCh* idTransform3D ();
+        static const XMLCh* idTransform3D();
         /**
          * @brief Identifier for rw::math::VelocityScrew6D<> in the XML format.
          * @return the identifier.
          */
-        static const XMLCh* idVelocityScrew6D ();
+        static const XMLCh* idVelocityScrew6D();
         /**
          * @brief Identifier for the position specification used in Transform3D.
          * @return the identifier.
          */
-        static const XMLCh* idPos ();
+        static const XMLCh* idPos();
         /**
          * @brief Identifier for matrix specification used in Transform3D.
          * @return the identifier.
          */
-        static const XMLCh* idMatrix ();
+        static const XMLCh* idMatrix();
         /**
          * @brief Identifier for specifying the linear part in a VelocityScrew6D.
          * @return the identifier.
          */
-        static const XMLCh* idLinear ();
+        static const XMLCh* idLinear();
         /**
          * @brief Identifier for specifying the angular part in a VelocityScrew6D.
          * @return the identifier.
          */
-        static const XMLCh* idAngular ();
+        static const XMLCh* idAngular();
         /**
          * @brief Identifier for specifying a State.
          * @return the identifier.
          */
-        static const XMLCh* idState ();
+        static const XMLCh* idState();
         /**
          * @brief Identifier for specifying a State.
          * @return the identifier.
          */
-        static const XMLCh* idQState ();
+        static const XMLCh* idQState();
         /**
          * @brief Identifier for specifying a State.
          * @return the identifier.
          */
-        static const XMLCh* idTreeState ();
+        static const XMLCh* idTreeState();
         /**
          * @brief Identifier for specifying a boolean.
          * @return the identifier.
          */
-        static const XMLCh* idBoolean ();
+        static const XMLCh* idBoolean();
         /**
          * @brief Identifier for specifying a double.
          * @return the identifier.
          */
-        static const XMLCh* idDouble ();
+        static const XMLCh* idDouble();
         /**
          * @brief Identifier for specifying a float.
          * @return the identifier.
          */
-        static const XMLCh* idFloat ();
+        static const XMLCh* idFloat();
         /**
          * @brief Identifier for specifying a integer.
          * @return the identifier.
          */
-        static const XMLCh* idInteger ();
+        static const XMLCh* idInteger();
         /**
          * @brief Identifier for specifying a string.
          * @return the identifier.
          */
-        static const XMLCh* idString ();
+        static const XMLCh* idString();
         /**
          * @brief Identifier for specifying a list of strings.
          * @return the identifier.
          */
-        static const XMLCh* idStringList ();
+        static const XMLCh* idStringList();
         /**
          * @brief Identifier for specifying a list of integers.
          * @return the identifier.
          */
-        static const XMLCh* idIntList ();
+        static const XMLCh* idIntList();
         /**
          * @brief Identifier for specifying a list of doubles.
          * @return the identifier.
          */
-        static const XMLCh* idDoubleList ();
+        static const XMLCh* idDoubleList();
         /**
          * @brief Identifier for specifying a pair of strings.
          * @return the identifier.
          */
-        static const XMLCh* idStringPair ();
+        static const XMLCh* idStringPair();
         /**
          * @brief Identifier for the unit attribute.
          * @return the identifier.
          */
-        static const XMLCh* idUnitAttribute ();
+        static const XMLCh* idUnitAttribute();
 
         /**
          * @brief Returns the conversion value for a given unit
@@ -200,7 +200,7 @@ namespace rw { namespace loaders {
          * @param key [in] The key for which the get the unit
          * @return Conversion value
          */
-        static double getUnit (const XMLCh* key);
+        static double getUnit(const XMLCh* key);
 
         /**
          * @brief Returns rw::math::Q element read from \b element
@@ -213,7 +213,7 @@ namespace rw { namespace loaders {
          * @param doCheckHeader [in] True if the header name should be checked
          * @return The element read
          */
-        static rw::math::Q readQ (xercesc::DOMElement* element, bool doCheckHeader = false);
+        static rw::math::Q readQ(xercesc::DOMElement* element, bool doCheckHeader = false);
 
         /**
          * @brief Returns rw::math::Vector3D<> element read from \b element
@@ -226,8 +226,8 @@ namespace rw { namespace loaders {
          * @param doCheckHeader [in] True if the header name should be checked
          * @return The element read
          */
-        static rw::math::Vector3D<> readVector3D (xercesc::DOMElement* element,
-                                                  bool doCheckHeader = false);
+        static rw::math::Vector3D<> readVector3D(xercesc::DOMElement* element,
+                                                 bool doCheckHeader = false);
 
         /**
          * @brief Returns rw::math::Vector2D<> element read from \b element
@@ -240,8 +240,8 @@ namespace rw { namespace loaders {
          * @param doCheckHeader [in] True if the header name should be checked
          * @return The element read
          */
-        static rw::math::Vector2D<> readVector2D (xercesc::DOMElement* element,
-                                                  bool doCheckHeader = false);
+        static rw::math::Vector2D<> readVector2D(xercesc::DOMElement* element,
+                                                 bool doCheckHeader = false);
 
         /**
          * @brief Returns rw::math::RPY<> element read from \b element
@@ -254,7 +254,7 @@ namespace rw { namespace loaders {
          * @param doCheckHeader [in] True if the header name should be checked
          * @return The element read
          */
-        static rw::math::RPY<> readRPY (xercesc::DOMElement* element, bool doCheckHeader = false);
+        static rw::math::RPY<> readRPY(xercesc::DOMElement* element, bool doCheckHeader = false);
 
         /**
          * @brief Returns rw::math::EAA<> element read from \b element
@@ -267,7 +267,7 @@ namespace rw { namespace loaders {
          * @param doCheckHeader [in] True if the header name should be checked
          * @return The element read
          */
-        static rw::math::EAA<> readEAA (xercesc::DOMElement* element, bool doCheckHeader = false);
+        static rw::math::EAA<> readEAA(xercesc::DOMElement* element, bool doCheckHeader = false);
 
         /**
          * @brief Returns rw::math::Quaternion<> element read from \b element
@@ -280,8 +280,8 @@ namespace rw { namespace loaders {
          * @param doCheckHeader [in] True if the header name should be checked
          * @return The element read
          */
-        static rw::math::Quaternion<> readQuaternion (xercesc::DOMElement* element,
-                                                      bool doCheckHeader = false);
+        static rw::math::Quaternion<> readQuaternion(xercesc::DOMElement* element,
+                                                     bool doCheckHeader = false);
 
         /**
          * @brief Returns rw::math::Rotation3D<> element read from \b element
@@ -294,8 +294,8 @@ namespace rw { namespace loaders {
          * @param doCheckHeader [in] True if the header name should be checked
          * @return The element read
          */
-        static rw::math::Rotation3D<> readRotation3D (xercesc::DOMElement* element,
-                                                      bool doCheckHeader = false);
+        static rw::math::Rotation3D<> readRotation3D(xercesc::DOMElement* element,
+                                                     bool doCheckHeader = false);
 
         /**
          * @brief Returns rw::math::Rotation2D<> element read from \b element
@@ -308,8 +308,8 @@ namespace rw { namespace loaders {
          * @param doCheckHeader [in] True if the header name should be checked
          * @return The element read
          */
-        static rw::math::Rotation2D<> readRotation2D (xercesc::DOMElement* element,
-                                                      bool doCheckHeader = false);
+        static rw::math::Rotation2D<> readRotation2D(xercesc::DOMElement* element,
+                                                     bool doCheckHeader = false);
 
         /**
          * @brief Returns rw::math::Rotation3D<> element read from \b element
@@ -321,7 +321,7 @@ namespace rw { namespace loaders {
          * @param element [in] Element to read
          * @return The element read
          */
-        static rw::math::Rotation3D<> readRotation3DStructure (xercesc::DOMElement* element);
+        static rw::math::Rotation3D<> readRotation3DStructure(xercesc::DOMElement* element);
 
         /**
          * @brief Returns rw::math::Transform3D<> element read from \b element
@@ -334,8 +334,8 @@ namespace rw { namespace loaders {
          * @param doCheckHeader [in] True if the header name should be checked
          * @return The element read
          */
-        static rw::math::Transform3D<> readTransform3D (xercesc::DOMElement* element,
-                                                        bool doCheckHeader = false);
+        static rw::math::Transform3D<> readTransform3D(xercesc::DOMElement* element,
+                                                       bool doCheckHeader = false);
 
         /**
          * @brief Returns rw::math::VelocityScrew6D<> element read from \b element
@@ -348,8 +348,8 @@ namespace rw { namespace loaders {
          * @param doCheckHeader [in] True if the header name should be checked
          * @return The element read
          */
-        static rw::math::VelocityScrew6D<> readVelocityScrew6D (xercesc::DOMElement* element,
-                                                                bool doCheckHeader = false);
+        static rw::math::VelocityScrew6D<> readVelocityScrew6D(xercesc::DOMElement* element,
+                                                               bool doCheckHeader = false);
 
         /**
          * @brief Returns rw::kinematics::State<> element read from \b element
@@ -364,14 +364,14 @@ namespace rw { namespace loaders {
          * @param doCheckHeader [in] True if the header name should be checked
          * @return The State read from \b element
          */
-        static rw::kinematics::State readState (xercesc::DOMElement* element,
-                                                rw::core::Ptr< rw::models::WorkCell > workcell,
-                                                bool doCheckHeader = false);
+        static rw::kinematics::State readState(xercesc::DOMElement* element,
+                                               rw::core::Ptr<rw::models::WorkCell> workcell,
+                                               bool doCheckHeader = false);
 
         /**
          * @brief Definition of a pair of strings
          */
-        typedef std::pair< std::string, std::string > StringPair;
+        typedef std::pair<std::string, std::string> StringPair;
 
         /**
          * @brief Returns pair of strings from \b element
@@ -385,7 +385,7 @@ namespace rw { namespace loaders {
          * @param doCheckHeader [in] True if the element name should be checked
          * @return Pair of strings
          */
-        static StringPair readStringPair (xercesc::DOMElement* element, bool doCheckHeader = false);
+        static StringPair readStringPair(xercesc::DOMElement* element, bool doCheckHeader = false);
 
         /**
          * @brief Reads in a list of string pairs that are childs of \b element
@@ -398,7 +398,7 @@ namespace rw { namespace loaders {
          * @param element [in] Element which string pairs as children
          * @return List of string pairs
          */
-        static std::vector< StringPair > readStringPairs (xercesc::DOMElement* element);
+        static std::vector<StringPair> readStringPairs(xercesc::DOMElement* element);
 
         /**
          * @brief Reads in a list of strings that are childs of \b element
@@ -410,7 +410,7 @@ namespace rw { namespace loaders {
          * @param element [in] Element which string pairs as children
          * @return List of strings
          */
-        static std::vector< std::string > readStringList (xercesc::DOMElement* element);
+        static std::vector<std::string> readStringList(xercesc::DOMElement* element);
 
         /**
          * @brief Reads in a string element
@@ -422,7 +422,7 @@ namespace rw { namespace loaders {
          * @param doCheckHeader [in] True if the element name should be checked
          * @return String giving the content of \b element
          */
-        static std::string readString (xercesc::DOMElement* element, bool doCheckHeader = false);
+        static std::string readString(xercesc::DOMElement* element, bool doCheckHeader = false);
 
         /**
          * @brief Reads in a double element
@@ -434,7 +434,7 @@ namespace rw { namespace loaders {
          * @param doCheckHeader [in] True if the element name should be checked
          * @return double represented in \b element
          */
-        static double readDouble (xercesc::DOMElement* element, bool doCheckHeader = false);
+        static double readDouble(xercesc::DOMElement* element, bool doCheckHeader = false);
 
         /**
          * @brief Reads in a double element
@@ -446,7 +446,7 @@ namespace rw { namespace loaders {
          * @param doCheckHeader [in] True if the element name should be checked
          * @return double represented in \b element
          */
-        static float readFloat (xercesc::DOMElement* element, bool doCheckHeader = false);
+        static float readFloat(xercesc::DOMElement* element, bool doCheckHeader = false);
 
         /**
          * @brief Reads in an integer element
@@ -458,7 +458,7 @@ namespace rw { namespace loaders {
          * @param doCheckHeader [in] True if the element name should be checked
          * @return int represented in \b element
          */
-        static int readInt (xercesc::DOMElement* element, bool doCheckHeader = false);
+        static int readInt(xercesc::DOMElement* element, bool doCheckHeader = false);
 
         /**
          * @brief Reads in a list of integers from \b element
@@ -470,8 +470,8 @@ namespace rw { namespace loaders {
          * @param doCheckHeader [in] True if the element name should be checked
          * @return std::vector<int> represented in \b element
          */
-        static std::vector< int > readIntList (xercesc::DOMElement* element,
-                                               bool doCheckHeader = false);
+        static std::vector<int> readIntList(xercesc::DOMElement* element,
+                                            bool doCheckHeader = false);
 
         /**
          * @brief Reads in a list of doubles from \b element
@@ -483,8 +483,8 @@ namespace rw { namespace loaders {
          * @param doCheckHeader [in] True if the element name should be checked
          * @return std::vector<double> represented in \b element
          */
-        static std::vector< double > readDoubleList (xercesc::DOMElement* element,
-                                                     bool doCheckHeader = false);
+        static std::vector<double> readDoubleList(xercesc::DOMElement* element,
+                                                  bool doCheckHeader = false);
 
         /**
          * @brief Reads in a boolean element
@@ -498,7 +498,7 @@ namespace rw { namespace loaders {
          * @param doCheckHeader [in] True if the element name should be checked
          * @return bool represented in \b element
          */
-        static bool readBool (xercesc::DOMElement* element, bool doCheckHeader = false);
+        static bool readBool(xercesc::DOMElement* element, bool doCheckHeader = false);
 
         /**
          * @brief Reads the text of a node
@@ -515,8 +515,8 @@ namespace rw { namespace loaders {
          * string.
          * @return string content of first child DOMText-node
          */
-        static std::string readElementText (xercesc::DOMElement* element,
-                                            bool exceptionOnEmpty = true);
+        static std::string readElementText(xercesc::DOMElement* element,
+                                           bool exceptionOnEmpty = true);
 
         /**
          * @brief Read element text and return as XMLCh*.
@@ -533,8 +533,8 @@ namespace rw { namespace loaders {
          * string.
          * @return string content of first child DOMText-node
          */
-        static const XMLCh* readElementTextXMLCh (xercesc::DOMElement* element,
-                                                  bool exceptionOnEmpty = true);
+        static const XMLCh* readElementTextXMLCh(xercesc::DOMElement* element,
+                                                 bool exceptionOnEmpty = true);
 
         /**
          * @brief Create an element with name \b id and content \b value in the DOMDocument \b doc
@@ -548,8 +548,8 @@ namespace rw { namespace loaders {
          *
          * @return The new element.
          */
-        static xercesc::DOMElement* createElement (const XMLCh* id, const XMLCh* value,
-                                                   xercesc::DOMDocument* doc);
+        static xercesc::DOMElement* createElement(const XMLCh* id, const XMLCh* value,
+                                                  xercesc::DOMDocument* doc);
 
         /**
          * @brief Creates a DOMElement to represent \b q
@@ -562,7 +562,7 @@ namespace rw { namespace loaders {
          * @param doc [in] Document which should contain the element
          * @return Pointer to the newly created DOMElement
          */
-        static xercesc::DOMElement* createQ (const rw::math::Q& q, xercesc::DOMDocument* doc);
+        static xercesc::DOMElement* createQ(const rw::math::Q& q, xercesc::DOMDocument* doc);
 
         /**
          * @brief Creates a DOMElement to represent \b v
@@ -575,8 +575,8 @@ namespace rw { namespace loaders {
          * @param doc [in] Document which should contain the element
          * @return Pointer to the newly created DOMElement
          */
-        static xercesc::DOMElement* createVector3D (const rw::math::Vector3D<>& v,
-                                                    xercesc::DOMDocument* doc);
+        static xercesc::DOMElement* createVector3D(const rw::math::Vector3D<>& v,
+                                                   xercesc::DOMDocument* doc);
 
         /**
          * @brief Creates a DOMElement to represent \b v
@@ -589,8 +589,8 @@ namespace rw { namespace loaders {
          * @param doc [in] Document which should contain the element
          * @return Pointer to the newly created DOMElement
          */
-        static xercesc::DOMElement* createVector2D (const rw::math::Vector2D<>& v,
-                                                    xercesc::DOMDocument* doc);
+        static xercesc::DOMElement* createVector2D(const rw::math::Vector2D<>& v,
+                                                   xercesc::DOMDocument* doc);
 
         /**
          * @brief Creates a DOMElement to represent \b rpy
@@ -603,8 +603,8 @@ namespace rw { namespace loaders {
          * @param doc [in] Document which should contain the element
          * @return Pointer to the newly created DOMElement
          */
-        static xercesc::DOMElement* createRPY (const rw::math::RPY<>& rpy,
-                                               xercesc::DOMDocument* doc);
+        static xercesc::DOMElement* createRPY(const rw::math::RPY<>& rpy,
+                                              xercesc::DOMDocument* doc);
 
         /**
          * @brief Creates a DOMElement to represent \b eaa
@@ -617,8 +617,8 @@ namespace rw { namespace loaders {
          * @param doc [in] Document which should contain the element
          * @return Pointer to the newly created DOMElement
          */
-        static xercesc::DOMElement* createEAA (const rw::math::EAA<>& eaa,
-                                               xercesc::DOMDocument* doc);
+        static xercesc::DOMElement* createEAA(const rw::math::EAA<>& eaa,
+                                              xercesc::DOMDocument* doc);
 
         /**
          * @brief Creates a DOMElement to represent \b quat
@@ -631,8 +631,8 @@ namespace rw { namespace loaders {
          * @param doc [in] Document which should contain the element
          * @return Pointer to the newly created DOMElement
          */
-        static xercesc::DOMElement* createQuaternion (const rw::math::Quaternion<>& quat,
-                                                      xercesc::DOMDocument* doc);
+        static xercesc::DOMElement* createQuaternion(const rw::math::Quaternion<>& quat,
+                                                     xercesc::DOMDocument* doc);
 
         /**
          * @brief Creates a DOMElement to represent \b rot
@@ -645,8 +645,8 @@ namespace rw { namespace loaders {
          * @param doc [in] Document which should contain the element
          * @return Pointer to the newly created DOMElement
          */
-        static xercesc::DOMElement* createRotation3D (const rw::math::Rotation3D<>& rot,
-                                                      xercesc::DOMDocument* doc);
+        static xercesc::DOMElement* createRotation3D(const rw::math::Rotation3D<>& rot,
+                                                     xercesc::DOMDocument* doc);
 
         /**
          * @brief Creates a DOMElement to represent \b rot
@@ -659,8 +659,8 @@ namespace rw { namespace loaders {
          * @param doc [in] Document which should contain the element
          * @return Pointer to the newly created DOMElement
          */
-        static xercesc::DOMElement* createRotation2D (const rw::math::Rotation2D<>& rot,
-                                                      xercesc::DOMDocument* doc);
+        static xercesc::DOMElement* createRotation2D(const rw::math::Rotation2D<>& rot,
+                                                     xercesc::DOMDocument* doc);
 
         /**
          * @brief Creates a DOMElement to represent \b trans
@@ -673,8 +673,8 @@ namespace rw { namespace loaders {
          * @param doc [in] Document which should contain the element
          * @return Pointer to the newly created DOMElement
          */
-        static xercesc::DOMElement* createTransform3D (const rw::math::Transform3D<>& trans,
-                                                       xercesc::DOMDocument* doc);
+        static xercesc::DOMElement* createTransform3D(const rw::math::Transform3D<>& trans,
+                                                      xercesc::DOMDocument* doc);
 
         /**
          * @brief Creates a DOMElement to represent \b vs
@@ -687,8 +687,8 @@ namespace rw { namespace loaders {
          * @param doc [in] Document which should contain the element
          * @return Pointer to the newly created DOMElement
          */
-        static xercesc::DOMElement* createVelocityScrew6D (const rw::math::VelocityScrew6D<>& vs,
-                                                           xercesc::DOMDocument* doc);
+        static xercesc::DOMElement* createVelocityScrew6D(const rw::math::VelocityScrew6D<>& vs,
+                                                          xercesc::DOMDocument* doc);
 
         /**
          * @brief Creates an element to represent \b state.
@@ -701,8 +701,8 @@ namespace rw { namespace loaders {
          * @param doc [in] Document which should contain the element
          * @return Pointer to the newly created DOMElement
          */
-        static xercesc::DOMElement* createState (const rw::kinematics::State& state,
-                                                 xercesc::DOMDocument* doc);
+        static xercesc::DOMElement* createState(const rw::kinematics::State& state,
+                                                xercesc::DOMDocument* doc);
 
         /**
          * @brief Creates an element to represent the rw::kinematics::QState contained in \b state.
@@ -716,8 +716,8 @@ namespace rw { namespace loaders {
          * @param doc [in] Document which should contain the element
          * @return Pointer to the newly created DOMElement
          */
-        static xercesc::DOMElement* createQState (const rw::kinematics::State& state,
-                                                  xercesc::DOMDocument* doc);
+        static xercesc::DOMElement* createQState(const rw::kinematics::State& state,
+                                                 xercesc::DOMDocument* doc);
 
         /**
          * @brief Creates an element to represent the rw::kinematics::TreeState contained in \b
@@ -732,8 +732,8 @@ namespace rw { namespace loaders {
          * @param doc [in] Document which should contain the element
          * @return Pointer to the newly created DOMElement
          */
-        static xercesc::DOMElement* createTreeState (const rw::kinematics::State& state,
-                                                     xercesc::DOMDocument* doc);
+        static xercesc::DOMElement* createTreeState(const rw::kinematics::State& state,
+                                                    xercesc::DOMDocument* doc);
 
         /**
          * @brief Creates an element to represent \b value.
@@ -746,7 +746,7 @@ namespace rw { namespace loaders {
          * @param doc [in] Document which should contain the element
          * @return Pointer to the newly created DOMElement
          */
-        static xercesc::DOMElement* createBoolean (bool value, xercesc::DOMDocument* doc);
+        static xercesc::DOMElement* createBoolean(bool value, xercesc::DOMDocument* doc);
 
         /**
          * @brief Creates an element to represent \b value.
@@ -759,7 +759,7 @@ namespace rw { namespace loaders {
          * @param doc [in] Document which should contain the element
          * @return Pointer to the newly created DOMElement
          */
-        static xercesc::DOMElement* createDouble (double value, xercesc::DOMDocument* doc);
+        static xercesc::DOMElement* createDouble(double value, xercesc::DOMDocument* doc);
 
         /**
          * @brief Creates an element to represent \b value.
@@ -772,7 +772,7 @@ namespace rw { namespace loaders {
          * @param doc [in] Document which should contain the element
          * @return Pointer to the newly created DOMElement
          */
-        static xercesc::DOMElement* createFloat (float value, xercesc::DOMDocument* doc);
+        static xercesc::DOMElement* createFloat(float value, xercesc::DOMDocument* doc);
 
         /**
          * @brief Creates an element to represent \b value.
@@ -785,7 +785,7 @@ namespace rw { namespace loaders {
          * @param doc [in] Document which should contain the element
          * @return Pointer to the newly created DOMElement
          */
-        static xercesc::DOMElement* createInteger (int value, xercesc::DOMDocument* doc);
+        static xercesc::DOMElement* createInteger(int value, xercesc::DOMDocument* doc);
 
         /**
          * @brief Creates an element to represent \b string.
@@ -798,8 +798,8 @@ namespace rw { namespace loaders {
          * @param doc [in] Document which should contain the element
          * @return Pointer to the newly created DOMElement
          */
-        static xercesc::DOMElement* createString (const std::string& string,
-                                                  xercesc::DOMDocument* doc);
+        static xercesc::DOMElement* createString(const std::string& string,
+                                                 xercesc::DOMDocument* doc);
 
         /**
          * @brief Creates an element to represent \b strings.
@@ -812,8 +812,8 @@ namespace rw { namespace loaders {
          * @param doc [in] Document which should contain the element
          * @return Pointer to the newly created DOMElement
          */
-        static xercesc::DOMElement* createStringList (const std::vector< std::string >& strings,
-                                                      xercesc::DOMDocument* doc);
+        static xercesc::DOMElement* createStringList(const std::vector<std::string>& strings,
+                                                     xercesc::DOMDocument* doc);
 
         /**
          * @brief Creates an element to represent \b ints.
@@ -826,8 +826,8 @@ namespace rw { namespace loaders {
          * @param doc [in] Document which should contain the element
          * @return Pointer to the newly created DOMElement
          */
-        static xercesc::DOMElement* createIntList (const std::vector< int >& ints,
-                                                   xercesc::DOMDocument* doc);
+        static xercesc::DOMElement* createIntList(const std::vector<int>& ints,
+                                                  xercesc::DOMDocument* doc);
 
         /**
          * @brief Creates an element to represent \b doubles.
@@ -840,8 +840,8 @@ namespace rw { namespace loaders {
          * @param doc [in] Document which should contain the element
          * @return Pointer to the newly created DOMElement
          */
-        static xercesc::DOMElement* createDoubleList (const std::vector< double >& doubles,
-                                                      xercesc::DOMDocument* doc);
+        static xercesc::DOMElement* createDoubleList(const std::vector<double>& doubles,
+                                                     xercesc::DOMDocument* doc);
 
         /**
          * @brief Creates an element to represent strings \b first and \b second.
@@ -855,9 +855,9 @@ namespace rw { namespace loaders {
          * @param doc [in] Document which should contain the element
          * @return Pointer to the newly created DOMElement
          */
-        static xercesc::DOMElement* createStringPair (const std::string& first,
-                                                      const std::string& second,
-                                                      xercesc::DOMDocument* doc);
+        static xercesc::DOMElement* createStringPair(const std::string& first,
+                                                     const std::string& second,
+                                                     xercesc::DOMDocument* doc);
 
         /**
          * @brief Utility class which initializes local static variables.
@@ -874,13 +874,13 @@ namespace rw { namespace loaders {
         {
           public:
             //! @brief Initializes when constructed.
-            Initializer ();
+            Initializer();
         };
 
       private:
         static const Initializer initializer;
 
-        XMLBasisTypes (){}
+        XMLBasisTypes() {}
     };
 
     /* @} */

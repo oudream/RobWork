@@ -22,7 +22,7 @@
 #include <rw/geometry/QHullND.hpp>
 #include <rw/graspplanning/GraspQualityMeasure3D.hpp>
 #include <rw/math/Vector3D.hpp>
-#endif 
+#endif
 namespace rw { namespace graspplanning {
 
     /**
@@ -38,27 +38,27 @@ namespace rw { namespace graspplanning {
          * of the friction cone.
          * @param useUnitVectors [in] true if the unit wrench should be used, false otherwise
          */
-        GWSMeasure3D (int resolution = 8, bool useUnitVectors = false);
+        GWSMeasure3D(int resolution = 8, bool useUnitVectors = false);
 
         //! @brief destructor
-        virtual ~GWSMeasure3D () {}
+        virtual ~GWSMeasure3D() {}
 
         //// inherited from quality measure
         //! @copydoc GraspQualityMeasure3D::quality
-        virtual double quality (const rw::graspplanning::Grasp3D& grasp) const;
+        virtual double quality(const rw::graspplanning::Grasp3D& grasp) const;
 
         //// member functions
         /**
          * @brief set the center of the object
          * @param center [in] center of object.
          */
-        void setObjectCenter (const rw::math::Vector3D<>& center) { _objCenter = center; }
+        void setObjectCenter(const rw::math::Vector3D<>& center) { _objCenter = center; }
 
         /**
          * @brief tests if center of object is inside wrench space
          * @return true if center is inside both force and torque space
          */
-        bool isGraspStable () { return _isInside; }
+        bool isGraspStable() { return _isInside; }
 
         /**
          * @brief get the minimum force that will break the grasp
@@ -68,7 +68,7 @@ namespace rw { namespace graspplanning {
          *
          * @return minimum breaking force
          */
-        double getMinWrench () { return _minWrench; }
+        double getMinWrench() { return _minWrench; }
 
         /**
          * @brief get the force that will break the grasp
@@ -78,28 +78,28 @@ namespace rw { namespace graspplanning {
          *
          * @return minimum breaking force
          */
-        double getAvgWrench () { return _avgWrench; }
+        double getAvgWrench() { return _avgWrench; }
 
         /**
          * @brief get average wrench in relation to the origin
          * @return average wrench in relation to the origin.
          */
-        double getAverageOriginWrench () { return _avgOriginWrench; }
+        double getAverageOriginWrench() { return _avgOriginWrench; }
 
         /**
          * @brief get average wrench in relation to center of the convex hull
          * @return average wrench in relation to center of convex hull.
          */
-        double getAverageCenterWrench () { return _avgCenterWrench; }
+        double getAverageCenterWrench() { return _avgCenterWrench; }
 
         /**
          * @brief Set scaling of the torque.
          * @param lambda [in] new scaling coefficient.
          */
-        void setLambda (double lambda) { _lambda = lambda; }
+        void setLambda(double lambda) { _lambda = lambda; }
 
       protected:
-        rw::core::Ptr< rw::geometry::QHullND< 6 > > _chullCalculator;
+        rw::core::Ptr<rw::geometry::QHullND<6>> _chullCalculator;
         rw::math::Vector3D<> _objCenter;
         int _resolution;
 

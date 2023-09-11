@@ -36,40 +36,42 @@ namespace rw { namespace common {
          * @brief Register a new code time ounde the name \b name. if \b name already exists then
          * add the time from this execution to the a label and increment the amount of times this
          * label has been called
-         * 
-         * OBS this code is not multthread friendly, so only create instances of this class in a single thread
+         *
+         * OBS this code is not multthread friendly, so only create instances of this class in a
+         * single thread
          *
          * @param name name of the code label
          */
-        CodeTimer (std::string name = "CodeTimer");
+        CodeTimer(std::string name = "CodeTimer");
 
         /**
          * @brief calls stop();
          */
-        virtual ~CodeTimer ();
+        virtual ~CodeTimer();
 
         /**
          * @brief Stops the time and starts it under a new label
-         * 
+         *
          * @param newName new label
          */
         void operator()(std::string newName);
 
         /**
-         * @brief stop the code timer. if Print outs enabled print the time, else store the result in the static repport.
+         * @brief stop the code timer. if Print outs enabled print the time, else store the result
+         * in the static repport.
          */
-        void stop ();
+        void stop();
 
         /**
          * @brief Get the Repport object
          */
-        static void getRepport ();
+        static void getRepport();
 
         /**
          * @brief enable or disable printouts when stop is called on a global level
-         * @param enable 
+         * @param enable
          */
-        static void enablePrintOuts (bool enable);
+        static void enablePrintOuts(bool enable);
 
       private:
         std::string _name;
@@ -86,16 +88,15 @@ namespace rw { namespace common {
             std::string parent;        //!< Name of Parent Timer
         };
         using ParentMap =
-            std::map< std::string,
-                      std::vector< std::pair< std::string, CodeTimer::CodeTimerData > > >;
+            std::map<std::string, std::vector<std::pair<std::string, CodeTimer::CodeTimerData>>>;
 
         static bool doPrintOuts;
         static size_t level;
         static std::string current;
-        static std::map< std::string, CodeTimerData > statistics;
+        static std::map<std::string, CodeTimerData> statistics;
 
-        static void doRepport (size_t level, ParentMap& data, std::string current);
-        static unsigned long collectWaste (ParentMap& data, std::string current);
+        static void doRepport(size_t level, ParentMap& data, std::string current);
+        static unsigned long collectWaste(ParentMap& data, std::string current);
     };
 }}    // namespace rw::common
 

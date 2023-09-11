@@ -51,8 +51,8 @@ namespace rw { namespace loaders {
          * @param state documentation missing !
          * @param fileName [in] Name of the file to which to write.
          */
-        static void save (rw::core::Ptr< const rw::models::WorkCell > workcell,
-                          const rw::kinematics::State& state, std::string fileName);
+        static void save(rw::core::Ptr<const rw::models::WorkCell> workcell,
+                         const rw::kinematics::State& state, std::string fileName);
 
         /**
          * @brief Writes \b workcellCalibration to stream.
@@ -60,8 +60,8 @@ namespace rw { namespace loaders {
          * @param state documentation missing !
          * @param ostream [in] Stream to write to
          */
-        static void save (rw::core::Ptr< const rw::models::WorkCell > workcell,
-                          const rw::kinematics::State& state, std::ostream& ostream);
+        static void save(rw::core::Ptr<const rw::models::WorkCell> workcell,
+                         const rw::kinematics::State& state, std::ostream& ostream);
     };
 
     /* @} */

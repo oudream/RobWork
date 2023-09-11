@@ -22,15 +22,14 @@
    @file StateStructure.hpp
 */
 #if !defined(SWIG)
-#include <rw/kinematics/State.hpp>
-
 #include <rw/core/Event.hpp>
 #include <rw/core/Ptr.hpp>
+#include <rw/kinematics/State.hpp>
 
 #include <boost/function.hpp>
 #include <map>
 #include <vector>
-#endif 
+#endif
 namespace rw { namespace kinematics {
 
     class Frame;
@@ -47,18 +46,18 @@ namespace rw { namespace kinematics {
     {
       public:
         //! smart pointer type of this class
-        typedef rw::core::Ptr< StateStructure > Ptr;
+        typedef rw::core::Ptr<StateStructure> Ptr;
 
         /**
          * @brief constructs a frame tree with a default root frame
          * with the name "WORLD".
          */
-        StateStructure ();
+        StateStructure();
 
         /**
          * @brief destructor
          */
-        virtual ~StateStructure ();
+        virtual ~StateStructure();
 
         /**
          * @brief tests if StateData data exist in this StateStructure
@@ -68,7 +67,7 @@ namespace rw { namespace kinematics {
          * @note the search includes the union of StateData in all
          * StateSetup's that belong to the StateStructure
          */
-        bool has (rw::core::Ptr<const StateData> data);
+        bool has(rw::core::Ptr<const StateData> data);
 
         /**
          * @brief gets the max ID of any StateData/Frame currently in the tree.
@@ -77,7 +76,7 @@ namespace rw { namespace kinematics {
          * lower than this number (and greater than or equal to zero).
          *
          */
-        int getMaxID () const { return (int) _allDatas.size (); }
+        int getMaxID() const { return (int) _allDatas.size(); }
 
         /**
          * @brief adds a statedata to the frame tree and allocates memory
@@ -88,7 +87,7 @@ namespace rw { namespace kinematics {
          * any StateStructure before.
          */
         DEPRECATED("use rw::core::Ptr<StateData> instead of StateData*")
-        void addData (StateData*  data);
+        void addData(StateData* data);
 
         /**
          * @brief adds a statedata to the frame tree and allocates memory
@@ -98,7 +97,7 @@ namespace rw { namespace kinematics {
          * @note Ownership is not taken, the data object may not have been added to
          * any StateStructure before.
          */
-        void addData (rw::core::Ptr< StateData > data);
+        void addData(rw::core::Ptr<StateData> data);
 
         /**
          * @brief adds a frame to the frame tree and statically associates
@@ -109,7 +108,7 @@ namespace rw { namespace kinematics {
          * frame.
          *
          */
-        void addFrame (rw::core::Ptr< Frame > frame, rw::core::Ptr< Frame > parent = NULL);
+        void addFrame(rw::core::Ptr<Frame> frame, rw::core::Ptr<Frame> parent = NULL);
 
         /**
          * @brief adds a DAF to the frame tree and dynamicly associates
@@ -118,7 +117,7 @@ namespace rw { namespace kinematics {
          * @note the parent frame must exist in the frame tree and cannot be
          * NULL.
          */
-        void addDAF (rw::core::Ptr< Frame > frame, rw::core::Ptr< Frame > parent);
+        void addDAF(rw::core::Ptr<Frame> frame, rw::core::Ptr<Frame> parent);
 
         /**
          * @brief removes a StateData object from the tree. The actual
@@ -133,7 +132,7 @@ namespace rw { namespace kinematics {
          * children then all of these will change parent relation ship such that
          * world will become their parent.
          */
-        void remove (rw::core::Ptr<StateData> data);
+        void remove(rw::core::Ptr<StateData> data);
 
         /**
          * @brief upgrades the state to the default state, but without
@@ -141,26 +140,26 @@ namespace rw { namespace kinematics {
          * @param oldState [in] the state that should be upgraded
          * @return the upgraded state
          */
-        State upgradeState (const State& oldState);
+        State upgradeState(const State& oldState);
 
         /**
          * @brief get the default state of the frame tree
          * @return the default tree state
          */
-        const State& getDefaultState () const;
+        const State& getDefaultState() const;
 
         /**
          * @brief set the default state of the dynamic frame tree
          * if the given state is an older state then states valid in both
          * new and old version will be copied to the default state.
          */
-        void setDefaultState (const State& state);
+        void setDefaultState(const State& state);
 
         /**
          * @brief All state data in the tree.
          * @return All state data in the tree
          */
-        const std::vector< rw::core::Ptr< StateData > >& getStateData () const { return _allDatas; }
+        const std::vector<rw::core::Ptr<StateData>>& getStateData() const { return _allDatas; }
 
         /**
          * @brief All frames of the tree. Notice that elements in
@@ -168,33 +167,33 @@ namespace rw { namespace kinematics {
          *
          * @return All frames of the tree.
          */
-        const std::vector< Frame* >& getFrames () const { return _frames; }
+        const std::vector<Frame*>& getFrames() const { return _frames; }
 
         /**
          * @brief All DAFs of the tree.
          *
          * @return All DAFs of the tree.
          */
-        const std::vector< Frame* >& getDAFs () const { return _DAFs; }
+        const std::vector<Frame*>& getDAFs() const { return _DAFs; }
 
         /**
          * @brief get root of state structure
          * @return the root frame of the StateStructure
          */
-        const Frame* getRoot () const { return _root.get(); }
+        const Frame* getRoot() const { return _root.get(); }
 
         /**
          * @brief get root of state structure
          * @return the root frame of the StateStructure
          */
-        rw::kinematics::Frame* getRoot () { return _root.get(); }
+        rw::kinematics::Frame* getRoot() { return _root.get(); }
 
         /**
          * @brief destructs all frames and statedata that is not used any more.
          * @param ID [in] used to include a specific StateData ID for destruction, defualt -1 to
          * ignore this option.
          */
-        void cleanup (int ID = -1);
+        void cleanup(int ID = -1);
 
         /*
          * @brief test if the state structure has a specific frame
@@ -213,56 +212,60 @@ namespace rw { namespace kinematics {
          *
          * @return The frame with name \b name or NULL if no such frame.
          */
-        kinematics::Frame* findFrame (const std::string& name) const;
+        kinematics::Frame* findFrame(const std::string& name) const;
 
         /**
          * @brief Find data from name.
          * @param name [in] the name.
          * @return the data if found.
          */
-        rw::core::Ptr< kinematics::StateData > findData (const std::string& name) const;
+        rw::core::Ptr<kinematics::StateData> findData(const std::string& name) const;
 
 #if !defined(SWIG)
         /**
          * @brief Defines a listener for StateData added events
          * @param StateData [in] the statedata that has been added
          */
-        typedef boost::function< void (const kinematics::StateData*) > StateDataAddedListener;
+        typedef boost::function<void(const kinematics::StateData*)> StateDataAddedListener;
 
         /**
          * @brief Defines a listener for StateData removed events
          * @param StateData [in] the statedata that has been removed.
          */
-        typedef boost::function< void (const kinematics::StateData*) > StateDataRemovedListener;
+        typedef boost::function<void(const kinematics::StateData*)> StateDataRemovedListener;
 
         //! @brief Defines event for StateData added.
-        typedef rw::core::Event< StateDataAddedListener, const kinematics::StateData* >
+        typedef rw::core::Event<StateDataAddedListener, const kinematics::StateData*>
             StateDataAddedEvent;
 
         //! @brief Defines event for StateData removed.
-        typedef rw::core::Event< StateDataRemovedListener, const kinematics::StateData* >
+        typedef rw::core::Event<StateDataRemovedListener, const kinematics::StateData*>
             StateDataRemovedEvent;
 
         /**
          * @brief Returns StateDataAddedEvent object needed for subscription to and firing of event
          * @return Reference to the StateDataAddedEvent
          */
-        StateDataAddedEvent& stateDataAddedEvent () { return _stateDataAddedEvent; }
+        StateDataAddedEvent& stateDataAddedEvent() {
+            return _stateDataAddedEvent;
+        }
 
         /**
          * @brief Returns StateDataRemovedEvent object needed for subscription to and firing of
          * event
          * @return Reference to the StateDataRemovedEvent
          */
-        StateDataRemovedEvent& stateDataRemovedEvent () { return _stateDataRemovedEvent; }
+        StateDataRemovedEvent& stateDataRemovedEvent() {
+            return _stateDataRemovedEvent;
+        }
 #endif
       private:
-        void updateDefaultState ();
+        void updateDefaultState();
 
-        int allocateDataID ();
+        int allocateDataID();
 
-        void addDataInternal (StateData* data);
-        void addDataInternal (rw::core::Ptr< StateData > data);
+        void addDataInternal(StateData* data);
+        void addDataInternal(rw::core::Ptr<StateData> data);
 
       private:
         // this specify the version of the initial/default data/setup
@@ -276,43 +279,43 @@ namespace rw { namespace kinematics {
 
         //********** stuff for creating the default state
         // daf parent intial state
-        std::vector< int > _initialDafParents;
+        std::vector<int> _initialDafParents;
 
         // the public setup history, when all references to one setup
         // is gone it should be removed from the list
-        typedef std::vector< rw::core::Ptr< StateSetup > > StateSetupList;
+        typedef std::vector<rw::core::Ptr<StateSetup>> StateSetupList;
         StateSetupList _setups;
         int _stateSetupUniqueId;
 
         // the complete list of frames
-        std::vector< Frame* > _frames;
+        std::vector<Frame*> _frames;
 
         // the list of all dynamic attachable frames
-        std::vector< Frame* > _DAFs;
+        std::vector<Frame*> _DAFs;
 
         // the complete list of statedata, this define the IDs
-        std::vector< rw::core::Ptr< StateData > > _allDatas;
-        std::vector< rw::core::Ptr< StateData > > _currDatas;
+        std::vector<rw::core::Ptr<StateData>> _allDatas;
+        std::vector<rw::core::Ptr<StateData>> _currDatas;
 
         // list for keeping track of available ids
-        std::vector< int > _availableDataIds;
+        std::vector<int> _availableDataIds;
 
         // map from string id to frame name
-        typedef std::map< std::string, int > FrameIdxMap;
+        typedef std::map<std::string, int> FrameIdxMap;
         FrameIdxMap _frameIdxMap;
-        std::map< std::string, int > _stateIdxMap;
+        std::map<std::string, int> _stateIdxMap;
 #if !defined(SWIG)
         // event stuff
         StateDataAddedEvent _stateDataAddedEvent;
         StateDataRemovedEvent _stateDataRemovedEvent;
-#endif 
+#endif
     };
 
     /**
      * @brief Shortcut for smart pointer type.
      * @deprecated Please use StateStructure::Ptr instead!
      */
-    typedef rw::core::Ptr< StateStructure > StateStructurePtr;
+    typedef rw::core::Ptr<StateStructure> StateStructurePtr;
 
     /*@}*/
 }}    // namespace rw::kinematics

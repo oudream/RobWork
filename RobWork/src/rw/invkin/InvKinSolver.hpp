@@ -31,12 +31,12 @@ namespace rw { namespace invkin {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< InvKinSolver > Ptr;
+        typedef rw::core::Ptr<InvKinSolver> Ptr;
         //! @brief smart pointer type to this const class
-        typedef rw::core::Ptr< const InvKinSolver > CPtr;
+        typedef rw::core::Ptr<const InvKinSolver> CPtr;
 
         //! destructor
-        virtual ~InvKinSolver (){};
+        virtual ~InvKinSolver(){};
 
         /**
          * @brief Calculates the inverse kinematics
@@ -61,8 +61,8 @@ namespace rw { namespace invkin {
          * @note The targets \b baseTend must be defined relative to the base of the
          * robot/device.
          */
-        virtual std::vector< math::Q > solve (const rw::math::Transform3D<double>& baseTend,
-                                              const rw::kinematics::State& state) const = 0;
+        virtual std::vector<math::Q> solve(const rw::math::Transform3D<double>& baseTend,
+                                           const rw::kinematics::State& state) const = 0;
 
         /**
          * @brief Specifies whether to check joint limits before returning a solution.
@@ -70,14 +70,14 @@ namespace rw { namespace invkin {
          * @param check [in] If true the method should perform a check that joints are within
          * bounds.
          */
-        virtual void setCheckJointLimits (bool check) = 0;
+        virtual void setCheckJointLimits(bool check) = 0;
 
         /**
          * @brief Returns the Tool Center Point (TCP) used when solving the IK problem.
          *
          * @return The TCP Frame used when solving the IK.
          */
-        virtual rw::core::Ptr< const rw::kinematics::Frame > getTCP () const = 0;
+        virtual rw::core::Ptr<const rw::kinematics::Frame> getTCP() const = 0;
     };
 
     /* @} */

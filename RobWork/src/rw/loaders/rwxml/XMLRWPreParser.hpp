@@ -45,8 +45,8 @@ namespace rw { namespace loaders {
          * @return true if pasing was a succes, false otherwise
          */
         static bool
-        parse (const std::string& filename, std::vector< char >& output,
-               std::vector< std::pair< size_t, boost::spirit::classic::file_position > >& filemap);
+        parse(const std::string& filename, std::vector<char>& output,
+              std::vector<std::pair<size_t, boost::spirit::classic::file_position>>& filemap);
 
         /**
          * @brief Pre-parses for the XML RW format. All include, define, comments and use
@@ -60,9 +60,9 @@ namespace rw { namespace loaders {
          * @return true if pasing was a succes, false otherwise
          */
         static bool
-        parse (const std::string& filename, std::vector< char >& output,
-               std::vector< std::pair< size_t, boost::spirit::classic::file_position > >& filemap,
-               DependencyGraph& graph);
+        parse(const std::string& filename, std::vector<char>& output,
+              std::vector<std::pair<size_t, boost::spirit::classic::file_position>>& filemap,
+              DependencyGraph& graph);
     };
     /*@}*/
 }}     // namespace rw::loaders

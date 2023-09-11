@@ -32,37 +32,32 @@ namespace rw { namespace core {
     {
       public:
         //! @brief Construct empty null pointer.
-        AnyPtr () : content (nullptr) {}
+        AnyPtr() : content(nullptr) {}
 
         /**
          * @brief constructor - ownership of pointer is taken
          * @param value [in] a raw pointer.
          */
-        template< typename ValueType >
-        AnyPtr (ValueType* value) : content (ownedPtr (new holder< ValueType > (value)))
-        {}
+        template<typename ValueType>
+        AnyPtr(ValueType* value) : content(ownedPtr(new holder<ValueType>(value))) {}
 
         /**
          * @brief Construct from Ptr - shares ownership.
          * @param value [in] a smart pointer.
          */
-        template< typename ValueType >
-        AnyPtr (const rw::core::Ptr< ValueType >& value) :
-            content (ownedPtr (new holder< ValueType > (value)))
-        {}
+        template<typename ValueType>
+        AnyPtr(const rw::core::Ptr<ValueType>& value) :
+            content(ownedPtr(new holder<ValueType>(value))) {}
 
         /**
          * @brief Copy constructor - ownership is shared.
          * @param other [in] other AnyPtr object.
          */
-        AnyPtr (const AnyPtr& other) : content (other.content) {}
+        AnyPtr(const AnyPtr& other) : content(other.content) {}
 
         //! @brief Destructor.
-        ~AnyPtr ()
-        {
-            if (!content.isShared () && !content.isNull ()) {
-                delete content.get ();
-            }
+        ~AnyPtr() {
+            if(!content.isShared() && !content.isNull()) { delete content.get(); }
         }
 
         /**
@@ -70,11 +65,9 @@ namespace rw { namespace core {
          * @return a Ptr object pointing to object if cast success, otherwise a NULL Ptr object is
          * returned.
          */
-        template< class S > Ptr< S > cast () const
-        {
-            rw::core::Ptr< holder< S > > content_cast = content.cast< holder< S > > ();
-            if (content_cast.isNull ())
-                return Ptr< S > ();
+        template<class S> Ptr<S> cast() const {
+            rw::core::Ptr<holder<S>> content_cast = content.cast<holder<S>>();
+            if(content_cast.isNull()) return Ptr<S>();
             return content_cast->_ptr;
         }
 
@@ -82,24 +75,19 @@ namespace rw { namespace core {
          * @brief The pointer stored in the object.
          * @return raw pointer.
          */
-        template< class S > S* get () const
-        {
-            rw::core::Ptr< holder< S > > content_cast = content.cast< holder< S > > ();
-            if (content_cast.isNull ())
-                return NULL;
-            return content_cast->_ptr.get ();
+        template<class S> S* get() const {
+            rw::core::Ptr<holder<S>> content_cast = content.cast<holder<S>>();
+            if(content_cast.isNull()) return NULL;
+            return content_cast->_ptr.get();
         }
 
 #if !defined(SWIG)
         /**
          * @brief Support for implicit conversion to bool.
          */
-        operator void* () const
-        {
-            if (content.isNull ()) {
-                return NULL;
-            }
-            return content->getVoidPtr ();
+        operator void*() const {
+            if(content.isNull()) { return NULL; }
+            return content->getVoidPtr();
         }
 #endif
         /**
@@ -108,15 +96,10 @@ namespace rw { namespace core {
          * @param p [in] smart pointer to compare with
          * @return true if the referenced objects are the same
          */
-        template< class A > bool operator== (const Ptr< A >& p) const
-        {
-            if (content == p) {
-                return true;
-            }
-            if (content.isNull ()) {
-                return false;
-            }
-            return content->getVoidPtr () == p.get ();
+        template<class A> bool operator==(const Ptr<A>& p) const {
+            if(content == p) { return true; }
+            if(content.isNull()) { return false; }
+            return content->getVoidPtr() == p.get();
         }
 
         /**
@@ -125,15 +108,10 @@ namespace rw { namespace core {
          * @param p [in] any pointer to compare with
          * @return true if the referenced objects are the same
          */
-        bool operator== (const AnyPtr& p) const
-        {
-            if (content == p.content) {
-                return true;
-            }
-            if (content.isNull () || p.content.isNull ()) {
-                return false;
-            }
-            return content->getVoidPtr () == p.content->getVoidPtr ();
+        bool operator==(const AnyPtr& p) const {
+            if(content == p.content) { return true; }
+            if(content.isNull() || p.content.isNull()) { return false; }
+            return content->getVoidPtr() == p.content->getVoidPtr();
         }
 
 #if !defined(SWIG)
@@ -141,18 +119,17 @@ namespace rw { namespace core {
          * @brief Tests if the smart pointer points to the same instance as \b p
          * @return true if equal, false otherwise.
          */
-        bool operator== (void* p) const { return content->getVoidPtr () == p; }
+        bool operator==(void* p) const {
+            return content->getVoidPtr() == p;
+        }
 #endif
 
         /**
          * @brief copy assignemt
          * @param rhs [in] the Ptr to copy.
          */
-        AnyPtr& operator= (const AnyPtr& rhs)
-        {
-            if (!content.isShared () && !content.isNull ()) {
-                delete content.get ();
-            }
+        AnyPtr& operator=(const AnyPtr& rhs) {
+            if(!content.isShared() && !content.isNull()) { delete content.get(); }
             content = rhs.content;
             return *this;
         }
@@ -161,61 +138,59 @@ namespace rw { namespace core {
          * @brief Check if pointer is null.
          * @return true is the smart pointer is null.
          */
-        bool isNull () const
-        {
-            if (content == NULL) {
-                return true;
-            }
-            return content->getVoidPtr () == NULL;
+        bool isNull() const {
+            if(content == NULL) { return true; }
+            return content->getVoidPtr() == NULL;
         }
 
         /**
          * @brief Get type info for the object pointed to.
          * @return type_info object.
          */
-        const std::type_info& type () const { return content->type (); }
+        const std::type_info& type() const {
+            return content->type();
+        }
 
       private:    // types
         class placeholder
         {
           public:    // structors
-            virtual ~placeholder () {}
+            virtual ~placeholder() {}
 
           public:    // queries
-            virtual const std::type_info& type () const = 0;
+            virtual const std::type_info& type() const = 0;
 
-            virtual placeholder* clone () const = 0;
+            virtual placeholder* clone() const = 0;
 
-            virtual void* getVoidPtr () const = 0;
+            virtual void* getVoidPtr() const = 0;
         };
 
-        template< typename ValueType > class holder : public placeholder
+        template<typename ValueType> class holder : public placeholder
         {
           public:    // structors
-            holder (ValueType* value) : _ptr (value) {}
-            holder (Ptr< ValueType > value) : _ptr (value) {}
+            holder(ValueType* value) : _ptr(value) {}
+            holder(Ptr<ValueType> value) : _ptr(value) {}
 
           public:    // queries
-            virtual const std::type_info& type () const { return typeid (ValueType); }
+            virtual const std::type_info& type() const { return typeid(ValueType); }
 
-            virtual placeholder* clone () const
-            {
-                return dynamic_cast< placeholder* > (new holder (*this));
+            virtual placeholder* clone() const {
+                return dynamic_cast<placeholder*>(new holder(*this));
             }
 
-            virtual void* getVoidPtr () const { return (void*) _ptr.get (); }
+            virtual void* getVoidPtr() const { return (void*) _ptr.get(); }
 
           private:    // intentionally left unimplemented
-            holder& operator= (const holder&);
+            holder& operator=(const holder&);
 
           public:
-            Ptr< ValueType > _ptr;
+            Ptr<ValueType> _ptr;
         };
 
       private:    // representation
-        template< typename ValueType > friend ValueType* cast (AnyPtr*);
+        template<typename ValueType> friend ValueType* cast(AnyPtr*);
 
-        rw::core::Ptr< placeholder > content;
+        rw::core::Ptr<placeholder> content;
     };
 }}    // namespace rw::core
 

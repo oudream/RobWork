@@ -7,18 +7,13 @@
 
 #include "LineSearch.hpp"
 
-namespace rwlibs {
-namespace optimization {
+namespace rwlibs { namespace optimization {
 
-LineSearch::LineSearch() :
-		Optimizer(NULL) {
-}
+    LineSearch::LineSearch() : Optimizer(NULL) {}
 
-LineSearch::LineSearch(typename FunctionType::Ptr function,
-		VectorType direction, double left, double right) :
-		Optimizer(function), _direction(direction / direction.norm2()), _leftBracket(
-				left), _rightBracket(right) {
-}
+    LineSearch::LineSearch(typename FunctionType::Ptr function, VectorType direction, double left,
+                           double right) :
+        Optimizer(function),
+        _direction(direction / direction.norm2()), _leftBracket(left), _rightBracket(right) {}
 
-} /* namespace optimization */
-} /* namespace rwlibs */
+}}    // namespace rwlibs::optimization

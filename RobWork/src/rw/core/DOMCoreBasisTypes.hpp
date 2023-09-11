@@ -40,200 +40,200 @@ namespace rw { namespace core {
          * @brief Identifier for rw::math::Q in the XML format.
          * @return the identifier.
          */
-        static const std::string& idQ ();
+        static const std::string& idQ();
         /**
          * @brief Identifier for rw::math::Vector3D<> in the XML format.
          * @return the identifier.
          */
-        static const std::string& idVector3D ();
+        static const std::string& idVector3D();
         /**
          * @brief Identifier for rw::math::Vector2D<> in the XML format.
          * @return the identifier.
          */
-        static const std::string& idVector2D ();
+        static const std::string& idVector2D();
         /**
          * @brief Identifier for rw::math::Rotation3D<> in the XML format.
          * @return the identifier.
          */
-        static const std::string& idRotation3D ();
+        static const std::string& idRotation3D();
         /**
          * @brief Identifier for rw::math::RPY<> in the XML format.
          * @return the identifier.
          */
-        static const std::string& idRPY ();
+        static const std::string& idRPY();
         /**
          * @brief Identifier for rw::math::EAA<> in the XML format.
          * @return the identifier.
          */
-        static const std::string& idEAA ();
+        static const std::string& idEAA();
         /**
          * @brief Identifier for rw::math::Quaternion<> in the XML format.
          * @return the identifier.
          */
-        static const std::string& idQuaternion ();
+        static const std::string& idQuaternion();
         /**
          * @brief Identifier for rw::math::Rotation2D<> in the XML format.
          * @return the identifier.
          */
-        static const std::string& idRotation2D ();
+        static const std::string& idRotation2D();
         /**
          * @brief Identifier for single angle used to specify rw::math::Rotation2D<> in the XML
          * format.
          * @return the identifier.
          */
-        static const std::string& idRotation2DAngle ();
+        static const std::string& idRotation2DAngle();
         /**
          * @brief Identifier for rw::math::Transform2D<> in the XML format.
          * @return the identifier.
          */
-        static const std::string& idTransform2D ();
+        static const std::string& idTransform2D();
         /**
          * @brief Identifier for rw::math::Transform3D<> in the XML format.
          * @return the identifier.
          */
-        static const std::string& idTransform3D ();
+        static const std::string& idTransform3D();
         /**
          * @brief Identifier for rw::math::MatrixXd<> in the XML format.
          * @return the identifier.
          */
-        static const std::string& idMatrix ();
+        static const std::string& idMatrix();
         /**
          * @brief Identifier for rw::math::VelocityScrew6D<> in the XML format.
          * @return the identifier.
          */
-        static const std::string& idVelocityScrew6D ();
+        static const std::string& idVelocityScrew6D();
         /**
          * @brief Identifier for the position specification used in Transform3D.
          * @return the identifier.
          */
-        static const std::string& idPos ();
+        static const std::string& idPos();
 
         /**
          * @brief Identifier for specifying the linear part in a VelocityScrew6D.
          * @return the identifier.
          */
-        static const std::string& idLinear ();
+        static const std::string& idLinear();
 
         /**
          * @brief Identifier for specifying the angular part in a VelocityScrew6D.
          * @return the identifier.
          */
-        static const std::string& idAngular ();
+        static const std::string& idAngular();
 
         /**
          * @brief Identifier for specifying a State.
          * @return the identifier.
          */
-        static const std::string& idState ();
+        static const std::string& idState();
 
         /**
          * @brief Identifier for specifying a State.
          * @return the identifier.
          */
-        static const std::string& idQState ();
+        static const std::string& idQState();
 
         /**
          * @brief Identifier for specifying a State.
          * @return the identifier.
          */
-        static const std::string& idTreeState ();
+        static const std::string& idTreeState();
 
         /**
          * @brief Identifier for specifying a boolean.
          * @return the identifier.
          */
-        static const std::string& idBoolean ();
+        static const std::string& idBoolean();
 
         /**
          * @brief Identifier for specifying a double.
          * @return the identifier.
          */
-        static const std::string& idDouble ();
+        static const std::string& idDouble();
 
         /**
          * @brief Identifier for specifying a float.
          * @return the identifier.
          */
-        static const std::string& idFloat ();
+        static const std::string& idFloat();
 
         /**
          * @brief Identifier for specifying an integer.
          * @return the identifier.
          */
-        static const std::string& idInteger ();
+        static const std::string& idInteger();
 
         /**
          * @brief Identifier for specifying a string.
          * @return the identifier.
          */
-        static const std::string& idString ();
+        static const std::string& idString();
 
         /**
          * @brief Identifier for specifying a list of strings.
          * @return the identifier.
          */
-        static const std::string& idStringList ();
+        static const std::string& idStringList();
 
         /**
          * @brief Identifier for specifying a list of integers.
          * @return the identifier.
          */
-        static const std::string& idIntList ();
+        static const std::string& idIntList();
 
         /**
          * @brief Identifier for specifying a list of doubles.
          * @return the identifier.
          */
-        static const std::string& idDoubleList ();
+        static const std::string& idDoubleList();
 
         /**
          * @brief Identifier for specifying a pair of strings.
          * @return the identifier.
          */
-        static const std::string& idStringPair ();
+        static const std::string& idStringPair();
 
         /**
          * @brief Identifier for the unit attribute.
          * @return the identifier.
          */
-        static const std::string& idUnitAttribute ();
+        static const std::string& idUnitAttribute();
 
         /**
          * @brief Identifier for a Plane
          * @return the identifier.
          */
-        static const std::string& idPlane ();
+        static const std::string& idPlane();
 
         /**
          * @brief Identifier for a Box
          * @return the identifier.
          */
-        static const std::string& idBox ();
+        static const std::string& idBox();
 
         /**
          * @brief Identifier for a Sphere
          * @return the identifier.
          */
-        static const std::string& idSphere ();
+        static const std::string& idSphere();
 
         /**
          * @brief Identifier for a Cone
          * @return the identifier.
          */
-        static const std::string& idCone ();
+        static const std::string& idCone();
 
         /**
          * @brief Identifier for a Cylinder
          * @return the identifier.
          */
-        static const std::string& idCylinder ();
+        static const std::string& idCylinder();
 
         /**
          * @brief Identifier for a Tube
          * @return the identifier.
          * @return the identifier.
          */
-        static const std::string& idTube ();
+        static const std::string& idTube();
 
         /**
          * @brief Returns the conversion value for a given unit
@@ -246,7 +246,7 @@ namespace rw { namespace core {
          * @param key [in] The key for which the get the unit
          * @return Conversion value
          */
-        static double getUnit (const std::string key);
+        static double getUnit(const std::string key);
 
         /**
          * @brief Returns pair of strings from \b element
@@ -260,8 +260,8 @@ namespace rw { namespace core {
          * @param doCheckHeader [in] True if the element name should be checked
          * @return Pair of strings
          */
-        static std::pair< std::string, std::string > readStringPair (rw::core::DOMElem::Ptr element,
-                                                                     bool doCheckHeader = false);
+        static std::pair<std::string, std::string> readStringPair(rw::core::DOMElem::Ptr element,
+                                                                  bool doCheckHeader = false);
 
         /**
          * @brief Reads in a list of string pairs that are childs of \b element
@@ -274,8 +274,8 @@ namespace rw { namespace core {
          * @param element [in] Element which string pairs as children
          * @return List of string pairs
          */
-        static std::vector< std::pair< std::string, std::string > >
-        readStringPairs (rw::core::DOMElem::Ptr element);
+        static std::vector<std::pair<std::string, std::string>>
+        readStringPairs(rw::core::DOMElem::Ptr element);
 
         /**
          * @brief Reads in a list of strings that are childs of \b element
@@ -287,7 +287,7 @@ namespace rw { namespace core {
          * @param element [in] Element which string pairs as children
          * @return List of strings
          */
-        static std::vector< std::string > readStringList (rw::core::DOMElem::Ptr element);
+        static std::vector<std::string> readStringList(rw::core::DOMElem::Ptr element);
 
         /**
          * @brief Reads in a string element
@@ -299,7 +299,7 @@ namespace rw { namespace core {
          * @param doCheckHeader [in] True if the element name should be checked
          * @return String giving the content of \b element
          */
-        static std::string readString (rw::core::DOMElem::Ptr element, bool doCheckHeader = false);
+        static std::string readString(rw::core::DOMElem::Ptr element, bool doCheckHeader = false);
 
         /**
          * @brief Reads in a double element
@@ -311,7 +311,7 @@ namespace rw { namespace core {
          * @param doCheckHeader [in] True if the element name should be checked
          * @return double represented in \b element
          */
-        static double readDouble (rw::core::DOMElem::Ptr element, bool doCheckHeader = false);
+        static double readDouble(rw::core::DOMElem::Ptr element, bool doCheckHeader = false);
 
         /**
          * @brief Reads in a double element
@@ -323,7 +323,7 @@ namespace rw { namespace core {
          * @param doCheckHeader [in] True if the element name should be checked
          * @return double represented in \b element
          */
-        static float readFloat (rw::core::DOMElem::Ptr element, bool doCheckHeader = false);
+        static float readFloat(rw::core::DOMElem::Ptr element, bool doCheckHeader = false);
 
         /**
          * @brief Reads in an integer element
@@ -335,7 +335,7 @@ namespace rw { namespace core {
          * @param doCheckHeader [in] True if the element name should be checked
          * @return int represented in \b element
          */
-        static int readInt (rw::core::DOMElem::Ptr element, bool doCheckHeader = false);
+        static int readInt(rw::core::DOMElem::Ptr element, bool doCheckHeader = false);
 
         /**
          * @brief Reads in a list of integers from \b element
@@ -347,8 +347,8 @@ namespace rw { namespace core {
          * @param doCheckHeader [in] True if the element name should be checked
          * @return std::vector<int> represented in \b element
          */
-        static std::vector< int > readIntList (rw::core::DOMElem::Ptr element,
-                                               bool doCheckHeader = false);
+        static std::vector<int> readIntList(rw::core::DOMElem::Ptr element,
+                                            bool doCheckHeader = false);
 
         /**
          * @brief Reads in a list of doubles from \b element
@@ -360,8 +360,8 @@ namespace rw { namespace core {
          * @param doCheckHeader [in] True if the element name should be checked
          * @return std::vector<double> represented in \b element
          */
-        static std::vector< double > readDoubleList (rw::core::DOMElem::Ptr element,
-                                                     bool doCheckHeader = false);
+        static std::vector<double> readDoubleList(rw::core::DOMElem::Ptr element,
+                                                  bool doCheckHeader = false);
 
         /**
          * @brief Reads in a boolean element
@@ -375,7 +375,7 @@ namespace rw { namespace core {
          * @param doCheckHeader [in] True if the element name should be checked
          * @return bool represented in \b element
          */
-        static bool readBool (rw::core::DOMElem::Ptr element, bool doCheckHeader = false);
+        static bool readBool(rw::core::DOMElem::Ptr element, bool doCheckHeader = false);
 
         //------------------------ writing value of DOMElem
 
@@ -386,8 +386,8 @@ namespace rw { namespace core {
          * @param addHeader [in] Whether or not to set the header of \b elem
          * @return newly created DOMElem
          */
-        static rw::core::DOMElem::Ptr write (int val, rw::core::DOMElem::Ptr elem,
-                                             bool addHeader = true);
+        static rw::core::DOMElem::Ptr write(int val, rw::core::DOMElem::Ptr elem,
+                                            bool addHeader = true);
 
         /**
          * @brief Writes \b val to \b elem.
@@ -396,8 +396,8 @@ namespace rw { namespace core {
          * @param addHeader [in] Whether or not to set the header of \b elem
          * @return newly created DOMElem
          */
-        static rw::core::DOMElem::Ptr write (double val, rw::core::DOMElem::Ptr elem,
-                                             bool addHeader = true);
+        static rw::core::DOMElem::Ptr write(double val, rw::core::DOMElem::Ptr elem,
+                                            bool addHeader = true);
 
         /**
          * @brief Writes \b str to \b elem.
@@ -406,8 +406,8 @@ namespace rw { namespace core {
          * @param addHeader [in] Whether or not to set the header of \b elem
          * @return newly created DOMElem
          */
-        static rw::core::DOMElem::Ptr write (const std::string& str, rw::core::DOMElem::Ptr elem,
-                                             bool addHeader = true);
+        static rw::core::DOMElem::Ptr write(const std::string& str, rw::core::DOMElem::Ptr elem,
+                                            bool addHeader = true);
 
         //------------------------ creating and writing DOMElem
         /**
@@ -422,8 +422,8 @@ namespace rw { namespace core {
          *
          * @return The new element.
          */
-        static rw::core::DOMElem::Ptr
-        createElement (const std::string& id, const std::string& value, rw::core::DOMElem::Ptr doc);
+        static rw::core::DOMElem::Ptr createElement(const std::string& id, const std::string& value,
+                                                    rw::core::DOMElem::Ptr doc);
 
         /**
          * @brief Creates an element to represent \b value.
@@ -436,7 +436,7 @@ namespace rw { namespace core {
          * @param doc [in] Document which should contain the element
          * @return Pointer to the newly created DOMElement
          */
-        static rw::core::DOMElem::Ptr createBoolean (bool value, rw::core::DOMElem::Ptr doc);
+        static rw::core::DOMElem::Ptr createBoolean(bool value, rw::core::DOMElem::Ptr doc);
 
         /**
          * @brief Creates an element to represent \b value.
@@ -449,7 +449,7 @@ namespace rw { namespace core {
          * @param doc [in] Document which should contain the element
          * @return Pointer to the newly created DOMElement
          */
-        static rw::core::DOMElem::Ptr createDouble (double value, rw::core::DOMElem::Ptr doc);
+        static rw::core::DOMElem::Ptr createDouble(double value, rw::core::DOMElem::Ptr doc);
 
         /**
          * @brief Creates an element to represent \b value.
@@ -462,7 +462,7 @@ namespace rw { namespace core {
          * @param doc [in] Document which should contain the element
          * @return Pointer to the newly created DOMElement
          */
-        static rw::core::DOMElem::Ptr createFloat (float value, rw::core::DOMElem::Ptr doc);
+        static rw::core::DOMElem::Ptr createFloat(float value, rw::core::DOMElem::Ptr doc);
 
         /**
          * @brief Creates an element to represent \b value.
@@ -475,7 +475,7 @@ namespace rw { namespace core {
          * @param doc [in] Document which should contain the element
          * @return Pointer to the newly created DOMElement
          */
-        static rw::core::DOMElem::Ptr createInteger (int value, rw::core::DOMElem::Ptr doc);
+        static rw::core::DOMElem::Ptr createInteger(int value, rw::core::DOMElem::Ptr doc);
 
         /**
          * @brief Creates an element to represent \b string.
@@ -488,8 +488,8 @@ namespace rw { namespace core {
          * @param doc [in] Document which should contain the element
          * @return Pointer to the newly created DOMElement
          */
-        static rw::core::DOMElem::Ptr createString (const std::string& string,
-                                                    rw::core::DOMElem::Ptr doc);
+        static rw::core::DOMElem::Ptr createString(const std::string& string,
+                                                   rw::core::DOMElem::Ptr doc);
 
         /**
          * @brief Creates an element to represent \b strings.
@@ -502,8 +502,8 @@ namespace rw { namespace core {
          * @param doc [in] Document which should contain the element
          * @return Pointer to the newly created DOMElement
          */
-        static rw::core::DOMElem::Ptr createStringList (const std::vector< std::string >& strings,
-                                                        rw::core::DOMElem::Ptr doc);
+        static rw::core::DOMElem::Ptr createStringList(const std::vector<std::string>& strings,
+                                                       rw::core::DOMElem::Ptr doc);
 
         /**
          * @brief Creates an element to represent \b ints.
@@ -516,8 +516,8 @@ namespace rw { namespace core {
          * @param doc [in] Document which should contain the element
          * @return Pointer to the newly created DOMElement
          */
-        static rw::core::DOMElem::Ptr createIntList (const std::vector< int >& ints,
-                                                     rw::core::DOMElem::Ptr doc);
+        static rw::core::DOMElem::Ptr createIntList(const std::vector<int>& ints,
+                                                    rw::core::DOMElem::Ptr doc);
 
         /**
          * @brief Creates an element to represent \b doubles.
@@ -530,8 +530,8 @@ namespace rw { namespace core {
          * @param doc [in] Document which should contain the element
          * @return Pointer to the newly created DOMElement
          */
-        static rw::core::DOMElem::Ptr createDoubleList (const std::vector< double >& doubles,
-                                                        rw::core::DOMElem::Ptr doc);
+        static rw::core::DOMElem::Ptr createDoubleList(const std::vector<double>& doubles,
+                                                       rw::core::DOMElem::Ptr doc);
 
         /**
          * @brief Creates an element to represent strings \b first and \b second.
@@ -545,9 +545,9 @@ namespace rw { namespace core {
          * @param doc [in] Document which should contain the element
          * @return Pointer to the newly created DOMElement
          */
-        static rw::core::DOMElem::Ptr createStringPair (const std::string& first,
-                                                        const std::string& second,
-                                                        rw::core::DOMElem::Ptr doc);
+        static rw::core::DOMElem::Ptr createStringPair(const std::string& first,
+                                                       const std::string& second,
+                                                       rw::core::DOMElem::Ptr doc);
 
         /**
          * @brief Utility class which initializes local static variables.
@@ -564,13 +564,13 @@ namespace rw { namespace core {
         {
           public:
             //! @brief Initializes when constructed.
-            Initializer ();
+            Initializer();
         };
 
       private:
         static const Initializer initializer;
 
-        DOMCoreBasisTypes (){};
+        DOMCoreBasisTypes(){};
 
         /*
          * Map used for mapping unit identifiers o their corresponding values

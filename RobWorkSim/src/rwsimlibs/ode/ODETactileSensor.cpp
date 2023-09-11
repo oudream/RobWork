@@ -29,94 +29,77 @@ using namespace rwsim::simulator;
 using namespace rwsim::dynamics;
 using namespace rwsim;
 
-ODETactileSensor::ODETactileSensor (sensor::SimulatedTactileSensor* sens) : _rwsensor (sens)
-{}
+ODETactileSensor::ODETactileSensor(sensor::SimulatedTactileSensor* sens) : _rwsensor(sens) {}
 
-void ODETactileSensor::addFeedback (const std::vector< dJointFeedback* >& fback,
-                                    const std::vector< dContactGeom >& g, Body::Ptr bodyA,
-                                    Body::Ptr bodyB, int bodyIdx)
-{
-    _feedback.push_back (fback);
-    _geoms.push_back (g);
-    _bodyIdx.push_back (bodyIdx);
+void ODETactileSensor::addFeedback(const std::vector<dJointFeedback*>& fback,
+                                   const std::vector<dContactGeom>& g, Body::Ptr bodyA,
+                                   Body::Ptr bodyB, int bodyIdx) {
+    _feedback.push_back(fback);
+    _geoms.push_back(g);
+    _bodyIdx.push_back(bodyIdx);
     // if(body==NULL)
     //    RW_WARN("BODY IS NULL HERE!");
-    _rwBody.push_back (bodyA);
-    if (bodyA.cast< FixedBody > ())
-        _bodyFixed.push_back (1);
-    else if (bodyB.cast< FixedBody > ())
-        _bodyFixed.push_back (2);
-    else
-        _bodyFixed.push_back (0);
+    _rwBody.push_back(bodyA);
+    if(bodyA.cast<FixedBody>()) _bodyFixed.push_back(1);
+    else if(bodyB.cast<FixedBody>()) _bodyFixed.push_back(2);
+    else _bodyFixed.push_back(0);
 }
 
-void ODETactileSensor::addFeedbackGlobal (dJointFeedback* joint, Body::Ptr a, Body::Ptr b, int body)
-{
-    _feedbackGlobal.push_back (joint);
-    _bodyGlobalIdx.push_back (body);
-    _bodyGlobal.push_back (a);
-    if (a.cast< FixedBody > ())
-        _bodyGlobalFixed.push_back (1);
-    else if (b.cast< FixedBody > ())
-        _bodyGlobalFixed.push_back (2);
-    else
-        _bodyGlobalFixed.push_back (0);
+void ODETactileSensor::addFeedbackGlobal(dJointFeedback* joint, Body::Ptr a, Body::Ptr b,
+                                         int body) {
+    _feedbackGlobal.push_back(joint);
+    _bodyGlobalIdx.push_back(body);
+    _bodyGlobal.push_back(a);
+    if(a.cast<FixedBody>()) _bodyGlobalFixed.push_back(1);
+    else if(b.cast<FixedBody>()) _bodyGlobalFixed.push_back(2);
+    else _bodyGlobalFixed.push_back(0);
 }
 
-void ODETactileSensor::clear ()
-{
-    _feedback.clear ();
-    _geoms.clear ();
-    _bodyIdx.clear ();
+void ODETactileSensor::clear() {
+    _feedback.clear();
+    _geoms.clear();
+    _bodyIdx.clear();
     //_contacts.clear();
-    _wTa.clear ();
-    _wTb.clear ();
-    _rwBody.clear ();
-    _bodyFixed.clear ();
-    _directContacts.clear ();
+    _wTa.clear();
+    _wTb.clear();
+    _rwBody.clear();
+    _bodyFixed.clear();
+    _directContacts.clear();
 }
 
-void ODETactileSensor::addContact (const Vector3D<>& pos, const Vector3D<>& force,
-                                   const Vector3D<>& normal, Body::Ptr b)
-{
-    _directContacts.push_back (DirectContact (pos, force, normal, b));
+void ODETactileSensor::addContact(const Vector3D<>& pos, const Vector3D<>& force,
+                                  const Vector3D<>& normal, Body::Ptr b) {
+    _directContacts.push_back(DirectContact(pos, force, normal, b));
 }
 
-void ODETactileSensor::update (const rwlibs::simulation::Simulator::UpdateInfo& info,
-                               rw::kinematics::State& state)
-{
-    RW_ASSERT (_feedback.size () == _geoms.size ());
-    RW_ASSERT (_feedback.size () == _bodyIdx.size ());
-    RW_ASSERT (_feedback.size () == _rwBody.size ());
-    RW_ASSERT (_feedback.size () == _bodyFixed.size ());
-    RW_ASSERT (_rwsensor);
+void ODETactileSensor::update(const rwlibs::simulation::Simulator::UpdateInfo& info,
+                              rw::kinematics::State& state) {
+    RW_ASSERT(_feedback.size() == _geoms.size());
+    RW_ASSERT(_feedback.size() == _bodyIdx.size());
+    RW_ASSERT(_feedback.size() == _rwBody.size());
+    RW_ASSERT(_feedback.size() == _bodyFixed.size());
+    RW_ASSERT(_rwsensor);
     // std::cout << "\n";
-    for (size_t midx = 0; midx < _feedback.size (); midx++) {
-        const int bodyIdx                        = _bodyIdx[midx];
-        const int fixed                          = _bodyFixed[midx];
-        std::vector< dJointFeedback* >& feedback = _feedback[midx];
-        std::vector< dContactGeom >& geoms       = _geoms[midx];
-        for (size_t i = 0; i < feedback.size (); i++) {
+    for(size_t midx = 0; midx < _feedback.size(); midx++) {
+        const int bodyIdx                      = _bodyIdx[midx];
+        const int fixed                        = _bodyFixed[midx];
+        std::vector<dJointFeedback*>& feedback = _feedback[midx];
+        std::vector<dContactGeom>& geoms       = _geoms[midx];
+        for(size_t i = 0; i < feedback.size(); i++) {
             rw::math::Vector3D<> force, snormal, posw;
             // double depth = geoms[i].depth;
-            posw = ODEUtil::toVector3D (geoms[i].pos);
-            if (bodyIdx == 0) {
-                snormal = ODEUtil::toVector3D (geoms[i].normal);
-                if (fixed == 0)
-                    force = ODEUtil::toVector3D (feedback[i]->f1);
-                else if (fixed == 2)
-                    force = -ODEUtil::toVector3D (feedback[i]->f1);
-                else if (fixed == 1)
-                    force = ODEUtil::toVector3D (feedback[i]->f1);
+            posw = ODEUtil::toVector3D(geoms[i].pos);
+            if(bodyIdx == 0) {
+                snormal = ODEUtil::toVector3D(geoms[i].normal);
+                if(fixed == 0) force = ODEUtil::toVector3D(feedback[i]->f1);
+                else if(fixed == 2) force = -ODEUtil::toVector3D(feedback[i]->f1);
+                else if(fixed == 1) force = ODEUtil::toVector3D(feedback[i]->f1);
             }
             else {
-                snormal = -ODEUtil::toVector3D (geoms[i].normal);
-                if (fixed == 0)
-                    force = ODEUtil::toVector3D (feedback[i]->f2);
-                else if (fixed == 1)
-                    force = ODEUtil::toVector3D (feedback[i]->f1);
-                else if (fixed == 2)
-                    force = -ODEUtil::toVector3D (feedback[i]->f1);
+                snormal = -ODEUtil::toVector3D(geoms[i].normal);
+                if(fixed == 0) force = ODEUtil::toVector3D(feedback[i]->f2);
+                else if(fixed == 1) force = ODEUtil::toVector3D(feedback[i]->f1);
+                else if(fixed == 2) force = -ODEUtil::toVector3D(feedback[i]->f1);
             }
             /*
             if(force.norm1()<0.0000001){
@@ -126,72 +109,72 @@ void ODETactileSensor::update (const rwlibs::simulation::Simulator::UpdateInfo& 
             }
             */
 
-            _rwsensor->addForceW (posw, force, snormal, state, _rwBody[midx]);
+            _rwsensor->addForceW(posw, force, snormal, state, _rwBody[midx]);
         }
     }
 
-    for (size_t i = 0; i < _feedbackGlobal.size (); i++) {
+    for(size_t i = 0; i < _feedbackGlobal.size(); i++) {
         Vector3D<> force, torque;
-        if (_bodyGlobalIdx[i] == 0) {
+        if(_bodyGlobalIdx[i] == 0) {
             // Object 1 is sensor body, object 2 is parent
-            if (_bodyGlobalFixed[i] == 1) {
+            if(_bodyGlobalFixed[i] == 1) {
                 // None of the two objects are static
                 // The force the constraint applies in the sensor body is added to the sensor.
                 // The SimulatedFTSensor will calculate the influence for the parent body in the
                 // parent body frame automatically.
-                force  = ODEUtil::toVector3D (_feedbackGlobal[i]->f1);
-                torque = ODEUtil::toVector3D (_feedbackGlobal[i]->t1);
+                force  = ODEUtil::toVector3D(_feedbackGlobal[i]->f1);
+                torque = ODEUtil::toVector3D(_feedbackGlobal[i]->t1);
             }
-            else if (_bodyGlobalFixed[i] == 2) {
+            else if(_bodyGlobalFixed[i] == 2) {
                 // Parent object is fixed  (no force is returned)
                 // It is however reasonable to set it to the opposite of the force applied at body 1
-                force  = -ODEUtil::toVector3D (_feedbackGlobal[i]->f1);
-                torque = -ODEUtil::toVector3D (_feedbackGlobal[i]->t1);
+                force  = -ODEUtil::toVector3D(_feedbackGlobal[i]->f1);
+                torque = -ODEUtil::toVector3D(_feedbackGlobal[i]->t1);
             }
             else {
                 // Body 1 is fixed
                 // If one body is fixed, result is always in f1 and t1 (even though they are for
                 // body 2)
-                force  = ODEUtil::toVector3D (_feedbackGlobal[i]->f1);
-                torque = ODEUtil::toVector3D (_feedbackGlobal[i]->t1);
+                force  = ODEUtil::toVector3D(_feedbackGlobal[i]->f1);
+                torque = ODEUtil::toVector3D(_feedbackGlobal[i]->t1);
             }
         }
         else {
             // Object 1 is parent, object 2 is sensor body
-            if (_bodyGlobalFixed[i] == 0) {
+            if(_bodyGlobalFixed[i] == 0) {
                 // None of the two objects are static
                 // The force the constraint applies in the sensor body is added to the sensor.
                 // The SimulatedFTSensor will calculate the influence for the parent body in the
                 // parent body frame automatically.
-                force  = ODEUtil::toVector3D (_feedbackGlobal[i]->f2);
-                torque = ODEUtil::toVector3D (_feedbackGlobal[i]->t2);
+                force  = ODEUtil::toVector3D(_feedbackGlobal[i]->f2);
+                torque = ODEUtil::toVector3D(_feedbackGlobal[i]->t2);
             }
-            else if (_bodyGlobalFixed[i] == 1) {
+            else if(_bodyGlobalFixed[i] == 1) {
                 // Parent object is fixed.
                 // If one body is fixed, result is always in f1 and t1 (even though they are for
                 // body 2)
-                force  = ODEUtil::toVector3D (_feedbackGlobal[i]->f1);
-                torque = ODEUtil::toVector3D (_feedbackGlobal[i]->t1);
+                force  = ODEUtil::toVector3D(_feedbackGlobal[i]->f1);
+                torque = ODEUtil::toVector3D(_feedbackGlobal[i]->t1);
             }
-            else if (_bodyGlobalFixed[i] == 2) {
+            else if(_bodyGlobalFixed[i] == 2) {
                 // Body 2 is fixed (no force is returned)
                 // It is however reasonable to set it to the opposite of the force applied at body 1
-                force  = -ODEUtil::toVector3D (_feedbackGlobal[i]->f1);
-                torque = -ODEUtil::toVector3D (_feedbackGlobal[i]->t1);
+                force  = -ODEUtil::toVector3D(_feedbackGlobal[i]->f1);
+                torque = -ODEUtil::toVector3D(_feedbackGlobal[i]->t1);
             }
         }
         // std::cout << force << torque << std::endl;
-        _rwsensor->addWrenchWToCOM (force, torque, state, _bodyGlobal[i]);
+        _rwsensor->addWrenchWToCOM(force, torque, state, _bodyGlobal[i]);
     }
 
     // add all direct contacts
-    for (DirectContact& dc : _directContacts) {
-        _rwsensor->addForceW (dc.p, dc.f, dc.n, state, dc.b);
+    for(DirectContact& dc : _directContacts) {
+        _rwsensor->addForceW(dc.p, dc.f, dc.n, state, dc.b);
     }
 
-    clear ();
+    clear();
 
-    _rwsensor->update (info, state);
+    _rwsensor->update(info, state);
 
     /*
         for(size_t midx=0;midx<_feedback.size();midx++){

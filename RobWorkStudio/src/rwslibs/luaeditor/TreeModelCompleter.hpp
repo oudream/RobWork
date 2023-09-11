@@ -23,19 +23,19 @@
 class TreeModelCompleter : public QCompleter
 {
     Q_OBJECT
-    Q_PROPERTY (QString separator READ separator WRITE setSeparator)
+    Q_PROPERTY(QString separator READ separator WRITE setSeparator)
 
   public:
-    TreeModelCompleter (QObject* parent = 0);
-    TreeModelCompleter (QAbstractItemModel* model, QObject* parent = 0);
+    TreeModelCompleter(QObject* parent = 0);
+    TreeModelCompleter(QAbstractItemModel* model, QObject* parent = 0);
 
-    QString separator () const;
+    QString separator() const;
   public Q_SLOTS:
-    void setSeparator (const QString& separator);
+    void setSeparator(const QString& separator);
 
   protected:
-    QStringList splitPath (const QString& path) const;
-    QString pathFromIndex (const QModelIndex& index) const;
+    QStringList splitPath(const QString& path) const;
+    QString pathFromIndex(const QModelIndex& index) const;
 
   private:
     QString sep;

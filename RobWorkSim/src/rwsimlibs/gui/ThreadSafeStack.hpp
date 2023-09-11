@@ -24,34 +24,30 @@
  * @brief Concurrent queue of WorkPiles
  *
  */
-template< class T > class ThreadSafeStack
+template<class T> class ThreadSafeStack
 {
   public:
-    ThreadSafeStack () : _size (0){};
+    ThreadSafeStack() : _size(0){};
 
-    inline bool empty ()
-    {
+    inline bool empty() {
         // boost::mutex::scoped_lock lock(_mutex);
-        return _stack.empty ();
+        return _stack.empty();
     };
 
-    inline void push (T wp)
-    {
-        boost::mutex::scoped_lock lock (_mutex);
-        _stack.push (wp);
+    inline void push(T wp) {
+        boost::mutex::scoped_lock lock(_mutex);
+        _stack.push(wp);
         _size++;
         // lock.unlock();
-        _cond.notify_one ();
+        _cond.notify_one();
     };
 
-    inline bool try_pop (T* wp)
-    {
-        boost::mutex::scoped_lock lock (_mutex);
-        if (_stack.empty ())
-            return false;
+    inline bool try_pop(T* wp) {
+        boost::mutex::scoped_lock lock(_mutex);
+        if(_stack.empty()) return false;
 
-        *wp = _stack.top ();
-        _stack.pop ();
+        *wp = _stack.top();
+        _stack.pop();
         _size--;
         /*
                         std::stack<T> tmpQ = _stack;
@@ -64,14 +60,11 @@ template< class T > class ThreadSafeStack
         return true;
     }
 
-    inline bool pop (T* wp)
-    {
-        boost::mutex::scoped_lock lock (_mutex);
-        while (_stack.empty ()) {
-            _cond.wait (lock);
-        }
-        *wp = _stack.top ();
-        _stack.pop ();
+    inline bool pop(T* wp) {
+        boost::mutex::scoped_lock lock(_mutex);
+        while(_stack.empty()) { _cond.wait(lock); }
+        *wp = _stack.top();
+        _stack.pop();
         _size--;
         /*
                         std::stack<T> tmpQ = _stack;
@@ -84,23 +77,21 @@ template< class T > class ThreadSafeStack
         return true;
     };
 
-    bool has (T value)
-    {
-        boost::mutex::scoped_lock lock (_mutex);
-        std::stack< T > tmpQ = _stack;
-        while (!tmpQ.empty ()) {
-            T val = tmpQ.top ();
-            tmpQ.pop ();
-            if (value == val)
-                return true;
+    bool has(T value) {
+        boost::mutex::scoped_lock lock(_mutex);
+        std::stack<T> tmpQ = _stack;
+        while(!tmpQ.empty()) {
+            T val = tmpQ.top();
+            tmpQ.pop();
+            if(value == val) return true;
         }
         return false;
     }
 
-    inline size_t size () { return _size; };
+    inline size_t size() { return _size; };
 
   private:
-    std::stack< T > _stack;
+    std::stack<T> _stack;
 
     mutable boost::mutex _mutex;
     boost::condition _cond;

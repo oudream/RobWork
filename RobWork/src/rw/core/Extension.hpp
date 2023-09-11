@@ -39,7 +39,7 @@ namespace rw { namespace core {
     {
       public:
         //! @brief Smart pointer type for Extension.
-        typedef rw::core::Ptr< Extension > Ptr;
+        typedef rw::core::Ptr<Extension> Ptr;
 
         /**
          * @brief An extension descriptor.
@@ -50,16 +50,15 @@ namespace rw { namespace core {
         struct Descriptor
         {
             //! @brief Construct empty descriptor.
-            Descriptor () {}
+            Descriptor() {}
 
             /**
              * @brief Construct new descriptor.
              * @param id_ [in] a unique id of the extension.
              * @param point_ [in] the extension point.
              */
-            Descriptor (const std::string& id_, const std::string& point_) :
-                id (id_), point (point_)
-            {}
+            Descriptor(const std::string& id_, const std::string& point_) :
+                id(id_), point(point_) {}
 
             //! @brief A unique id of an extension.
             std::string id;
@@ -78,10 +77,12 @@ namespace rw { namespace core {
              *
              * @return a reference to the properties.
              */
-            rw::core::PropertyMap& getProperties () { return props; }
+            rw::core::PropertyMap& getProperties() { return props; }
 #if !defined(SWIG)
             //! @copydoc getProperties
-            const rw::core::PropertyMap& getProperties () const { return props; }
+            const rw::core::PropertyMap& getProperties() const {
+                return props;
+            }
 #endif
         };
 
@@ -91,7 +92,7 @@ namespace rw { namespace core {
          * @param desc [in] Description and configuration of extension.
          * @param owner [in] the plugin that owns this extension or NULL.
          */
-        Extension (Descriptor desc, Plugin* owner);
+        Extension(Descriptor desc, Plugin* owner);
 
         /**
          * @brief Constructor.
@@ -99,50 +100,66 @@ namespace rw { namespace core {
          * @param point [in] the extension point.
          * @param owner [in] the plugin that owns this extension or NULL.
          */
-        Extension (const std::string& id, const std::string& point, Plugin* owner);
+        Extension(const std::string& id, const std::string& point, Plugin* owner);
 
         /**
          * @copydoc Extension(const std::string&,const std::string&,Plugin*)
          * @param obj [in] a pointer to the object.
          */
-        Extension (const std::string& id, const std::string& point, Plugin* owner,
-                   rw::core::AnyPtr obj);
+        Extension(const std::string& id, const std::string& point, Plugin* owner,
+                  rw::core::AnyPtr obj);
 
         //! @brief Destructor
-        virtual ~Extension () {}
+        virtual ~Extension() {}
 
         //! @brief a unique id that uniquely identifies this extension in its owner Plugin
-        const std::string& getId () { return _desc.id; }
+        const std::string& getId() {
+            return _desc.id;
+        }
 
         //! @brief a human readable name of this plugin (may contain spaces)
-        const std::string& getName () { return _desc.name; }
+        const std::string& getName() {
+            return _desc.name;
+        }
 
         //! @brief a unique global identifier of the extension point that this extension is attached
         //! to
-        const std::string& getPoint () const { return _desc.point; }
+        const std::string& getPoint() const {
+            return _desc.point;
+        }
 
         //! @copydoc getProperties() const
-        rw::core::PropertyMap& getProperties () { return _desc.props; }
+        rw::core::PropertyMap& getProperties() {
+            return _desc.props;
+        }
 
 #if !defined(SWIG)
         //! @brief the properties/configuration of this extension
-        const rw::core::PropertyMap& getProperties () const { return _desc.props; }
+        const rw::core::PropertyMap& getProperties() const {
+            return _desc.props;
+        }
 #endif
 
         /**
          * @brief Get the object.
          * @return the object.
          */
-        virtual rw::core::AnyPtr getObject () { return _obj; }
+        virtual rw::core::AnyPtr getObject() {
+            return _obj;
+        }
 
         //! @brief get the owner plugin
-        Plugin* getOwner () { return _owner; }
+        Plugin* getOwner() {
+            return _owner;
+        }
 
       private:
         friend class Plugin;
 
         //! @brief set owner plugin, NOTE use with care
-        void setOwner (Plugin* owner) { _owner = owner; }
+        void setOwner(Plugin* owner) {
+            _owner = owner;
+        }
 
       private:
         Descriptor _desc;

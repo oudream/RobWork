@@ -20,7 +20,7 @@
 
 #if !defined(SWIG)
 #include <rw/models/Joint.hpp>
-#endif 
+#endif
 
 namespace rw { namespace models {
 
@@ -36,7 +36,7 @@ namespace rw { namespace models {
         /**
          * @brief Destructor
          */
-        virtual ~DependentJoint ();
+        virtual ~DependentJoint();
 
         /**
          * @brief Returns true if the DependentJoint is controlled by \b joint.
@@ -47,14 +47,14 @@ namespace rw { namespace models {
          * @return True if this is controlled by \b joint
          *
          */
-        virtual bool isControlledBy (const rw::models::Joint* joint) const = 0;
+        virtual bool isControlledBy(const rw::models::Joint* joint) const = 0;
 
       protected:
         /**
          * @brief Constructs DependentJoint
          * @param name [in] Name of the joints
          */
-        DependentJoint (const std::string& name);
+        DependentJoint(const std::string& name);
     };
 
 }}    // namespace rw::models

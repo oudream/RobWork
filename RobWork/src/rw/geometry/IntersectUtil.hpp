@@ -25,9 +25,8 @@
 
 #if !defined(SWIG)
 #include <rw/geometry/Triangle.hpp>
-
 #include <rw/math/Vector3D.hpp>
-#endif 
+#endif
 
 namespace rw { namespace geometry {
     class Plane;
@@ -47,29 +46,30 @@ namespace rw { namespace geometry {
         /**
          * @brief finds the point on a line which is closest to the point \b point
          */
-        static rw::math::Vector3D<double> closestPt (const rw::math::Vector3D<double>& point, const Line& line);
+        static rw::math::Vector3D<double> closestPt(const rw::math::Vector3D<double>& point,
+                                                    const Line& line);
 
         /**
          * @brief finds the point on a ray (infinite in all directions) which is
          * closest to the point \b point
          */
-        static rw::math::Vector3D<double> closestPtPointRay (const rw::math::Vector3D<double>& point,
-                                                       const rw::math::Vector3D<double>& p1,
-                                                       const rw::math::Vector3D<double>& p2);
+        static rw::math::Vector3D<double> closestPtPointRay(const rw::math::Vector3D<double>& point,
+                                                            const rw::math::Vector3D<double>& p1,
+                                                            const rw::math::Vector3D<double>& p2);
 
         /**
          * @brief finds the point on a line which is closest to the point \b point
          */
-        static rw::math::Vector3D<double> closestPtPointLine (const rw::math::Vector3D<double>& point,
-                                                        const rw::math::Vector3D<double>& p1,
-                                                        const rw::math::Vector3D<double>& p2);
+        static rw::math::Vector3D<double>
+        closestPtPointLine(const rw::math::Vector3D<double>& point,
+                           const rw::math::Vector3D<double>& p1,
+                           const rw::math::Vector3D<double>& p2);
 
         /**
          * @brief finds the point on a line which is closest to the point \b point
          */
-        /*static rw::math::Vector3D<double> closestPtPointRay(const rw::math::Vector3D<double>& point,
-                                                                                  const
-           rw::math::Vector3D<double>& ray);
+        /*static rw::math::Vector3D<double> closestPtPointRay(const rw::math::Vector3D<double>&
+           point, const rw::math::Vector3D<double>& ray);
 */
         /// closest point pair tests
 
@@ -81,13 +81,14 @@ namespace rw { namespace geometry {
         /**
          * @brief finds the closest points between a line segment and a triangle
          */
-        // static PointPair closestPts(const Line& line, const rw::geometry::Triangle < double >& tri);
+        // static PointPair closestPts(const Line& line, const rw::geometry::Triangle < double >&
+        // tri);
 
         /**
          * @brief finds the closest points between a ray and a triangle
          */
-        // static PointPair closestPtsRayTraingle(const rw::math::Vector3D<double>& ray, const rw::geometry::Triangle < double >&
-        // tri);
+        // static PointPair closestPtsRayTraingle(const rw::math::Vector3D<double>& ray, const
+        // rw::geometry::Triangle < double >& tri);
 
         /// intersection tests
 
@@ -95,7 +96,48 @@ namespace rw { namespace geometry {
          * @brief calculates the intersection point between the ray and the plane.
          * If they intersect true is returned and intersection point is set in \b dst
          */
-        static bool intersetPtRayPlane (const rw::math::Vector3D<double>& p1,
+        static bool intersetPtRayPlane(const rw::math::Vector3D<double>& p1,
+                                       const rw::math::Vector3D<double>& p2, const Plane& p,
+                                       rw::math::Vector3D<double>& dst);
+
+        /**
+         * @brief calculates the intersection point between the ray and the implicit
+         * plane defined by the three points \b p1 \b p2 \b p3.
+         * If they intersect, true is returned and intersection point is set in \b dst
+         */
+        static bool intersetPtRayPlane(const rw::math::Vector3D<double>& ray1,
+                                       const rw::math::Vector3D<double>& ray2,
+                                       const rw::math::Vector3D<double>& p1,
+                                       const rw::math::Vector3D<double>& p2,
+                                       const rw::math::Vector3D<double>& p3,
+                                       rw::math::Vector3D<double>& dst);
+
+        /**
+         * @brief calculates the intersection point between the ray and the triangle.
+         * If they intersect true is returned and intersection point is set in \b dst
+         */
+        static bool intersetPtRayTri(const rw::math::Vector3D<double>& p1,
+                                     const rw::math::Vector3D<double>& p2,
+                                     const rw::geometry::Triangle<double>& tri,
+                                     rw::math::Vector3D<double>& dst);
+
+        /**
+         * @brief calculates the intersection point between the ray and the
+         * triangle defined by the three points \b p1 \b p2 \b p3.
+         * If they intersect, true is returned and intersection point is set in \b dst
+         */
+        static bool intersetPtRayTri(const rw::math::Vector3D<double>& ray1,
+                                     const rw::math::Vector3D<double>& ray2,
+                                     const rw::math::Vector3D<double>& p1,
+                                     const rw::math::Vector3D<double>& p2,
+                                     const rw::math::Vector3D<double>& p3,
+                                     rw::math::Vector3D<double>& dst);
+
+        /**
+         * @brief calculates the intersection point between the ray and the plane.
+         * If they intersect true is returned and intersection point is set in \b dst
+         */
+        static bool intersetPtLinePlane(const rw::math::Vector3D<double>& p1,
                                         const rw::math::Vector3D<double>& p2, const Plane& p,
                                         rw::math::Vector3D<double>& dst);
 
@@ -104,68 +146,33 @@ namespace rw { namespace geometry {
          * plane defined by the three points \b p1 \b p2 \b p3.
          * If they intersect, true is returned and intersection point is set in \b dst
          */
-        static bool intersetPtRayPlane (const rw::math::Vector3D<double>& ray1,
+        static bool intersetPtLinePlane(const rw::math::Vector3D<double>& ray1,
                                         const rw::math::Vector3D<double>& ray2,
                                         const rw::math::Vector3D<double>& p1,
                                         const rw::math::Vector3D<double>& p2,
-                                        const rw::math::Vector3D<double>& p3, rw::math::Vector3D<double>& dst);
+                                        const rw::math::Vector3D<double>& p3,
+                                        rw::math::Vector3D<double>& dst);
 
         /**
          * @brief calculates the intersection point between the ray and the triangle.
          * If they intersect true is returned and intersection point is set in \b dst
          */
-        static bool intersetPtRayTri (const rw::math::Vector3D<double>& p1,
-                                      const rw::math::Vector3D<double>& p2, const rw::geometry::Triangle < double >& tri,
-                                      rw::math::Vector3D<double>& dst);
-
-        /**
-         * @brief calculates the intersection point between the ray and the
-         * triangle defined by the three points \b p1 \b p2 \b p3.
-         * If they intersect, true is returned and intersection point is set in \b dst
-         */
-        static bool intersetPtRayTri (const rw::math::Vector3D<double>& ray1,
-                                      const rw::math::Vector3D<double>& ray2,
-                                      const rw::math::Vector3D<double>& p1,
+        static bool intersetPtLineTri(const rw::math::Vector3D<double>& p1,
                                       const rw::math::Vector3D<double>& p2,
-                                      const rw::math::Vector3D<double>& p3, rw::math::Vector3D<double>& dst);
-
-        /**
-         * @brief calculates the intersection point between the ray and the plane.
-         * If they intersect true is returned and intersection point is set in \b dst
-         */
-        static bool intersetPtLinePlane (const rw::math::Vector3D<double>& p1,
-                                         const rw::math::Vector3D<double>& p2, const Plane& p,
-                                         rw::math::Vector3D<double>& dst);
-
-        /**
-         * @brief calculates the intersection point between the ray and the implicit
-         * plane defined by the three points \b p1 \b p2 \b p3.
-         * If they intersect, true is returned and intersection point is set in \b dst
-         */
-        static bool intersetPtLinePlane (const rw::math::Vector3D<double>& ray1,
-                                         const rw::math::Vector3D<double>& ray2,
-                                         const rw::math::Vector3D<double>& p1,
-                                         const rw::math::Vector3D<double>& p2,
-                                         const rw::math::Vector3D<double>& p3, rw::math::Vector3D<double>& dst);
-
-        /**
-         * @brief calculates the intersection point between the ray and the triangle.
-         * If they intersect true is returned and intersection point is set in \b dst
-         */
-        static bool intersetPtLineTri (const rw::math::Vector3D<double>& p1,
-                                       const rw::math::Vector3D<double>& p2, const rw::geometry::Triangle < double >& tri,
-                                       rw::math::Vector3D<double>& dst);
+                                      const rw::geometry::Triangle<double>& tri,
+                                      rw::math::Vector3D<double>& dst);
 
         /**
          * @brief calculates the intersection point between the line segment and the
          * triangle defined by the three points \b p1 \b p2 \b p3.
          * If they intersect, true is returned and intersection point is set in \b dst
          */
-        static bool intersetPtLineTri (const rw::math::Vector3D<double>& ray1,
-                                       const rw::math::Vector3D<double>& ray2,
-                                       const rw::math::Vector3D<double>& p1,
-                                       const rw::math::Vector3D<double>& p2,
-                                       const rw::math::Vector3D<double>& p3, rw::math::Vector3D<double>& dst);
+        static bool intersetPtLineTri(const rw::math::Vector3D<double>& ray1,
+                                      const rw::math::Vector3D<double>& ray2,
+                                      const rw::math::Vector3D<double>& p1,
+                                      const rw::math::Vector3D<double>& p2,
+                                      const rw::math::Vector3D<double>& p3,
+                                      rw::math::Vector3D<double>& dst);
 
         /**
          * @brief calculates the intersection point between the triangle \b triA and the triangle \b
@@ -174,8 +181,10 @@ namespace rw { namespace geometry {
          *
          * @note this is not an optimized method
          */
-        static bool intersetPtTriTri (const rw::geometry::Triangle < double >& triA, const rw::geometry::Triangle < double >& triB,
-                                      rw::math::Vector3D<double>& dst1, rw::math::Vector3D<double>& dst2);
+        static bool intersetPtTriTri(const rw::geometry::Triangle<double>& triA,
+                                     const rw::geometry::Triangle<double>& triB,
+                                     rw::math::Vector3D<double>& dst1,
+                                     rw::math::Vector3D<double>& dst2);
     };
 
     // @}

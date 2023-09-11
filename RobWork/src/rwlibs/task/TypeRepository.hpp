@@ -42,7 +42,7 @@ namespace rwlibs { namespace task {
          *
          * @param id [in] int identifier of the type
          */
-        Type (int id = -1) : _id (id) {}
+        Type(int id = -1) : _id(id) {}
 
         /**
          * Predefined ids
@@ -62,7 +62,7 @@ namespace rwlibs { namespace task {
          *
          * This operator enables using Type in switch statements
          */
-        operator int () { return _id; }
+        operator int() { return _id; }
 
       private:
         int _id;
@@ -79,7 +79,7 @@ namespace rwlibs { namespace task {
     class TypeRepository
     {
       public:
-        virtual ~TypeRepository (){}
+        virtual ~TypeRepository() {}
 
         /**
          * @brief Adds a new Type to the repository for the template type T
@@ -88,13 +88,12 @@ namespace rwlibs { namespace task {
          *
          * @return Type object associated to the type T
          */
-        template< class T > Type add ()
-        {
-            std::string name     = typeid (T).name ();
-            TypeMap::iterator it = _typeMap.find (name);
+        template<class T> Type add() {
+            std::string name     = typeid(T).name();
+            TypeMap::iterator it = _typeMap.find(name);
 
-            if (it == _typeMap.end ()) {
-                it = _typeMap.insert (TypeMap::value_type (name, _next++)).first;
+            if(it == _typeMap.end()) {
+                it = _typeMap.insert(TypeMap::value_type(name, _next++)).first;
             }
 
             return (*it).second;
@@ -103,10 +102,7 @@ namespace rwlibs { namespace task {
         /**
          * @brief Tests whether the template type T exists in the repository
          */
-        template< class T > bool has ()
-        {
-            return _typeMap.find (typeid (T).name ()) != _typeMap.end ();
-        }
+        template<class T> bool has() { return _typeMap.find(typeid(T).name()) != _typeMap.end(); }
 
         /**
          * @brief Returns the Type associated to the template type T
@@ -115,15 +111,11 @@ namespace rwlibs { namespace task {
          * if it does not exists or whether to throw a rw::core::Exception. If the
          * type if not defined and no exception is throw it returns Undefined.
          */
-        template< class T > Type get (bool addIfNotExisting = false, bool throwException = true)
-        {
-            TypeMap::const_iterator it = _typeMap.find (typeid (T).name ());
-            if (it != _typeMap.end ())
-                return (*it).second;
-            if (addIfNotExisting)
-                return add< T > ();
-            if (throwException)
-                RW_THROW ("Type does not exists in TypeRepository");
+        template<class T> Type get(bool addIfNotExisting = false, bool throwException = true) {
+            TypeMap::const_iterator it = _typeMap.find(typeid(T).name());
+            if(it != _typeMap.end()) return (*it).second;
+            if(addIfNotExisting) return add<T>();
+            if(throwException) RW_THROW("Type does not exists in TypeRepository");
             return Type::Undefined;
         }
 
@@ -131,15 +123,15 @@ namespace rwlibs { namespace task {
          * @brief Returns the global instance of the TypeRepository
          * @return Reference to the global TypeRepository
          */
-        static TypeRepository& instance ();
+        static TypeRepository& instance();
 
       private:
         // typedef std::tr1::unordered_map<std::string, Type> TypeMap;
-        typedef std::map< std::string, Type > TypeMap;
+        typedef std::map<std::string, Type> TypeMap;
 
         TypeMap _typeMap;
         int _next;
-        TypeRepository ();
+        TypeRepository();
     };
 
     /* @} */

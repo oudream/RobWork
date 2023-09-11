@@ -59,14 +59,14 @@ namespace rw { namespace pathplanning {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< QEdgeConstraint > Ptr;
+        typedef rw::core::Ptr<QEdgeConstraint> Ptr;
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< const QEdgeConstraint > CPtr;
+        typedef rw::core::Ptr<const QEdgeConstraint> CPtr;
 
         /**
            @brief Destructor
         */
-        virtual ~QEdgeConstraint ();
+        virtual ~QEdgeConstraint();
 
         /**
            @brief True if the path from \b start to \b end can't be traversed.
@@ -74,9 +74,8 @@ namespace rw { namespace pathplanning {
            @param start [in] Start configuration.
            @param end [in] End configuration.
         */
-        bool inCollision (const rw::math::Q& start, const rw::math::Q& end) const
-        {
-            return doInCollision (start, end);
+        bool inCollision(const rw::math::Q& start, const rw::math::Q& end) const {
+            return doInCollision(start, end);
         }
 
         /**
@@ -96,8 +95,8 @@ namespace rw { namespace pathplanning {
                    \param metric [in] Metric with which the resolution it to be measured
                    \param resolution [in] The test resolution
         */
-        static QEdgeConstraint::Ptr make (rw::core::Ptr< QConstraint > constraint,
-                                          rw::math::QMetric::CPtr metric, double resolution);
+        static QEdgeConstraint::Ptr make(rw::core::Ptr<QConstraint> constraint,
+                                         rw::math::QMetric::CPtr metric, double resolution);
 
         /**
            @brief Default edge constraint for a configuration constraint and a
@@ -107,8 +106,8 @@ namespace rw { namespace pathplanning {
            configuration space and are checked by a default collision checking
            resolution.
         */
-        static QEdgeConstraint::Ptr makeDefault (rw::core::Ptr< QConstraint > constraint,
-                                                 rw::core::Ptr< const rw::models::Device > device);
+        static QEdgeConstraint::Ptr makeDefault(rw::core::Ptr<QConstraint> constraint,
+                                                rw::core::Ptr<const rw::models::Device> device);
 
         /**
          * @brief Makes an edge constraint by combining multiple edge constraints
@@ -120,7 +119,7 @@ namespace rw { namespace pathplanning {
          * @return Pointer to the resulting QEdgeConstraint. Pointer has ownership.
          **/
         static QEdgeConstraint::Ptr
-        makeMerged (const std::vector< QEdgeConstraint::Ptr >& constraints);
+        makeMerged(const std::vector<QEdgeConstraint::Ptr>& constraints);
 
         /**
          * @brief Makes an edge constraint by combining two edge constraints
@@ -132,8 +131,8 @@ namespace rw { namespace pathplanning {
          * @param constraint2 [in] Second constraint to check
          * @return Pointer to the resulting QEdgeConstraint. Pointer has ownership.
          **/
-        static QEdgeConstraint::Ptr makeMerged (QEdgeConstraint::Ptr constraint1,
-                                                QEdgeConstraint::Ptr constraint2);
+        static QEdgeConstraint::Ptr makeMerged(QEdgeConstraint::Ptr constraint1,
+                                               QEdgeConstraint::Ptr constraint2);
 
       protected:
         /**
@@ -142,7 +141,7 @@ namespace rw { namespace pathplanning {
            By default the method is implemented in terms of instance() and
            inCollision().
         */
-        virtual bool doInCollision (const rw::math::Q& start, const rw::math::Q& end) const = 0;
+        virtual bool doInCollision(const rw::math::Q& start, const rw::math::Q& end) const = 0;
     };
 
     /*@}*/

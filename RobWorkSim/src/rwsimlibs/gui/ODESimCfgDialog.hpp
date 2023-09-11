@@ -26,26 +26,26 @@ class ODESimCfgDialog : public QDialog
     Q_OBJECT
 
   public:
-    ODESimCfgDialog (rw::core::Ptr< rwsim::simulator::DynamicSimulator > sim, QWidget* parent = 0);
+    ODESimCfgDialog(rw::core::Ptr<rwsim::simulator::DynamicSimulator> sim, QWidget* parent = 0);
 
-    void initializeStart ();
+    void initializeStart();
 
   signals:
-    void updateView ();
+    void updateView();
 
   private slots:
-    void btnPressed ();
-    void changedEvent ();
+    void btnPressed();
+    void changedEvent();
 
   private:
-    void updateStatus ();
-    void applyChanges ();
-    void updateValues ();
+    void updateStatus();
+    void applyChanges();
+    void updateValues();
 
   private:
     Ui::ODESimCfgForm* _ui;
 
-    rw::core::Ptr< rwsim::simulator::DynamicSimulator > _sim;
+    rw::core::Ptr<rwsim::simulator::DynamicSimulator> _sim;
 };
 
 #endif /* ODESimCfgDialog_HPP_ */

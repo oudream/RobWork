@@ -26,76 +26,66 @@ using namespace rw::proximity;
 using namespace rw::kinematics;
 using namespace rw::math;
 
-CollisionToleranceStrategy::CollisionToleranceStrategy ()
-{}
-CollisionToleranceStrategy::~CollisionToleranceStrategy ()
-{}
+CollisionToleranceStrategy::CollisionToleranceStrategy() {}
+CollisionToleranceStrategy::~CollisionToleranceStrategy() {}
 
-bool CollisionToleranceStrategy::isWithinDistance (const rw::core::Ptr<Frame> a, const Transform3D<>& wTa,
-                                                   const rw::core::Ptr<Frame> b, const Transform3D<>& wTb,
-                                                   double tolerance)
-{
-    if (getModel (a) == NULL || getModel (b) == NULL)
-        return false;
+bool CollisionToleranceStrategy::isWithinDistance(const rw::core::Ptr<Frame> a,
+                                                  const Transform3D<>& wTa,
+                                                  const rw::core::Ptr<Frame> b,
+                                                  const Transform3D<>& wTb, double tolerance) {
+    if(getModel(a) == NULL || getModel(b) == NULL) return false;
     ProximityStrategyData data;
-    return isWithinDistance (getModel (a), wTa, getModel (b), wTb, tolerance, data);
+    return isWithinDistance(getModel(a), wTa, getModel(b), wTb, tolerance, data);
 }
 
-bool CollisionToleranceStrategy::isWithinDistance (const rw::core::Ptr<Frame> a, const Transform3D<>& wTa,
-                                                   const rw::core::Ptr<Frame> b, const Transform3D<>& wTb,
-                                                   double tolerance, ProximityStrategyData& data)
-{
-    if (getModel (a) == NULL || getModel (b) == NULL)
-        return false;
+bool CollisionToleranceStrategy::isWithinDistance(const rw::core::Ptr<Frame> a,
+                                                  const Transform3D<>& wTa,
+                                                  const rw::core::Ptr<Frame> b,
+                                                  const Transform3D<>& wTb, double tolerance,
+                                                  ProximityStrategyData& data) {
+    if(getModel(a) == NULL || getModel(b) == NULL) return false;
 
-    return isWithinDistance (getModel (a), wTa, getModel (b), wTb, tolerance, data);
+    return isWithinDistance(getModel(a), wTa, getModel(b), wTb, tolerance, data);
 }
 
-CollisionToleranceStrategy::Factory::Factory () :
-    ExtensionPoint< CollisionToleranceStrategy > (
+CollisionToleranceStrategy::Factory::Factory() :
+    ExtensionPoint<CollisionToleranceStrategy>(
         "rw.proximity.CollisionToleranceStrategy",
-        "Extensions to create collision tolerance strategies")
-{}
+        "Extensions to create collision tolerance strategies") {}
 
-std::vector< std::string > CollisionToleranceStrategy::Factory::getStrategies ()
-{
-    std::vector< std::string > ids;
+std::vector<std::string> CollisionToleranceStrategy::Factory::getStrategies() {
+    std::vector<std::string> ids;
     CollisionToleranceStrategy::Factory ep;
-    std::vector< Extension::Descriptor > exts = ep.getExtensionDescriptors ();
-    for (Extension::Descriptor& ext : exts) {
-        ids.push_back (ext.getProperties ().get ("strategyID", ext.name));
+    std::vector<Extension::Descriptor> exts = ep.getExtensionDescriptors();
+    for(Extension::Descriptor& ext : exts) {
+        ids.push_back(ext.getProperties().get("strategyID", ext.name));
     }
     return ids;
 }
 
-bool CollisionToleranceStrategy::Factory::hasStrategy (const std::string& strategy)
-{
+bool CollisionToleranceStrategy::Factory::hasStrategy(const std::string& strategy) {
     std::string upper = strategy;
-    std::transform (upper.begin (), upper.end (), upper.begin (), ::toupper);
+    std::transform(upper.begin(), upper.end(), upper.begin(), ::toupper);
     CollisionToleranceStrategy::Factory ep;
-    std::vector< Extension::Descriptor > exts = ep.getExtensionDescriptors ();
-    for (Extension::Descriptor& ext : exts) {
-        std::string id = ext.getProperties ().get ("strategyID", ext.name);
-        std::transform (id.begin (), id.end (), id.begin (), ::toupper);
-        if (id == upper)
-            return true;
+    std::vector<Extension::Descriptor> exts = ep.getExtensionDescriptors();
+    for(Extension::Descriptor& ext : exts) {
+        std::string id = ext.getProperties().get("strategyID", ext.name);
+        std::transform(id.begin(), id.end(), id.begin(), ::toupper);
+        if(id == upper) return true;
     }
     return false;
 }
 
 CollisionToleranceStrategy::Ptr
-CollisionToleranceStrategy::Factory::makeStrategy (const std::string& strategy)
-{
+CollisionToleranceStrategy::Factory::makeStrategy(const std::string& strategy) {
     std::string upper = strategy;
-    std::transform (upper.begin (), upper.end (), upper.begin (), ::toupper);
+    std::transform(upper.begin(), upper.end(), upper.begin(), ::toupper);
     CollisionToleranceStrategy::Factory ep;
-    std::vector< Extension::Ptr > exts = ep.getExtensions ();
-    for (Extension::Ptr& ext : exts) {
-        std::string id = ext->getProperties ().get ("strategyID", ext->getName ());
-        std::transform (id.begin (), id.end (), id.begin (), ::toupper);
-        if (id == upper) {
-            return ext->getObject ().cast< CollisionToleranceStrategy > ();
-        }
+    std::vector<Extension::Ptr> exts = ep.getExtensions();
+    for(Extension::Ptr& ext : exts) {
+        std::string id = ext->getProperties().get("strategyID", ext->getName());
+        std::transform(id.begin(), id.end(), id.begin(), ::toupper);
+        if(id == upper) { return ext->getObject().cast<CollisionToleranceStrategy>(); }
     }
     return NULL;
 }

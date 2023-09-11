@@ -20,5 +20,5 @@
 using namespace rw::trajectory;
 
 namespace {
-Timed< int > x (0, 0);
+Timed<int> x(0, 0);
 }

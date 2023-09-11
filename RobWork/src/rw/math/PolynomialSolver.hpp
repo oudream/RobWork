@@ -89,24 +89,24 @@ namespace rw { namespace math {
          * @brief Create a solver for a polynomial with real coefficients.
          * @param polynomial [in] the polynomial to find roots for.
          */
-        PolynomialSolver (const Polynomial< double >& polynomial);
+        PolynomialSolver(const Polynomial<double>& polynomial);
 
         /**
          * @brief Create a solver for a polynomial with complex coefficients.
          * @param polynomial [in] the polynomial to find roots for.
          */
-        PolynomialSolver (const Polynomial< std::complex< double > >& polynomial);
+        PolynomialSolver(const Polynomial<std::complex<double>>& polynomial);
 
         /**
          * @brief Destructor
          */
-        virtual ~PolynomialSolver ();
+        virtual ~PolynomialSolver();
 
         /**
          * @brief Use a specific initial guess for a root.
          * @param guess [in] a complex initial guess for the algorithm.
          */
-        void setInitialGuess (std::complex< double > guess = 0);
+        void setInitialGuess(std::complex<double> guess = 0);
 #if !defined(SWIGJAVA)
 
         /**
@@ -119,7 +119,7 @@ namespace rw { namespace math {
          * @see PolynomialSolver for more details about the method used.
          */
 #endif
-        std::vector< double > getRealSolutions (double epsilon = 1.0e-14);
+        std::vector<double> getRealSolutions(double epsilon = 1.0e-14);
 
 #if !defined(SWIGJAVA)
 
@@ -133,21 +133,21 @@ namespace rw { namespace math {
          * @see PolynomialSolver for more details about the method used.
          */
 #endif
-        virtual std::vector< std::complex< double > > getSolutions (double epsilon = 1.0e-14);
+        virtual std::vector<std::complex<double>> getSolutions(double epsilon = 1.0e-14);
 
         /**
          * @brief Set the number of iterations to take in the Laguerre method.
          * @param iterations [in] the maximum number of iterations (default is 10).
          */
-        void setLaguerreIterations (unsigned int iterations = 10);
+        void setLaguerreIterations(unsigned int iterations = 10);
 
       private:
-        bool analyticalSolutions (std::vector< std::complex< double > >& res, double EPS) const;
-        std::complex< double > laguerre (std::complex< double > x) const;
+        bool analyticalSolutions(std::vector<std::complex<double>>& res, double EPS) const;
+        std::complex<double> laguerre(std::complex<double> x) const;
 
-        Polynomial< std::complex< double > > _polynomial;
+        Polynomial<std::complex<double>> _polynomial;
         PolynomialSolver* _derivative;
-        std::complex< double > _guess;
+        std::complex<double> _guess;
         unsigned int _iterations;
     };
     //! @}

@@ -34,7 +34,7 @@ namespace rw { namespace common {
     class ThreadTask;
 }}    // namespace rw::common
 namespace rw { namespace common {
-    template< typename T > class ThreadSafeVariable;
+    template<typename T> class ThreadSafeVariable;
 }}    // namespace rw::common
 namespace rwsim { namespace dynamics {
     class DynamicWorkCell;
@@ -55,10 +55,10 @@ namespace rwsimlibs { namespace test {
     {
       public:
         //! @brief Smart pointer to EngineTest.
-        typedef rw::core::Ptr< EngineTest > Ptr;
+        typedef rw::core::Ptr<EngineTest> Ptr;
 
         //! @brief The callback type for the current simulation time
-        typedef std::function< void (double time, bool failed, bool done) > TimeCallback;
+        typedef std::function<void(double time, bool failed, bool done)> TimeCallback;
 
         //! @brief Format for a failure to an engine test.
         struct Failure
@@ -68,7 +68,7 @@ namespace rwsimlibs { namespace test {
              * @param time [in] the simulation time when the failure occurred.
              * @param description [in] a description of the error.
              */
-            Failure (double time, const std::string& description);
+            Failure(double time, const std::string& description);
 
             //! @brief The simulation time when the failure occurred.
             double time;
@@ -84,21 +84,21 @@ namespace rwsimlibs { namespace test {
              * @param name [in] name of the result.
              * @param description [in] description of the result.
              */
-            Result (const std::string& name, const std::string& description);
+            Result(const std::string& name, const std::string& description);
 
             /**
              * @brief Add a value to the result.
              * @param time [in] simulation time.
              * @param val [in] the value to record.
              */
-            void addValue (double time, double val);
+            void addValue(double time, double val);
 
             /**
              * @brief Add multiple values to the result.
              * @param time [in] simulation time.
              * @param vals [in] the values to record.
              */
-            void addValues (double time, const rw::math::Q& vals);
+            void addValues(double time, const rw::math::Q& vals);
 
             /**
              * @brief Check if the latest added value was as expected and add a failure if not.
@@ -107,8 +107,8 @@ namespace rwsimlibs { namespace test {
              * @note For Q values with 2 or more values, these are compared to the same \b expected
              * value.
              */
-            void checkLastValues (double expected,
-                                  double eps = std::numeric_limits< double >::epsilon ());
+            void checkLastValues(double expected,
+                                 double eps = std::numeric_limits<double>::epsilon());
 
             /**
              * @brief Check if the latest added value was in expected range, [\b expectedLow; \b
@@ -118,8 +118,8 @@ namespace rwsimlibs { namespace test {
              * @param eps [in] (optional) the tolerance.
              * @note For Q values with 2 or more values, these are compared to the same values.
              */
-            void checkLastValuesBetween (double expectedLow, double expectedHigh,
-                                         double eps = std::numeric_limits< double >::epsilon ());
+            void checkLastValuesBetween(double expectedLow, double expectedHigh,
+                                        double eps = std::numeric_limits<double>::epsilon());
 
             //! @brief Name of the result.
             std::string name;
@@ -128,7 +128,7 @@ namespace rwsimlibs { namespace test {
             //! @brief The timed values recorded during simulation.
             rw::trajectory::TimedQPath values;
             //! @brief A list of failures for this result.
-            std::list< Failure > failures;
+            std::list<Failure> failures;
         };
 
         //! @brief Handle for a concrete test run, which makes it possible to interact with the test
@@ -137,13 +137,13 @@ namespace rwsimlibs { namespace test {
         {
           public:
             //! @brief Smart pointer.
-            typedef rw::core::Ptr< TestHandle > Ptr;
+            typedef rw::core::Ptr<TestHandle> Ptr;
 
             //! @brief Constructor.
-            TestHandle ();
+            TestHandle();
 
             //! @brief Destructor.
-            virtual ~TestHandle ();
+            virtual ~TestHandle();
 
             /**
              * @brief Get description of a simulation error.
@@ -151,19 +151,19 @@ namespace rwsimlibs { namespace test {
              * still give failures.
              * @return empty string if there was no simulation error, or string giving the error.
              */
-            virtual std::string getError () const;
+            virtual std::string getError() const;
 
             /**
              * @brief Get the timed state path, which will allow playback of the simulation.
              * @return a timed state path.
              */
-            virtual rw::trajectory::TimedStatePath getTimedStatePath () const;
+            virtual rw::trajectory::TimedStatePath getTimedStatePath() const;
 
             /**
              * @brief Get a vector of all results from the test run.
              * @return a vector of Result objects.
              */
-            virtual const std::vector< Result >& getResults () const;
+            virtual const std::vector<Result>& getResults() const;
 
             /**
              * @brief Get a reference to a specific result.
@@ -171,54 +171,54 @@ namespace rwsimlibs { namespace test {
              * @return the Result object with given name
              * @throws Exception if \b name is not found.
              */
-            virtual Result& getResult (const std::string& name);
+            virtual Result& getResult(const std::string& name);
 
             /**
              * @brief Set a simulation error.
              * @param error [in] a description of the simulation error.
              */
-            virtual void setError (const std::string& error);
+            virtual void setError(const std::string& error);
 
             /**
              * @brief Append a timed state.
              * @param tstate [in] the timed state.
              */
-            virtual void append (const rw::trajectory::TimedState& tstate);
+            virtual void append(const rw::trajectory::TimedState& tstate);
 
             /**
              * @brief Append with a new Result.
              * @param result [in] the result to add.
              */
-            virtual void append (const Result& result);
+            virtual void append(const Result& result);
 
             /**
              * @brief Construct a new Result with given name.
              * @param name [in] the name of the Result.
              * @param description [in] the description of the result.
              */
-            virtual void addResult (const std::string& name, const std::string& description = "");
+            virtual void addResult(const std::string& name, const std::string& description = "");
 
             /**
              * @brief Check if test has been aborted.
              * @return true if aborted.
              */
-            virtual bool isAborted ();
+            virtual bool isAborted();
 
             //! @brief Request that the simulation is aborted.
-            virtual void abort ();
+            virtual void abort();
 
             /**
              * @brief Check if the test was successful.
              * @return true if there were no simulation failures, and no failures were registered in
              * the results.
              */
-            virtual bool success () const;
+            virtual bool success() const;
 
             /**
              * @brief Set a callback to retrieve the current state of the test run.
              * @param cb [in] the function to call.
              */
-            void setTimeCallback (TimeCallback cb);
+            void setTimeCallback(TimeCallback cb);
 
             /**
              * @brief Invoke the callback if it is set.
@@ -226,41 +226,41 @@ namespace rwsimlibs { namespace test {
              * @param failed [in] whether or not simulation has failed.
              * @param done [in] whether or not simulation has ended.
              */
-            void callback (double time, bool failed, bool done);
+            void callback(double time, bool failed, bool done);
 
             /**
              * @brief Set the Dynamic WorkCell used in the test.
              * @param dwc [in] reference to a DynamicWorkCell smart pointer.
              */
-            void setDynamicWorkCell (const rw::core::Ptr< rwsim::dynamics::DynamicWorkCell >& dwc);
+            void setDynamicWorkCell(const rw::core::Ptr<rwsim::dynamics::DynamicWorkCell>& dwc);
 
             /**
              * @brief Get the Dynamic WorkCell used in the test.
              * @return reference to a DynamicWorkCell smart pointer.
              */
-            const rw::core::Ptr< rwsim::dynamics::DynamicWorkCell >& getDynamicWorkCell () const;
+            const rw::core::Ptr<rwsim::dynamics::DynamicWorkCell>& getDynamicWorkCell() const;
 
           private:
             std::string _error;
             rw::trajectory::TimedStatePath _path;
-            std::vector< Result > _results;
-            rw::common::ThreadSafeVariable< bool >* _abort;
+            std::vector<Result> _results;
+            rw::common::ThreadSafeVariable<bool>* _abort;
             TimeCallback _cb;
-            rw::core::Ptr< rwsim::dynamics::DynamicWorkCell > _dwc;
+            rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> _dwc;
         };
 
         //! @brief Construct new test.
-        EngineTest ();
+        EngineTest();
 
         //! @brief Destructor.
-        virtual ~EngineTest ();
+        virtual ~EngineTest();
 
         /**
          * @brief Check if engine with specific name is supported by the test.
          * @param engineID [in] the id of the engine.
          * @return true if supported, false otherwise.
          */
-        virtual bool isEngineSupported (const std::string& engineID) const = 0;
+        virtual bool isEngineSupported(const std::string& engineID) const = 0;
 
         /**
          * @brief Run the test in a separate thread.
@@ -272,10 +272,10 @@ namespace rwsimlibs { namespace test {
          * @return a TestHandle which makes it possible to interact with the test during the test
          * run.
          */
-        virtual TestHandle::Ptr runThread (const std::string& engineID,
-                                           const rw::core::PropertyMap& parameters,
-                                           rw::core::Ptr< rwsim::log::SimulatorLogScope > verbose,
-                                           rw::core::Ptr< rw::common::ThreadTask > task);
+        virtual TestHandle::Ptr runThread(const std::string& engineID,
+                                          const rw::core::PropertyMap& parameters,
+                                          rw::core::Ptr<rwsim::log::SimulatorLogScope> verbose,
+                                          rw::core::Ptr<rw::common::ThreadTask> task);
 
         /**
          * @brief Run the test.
@@ -285,36 +285,35 @@ namespace rwsimlibs { namespace test {
          * @param verbose [in] (optional) record detailed internal debug information in the engine
          * during simulation.
          */
-        virtual void run (TestHandle::Ptr handle, const std::string& engineID,
-                          const rw::core::PropertyMap& parameters,
-                          rw::core::Ptr< rwsim::log::SimulatorLogScope > verbose = NULL) = 0;
+        virtual void run(TestHandle::Ptr handle, const std::string& engineID,
+                         const rw::core::PropertyMap& parameters,
+                         rw::core::Ptr<rwsim::log::SimulatorLogScope> verbose = NULL) = 0;
 
         /**
          * @brief Get the length of the simulation.
          * @return the length of the simulation.
          */
-        virtual double getRunTime () const = 0;
+        virtual double getRunTime() const = 0;
 
         /**
          * @brief Get the dynamic workcell used by the test.
          * @param map [in] properties for test workcell.
          * @return a smart pointer to a dynamic workcell.
          */
-        virtual rw::core::Ptr< rwsim::dynamics::DynamicWorkCell >
-        getDWC (const rw::core::PropertyMap& map) = 0;
+        virtual rw::core::Ptr<rwsim::dynamics::DynamicWorkCell>
+        getDWC(const rw::core::PropertyMap& map) = 0;
 
         /**
          * @brief Get the default parameters used by the test.
          * @return the default test parameters.
          */
-        virtual rw::core::Ptr< rw::core::PropertyMap > getDefaultParameters () const;
+        virtual rw::core::Ptr<rw::core::PropertyMap> getDefaultParameters() const;
 
         /**
          * @brief Get a vector of predefined parameters.
          * @return the predefines parameters.
          */
-        virtual std::vector< rw::core::Ptr< rw::core::PropertyMap > >
-        getPredefinedParameters () const;
+        virtual std::vector<rw::core::Ptr<rw::core::PropertyMap>> getPredefinedParameters() const;
 
         /**
          * @addtogroup extensionpoints
@@ -323,38 +322,38 @@ namespace rwsimlibs { namespace test {
         /**
          * @brief A factory for engine tests. This factory also defines an ExtensionPoint.
          */
-        class Factory : public rw::core::ExtensionPoint< EngineTest >
+        class Factory : public rw::core::ExtensionPoint<EngineTest>
         {
           public:
             /**
              * @brief Get the available tests.
              * @return a vector of identifiers for tests.
              */
-            static std::vector< std::string > getTests ();
+            static std::vector<std::string> getTests();
 
             /**
              * @brief Check if test is available.
              * @param test [in] the name of the test.
              * @return true if available, false otherwise.
              */
-            static bool hasTest (const std::string& test);
+            static bool hasTest(const std::string& test);
 
             /**
              * @brief Create a new test.
              * @param test [in] the name of the test.
              * @return a pointer to a new EngineTest.
              */
-            static EngineTest::Ptr getTest (const std::string& test);
+            static EngineTest::Ptr getTest(const std::string& test);
 
           private:
-            static std::vector< rw::core::Extension >& internalExtensions ();
-            Factory ();
+            static std::vector<rw::core::Extension>& internalExtensions();
+            Factory();
         };
 
       protected:
         //! @brief Type for a function initializing the state.
-        typedef std::function< void (rw::core::Ptr< const rwsim::dynamics::DynamicWorkCell >,
-                                       rw::kinematics::State&) >
+        typedef std::function<void(rw::core::Ptr<const rwsim::dynamics::DynamicWorkCell>,
+                                   rw::kinematics::State&)>
             InitCallback;
 
         //! @brief The info passed in a callback function.
@@ -368,19 +367,18 @@ namespace rwsimlibs { namespace test {
              * @param state [in] the current state of the simulation.
              * @param dt [in] the time-step used.
              */
-            EngineLoopInfo (TestHandle::Ptr handle, const std::string& engineID,
-                            rw::core::Ptr< const rwsim::dynamics::DynamicWorkCell > dwc,
-                            const rw::kinematics::State* state, double dt) :
-                handle (handle),
-                engineID (engineID), dwc (dwc), state (state), dt (dt), time (0)
-            {}
+            EngineLoopInfo(TestHandle::Ptr handle, const std::string& engineID,
+                           rw::core::Ptr<const rwsim::dynamics::DynamicWorkCell> dwc,
+                           const rw::kinematics::State* state, double dt) :
+                handle(handle),
+                engineID(engineID), dwc(dwc), state(state), dt(dt), time(0) {}
 
             //! @brief The test handle.
             const TestHandle::Ptr handle;
             //! @brief The current engine being tested.
             const std::string engineID;
             //! @brief The dynamic workcell.
-            const rw::core::Ptr< const rwsim::dynamics::DynamicWorkCell > dwc;
+            const rw::core::Ptr<const rwsim::dynamics::DynamicWorkCell> dwc;
             //! @brief The current state (can not be changed).
             const rw::kinematics::State* state;
             //! @brief The time-step used.
@@ -390,7 +388,7 @@ namespace rwsimlibs { namespace test {
         };
 
         //! @brief Type for a callback function.
-        typedef std::function< void (const EngineLoopInfo&) > TestCallback;
+        typedef std::function<void(const EngineLoopInfo&)> TestCallback;
 
         /**
          * @brief A standard stepping loop provided as a convenience for test implementations.
@@ -403,10 +401,10 @@ namespace rwsimlibs { namespace test {
          * @param callback [in] (optional) call a function after each step of the simulation.
          * @param initialize [in] (optional) call a function that sets the initial state.
          */
-        void runEngineLoop (double dt, TestHandle::Ptr handle, const std::string& engineID,
-                            const rw::core::PropertyMap& parameters,
-                            rw::core::Ptr< rwsim::log::SimulatorLogScope > verbose,
-                            TestCallback callback = 0, InitCallback initialize = 0);
+        void runEngineLoop(double dt, TestHandle::Ptr handle, const std::string& engineID,
+                           const rw::core::PropertyMap& parameters,
+                           rw::core::Ptr<rwsim::log::SimulatorLogScope> verbose,
+                           TestCallback callback = 0, InitCallback initialize = 0);
     };
     //! @}
 }}     // namespace rwsimlibs::test

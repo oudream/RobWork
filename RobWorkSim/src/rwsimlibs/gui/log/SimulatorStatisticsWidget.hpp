@@ -53,24 +53,24 @@ namespace rwsimlibs { namespace gui {
          * @param parent [in] (optional) the parent Qt widget. Ownership is shared by the caller and
          * the parent widget if given.
          */
-        SimulatorStatisticsWidget (rw::core::Ptr< const rwsim::log::SimulatorStatistics > stats,
-                                   QWidget* parent = 0);
+        SimulatorStatisticsWidget(rw::core::Ptr<const rwsim::log::SimulatorStatistics> stats,
+                                  QWidget* parent = 0);
 
         //! @brief Destructor.
-        virtual ~SimulatorStatisticsWidget ();
+        virtual ~SimulatorStatisticsWidget();
 
         /**
          * @brief Get name of widget.
          * @return the name.
          */
-        std::string getName () const;
+        std::string getName() const;
 
       private slots:
-        void changed (const QItemSelection& newSelection, const QItemSelection& oldSelection);
+        void changed(const QItemSelection& newSelection, const QItemSelection& oldSelection);
 
       private:
         Ui::SimulatorStatisticsWidget* const _ui;
-        rw::core::Ptr< const rwsim::log::SimulatorStatistics > _stats;
+        rw::core::Ptr<const rwsim::log::SimulatorStatistics> _stats;
         class MathematicaPlotWidget* const _mathematica;
     };
     //! @}

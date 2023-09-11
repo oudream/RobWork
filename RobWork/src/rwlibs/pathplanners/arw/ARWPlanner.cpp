@@ -27,28 +27,25 @@ using namespace rw::core;
 using namespace rw::math;
 using namespace rw::models;
 
-QToQPlanner::Ptr ARWPlanner::makeQToQPlanner (const PlannerConstraint& constraint,
-                                              ARWExpand::Ptr expand, QMetric::Ptr metric,
-                                              double nearDistance)
-{
-    return ownedPtr (new ARWQToQPlanner (constraint, expand, metric, nearDistance));
+QToQPlanner::Ptr ARWPlanner::makeQToQPlanner(const PlannerConstraint& constraint,
+                                             ARWExpand::Ptr expand, QMetric::Ptr metric,
+                                             double nearDistance) {
+    return ownedPtr(new ARWQToQPlanner(constraint, expand, metric, nearDistance));
 }
 
-QToQPlanner::Ptr ARWPlanner::makeQToQPlanner (const rw::pathplanning::PlannerConstraint& constraint,
-                                              rw::models::Device::Ptr device,
-                                              rw::math::QMetric::Ptr metric, double nearDistance,
-                                              int historySize)
-{
-    if (!metric) {
-        metric       = PlannerUtil::normalizingInfinityMetric (device->getBounds ());
+QToQPlanner::Ptr ARWPlanner::makeQToQPlanner(const rw::pathplanning::PlannerConstraint& constraint,
+                                             rw::models::Device::Ptr device,
+                                             rw::math::QMetric::Ptr metric, double nearDistance,
+                                             int historySize) {
+    if(!metric) {
+        metric       = PlannerUtil::normalizingInfinityMetric(device->getBounds());
         nearDistance = 0.5;
     }
 
-    if (historySize < 0)
-        historySize = 20;
+    if(historySize < 0) historySize = 20;
 
-    return makeQToQPlanner (constraint,
-                            ARWExpand::make (device->getBounds (), constraint, Q (), historySize),
-                            metric,
-                            nearDistance);
+    return makeQToQPlanner(constraint,
+                           ARWExpand::make(device->getBounds(), constraint, Q(), historySize),
+                           metric,
+                           nearDistance);
 }

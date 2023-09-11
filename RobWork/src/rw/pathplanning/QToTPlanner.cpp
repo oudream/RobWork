@@ -33,15 +33,13 @@ namespace {
 class RegionPlanner : public QToTPlanner
 {
   public:
-    RegionPlanner (QToQSamplerPlanner::Ptr planner, QIKSampler::Ptr ikSampler) :
-        _planner (planner), _ikSampler (ikSampler)
-    {}
+    RegionPlanner(QToQSamplerPlanner::Ptr planner, QIKSampler::Ptr ikSampler) :
+        _planner(planner), _ikSampler(ikSampler) {}
 
   private:
-    bool doQuery (const rw::math::Q& from, const rw::math::Transform3D<>& baseTend, QPath& path,
-                  const StopCriteria& stop)
-    {
-        return _planner->query (from, *QSampler::make (_ikSampler, baseTend), path, stop);
+    bool doQuery(const rw::math::Q& from, const rw::math::Transform3D<>& baseTend, QPath& path,
+                 const StopCriteria& stop) {
+        return _planner->query(from, *QSampler::make(_ikSampler, baseTend), path, stop);
     }
 
   private:
@@ -52,34 +50,30 @@ class RegionPlanner : public QToTPlanner
 class QToTNearestPlanner : public QToTPlanner
 {
   public:
-    QToTNearestPlanner (QToQPlanner::Ptr planner, QIKSampler::Ptr sampler, QMetric::Ptr metric,
-                        int cnt) :
-        _planner (planner),
-        _sampler (sampler), _metric (metric), _cnt (cnt)
-    {
-        RW_ASSERT (cnt >= 0);
+    QToTNearestPlanner(QToQPlanner::Ptr planner, QIKSampler::Ptr sampler, QMetric::Ptr metric,
+                       int cnt) :
+        _planner(planner),
+        _sampler(sampler), _metric(metric), _cnt(cnt) {
+        RW_ASSERT(cnt >= 0);
     }
 
   private:
-    bool doQuery (const Q& from, const Transform3D<>& to, QPath& path, const StopCriteria& stop)
-    {
+    bool doQuery(const Q& from, const Transform3D<>& to, QPath& path, const StopCriteria& stop) {
         Q minQ;
         double minDist = -1;
-        for (int cnt = 0; cnt < _cnt && !stop.stop (); cnt++) {
-            const Q q = _sampler->sample (to);
-            if (!q.empty ()) {
-                const double dist = _metric->distance (from, q);
-                if (minDist < 0 || dist < minDist) {
+        for(int cnt = 0; cnt < _cnt && !stop.stop(); cnt++) {
+            const Q q = _sampler->sample(to);
+            if(!q.empty()) {
+                const double dist = _metric->distance(from, q);
+                if(minDist < 0 || dist < minDist) {
                     minDist = dist;
                     minQ    = q;
                 }
             }
         }
 
-        if (minQ.empty ())
-            return false;
-        else
-            return _planner->query (from, minQ, path, stop);
+        if(minQ.empty()) return false;
+        else return _planner->query(from, minQ, path, stop);
     }
 
   private:
@@ -90,13 +84,11 @@ class QToTNearestPlanner : public QToTPlanner
 };
 }    // namespace
 
-QToTPlanner::Ptr QToTPlanner::make (QToQSamplerPlanner::Ptr planner, QIKSampler::Ptr ikSampler)
-{
-    return ownedPtr (new RegionPlanner (planner, ikSampler));
+QToTPlanner::Ptr QToTPlanner::make(QToQSamplerPlanner::Ptr planner, QIKSampler::Ptr ikSampler) {
+    return ownedPtr(new RegionPlanner(planner, ikSampler));
 }
 
-QToTPlanner::Ptr QToTPlanner::makeToNearest (QToQPlanner::Ptr planner, QIKSampler::Ptr sampler,
-                                             QMetric::Ptr metric, int cnt)
-{
-    return ownedPtr (new QToTNearestPlanner (planner, sampler, metric, cnt));
+QToTPlanner::Ptr QToTPlanner::makeToNearest(QToQPlanner::Ptr planner, QIKSampler::Ptr sampler,
+                                            QMetric::Ptr metric, int cnt) {
+    return ownedPtr(new QToTNearestPlanner(planner, sampler, metric, cnt));
 }

@@ -19,8 +19,12 @@
 
 namespace rwlibs { namespace simulation {
 
-    void FrameGrabber::resize (int width, int height) { _img->resize (width, height); }
+    void FrameGrabber::resize(int width, int height) {
+        _img->resize(width, height);
+    }
 
-    rw::sensor::Image& FrameGrabber::getImage () { return *_img; }
+    rw::sensor::Image& FrameGrabber::getImage() {
+        return *_img;
+    }
 
 }}    // namespace rwlibs::simulation

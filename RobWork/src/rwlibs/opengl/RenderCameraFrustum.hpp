@@ -33,21 +33,22 @@ namespace rwlibs { namespace opengl {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< RenderCameraFrustum > Ptr;
+        typedef rw::core::Ptr<RenderCameraFrustum> Ptr;
 
         /**
          * @brief Constructs RenderLine with no lines
          */
-        RenderCameraFrustum ();
+        RenderCameraFrustum();
 
         /**
          * @brief Descructor
          */
-        virtual ~RenderCameraFrustum ();
+        virtual ~RenderCameraFrustum();
 
-        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info, DrawableNode::DrawType type, double alpha) const
-        void draw (const rw::graphics::DrawableNode::RenderInfo& info,
-                   rw::graphics::DrawableNode::DrawType type, double alpha) const;
+        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info,
+        //! DrawableNode::DrawType type, double alpha) const
+        void draw(const rw::graphics::DrawableNode::RenderInfo& info,
+                  rw::graphics::DrawableNode::DrawType type, double alpha) const;
 
         /**
          * @brief sets how the parameters of a perspective view model
@@ -56,14 +57,14 @@ namespace rwlibs { namespace opengl {
          * @param vnear [in] near clipping plane
          * @param depth [in] far clipping plane (where to stop drawing the camera lines)
          */
-        void setPerspective (double aspect, double fovy_deg, double vnear, double depth);
+        void setPerspective(double aspect, double fovy_deg, double vnear, double depth);
 
       private:
         float _xnear, _ynear, _vnear, _x, _y, _z;
     };
 
     //! smart pointer to RenderCameraFrustum
-    typedef rw::core::Ptr< RenderCameraFrustum > RenderCameraFrustumPtr;
+    typedef rw::core::Ptr<RenderCameraFrustum> RenderCameraFrustumPtr;
     //! @}
 }}    // namespace rwlibs::opengl
 

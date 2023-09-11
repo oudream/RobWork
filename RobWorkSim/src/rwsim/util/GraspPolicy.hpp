@@ -37,17 +37,17 @@ namespace rwsim { namespace util {
     {
       public:
         //! @brief smart pointer type of this object
-        typedef rw::core::Ptr< GraspPolicy > Ptr;
+        typedef rw::core::Ptr<GraspPolicy> Ptr;
 
-        virtual void reset (const rw::kinematics::State& state) = 0;
+        virtual void reset(const rw::kinematics::State& state) = 0;
 
-        virtual rwlibs::simulation::SimulatedController::Ptr getController () = 0;
+        virtual rwlibs::simulation::SimulatedController::Ptr getController() = 0;
 
-        virtual std::string getIdentifier () = 0;
+        virtual std::string getIdentifier() = 0;
 
-        virtual rw::core::PropertyMap getSettings () = 0;
+        virtual rw::core::PropertyMap getSettings() = 0;
 
-        virtual void applySettings () = 0;
+        virtual void applySettings() = 0;
     };
 
 }}    // namespace rwsim::util

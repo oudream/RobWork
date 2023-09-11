@@ -22,24 +22,21 @@
 using namespace rw::core;
 using namespace rw::math;
 
-PropertyViewDialog::PropertyViewDialog (rw::core::PropertyMap::Ptr map, QWidget* parent) :
-    QDialog (parent), _pOriginalProperties (map), _workingCopy (*map.get ())
-{
-    ui = new Ui_PropertyViewDialog ();
-    ui->setupUi (this);
-    ui->propertyViewEditor->setPropertyMap (&_workingCopy);
+PropertyViewDialog::PropertyViewDialog(rw::core::PropertyMap::Ptr map, QWidget* parent) :
+    QDialog(parent), _pOriginalProperties(map), _workingCopy(*map.get()) {
+    ui = new Ui_PropertyViewDialog();
+    ui->setupUi(this);
+    ui->propertyViewEditor->setPropertyMap(&_workingCopy);
 
-    connect (ui->buttonBox, SIGNAL (accepted ()), this, SLOT (acceptPressed ()));
-    connect (ui->buttonBox, SIGNAL (rejected ()), this, SLOT (rejectPressed ()));
+    connect(ui->buttonBox, SIGNAL(accepted()), this, SLOT(acceptPressed()));
+    connect(ui->buttonBox, SIGNAL(rejected()), this, SLOT(rejectPressed()));
 }
 
-void PropertyViewDialog::acceptPressed ()
-{
+void PropertyViewDialog::acceptPressed() {
     (*_pOriginalProperties) = _workingCopy;
-    accept ();
+    accept();
 }
 
-void PropertyViewDialog::rejectPressed ()
-{
-    reject ();
+void PropertyViewDialog::rejectPressed() {
+    reject();
 }

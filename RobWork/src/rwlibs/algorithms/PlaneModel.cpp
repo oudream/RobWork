@@ -21,45 +21,41 @@
 
 using namespace rwlibs::algorithms;
 
-double PlaneModel::fitError (const rw::math::Vector3D<>& sample) const
-{
+double PlaneModel::fitError(const rw::math::Vector3D<>& sample) const {
     // return a distance of the sample to the model
-    return std::fabs (_model.distance (sample));
+    return std::fabs(_model.distance(sample));
 }
 
-bool PlaneModel::invalid () const
-{
+bool PlaneModel::invalid() const {
     // test whether all the data points are co-linear
     return false;
 }
 
-double PlaneModel::refit (const std::vector< rw::math::Vector3D<> >& samples)
-{
+double PlaneModel::refit(const std::vector<rw::math::Vector3D<>>& samples) {
     _data = samples;
 
     // re-fit plane
-    _model.refit (_data);
+    _model.refit(_data);
 
     // calculate total fit error
     double error = 0.0;
-    for (std::vector< rw::math::Vector3D<> >::iterator i = _data.begin (); i != _data.end (); ++i) {
-        double sample_error = fitError (*i);
+    for(std::vector<rw::math::Vector3D<>>::iterator i = _data.begin(); i != _data.end(); ++i) {
+        double sample_error = fitError(*i);
         error += sample_error * sample_error;
     }
 
-    const std::size_t n = _data.size ();
-    error /= static_cast< double > (n > 0 ? n : 1);
-    setQuality (error);
+    const std::size_t n = _data.size();
+    error /= static_cast<double>(n > 0 ? n : 1);
+    setQuality(error);
 
     return error;
 }
 
-bool PlaneModel::same (const PlaneModel& model, double threshold) const
-{
+bool PlaneModel::same(const PlaneModel& model, double threshold) const {
     // make a metric to compute distance between planes
-    rw::math::Metric< rw::geometry::Plane >::Ptr metric = rw::geometry::Plane::makeMetric ();
+    rw::math::Metric<rw::geometry::Plane>::Ptr metric = rw::geometry::Plane::makeMetric();
 
-    double d = metric->distance (_model, model._model);
+    double d = metric->distance(_model, model._model);
 
     return d <= threshold;
 }

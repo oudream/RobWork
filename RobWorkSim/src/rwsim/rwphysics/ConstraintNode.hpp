@@ -40,81 +40,80 @@ namespace rwsim { namespace simulator {
         } NodeType;
 
       public:
-        ConstraintNode (NodeType type, int id);
+        ConstraintNode(NodeType type, int id);
 
-        ConstraintNode (ConstraintNode* parent, NodeType type, int id);
+        ConstraintNode(ConstraintNode* parent, NodeType type, int id);
 
-        virtual ~ConstraintNode (){};
+        virtual ~ConstraintNode(){};
 
-        void setType (NodeType type);
-
-        /**
-         * @brief hmm?
-         */
-        inline void setDeleted (bool del) { _deleted = del; }
+        void setType(NodeType type);
 
         /**
          * @brief hmm?
          */
-        inline bool isDeleted () const { return _deleted; }
+        inline void setDeleted(bool del) { _deleted = del; }
 
         /**
          * @brief hmm?
          */
-        inline bool isPassive () const { return false; }
+        inline bool isDeleted() const { return _deleted; }
+
+        /**
+         * @brief hmm?
+         */
+        inline bool isPassive() const { return false; }
 
         /**
          * @brief returns true if this node has physical
          */
-        inline bool isPhysical () const { return _isPhysical; }
+        inline bool isPhysical() const { return _isPhysical; }
 
         /**
          * @brief returns true is this node is of the type trigger
          */
-        inline bool isTrigger () const { return _type == Trigger; }
+        inline bool isTrigger() const { return _type == Trigger; }
 
         /**
          * @brief ad a constraint to this node
          */
-        inline void addEdge (ConstraintEdge& edge) { _edges.push_back (&edge); }
+        inline void addEdge(ConstraintEdge& edge) { _edges.push_back(&edge); }
 
         /**
          * @brief returns the list of constraints that works on this node
          */
-        inline std::list< ConstraintEdge* >& getEdges () { return _edges; }
+        inline std::list<ConstraintEdge*>& getEdges() { return _edges; }
 
         /**
          * @brief removes a constraint (Edge) from this node
          */
-        inline void removeEdge (ConstraintEdge* edge) { _edges.remove (edge); }
+        inline void removeEdge(ConstraintEdge* edge) { _edges.remove(edge); }
 
         /**
          * @brief return the type of this node
          */
-        NodeType getNodeType () const { return _type; }
+        NodeType getNodeType() const { return _type; }
 
-        ConstraintNode* getParentNode () { return _parentNode; }
+        ConstraintNode* getParentNode() { return _parentNode; }
 
-        void setFrame (rw::core::Ptr<rw::kinematics::Frame> frame) { _frame = frame; }
+        void setFrame(rw::core::Ptr<rw::kinematics::Frame> frame) { _frame = frame; }
 
         /**
          * @brief return the frames which this node is associated with
          */
-        rw::kinematics::Frame* getFrame () { return _frame.get(); }
+        rw::kinematics::Frame* getFrame() { return _frame.get(); }
 
-        inline void setID (int id) { _id = id; }
+        inline void setID(int id) { _id = id; }
 
-        inline int getID () const { return _id; }
+        inline int getID() const { return _id; }
 
         // user data type
         void* data;
 
-        RWBody* getBody () { return _body; };
+        RWBody* getBody() { return _body; };
 
-        void setBody (RWBody* body)
-        {
+        void setBody(RWBody* body) {
             _body = body;
-            setFrame (body->getBodyFrame ());
+            setFrame(body->getBodyFrame());
         };
 
       private:
@@ -127,7 +126,7 @@ namespace rwsim { namespace simulator {
         bool _isPhysical;
 
         // list of constraints that are working on this node
-        std::list< ConstraintEdge* > _edges;
+        std::list<ConstraintEdge*> _edges;
 
         // the frame that this node is associated with
         rw::core::Ptr<rw::kinematics::Frame> _frame;
@@ -145,9 +144,8 @@ namespace rwsim { namespace simulator {
     struct CNodePair
     {
       public:
-        CNodePair (ConstraintNode* n1, ConstraintNode* n2)
-        {
-            if (n1->getID () > n2->getID ()) {
+        CNodePair(ConstraintNode* n1, ConstraintNode* n2) {
+            if(n1->getID() > n2->getID()) {
                 first  = n2;
                 second = n1;
             }

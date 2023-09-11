@@ -22,28 +22,23 @@
 
 using namespace rw::core;
 
-LogStreamWriter::LogStreamWriter (std::ostream* stream) : _stream (stream), _tabLevel (0)
-{
+LogStreamWriter::LogStreamWriter(std::ostream* stream) : _stream(stream), _tabLevel(0) {
     // RW_ASSERT(stream);
 }
 
-LogStreamWriter::~LogStreamWriter ()
-{
-    flush ();
+LogStreamWriter::~LogStreamWriter() {
+    flush();
 }
 
-void LogStreamWriter::doWrite (const std::string& str)
-{
-    *_stream << std::setw (_tabLevel) << std::setfill (' ');
+void LogStreamWriter::doWrite(const std::string& str) {
+    *_stream << std::setw(_tabLevel) << std::setfill(' ');
     *_stream << str;
 }
 
-void LogStreamWriter::doFlush ()
-{
-    _stream->flush ();
+void LogStreamWriter::doFlush() {
+    _stream->flush();
 }
 
-void LogStreamWriter::doSetTabLevel (int tabLevel)
-{
+void LogStreamWriter::doSetTabLevel(int tabLevel) {
     _tabLevel = tabLevel;
 }

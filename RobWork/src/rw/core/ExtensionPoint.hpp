@@ -29,11 +29,11 @@ namespace rw { namespace core {
      * This is typically used together with plugins, however any class may register extensions
      * to an extension point.
      */
-    template< class ExtensionInterface > class ExtensionPoint
+    template<class ExtensionInterface> class ExtensionPoint
     {
       public:
         //! smart pointer type of ExtensionPoint
-        typedef rw::core::Ptr< ExtensionPoint > Ptr;
+        typedef rw::core::Ptr<ExtensionPoint> Ptr;
 
         /**
          * @brief Constructor
@@ -42,15 +42,14 @@ namespace rw { namespace core {
          * @param plugin [in] the plugin from which this extension point is defined, NULL if not
          * defined from plugin
          */
-        ExtensionPoint (const std::string& id, const std::string& name, Plugin* plugin = NULL) :
-            _id (id), _name (id), _owner (plugin)
-        {}
+        ExtensionPoint(const std::string& id, const std::string& name, Plugin* plugin = NULL) :
+            _id(id), _name(id), _owner(plugin) {}
 
         //! @brief get unique identifier of this extensionpoint
-        const std::string& getId () const { return _id; }
+        const std::string& getId() const { return _id; }
 
         //! @brief get human readable name of this extension point
-        const std::string& getName () const { return _name; }
+        const std::string& getName() const { return _name; }
 
         /**
          * @brief the schema describe the possible properties/configurations elements
@@ -58,20 +57,18 @@ namespace rw { namespace core {
          * options. This can be used to configure any extensions that needs to attach to
          * this extension point.
          */
-        const rw::core::PropertyMap& getSchema () const { return _schema; }
+        const rw::core::PropertyMap& getSchema() const { return _schema; }
 
         //! @brief get all extension descriptions of this extension point
-        std::vector< rw::core::Extension::Descriptor > getExtensionDescriptors () const
-        {
-            ExtensionRegistry::Ptr reg = ExtensionRegistry::getInstance ();
-            return reg->getExtensionDescriptors (_id);
+        std::vector<rw::core::Extension::Descriptor> getExtensionDescriptors() const {
+            ExtensionRegistry::Ptr reg = ExtensionRegistry::getInstance();
+            return reg->getExtensionDescriptors(_id);
         }
 
         //! @brief get all extensions of this extension point
-        std::vector< rw::core::Ptr< Extension > > getExtensions () const
-        {
-            ExtensionRegistry::Ptr reg = ExtensionRegistry::getInstance ();
-            return reg->getExtensions (_id);
+        std::vector<rw::core::Ptr<Extension>> getExtensions() const {
+            ExtensionRegistry::Ptr reg = ExtensionRegistry::getInstance();
+            return reg->getExtensions(_id);
         }
 
       protected:
@@ -105,7 +102,7 @@ namespace rw { namespace core {
          *
          * @return
          */
-        rw::core::PropertyMap& getSchema () { return _schema; };
+        rw::core::PropertyMap& getSchema() { return _schema; };
 
       private:
         std::string _id, _name;

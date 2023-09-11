@@ -19,20 +19,12 @@
 
 using namespace rw::core;
 
-PropertyValueBase::PropertyValueBase()
-{
-}
+PropertyValueBase::PropertyValueBase() {}
 
-PropertyValueBase::PropertyValueBase(const PropertyType& type):
-    _propertyType(type)
-{
-}
+PropertyValueBase::PropertyValueBase(const PropertyType& type) : _propertyType(type) {}
 
-PropertyValueBase::~PropertyValueBase()
-{
-}
+PropertyValueBase::~PropertyValueBase() {}
 
-const PropertyType& PropertyValueBase::getType() const
-{
+const PropertyType& PropertyValueBase::getType() const {
     return _propertyType;
 }

@@ -14,24 +14,24 @@ namespace rwsim { namespace simulator {
     class BodyIntegrator
     {
       protected:
-        BodyIntegrator (){};
+        BodyIntegrator(){};
 
       public:
         /**
          * @brief destructor
          * @return
          */
-        virtual ~BodyIntegrator (){};
+        virtual ~BodyIntegrator(){};
 
         /**
          * @brief integrates velocity over timestep h to update the position of the body
          */
-        virtual void updatePosition (double h, rw::kinematics::State& state) = 0;
+        virtual void updatePosition(double h, rw::kinematics::State& state) = 0;
 
         /**
          * @brief integrates forces over timestep h to update the velocity of the body
          */
-        virtual void updateVelocity (double h, rw::kinematics::State& state) = 0;
+        virtual void updateVelocity(double h, rw::kinematics::State& state) = 0;
     };
 
 }}     // namespace rwsim::simulator

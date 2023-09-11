@@ -34,10 +34,9 @@ using namespace rw::loaders;
 using namespace rw::math;
 using namespace rwlibs::task;
 
-DOMTaskSaver::Initializer::Initializer ()
-{
+DOMTaskSaver::Initializer::Initializer() {
     static bool done = false;
-    if (!done) {
+    if(!done) {
         DOMBasisTypes::Initializer init1;
         DOMTaskFormat::Initializer init2;
         done = true;
@@ -48,217 +47,195 @@ const DOMTaskSaver::Initializer DOMTaskSaver::initializer;
 
 namespace {
 
-template< class T > class Identifiers
+template<class T> class Identifiers
 {
   public:
-    static const std::string& taskId ();
-    static const std::string& targetId ();
+    static const std::string& taskId();
+    static const std::string& targetId();
 };
 
-template<> const std::string& Identifiers< Q >::taskId ()
-{
-    return DOMTaskFormat::idQTask ();
+template<> const std::string& Identifiers<Q>::taskId() {
+    return DOMTaskFormat::idQTask();
 }
 
-template<> const std::string& Identifiers< Q >::targetId ()
-{
-    return DOMTaskFormat::idQTarget ();
+template<> const std::string& Identifiers<Q>::targetId() {
+    return DOMTaskFormat::idQTarget();
 }
 
-template<> const std::string& Identifiers< Transform3D<> >::taskId ()
-{
-    return DOMTaskFormat::idCartesianTask ();
+template<> const std::string& Identifiers<Transform3D<>>::taskId() {
+    return DOMTaskFormat::idCartesianTask();
 }
 
-template<> const std::string& Identifiers< Transform3D<> >::targetId ()
-{
-    return DOMTaskFormat::idCartesianTarget ();
+template<> const std::string& Identifiers<Transform3D<>>::targetId() {
+    return DOMTaskFormat::idCartesianTarget();
 }
 
-template< class T > class ElementCreator
+template<class T> class ElementCreator
 {
   public:
-    static DOMElem::Ptr createElement (const T& element, DOMElem::Ptr parent);
+    static DOMElem::Ptr createElement(const T& element, DOMElem::Ptr parent);
 };
 
-template<> DOMElem::Ptr ElementCreator< Q >::createElement (const Q& element, DOMElem::Ptr parent)
-{
-    return DOMBasisTypes::createQ (element, parent);
+template<> DOMElem::Ptr ElementCreator<Q>::createElement(const Q& element, DOMElem::Ptr parent) {
+    return DOMBasisTypes::createQ(element, parent);
 }
 
 template<>
-DOMElem::Ptr ElementCreator< Transform3D<> >::createElement (const Transform3D<>& element,
-                                                             DOMElem::Ptr parent)
-{
-    return DOMBasisTypes::createTransform3D (element, parent);
+DOMElem::Ptr ElementCreator<Transform3D<>>::createElement(const Transform3D<>& element,
+                                                          DOMElem::Ptr parent) {
+    return DOMBasisTypes::createTransform3D(element, parent);
 }
 
 }    // end anonymous namespace
 
-void DOMTaskSaver::writeEntityInfo (Entity::Ptr entity, DOMElem::Ptr parent)
-{
-    DOMElem::Ptr idElement = parent->addChild (DOMTaskFormat::idEntityId ());
-    idElement->setValue (entity->getId ());
+void DOMTaskSaver::writeEntityInfo(Entity::Ptr entity, DOMElem::Ptr parent) {
+    DOMElem::Ptr idElement = parent->addChild(DOMTaskFormat::idEntityId());
+    idElement->setValue(entity->getId());
 
-    DOMElem::Ptr indexElement = parent->addChild (DOMTaskFormat::idEntityIndex ());
-    indexElement->setValue (entity->getIndex ());
+    DOMElem::Ptr indexElement = parent->addChild(DOMTaskFormat::idEntityIndex());
+    indexElement->setValue(entity->getIndex());
 
-    DOMPropertyMapSaver::save (entity->getPropertyMap (), parent);
+    DOMPropertyMapSaver::save(entity->getPropertyMap(), parent);
 }
 
-template< class T >
-void DOMTaskSaver::writeTargets (typename Task< T >::Ptr task, DOMElem::Ptr parent)
-{
-    DOMElem::Ptr element = parent->addChild (DOMTaskFormat::idTargets ());
+template<class T> void DOMTaskSaver::writeTargets(typename Task<T>::Ptr task, DOMElem::Ptr parent) {
+    DOMElem::Ptr element = parent->addChild(DOMTaskFormat::idTargets());
 
-    std::vector< rw::core::Ptr< Target< T > > > targets = task->getTargets ();
+    std::vector<rw::core::Ptr<Target<T>>> targets = task->getTargets();
 
     int targetId = 0;
-    for (rw::core::Ptr< Target< T > > target : targets) {
-        DOMElem::Ptr targetElement = element->addChild (Identifiers< T >::targetId ());
-        DOMElem::Ptr attr          = targetElement->addAttribute (DOMTaskFormat::idTargetIdAttr ());
-        attr->setValue (targetId);
-        _targetMap[target] = attr->getValue ();
-        ElementCreator< T >::createElement (target->get (), targetElement);
-        writeEntityInfo (target, targetElement);
+    for(rw::core::Ptr<Target<T>> target : targets) {
+        DOMElem::Ptr targetElement = element->addChild(Identifiers<T>::targetId());
+        DOMElem::Ptr attr          = targetElement->addAttribute(DOMTaskFormat::idTargetIdAttr());
+        attr->setValue(targetId);
+        _targetMap[target] = attr->getValue();
+        ElementCreator<T>::createElement(target->get(), targetElement);
+        writeEntityInfo(target, targetElement);
         targetId++;
     }
 }
 
-template< class T >
-void DOMTaskSaver::writeMotion (typename Motion< T >::Ptr motion, DOMElem::Ptr parent)
-{
-    DOMElem::Ptr motionElement = parent->addChild (DOMTaskFormat::idMotion ());
+template<class T>
+void DOMTaskSaver::writeMotion(typename Motion<T>::Ptr motion, DOMElem::Ptr parent) {
+    DOMElem::Ptr motionElement = parent->addChild(DOMTaskFormat::idMotion());
 
-    DOMElem::Ptr typeAttr = motionElement->addAttribute (DOMTaskFormat::idMotionTypeAttr ());
-    switch (motion->motionType ()) {
-        case MotionType::Linear: typeAttr->setValue (DOMTaskFormat::idLinearMotion ()); break;
-        case MotionType::P2P: typeAttr->setValue (DOMTaskFormat::idP2PMotion ()); break;
-        case MotionType::Circular: typeAttr->setValue (DOMTaskFormat::idCircularMotion ()); break;
+    DOMElem::Ptr typeAttr = motionElement->addAttribute(DOMTaskFormat::idMotionTypeAttr());
+    switch(motion->motionType()) {
+        case MotionType::Linear: typeAttr->setValue(DOMTaskFormat::idLinearMotion()); break;
+        case MotionType::P2P: typeAttr->setValue(DOMTaskFormat::idP2PMotion()); break;
+        case MotionType::Circular: typeAttr->setValue(DOMTaskFormat::idCircularMotion()); break;
     }
 
-    DOMElem::Ptr targetElement = motionElement->addChild (DOMTaskFormat::idMotionStart ());
-    targetElement->setValue (_targetMap[motion->startTarget ()]);
+    DOMElem::Ptr targetElement = motionElement->addChild(DOMTaskFormat::idMotionStart());
+    targetElement->setValue(_targetMap[motion->startTarget()]);
 
-    if (motion->motionType () == MotionType::Circular) {
-        targetElement = motionElement->addChild (DOMTaskFormat::idMotionMid ());
-        targetElement->setValue (
-            _targetMap[motion.template cast< CircularMotion< T > > ()->midTarget ()]);
+    if(motion->motionType() == MotionType::Circular) {
+        targetElement = motionElement->addChild(DOMTaskFormat::idMotionMid());
+        targetElement->setValue(_targetMap[motion.template cast<CircularMotion<T>>()->midTarget()]);
     }
 
-    targetElement = motionElement->addChild (DOMTaskFormat::idMotionEnd ());
-    targetElement->setValue (_targetMap[motion->endTarget ()]);
+    targetElement = motionElement->addChild(DOMTaskFormat::idMotionEnd());
+    targetElement->setValue(_targetMap[motion->endTarget()]);
 
-    writeEntityInfo (motion, motionElement);
+    writeEntityInfo(motion, motionElement);
 }
 
-void DOMTaskSaver::writeAction (Action::Ptr action, DOMElem::Ptr parent)
-{
-    DOMElem::Ptr actionElement = parent->addChild (DOMTaskFormat::idAction ());
+void DOMTaskSaver::writeAction(Action::Ptr action, DOMElem::Ptr parent) {
+    DOMElem::Ptr actionElement = parent->addChild(DOMTaskFormat::idAction());
 
-    DOMElem::Ptr typeAttr = actionElement->addAttribute (DOMTaskFormat::idActionTypeAttr ());
-    typeAttr->setValue (action->actionType ());
+    DOMElem::Ptr typeAttr = actionElement->addAttribute(DOMTaskFormat::idActionTypeAttr());
+    typeAttr->setValue(action->actionType());
 
-    writeEntityInfo (action, actionElement);
+    writeEntityInfo(action, actionElement);
 }
 
-template< class T >
-void DOMTaskSaver::writeEntities (typename Task< T >::Ptr task, DOMElem::Ptr parent)
-{
-    DOMElem::Ptr entriesElement = parent->addChild (DOMTaskFormat::idEntities ());
+template<class T>
+void DOMTaskSaver::writeEntities(typename Task<T>::Ptr task, DOMElem::Ptr parent) {
+    DOMElem::Ptr entriesElement = parent->addChild(DOMTaskFormat::idEntities());
 
-    std::vector< Entity::Ptr > entities = task->getEntities ();
-    for (Entity::Ptr entity : entities) {
-        switch (entity->entityType ()) {
-            case EntityType::Task: writeTask (entity.cast< Task< T > > (), entriesElement); break;
+    std::vector<Entity::Ptr> entities = task->getEntities();
+    for(Entity::Ptr entity : entities) {
+        switch(entity->entityType()) {
+            case EntityType::Task: writeTask(entity.cast<Task<T>>(), entriesElement); break;
             case EntityType::Motion:
-                writeMotion< T > (entity.cast< Motion< T > > (), entriesElement);
+                writeMotion<T>(entity.cast<Motion<T>>(), entriesElement);
                 break;
-            case EntityType::Action: writeAction (entity.cast< Action > (), entriesElement); break;
-            case EntityType::User: RW_THROW ("Unable to save user specified types"); break;
+            case EntityType::Action: writeAction(entity.cast<Action>(), entriesElement); break;
+            case EntityType::User: RW_THROW("Unable to save user specified types"); break;
         }
     }
 }
 
-template< class T >
-void DOMTaskSaver::writeTaskImpl (typename Task< T >::Ptr task, DOMElem::Ptr parent)
-{
-    DOMElem::Ptr taskElement = parent->addChild (Identifiers< T >::taskId ());
-    saveImpl< T > (task, taskElement);
+template<class T>
+void DOMTaskSaver::writeTaskImpl(typename Task<T>::Ptr task, DOMElem::Ptr parent) {
+    DOMElem::Ptr taskElement = parent->addChild(Identifiers<T>::taskId());
+    saveImpl<T>(task, taskElement);
 }
 
-void DOMTaskSaver::writeTask (TaskBase::Ptr task, DOMElem::Ptr parent)
-{
-    Task< Q >::Ptr qtask = task.cast< Task< Q > > ();
-    if (qtask != NULL) {
-        writeTaskImpl< Q > (qtask, parent);
+void DOMTaskSaver::writeTask(TaskBase::Ptr task, DOMElem::Ptr parent) {
+    Task<Q>::Ptr qtask = task.cast<Task<Q>>();
+    if(qtask != NULL) {
+        writeTaskImpl<Q>(qtask, parent);
         return;
     }
 
-    Task< Transform3D<> >::Ptr carttask = task.cast< Task< Transform3D<> > > ();
-    if (carttask != NULL) {
-        writeTaskImpl< Transform3D<> > (carttask, parent);
+    Task<Transform3D<>>::Ptr carttask = task.cast<Task<Transform3D<>>>();
+    if(carttask != NULL) {
+        writeTaskImpl<Transform3D<>>(carttask, parent);
         return;
     }
 }
 
-template< class T > void DOMTaskSaver::saveImpl (typename Task< T >::Ptr task, DOMElem::Ptr parent)
-{
-    writeTargets< T > (task, parent);
-    writeEntities< T > (task, parent);
-    writeEntityInfo (task, parent);
+template<class T> void DOMTaskSaver::saveImpl(typename Task<T>::Ptr task, DOMElem::Ptr parent) {
+    writeTargets<T>(task, parent);
+    writeEntities<T>(task, parent);
+    writeEntityInfo(task, parent);
 }
 
-bool DOMTaskSaver::save (rwlibs::task::QTask::Ptr task, std::ostream& outstream)
-{
-    DOMParser::Ptr parser = DOMParser::make ();
-    DOMElem::Ptr doc      = parser->getRootElement ();
-    DOMElem::Ptr parent   = doc->addChild (DOMTaskFormat::idQTask ());
-    saveImpl< Q > (task, parent);
-    parser->save (outstream);
+bool DOMTaskSaver::save(rwlibs::task::QTask::Ptr task, std::ostream& outstream) {
+    DOMParser::Ptr parser = DOMParser::make();
+    DOMElem::Ptr doc      = parser->getRootElement();
+    DOMElem::Ptr parent   = doc->addChild(DOMTaskFormat::idQTask());
+    saveImpl<Q>(task, parent);
+    parser->save(outstream);
     return true;
 }
 
-bool DOMTaskSaver::save (rwlibs::task::CartesianTask::Ptr task, std::ostream& outstream)
-{
-    DOMParser::Ptr parser = DOMParser::make ();
-    DOMElem::Ptr doc      = parser->getRootElement ();
-    DOMElem::Ptr parent   = doc->addChild (DOMTaskFormat::idCartesianTask ());
-    saveImpl< Transform3D<> > (task, parent);
-    parser->save (outstream);
+bool DOMTaskSaver::save(rwlibs::task::CartesianTask::Ptr task, std::ostream& outstream) {
+    DOMParser::Ptr parser = DOMParser::make();
+    DOMElem::Ptr doc      = parser->getRootElement();
+    DOMElem::Ptr parent   = doc->addChild(DOMTaskFormat::idCartesianTask());
+    saveImpl<Transform3D<>>(task, parent);
+    parser->save(outstream);
     return true;
 }
 
-bool DOMTaskSaver::save (QTask::Ptr task, const std::string& filename)
-{
-    std::string ext = StringUtil::toUpper (StringUtil::getFileExtension (filename));
-    if (!ext.empty ())
-        ext = ext.substr (1);    // remove dot
-    if (!DOMParser::Factory::hasDOMParser (ext)) {
-        RW_WARN ("No DOMParser can be created for a file with the extension " << ext << "!");
+bool DOMTaskSaver::save(QTask::Ptr task, const std::string& filename) {
+    std::string ext = StringUtil::toUpper(StringUtil::getFileExtension(filename));
+    if(!ext.empty()) ext = ext.substr(1);    // remove dot
+    if(!DOMParser::Factory::hasDOMParser(ext)) {
+        RW_WARN("No DOMParser can be created for a file with the extension " << ext << "!");
         return false;
     }
-    DOMParser::Ptr parser = DOMParser::Factory::getDOMParser (ext);
-    DOMElem::Ptr doc      = parser->getRootElement ();
-    DOMElem::Ptr parent   = doc->addChild (DOMTaskFormat::idQTask ());
-    saveImpl< Q > (task, parent);
-    parser->save (filename);
+    DOMParser::Ptr parser = DOMParser::Factory::getDOMParser(ext);
+    DOMElem::Ptr doc      = parser->getRootElement();
+    DOMElem::Ptr parent   = doc->addChild(DOMTaskFormat::idQTask());
+    saveImpl<Q>(task, parent);
+    parser->save(filename);
     return true;
 }
 
-bool DOMTaskSaver::save (CartesianTask::Ptr task, const std::string& filename)
-{
-    std::string ext = StringUtil::toUpper (StringUtil::getFileExtension (filename));
-    if (!ext.empty ())
-        ext = ext.substr (1);    // remove dot
-    if (!DOMParser::Factory::hasDOMParser (ext)) {
-        RW_WARN ("No DOMParser can be created for a file with the extension " << ext << "!");
+bool DOMTaskSaver::save(CartesianTask::Ptr task, const std::string& filename) {
+    std::string ext = StringUtil::toUpper(StringUtil::getFileExtension(filename));
+    if(!ext.empty()) ext = ext.substr(1);    // remove dot
+    if(!DOMParser::Factory::hasDOMParser(ext)) {
+        RW_WARN("No DOMParser can be created for a file with the extension " << ext << "!");
         return false;
     }
-    DOMParser::Ptr parser = DOMParser::make ();
-    DOMElem::Ptr doc      = parser->getRootElement ();
-    DOMElem::Ptr parent   = doc->addChild (DOMTaskFormat::idCartesianTask ());
-    saveImpl< Transform3D<> > (task, parent);
-    parser->save (filename);
+    DOMParser::Ptr parser = DOMParser::make();
+    DOMElem::Ptr doc      = parser->getRootElement();
+    DOMElem::Ptr parent   = doc->addChild(DOMTaskFormat::idCartesianTask());
+    saveImpl<Transform3D<>>(task, parent);
+    parser->save(filename);
     return true;
 }

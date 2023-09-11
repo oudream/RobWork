@@ -20,80 +20,74 @@
 
 #include "Grasp2D.hpp"
 
-#include <rw/models/Joint.hpp>
 #include <rw/kinematics/State.hpp>
-#include <rw/models/TreeDevice.hpp>
-#include <rw/math/Transform3D.hpp>
 #include <rw/math/Q.hpp>
+#include <rw/math/Transform3D.hpp>
+#include <rw/models/Joint.hpp>
+#include <rw/models/TreeDevice.hpp>
 
-namespace rw {
-namespace graspplanning {
-/**
- * @brief solves the inverse kinematics problem for a SDH
- */
-class CG3IKSolver2D {
-
-public:
-    //! result of this ik solver
-    typedef std::vector<std::pair<rw::math::Transform3D<>,rw::math::Q> > IKResult;
-
+namespace rw { namespace graspplanning {
     /**
-     * @brief constructor
+     * @brief solves the inverse kinematics problem for a SDH
      */
-    CG3IKSolver2D(const rw::models::TreeDevice& device, const rw::kinematics::State& state);
+    class CG3IKSolver2D
+    {
+      public:
+        //! result of this ik solver
+        typedef std::vector<std::pair<rw::math::Transform3D<>, rw::math::Q>> IKResult;
 
-    /**
-     * @brief destructor
-     */
-    virtual ~CG3IKSolver2D(){};
+        /**
+         * @brief constructor
+         */
+        CG3IKSolver2D(const rw::models::TreeDevice& device, const rw::kinematics::State& state);
 
-    /**
-     * @brief
-     * @param bTgrasp
-     * @param grasp
-     * @param state
-     * @return
-     */
-    IKResult solve(const rw::math::Transform3D<>& bTgrasp,
-                   const Grasp2D& grasp, const rw::kinematics::State& state);
+        /**
+         * @brief destructor
+         */
+        virtual ~CG3IKSolver2D(){};
 
-    /**
-     * @brief sets the minimum required distance from hand base to grasp plane.
-     * @param height [in] height from hand base to grasp plane in meters
-     *
-     */
-    void setMinWristHeight(double height){
-        _minWristHeight = height;
-    }
+        /**
+         * @brief
+         * @param bTgrasp
+         * @param grasp
+         * @param state
+         * @return
+         */
+        IKResult solve(const rw::math::Transform3D<>& bTgrasp, const Grasp2D& grasp,
+                       const rw::kinematics::State& state);
 
-    /**
-     *
-     * @return the minimum wrist height
-     */
-    double getMinWristHeight(){
-        return _minWristHeight;
-    }
+        /**
+         * @brief sets the minimum required distance from hand base to grasp plane.
+         * @param height [in] height from hand base to grasp plane in meters
+         *
+         */
+        void setMinWristHeight(double height) { _minWristHeight = height; }
 
-private:
-    void init(const rw::kinematics::State& state);
+        /**
+         *
+         * @return the minimum wrist height
+         */
+        double getMinWristHeight() { return _minWristHeight; }
 
-    const rw::models::TreeDevice& _device;
-    double _maxWristToFingerTip;
-    double _minWristHeight;
+      private:
+        void init(const rw::kinematics::State& state);
 
-    rw::models::Joint *_thumbBase,*_thumbMid;
-    rw::kinematics::Frame *_thumbTcp;
-    rw::models::Joint *_f1Base,*_f1Mid;
-    rw::kinematics::Frame *_f1Tcp;
-    rw::models::Joint *_f2Base,*_f2Mid;
-    rw::kinematics::Frame *_f2Tcp;
+        const rw::models::TreeDevice& _device;
+        double _maxWristToFingerTip;
+        double _minWristHeight;
 
-    double _aThum, _bThum;
-    double _af1,_bf1;
-    double _af2, _bf2;
-};
+        rw::models::Joint *_thumbBase, *_thumbMid;
+        rw::kinematics::Frame* _thumbTcp;
+        rw::models::Joint *_f1Base, *_f1Mid;
+        rw::kinematics::Frame* _f1Tcp;
+        rw::models::Joint *_f2Base, *_f2Mid;
+        rw::kinematics::Frame* _f2Tcp;
 
-}
-}
+        double _aThum, _bThum;
+        double _af1, _bf1;
+        double _af2, _bf2;
+    };
+
+}}    // namespace rw::graspplanning
 
 #endif /*CG3IKSOLVER2D_HPP_*/

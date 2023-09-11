@@ -41,28 +41,29 @@ namespace rwlibs { namespace opengl {
 
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< RenderModel3D > Ptr;
+        typedef rw::core::Ptr<RenderModel3D> Ptr;
 
         /**
          * @brief constructor.
          * @param model [in] the model that is to be rendered
          */
-        RenderModel3D (rw::graphics::Model3D::Ptr model);
+        RenderModel3D(rw::graphics::Model3D::Ptr model);
 
         /**
          * @brief Destructor
          */
-        virtual ~RenderModel3D ();
+        virtual ~RenderModel3D();
 
         /**
          * @brief get the model that is being rendered
          */
-        rw::graphics::Model3D::Ptr getModel () { return _model; };
+        rw::graphics::Model3D::Ptr getModel() { return _model; };
 
         // Functions inherited from Render
-        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info, DrawableNode::DrawType type, double alpha) const
-        void draw (const rw::graphics::DrawableNode::RenderInfo& info,
-                   rw::graphics::DrawableNode::DrawType type, double alpha) const;
+        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info,
+        //! DrawableNode::DrawType type, double alpha) const
+        void draw(const rw::graphics::DrawableNode::RenderInfo& info,
+                  rw::graphics::DrawableNode::DrawType type, double alpha) const;
 
         /**
          * @brief Fast drawing of model using drawelements array. This draw method require that
@@ -72,8 +73,8 @@ namespace rwlibs { namespace opengl {
          * @param type [in] the drawtype which is being used
          * @param alpha [in] the alpha value to render with
          */
-        void drawUsingArrays (const rw::graphics::DrawableNode::RenderInfo& info, DrawType type,
-                              double alpha) const;
+        void drawUsingArrays(const rw::graphics::DrawableNode::RenderInfo& info, DrawType type,
+                             double alpha) const;
 
         /**
          * @brief Slower drawing of model using simple opengl draw calls. This draw
@@ -84,37 +85,37 @@ namespace rwlibs { namespace opengl {
          * @param alpha [in] the alpha value to render with
          * @param disableMaterials [in] true to disable materials, false otherwise.
          */
-        void drawUsingSimple (const rw::graphics::DrawableNode::RenderInfo& info, DrawType type,
-                              double alpha, bool disableMaterials = false) const;
+        void drawUsingSimple(const rw::graphics::DrawableNode::RenderInfo& info, DrawType type,
+                             double alpha, bool disableMaterials = false) const;
 
         // void drawUsingList(DrawType type, double alpha) const;
 
       private:
-        template< class T >
-        void drawUsingSimpleFct (const rw::graphics::DrawableNode::RenderInfo& info,
-                                 const rw::graphics::Model3D::Object3D< T >& obj,
-                                 rw::graphics::DrawableNode::DrawType type, double alpha,
-                                 bool disableMaterials = false) const;
+        template<class T>
+        void drawUsingSimpleFct(const rw::graphics::DrawableNode::RenderInfo& info,
+                                const rw::graphics::Model3D::Object3D<T>& obj,
+                                rw::graphics::DrawableNode::DrawType type, double alpha,
+                                bool disableMaterials = false) const;
 
-        template< class T >
-        void drawUsingArraysFct (const rw::graphics::DrawableNode::RenderInfo& info,
-                                 const rw::graphics::Model3D::Object3D< T >& obj,
-                                 rw::graphics::DrawableNode::DrawType type, double alpha) const;
+        template<class T>
+        void drawUsingArraysFct(const rw::graphics::DrawableNode::RenderInfo& info,
+                                const rw::graphics::Model3D::Object3D<T>& obj,
+                                rw::graphics::DrawableNode::DrawType type, double alpha) const;
 
-        void useMaterial (const rw::graphics::Model3D::Material& mat,
-                          rw::graphics::DrawableNode::DrawType type, double alpha) const;
+        void useMaterial(const rw::graphics::Model3D::Material& mat,
+                         rw::graphics::DrawableNode::DrawType type, double alpha) const;
 
-        template< class T >
-        void makeVertexList (
-            const rw::graphics::Model3D::Object3D< T >& obj, std::vector< TPFace >& list,
-            rw::math::Transform3D< float > initial = rw::math::Transform3D< float > ()) const;
+        template<class T>
+        void
+        makeVertexList(const rw::graphics::Model3D::Object3D<T>& obj, std::vector<TPFace>& list,
+                       rw::math::Transform3D<float> initial = rw::math::Transform3D<float>()) const;
 
-        void drawTPFaceList (const std::vector< TPFace >& list,
-                             const rw::graphics::DrawableNode::RenderInfo& info,
-                             rw::graphics::DrawableNode::DrawType type, double alpha,
-                             bool disableMaterials) const;
+        void drawTPFaceList(const std::vector<TPFace>& list,
+                            const rw::graphics::DrawableNode::RenderInfo& info,
+                            rw::graphics::DrawableNode::DrawType type, double alpha,
+                            bool disableMaterials) const;
 
-        std::vector< rw::core::Ptr< rwlibs::opengl::RWGLTexture > > _textures;
+        std::vector<rw::core::Ptr<rwlibs::opengl::RWGLTexture>> _textures;
         // bool _shownormals;
     };
 

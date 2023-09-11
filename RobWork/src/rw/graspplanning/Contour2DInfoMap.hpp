@@ -21,7 +21,7 @@
 #if !defined(SWIG)
 #include <rw/geometry/Contour2D.hpp>
 #include <rw/sensor/Contact2D.hpp>
-#endif 
+#endif
 namespace rw { namespace graspplanning {
 
     /**
@@ -31,19 +31,19 @@ namespace rw { namespace graspplanning {
     {
       public:
         //! 2d contact pointer list
-        typedef std::vector< rw::sensor::Contact2D* > ContactPtrList;
+        typedef std::vector<rw::sensor::Contact2D*> ContactPtrList;
 
         /**
          * @brief constructor
          * @param resolution [in] the resolution of the dicretisation of the
          * polar coordinates.
          */
-        Contour2DInfoMap (int resolution = 100);
+        Contour2DInfoMap(int resolution = 100);
 
         /**
          * @brief destructor
          */
-        virtual ~Contour2DInfoMap (){};
+        virtual ~Contour2DInfoMap(){};
 
         /*
          * @brief gets the contact at angle angle from the direction vector (1,0)
@@ -54,42 +54,42 @@ namespace rw { namespace graspplanning {
          * @brief get all contacts that has a normal with an angle nAngle +-thres
          * relative to the direction vector (1,0).
          */
-        ContactPtrList getCNormals (double nAngle, double margin, double thres);
+        ContactPtrList getCNormals(double nAngle, double margin, double thres);
 
         /**
          * @brief initialize the contour2d map with a contour
          */
-        void reset (const rw::geometry::Contour2D& contor);
+        void reset(const rw::geometry::Contour2D& contor);
 
         /**
          * @brief writes this contour information to file
          * @param file [in] name of file
          */
-        void printToFile (const std::string& file);
+        void printToFile(const std::string& file);
 
         /**
          * @brief get min curvature of contour
          * @return min curvature
          */
-        double getMinCurvature () { return _minCurvature; }
+        double getMinCurvature() { return _minCurvature; }
 
         /**
          * @brief get max curvature of contour
          * @return max curvature
          */
-        double getMaxCurvature () { return _maxCurvature; }
+        double getMaxCurvature() { return _maxCurvature; }
 
         /**
          * @brief get average curvature of contour
          * @return average curvature
          */
-        double getAvgCurvature () { return _avgCurvature; }
+        double getAvgCurvature() { return _avgCurvature; }
 
         /**
          * @brief get the 2d contour
          * @return 2d contour
          */
-        const rw::geometry::Contour2D& getContour () { return *_contour; }
+        const rw::geometry::Contour2D& getContour() { return *_contour; }
 
       private:
         // int getContactIdx(double angle);
@@ -102,10 +102,10 @@ namespace rw { namespace graspplanning {
         // double _resStep;
 
         // contact info per contour point
-        std::vector< rw::sensor::Contact2D > _contacts;
+        std::vector<rw::sensor::Contact2D> _contacts;
 
         // mapping between normal direction and contacts
-        std::vector< ContactPtrList > _normalToContactsMap;
+        std::vector<ContactPtrList> _normalToContactsMap;
 
         // rw::math::Vector2D<> _center;
         // std::vector<double> _distMap;

@@ -38,15 +38,15 @@ namespace rwsim { namespace util {
     class GraspStrategy
     {
       public:
-        typedef rw::core::Ptr< GraspStrategy > Ptr;
+        typedef rw::core::Ptr<GraspStrategy> Ptr;
 
-        virtual StateSampler::Ptr getSampler () = 0;
+        virtual StateSampler::Ptr getSampler() = 0;
 
-        virtual std::string getIdentifier () = 0;
+        virtual std::string getIdentifier() = 0;
 
-        virtual rw::core::PropertyMap& getSettings () = 0;
+        virtual rw::core::PropertyMap& getSettings() = 0;
 
-        virtual void applySettings () = 0;
+        virtual void applySettings() = 0;
     };
 
 }}     // namespace rwsim::util

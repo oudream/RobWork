@@ -22,40 +22,38 @@
 #include <boost/thread/condition.hpp>
 #include <boost/thread/mutex.hpp>
 #include <queue>
-#endif 
+#endif
 namespace rw { namespace common {
 
     /**
      * @brief Queue class which is thread safe, eg. multiple threads may
      * use it at the same time.
      */
-    template< class T > class ThreadSafeQueue
+    template<class T> class ThreadSafeQueue
     {
       public:
         //! constructor
-        ThreadSafeQueue () : _size (0){};
+        ThreadSafeQueue() : _size(0){};
 
         /**
          * @brief test if the queue is empty
          * @return true if queue is empty, false otherwise
          */
-        inline bool empty ()
-        {
-            boost::mutex::scoped_lock lock (_mutex);
-            return _queue.empty ();
+        inline bool empty() {
+            boost::mutex::scoped_lock lock(_mutex);
+            return _queue.empty();
         }
 
         /**
          * @brief add data to the queue
          * @param wp [in] data to add to queue
          */
-        inline void push (T wp)
-        {
-            boost::mutex::scoped_lock lock (_mutex);
-            _queue.push (wp);
+        inline void push(T wp) {
+            boost::mutex::scoped_lock lock(_mutex);
+            _queue.push(wp);
             _size++;
             // lock.unlock();
-            _cond.notify_one ();
+            _cond.notify_one();
         }
 
         /**
@@ -64,14 +62,12 @@ namespace rw { namespace common {
          * @param wp [out]
          * @return true is wp set, false otherwise
          */
-        inline bool try_pop (T* wp)
-        {
-            boost::mutex::scoped_lock lock (_mutex);
-            if (_queue.empty ())
-                return false;
+        inline bool try_pop(T* wp) {
+            boost::mutex::scoped_lock lock(_mutex);
+            if(_queue.empty()) return false;
 
-            *wp = _queue.front ();
-            _queue.pop ();
+            *wp = _queue.front();
+            _queue.pop();
             _size--;
 
             return true;
@@ -83,14 +79,11 @@ namespace rw { namespace common {
          * @param wp [out] data that is popped from the queue
          * @return
          */
-        inline bool pop (T* wp)
-        {
-            boost::mutex::scoped_lock lock (_mutex);
-            while (_queue.empty ()) {
-                _cond.wait (lock);
-            }
-            *wp = _queue.front ();
-            _queue.pop ();
+        inline bool pop(T* wp) {
+            boost::mutex::scoped_lock lock(_mutex);
+            while(_queue.empty()) { _cond.wait(lock); }
+            *wp = _queue.front();
+            _queue.pop();
             _size--;
             /*
                     std::queue<T> tmpQ = _queue;
@@ -111,15 +104,13 @@ namespace rw { namespace common {
          * @param value [in] the value to compare with.
          * @return
          */
-        bool has (T value)
-        {
-            boost::mutex::scoped_lock lock (_mutex);
-            std::queue< T > tmpQ = _queue;
-            while (!tmpQ.empty ()) {
-                T val = tmpQ.front ();
-                tmpQ.pop ();
-                if (value == val)
-                    return true;
+        bool has(T value) {
+            boost::mutex::scoped_lock lock(_mutex);
+            std::queue<T> tmpQ = _queue;
+            while(!tmpQ.empty()) {
+                T val = tmpQ.front();
+                tmpQ.pop();
+                if(value == val) return true;
             }
             return false;
         }
@@ -130,21 +121,18 @@ namespace rw { namespace common {
          * @param wp [out] data that is popped from the queue.
          * @return true.
          */
-        inline bool popAndPrint (T* wp)
-        {
-            boost::mutex::scoped_lock lock (_mutex);
-            while (_queue.empty ()) {
-                _cond.wait (lock);
+        inline bool popAndPrint(T* wp) {
+            boost::mutex::scoped_lock lock(_mutex);
+            while(_queue.empty()) { _cond.wait(lock); }
+
+            std::queue<T> tmpQ = _queue;
+            while(!tmpQ.empty()) {
+                T val = tmpQ.front();
+                tmpQ.pop();
             }
 
-            std::queue< T > tmpQ = _queue;
-            while (!tmpQ.empty ()) {
-                T val = tmpQ.front ();
-                tmpQ.pop ();
-            }
-
-            *wp = _queue.front ();
-            _queue.pop ();
+            *wp = _queue.front();
+            _queue.pop();
             _size--;
 
             return true;
@@ -154,10 +142,10 @@ namespace rw { namespace common {
          * @brief Get the size of the queue.
          * @return the size.
          */
-        inline size_t size () { return _size; }
+        inline size_t size() { return _size; }
 
       private:
-        std::queue< T > _queue;
+        std::queue<T> _queue;
 
         mutable boost::mutex _mutex;
         boost::condition _cond;

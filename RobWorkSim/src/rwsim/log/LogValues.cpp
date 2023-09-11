@@ -24,107 +24,80 @@ using namespace rw::common;
 using namespace rw::math;
 using namespace rwsim::log;
 
-LogValues::LogValues (SimulatorLogScope* parent) : SimulatorLogEntry (parent)
-{}
+LogValues::LogValues(SimulatorLogScope* parent) : SimulatorLogEntry(parent) {}
 
-LogValues::~LogValues ()
-{}
+LogValues::~LogValues() {}
 
-void LogValues::read (class InputArchive& iarchive, const std::string& id)
-{
+void LogValues::read(class InputArchive& iarchive, const std::string& id) {
     std::size_t n;
-    n = iarchive.readUInt ("Values");
-    _values.resize (n);
-    for (std::size_t i = 0; i < n; i++) {
-        iarchive.read (_values[i], "Value");
-    }
-    n = iarchive.readUInt ("Labels");
-    _labels.resize (n);
-    for (std::size_t i = 0; i < n; i++) {
-        _labels[i] = iarchive.readString ("Label");
-    }
-    SimulatorLogEntry::read (iarchive, id);
+    n = iarchive.readUInt("Values");
+    _values.resize(n);
+    for(std::size_t i = 0; i < n; i++) { iarchive.read(_values[i], "Value"); }
+    n = iarchive.readUInt("Labels");
+    _labels.resize(n);
+    for(std::size_t i = 0; i < n; i++) { _labels[i] = iarchive.readString("Label"); }
+    SimulatorLogEntry::read(iarchive, id);
 }
 
-void LogValues::write (class OutputArchive& oarchive, const std::string& id) const
-{
-    oarchive.write (_values.size (), "Values");
-    for (const double value : _values) {
-        oarchive.write (value, "Value");
+void LogValues::write(class OutputArchive& oarchive, const std::string& id) const {
+    oarchive.write(_values.size(), "Values");
+    for(const double value : _values) { oarchive.write(value, "Value"); }
+    oarchive.write(_labels.size(), "Labels");
+    for(const std::string& label : _labels) { oarchive.write(label, "Label"); }
+    SimulatorLogEntry::write(oarchive, id);
+}
+
+std::string LogValues::getType() const {
+    return getTypeID();
+}
+
+bool LogValues::operator==(const SimulatorLog& b) const {
+    if(const LogValues* const entry = dynamic_cast<const LogValues*>(&b)) {
+        if(_values != entry->_values) return false;
+        if(_labels != entry->_labels) return false;
     }
-    oarchive.write (_labels.size (), "Labels");
-    for (const std::string& label : _labels) {
-        oarchive.write (label, "Label");
-    }
-    SimulatorLogEntry::write (oarchive, id);
+    return SimulatorLogEntry::operator==(b);
 }
 
-std::string LogValues::getType () const
-{
-    return getTypeID ();
+std::list<SimulatorLogEntry::Ptr> LogValues::getLinkedEntries() const {
+    return std::list<SimulatorLogEntry::Ptr>(0);
 }
 
-bool LogValues::operator== (const SimulatorLog& b) const
-{
-    if (const LogValues* const entry = dynamic_cast< const LogValues* > (&b)) {
-        if (_values != entry->_values)
-            return false;
-        if (_labels != entry->_labels)
-            return false;
-    }
-    return SimulatorLogEntry::operator== (b);
-}
-
-std::list< SimulatorLogEntry::Ptr > LogValues::getLinkedEntries () const
-{
-    return std::list< SimulatorLogEntry::Ptr > (0);
-}
-
-bool LogValues::autoLink ()
-{
+bool LogValues::autoLink() {
     return true;
 }
 
-SimulatorLogEntry::Ptr LogValues::createNew (SimulatorLogScope* parent) const
-{
-    return rw::core::ownedPtr (new LogValues (parent));
+SimulatorLogEntry::Ptr LogValues::createNew(SimulatorLogScope* parent) const {
+    return rw::core::ownedPtr(new LogValues(parent));
 }
 
-void LogValues::setData (const std::vector< std::string >& labels,
-                         const std::vector< double >& values)
-{
-    RW_ASSERT (labels.size () == values.size ());
+void LogValues::setData(const std::vector<std::string>& labels, const std::vector<double>& values) {
+    RW_ASSERT(labels.size() == values.size());
     _values = values;
     _labels = labels;
 }
 
-std::size_t LogValues::size () const
-{
-    RW_ASSERT (_values.size () == _labels.size ());
-    return _values.size ();
+std::size_t LogValues::size() const {
+    RW_ASSERT(_values.size() == _labels.size());
+    return _values.size();
 }
 
-const std::vector< std::string >& LogValues::getLabels () const
-{
+const std::vector<std::string>& LogValues::getLabels() const {
     return _labels;
 }
 
-std::string LogValues::getLabel (std::size_t i) const
-{
+std::string LogValues::getLabel(std::size_t i) const {
     return _labels[i];
 }
 
-const std::vector< double >& LogValues::getValues () const
-{
+const std::vector<double>& LogValues::getValues() const {
     return _values;
 }
 
-double LogValues::getValue (std::size_t i) const
-{
+double LogValues::getValue(std::size_t i) const {
     return _values[i];
 }
 
-std::string LogValues::getTypeID ()
-{
+std::string LogValues::getTypeID() {
     return "Values";
 }

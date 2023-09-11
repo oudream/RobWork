@@ -50,51 +50,51 @@ class TactileSensorDialog : public QDialog
     Q_OBJECT
 
   public:
-    TactileSensorDialog (rwsim::dynamics::DynamicWorkCell* dwc, QWidget* parent = 0);
+    TactileSensorDialog(rwsim::dynamics::DynamicWorkCell* dwc, QWidget* parent = 0);
 
-    void drawTactileInput ();
+    void drawTactileInput();
 
-    void detectFeatures ();
+    void detectFeatures();
 
   signals:
 
   public slots:
-    void zoomIn ();
-    void zoomOut ();
-    void rotateLeft ();
-    void rotateRight ();
-    void wheelEvent (QWheelEvent* event);
+    void zoomIn();
+    void zoomOut();
+    void rotateLeft();
+    void rotateRight();
+    void wheelEvent(QWheelEvent* event);
 
   private slots:
-    void btnPressed ();
-    void changedEvent ();
-    void setState (const rw::kinematics::State& state);
+    void btnPressed();
+    void changedEvent();
+    void setState(const rw::kinematics::State& state);
 
   private:
-    void initTactileInput ();
-    void detectCenterMass ();
-    void findMoments ();
+    void initTactileInput();
+    void detectCenterMass();
+    void findMoments();
 
   private:
     Ui::TactileSensorDialog* _ui;
 
     rwsim::dynamics::DynamicWorkCell* _dwc;
-    std::vector< rwsim::sensor::TactileArraySensor* > _tsensors;
-    std::vector< Eigen::MatrixXf > _values;
+    std::vector<rwsim::sensor::TactileArraySensor*> _tsensors;
+    std::vector<Eigen::MatrixXf> _values;
     QGraphicsScene* _scene;
     bool _renderingToImage;
 
-    std::vector< std::vector< QGraphicsRectItem* > > _rectItems;
-    std::vector< QGraphicsEllipseItem* > _centerItems;
-    std::vector< QGraphicsLineItem* > _momentItems;
-    std::vector< QGraphicsLineItem* > _momentSecItems;
-    std::vector< std::pair< int, int > > _dims;
+    std::vector<std::vector<QGraphicsRectItem*>> _rectItems;
+    std::vector<QGraphicsEllipseItem*> _centerItems;
+    std::vector<QGraphicsLineItem*> _momentItems;
+    std::vector<QGraphicsLineItem*> _momentSecItems;
+    std::vector<std::pair<int, int>> _dims;
     int _saveCnt;
 
     // typedef std::pair<rw::math::Vector2D<>,rw::math::Vector2D<> > Moment;
 
-    std::vector< rw::math::Vector2D<> > _centers;
-    std::vector< Moment > _moments;
+    std::vector<rw::math::Vector2D<>> _centers;
+    std::vector<Moment> _moments;
     int _nrOfPadsH;
 };
 

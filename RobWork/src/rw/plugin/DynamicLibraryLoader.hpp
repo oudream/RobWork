@@ -35,7 +35,7 @@ namespace rw { namespace plugin {
      * additional libraries. On Linux/Mac link with "dl". On Windows link with "kernel32".
      *
      */
-    template< class T > class DynamicLibraryLoader : public DynamicLibraryLoaderBase
+    template<class T> class DynamicLibraryLoader : public DynamicLibraryLoaderBase
     {
       public:
         /**
@@ -48,16 +48,15 @@ namespace rw { namespace plugin {
          * @param filename [in] Library file name (with extension)
          * @param funcname [in] Name of factory function in the library (default: factory0)
          */
-        DynamicLibraryLoader (const std::string& filename,
-                              const std::string& funcname = "factory0") :
-            DynamicLibraryLoaderBase (filename),
-            _funcname (funcname)
-        {}
+        DynamicLibraryLoader(const std::string& filename,
+                             const std::string& funcname = "factory0") :
+            DynamicLibraryLoaderBase(filename),
+            _funcname(funcname) {}
 
         /**
          * @copydoc ~DynamicLibraryLoaderBase
          */
-        virtual ~DynamicLibraryLoader (){
+        virtual ~DynamicLibraryLoader(){
 
         };
 
@@ -69,7 +68,7 @@ namespace rw { namespace plugin {
          *
          * @return The loaded object. This may be null
          */
-        T* get () { return (T*) getObject (_funcname); }
+        T* get() { return (T*) getObject(_funcname); }
 
       private:
         const std::string _funcname;

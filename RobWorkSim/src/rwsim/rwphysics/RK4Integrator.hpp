@@ -19,13 +19,13 @@ namespace rwsim { namespace simulator {
     class RK4Integrator : public BodyIntegrator
     {
       public:
-        RK4Integrator (dynamics::RigidBody* body);
+        RK4Integrator(dynamics::RigidBody* body);
 
-        virtual ~RK4Integrator (){};
+        virtual ~RK4Integrator(){};
 
-        void updatePosition (double h, rw::kinematics::State& state);
+        void updatePosition(double h, rw::kinematics::State& state);
 
-        void updateVelocity (double h, rw::kinematics::State& state);
+        void updateVelocity(double h, rw::kinematics::State& state);
 
       private:
         dynamics::RigidBody* _body;

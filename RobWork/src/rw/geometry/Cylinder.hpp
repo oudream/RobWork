@@ -20,7 +20,6 @@
 
 #if !defined(SWIG)
 #include <rw/geometry/Primitive.hpp>
-
 #include <rw/math/Transform3D.hpp>
 #endif
 
@@ -38,7 +37,7 @@ namespace rw { namespace geometry {
         /**
          * @brief constructor
          */
-        Cylinder (int levels = 16);
+        Cylinder(int levels = 16);
 
         /**
          * @brief Constructs cylinder primitive with the specified setup
@@ -49,14 +48,14 @@ namespace rw { namespace geometry {
          * @param height [in] height of the cylinder.
          * @param levels [in] granularity of the mesh
          */
-        Cylinder (float radius, float height, int levels = 16);
+        Cylinder(float radius, float height, int levels = 16);
 
         /**
          * @brief Constructor.
          * @param initQ [in] vector with (height, radius)
          * @param levels [in] granularity of the mesh
          */
-        Cylinder (const rw::math::Q& initQ, int levels = 16);
+        Cylinder(const rw::math::Q& initQ, int levels = 16);
 
         /**
          * @brief Construct cylinder primitive with specified radius and height and with the given
@@ -69,23 +68,23 @@ namespace rw { namespace geometry {
          * @param height [in] height of the cylinder.
          * @param levels [in] granularity of the mesh
          */
-        Cylinder (const rw::math::Transform3D<>& transform, float radius, float height,
-                  int levels = 16);
+        Cylinder(const rw::math::Transform3D<>& transform, float radius, float height,
+                 int levels = 16);
 
         //! @brief destructor
-        virtual ~Cylinder ();
+        virtual ~Cylinder();
 
         /**
          * @brief Get the radius of the cylinder.
          * @return the radius.
          */
-        double getRadius () const { return _radius; }
+        double getRadius() const { return _radius; }
 
         /**
          * @brief Get the height of the cylinder.
          * @return the height.
          */
-        double getHeight () const { return _height; }
+        double getHeight() const { return _height; }
 
         /**
          * @brief Returns the transform of the cylinder.
@@ -93,24 +92,24 @@ namespace rw { namespace geometry {
          * Default is the identity matrix unless a transform has been specified.
          * @return Transform of the cylinder
          */
-        const rw::math::Transform3D< float >& getTransform () const { return _transform; }
+        const rw::math::Transform3D<float>& getTransform() const { return _transform; }
 
         // inherited from Primitive
 
         //! @copydoc Primitive::createMesh
-        TriMesh::Ptr createMesh (int resolution) const;
+        TriMesh::Ptr createMesh(int resolution) const;
 
         //! @copydoc Primitive::getParameters
-        virtual rw::math::Q getParameters () const;
+        virtual rw::math::Q getParameters() const;
 
         //! @copydoc Primitive::setParameters
-        virtual void setParameters (const rw::math::Q& q);
+        virtual void setParameters(const rw::math::Q& q);
 
         //! @copydoc GeometryData::getType
-        GeometryType getType () const { return CylinderPrim; };
+        GeometryType getType() const { return CylinderPrim; };
 
       private:
-        rw::math::Transform3D< float > _transform;
+        rw::math::Transform3D<float> _transform;
         float _radius;
         float _height;
     };

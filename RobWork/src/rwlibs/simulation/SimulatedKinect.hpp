@@ -20,12 +20,11 @@
 
 //! @file SimulatedKinect.hpp
 #if !defined(SWIG)
-#include <rwlibs/simulation/SimulatedSensor.hpp>
-
 #include <rw/core/Ptr.hpp>
 #include <rw/graphics/SceneViewer.hpp>
 #include <rw/sensor/CameraModel.hpp>
 #include <rw/sensor/Scanner25DModel.hpp>
+#include <rwlibs/simulation/SimulatedSensor.hpp>
 #endif
 namespace rw { namespace sensor {
     class Scanner25D;
@@ -41,7 +40,6 @@ namespace rwlibs { namespace simulation {
     class SimulatedKinect : public SimulatedSensor
     {
       public:
-
         typedef rw::core::Ptr<SimulatedKinect> Ptr;
 
         /**
@@ -49,7 +47,7 @@ namespace rwlibs { namespace simulation {
          * @param name [in] name of this simulated scanner
          * @param frame [in] the frame the scanner is attached to.
          */
-        SimulatedKinect (const std::string& name, rw::core::Ptr<rw::kinematics::Frame> frame);
+        SimulatedKinect(const std::string& name, rw::core::Ptr<rw::kinematics::Frame> frame);
 
         /**
          * @brief constructor
@@ -57,19 +55,19 @@ namespace rwlibs { namespace simulation {
          * @param desc [in] description of this scanner
          * @param frame [in] the frame the scanner is attached to.
          */
-        SimulatedKinect (const std::string& name, const std::string& desc,
-                         rw::core::Ptr<rw::kinematics::Frame> frame);
+        SimulatedKinect(const std::string& name, const std::string& desc,
+                        rw::core::Ptr<rw::kinematics::Frame> frame);
 
         /**
          * @brief constructor
          * @param camModel [in] the camera model to use
          * @param scannerModel [in] the scanner model to use
          */
-        SimulatedKinect (rw::core::Ptr<rw::sensor::CameraModel> camModel,
-                         rw::core::Ptr<rw::sensor::Scanner25DModel> scannerModel);
+        SimulatedKinect(rw::core::Ptr<rw::sensor::CameraModel> camModel,
+                        rw::core::Ptr<rw::sensor::Scanner25DModel> scannerModel);
 
         //! @brief destructor
-        virtual ~SimulatedKinect ();
+        virtual ~SimulatedKinect();
 
         /**
          * @brief Initialize sensor.
@@ -77,92 +75,94 @@ namespace rwlibs { namespace simulation {
          * @return true if initialization succeeded, false otherwise (depends on the capabilities of
          * the SceneViewer).
          */
-        bool init (rw::core::Ptr<rw::graphics::SceneViewer> drawer);
+        bool init(rw::core::Ptr<rw::graphics::SceneViewer> drawer);
 
         /**
          * @brief set the framerate in frames per sec.
          * @param rate [in] frames per sec
          */
-        void setFrameRate (double rate);
+        void setFrameRate(double rate);
 
         ///////////// below is inheritet functions form Scanner25D and Sensor
 
         //! @copydoc rw::sensor::Scanner25D::open
-        void open ();
+        void open();
 
         //! @copydoc rw::sensor::Scanner25D::isOpen
-        bool isOpen ();
+        bool isOpen();
 
         //! @copydoc rw::sensor::Scanner25D::close
-        void close ();
+        void close();
 
         //! @copydoc rw::sensor::Scanner25D::acquire
-        void acquire ();
+        void acquire();
 
         //! @copydoc rw::sensor::Scanner25D::isScanReady
-        bool isDataReady ();
+        bool isDataReady();
 
         //! @copydoc rw::sensor::Scanner25D::getRange
-        std::pair< double, double > getRange () const;
+        std::pair<double, double> getRange() const;
 
         //! @copydoc rw::sensor::Scanner25D::getFrameRate
-        double getFrameRate () const;
+        double getFrameRate() const;
 
         //! @copydoc rwlibs::simulation::SimulatedKinect
-        const rw::geometry::PointCloud& getScan ();
+        const rw::geometry::PointCloud& getScan();
 
         /**
          * @brief Get scanned image.
          * @return a reference to the image.
          */
-        const rw::sensor::Image& getImage ();
+        const rw::sensor::Image& getImage();
 
         //! @copydoc SimulatedSensor::update
-        void update (const rwlibs::simulation::Simulator::UpdateInfo& info, rw::kinematics::State& state);
+        void update(const rwlibs::simulation::Simulator::UpdateInfo& info,
+                    rw::kinematics::State& state);
 
         //! @copydoc SimulatedSensor::reset
-        void reset (const rw::kinematics::State& state);
+        void reset(const rw::kinematics::State& state);
 
         /**
          * @brief get a handle to controlling an instance of the simulated sensor in a specific
          * simulator
          * @param simulator [in] the simulator in which the handle is active
          */
-        rw::core::Ptr<rw::sensor::Sensor> getSensorHandle (rw::core::Ptr<rwlibs::simulation::Simulator> simulator);
+        rw::core::Ptr<rw::sensor::Sensor>
+        getSensorHandle(rw::core::Ptr<rwlibs::simulation::Simulator> simulator);
 
         /**
          * @brief set to true to enable realistic noise on the scan.
          * @param enabled [in]
          */
-        void setNoiseEnabled (bool enabled) { _noiseEnabled = enabled; };
+        void setNoiseEnabled(bool enabled) { _noiseEnabled = enabled; };
 
         /**
          * @brief returns the vertical field of view
          * @return the vertical field of view
          */
-        double getVerticalFieldOfView () const { return _fieldOfView; }
+        double getVerticalFieldOfView() const { return _fieldOfView; }
 
         /**
          * @brief returns the width of the image
          * @return the width of the image
          */
-        int getWidth () const { return _width; }
+        int getWidth() const { return _width; }
 
         /**
          * @brief returns the height of the image
          * @return the height of the image
          */
-        int getHeight () const { return _height; }
+        int getHeight() const { return _height; }
 
         /**
          * @brief get the model of the camera of this kinect
          */
-        rw::core::Ptr<rw::sensor::CameraModel> getCameraModel () { return _camModel; }
+        rw::core::Ptr<rw::sensor::CameraModel> getCameraModel() { return _camModel; }
 
         /**
          * @brief get the model of the range scannger of this kinect
          */
-        rw::core::Ptr<rw::sensor::Scanner25DModel> getScannerModel () { return _scannerModel; }
+        rw::core::Ptr<rw::sensor::Scanner25DModel> getScannerModel() { return _scannerModel; }
 
       private:
         rw::sensor::CameraModel::Ptr _camModel;
@@ -170,7 +170,7 @@ namespace rwlibs { namespace simulation {
 
         double _frameRate, _dtsum;
         bool _isAcquired, _isOpenned, _noiseEnabled;
-        rw::core::Ptr< rw::sensor::Scanner25D > _rsensor;
+        rw::core::Ptr<rw::sensor::Scanner25D> _rsensor;
 
         rw::graphics::SceneViewer::Ptr _drawer;
         rw::graphics::SceneViewer::View::Ptr _view;

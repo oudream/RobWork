@@ -36,21 +36,21 @@ namespace rwlibs { namespace softbody {
          * @param plane the plane defining the obstacle
          * @param trans the world to plane transformation
          **/
-        BeamObstaclePlane (const rw::geometry::Plane& plane, const rw::math::Transform3D<>& trans);
+        BeamObstaclePlane(const rw::geometry::Plane& plane, const rw::math::Transform3D<>& trans);
 
         /**
          * @brief returns the world to plane transformation
          *
          * @return world to plane transformation
          **/
-        rw::math::Transform3D<> getTransform (void) const;
+        rw::math::Transform3D<> getTransform(void) const;
 
         /**
          * @brief sets the world to plane transformation
          *
          * @param trans world to plane transformation
          **/
-        void setTransform (const rw::math::Transform3D<>& trans);
+        void setTransform(const rw::math::Transform3D<>& trans);
 
         /**
          * @brief given the plane to beam tranformation, returns yTCP
@@ -58,7 +58,7 @@ namespace rwlibs { namespace softbody {
          * @param planeTbeam the transformation from the plane to the beam..
          * @return yTCP in millimeters
          **/
-        double get_yTCP (const rw::math::Transform3D<>& planeTbeam) const;
+        double get_yTCP(const rw::math::Transform3D<>& planeTbeam) const;
 
         /**
          * @brief given the plane to beam transformation, returns thetaTCP
@@ -66,7 +66,7 @@ namespace rwlibs { namespace softbody {
          * @param planeTbeam the transformation from the plane to the beam
          * @return thetaTCP in radians
          **/
-        double get_thetaTCP (const rw::math::Transform3D<>& planeTbeam) const;
+        double get_thetaTCP(const rw::math::Transform3D<>& planeTbeam) const;
 
         /**
          * @brief computes the plane to beam transformation, given the world to beam transformation
@@ -74,21 +74,21 @@ namespace rwlibs { namespace softbody {
          * @param Tbeam world to beam transformation
          * @return plane to beam transformation
          **/
-        rw::math::Transform3D<> compute_planeTbeam (const rw::math::Transform3D<>& Tbeam);
+        rw::math::Transform3D<> compute_planeTbeam(const rw::math::Transform3D<>& Tbeam);
 
         /**
          * @brief returns the plane
          *
          * @return the plane
          **/
-        rw::geometry::Plane::Ptr getPlane (void) const;
+        rw::geometry::Plane::Ptr getPlane(void) const;
 
         /**
          * @brief returns the geometry of the plane
          *
          * @return geometry of plane
          **/
-        rw::geometry::Geometry::Ptr getPlaneGeometry (void) const;
+        rw::geometry::Geometry::Ptr getPlaneGeometry(void) const;
 
       private:
         rw::geometry::Plane::Ptr _planePtr;

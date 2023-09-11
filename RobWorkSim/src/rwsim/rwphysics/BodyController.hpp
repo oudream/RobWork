@@ -37,12 +37,12 @@ namespace rwsim { namespace simulator {
          * @brief add external forces to the bodies that this
          * BodyManipulator controls.
          */
-        virtual void addForces (rw::kinematics::State& state, double time) = 0;
+        virtual void addForces(rw::kinematics::State& state, double time) = 0;
 
         /**
          * @brief resets the state of the body controller to \b state
          */
-        virtual void reset (rw::kinematics::State& state) = 0;
+        virtual void reset(rw::kinematics::State& state) = 0;
 
         /**
          * @brief return the list of bodies that this controller controls

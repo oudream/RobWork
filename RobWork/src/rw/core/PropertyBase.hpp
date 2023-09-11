@@ -43,7 +43,7 @@ namespace rw { namespace core {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< PropertyBase > Ptr;
+        typedef rw::core::Ptr<PropertyBase> Ptr;
 
         /**
          * @brief Constructor
@@ -51,7 +51,7 @@ namespace rw { namespace core {
          * @param identifier [in] identifier for the property
          * @param description [in] description of the property
          */
-        PropertyBase (const std::string& identifier, const std::string& description);
+        PropertyBase(const std::string& identifier, const std::string& description);
 
         /**
          * @brief Constructor
@@ -60,59 +60,58 @@ namespace rw { namespace core {
          * @param description [in] description of the property
          * @param type [in] type of the property
          */
-        PropertyBase (const std::string& identifier, const std::string& description,
-                      const PropertyType& type);
+        PropertyBase(const std::string& identifier, const std::string& description,
+                     const PropertyType& type);
 
         /**
          * @brief Destroys PropertyBase
          */
-        virtual ~PropertyBase ();
+        virtual ~PropertyBase();
 
         /**
          * @brief Returns the Property identifier
          * @return string identifier
          */
-        const std::string& getIdentifier () const;
+        const std::string& getIdentifier() const;
 
         /**
          * @brief Returns description
          * @return string description
          */
-        const std::string& getDescription () const;
+        const std::string& getDescription() const;
 
         /**
          * @brief Set description.
          * @param desc [in] the new description.
          * @param fireChangedEvent [in] (optional) fire changed event.
          */
-        void setDescription (const std::string& desc,
-                bool fireChangedEvent = true);
+        void setDescription(const std::string& desc, bool fireChangedEvent = true);
 
         /**
            @brief Construct a clone of the property.
         */
-        virtual PropertyBase* clone () const = 0;
+        virtual PropertyBase* clone() const = 0;
 
         /**
          * @brief returns reference to the property value
          * @return value
          */
-        virtual PropertyValueBase& getPropertyValue () = 0;
+        virtual PropertyValueBase& getPropertyValue() = 0;
 
 #if !defined(SWIGJAVA)
         /**
          * @brief returns const reference to the property value
          * @return value
          */
-        virtual const PropertyValueBase& getPropertyValue () const = 0;
+        virtual const PropertyValueBase& getPropertyValue() const = 0;
 
         /**
          * @brief Method signature for a callback function
          */
-        typedef std::function< void (PropertyBase*) > PropertyListener;
+        typedef std::function<void(PropertyBase*)> PropertyListener;
 
         //! @brief Type for changed property events.
-        typedef rw::core::Event< PropertyListener, PropertyBase* > ChangedEvent;
+        typedef rw::core::Event<PropertyListener, PropertyBase*> ChangedEvent;
 
         /**
          * @brief get changed event
@@ -121,13 +120,15 @@ namespace rw { namespace core {
          * changedEvent().add(...)
          *
          */
-        ChangedEvent& changedEvent () { return _changedEvent; }
+        ChangedEvent& changedEvent() {
+            return _changedEvent;
+        }
 #endif
         /**
          * @brief Returns the PropertyType
          * @return the PropertyType
          */
-        const rw::core::PropertyType& getType () const;
+        const rw::core::PropertyType& getType() const;
 
       private:
         /**
@@ -144,13 +145,13 @@ namespace rw { namespace core {
          * @brief Type of property
          */
         PropertyType _propertyType;
-#if!defined(SWIGJAVA)
+#if !defined(SWIGJAVA)
         //! changed event handler
         ChangedEvent _changedEvent;
 #endif
       private:
-        PropertyBase (const PropertyBase&);
-        PropertyBase& operator= (const PropertyBase&);
+        PropertyBase(const PropertyBase&);
+        PropertyBase& operator=(const PropertyBase&);
     };
 
     /* @} */

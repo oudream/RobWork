@@ -62,11 +62,11 @@ namespace rw { namespace loaders {
          *
          * @return The collision setup.
          */
-        static rw::proximity::CollisionSetup load (const std::string& prefix,
-                                                   const std::string& file);
+        static rw::proximity::CollisionSetup load(const std::string& prefix,
+                                                  const std::string& file);
 
       private:
-        CollisionSetupLoader ();
+        CollisionSetupLoader();
     };
 
     /*@}*/

@@ -23,10 +23,9 @@
  */
 
 #if !defined(SWIG)
-#include <rw/models/Device.hpp>
-
 #include <rw/kinematics/State.hpp>
 #include <rw/math/Q.hpp>
+#include <rw/models/Device.hpp>
 
 #include <utility>
 #include <vector>
@@ -58,7 +57,8 @@ namespace rw { namespace models {
         /**
            @brief All frames of the workcell.
         */
-        static std::vector< rw::kinematics::Frame* > findAllFrames (const rw::models::WorkCell& workcell);
+        static std::vector<rw::kinematics::Frame*>
+        findAllFrames(const rw::models::WorkCell& workcell);
 
         /**
            @brief The frame named \b name of workcell \b workcell.
@@ -67,7 +67,8 @@ namespace rw { namespace models {
 
            See WorkCell::findFrame() for a non-throwing version.
         */
-        static rw::kinematics::Frame& getFrame (const rw::models::WorkCell& workcell, const std::string& name);
+        static rw::kinematics::Frame& getFrame(const rw::models::WorkCell& workcell,
+                                               const std::string& name);
 
         /**
            @brief The device named \b name of workcell \b workcell.
@@ -76,8 +77,8 @@ namespace rw { namespace models {
 
            See WorkCell::findDevice() for a non-throwing version.
         */
-        static rw::core::Ptr< rw::models::Device > getDevice (const rw::models::WorkCell& workcell,
-                                                              const std::string& name);
+        static rw::core::Ptr<rw::models::Device> getDevice(const rw::models::WorkCell& workcell,
+                                                           const std::string& name);
 
         // Bounds checking
 
@@ -86,28 +87,29 @@ namespace rw { namespace models {
            upper corners given by \b bounds. Each value of \b q is allowed to be
            outside of the box by the amount \b tolerance.
         */
-        static bool inBounds (const rw::math::Q& q, const Device::QBox& bounds,
-                              double tolerance = 0);
+        static bool inBounds(const rw::math::Q& q, const Device::QBox& bounds,
+                             double tolerance = 0);
 
         /**
            @brief True iff the configuration \b q is within the joint limits of the
            device \b device.
         */
-        static bool inBounds (const rw::math::Q& q, const rw::models::Device& device,
-                              double tolerance = 0);
+        static bool inBounds(const rw::math::Q& q, const rw::models::Device& device,
+                             double tolerance = 0);
 
         /**
            @brief True iff the joint value \b val is within the joint limits of the
            joint \b joint with a tolerance of \b tolerance.
         */
-        static bool inBounds (const rw::math::Q& val, const rw::models::Joint& joint, double tolerance = 0);
+        static bool inBounds(const rw::math::Q& val, const rw::models::Joint& joint,
+                             double tolerance = 0);
 
         /**
            @brief True iff the joint values of \b state are within the joint limits
            of the joints of \b workcell with a tolerance of \b tolerance.
         */
-        static bool inBounds (const rw::kinematics::State& state, const rw::models::WorkCell& workcell,
-                              double tolerance = 0);
+        static bool inBounds(const rw::kinematics::State& state,
+                             const rw::models::WorkCell& workcell, double tolerance = 0);
 
         // Q path to state path conversion.
 
@@ -120,9 +122,9 @@ namespace rw { namespace models {
          * @param common_state [in] State to share for all configurations.
          * @return Sequence of states - one state for each configuration.
          */
-        static std::vector< rw::kinematics::State >
-        getStatePath (const rw::models::Device& device, const std::vector< rw::math::Q >& path,
-                      const rw::kinematics::State& common_state);
+        static std::vector<rw::kinematics::State>
+        getStatePath(const rw::models::Device& device, const std::vector<rw::math::Q>& path,
+                     const rw::kinematics::State& common_state);
 
         /**
            @brief Convert a sequence of configurations to a sequence of states.
@@ -135,10 +137,10 @@ namespace rw { namespace models {
            @param common_state [in] State to share for all configurations.
            @param result [out] Sequence of states - one state for each configuration.
         */
-        static void getStatePath (const rw::models::Device& device,
-                                  const std::vector< rw::math::Q >& path,
-                                  const rw::kinematics::State& common_state,
-                                  std::vector< rw::kinematics::State >& result);
+        static void getStatePath(const rw::models::Device& device,
+                                 const std::vector<rw::math::Q>& path,
+                                 const rw::kinematics::State& common_state,
+                                 std::vector<rw::kinematics::State>& result);
 
         /**
            @brief Construct a new device for which the base of the device equals
@@ -165,9 +167,10 @@ namespace rw { namespace models {
            @param base [in] Base frame for the new device.
            @param end [in] End frame for the new device.
         */
-        static rw::core::Ptr< rw::models::Device >
-        makeDevice (rw::core::Ptr< rw::models::Device > device, const rw::kinematics::State& state,
-                    rw::core::Ptr<rw::kinematics::Frame> base = NULL, rw::core::Ptr<rw::kinematics::Frame> end = NULL);
+        static rw::core::Ptr<rw::models::Device>
+        makeDevice(rw::core::Ptr<rw::models::Device> device, const rw::kinematics::State& state,
+                   rw::core::Ptr<rw::kinematics::Frame> base = NULL,
+                   rw::core::Ptr<rw::kinematics::Frame> end  = NULL);
     };
 
     /*@}*/

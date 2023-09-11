@@ -39,11 +39,11 @@ namespace rw { namespace core {
     class _n8
     {};
 
-    template< class CallBackMethod, class T1 = _n1, class T2 = _n1, class T3 = _n1, class T4 = _n1,
-              class T5 = _n1 >
+    template<class CallBackMethod, class T1 = _n1, class T2 = _n1, class T3 = _n1, class T4 = _n1,
+             class T5 = _n1>
     struct FireFunctor;
 
-    template< class CallBackMethod > struct EventListener;
+    template<class CallBackMethod> struct EventListener;
 
     /**
      * @brief Event is used for managing subscribtions and firing of events.
@@ -85,16 +85,16 @@ namespace rw { namespace core {
      * \endcode
      *
      */
-    template< class CallBackMethod, class T1 = _n1, class T2 = _n1, class T3 = _n1, class T4 = _n1 >
+    template<class CallBackMethod, class T1 = _n1, class T2 = _n1, class T3 = _n1, class T4 = _n1>
     class Event
     {
       public:
-        typedef rw::core::EventListener< CallBackMethod > Listener;
+        typedef rw::core::EventListener<CallBackMethod> Listener;
 
         /**
          * @brief constructor
          */
-        Event () : fire (this) {}
+        Event() : fire(this) {}
 
         /**
          * @brief Descructor.
@@ -133,9 +133,8 @@ namespace rw { namespace core {
          * @param id [in] Id associated with the callback (only used for removing a
          * specific listener)
          */
-        void add (CallBackMethod callback, const void* obj = nullptr, int id = 0)
-        {
-            _listeners.push_back (Listener (callback, obj, id));
+        void add(CallBackMethod callback, const void* obj = nullptr, int id = 0) {
+            _listeners.push_back(Listener(callback, obj, id));
         }
 
         /**
@@ -146,16 +145,11 @@ namespace rw { namespace core {
          *
          * @param obj [in] Object for which to remove listeners
          */
-        void remove (void* obj)
-        {
-            typename std::list< Listener >::iterator it = _listeners.begin ();
-            while (it != _listeners.end ()) {
-                if ((*it).obj == obj) {
-                    it = _listeners.erase (it);
-                }
-                else {
-                    ++it;
-                }
+        void remove(void* obj) {
+            typename std::list<Listener>::iterator it = _listeners.begin();
+            while(it != _listeners.end()) {
+                if((*it).obj == obj) { it = _listeners.erase(it); }
+                else { ++it; }
             }
         }
 
@@ -165,41 +159,37 @@ namespace rw { namespace core {
          * @param obj [in] Object associated with the callback
          * @param id [in] Id of the callback
          */
-        void remove (void* obj, int id)
-        {
-            typename std::list< Listener >::iterator it = _listeners.begin ();
-            while (it != _listeners.end ()) {
-                if ((*it).obj == obj && (*it).id == id) {
-                    it = _listeners.erase (it);
-                }
-                else {
-                    ++it;
-                }
+        void remove(void* obj, int id) {
+            typename std::list<Listener>::iterator it = _listeners.begin();
+            while(it != _listeners.end()) {
+                if((*it).obj == obj && (*it).id == id) { it = _listeners.erase(it); }
+                else { ++it; }
             }
         }
 
 #if !defined(SWIGJAVA)
         //! iterator of event listeners
-        typedef typename std::list< Listener >::const_iterator ConstListenerIterator;
+        typedef typename std::list<Listener>::const_iterator ConstListenerIterator;
 
         /**
          * @brief Returns list of listeners to the event
          *
          * @return List of listeners
          */
-        std::pair< ConstListenerIterator, ConstListenerIterator > getListeners ()
-        {
-            return std::make_pair (_listeners.begin (), _listeners.end ());
+        std::pair<ConstListenerIterator, ConstListenerIterator> getListeners() {
+            return std::make_pair(_listeners.begin(), _listeners.end());
         }
 #endif
         /**
          * @brief Get the list of listeners for this event.
          * @return list of listeners.
          */
-        std::list< Listener >& getListenerList () { return _listeners; }
+        std::list<Listener>& getListenerList() {
+            return _listeners;
+        }
 
       private:
-        std::list< Listener > _listeners;
+        std::list<Listener> _listeners;
 
       public:
         /**
@@ -207,13 +197,13 @@ namespace rw { namespace core {
          *
          * The signature of the \b fire method depends on the FireEventMethod template argument.
          */
-        FireFunctor< CallBackMethod, T1, T2, T3, T4, _n1 > fire;
+        FireFunctor<CallBackMethod, T1, T2, T3, T4, _n1> fire;
     };
 
     /**
      * @brief Structure for data associated to a listener
      */
-    template< class CallBackMethod > struct EventListener
+    template<class CallBackMethod> struct EventListener
     {
         /**
          * @brief The callback method
@@ -234,9 +224,8 @@ namespace rw { namespace core {
         /**
          * @brief Constructs Listener data struct
          */
-        EventListener (CallBackMethod callback, const void* obj, int id) :
-            callback (callback), obj (obj), id (id)
-        {}
+        EventListener(CallBackMethod callback, const void* obj, int id) :
+            callback(callback), obj(obj), id(id) {}
 #endif
     };
 
@@ -246,7 +235,7 @@ namespace rw { namespace core {
     // FireFunctor0<CallBackMethod> {};
 
     //! FireFunctor with 0 arguments
-    template< class CallBackMethod, class T1, class T2, class T3, class T4, class T5 >
+    template<class CallBackMethod, class T1, class T2, class T3, class T4, class T5>
     struct FireFunctor
     {
       public:
@@ -254,36 +243,33 @@ namespace rw { namespace core {
          * @brief Constructor.
          * @param event [in] the event.
          */
-        FireFunctor (Event< CallBackMethod >* event) : _event (event) {}
+        FireFunctor(Event<CallBackMethod>* event) : _event(event) {}
         //! @brief Functor operator for invoking the callback methods on all listeners.
-        void operator() ()
-        {
-            for (typename Event< CallBackMethod >::Listener& listener :
-                 _event->getListenerList ()) {
-                listener.callback ();
+        void operator()() {
+            for(typename Event<CallBackMethod>::Listener& listener : _event->getListenerList()) {
+                listener.callback();
             }
         }
 
       private:
-        Event< CallBackMethod >* _event;
+        Event<CallBackMethod>* _event;
     };
 
     //! FireFunctor with 1 arguments
-    template< class CallBackMethod, class T1 >
-    struct FireFunctor< CallBackMethod, T1, _n1, _n1, _n1, _n1 >
+    template<class CallBackMethod, class T1>
+    struct FireFunctor<CallBackMethod, T1, _n1, _n1, _n1, _n1>
     {
         //! @brief Type of the event.
-        typedef Event< CallBackMethod, T1 > EventType;
+        typedef Event<CallBackMethod, T1> EventType;
         /**
          * @brief Constructor.
          * @param event [in] the event.
          */
-        FireFunctor (EventType* event) : _event (event) {}
+        FireFunctor(EventType* event) : _event(event) {}
         //! @brief Functor operator for invoking the callback methods on all listeners.
-        void operator() (T1 t1)
-        {
-            for (typename EventType::Listener& listener : _event->getListenerList ()) {
-                listener.callback (t1);
+        void operator()(T1 t1) {
+            for(typename EventType::Listener& listener : _event->getListenerList()) {
+                listener.callback(t1);
             }
         }
 
@@ -292,21 +278,20 @@ namespace rw { namespace core {
     };
 
     //! FireFunctor with 2 arguments
-    template< class CallBackMethod, class T1, class T2 >
-    struct FireFunctor< CallBackMethod, T1, T2, _n1, _n1, _n1 >
+    template<class CallBackMethod, class T1, class T2>
+    struct FireFunctor<CallBackMethod, T1, T2, _n1, _n1, _n1>
     {
         //! @brief Type of the event.
-        typedef Event< CallBackMethod, T1, T2 > EventType;
+        typedef Event<CallBackMethod, T1, T2> EventType;
         /**
          * @brief Constructor.
          * @param event [in] the event.
          */
-        FireFunctor (EventType* event) : _event (event) {}
+        FireFunctor(EventType* event) : _event(event) {}
         //! @brief Functor operator for invoking the callback methods on all listeners.
-        void operator() (T1 t1, T2 t2)
-        {
-            for (typename EventType::Listener& listener : _event->getListenerList ()) {
-                listener.callback (t1, t2);
+        void operator()(T1 t1, T2 t2) {
+            for(typename EventType::Listener& listener : _event->getListenerList()) {
+                listener.callback(t1, t2);
             }
         }
 
@@ -315,21 +300,20 @@ namespace rw { namespace core {
     };
 
     //! FireFunctor with 3 arguments
-    template< class CallBackMethod, class T1, class T2, class T3 >
-    struct FireFunctor< CallBackMethod, T1, T2, T3, _n1, _n1 >
+    template<class CallBackMethod, class T1, class T2, class T3>
+    struct FireFunctor<CallBackMethod, T1, T2, T3, _n1, _n1>
     {
         //! @brief Type of the event.
-        typedef Event< CallBackMethod, T1, T2, T3 > EventType;
+        typedef Event<CallBackMethod, T1, T2, T3> EventType;
         /**
          * @brief Constructor.
          * @param event [in] the event.
          */
-        FireFunctor (EventType* event) : _event (event) {}
+        FireFunctor(EventType* event) : _event(event) {}
         //! @brief Functor operator for invoking the callback methods on all listeners.
-        void operator() (T1 t1, T2 t2, T3 t3)
-        {
-            for (typename EventType::Listener& listener : _event->getListenerList ()) {
-                listener.callback (t1, t2, t3);
+        void operator()(T1 t1, T2 t2, T3 t3) {
+            for(typename EventType::Listener& listener : _event->getListenerList()) {
+                listener.callback(t1, t2, t3);
             }
         }
 
@@ -338,21 +322,20 @@ namespace rw { namespace core {
     };
 
     //! FireFunctor with 4 arguments
-    template< class CallBackMethod, class T1, class T2, class T3, class T4 >
-    struct FireFunctor< CallBackMethod, T1, T2, T3, T4, _n1 >
+    template<class CallBackMethod, class T1, class T2, class T3, class T4>
+    struct FireFunctor<CallBackMethod, T1, T2, T3, T4, _n1>
     {
         //! @brief Type of the event.
-        typedef Event< CallBackMethod, T1, T2, T3, T4 > EventType;
+        typedef Event<CallBackMethod, T1, T2, T3, T4> EventType;
         /**
          * @brief Constructor.
          * @param event [in] the event.
          */
-        FireFunctor (EventType* event) : _event (event) {}
+        FireFunctor(EventType* event) : _event(event) {}
         //! @brief Functor operator for invoking the callback methods on all listeners.
-        void operator() (T1 t1, T2 t2, T3 t3, T4 t4)
-        {
-            for (typename EventType::Listener& listener : _event->getListenerList ()) {
-                listener.callback (t1, t2, t3, t4);
+        void operator()(T1 t1, T2 t2, T3 t3, T4 t4) {
+            for(typename EventType::Listener& listener : _event->getListenerList()) {
+                listener.callback(t1, t2, t3, t4);
             }
         }
 

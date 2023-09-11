@@ -18,10 +18,11 @@
 #ifndef RWSIM_SIMULATOR_ODEJOINT_HPP_
 #define RWSIM_SIMULATOR_ODEJOINT_HPP_
 
-#include <ode/ode.h>
 #include <rw/math/Vector3D.hpp>
 #include <rw/models/Joint.hpp>
 #include <rwsimlibs/ode/ODEBody.hpp>
+
+#include <ode/ode.h>
 
 namespace rw { namespace kinematics {
     class State;
@@ -49,119 +50,95 @@ namespace rwsim { namespace simulator {
          * @param sim
          * @param state
          */
-        ODEJoint (rw::models::Joint* rwjoint, ODEBody* parent, ODEBody* child, ODESimulator* sim,
-                  const rw::kinematics::State& state);
+        ODEJoint(rw::models::Joint* rwjoint, ODEBody* parent, ODEBody* child, ODESimulator* sim,
+                 const rw::kinematics::State& state);
 
-        virtual ~ODEJoint (){}
+        virtual ~ODEJoint() {}
 
-        void setForce (double vel)
-        {
+        void setForce(double vel) {
             // if(isMotorEnabled())
             //	RW_WARN("PLEASE DISABLE MOTOR!");
 
             // if(_jtype==Revolute) dJointAddHingeTorque(_jointId, vel);
             // else dJointAddSliderForce(_jointId, vel);
-            if (_jtype == Revolute)
-                dJointAddAMotorTorques (_motorId, vel, vel, vel);
+            if(_jtype == Revolute) dJointAddAMotorTorques(_motorId, vel, vel, vel);
         }
 
-        double getActualVelocity ()
-        {
-            if (_jtype == Revolute)
-                return dJointGetHingeAngleRate (_jointId);
-            return dJointGetSliderPositionRate (_jointId);
+        double getActualVelocity() {
+            if(_jtype == Revolute) return dJointGetHingeAngleRate(_jointId);
+            return dJointGetSliderPositionRate(_jointId);
         }
 
-        double getAngle ()
-        {
+        double getAngle() {
             double val;
-            if (_jtype == Revolute)
-                val = dJointGetHingeAngle (_jointId);
-            else
-                val = dJointGetSliderPosition (_jointId);
+            if(_jtype == Revolute) val = dJointGetHingeAngle(_jointId);
+            else val = dJointGetSliderPosition(_jointId);
             return val;
         }
 
-        ODEJoint* getOwner () { return _owner; }
+        ODEJoint* getOwner() { return _owner; }
 
-        ODEJointType getType () { return _type; }
+        ODEJointType getType() { return _type; }
 
-        void reset (const rw::kinematics::State& state);
+        void reset(const rw::kinematics::State& state);
 
-        double getScale () { return _scale; };
-        double getOffset () { return _off; };
+        double getScale() { return _scale; };
+        double getOffset() { return _off; };
 
-        ODEBody* getParent () { return _parent; }
+        ODEBody* getParent() { return _parent; }
 
-        ODEBody* getChild () { return _child; }
+        ODEBody* getChild() { return _child; }
 
-        rw::models::Joint* getJoint () { return _rwJoint; }
+        rw::models::Joint* getJoint() { return _rwJoint; }
 
-        bool isDepend () { return getType () == DEPEND || getType () == DEPEND_PAR; }
+        bool isDepend() { return getType() == DEPEND || getType() == DEPEND_PAR; }
 
         /// Functions that require a MOTOR
 
-        void setVelocity (double vel)
-        {
-            if (_jtype == Revolute)
-                dJointSetAMotorParam (_motorId, dParamVel, vel);
-            else
-                dJointSetLMotorParam (_motorId, dParamVel, vel);
+        void setVelocity(double vel) {
+            if(_jtype == Revolute) dJointSetAMotorParam(_motorId, dParamVel, vel);
+            else dJointSetLMotorParam(_motorId, dParamVel, vel);
         }
 
-        double getVelocity ()
-        {
+        double getVelocity() {
             double vel;
-            if (_jtype == Revolute)
-                vel = dJointGetAMotorParam (_motorId, dParamVel);
-            else
-                vel = dJointGetLMotorParam (_motorId, dParamVel);
+            if(_jtype == Revolute) vel = dJointGetAMotorParam(_motorId, dParamVel);
+            else vel = dJointGetLMotorParam(_motorId, dParamVel);
             return vel;
         }
 
-        void setMaxForce (double force)
-        {
-            if (force > 0.0)
-                _disableForceTmp = force;
-            if (_jtype == Revolute)
-                dJointSetAMotorParam (_motorId, dParamFMax, force);
-            else
-                dJointSetLMotorParam (_motorId, dParamFMax, force);
+        void setMaxForce(double force) {
+            if(force > 0.0) _disableForceTmp = force;
+            if(_jtype == Revolute) dJointSetAMotorParam(_motorId, dParamFMax, force);
+            else dJointSetLMotorParam(_motorId, dParamFMax, force);
         }
 
-        double getMaxForce ()
-        {
-            if (_jtype == Revolute)
-                return dJointGetAMotorParam (_motorId, dParamFMax);
-            return dJointGetLMotorParam (_motorId, dParamFMax);
+        double getMaxForce() {
+            if(_jtype == Revolute) return dJointGetAMotorParam(_motorId, dParamFMax);
+            return dJointGetLMotorParam(_motorId, dParamFMax);
         }
 
-        void setAngle (double pos)
-        {
-            if (_jtype == Revolute)
-                dJointSetAMotorAngle (_motorId, 0, pos);
+        void setAngle(double pos) {
+            if(_jtype == Revolute) dJointSetAMotorAngle(_motorId, 0, pos);
             // else dJointSetLMotorAngle(_motorId, 0, pos);
         }
 
-        void setMotorEnabled (bool enabled)
-        {
-            std::cout << "set motor " << enabled << " " << _rwJoint->getName ()
+        void setMotorEnabled(bool enabled) {
+            std::cout << "set motor " << enabled << " " << _rwJoint->getName()
                       << " id: " << _motorId << "\n";
-            if (enabled) {
+            if(enabled) {
                 // dJointEnable(_motorId);
-                setMaxForce (_disableForceTmp);
+                setMaxForce(_disableForceTmp);
             }
             else {
-                _disableForceTmp = getMaxForce ();
-                setMaxForce (0.0);
+                _disableForceTmp = getMaxForce();
+                setMaxForce(0.0);
                 // dJointDisable(_motorId);
             }
         }
 
-        bool isMotorEnabled ()
-        {
-            if (dJointIsEnabled (_motorId))
-                return true;
+        bool isMotorEnabled() {
+            if(dJointIsEnabled(_motorId)) return true;
             return false;
         }
 

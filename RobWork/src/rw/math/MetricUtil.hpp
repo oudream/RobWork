@@ -26,7 +26,7 @@
 
 #include <cmath>
 #include <cstddef>
-#endif 
+#endif
 
 namespace rw { namespace math {
     /** @addtogroup math */
@@ -43,44 +43,35 @@ namespace rw { namespace math {
         /**
            @brief The 1-norm of a configuration.
         */
-        template< class VectorType >
-        static inline typename VectorType::value_type norm1 (const VectorType& q)
-        {
-            const size_t len                       = q.size ();
+        template<class VectorType>
+        static inline typename VectorType::value_type norm1(const VectorType& q) {
+            const size_t len                       = q.size();
             typename VectorType::value_type result = 0;
-            for (size_t i = 0; i < len; i++) {
-                result += std::fabs (q[i]);
-            }
+            for(size_t i = 0; i < len; i++) { result += std::fabs(q[i]); }
             return result;
         }
 
         /**
            @brief The 1-norm of the difference between two configurations.
         */
-        template< class VectorType >
-        static inline typename VectorType::value_type dist1 (const VectorType& a,
-                                                             const VectorType& b)
-        {
+        template<class VectorType>
+        static inline typename VectorType::value_type dist1(const VectorType& a,
+                                                            const VectorType& b) {
             typename VectorType::value_type result = 0;
-            const size_t len                       = a.size ();
-            for (size_t i = 0; i < len; i++) {
-                result += std::fabs (a[i] - b[i]);
-            }
+            const size_t len                       = a.size();
+            for(size_t i = 0; i < len; i++) { result += std::fabs(a[i] - b[i]); }
             return result;
         }
 
         /**
            @brief The scaled 1-norm of a configuration.
         */
-        template< class VectorType >
-        static inline typename VectorType::value_type norm1Weighted (const VectorType& q,
-                                                                     const VectorType& scale)
-        {
+        template<class VectorType>
+        static inline typename VectorType::value_type norm1Weighted(const VectorType& q,
+                                                                    const VectorType& scale) {
             typename VectorType::value_type result = 0;
-            const size_t len                       = q.size ();
-            for (size_t i = 0; i < len; i++) {
-                result += std::fabs (q[i] * scale[i]);
-            }
+            const size_t len                       = q.size();
+            for(size_t i = 0; i < len; i++) { result += std::fabs(q[i] * scale[i]); }
             return result;
         }
 
@@ -88,15 +79,12 @@ namespace rw { namespace math {
            @brief The scaled 1-norm of the difference between two
            configurations.
         */
-        template< class VectorType >
+        template<class VectorType>
         static inline typename VectorType::value_type
-        dist1Weighted (const VectorType& a, const VectorType& b, const VectorType& scale)
-        {
+        dist1Weighted(const VectorType& a, const VectorType& b, const VectorType& scale) {
             typename VectorType::value_type result = 0;
-            const size_t len                       = a.size ();
-            for (size_t i = 0; i < len; i++) {
-                result += std::fabs ((a[i] - b[i]) * scale[i]);
-            }
+            const size_t len                       = a.size();
+            for(size_t i = 0; i < len; i++) { result += std::fabs((a[i] - b[i]) * scale[i]); }
             return result;
         }
 
@@ -105,87 +93,74 @@ namespace rw { namespace math {
         /**
            @brief The square of the 2-norm of a configuration.
         */
-        template< class VectorType >
-        static inline typename VectorType::value_type norm2Sqr (const VectorType& q)
-        {
+        template<class VectorType>
+        static inline typename VectorType::value_type norm2Sqr(const VectorType& q) {
             typename VectorType::value_type result = 0;
-            const size_t len                       = q.size ();
-            for (size_t i = 0; i < len; i++) {
-                result += q[i] * q[i];
-            }
+            const size_t len                       = q.size();
+            for(size_t i = 0; i < len; i++) { result += q[i] * q[i]; }
             return result;
         }
 
         /**
            @brief The 2-norm of a configuration.
         */
-        template< class VectorType >
-        static inline typename VectorType::value_type norm2 (const VectorType& q)
-        {
-            return std::sqrt (norm2Sqr (q));
+        template<class VectorType>
+        static inline typename VectorType::value_type norm2(const VectorType& q) {
+            return std::sqrt(norm2Sqr(q));
         }
 
         /**
            @brief The squared 2-norm of the difference between two configurations.
         */
-        template< class VectorType >
-        static inline typename VectorType::value_type dist2Sqr (const VectorType& a,
-                                                                const VectorType& b)
-        {
+        template<class VectorType>
+        static inline typename VectorType::value_type dist2Sqr(const VectorType& a,
+                                                               const VectorType& b) {
             typename VectorType::value_type result = 0;
-            const size_t len                       = a.size ();
-            for (size_t i = 0; i < len; i++) {
-                result += (a[i] - b[i]) * (a[i] - b[i]);
-            }
+            const size_t len                       = a.size();
+            for(size_t i = 0; i < len; i++) { result += (a[i] - b[i]) * (a[i] - b[i]); }
             return result;
         }
 
         /**
            @brief The 2-norm of the difference between two configurations.
         */
-        template< class VectorType >
-        static inline typename VectorType::value_type dist2 (const VectorType& a,
-                                                             const VectorType& b)
-        {
-            return std::sqrt (dist2Sqr (a, b));
+        template<class VectorType>
+        static inline typename VectorType::value_type dist2(const VectorType& a,
+                                                            const VectorType& b) {
+            return std::sqrt(dist2Sqr(a, b));
         }
 
         /**
            @brief The squared scaled 2-norm of a configuration.
         */
-        template< class VectorType >
-        static inline typename VectorType::value_type norm2WeightedSqr (const VectorType& q,
-                                                                        const VectorType& scale)
-        {
+        template<class VectorType>
+        static inline typename VectorType::value_type norm2WeightedSqr(const VectorType& q,
+                                                                       const VectorType& scale) {
             typename VectorType::value_type result = 0;
-            const size_t len                       = q.size ();
-            for (size_t i = 0; i < len; i++) {
-                result += (q[i] * scale[i]) * (q[i] * scale[i]);
-            }
+            const size_t len                       = q.size();
+            for(size_t i = 0; i < len; i++) { result += (q[i] * scale[i]) * (q[i] * scale[i]); }
             return result;
         }
 
         /**
            @brief The scaled 2-norm of a configuration.
         */
-        template< class VectorType >
-        static inline typename VectorType::value_type norm2Weighted (const VectorType& q,
-                                                                     const VectorType& scale)
-        {
-            return std::sqrt (norm2WeightedSqr (q, scale));
+        template<class VectorType>
+        static inline typename VectorType::value_type norm2Weighted(const VectorType& q,
+                                                                    const VectorType& scale) {
+            return std::sqrt(norm2WeightedSqr(q, scale));
         }
 
         /**
            @brief The squared scaled 2-norm of the difference between two
            configurations.
         */
-        template< class VectorType >
+        template<class VectorType>
         static inline typename VectorType::value_type
-        dist2WeightedSqr (const VectorType& a, const VectorType& b, const VectorType& scale)
-        {
+        dist2WeightedSqr(const VectorType& a, const VectorType& b, const VectorType& scale) {
             typename VectorType::value_type result = 0;
-            const size_t len                       = a.size ();
-            for (size_t i = 0; i < len; i++) {
+            const size_t len                       = a.size();
+            for(size_t i = 0; i < len; i++) {
                 result += ((a[i] - b[i]) * scale[i]) * ((a[i] - b[i]) * scale[i]);
             }
             return result;
@@ -195,11 +170,10 @@ namespace rw { namespace math {
            @brief The scaled 2-norm of the difference between two
            configurations.
         */
-        template< class VectorType >
+        template<class VectorType>
         static inline typename VectorType::value_type
-        dist2Weighted (const VectorType& a, const VectorType& b, const VectorType& scale)
-        {
-            return std::sqrt (dist2WeightedSqr (a, b, scale));
+        dist2Weighted(const VectorType& a, const VectorType& b, const VectorType& scale) {
+            return std::sqrt(dist2WeightedSqr(a, b, scale));
         }
 
         // infinity norm.
@@ -207,15 +181,13 @@ namespace rw { namespace math {
         /**
            @brief The infinity-norm of a configuration.
         */
-        template< class VectorType >
-        static inline typename VectorType::value_type normInf (const VectorType& q)
-        {
+        template<class VectorType>
+        static inline typename VectorType::value_type normInf(const VectorType& q) {
             typename VectorType::value_type result = 0;
-            const size_t len                       = q.size ();
-            for (size_t i = 0; i < len; i++) {
-                typename VectorType::value_type abs_val = std::fabs (q[i]);
-                if (abs_val > result)
-                    result = abs_val;
+            const size_t len                       = q.size();
+            for(size_t i = 0; i < len; i++) {
+                typename VectorType::value_type abs_val = std::fabs(q[i]);
+                if(abs_val > result) result = abs_val;
             }
             return result;
         }
@@ -223,16 +195,14 @@ namespace rw { namespace math {
         /**
            @brief The infinity-norm of the difference between two configurations.
         */
-        template< class VectorType >
-        static inline typename VectorType::value_type distInf (const VectorType& a,
-                                                               const VectorType& b)
-        {
+        template<class VectorType>
+        static inline typename VectorType::value_type distInf(const VectorType& a,
+                                                              const VectorType& b) {
             typename VectorType::value_type result = 0;
-            const size_t len                       = a.size ();
-            for (size_t i = 0; i < len; i++) {
-                typename VectorType::value_type abs_val = std::fabs (a[i] - b[i]);
-                if (abs_val > result)
-                    result = abs_val;
+            const size_t len                       = a.size();
+            for(size_t i = 0; i < len; i++) {
+                typename VectorType::value_type abs_val = std::fabs(a[i] - b[i]);
+                if(abs_val > result) result = abs_val;
             }
             return result;
         }
@@ -240,16 +210,14 @@ namespace rw { namespace math {
         /**
            @brief The scaled infinity-norm of a configuration.
         */
-        template< class VectorType >
-        static inline typename VectorType::value_type normInfWeighted (const VectorType& q,
-                                                                       const VectorType& scale)
-        {
+        template<class VectorType>
+        static inline typename VectorType::value_type normInfWeighted(const VectorType& q,
+                                                                      const VectorType& scale) {
             typename VectorType::value_type result = 0;
-            const size_t len                       = q.size ();
-            for (size_t i = 0; i < len; i++) {
-                typename VectorType::value_type abs_val = std::fabs (q[i] * scale[i]);
-                if (abs_val > result)
-                    result = abs_val;
+            const size_t len                       = q.size();
+            for(size_t i = 0; i < len; i++) {
+                typename VectorType::value_type abs_val = std::fabs(q[i] * scale[i]);
+                if(abs_val > result) result = abs_val;
             }
             return result;
         }
@@ -258,16 +226,14 @@ namespace rw { namespace math {
            @brief The scaled infinity-norm of the difference between two
            configurations.
         */
-        template< class VectorType >
+        template<class VectorType>
         static inline typename VectorType::value_type
-        distInfWeighted (const VectorType& a, const VectorType& b, const VectorType& scale)
-        {
+        distInfWeighted(const VectorType& a, const VectorType& b, const VectorType& scale) {
             typename VectorType::value_type result = 0;
-            const size_t len                       = a.size ();
-            for (size_t i = 0; i < len; i++) {
-                typename VectorType::value_type abs_val = std::fabs ((a[i] - b[i]) * scale[i]);
-                if (abs_val > result)
-                    result = abs_val;
+            const size_t len                       = a.size();
+            for(size_t i = 0; i < len; i++) {
+                typename VectorType::value_type abs_val = std::fabs((a[i] - b[i]) * scale[i]);
+                if(abs_val > result) result = abs_val;
             }
             return result;
         }

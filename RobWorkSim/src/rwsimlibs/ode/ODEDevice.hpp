@@ -38,13 +38,13 @@ namespace rwsim { namespace simulator {
         /**
          * @brief destructor
          */
-        virtual ~ODEDevice (){};
+        virtual ~ODEDevice(){};
 
         /**
          * @brief resets the ODE device to the state values of the RWSim device.
          * @param state
          */
-        virtual void reset (rw::kinematics::State& state) = 0;
+        virtual void reset(rw::kinematics::State& state) = 0;
 
         /**
          * @brief the update call is made prior to the simulation step. In this
@@ -53,8 +53,8 @@ namespace rwsim { namespace simulator {
          * @param dt
          * @param state [out] ODEDevice state values are copied to \b state
          */
-        virtual void update (const rwlibs::simulation::Simulator::UpdateInfo& dt,
-                             rw::kinematics::State& state) = 0;
+        virtual void update(const rwlibs::simulation::Simulator::UpdateInfo& dt,
+                            rw::kinematics::State& state) = 0;
 
         /**
          * @brief The post update is called after a simulation step has
@@ -62,16 +62,16 @@ namespace rwsim { namespace simulator {
          * of the ODE device is written back to the \b state object.
          * @param state
          */
-        virtual void postUpdate (rw::kinematics::State& state) = 0;
+        virtual void postUpdate(rw::kinematics::State& state) = 0;
 
         /**
          * @brief Get the ODE bodies in the device.
          * @return a vector of bodies.
          */
-        virtual std::vector< ODEBody* > getBodies () = 0;
+        virtual std::vector<ODEBody*> getBodies() = 0;
 
       protected:
-        ODEDevice (){};
+        ODEDevice(){};
     };
 }}     // namespace rwsim::simulator
 #endif /* ODEDEVICE_HPP_ */

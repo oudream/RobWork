@@ -53,10 +53,9 @@ using namespace rw::math;
 using namespace rw::loaders;
 using namespace rw::trajectory;
 
-XMLTrajectorySaver::Initializer::Initializer ()
-{
+XMLTrajectorySaver::Initializer::Initializer() {
     static bool done = false;
-    if (!done) {
+    if(!done) {
         XMLBasisTypes::Initializer init1;
         XMLTrajectoryFormat::Initializer init2;
         done = true;
@@ -67,51 +66,45 @@ const XMLTrajectorySaver::Initializer XMLTrajectorySaver::initializer;
 
 namespace {
 
-template< class T > class ElementCreator
+template<class T> class ElementCreator
 {
   public:
-    static xercesc::DOMElement* createElement (const T& element, xercesc::DOMDocument* doc);
+    static xercesc::DOMElement* createElement(const T& element, xercesc::DOMDocument* doc);
 };
 
 template<>
-xercesc::DOMElement* ElementCreator< Q >::createElement (const Q& element,
-                                                         xercesc::DOMDocument* doc)
-{
-    return XMLBasisTypes::createQ (element, doc);
+xercesc::DOMElement* ElementCreator<Q>::createElement(const Q& element, xercesc::DOMDocument* doc) {
+    return XMLBasisTypes::createQ(element, doc);
 }
 
 template<>
-xercesc::DOMElement* ElementCreator< Vector3D<> >::createElement (const Vector3D<>& element,
-                                                                  xercesc::DOMDocument* doc)
-{
-    return XMLBasisTypes::createVector3D (element, doc);
+xercesc::DOMElement* ElementCreator<Vector3D<>>::createElement(const Vector3D<>& element,
+                                                               xercesc::DOMDocument* doc) {
+    return XMLBasisTypes::createVector3D(element, doc);
 }
 
 template<>
-xercesc::DOMElement* ElementCreator< Rotation3D<> >::createElement (const Rotation3D<>& element,
-                                                                    xercesc::DOMDocument* doc)
-{
-    return XMLBasisTypes::createRotation3D (element, doc);
+xercesc::DOMElement* ElementCreator<Rotation3D<>>::createElement(const Rotation3D<>& element,
+                                                                 xercesc::DOMDocument* doc) {
+    return XMLBasisTypes::createRotation3D(element, doc);
 }
 
 template<>
-xercesc::DOMElement* ElementCreator< Transform3D<> >::createElement (const Transform3D<>& element,
-                                                                     xercesc::DOMDocument* doc)
-{
-    return XMLBasisTypes::createTransform3D (element, doc);
+xercesc::DOMElement* ElementCreator<Transform3D<>>::createElement(const Transform3D<>& element,
+                                                                  xercesc::DOMDocument* doc) {
+    return XMLBasisTypes::createTransform3D(element, doc);
 }
 
-template< class T > class Identifiers
+template<class T> class Identifiers
 {
   public:
-    static const XMLCh* linearInterpolatorId ();
-    static const XMLCh* cubicSplineInterpolatorId ();
-    static const XMLCh* circularInterpolatorId ();
+    static const XMLCh* linearInterpolatorId();
+    static const XMLCh* cubicSplineInterpolatorId();
+    static const XMLCh* circularInterpolatorId();
 };
 
-template<> const XMLCh* Identifiers< Q >::linearInterpolatorId ()
-{
-    return XMLTrajectoryFormat::idQLinearInterpolator ();
+template<> const XMLCh* Identifiers<Q>::linearInterpolatorId() {
+    return XMLTrajectoryFormat::idQLinearInterpolator();
 }
 
 /*
@@ -119,28 +112,24 @@ template<> const XMLCh* Identifiers< Q >::linearInterpolatorId ()
         return XMLTrajectoryFormat::idQCubicSplineInterpolator();
     }
 */
-template<> const XMLCh* Identifiers< Q >::circularInterpolatorId ()
-{
+template<> const XMLCh* Identifiers<Q>::circularInterpolatorId() {
     return NULL;
 }
 
-template<> const XMLCh* Identifiers< Vector3D<> >::linearInterpolatorId ()
-{
-    return XMLTrajectoryFormat::idV3DLinearInterpolator ();
+template<> const XMLCh* Identifiers<Vector3D<>>::linearInterpolatorId() {
+    return XMLTrajectoryFormat::idV3DLinearInterpolator();
 }
 /*
     template<> const XMLCh* Identifiers<Vector3D<> >::cubicSplineInterpolatorId() {
         return XMLTrajectoryFormat::idV3DCubicSplineInterpolator();
     }
 */
-template<> const XMLCh* Identifiers< Vector3D<> >::circularInterpolatorId ()
-{
-    return XMLTrajectoryFormat::idV3DCircularInterpolator ();
+template<> const XMLCh* Identifiers<Vector3D<>>::circularInterpolatorId() {
+    return XMLTrajectoryFormat::idV3DCircularInterpolator();
 }
 
-template<> const XMLCh* Identifiers< Rotation3D<> >::linearInterpolatorId ()
-{
-    return XMLTrajectoryFormat::idR3DLinearInterpolator ();
+template<> const XMLCh* Identifiers<Rotation3D<>>::linearInterpolatorId() {
+    return XMLTrajectoryFormat::idR3DLinearInterpolator();
 }
 
 /*
@@ -148,14 +137,12 @@ template<> const XMLCh* Identifiers< Rotation3D<> >::linearInterpolatorId ()
         return XMLTrajectoryFormat::idR3DCubicSplineInterpolator();
     }
 */
-template<> const XMLCh* Identifiers< Rotation3D<> >::circularInterpolatorId ()
-{
+template<> const XMLCh* Identifiers<Rotation3D<>>::circularInterpolatorId() {
     return NULL;
 }
 
-template<> const XMLCh* Identifiers< Transform3D<> >::linearInterpolatorId ()
-{
-    return XMLTrajectoryFormat::idT3DLinearInterpolator ();
+template<> const XMLCh* Identifiers<Transform3D<>>::linearInterpolatorId() {
+    return XMLTrajectoryFormat::idT3DLinearInterpolator();
 }
 
 /*
@@ -163,229 +150,204 @@ template<> const XMLCh* Identifiers< Transform3D<> >::linearInterpolatorId ()
         return XMLTrajectoryFormat::idT3DCubicSplineInterpolator();
     }
 */
-template<> const XMLCh* Identifiers< Transform3D<> >::circularInterpolatorId ()
-{
+template<> const XMLCh* Identifiers<Transform3D<>>::circularInterpolatorId() {
     return NULL;
 }
 
-template< class T >
-xercesc::DOMElement* writeInterpolator (const Ptr< Interpolator< T > > interpolator,
-                                        xercesc::DOMDocument* doc)
-{
-    LinearInterpolator< T >* linear =
-        dynamic_cast< LinearInterpolator< T >* > (interpolator.get ());
-    if (linear != NULL) {
-        T start         = linear->getStart ();
-        T end           = linear->getEnd ();
-        double duration = linear->duration ();
+template<class T>
+xercesc::DOMElement* writeInterpolator(const Ptr<Interpolator<T>> interpolator,
+                                       xercesc::DOMDocument* doc) {
+    LinearInterpolator<T>* linear = dynamic_cast<LinearInterpolator<T>*>(interpolator.get());
+    if(linear != NULL) {
+        T start         = linear->getStart();
+        T end           = linear->getEnd();
+        double duration = linear->duration();
 
-        xercesc::DOMElement* element =
-            doc->createElement (Identifiers< T >::linearInterpolatorId ());
-        DOMAttr* durationAttr = doc->createAttribute (XMLTrajectoryFormat::idDurationAttribute ());
-        durationAttr->setValue (XMLStr (duration).uni ());
-        element->setAttributeNode (durationAttr);
-        xercesc::DOMElement* startElement = ElementCreator< T >::createElement (start, doc);
-        element->appendChild (startElement);
-        xercesc::DOMElement* endElement = ElementCreator< T >::createElement (end, doc);
-        element->appendChild (endElement);
+        xercesc::DOMElement* element = doc->createElement(Identifiers<T>::linearInterpolatorId());
+        DOMAttr* durationAttr = doc->createAttribute(XMLTrajectoryFormat::idDurationAttribute());
+        durationAttr->setValue(XMLStr(duration).uni());
+        element->setAttributeNode(durationAttr);
+        xercesc::DOMElement* startElement = ElementCreator<T>::createElement(start, doc);
+        element->appendChild(startElement);
+        xercesc::DOMElement* endElement = ElementCreator<T>::createElement(end, doc);
+        element->appendChild(endElement);
         return element;
     }
 
-    CubicSplineInterpolator< T >* cspline =
-        dynamic_cast< CubicSplineInterpolator< T >* > (interpolator.get ());
-    if (cspline != NULL) {
+    CubicSplineInterpolator<T>* cspline =
+        dynamic_cast<CubicSplineInterpolator<T>*>(interpolator.get());
+    if(cspline != NULL) {
         // TODO Once implemented
-        RW_THROW ("Interpolator not supported by XMLTrajectorySaver");
+        RW_THROW("Interpolator not supported by XMLTrajectorySaver");
     }
 
-    CircularInterpolator< T >* circular =
-        dynamic_cast< CircularInterpolator< T >* > (interpolator.get ());
-    if (circular != NULL) {
-        T p1            = circular->getP1 ();
-        T p2            = circular->getP2 ();
-        T p3            = circular->getP3 ();
-        double duration = circular->duration ();
+    CircularInterpolator<T>* circular = dynamic_cast<CircularInterpolator<T>*>(interpolator.get());
+    if(circular != NULL) {
+        T p1            = circular->getP1();
+        T p2            = circular->getP2();
+        T p3            = circular->getP3();
+        double duration = circular->duration();
 
-        xercesc::DOMElement* element =
-            doc->createElement (Identifiers< T >::circularInterpolatorId ());
-        DOMAttr* durationAttr = doc->createAttribute (XMLTrajectoryFormat::idDurationAttribute ());
-        durationAttr->setValue (XMLStr (duration).uni ());
-        element->setAttributeNode (durationAttr);
+        xercesc::DOMElement* element = doc->createElement(Identifiers<T>::circularInterpolatorId());
+        DOMAttr* durationAttr = doc->createAttribute(XMLTrajectoryFormat::idDurationAttribute());
+        durationAttr->setValue(XMLStr(duration).uni());
+        element->setAttributeNode(durationAttr);
 
-        xercesc::DOMElement* element1 = ElementCreator< T >::createElement (p1, doc);
-        element->appendChild (element1);
-        xercesc::DOMElement* element2 = ElementCreator< T >::createElement (p2, doc);
-        element->appendChild (element2);
-        xercesc::DOMElement* element3 = ElementCreator< T >::createElement (p3, doc);
-        element->appendChild (element3);
+        xercesc::DOMElement* element1 = ElementCreator<T>::createElement(p1, doc);
+        element->appendChild(element1);
+        xercesc::DOMElement* element2 = ElementCreator<T>::createElement(p2, doc);
+        element->appendChild(element2);
+        xercesc::DOMElement* element3 = ElementCreator<T>::createElement(p3, doc);
+        element->appendChild(element3);
         return element;
     }
-    RW_THROW ("The Trajectory contains an interpolator not supported by XMLTrajectorySaver");
+    RW_THROW("The Trajectory contains an interpolator not supported by XMLTrajectorySaver");
 }
 
-template< class T >
-xercesc::DOMElement* writeBlend (const Ptr< Blend< T > >& blend, xercesc::DOMDocument* doc)
-{
-    const ParabolicBlend< T >* parabolic =
-        dynamic_cast< const ParabolicBlend< T >* > (blend.get ());
-    if (parabolic != NULL) {
-        double tau = parabolic->tau1 ();
-        xercesc::DOMElement* element =
-            doc->createElement (XMLTrajectoryFormat::idParabolicBlend ());
-        DOMAttr* tauAttr = doc->createAttribute (XMLTrajectoryFormat::idTauAttribute ());
-        tauAttr->setValue (XMLStr (tau).uni ());
-        element->setAttributeNode (tauAttr);
+template<class T>
+xercesc::DOMElement* writeBlend(const Ptr<Blend<T>>& blend, xercesc::DOMDocument* doc) {
+    const ParabolicBlend<T>* parabolic = dynamic_cast<const ParabolicBlend<T>*>(blend.get());
+    if(parabolic != NULL) {
+        double tau                   = parabolic->tau1();
+        xercesc::DOMElement* element = doc->createElement(XMLTrajectoryFormat::idParabolicBlend());
+        DOMAttr* tauAttr             = doc->createAttribute(XMLTrajectoryFormat::idTauAttribute());
+        tauAttr->setValue(XMLStr(tau).uni());
+        element->setAttributeNode(tauAttr);
         return element;
     }
 
-    const LloydHaywardBlend< T >* lloydHayward =
-        dynamic_cast< const LloydHaywardBlend< T >* > (blend.get ());
-    if (lloydHayward != NULL) {
-        double tau   = lloydHayward->tau1 ();
-        double kappa = lloydHayward->kappa ();
+    const LloydHaywardBlend<T>* lloydHayward =
+        dynamic_cast<const LloydHaywardBlend<T>*>(blend.get());
+    if(lloydHayward != NULL) {
+        double tau   = lloydHayward->tau1();
+        double kappa = lloydHayward->kappa();
         xercesc::DOMElement* element =
-            doc->createElement (XMLTrajectoryFormat::idLloydHaywardBlend ());
-        DOMAttr* tauAttr = doc->createAttribute (XMLTrajectoryFormat::idTauAttribute ());
-        tauAttr->setValue (XMLStr (tau).uni ());
-        element->setAttributeNode (tauAttr);
-        DOMAttr* kappaAttr = doc->createAttribute (XMLTrajectoryFormat::idKappaAttribute ());
-        kappaAttr->setValue (XMLStr (kappa).uni ());
-        element->setAttributeNode (kappaAttr);
+            doc->createElement(XMLTrajectoryFormat::idLloydHaywardBlend());
+        DOMAttr* tauAttr = doc->createAttribute(XMLTrajectoryFormat::idTauAttribute());
+        tauAttr->setValue(XMLStr(tau).uni());
+        element->setAttributeNode(tauAttr);
+        DOMAttr* kappaAttr = doc->createAttribute(XMLTrajectoryFormat::idKappaAttribute());
+        kappaAttr->setValue(XMLStr(kappa).uni());
+        element->setAttributeNode(kappaAttr);
         return element;
     }
-    RW_THROW ("The Trajectory contains a blend not supported by XMLTrajectorySaver");
+    RW_THROW("The Trajectory contains a blend not supported by XMLTrajectorySaver");
 }
 
-template< class T, class TRAJ >
-xercesc::DOMDocument* createDOMDocument (TRAJ& trajectory, const XMLCh* trajectoryId)
-{
-    XMLCh* features         = XMLString::transcode ("Core");
-    DOMImplementation* impl = DOMImplementationRegistry::getDOMImplementation (features);
-    XMLString::release (&features);
+template<class T, class TRAJ>
+xercesc::DOMDocument* createDOMDocument(TRAJ& trajectory, const XMLCh* trajectoryId) {
+    XMLCh* features         = XMLString::transcode("Core");
+    DOMImplementation* impl = DOMImplementationRegistry::getDOMImplementation(features);
+    XMLString::release(&features);
 
     xercesc::DOMDocument* doc = NULL;
-    if (impl != NULL) {
+    if(impl != NULL) {
         try {
-            doc = impl->createDocument (0,               // root element namespace URI.
-                                        trajectoryId,    // root element name
-                                        0);    // We do not wish to specify a document type
+            doc = impl->createDocument(0,               // root element namespace URI.
+                                       trajectoryId,    // root element name
+                                       0);              // We do not wish to specify a document type
 
-            xercesc::DOMElement* root = doc->getDocumentElement ();
+            xercesc::DOMElement* root = doc->getDocumentElement();
 
-            typedef const InterpolatorTrajectory< T > Traj;
-            Traj* traj = dynamic_cast< Traj* > (&trajectory);
-            if (traj == NULL) {
-                doc->release ();
-                RW_THROW ("Unable to save trajectory which is not a InterpolatorTrajectory");
+            typedef const InterpolatorTrajectory<T> Traj;
+            Traj* traj = dynamic_cast<Traj*>(&trajectory);
+            if(traj == NULL) {
+                doc->release();
+                RW_THROW("Unable to save trajectory which is not a InterpolatorTrajectory");
             }
 
-            for (size_t i = 0; i < traj->getSegmentsCount (); i++) {
-                typedef std::pair< const Ptr< Blend< T > >, const Ptr< Interpolator< T > > >
-                    Segment;
-                Segment segment = traj->getSegment (i);
+            for(size_t i = 0; i < traj->getSegmentsCount(); i++) {
+                typedef std::pair<const Ptr<Blend<T>>, const Ptr<Interpolator<T>>> Segment;
+                Segment segment = traj->getSegment(i);
 
-                if (segment.first != NULL) {
-                    xercesc::DOMElement* blendElement = writeBlend (segment.first, doc);
-                    root->appendChild (blendElement);
+                if(segment.first != NULL) {
+                    xercesc::DOMElement* blendElement = writeBlend(segment.first, doc);
+                    root->appendChild(blendElement);
                 }
-                xercesc::DOMElement* element = writeInterpolator (segment.second, doc);
-                root->appendChild (element);
+                xercesc::DOMElement* element = writeInterpolator(segment.second, doc);
+                root->appendChild(element);
             }
         }
-        catch (const OutOfMemoryException&) {
-            RW_THROW ("XMLPathWriter: OutOfMemory");
+        catch(const OutOfMemoryException&) {
+            RW_THROW("XMLPathWriter: OutOfMemory");
         }
-        catch (const DOMException& e) {
-            RW_THROW ("XMLPathWriter: DOMException:  " << XMLStr (e.getMessage ()).str ());
+        catch(const DOMException& e) {
+            RW_THROW("XMLPathWriter: DOMException:  " << XMLStr(e.getMessage()).str());
         }
-        catch (const rw::core::Exception& exp) {
+        catch(const rw::core::Exception& exp) {
             throw exp;
         }
-        catch (...) {
-            RW_THROW ("XMLPathWriter: Unknown Exception while creating saving path");
+        catch(...) {
+            RW_THROW("XMLPathWriter: Unknown Exception while creating saving path");
         }
     }
-    else {
-        RW_THROW ("XMLPathWriter: Unable to find a suitable DOM Implementation");
-    }
+    else { RW_THROW("XMLPathWriter: Unable to find a suitable DOM Implementation"); }
     return doc;
 }
 
-template< class T, class TRAJ >
-bool saveTrajectoryImpl (TRAJ& trajectory, const XMLCh* trajectoryId, const std::string& filename)
-{
-    xercesc::DOMDocument* doc = createDOMDocument< T, TRAJ > (trajectory, trajectoryId);
-    if (doc == NULL)
-        return false;
-    XercesDocumentWriter::writeDocument (doc, filename);
-    doc->release ();
+template<class T, class TRAJ>
+bool saveTrajectoryImpl(TRAJ& trajectory, const XMLCh* trajectoryId, const std::string& filename) {
+    xercesc::DOMDocument* doc = createDOMDocument<T, TRAJ>(trajectory, trajectoryId);
+    if(doc == NULL) return false;
+    XercesDocumentWriter::writeDocument(doc, filename);
+    doc->release();
     return true;
 }
 
-template< class T, class TRAJ >
-bool saveTrajectoryImpl (TRAJ& trajectory, const XMLCh* trajectoryId, std::ostream& outstream)
-{
-    xercesc::DOMDocument* doc = createDOMDocument< T, TRAJ > (trajectory, trajectoryId);
-    if (doc == NULL)
-        return false;
-    XercesDocumentWriter::writeDocument (doc, outstream);
-    doc->release ();
+template<class T, class TRAJ>
+bool saveTrajectoryImpl(TRAJ& trajectory, const XMLCh* trajectoryId, std::ostream& outstream) {
+    xercesc::DOMDocument* doc = createDOMDocument<T, TRAJ>(trajectory, trajectoryId);
+    if(doc == NULL) return false;
+    XercesDocumentWriter::writeDocument(doc, outstream);
+    doc->release();
     return true;
 }
 }    // namespace
 
-bool XMLTrajectorySaver::save (const rw::trajectory::QTrajectory& trajectory,
-                               const std::string& filename)
-{
-    return saveTrajectoryImpl< Q, const QTrajectory > (
-        trajectory, XMLTrajectoryFormat::idQTrajectory (), filename);
+bool XMLTrajectorySaver::save(const rw::trajectory::QTrajectory& trajectory,
+                              const std::string& filename) {
+    return saveTrajectoryImpl<Q, const QTrajectory>(
+        trajectory, XMLTrajectoryFormat::idQTrajectory(), filename);
 }
 
-bool XMLTrajectorySaver::save (const rw::trajectory::Vector3DTrajectory& trajectory,
-                               const std::string& filename)
-{
-    return saveTrajectoryImpl< Vector3D<>, const Vector3DTrajectory > (
-        trajectory, XMLTrajectoryFormat::idV3DTrajectory (), filename);
+bool XMLTrajectorySaver::save(const rw::trajectory::Vector3DTrajectory& trajectory,
+                              const std::string& filename) {
+    return saveTrajectoryImpl<Vector3D<>, const Vector3DTrajectory>(
+        trajectory, XMLTrajectoryFormat::idV3DTrajectory(), filename);
 }
 
-bool XMLTrajectorySaver::save (const rw::trajectory::Rotation3DTrajectory& trajectory,
-                               const std::string& filename)
-{
-    return saveTrajectoryImpl< Rotation3D<>, const Rotation3DTrajectory > (
-        trajectory, XMLTrajectoryFormat::idR3DTrajectory (), filename);
+bool XMLTrajectorySaver::save(const rw::trajectory::Rotation3DTrajectory& trajectory,
+                              const std::string& filename) {
+    return saveTrajectoryImpl<Rotation3D<>, const Rotation3DTrajectory>(
+        trajectory, XMLTrajectoryFormat::idR3DTrajectory(), filename);
 }
 
-bool XMLTrajectorySaver::save (const rw::trajectory::Transform3DTrajectory& trajectory,
-                               const std::string& filename)
-{
-    return saveTrajectoryImpl< Transform3D<>, const Transform3DTrajectory > (
-        trajectory, XMLTrajectoryFormat::idT3DTrajectory (), filename);
+bool XMLTrajectorySaver::save(const rw::trajectory::Transform3DTrajectory& trajectory,
+                              const std::string& filename) {
+    return saveTrajectoryImpl<Transform3D<>, const Transform3DTrajectory>(
+        trajectory, XMLTrajectoryFormat::idT3DTrajectory(), filename);
 }
 
-bool XMLTrajectorySaver::write (const rw::trajectory::QTrajectory& trajectory,
-                                std::ostream& outstream)
-{
-    return saveTrajectoryImpl< Q, const QTrajectory > (
-        trajectory, XMLTrajectoryFormat::idQTrajectory (), outstream);
+bool XMLTrajectorySaver::write(const rw::trajectory::QTrajectory& trajectory,
+                               std::ostream& outstream) {
+    return saveTrajectoryImpl<Q, const QTrajectory>(
+        trajectory, XMLTrajectoryFormat::idQTrajectory(), outstream);
 }
 
-bool XMLTrajectorySaver::write (const rw::trajectory::Vector3DTrajectory& trajectory,
-                                std::ostream& outstream)
-{
-    return saveTrajectoryImpl< Vector3D<>, const Vector3DTrajectory > (
-        trajectory, XMLTrajectoryFormat::idV3DTrajectory (), outstream);
+bool XMLTrajectorySaver::write(const rw::trajectory::Vector3DTrajectory& trajectory,
+                               std::ostream& outstream) {
+    return saveTrajectoryImpl<Vector3D<>, const Vector3DTrajectory>(
+        trajectory, XMLTrajectoryFormat::idV3DTrajectory(), outstream);
 }
 
-bool XMLTrajectorySaver::write (const rw::trajectory::Rotation3DTrajectory& trajectory,
-                                std::ostream& outstream)
-{
-    return saveTrajectoryImpl< Rotation3D<>, const Rotation3DTrajectory > (
-        trajectory, XMLTrajectoryFormat::idR3DTrajectory (), outstream);
+bool XMLTrajectorySaver::write(const rw::trajectory::Rotation3DTrajectory& trajectory,
+                               std::ostream& outstream) {
+    return saveTrajectoryImpl<Rotation3D<>, const Rotation3DTrajectory>(
+        trajectory, XMLTrajectoryFormat::idR3DTrajectory(), outstream);
 }
 
-bool XMLTrajectorySaver::write (const rw::trajectory::Transform3DTrajectory& trajectory,
-                                std::ostream& outstream)
-{
-    return saveTrajectoryImpl< Transform3D<>, const Transform3DTrajectory > (
-        trajectory, XMLTrajectoryFormat::idT3DTrajectory (), outstream);
+bool XMLTrajectorySaver::write(const rw::trajectory::Transform3DTrajectory& trajectory,
+                               std::ostream& outstream) {
+    return saveTrajectoryImpl<Transform3D<>, const Transform3DTrajectory>(
+        trajectory, XMLTrajectoryFormat::idT3DTrajectory(), outstream);
 }

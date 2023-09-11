@@ -19,7 +19,7 @@ class SimulatorDialog : public QDialog
     Q_OBJECT
 
   public:
-    SimulatorDialog (Simulator* jcontroller, rw::kinematics::State* state, QWidget* parent = 0);
+    SimulatorDialog(Simulator* jcontroller, rw::kinematics::State* state, QWidget* parent = 0);
 
   private:
     QTabWidget* tabWidget;
@@ -31,8 +31,8 @@ class SyncTab : public QWidget
     Q_OBJECT
 
   public:
-    SyncTab (JointController* jcontroller, QWidget* parent = 0) : QWidget (parent) {}
-    virtual ~SyncTab (){};
+    SyncTab(JointController* jcontroller, QWidget* parent = 0) : QWidget(parent) {}
+    virtual ~SyncTab(){};
 };
 
 class PosTab : public QWidget
@@ -40,14 +40,14 @@ class PosTab : public QWidget
     Q_OBJECT
 
   public:
-    PosTab (JointController* jcontroller, rw::kinematics::State* state, QWidget* parent = 0);
+    PosTab(JointController* jcontroller, rw::kinematics::State* state, QWidget* parent = 0);
 
-    virtual ~PosTab (){};
+    virtual ~PosTab(){};
 
   private:
   private slots:
-    void targetChanged ();
-    void setTarget ();
+    void targetChanged();
+    void setTarget();
 
   private:
     JogGroup* _jogGroup;
@@ -60,12 +60,11 @@ class VelTab : public QWidget
     Q_OBJECT
 
   public:
-    VelTab (JointController* jcontroller, QWidget* parent = 0) : QWidget (parent)
-    {
+    VelTab(JointController* jcontroller, QWidget* parent = 0) : QWidget(parent) {
         // if( !(jcontroller->getControlModes() & JointController::VELOCITY) )
-        this->setDisabled (true);
+        this->setDisabled(true);
     }
-    virtual ~VelTab (){};
+    virtual ~VelTab(){};
 };
 
 class CurTab : public QWidget
@@ -73,12 +72,10 @@ class CurTab : public QWidget
     Q_OBJECT
 
   public:
-    CurTab (JointController* jcontroller, QWidget* parent = 0) : QWidget (parent)
-    {
-        if (!(jcontroller->getControlModes () & JointController::CURRENT))
-            this->setDisabled (true);
+    CurTab(JointController* jcontroller, QWidget* parent = 0) : QWidget(parent) {
+        if(!(jcontroller->getControlModes() & JointController::CURRENT)) this->setDisabled(true);
     }
-    virtual ~CurTab (){};
+    virtual ~CurTab(){};
 };
 
 #endif /*CUBECONTROLDIALOG_HPP_*/

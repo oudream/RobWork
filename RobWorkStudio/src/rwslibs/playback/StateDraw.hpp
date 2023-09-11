@@ -21,7 +21,7 @@
 #include <rw/core/Ptr.hpp>
 
 class StateDraw;
-typedef rw::core::Ptr< StateDraw > StateDrawPtr;
+typedef rw::core::Ptr<StateDraw> StateDrawPtr;
 
 namespace rw { namespace kinematics {
     class State;
@@ -36,22 +36,22 @@ class StateDraw
     /**
        @brief Draw the work cell for a state of \b state.
     */
-    virtual void draw (const rw::kinematics::State& state) const = 0;
+    virtual void draw(const rw::kinematics::State& state) const = 0;
 
     /**
        @brief Destructor.
     */
-    virtual ~StateDraw () {}
+    virtual ~StateDraw() {}
 
   protected:
     /**
        @brief Default constructor.
     */
-    StateDraw () {}
+    StateDraw() {}
 
   private:
-    StateDraw (const StateDraw&);
-    StateDraw& operator= (const StateDraw&);
+    StateDraw(const StateDraw&);
+    StateDraw& operator=(const StateDraw&);
 };
 
 /**
@@ -59,6 +59,6 @@ class StateDraw
 
    Calls to the draw() method of the drawer are simply ignored.
 */
-StateDrawPtr makeEmptyStateDraw ();
+StateDrawPtr makeEmptyStateDraw();
 
 #endif

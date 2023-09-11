@@ -18,5 +18,5 @@
 #include "Transform3DVector.hpp"
 
 // some explicit template specifications
-template class rw::math::Transform3DVector< double >;
-template class rw::math::Transform3DVector< float >;
+template class rw::math::Transform3DVector<double>;
+template class rw::math::Transform3DVector<float>;

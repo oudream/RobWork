@@ -40,7 +40,7 @@ namespace rw { namespace common {
          * you should \b not use it for getting the calendar time. It's really only meant for
          * calculating wall time differences.
          */
-        static long long currentTimeMs ();
+        static long long currentTimeMs();
 
         /**
          * @brief Returns system clock in micro-seconds.
@@ -51,7 +51,7 @@ namespace rw { namespace common {
          *
          * Notice: The timer cannot hold times longer than approx. 2100second.
          */
-        static long long currentTimeUs ();
+        static long long currentTimeUs();
 
         /**
          * @brief Returns system clock in seconds
@@ -60,21 +60,21 @@ namespace rw { namespace common {
          * you should \b not use it for getting the calendar time. It's really only meant for
          * calculating wall time differences.
          */
-        static double currentTime ();
+        static double currentTime();
 
         /**
          * @brief Sleeps for a period of time
          *
          * @param period [in] the time in miliseconds to sleep
          */
-        static void sleepMs (int period);
+        static void sleepMs(int period);
 
         /**
          * @brief Sleeps for a period of time
          *
          * @param period [in] the time in microseconds to sleep
          */
-        static void sleepUs (int period);
+        static void sleepUs(int period);
     };
 
     /* @} */

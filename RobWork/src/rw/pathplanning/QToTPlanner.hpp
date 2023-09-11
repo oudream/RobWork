@@ -22,10 +22,9 @@
    @file QToTPlanner.hpp
 */
 #if !defined(SWIG)
-#include <rw/pathplanning/PathPlanner.hpp>
-
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Metric.hpp>
+#include <rw/pathplanning/PathPlanner.hpp>
 #endif
 namespace rw { namespace pathplanning {
     class QIKSampler;
@@ -41,11 +40,11 @@ namespace rw { namespace pathplanning {
        An approach planner plans a path from a configuration for the device to a
        configuration for the tool.
     */
-    class QToTPlanner : public PathPlanner< rw::math::Q, const rw::math::Transform3D<double> >
+    class QToTPlanner : public PathPlanner<rw::math::Q, const rw::math::Transform3D<double>>
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< QToTPlanner > Ptr;
+        typedef rw::core::Ptr<QToTPlanner> Ptr;
 
         /**
            @brief An approach planner for a sampler of IK solutions and a region
@@ -57,8 +56,8 @@ namespace rw { namespace pathplanning {
            @param planner [in] Planner for a QSampler region.
            @param ikSampler [in] Sampler of IK solutions for the target transform.
         */
-        static QToTPlanner::Ptr make (rw::core::Ptr< QToQSamplerPlanner > planner,
-                                      rw::core::Ptr< QIKSampler > ikSampler);
+        static QToTPlanner::Ptr make(rw::core::Ptr<QToQSamplerPlanner> planner,
+                                     rw::core::Ptr<QIKSampler> ikSampler);
 
         /**
            @brief An approach planner for a standard path planner and a sampler
@@ -68,9 +67,9 @@ namespace rw { namespace pathplanning {
            from \b sampler and calls \b planner with the configuration closest
            to \b from according to \b metric.
         */
-        static QToTPlanner::Ptr makeToNearest (rw::core::Ptr< QToQPlanner > planner,
-                                               rw::core::Ptr< QIKSampler > sampler,
-                                               rw::math::QMetric::Ptr metric, int cnt);
+        static QToTPlanner::Ptr makeToNearest(rw::core::Ptr<QToQPlanner> planner,
+                                              rw::core::Ptr<QIKSampler> sampler,
+                                              rw::math::QMetric::Ptr metric, int cnt);
     };
 
     /*@}*/

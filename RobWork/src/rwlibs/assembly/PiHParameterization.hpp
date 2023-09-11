@@ -24,10 +24,9 @@
  * \copydoc rwlibs::assembly::PiHParameterization
  */
 
-#include <rwlibs/assembly/AssemblyParameterization.hpp>
-
 #include <rw/core/Ptr.hpp>
 #include <rw/math/Q.hpp>
+#include <rwlibs/assembly/AssemblyParameterization.hpp>
 
 namespace rw { namespace core {
     class PropertyMap;
@@ -70,14 +69,14 @@ namespace rwlibs { namespace assembly {
     {
       public:
         //! @brief Smart pointer type for parameterization.
-        typedef rw::core::Ptr< PiHParameterization > Ptr;
+        typedef rw::core::Ptr<PiHParameterization> Ptr;
 
         /**
          * @brief Construct parameterization from PropertyMap.
          * @param pmap [in] a PropertyMap with the parameterization given as properties with
          * user-friendly (non-SI) units.
          */
-        PiHParameterization (rw::core::Ptr< rw::core::PropertyMap > pmap);
+        PiHParameterization(rw::core::Ptr<rw::core::PropertyMap> pmap);
 
         /**
          * @brief Construct parameterization with values given directly with SI units.
@@ -90,25 +89,25 @@ namespace rwlibs { namespace assembly {
          * @param distTContact [in] the approach distance, d, in meters.
          * @param x0 [in] the insertion depth, \f$x_0\f$, in meters.
          */
-        PiHParameterization (double holeRadius, double pegRadius, double theta, double phi,
-                             double distX, double distY, double distTContact,
-                             double x0    //,
-                                          // double pertScale = 1,
-                             // rw::math::Q perturbationMale = rw::math::Q(6,0.0),
-                             // rw::math::Q perturbationFemale = rw::math::Q(6,0.0)
+        PiHParameterization(double holeRadius, double pegRadius, double theta, double phi,
+                            double distX, double distY, double distTContact,
+                            double x0    //,
+                                         // double pertScale = 1,
+                                         // rw::math::Q perturbationMale = rw::math::Q(6,0.0),
+                                         // rw::math::Q perturbationFemale = rw::math::Q(6,0.0)
         );
 
         //! @brief Destructor.
-        virtual ~PiHParameterization ();
+        virtual ~PiHParameterization();
 
         //! @copydoc AssemblyParameterization::toPropertyMap
-        virtual rw::core::Ptr< rw::core::PropertyMap > toPropertyMap () const;
+        virtual rw::core::Ptr<rw::core::PropertyMap> toPropertyMap() const;
 
         //! @copydoc AssemblyParameterization::clone
-        virtual AssemblyParameterization::Ptr clone () const;
+        virtual AssemblyParameterization::Ptr clone() const;
 
         //! @copydoc AssemblyParameterization::reset
-        virtual void reset (rw::core::Ptr< rw::core::PropertyMap > pmap);
+        virtual void reset(rw::core::Ptr<rw::core::PropertyMap> pmap);
 
       public:
         //! @brief Radius of the hole.

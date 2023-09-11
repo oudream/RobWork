@@ -34,60 +34,59 @@ namespace rw { namespace trajectory {
      *
      *
      */
-    class DeviceTrajectory : public rw::trajectory::Trajectory< rw::math::Q >
+    class DeviceTrajectory : public rw::trajectory::Trajectory<rw::math::Q>
     {
       public:
         /**
          * @brief Default constructor creating an empty trajectory
          */
-        DeviceTrajectory (rw::core::Ptr< rw::models::Device > deviceIn,
-                          const rw::kinematics::State& state);
+        DeviceTrajectory(rw::core::Ptr<rw::models::Device> deviceIn,
+                         const rw::kinematics::State& state);
 
         /**
          * @brief Destructor
          */
-        virtual ~DeviceTrajectory ();
+        virtual ~DeviceTrajectory();
 
         //! @copydoc rw::trajectory::Trajectory::x(double) const
-        rw::math::Q x (double t) const { return _trajectory->x (t); }
+        rw::math::Q x(double t) const { return _trajectory->x(t); }
 
         //! @copydoc rw::trajectory::Trajectory::dx(double) const
-        rw::math::Q dx (double t) const { return _trajectory->dx (t); }
+        rw::math::Q dx(double t) const { return _trajectory->dx(t); }
 
         //! @copydoc rw::trajectory::Trajectory::ddx(double) const
-        rw::math::Q ddx (double t) const { return _trajectory->ddx (t); }
+        rw::math::Q ddx(double t) const { return _trajectory->ddx(t); }
 
         //! @copydoc rw::trajectory::Trajectory::duration()
-        double duration () const { return _trajectory->duration (); }
+        double duration() const { return _trajectory->duration(); }
 
         //! @copydoc rw::trajectory::Trajectory::startTime()
-        double startTime () const { return _trajectory->startTime (); }
+        double startTime() const { return _trajectory->startTime(); }
 
         //! @copydoc rw::trajectory::Trajectory::endTime()
-        double endTime () const { return _trajectory->endTime (); }
+        double endTime() const { return _trajectory->endTime(); }
 
         //! @copydoc rw::trajectory::Trajectory<T>::getIterator(double) const
-        virtual typename rw::trajectory::TrajectoryIterator< T >::Ptr getIterator (double dt) const
-        {
-            return rw::core::ownedPtr (
-                new BlendedTrajectoryIterator< T > (const_cast< BlendedTrajectory* > (this), dt));
+        virtual typename rw::trajectory::TrajectoryIterator<T>::Ptr getIterator(double dt) const {
+            return rw::core::ownedPtr(
+                new BlendedTrajectoryIterator<T>(const_cast<BlendedTrajectory*>(this), dt));
         }
 
         // use default SE3 blend from last configuration to target
-        void moveL (const rw::math::Transform3D<>& target, double blend = 0.0);
+        void moveL(const rw::math::Transform3D<>& target, double blend = 0.0);
 
         // use default SE3 blend from last configuration to target
-        void moveL (const rw::math::Rotation3D<>& target, double blend = 0.0);
+        void moveL(const rw::math::Rotation3D<>& target, double blend = 0.0);
 
         // use default SE3 blend from last configuration to target
-        void moveL (const rw::math::Vector3D<>& target, double blend = 0.0);
+        void moveL(const rw::math::Vector3D<>& target, double blend = 0.0);
 
         // use default blend from last configuration to target
-        void moveJ (const rw::math::Q& target, double blend = 0.0);
+        void moveJ(const rw::math::Q& target, double blend = 0.0);
 
       private:
-        rw::core::Ptr< rw::models::Device > _dev;
-        InterpolatorTrajectory< rw::math::Q >::Ptr _trajectory;
+        rw::core::Ptr<rw::models::Device> _dev;
+        InterpolatorTrajectory<rw::math::Q>::Ptr _trajectory;
         double _time, _timeTotal;
         double _dt;
         rw::kinematics::State _state;

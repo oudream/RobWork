@@ -46,38 +46,37 @@ namespace rwsimlibs { namespace test {
     {
       public:
         //! @brief Smart pointer to IntegratorRotationTest.
-        typedef rw::core::Ptr< IntegratorRotationTest > Ptr;
+        typedef rw::core::Ptr<IntegratorRotationTest> Ptr;
 
         //! @brief Constructor.
-        IntegratorRotationTest ();
+        IntegratorRotationTest();
 
         //! @brief Destructor.
-        virtual ~IntegratorRotationTest ();
+        virtual ~IntegratorRotationTest();
 
         //! @copydoc EngineTest::run
-        virtual void run (TestHandle::Ptr handle, const std::string& engineID,
-                          const rw::core::PropertyMap& parameters,
-                          rw::core::Ptr< rwsim::log::SimulatorLogScope > verbose = NULL);
+        virtual void run(TestHandle::Ptr handle, const std::string& engineID,
+                         const rw::core::PropertyMap& parameters,
+                         rw::core::Ptr<rwsim::log::SimulatorLogScope> verbose = NULL);
 
         //! @copydoc EngineTest::getRunTime
-        virtual double getRunTime () const;
+        virtual double getRunTime() const;
 
         //! @copydoc IntegratorTest::makeIntegratorDWC
-        virtual rw::core::Ptr< rwsim::dynamics::DynamicWorkCell >
-        makeIntegratorDWC (const std::string& integratorType = "");
+        virtual rw::core::Ptr<rwsim::dynamics::DynamicWorkCell>
+        makeIntegratorDWC(const std::string& integratorType = "");
 
         /**
          * @brief Get the expected kinetic energy.
          * @param dwc [in] the dynamic workcell.
          * @return the energy.
          */
-        static double
-        getExpectedEnergy (rw::core::Ptr< const rwsim::dynamics::DynamicWorkCell > dwc);
+        static double getExpectedEnergy(rw::core::Ptr<const rwsim::dynamics::DynamicWorkCell> dwc);
 
       private:
-        static void initialize (rw::core::Ptr< const rwsim::dynamics::DynamicWorkCell > dwc,
-                                rw::kinematics::State& state);
-        static void updateResults (const EngineLoopInfo& info);
+        static void initialize(rw::core::Ptr<const rwsim::dynamics::DynamicWorkCell> dwc,
+                               rw::kinematics::State& state);
+        static void updateResults(const EngineLoopInfo& info);
     };
     //! @}
 }}     // namespace rwsimlibs::test

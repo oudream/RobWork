@@ -64,10 +64,9 @@ class GraspTableGeneratorPlugin;
 
 struct RestingConfig
 {
-    RestingConfig (const rw::kinematics::State& state, const std::string& str) :
-        _state (state), _desc (str)
-    {}
-    RestingConfig (){}
+    RestingConfig(const rw::kinematics::State& state, const std::string& str) :
+        _state(state), _desc(str) {}
+    RestingConfig() {}
     rw::kinematics::State _state;
     std::string _desc;
 };
@@ -80,57 +79,58 @@ struct RestingConfig
 class GraspTableGeneratorPlugin : public rws::RobWorkStudioPlugin
 {
     Q_OBJECT
-    Q_INTERFACES (rws::RobWorkStudioPlugin)
-    Q_PLUGIN_METADATA (IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE
-                           "GraspTableGeneratorPlugin.json");
+    Q_INTERFACES(rws::RobWorkStudioPlugin)
+    Q_PLUGIN_METADATA(IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE
+                          "GraspTableGeneratorPlugin.json");
+
   public:
-    typedef std::vector< Eigen::MatrixXf > TactileSensorData;
+    typedef std::vector<Eigen::MatrixXf> TactileSensorData;
 
     /**
      * @brief constructor
      */
-    GraspTableGeneratorPlugin ();
+    GraspTableGeneratorPlugin();
 
     /**
      * @brief destructor
      */
-    virtual ~GraspTableGeneratorPlugin ();
+    virtual ~GraspTableGeneratorPlugin();
 
     /**
      * @brief starts the generation of the grasp table
      */
-    void startTableGeneration ();
+    void startTableGeneration();
 
     /**
      * @brief callback used for interfacing to ThreadSimulator
      */
-    void stepCallBack (int i, const rw::kinematics::State& state);
+    void stepCallBack(int i, const rw::kinematics::State& state);
 
     /**
      * @brief for state changes of RWS
      */
-    void stateChangedListener (const rw::kinematics::State& state);
+    void stateChangedListener(const rw::kinematics::State& state);
 
     /**
      * @brief we listen for events regarding opening and closing of dynamic
      * workcell
      */
-    void genericEventListener (const std::string& event);
+    void genericEventListener(const std::string& event);
 
     ////// inherited from RobWorkStudioPlugin
 
     //! @copydoc rws::RobWorkStudioPlugin::open
-    void open (rw::models::WorkCell* workcell);
+    void open(rw::models::WorkCell* workcell);
 
     //! @copydoc rws::RobWorkStudioPlugin::close
-    void close ();
+    void close();
 
     //! @copydoc rws::RobWorkStudioPlugin::initialize
-    void initialize ();
+    void initialize();
 
   private slots:
-    void btnPressed ();
-    void changedEvent ();
+    void btnPressed();
+    void changedEvent();
 
   private:
     /*
@@ -141,91 +141,88 @@ class GraspTableGeneratorPlugin : public rws::RobWorkStudioPlugin
     bool saveRestingState( int simidx, SimulatorPtr sim , const rw::kinematics::State& state );
      */
 
-    void cleanup ();
-    void loadConfiguration (const std::string& filename);
-    void saveConfiguration (const std::string& filename);
-    void applyConfiguration ();
-    void readConfiguration ();
+    void cleanup();
+    void loadConfiguration(const std::string& filename);
+    void saveConfiguration(const std::string& filename);
+    void applyConfiguration();
+    void readConfiguration();
 
   private:
     rw::core::PropertyMap _settings;
 
     struct CallBackFunctor
     {
-        CallBackFunctor (int i, GraspTableGeneratorPlugin* parent) : _i (i), _parent (parent) {}
+        CallBackFunctor(int i, GraspTableGeneratorPlugin* parent) : _i(i), _parent(parent) {}
 
-        void stepCallBack (const rw::kinematics::State& state)
-        {
-            _parent->stepCallBack (_i, state);
-        }
+        void stepCallBack(const rw::kinematics::State& state) { _parent->stepCallBack(_i, state); }
 
         int _i;
         GraspTableGeneratorPlugin* _parent;
     };
 
-    std::vector< rwsim::util::RestingPoseGenerator* > _generators;
+    std::vector<rwsim::util::RestingPoseGenerator*> _generators;
 
     Ui::GraspTableGeneratorPlugin* _ui;
 
     rw::kinematics::State _defstate;
     rw::kinematics::State _state;
     QTimer* _timer;
-    std::vector< rw::core::Ptr< rwsim::simulator::ThreadSimulator > > _simulators;
-    std::vector< rw::kinematics::State > _initStates;
-    std::vector< double > _simStartTimes;
+    std::vector<rw::core::Ptr<rwsim::simulator::ThreadSimulator>> _simulators;
+    std::vector<rw::kinematics::State> _initStates;
+    std::vector<double> _simStartTimes;
     int _nrOfTests;
     double _totalSimTime;
-    std::vector< rwsim::dynamics::RigidBody* > _bodies;
+    std::vector<rwsim::dynamics::RigidBody*> _bodies;
 
     long _startTime;
 
-    std::vector< rw::kinematics::State > _startPoses;
-    std::vector< rw::kinematics::State > _resultPoses;
+    std::vector<rw::kinematics::State> _startPoses;
+    std::vector<rw::kinematics::State> _resultPoses;
 
-    rw::kinematics::FrameMap< rwsim::dynamics::RigidBody* > _frameToBody;
-    rw::core::Ptr< rwsim::dynamics::DynamicWorkCell > _dwc;
+    rw::kinematics::FrameMap<rwsim::dynamics::RigidBody*> _frameToBody;
+    rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> _dwc;
 
     rw::proximity::CollisionDetector* _colDect;
     double _lastTime, _lastBelowThresUpdate;
     rwsim::util::MovingAverage _avgSimTime;
     rwsim::util::MovingAverage _avgTime;
 
-    std::vector< rw::core::Ptr< rwsim::control::PDController > > _controllers;
-    std::vector< rw::math::Q > _preshapes;
-    std::vector< rw::math::Q > _targetQ;
+    std::vector<rw::core::Ptr<rwsim::control::PDController>> _controllers;
+    std::vector<rw::math::Q> _preshapes;
+    std::vector<rw::math::Q> _targetQ;
     rwsim::dynamics::RigidBody* _body;
     rwsim::dynamics::RigidDevice* _hand;
     rw::kinematics::MovableFrame *_handBase, *_object;
 
-    rw::core::Ptr< rwsim::sensor::BodyContactSensor > _bodySensor;
+    rw::core::Ptr<rwsim::sensor::BodyContactSensor> _bodySensor;
 
     bool _exitHard;
 
     bool _graspNotStable;
 
-    std::vector< bool > _fingersInContact;
+    std::vector<bool> _fingersInContact;
 
-    std::vector< std::vector< rw::math::Q > > _handconfigs;
-    std::vector< std::vector< TactileSensorData > > _tactiledatas;
+    std::vector<std::vector<rw::math::Q>> _handconfigs;
+    std::vector<std::vector<TactileSensorData>> _tactiledatas;
 
-    std::vector< rw::core::Ptr< CallBackFunctor > > _functors;
-    std::vector< double > _nextTimeUpdate;
+    std::vector<rw::core::Ptr<CallBackFunctor>> _functors;
+    std::vector<double> _nextTimeUpdate;
     int _nrOfTestsOld;
 
-    ThreadSafeStack< RestingConfig > _restingConfigs;
+    ThreadSafeStack<RestingConfig> _restingConfigs;
 
     // QSampler *_handQSampler;
 
-    std::vector< int > _currentPreshapeIDX;
+    std::vector<int> _currentPreshapeIDX;
     rw::math::Q _target, _preshape;
     rw::math::Transform3D<> _objTransform;
 
     int _nrOfGraspsInGroup, _lastTableBackupCnt;
     int _tactileDataOnAllCnt;
 
-    rw::core::Ptr< rwsim::util::GraspStrategy > _gstrategy;
-    rw::core::Ptr< rwsim::util::GraspPolicy > _gpolicy;
-    rw::core::Ptr< rwsim::simulator::DynamicSimulator > _simulator;
+    rw::core::Ptr<rwsim::util::GraspStrategy> _gstrategy;
+    rw::core::Ptr<rwsim::util::GraspPolicy> _gpolicy;
+    rw::core::Ptr<rwsim::simulator::DynamicSimulator> _simulator;
 
     rw::graspplanning::GraspTable* _gtable;
     std::string _configFile;    // loadet on initialization

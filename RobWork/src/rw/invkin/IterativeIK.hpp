@@ -23,10 +23,9 @@
  */
 
 #if !defined(SWIG)
-#include <rw/invkin/InvKinSolver.hpp>
-
 #include <rw/core/PropertyMap.hpp>
 #include <rw/core/Ptr.hpp>
+#include <rw/invkin/InvKinSolver.hpp>
 #endif
 namespace rw { namespace kinematics {
     class State;
@@ -56,14 +55,14 @@ namespace rw { namespace invkin {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< IterativeIK > Ptr;
+        typedef rw::core::Ptr<IterativeIK> Ptr;
         //! @brief smart pointer type to this const class
-        typedef rw::core::Ptr< const IterativeIK > CPtr;
+        typedef rw::core::Ptr<const IterativeIK> CPtr;
 
         /**
          * @brief Destructor
          */
-        virtual ~IterativeIK () {}
+        virtual ~IterativeIK() {}
 
         /**
          * @brief Sets the maximal error for a solution
@@ -73,38 +72,38 @@ namespace rw { namespace invkin {
          *
          * @param maxError [in] the maxError. It will be assumed that maxError > 0
          */
-        virtual void setMaxError (double maxError);
+        virtual void setMaxError(double maxError);
 
         /**
          * @brief Returns the maximal error for a solution
          *
          * @return Maximal error
          */
-        virtual double getMaxError () const;
+        virtual double getMaxError() const;
 
         /**
          * @brief Sets the maximal number of iterations allowed
          *
          * @param maxIterations [in] maximal number of iterations
          */
-        virtual void setMaxIterations (int maxIterations);
+        virtual void setMaxIterations(int maxIterations);
 
         /**
          * @brief Returns the maximal number of iterations
          */
-        virtual int getMaxIterations () const;
+        virtual int getMaxIterations() const;
 
         /**
          * @brief Returns the PropertyMap
          * @return Reference to the PropertyMap
          */
-        virtual rw::core::PropertyMap& getProperties ();
+        virtual rw::core::PropertyMap& getProperties();
 
         /**
          * @brief Returns the PropertyMap
          * return Reference to the PropertyMap
          */
-        virtual const rw::core::PropertyMap& getProperties () const;
+        virtual const rw::core::PropertyMap& getProperties() const;
 
         /**
            @brief Default iterative inverse kinematics solver for a device and
@@ -113,14 +112,14 @@ namespace rw { namespace invkin {
            @param device [in] Device for which to solve IK.
            @param state [in] Fixed state for which IK is solved.
         */
-        static IterativeIK::Ptr makeDefault (rw::core::Ptr< rw::models::Device > device,
-                                             const rw::kinematics::State& state);
+        static IterativeIK::Ptr makeDefault(rw::core::Ptr<rw::models::Device> device,
+                                            const rw::kinematics::State& state);
 
       protected:
         /**
          * @brief Constructor
          */
-        IterativeIK ();
+        IterativeIK();
 
       private:
         /**
@@ -129,8 +128,8 @@ namespace rw { namespace invkin {
         rw::core::PropertyMap _properties;
 
       private:
-        IterativeIK (const IterativeIK&);
-        IterativeIK& operator= (const IterativeIK&);
+        IterativeIK(const IterativeIK&);
+        IterativeIK& operator=(const IterativeIK&);
     };
 
     /*@}*/

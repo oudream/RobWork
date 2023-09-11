@@ -30,33 +30,33 @@ namespace rwlibs { namespace algorithms {
     class StablePlanePose
     {
         //! constructor
-        StablePlanePose ();
+        StablePlanePose();
 
         /**
          * @brief constructor
          * @param geom [in] the geometry to find stable poses for
          */
-        StablePlanePose (rw::geometry::Geometry::Ptr geom);
+        StablePlanePose(rw::geometry::Geometry::Ptr geom);
 
         /**
          * @brief constructor
          * @param geom [in] the geometry to find stable poses for
          * @param cm [in] center of mass of geometry
          */
-        StablePlanePose (rw::geometry::Geometry::Ptr geom, const rw::math::Vector3D<>& CM);
+        StablePlanePose(rw::geometry::Geometry::Ptr geom, const rw::math::Vector3D<>& CM);
 
         /**
          * @brief set a new geometry of this
          * @param geom [in]
          */
-        void setGeometry (rw::geometry::Geometry::Ptr geom);
+        void setGeometry(rw::geometry::Geometry::Ptr geom);
 
         /**
          * @brief set the geometry to process and include the specification of the center of mass
          * @param geom [in] geometry
          * @param CM [in] center of mass
          */
-        void setGeometry (rw::geometry::Geometry::Ptr geom, const rw::math::Vector3D<>& CM);
+        void setGeometry(rw::geometry::Geometry::Ptr geom, const rw::math::Vector3D<>& CM);
 
         /**
          * @brief calculate all stable poses for the geometry lying on a planar
@@ -64,7 +64,7 @@ namespace rwlibs { namespace algorithms {
          * @param dist [in] the minimum distance from the edge of the supporting
          * polygon to the point defined by CM projected onto the supporting polygon.
          */
-        std::vector< StablePose > calcStablePoses (bool includePoseDistributions = false);
+        std::vector<StablePose> calcStablePoses(bool includePoseDistributions = false);
 
         /**
          * @brief calculate the pose distributions eg. the probabilities of an object
@@ -72,7 +72,7 @@ namespace rwlibs { namespace algorithms {
          * orientation.
          * @return
          */
-        std::vector< StablePose > calcPoseDistributions ();
+        std::vector<StablePose> calcPoseDistributions();
     };
 
 }}    // namespace rwlibs::algorithms

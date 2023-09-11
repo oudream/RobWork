@@ -44,32 +44,32 @@ namespace rwsim { namespace simulator {
          * @param state [in]
          * @param sim the simulator.
          */
-        ODEKinematicDevice (dynamics::KinematicDevice* rdev, const rw::kinematics::State& state,
-                            ODESimulator* sim);
+        ODEKinematicDevice(dynamics::KinematicDevice* rdev, const rw::kinematics::State& state,
+                           ODESimulator* sim);
 
         //! @brief destructor
-        virtual ~ODEKinematicDevice ();
+        virtual ~ODEKinematicDevice();
 
-        void reset (rw::kinematics::State& state);
+        void reset(rw::kinematics::State& state);
 
         /**
          * @brief
          * @param dt
          * @param state
          */
-        void update (const rwlibs::simulation::Simulator::UpdateInfo& dt,
-                     rw::kinematics::State& state);
+        void update(const rwlibs::simulation::Simulator::UpdateInfo& dt,
+                    rw::kinematics::State& state);
 
-        void postUpdate (rw::kinematics::State& state);
+        void postUpdate(rw::kinematics::State& state);
 
         //! @copydoc ODEDevice::getBodies
-        std::vector< ODEBody* > getBodies () { return _bodies; };
+        std::vector<ODEBody*> getBodies() { return _bodies; };
 
       private:
         dynamics::KinematicDevice* _kdev;
         rw::math::Q _maxVel;
-        std::vector< dBodyID > _kbodies;
-        std::vector< ODEBody* > _bodies;
+        std::vector<dBodyID> _kbodies;
+        std::vector<ODEBody*> _bodies;
     };
 }}     // namespace rwsim::simulator
 #endif /* ODEVELOCITYDEVICE_HPP_ */

@@ -170,14 +170,16 @@ if(build)
     rw_add_includes(${SUBSYS_NAME} "rw/loaders/rwxml" ${FILES_HPP_rwxml})
     rw_add_includes(${SUBSYS_NAME} "rw/loaders/xml" ${FILES_HPP_xml})
     rw_add_includes(${SUBSYS_NAME} "rw" ../loaders.hpp)
+
     target_link_libraries(${SUBSYS_NAME} PUBLIC ${Boost_LIBRARIES} ${SUBSYS_DEPS})
     target_include_directories(
         ${SUBSYS_NAME}
-        PUBLIC ${Boost_INCLUDE_DIR} ${XERCESC_INCLUDE_DIR} $<BUILD_INTERFACE:${RW_ROOT}/src>
+        PUBLIC ${Boost_INCLUDE_DIR} $<BUILD_INTERFACE:${RW_ROOT}/src>
                $<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}>
     )
     if(RW_HAVE_XERCES)
         target_link_libraries(${SUBSYS_NAME} PUBLIC ${XERCESC_LIBRARIES})
+        target_include_directories(${SUBSYS_NAME} PUBLIC ${XERCESC_INCLUDE_DIR})
     endif()
     if(RW_HAVE_ASSIMP)
         target_link_libraries(${SUBSYS_NAME} PRIVATE ${ASSIMP_LIBRARIES})

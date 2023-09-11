@@ -41,24 +41,23 @@ namespace rwsim { namespace util {
          * @param detector [in] the collision detector
          * @param n [in] max nr of tries pr sample request
          */
-        CollisionFreeSampler (StateSampler::Ptr sampler,
-                              rw::core::Ptr< rw::proximity::CollisionDetector > detector,
-                              int n = -1);
+        CollisionFreeSampler(StateSampler::Ptr sampler,
+                             rw::core::Ptr<rw::proximity::CollisionDetector> detector, int n = -1);
 
         /**
          * @brief destructor
          */
-        virtual ~CollisionFreeSampler ();
+        virtual ~CollisionFreeSampler();
 
         //! @copydoc StateSampler::sample
-        bool sample (rw::kinematics::State& state);
+        bool sample(rw::kinematics::State& state);
 
         //! @copydoc StateSampler::empty
-        bool empty () const { return _sampler->empty (); };
+        bool empty() const { return _sampler->empty(); };
 
       private:
         StateSampler::Ptr _sampler;
-        rw::core::Ptr< rw::proximity::CollisionDetector > _detector;
+        rw::core::Ptr<rw::proximity::CollisionDetector> _detector;
         int _n;
     };
     //! @}

@@ -9,16 +9,16 @@ namespace rwsim { namespace simulator {
 
     class ContactModel;
 
-    typedef std::vector< rwsim::dynamics::ContactPoint > ContactPointList;
+    typedef std::vector<rwsim::dynamics::ContactPoint> ContactPointList;
 
     class Contact
     {
       public:
-        Contact (ContactModel* model) : nColRestCoeff (0.2), nConRestCoeff (0.0), _model (model) {}
+        Contact(ContactModel* model) : nColRestCoeff(0.2), nConRestCoeff(0.0), _model(model) {}
 
-        virtual ~Contact (){};
+        virtual ~Contact(){};
 
-        ContactModel& getModel () { return *_model; }
+        ContactModel& getModel() { return *_model; }
 
         RWBody *bodyA, *bodyB;    // the contacting bodies
 
@@ -32,7 +32,7 @@ namespace rwsim { namespace simulator {
         double nConRestCoeff;
 
       private:
-        Contact (){};
+        Contact(){};
 
         ContactModel* _model;
     };

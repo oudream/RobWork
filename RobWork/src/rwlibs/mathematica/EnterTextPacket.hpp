@@ -24,9 +24,8 @@
  * \copydoc rwlibs::mathematica::EnterTextPacket
  */
 
-#include <rwlibs/mathematica/Mathematica.hpp>
-
 #include <rw/core/Ptr.hpp>
+#include <rwlibs/mathematica/Mathematica.hpp>
 
 namespace rwlibs { namespace mathematica {
     //! @addtogroup mathematica
@@ -37,28 +36,28 @@ namespace rwlibs { namespace mathematica {
     {
       public:
         //! @brief Smart pointer type.
-        typedef rw::core::Ptr< EnterTextPacket > Ptr;
+        typedef rw::core::Ptr<EnterTextPacket> Ptr;
 
         /**
          * @brief Construct new packet.
          * @param string [in] the string argument.
          */
-        EnterTextPacket (const Mathematica::String& string);
+        EnterTextPacket(const Mathematica::String& string);
 
         //! @brief Destructor.
-        virtual ~EnterTextPacket ();
+        virtual ~EnterTextPacket();
 
         /**
          * @brief Get the string stored in the packet.
          * @return the string.
          */
-        const Mathematica::String& string ();
+        const Mathematica::String& string();
 
         //! @copydoc Mathematica::FunctionBase::getArguments
-        std::list< rw::core::Ptr< const Mathematica::Expression > > getArguments () const;
+        std::list<rw::core::Ptr<const Mathematica::Expression>> getArguments() const;
 
         //! @copydoc Mathematica::Expression::clone
-        Mathematica::Expression::Ptr clone () const;
+        Mathematica::Expression::Ptr clone() const;
 
       private:
         const Mathematica::String _string;

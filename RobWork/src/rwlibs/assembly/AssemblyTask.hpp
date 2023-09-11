@@ -29,8 +29,8 @@
 
 // Forward declarations
 namespace rwlibs { namespace task {
-    template< class T > class Task;
-    typedef Task< rw::math::Transform3D<> > CartesianTask;
+    template<class T> class Task;
+    typedef Task<rw::math::Transform3D<>> CartesianTask;
 }}    // namespace rwlibs::task
 
 namespace rwlibs { namespace assembly {
@@ -56,10 +56,10 @@ namespace rwlibs { namespace assembly {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< AssemblyTask > Ptr;
+        typedef rw::core::Ptr<AssemblyTask> Ptr;
 
         //! @brief Construct a new uninitialized task.
-        AssemblyTask ();
+        AssemblyTask();
 
         /**
          * @brief Construct a new task from a CartesianTask.
@@ -67,17 +67,17 @@ namespace rwlibs { namespace assembly {
          * @param registry [in] the control strategy registry (required only if user specified
          * strategies will be used).
          */
-        AssemblyTask (rw::core::Ptr< rwlibs::task::CartesianTask > task,
-                      rw::core::Ptr< AssemblyRegistry > registry = NULL);
+        AssemblyTask(rw::core::Ptr<rwlibs::task::CartesianTask> task,
+                     rw::core::Ptr<AssemblyRegistry> registry = NULL);
 
         //! @brief Destructor.
-        virtual ~AssemblyTask ();
+        virtual ~AssemblyTask();
 
         /**
          * @brief Convert to CartesianTask.
          * @return a CartesianTask.
          */
-        rw::core::Ptr< rwlibs::task::CartesianTask > toCartesianTask ();
+        rw::core::Ptr<rwlibs::task::CartesianTask> toCartesianTask();
 
         /**
          * @brief Save a single AssemblyTask to a task file.
@@ -85,7 +85,7 @@ namespace rwlibs { namespace assembly {
          * @param name [in] the name of the file to save to (normally with the extension
          * .assembly.xml).
          */
-        static void saveRWTask (AssemblyTask::Ptr task, const std::string& name);
+        static void saveRWTask(AssemblyTask::Ptr task, const std::string& name);
 
         /**
          * @brief Save multiple tasks to a task file.
@@ -93,7 +93,7 @@ namespace rwlibs { namespace assembly {
          * @param name [in] the name of the file to save to (normally with the extension
          * .assembly.xml).
          */
-        static void saveRWTask (std::vector< AssemblyTask::Ptr > tasks, const std::string& name);
+        static void saveRWTask(std::vector<AssemblyTask::Ptr> tasks, const std::string& name);
 
         /**
          * @brief Load tasks from a file.
@@ -101,8 +101,8 @@ namespace rwlibs { namespace assembly {
          * @param registry [in] a registry of control strategies to be used.
          * @return a vector of tasks loaded from the file.
          */
-        static std::vector< AssemblyTask::Ptr >
-        load (const std::string& name, rw::core::Ptr< AssemblyRegistry > registry = NULL);
+        static std::vector<AssemblyTask::Ptr> load(const std::string& name,
+                                                   rw::core::Ptr<AssemblyRegistry> registry = NULL);
 
         /**
          * @brief Load tasks from multiple files.
@@ -110,9 +110,8 @@ namespace rwlibs { namespace assembly {
          * @param registry [in] a registry of control strategies to be used.
          * @return a vector of tasks loaded from the files.
          */
-        static std::vector< AssemblyTask::Ptr >
-        load (const std::vector< std::string >& names,
-              rw::core::Ptr< AssemblyRegistry > registry = NULL);
+        static std::vector<AssemblyTask::Ptr> load(const std::vector<std::string>& names,
+                                                   rw::core::Ptr<AssemblyRegistry> registry = NULL);
 
         /**
          * @brief Load tasks from a input stream.
@@ -120,14 +119,14 @@ namespace rwlibs { namespace assembly {
          * @param registry [in] a registry of control strategies to be used.
          * @return a vector of tasks loaded from the stream.
          */
-        static std::vector< AssemblyTask::Ptr >
-        load (std::istringstream& inputStream, rw::core::Ptr< AssemblyRegistry > registry = NULL);
+        static std::vector<AssemblyTask::Ptr> load(std::istringstream& inputStream,
+                                                   rw::core::Ptr<AssemblyRegistry> registry = NULL);
 
         /**
          * @brief Clone the task.
          * @return a new cloned task.
          */
-        AssemblyTask::Ptr clone () const;
+        AssemblyTask::Ptr clone() const;
 
       public:
         /**
@@ -143,9 +142,9 @@ namespace rwlibs { namespace assembly {
         //! femaleTCP).
         rw::math::Transform3D<> femaleTmaleTarget;
         //! @brief The control strategy to use for the assembly operation.
-        rw::core::Ptr< AssemblyControlStrategy > strategy;
+        rw::core::Ptr<AssemblyControlStrategy> strategy;
         //! @brief Parameters for the constrol strategy (specific for the control strategy used)
-        rw::core::Ptr< AssemblyParameterization > parameters;
+        rw::core::Ptr<AssemblyParameterization> parameters;
         ///@}
 
         /**
@@ -197,12 +196,12 @@ namespace rwlibs { namespace assembly {
         std::string femaleFTSensor;
         //! @brief If there is flexibility between the control frame and the peg, the intermediate
         //! flexibility base frames can be set here for the male manipulator.
-        std::vector< std::string > maleFlexFrames;
+        std::vector<std::string> maleFlexFrames;
         //! @brief If there is flexibility between the control frame and the peg, the intermediate
         //! flexibility base frames can be set here for the female manipulator.
-        std::vector< std::string > femaleFlexFrames;
+        std::vector<std::string> femaleFlexFrames;
         //! @brief Add contacts to the result for the given BodyContactSensors.
-        std::vector< std::string > bodyContactSensors;
+        std::vector<std::string> bodyContactSensors;
         ///@}
     };
     //! @}

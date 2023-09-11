@@ -37,36 +37,36 @@ namespace rw { namespace common {
         /**
          * @brief Constructs empty LogMultiWriter
          */
-        LogMultiWriter ();
+        LogMultiWriter();
 
         /**
          * @brief Destructor
          */
-        ~LogMultiWriter ();
+        ~LogMultiWriter();
 
         /**
          * @brief Adds a LogWriter to be written to
          */
-        void addWriter (rw::core::LogWriter::Ptr writer);
+        void addWriter(rw::core::LogWriter::Ptr writer);
 
       protected:
         /**
          * @copydoc LogWriter::write(const std::string&)
          */
-        void doWrite (const std::string& str);
+        void doWrite(const std::string& str);
 
         /**
          * @brief Calls flush on the individual writers
          */
-        void doFlush ();
+        void doFlush();
 
         /**
          * @copydoc LogWriter::setTabLevel(int)
          */
-        void doSetTabLevel (int tabLevel);
+        void doSetTabLevel(int tabLevel);
 
       private:
-        std::vector< rw::core::LogWriter::Ptr > _writers;
+        std::vector<rw::core::LogWriter::Ptr> _writers;
     };
 
     /*@}*/

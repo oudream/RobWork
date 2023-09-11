@@ -9,64 +9,63 @@
 #define SRC_RWLIBS_OPTIMIZATION_TAXICABOPTIMIZER_HPP_
 
 #include "DirectionSetOptimizer.hpp"
-#include "LineSearch.hpp"
 #include "GoldenSectionLineSearch.hpp"
+#include "LineSearch.hpp"
+
 #include <rw/core/Ptr.hpp>
 
-namespace rwlibs {
-namespace optimization {
+namespace rwlibs { namespace optimization {
 
-/** @addtogroup optimization */
-/*@{*/
+    /** @addtogroup optimization */
+    /*@{*/
 
-/**
- * Implements a taxi-cab method optimizer.
- *
- * Optimizer that searches sequentially through base directions using line search.
- */
-class TaxiCabOptimizer: public DirectionSetOptimizer {
-public:
-	//! Smart pointer.
-	typedef rw::core::Ptr<TaxiCabOptimizer> Ptr;
+    /**
+     * Implements a taxi-cab method optimizer.
+     *
+     * Optimizer that searches sequentially through base directions using line search.
+     */
+    class TaxiCabOptimizer : public DirectionSetOptimizer
+    {
+      public:
+        //! Smart pointer.
+        typedef rw::core::Ptr<TaxiCabOptimizer> Ptr;
 
-public:
-	/**
-	 * @brief Constructor.
-	 *
-	 * @param function [in] a function to optimize
-	 * @param stepSize [in] step size
-	 * @param stopCondition [in] stop consition for the line search subroutine
-	 * @param strategy [in] line search strategy (default: golden section)
-	 */
-	TaxiCabOptimizer(typename FunctionType::Ptr function, double stepSize = 1.0,
-			StopCondition::Ptr stopCondition = rw::core::ownedPtr(
-					new StopCondition(100, 0.01)), LineSearch::Ptr strategy =
-					rw::core::ownedPtr(new GoldenSectionLineSearch()));
+      public:
+        /**
+         * @brief Constructor.
+         *
+         * @param function [in] a function to optimize
+         * @param stepSize [in] step size
+         * @param stopCondition [in] stop consition for the line search subroutine
+         * @param strategy [in] line search strategy (default: golden section)
+         */
+        TaxiCabOptimizer(
+            typename FunctionType::Ptr function, double stepSize = 1.0,
+            StopCondition::Ptr stopCondition = rw::core::ownedPtr(new StopCondition(100, 0.01)),
+            LineSearch::Ptr strategy         = rw::core::ownedPtr(new GoldenSectionLineSearch()));
 
-	//! Destructor.
-	virtual ~TaxiCabOptimizer();
+        //! Destructor.
+        virtual ~TaxiCabOptimizer();
 
-protected:
-	//! @copydoc Optimizer::newOptimization
-	virtual void newOptimization(const VectorType& initialGuess,
-			ResultType& initialValue, double& initialError);
+      protected:
+        //! @copydoc Optimizer::newOptimization
+        virtual void newOptimization(const VectorType& initialGuess, ResultType& initialValue,
+                                     double& initialError);
 
-	//! @copydoc Optimizer::step
-	virtual void step(VectorType& currentGuess, ResultType& currentValue,
-			double& currentError);
+        //! @copydoc Optimizer::step
+        virtual void step(VectorType& currentGuess, ResultType& currentValue, double& currentError);
 
-private:
-	// which direction do we use next step?
-	unsigned _dirIdx;
+      private:
+        // which direction do we use next step?
+        unsigned _dirIdx;
 
-	// previous result (for calculating tolerance)
-	VectorType _previousGuess;
-	ResultType _previousValue;
-};
+        // previous result (for calculating tolerance)
+        VectorType _previousGuess;
+        ResultType _previousValue;
+    };
 
-/*@}*/
+    /*@}*/
 
-} /* namespace optimization */
-} /* namespace rwlibs */
+}}    // namespace rwlibs::optimization
 
 #endif /* SRC_RWLIBS_OPTIMIZATION_TAXICABOPTIMIZER_HPP_ */

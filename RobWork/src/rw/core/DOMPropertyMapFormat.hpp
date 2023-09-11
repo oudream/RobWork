@@ -18,7 +18,7 @@
 #ifndef RW_CORE_DOMPROPERTYMAPFORMAT_HPP
 #define RW_CORE_DOMPROPERTYMAPFORMAT_HPP
 
-#if ! defined(SWIG)
+#if !defined(SWIG)
 #include <string>
 #endif
 namespace rw { namespace core {
@@ -36,31 +36,31 @@ namespace rw { namespace core {
          * @brief Get identifier for rw::core::PropertyMap.
          * @return the identifier.
          */
-        static const std::string& idPropertyMap ();
+        static const std::string& idPropertyMap();
 
         /**
          * @brief Get identifier for rw::core::Property.
          * @return the identifier.
          */
-        static const std::string& idProperty ();
+        static const std::string& idProperty();
 
         /**
          * @brief Get identifier for the name of a rw::core::Property.
          * @return the identifier.
          */
-        static const std::string& idPropertyName ();
+        static const std::string& idPropertyName();
 
         /**
          * @brief Get identifier for the description of a rw::core::Property.
          * @return the identifier.
          */
-        static const std::string& idPropertyDescription ();
+        static const std::string& idPropertyDescription();
 
         /**
          * @brief Get identifier for the value of a rw::core::Property.
          * @return the identifier.
          */
-        static const std::string& idPropertyValue ();
+        static const std::string& idPropertyValue();
 
         /**
          * @brief Utility class which initializes local static variables.
@@ -77,7 +77,7 @@ namespace rw { namespace core {
         {
           public:
             //! @brief Initializes when constructed.
-            Initializer ();
+            Initializer();
         };
 
       private:

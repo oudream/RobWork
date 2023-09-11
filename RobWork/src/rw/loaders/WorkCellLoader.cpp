@@ -26,35 +26,30 @@ using namespace rw::core;
 using namespace rw::loaders;
 using rw::models::WorkCell;
 
-WorkCellLoader::Ptr WorkCellLoader::Factory::getWorkCellLoader (const std::string& format)
-{
-    const std::string formatUp = StringUtil::toUpper (format);
+WorkCellLoader::Ptr WorkCellLoader::Factory::getWorkCellLoader(const std::string& format) {
+    const std::string formatUp = StringUtil::toUpper(format);
     WorkCellLoader::Factory ep;
-    std::vector< Extension::Ptr > exts = ep.getExtensions ();
-    for (Extension::Ptr ext : exts) {
-        if (!ext->getProperties ().has (formatUp))
-            continue;
+    std::vector<Extension::Ptr> exts = ep.getExtensions();
+    for(Extension::Ptr ext : exts) {
+        if(!ext->getProperties().has(formatUp)) continue;
         // else try casting to WorkCellLoader
-        WorkCellLoader::Ptr loader = ext->getObject ().cast< WorkCellLoader > ();
-        if (!loader.isNull ())
-            return loader;
+        WorkCellLoader::Ptr loader = ext->getObject().cast<WorkCellLoader>();
+        if(!loader.isNull()) return loader;
     }
 
-    return ownedPtr (new XMLRWLoader ());
-
+    return ownedPtr(new XMLRWLoader());
 }
 
-WorkCell::Ptr WorkCellLoader::Factory::load (const std::string& file)
-{
-    const std::string ext2           = StringUtil::getFileExtension (file);
-    const std::string ext            = StringUtil::toUpper (ext2);
-    const WorkCellLoader::Ptr loader = getWorkCellLoader (ext);
+WorkCell::Ptr WorkCellLoader::Factory::load(const std::string& file) {
+    const std::string ext2           = StringUtil::getFileExtension(file);
+    const std::string ext            = StringUtil::toUpper(ext2);
+    const WorkCellLoader::Ptr loader = getWorkCellLoader(ext);
     try {
-        return loader->loadWorkCell (file);
+        return loader->loadWorkCell(file);
     }
-    catch (const std::exception& err) {
-        Log::infoLog () << "Tried loading workcell with extension, but failed!";
-        Log::infoLog () << " " << err.what () << std::endl;
+    catch(const std::exception& err) {
+        Log::infoLog() << "Tried loading workcell with extension, but failed!";
+        Log::infoLog() << " " << err.what() << std::endl;
     }
     return nullptr;
 }

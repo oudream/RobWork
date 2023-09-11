@@ -30,7 +30,8 @@ bool HelpAssistant::showDocumentation(const QStringList& paths) {
         "<a href='https://www.robwork.dk'>robwork.dk</a>.</p> <p>If there are futher questions or "
         "issues they can be posted on <a href='https://gitlab.com/sdurobotics/RobWork'> "
         "Git Repository</a>.</p> <p>If you don't have access to the repository you can get access "
-        "<a href='http://robwork.dk/getaccess'> here </a>, after you have logged onto <a href='https://gitlab.com'> gitlab </a></p>");
+        "<a href='http://robwork.dk/getaccess'> here </a>, after you have logged onto <a "
+        "href='https://gitlab.com'> gitlab </a></p>");
     msgBox.setStandardButtons(QMessageBox::Ok);
     msgBox.exec();
 

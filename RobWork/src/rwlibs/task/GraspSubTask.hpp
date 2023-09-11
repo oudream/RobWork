@@ -8,10 +8,9 @@
 #ifndef SRC_RWLIBS_TASK_GRASPSUBTASK_HPP_
 #define SRC_RWLIBS_TASK_GRASPSUBTASK_HPP_
 
-#include <rwlibs/task/GraspTarget.hpp>
-
 #include <rw/math/Q.hpp>
 #include <rw/math/Transform3D.hpp>
+#include <rwlibs/task/GraspTarget.hpp>
 
 #include <string>
 
@@ -30,38 +29,34 @@ namespace rwlibs { namespace task {
     class GraspSubTask
     {
       public:
-        void addTarget (const rw::math::Transform3D<>& target)
-        {
-            targets.push_back (GraspTarget (target));
+        void addTarget(const rw::math::Transform3D<>& target) {
+            targets.push_back(GraspTarget(target));
         }
 
-        void addTarget (const GraspTarget& target) { targets.push_back (target); }
+        void addTarget(const GraspTarget& target) { targets.push_back(target); }
 
-        rw::math::Q& getOpenQ () { return openQ; }
-        rw::math::Q& getCloseQ () { return closeQ; }
-        rw::math::Q& getTauMax () { return tauMax; }
+        rw::math::Q& getOpenQ() { return openQ; }
+        rw::math::Q& getCloseQ() { return closeQ; }
+        rw::math::Q& getTauMax() { return tauMax; }
 
-        void setOpenQ (const rw::math::Q& q) { openQ = q; }
-        void setCloseQ (const rw::math::Q& q) { closeQ = q; }
-        void setTauMax (const rw::math::Q& q) { tauMax = q; }
+        void setOpenQ(const rw::math::Q& q) { openQ = q; }
+        void setCloseQ(const rw::math::Q& q) { closeQ = q; }
+        void setTauMax(const rw::math::Q& q) { tauMax = q; }
 
-        const rw::math::Transform3D<>& getOffset () { return offset; }
+        const rw::math::Transform3D<>& getOffset() { return offset; }
 
-        void setRetract (const rw::math::Transform3D<>& t3d) { retract = t3d; }
-        bool hasRetract () { return !(retract == rw::math::Transform3D<>::identity ()); }
-        const rw::math::Transform3D<>& getRetract () { return retract; }
+        void setRetract(const rw::math::Transform3D<>& t3d) { retract = t3d; }
+        bool hasRetract() { return !(retract == rw::math::Transform3D<>::identity()); }
+        const rw::math::Transform3D<>& getRetract() { return retract; }
 
-        void setApproach (const rw::math::Transform3D<>& t3d) { approach = t3d; }
-        bool hasApproach () { return !(approach == rw::math::Transform3D<>::identity ()); }
-        const rw::math::Transform3D<>& getApproach () { return approach; }
+        void setApproach(const rw::math::Transform3D<>& t3d) { approach = t3d; }
+        bool hasApproach() { return !(approach == rw::math::Transform3D<>::identity()); }
+        const rw::math::Transform3D<>& getApproach() { return approach; }
 
-        void setRefFrame (const std::string& rframe) { refframe = rframe; }
+        void setRefFrame(const std::string& rframe) { refframe = rframe; }
 
-        std::string getRefFrame ()
-        {
-            if (refframe == "") {
-                return "WORLD";
-            }
+        std::string getRefFrame() {
+            if(refframe == "") { return "WORLD"; }
 
             return refframe;
         }
@@ -69,8 +64,7 @@ namespace rwlibs { namespace task {
         /**
          * @brief Clones the subtask copying everything except targets.
          */
-        GraspSubTask clone ()
-        {
+        GraspSubTask clone() {
             GraspSubTask res;
             res.refframe = refframe;
             res.objectID = objectID;
@@ -84,16 +78,16 @@ namespace rwlibs { namespace task {
             return res;
         }
 
-        std::vector< GraspTarget >& getTargets () { return targets; }
+        std::vector<GraspTarget>& getTargets() { return targets; }
 
-        std::string getTaskID () { return taskID; }
-        void setTaskID (const std::string& ID) { taskID = ID; }
+        std::string getTaskID() { return taskID; }
+        void setTaskID(const std::string& ID) { taskID = ID; }
 
         std::string refframe;
         std::string objectID;
         rw::math::Transform3D<> offset, approach, retract;
         rw::math::Q openQ, closeQ, tauMax;
-        std::vector< GraspTarget > targets;
+        std::vector<GraspTarget> targets;
 
         std::string taskID;
     };

@@ -39,128 +39,110 @@ using namespace rw::math;
 using namespace rw::proximity;
 using namespace rw::geometry;
 
-CollisionDetector::CollisionDetector (WorkCell::Ptr workcell) : ProximityCalculator (workcell, NULL)
-{}
+CollisionDetector::CollisionDetector(WorkCell::Ptr workcell) :
+    ProximityCalculator(workcell, NULL) {}
 
-CollisionDetector::CollisionDetector (WorkCell::Ptr workcell, CollisionStrategy::Ptr strategy) :
-    ProximityCalculator (workcell, strategy)
-{}
+CollisionDetector::CollisionDetector(WorkCell::Ptr workcell, CollisionStrategy::Ptr strategy) :
+    ProximityCalculator(workcell, strategy) {}
 
-CollisionDetector::CollisionDetector (WorkCell::Ptr workcell, CollisionStrategy::Ptr strategy,
-                                      ProximityFilterStrategy::Ptr bpfilter) :
-    ProximityCalculator (workcell, strategy)
-{
-    RW_ASSERT (bpfilter);
-    setProximityFilterStrategy (bpfilter);
+CollisionDetector::CollisionDetector(WorkCell::Ptr workcell, CollisionStrategy::Ptr strategy,
+                                     ProximityFilterStrategy::Ptr bpfilter) :
+    ProximityCalculator(workcell, strategy) {
+    RW_ASSERT(bpfilter);
+    setProximityFilterStrategy(bpfilter);
 }
 
-bool CollisionDetector::inCollision (const kinematics::State& state, ProximityData& proxdata) const
-{
+bool CollisionDetector::inCollision(const kinematics::State& state, ProximityData& proxdata) const {
     ProximityStrategyData data;
-    data.getCache () = proxdata._cache;
+    data.getCache() = proxdata._cache;
 
-    proxdata._collisionData.collidingFrames.clear ();
+    proxdata._collisionData.collidingFrames.clear();
 
-    bool stopAtFirstContact = proxdata.getCollisionQueryType () == FirstContactFullInfo ||
-                              proxdata.getCollisionQueryType () == FirstContactNoInfo;
+    bool stopAtFirstContact = proxdata.getCollisionQueryType() == FirstContactFullInfo ||
+                              proxdata.getCollisionQueryType() == FirstContactNoInfo;
 
-    bool fullInfo = proxdata.getCollisionQueryType () == FirstContactFullInfo ||
-                    proxdata.getCollisionQueryType () == AllContactsFullInfo;
+    bool fullInfo = proxdata.getCollisionQueryType() == FirstContactFullInfo ||
+                    proxdata.getCollisionQueryType() == AllContactsFullInfo;
 
-    if (fullInfo) {
-        data.setCollisionQueryType (CollisionStrategy::AllContacts);
-    }
-    else {
-        data.setCollisionQueryType (CollisionStrategy::FirstContact);
-    }
-    if (stopAtFirstContact) {
-        proxdata._collisionData._fullInfo.push_back (
-            const_cast< CollisionDetector* > (this)->calculate (state, &data));
-        if (proxdata._collisionData._fullInfo.front ().inCollision ()) {
-            std::pair< Frame::Ptr, Frame::Ptr > colFrames =
-                proxdata._collisionData._fullInfo.front ().getColidingFrames ();
+    if(fullInfo) { data.setCollisionQueryType(CollisionStrategy::AllContacts); }
+    else { data.setCollisionQueryType(CollisionStrategy::FirstContact); }
+    if(stopAtFirstContact) {
+        proxdata._collisionData._fullInfo.push_back(
+            const_cast<CollisionDetector*>(this)->calculate(state, &data));
+        if(proxdata._collisionData._fullInfo.front().inCollision()) {
+            std::pair<Frame::Ptr, Frame::Ptr> colFrames =
+                proxdata._collisionData._fullInfo.front().getColidingFrames();
 
-            proxdata._collisionData.collidingFrames.insert (
-                std::make_pair (colFrames.first.get (), colFrames.second.get ()));
+            proxdata._collisionData.collidingFrames.insert(
+                std::make_pair(colFrames.first.get(), colFrames.second.get()));
         }
-        else {
-            proxdata._collisionData._fullInfo.clear ();
-        }
+        else { proxdata._collisionData._fullInfo.clear(); }
     }
     else {
         ProximityCalculator::ResultType res =
-            rw::core::ownedPtr (new std::vector< ProximityStrategyData > ());
-        const_cast< CollisionDetector* > (this)->calculate (state, &data, res);
+            rw::core::ownedPtr(new std::vector<ProximityStrategyData>());
+        const_cast<CollisionDetector*>(this)->calculate(state, &data, res);
 
-        for (ProximityStrategyData& d : *res) {
-            if (d.inCollision ()) {
-                proxdata._collisionData._fullInfo.push_back (d);
-                std::pair< Frame::Ptr, Frame::Ptr > colFrames = d.getColidingFrames ();
+        for(ProximityStrategyData& d : *res) {
+            if(d.inCollision()) {
+                proxdata._collisionData._fullInfo.push_back(d);
+                std::pair<Frame::Ptr, Frame::Ptr> colFrames = d.getColidingFrames();
 
-                proxdata._collisionData.collidingFrames.insert (
-                    std::make_pair (colFrames.first.get (), colFrames.second.get ()));
+                proxdata._collisionData.collidingFrames.insert(
+                    std::make_pair(colFrames.first.get(), colFrames.second.get()));
             }
         }
     }
 
-    return proxdata._collisionData.collidingFrames.size () > 0;
+    return proxdata._collisionData.collidingFrames.size() > 0;
 }
 
-bool CollisionDetector::inCollision (const State& state, QueryResult* result,
-                                     bool stopAtFirstContact) const
-{
+bool CollisionDetector::inCollision(const State& state, QueryResult* result,
+                                    bool stopAtFirstContact) const {
     ProximityStrategyData data;
-    data.setCollisionQueryType (CollisionStrategy::AllContacts);
+    data.setCollisionQueryType(CollisionStrategy::AllContacts);
 
     ProximityData res;
-    if (result == NULL) {
-        res.setCollisionQueryType (FirstContactFullInfo);
-    }
+    if(result == NULL) { res.setCollisionQueryType(FirstContactFullInfo); }
     else {
-        res.setCollisionQueryType (AllContactsFullInfo);
+        res.setCollisionQueryType(AllContactsFullInfo);
 
-        if (stopAtFirstContact) {
-            res.setCollisionQueryType (FirstContactFullInfo);
-        }
+        if(stopAtFirstContact) { res.setCollisionQueryType(FirstContactFullInfo); }
     }
 
-    bool coliding = inCollision (state, res);
+    bool coliding = inCollision(state, res);
 
-    if (result != NULL) {
-        *result = res._collisionData;
-    }
+    if(result != NULL) { *result = res._collisionData; }
     return coliding;
 }
 
-bool CollisionDetector::addGeometry (rw::core::Ptr<rw::kinematics::Frame> frame,
-                                     const rw::geometry::Geometry::Ptr geometry)
-{
-    return ProximityCalculator::addGeometry (Frame::Ptr (frame), geometry);
+bool CollisionDetector::addGeometry(rw::core::Ptr<rw::kinematics::Frame> frame,
+                                    const rw::geometry::Geometry::Ptr geometry) {
+    return ProximityCalculator::addGeometry(Frame::Ptr(frame), geometry);
 }
 
-void CollisionDetector::removeGeometry (rw::core::Ptr<rw::kinematics::Frame> frame,
-                                        const rw::geometry::Geometry::Ptr geo)
-{
-    ProximityCalculator::removeGeometry (Frame::Ptr (frame), geo);
+void CollisionDetector::removeGeometry(rw::core::Ptr<rw::kinematics::Frame> frame,
+                                       const rw::geometry::Geometry::Ptr geo) {
+    ProximityCalculator::removeGeometry(Frame::Ptr(frame), geo);
 }
 
-void CollisionDetector::removeGeometry (rw::core::Ptr<rw::kinematics::Frame> frame, const std::string geoid)
-{
-    ProximityCalculator::removeGeometry (Frame::Ptr (frame), geoid);
+void CollisionDetector::removeGeometry(rw::core::Ptr<rw::kinematics::Frame> frame,
+                                       const std::string geoid) {
+    ProximityCalculator::removeGeometry(Frame::Ptr(frame), geoid);
 }
 
-std::vector< std::string > CollisionDetector::getGeometryIDs (rw::core::Ptr<rw::kinematics::Frame> frame)
-{
-    return ProximityCalculator::getGeometryIDs (Frame::Ptr (frame));
+std::vector<std::string>
+CollisionDetector::getGeometryIDs(rw::core::Ptr<rw::kinematics::Frame> frame) {
+    return ProximityCalculator::getGeometryIDs(Frame::Ptr(frame));
 }
 
-bool CollisionDetector::hasGeometry (rw::core::Ptr<rw::kinematics::Frame> frame, const std::string& geometryId)
-{
-    return ProximityCalculator::hasGeometry (Frame::Ptr (frame), geometryId);
+bool CollisionDetector::hasGeometry(rw::core::Ptr<rw::kinematics::Frame> frame,
+                                    const std::string& geometryId) {
+    return ProximityCalculator::hasGeometry(Frame::Ptr(frame), geometryId);
 }
 
-rw::geometry::Geometry::Ptr CollisionDetector::getGeometry (rw::core::Ptr<rw::kinematics::Frame> frame,
-                                                            const std::string& geometryId)
-{
-    return ProximityCalculator::getGeometry (Frame::Ptr (frame), geometryId);
+rw::geometry::Geometry::Ptr
+CollisionDetector::getGeometry(rw::core::Ptr<rw::kinematics::Frame> frame,
+                               const std::string& geometryId) {
+    return ProximityCalculator::getGeometry(Frame::Ptr(frame), geometryId);
 }

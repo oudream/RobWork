@@ -22,52 +22,51 @@
  * @file rwlibs/algorithms/PlaneModel.hpp
  */
 
-#include <rwlibs/algorithms/RANSACModel.hpp>
-
 #include <rw/core/Ptr.hpp>
 #include <rw/geometry/Plane.hpp>
 #include <rw/math/Vector3D.hpp>
+#include <rwlibs/algorithms/RANSACModel.hpp>
 
 namespace rwlibs { namespace algorithms {
 
     /**
      * @brief A plane model.
      */
-    class PlaneModel : public RANSACModel< PlaneModel, rw::math::Vector3D<> >
+    class PlaneModel : public RANSACModel<PlaneModel, rw::math::Vector3D<>>
     {
       public:
         //! @brief Smart pointer type to this class.
-        typedef rw::core::Ptr< PlaneModel > Ptr;
+        typedef rw::core::Ptr<PlaneModel> Ptr;
 
       public:    // constructors
         /**
          * @brief Constructor.
          */
-        PlaneModel () {}
+        PlaneModel() {}
 
         /**
          * @brief Constructor.
          *
          * @param plane [in] plane model
          */
-        PlaneModel (const rw::geometry::Plane& plane) : _model (plane) {}
+        PlaneModel(const rw::geometry::Plane& plane) : _model(plane) {}
 
         //! @brief Destructor.
-        virtual ~PlaneModel () {}
+        virtual ~PlaneModel() {}
 
       public:    // methods
         //! @copydoc RANSACModel::fitError
-        virtual double fitError (const rw::math::Vector3D<>& sample) const;
+        virtual double fitError(const rw::math::Vector3D<>& sample) const;
 
         //! @copydoc RANSACModel::invalid
-        virtual bool invalid () const;
+        virtual bool invalid() const;
 
         /**
          * @copydoc RANSACModel::getMinReqData
          *
          * PlaneModel requires at least 3 samples.
          */
-        virtual int getMinReqData () const { return 3; }
+        virtual int getMinReqData() const { return 3; }
 
         /**
          * @copydoc RANSACModel::refit
@@ -75,25 +74,24 @@ namespace rwlibs { namespace algorithms {
          * Returns standard variance of point distances to the plane model (an average of distances
          * squared).
          */
-        virtual double refit (const std::vector< rw::math::Vector3D<> >& samples);
+        virtual double refit(const std::vector<rw::math::Vector3D<>>& samples);
 
         //! @copydoc RANSACModel::same
-        virtual bool same (const PlaneModel& model, double threshold) const;
+        virtual bool same(const PlaneModel& model, double threshold) const;
 
         //! @brief Get plane.
-        rw::geometry::Plane plane () const { return _model; }
+        rw::geometry::Plane plane() const { return _model; }
 
         //! @brief Get plane normal.
-        inline rw::math::Vector3D<> normal () const { return _model.normal (); }
+        inline rw::math::Vector3D<> normal() const { return _model.normal(); }
 
         //! @brief Get plane distance from {0, 0, 0} along normal.
-        inline double d () const { return -_model.d (); }
+        inline double d() const { return -_model.d(); }
 
         /**
          * @brief Streaming operator.
          */
-        friend std::ostream& operator<< (std::ostream& out, const PlaneModel& plane)
-        {
+        friend std::ostream& operator<<(std::ostream& out, const PlaneModel& plane) {
             return out << plane._model;
         }
 

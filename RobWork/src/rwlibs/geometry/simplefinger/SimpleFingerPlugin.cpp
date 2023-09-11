@@ -23,33 +23,29 @@ using namespace rw::core;
 using namespace rw::geometry;
 using namespace rwlibs::geometry::simplefinger;
 
-RW_ADD_PLUGIN (SimpleFingerPlugin)
+RW_ADD_PLUGIN(SimpleFingerPlugin)
 
-SimpleFingerPlugin::SimpleFingerPlugin () :
-    Plugin ("SimpleFingerPlugin", "SimpleFingerPlugin", "1.0")
-{}
+SimpleFingerPlugin::SimpleFingerPlugin() :
+    Plugin("SimpleFingerPlugin", "SimpleFingerPlugin", "1.0") {}
 
-SimpleFingerPlugin::~SimpleFingerPlugin ()
-{}
+SimpleFingerPlugin::~SimpleFingerPlugin() {}
 
-std::vector< Extension::Descriptor > SimpleFingerPlugin::getExtensionDescriptors ()
-{
-    std::vector< Extension::Descriptor > descriptors;
+std::vector<Extension::Descriptor> SimpleFingerPlugin::getExtensionDescriptors() {
+    std::vector<Extension::Descriptor> descriptors;
 
-    Extension::Descriptor descriptor ("SimpleFinger", "rw.loaders.GeometryFactory");
-    descriptor.getProperties ().set< std::string > ("type", "simplefinger");
+    Extension::Descriptor descriptor("SimpleFinger", "rw.loaders.GeometryFactory");
+    descriptor.getProperties().set<std::string>("type", "simplefinger");
 
-    descriptors.push_back (descriptor);
+    descriptors.push_back(descriptor);
 
     return descriptors;
 }
 
-Ptr< Extension > SimpleFingerPlugin::makeExtension (const std::string& str)
-{
-    if (str == "SimpleFinger") {
-        Extension::Ptr extension = ownedPtr (new Extension (
-            "SimpleFinger", "rw.loaders.GeometryFactory", this, ownedPtr (new SimpleFinger ())));
-        extension->getProperties ().set< std::string > ("type", "simplefinger");
+Ptr<Extension> SimpleFingerPlugin::makeExtension(const std::string& str) {
+    if(str == "SimpleFinger") {
+        Extension::Ptr extension = ownedPtr(new Extension(
+            "SimpleFinger", "rw.loaders.GeometryFactory", this, ownedPtr(new SimpleFinger())));
+        extension->getProperties().set<std::string>("type", "simplefinger");
 
         return extension;
     }

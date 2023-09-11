@@ -37,14 +37,14 @@ namespace rw { namespace kinematics {
         /**
          * @brief constructor
          */
-        Stateless () : _registered (false) {}
+        Stateless() : _registered(false) {}
 
       public:
         //! @brief Smart pointer type for Stateless.
-        typedef rw::core::Ptr< Stateless > Ptr;
+        typedef rw::core::Ptr<Stateless> Ptr;
 
         //! destructor
-        virtual ~Stateless () {}
+        virtual ~Stateless() {}
 
         /**
          * @brief initialize this stateless data to a specific state
@@ -54,51 +54,49 @@ namespace rw { namespace kinematics {
          * and any copies or other instances of the \b state will therefore also
          * contain the added states.
          */
-        virtual void registerIn (State& state);
+        virtual void registerIn(State& state);
 
         //! register this stateless object in a statestructure.
-        virtual void registerIn (StateStructure::Ptr state);
+        virtual void registerIn(StateStructure::Ptr state);
 
         //! unregisters all state data of this stateless object
-        virtual void unregister ();
+        virtual void unregister();
 
         /**
          * @brief Get the state structure.
          * @return the state structure.
          */
-        StateStructure::Ptr getStateStructure () { return _stateStruct; }
+        StateStructure::Ptr getStateStructure() { return _stateStruct; }
 
         //! @copydoc getStateStructure
-        const StateStructure::Ptr getStateStructure () const { return _stateStruct; }
+        const StateStructure::Ptr getStateStructure() const { return _stateStruct; }
 
         /**
          * @brief Check if object has registered its state.
          * @return true if registered, false otherwise.
          */
-        bool isRegistered () { return _registered; }
+        bool isRegistered() { return _registered; }
 
       protected:
         //! implementations of sensor should add all their stateless data on initialization
-        template< class T > void add (StatelessData< T >& data) { add (data.getStateData ()); }
+        template<class T> void add(StatelessData<T>& data) { add(data.getStateData()); }
 
         /**
          * @brief Add data.
          * @param data [in] data to add.
          */
-        void add (StateData* data) { add (rw::core::Ptr< StateData > (data)); }
+        void add(StateData* data) { add(rw::core::Ptr<StateData>(data)); }
 
         //! implementations of sensor should add all their state data on initialization
-        void add (rw::core::Ptr< StateData > data)
-        {
-            if (_registered)
-                _stateStruct->addData (data);
-            _datas.push_back (data);
+        void add(rw::core::Ptr<StateData> data) {
+            if(_registered) _stateStruct->addData(data);
+            _datas.push_back(data);
         }
 
         //! @brief True if object has registered its state.
         bool _registered;
         //! @brief Data.
-        std::vector< rw::core::Ptr< StateData > > _datas;
+        std::vector<rw::core::Ptr<StateData>> _datas;
         //! @brief The state structure.
         StateStructure::Ptr _stateStruct;
     };

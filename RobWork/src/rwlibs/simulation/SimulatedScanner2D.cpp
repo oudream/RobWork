@@ -30,139 +30,115 @@ class Sensor2DWrapper : public rw::sensor::Scanner2D
   public:
     SimulatedScanner2D* _simscanner;
 
-    Sensor2DWrapper (SimulatedScanner2D* scanner) :
-        Scanner2D (scanner->getSensorModel ()->getName ()), _simscanner (scanner)
-    {
-        setSensorModel (scanner->getSensorModel ());
+    Sensor2DWrapper(SimulatedScanner2D* scanner) :
+        Scanner2D(scanner->getSensorModel()->getName()), _simscanner(scanner) {
+        setSensorModel(scanner->getSensorModel());
     }
 
-    const rw::geometry::PointCloud& getScan () const { return _simscanner->getScan (); }
-    double getAngularRange () const { return _simscanner->getAngularRange (); }
-    size_t getMeasurementCount () const { return _simscanner->getMeasurementCount (); }
+    const rw::geometry::PointCloud& getScan() const { return _simscanner->getScan(); }
+    double getAngularRange() const { return _simscanner->getAngularRange(); }
+    size_t getMeasurementCount() const { return _simscanner->getMeasurementCount(); }
 
-    void open () { _simscanner->open (); }
-    bool isOpen () { return _simscanner->isOpen (); }
-    void close () { _simscanner->close (); }
-    void acquire () { _simscanner->acquire (); }
-    bool isScanReady () { return _simscanner->isScanReady (); }
-    std::pair< double, double > getRange () { return _simscanner->getRange (); }
-    double getFrameRate () { return _simscanner->getFrameRate (); }
+    void open() { _simscanner->open(); }
+    bool isOpen() { return _simscanner->isOpen(); }
+    void close() { _simscanner->close(); }
+    void acquire() { _simscanner->acquire(); }
+    bool isScanReady() { return _simscanner->isScanReady(); }
+    std::pair<double, double> getRange() { return _simscanner->getRange(); }
+    double getFrameRate() { return _simscanner->getFrameRate(); }
 };
 
 }    // namespace
 
-SimulatedScanner2D::SimulatedScanner2D (const std::string& name, rw::core::Ptr<rw::kinematics::Frame> frame,
-                                        FrameGrabber25D::Ptr framegrabber) :
-    SimulatedSensor (rw::core::ownedPtr (
-        new Scanner2DModel (name, framegrabber->getFieldOfViewY (),
-                            static_cast< int > (framegrabber->getWidth ()), frame))),
-    _framegrabber (framegrabber), _frameRate (30), _dtsum (0), _isAcquired (false),
-    _isOpenned (false)
-{}
+SimulatedScanner2D::SimulatedScanner2D(const std::string& name,
+                                       rw::core::Ptr<rw::kinematics::Frame> frame,
+                                       FrameGrabber25D::Ptr framegrabber) :
+    SimulatedSensor(rw::core::ownedPtr(new Scanner2DModel(
+        name, framegrabber->getFieldOfViewY(), static_cast<int>(framegrabber->getWidth()), frame))),
+    _framegrabber(framegrabber), _frameRate(30), _dtsum(0), _isAcquired(false), _isOpenned(false) {}
 
-SimulatedScanner2D::SimulatedScanner2D (const std::string& name, const std::string& desc,
-                                        rw::core::Ptr<rw::kinematics::Frame> frame,
-                                        FrameGrabber25D::Ptr framegrabber) :
-    SimulatedSensor (
-        ownedPtr (new Scanner2DModel (name, _framegrabber->getFieldOfViewY (),
-                                      static_cast< int > (framegrabber->getWidth ()), frame))),
-    _framegrabber (framegrabber), _frameRate (30), _dtsum (0), _isAcquired (false),
-    _isOpenned (false)
-{}
+SimulatedScanner2D::SimulatedScanner2D(const std::string& name, const std::string& desc,
+                                       rw::core::Ptr<rw::kinematics::Frame> frame,
+                                       FrameGrabber25D::Ptr framegrabber) :
+    SimulatedSensor(
+        ownedPtr(new Scanner2DModel(name, _framegrabber->getFieldOfViewY(),
+                                    static_cast<int>(framegrabber->getWidth()), frame))),
+    _framegrabber(framegrabber), _frameRate(30), _dtsum(0), _isAcquired(false), _isOpenned(false) {}
 
-SimulatedScanner2D::~SimulatedScanner2D ()
-{}
+SimulatedScanner2D::~SimulatedScanner2D() {}
 
-void SimulatedScanner2D::open ()
-{
+void SimulatedScanner2D::open() {
     _isOpenned = true;
     _dtsum     = 0;
 }
 
-bool SimulatedScanner2D::isOpen ()
-{
+bool SimulatedScanner2D::isOpen() {
     return _isOpenned;
 }
 
-void SimulatedScanner2D::close ()
-{
+void SimulatedScanner2D::close() {
     _isOpenned = false;
 }
 
-const rw::geometry::PointCloud& SimulatedScanner2D::getScan () const
-{
-    return _framegrabber->getImage ();
+const rw::geometry::PointCloud& SimulatedScanner2D::getScan() const {
+    return _framegrabber->getImage();
 }
 
-void SimulatedScanner2D::acquire ()
-{
-    if (!_isOpenned)
-        RW_THROW ("Scanner has not been openned yet!");
+void SimulatedScanner2D::acquire() {
+    if(!_isOpenned) RW_THROW("Scanner has not been openned yet!");
     _isAcquired = false;
 }
 
-bool SimulatedScanner2D::isScanReady ()
-{
+bool SimulatedScanner2D::isScanReady() {
     return _isAcquired;
 }
 
-std::pair< double, double > SimulatedScanner2D::getRange ()
-{
-    return std::make_pair (_framegrabber->getMinDepth (), _framegrabber->getMaxDepth ());
+std::pair<double, double> SimulatedScanner2D::getRange() {
+    return std::make_pair(_framegrabber->getMinDepth(), _framegrabber->getMaxDepth());
 }
 
-void SimulatedScanner2D::setFrameRate (double fr)
-{
+void SimulatedScanner2D::setFrameRate(double fr) {
     _frameRate = fr;
 }
 
-double SimulatedScanner2D::getFrameRate ()
-{
+double SimulatedScanner2D::getFrameRate() {
     return _frameRate;
 }
 
-void SimulatedScanner2D::update (const Simulator::UpdateInfo& info, rw::kinematics::State& state)
-{
-    if (!_isOpenned || _isAcquired)
-        return;
-    if (_frameRate < 0.00001)
-        return;
+void SimulatedScanner2D::update(const Simulator::UpdateInfo& info, rw::kinematics::State& state) {
+    if(!_isOpenned || _isAcquired) return;
+    if(_frameRate < 0.00001) return;
 
     _dtsum += info.dt;
 
-    if (_dtsum > 1.0 / _frameRate) {
+    if(_dtsum > 1.0 / _frameRate) {
         _dtsum = 0;
-        _framegrabber->grab (getFrame (), state);
+        _framegrabber->grab(getFrame(), state);
         _isAcquired = true;
     }
 }
 
-void SimulatedScanner2D::reset (const rw::kinematics::State& state)
-{}
+void SimulatedScanner2D::reset(const rw::kinematics::State& state) {}
 
-rw::sensor::Scanner2DModel::Ptr SimulatedScanner2D::getSensorModel ()
-{
+rw::sensor::Scanner2DModel::Ptr SimulatedScanner2D::getSensorModel() {
     return _smodel;
 }
 
 rw::sensor::Scanner2D::Ptr
-SimulatedScanner2D::getScanner2DSensor (rwlibs::simulation::Simulator* instance)
-{
-    if (instance->hasHandle (this))
-        return instance->getSensorHandle (this).cast< rw::sensor::Scanner2D > ();
+SimulatedScanner2D::getScanner2DSensor(rwlibs::simulation::Simulator* instance) {
+    if(instance->hasHandle(this))
+        return instance->getSensorHandle(this).cast<rw::sensor::Scanner2D>();
 
-    rw::core::Ptr< Sensor2DWrapper > handle = rw::core::ownedPtr (new Sensor2DWrapper (this));
+    rw::core::Ptr<Sensor2DWrapper> handle = rw::core::ownedPtr(new Sensor2DWrapper(this));
 
-    instance->addHandle (this, handle);
+    instance->addHandle(this, handle);
     return handle;
 }
 
-double SimulatedScanner2D::getAngularRange ()
-{
-    return _framegrabber->getFieldOfViewY ();
+double SimulatedScanner2D::getAngularRange() {
+    return _framegrabber->getFieldOfViewY();
 }
 
-size_t SimulatedScanner2D::getMeasurementCount () const
-{
-    return _framegrabber->getWidth () * _framegrabber->getHeight ();
+size_t SimulatedScanner2D::getMeasurementCount() const {
+    return _framegrabber->getWidth() * _framegrabber->getHeight();
 }

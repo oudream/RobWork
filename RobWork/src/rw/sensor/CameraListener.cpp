@@ -19,8 +19,6 @@
 
 using namespace rw::sensor;
 
-CameraListener::CameraListener ()
-{}
+CameraListener::CameraListener() {}
 
-CameraListener::~CameraListener ()
-{}
+CameraListener::~CameraListener() {}

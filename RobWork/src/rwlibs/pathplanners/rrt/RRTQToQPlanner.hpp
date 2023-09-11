@@ -69,9 +69,9 @@ namespace rwlibs { namespace pathplanners {
            the tree towards an attractor configuration.
         */
         static rw::pathplanning::QToQPlanner::Ptr
-        makeBasic (const rw::pathplanning::PlannerConstraint& constraint,
-                   const rw::core::Ptr< rw::pathplanning::QSampler >& sampler,
-                   const rw::math::QMetric::CPtr& metric, double extend);
+        makeBasic(const rw::pathplanning::PlannerConstraint& constraint,
+                  const rw::core::Ptr<rw::pathplanning::QSampler>& sampler,
+                  const rw::math::QMetric::CPtr& metric, double extend);
 
         /**
            @brief RRT-Connect planner.
@@ -90,9 +90,9 @@ namespace rwlibs { namespace pathplanners {
            the tree towards an attractor configuration.
         */
         static rw::pathplanning::QToQPlanner::Ptr
-        makeConnect (const rw::pathplanning::PlannerConstraint& constraint,
-                     const rw::core::Ptr< rw::pathplanning::QSampler >& sampler,
-                     const rw::math::QMetric::CPtr& metric, double extend);
+        makeConnect(const rw::pathplanning::PlannerConstraint& constraint,
+                    const rw::core::Ptr<rw::pathplanning::QSampler>& sampler,
+                    const rw::math::QMetric::CPtr& metric, double extend);
 
         /**
            @brief Bidirectional RRT planner.
@@ -112,9 +112,9 @@ namespace rwlibs { namespace pathplanners {
            the tree towards an attractor configuration.
         */
         static rw::pathplanning::QToQPlanner::Ptr
-        makeBidirectional (const rw::pathplanning::PlannerConstraint& constraint,
-                           const rw::core::Ptr< rw::pathplanning::QSampler >& sampler,
-                           const rw::math::QMetric::CPtr& metric, double extend);
+        makeBidirectional(const rw::pathplanning::PlannerConstraint& constraint,
+                          const rw::core::Ptr<rw::pathplanning::QSampler>& sampler,
+                          const rw::math::QMetric::CPtr& metric, double extend);
 
         /**
            @brief Balanced, bidirectional RRT planner.
@@ -133,9 +133,9 @@ namespace rwlibs { namespace pathplanners {
            the tree towards an attractor configuration.
         */
         static rw::pathplanning::QToQPlanner::Ptr
-        makeBalancedBidirectional (const rw::pathplanning::PlannerConstraint& constraint,
-                                   const rw::core::Ptr< rw::pathplanning::QSampler >& sampler,
-                                   const rw::math::QMetric::CPtr& metric, double extend);
+        makeBalancedBidirectional(const rw::pathplanning::PlannerConstraint& constraint,
+                                  const rw::core::Ptr<rw::pathplanning::QSampler>& sampler,
+                                  const rw::math::QMetric::CPtr& metric, double extend);
     };
 
     /*\}*/

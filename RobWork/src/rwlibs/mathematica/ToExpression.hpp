@@ -24,9 +24,8 @@
  * \copydoc rwlibs::mathematica::ToExpression
  */
 
-#include <rwlibs/mathematica/Mathematica.hpp>
-
 #include <rw/core/Ptr.hpp>
+#include <rwlibs/mathematica/Mathematica.hpp>
 
 namespace rwlibs { namespace mathematica {
     //! @addtogroup mathematica
@@ -37,37 +36,37 @@ namespace rwlibs { namespace mathematica {
     {
       public:
         //! @brief Smart pointer type.
-        typedef rw::core::Ptr< ToExpression > Ptr;
+        typedef rw::core::Ptr<ToExpression> Ptr;
 
         /**
          * @brief Get expression from a string.
          * @param expression [in] the expression as a string.
          */
-        ToExpression (const char* expression);
+        ToExpression(const char* expression);
 
         /**
          * @brief Get expression from a string.
          * @param expression [in] the expression as a string.
          */
-        ToExpression (const std::string& expression);
+        ToExpression(const std::string& expression);
 
         /**
          * @brief Get expression from a string.
          * @param expression [in] the expression as a Mathematica string.
          */
-        ToExpression (const Mathematica::String& expression);
+        ToExpression(const Mathematica::String& expression);
 
         //! @brief Destructor.
-        virtual ~ToExpression ();
+        virtual ~ToExpression();
 
         //! @copydoc Mathematica::FunctionBase::getArguments
-        std::list< rw::core::Ptr< const Mathematica::Expression > > getArguments () const;
+        std::list<rw::core::Ptr<const Mathematica::Expression>> getArguments() const;
 
         //! @copydoc Mathematica::Expression::clone
-        Mathematica::Expression::Ptr clone () const;
+        Mathematica::Expression::Ptr clone() const;
 
       private:
-        rw::core::Ptr< Mathematica::String > _expression;
+        rw::core::Ptr<Mathematica::String> _expression;
     };
     //! @}
 }}     // namespace rwlibs::mathematica

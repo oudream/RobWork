@@ -35,14 +35,14 @@ namespace rwlibs { namespace proximitystrategies {
          * @brief Get a list of all available CollisionStrategiy ID's
          * @return A vector of ID's
          */
-        static std::vector< std::string > getCollisionStrategyIDs ();
+        static std::vector<std::string> getCollisionStrategyIDs();
 
         /**
          * @brief function to create a default available collision strategy
          * @return NULL if no collision strategies are available else a Ptr to a
          * collision strategy
          */
-        static rw::proximity::CollisionStrategy::Ptr makeDefaultCollisionStrategy ();
+        static rw::proximity::CollisionStrategy::Ptr makeDefaultCollisionStrategy();
 
         /**
          * @brief function to create a collision strategy from an ID
@@ -50,21 +50,21 @@ namespace rwlibs { namespace proximitystrategies {
          * @return NULL if the \b id dosn't match an available collision strategies else a Ptr to
          * the collision strategy
          */
-        static rw::proximity::CollisionStrategy::Ptr makeCollisionStrategy (const std::string& id);
+        static rw::proximity::CollisionStrategy::Ptr makeCollisionStrategy(const std::string& id);
 
         /**
          * @brief Get a list of all available DistanceStrategiy ID's
          * @return A vector of ID's
          */
 
-        static std::vector< std::string > getDistanceStrategyIDs ();
+        static std::vector<std::string> getDistanceStrategyIDs();
 
         /**
          * @brief function to create a default available distance strategy
          * @return NULL if no distancestrategies are available else a Ptr to a
          * distance strategy
          */
-        static rw::proximity::DistanceStrategy::Ptr makeDefaultDistanceStrategy ();
+        static rw::proximity::DistanceStrategy::Ptr makeDefaultDistanceStrategy();
 
         /**
          * @brief function to create a distance strategy from an ID
@@ -72,20 +72,20 @@ namespace rwlibs { namespace proximitystrategies {
          * @return NULL if the \b id dosn't match an available distance trategies else a Ptr to the
          * distance strategy
          */
-        static rw::proximity::DistanceStrategy::Ptr makeDistanceStrategy (const std::string& id);
+        static rw::proximity::DistanceStrategy::Ptr makeDistanceStrategy(const std::string& id);
 
         /**
          * @brief Get a list of all available DistanceMultiStrategiy ID's
          * @return A vector of ID's
          */
-        static std::vector< std::string > getDistanceMultiStrategyIDs ();
+        static std::vector<std::string> getDistanceMultiStrategyIDs();
 
         /**
          * @brief function to create a default available distance multi strategy
          * @return NULL if no distance multi strategies are available else a Ptr to a
          * distance multi strategy
          */
-        static rw::proximity::DistanceMultiStrategy::Ptr makeDefaultDistanceMultiStrategy ();
+        static rw::proximity::DistanceMultiStrategy::Ptr makeDefaultDistanceMultiStrategy();
 
         /**
          * @brief function to create a distance multi strategy from an ID
@@ -94,7 +94,7 @@ namespace rwlibs { namespace proximitystrategies {
          * to the distnace multi strategy
          */
         static rw::proximity::DistanceMultiStrategy::Ptr
-        makeDistanceMultiStrategy (const std::string& id);
+        makeDistanceMultiStrategy(const std::string& id);
     };
 
 }}    // namespace rwlibs::proximitystrategies

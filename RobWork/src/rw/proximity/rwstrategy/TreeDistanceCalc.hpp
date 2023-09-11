@@ -9,9 +9,8 @@
 #define TREEDISTANCECALC_HPP_
 
 #if !defined(SWIG)
-#include <rw/proximity/rwstrategy/BinaryBVTree.hpp>
-
 #include <rw/geometry/OBB.hpp>
+#include <rw/proximity/rwstrategy/BinaryBVTree.hpp>
 #endif
 
 namespace rw { namespace proximity {
@@ -25,14 +24,14 @@ namespace rw { namespace proximity {
     class TreeDistanceCalc
     {
       protected:
-        TreeDistanceCalc (){};
+        TreeDistanceCalc(){};
 
       public:
         typedef rw::proximity::BinaryOBBPtrTreeD BVTREE;
-        //typedef rw::proximity::RSSDistanceCalc< double > BVDISTANCECALC;
+        // typedef rw::proximity::RSSDistanceCalc< double > BVDISTANCECALC;
         typedef BVTREE BVTree;
 
-        virtual ~TreeDistanceCalc (){};
+        virtual ~TreeDistanceCalc(){};
 
         /**
          *
@@ -41,20 +40,20 @@ namespace rw { namespace proximity {
          * @param fTB [in] transform from reference frame \b f to tree \b treeB root.
          * @param B [in]
          */
-        virtual double distance (const rw::math::Transform3D<>& fTA, const BVTREE& A,
-                                 const rw::math::Transform3D<>& fTB, const BVTREE& B) = 0;
+        virtual double distance(const rw::math::Transform3D<>& fTA, const BVTREE& A,
+                                const rw::math::Transform3D<>& fTB, const BVTREE& B) = 0;
 
         /**
          * @brief returns the amount of heap memmory used by the tree distance calculator.
          * @return nr of bytes used
          */
-        virtual int getMemUsage () = 0;
+        virtual int getMemUsage() = 0;
 
-        virtual int getNrOfTestedBVs () { return -1; };
-        virtual int getNrOfCollidingBVs () { return -1; };
+        virtual int getNrOfTestedBVs() { return -1; };
+        virtual int getNrOfCollidingBVs() { return -1; };
 
-        virtual int getNrOfTestedPrimitives () { return -1; };
-        virtual int getNrOfCollidingPrimitives () { return -1; };
+        virtual int getNrOfTestedPrimitives() { return -1; };
+        virtual int getNrOfCollidingPrimitives() { return -1; };
 
         /*
          * @brief creates a tree collider that performes depth first search

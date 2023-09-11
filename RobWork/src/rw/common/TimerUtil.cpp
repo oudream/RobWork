@@ -30,51 +30,46 @@
 
 using namespace rw::common;
 
-double TimerUtil::currentTime ()
-{
-    return static_cast< double > (currentTimeUs ()) / static_cast< double > (1e6);
+double TimerUtil::currentTime() {
+    return static_cast<double>(currentTimeUs()) / static_cast<double>(1e6);
 }
 
-void TimerUtil::sleepMs (int period)
-{
+void TimerUtil::sleepMs(int period) {
 #ifdef _WIN32
-    Sleep (period);
+    Sleep(period);
 #else
-    usleep (1000 * period);
+    usleep(1000 * period);
 #endif
 }
 
-void TimerUtil::sleepUs (int period)
-{
+void TimerUtil::sleepUs(int period) {
 #ifdef _WIN32
     // This is the best we can do, I think.
-    Sleep (static_cast< int > (ceil (1e-3 * period)));
+    Sleep(static_cast<int>(ceil(1e-3 * period)));
 #else
-    usleep (period);
+    usleep(period);
 #endif
 }
 
-long long TimerUtil::currentTimeMs ()
-{
+long long TimerUtil::currentTimeMs() {
 #ifdef _WIN32
-    return (long long) (clock () * ((double) 1e3 / (double) CLOCKS_PER_SEC));
+    return (long long) (clock() * ((double) 1e3 / (double) CLOCKS_PER_SEC));
 #else
     timeval current;
 
-    gettimeofday (&current, 0);
+    gettimeofday(&current, 0);
     return (long long) current.tv_sec * 1000L + current.tv_usec / 1000L;
 
 #endif
 }
 
-long long TimerUtil::currentTimeUs ()
-{
+long long TimerUtil::currentTimeUs() {
 #ifdef _WIN32
-    return (long long) (clock () * ((double) 1e6) / ((double) CLOCKS_PER_SEC));
+    return (long long) (clock() * ((double) 1e6) / ((double) CLOCKS_PER_SEC));
 #else
     timeval current;
 
-    gettimeofday (&current, 0);
+    gettimeofday(&current, 0);
     return (long long) current.tv_sec * 1000000L + current.tv_usec;
 #endif
 }

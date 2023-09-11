@@ -24,7 +24,6 @@
  */
 #if !defined(SWIG)
 #include <rw/geometry/Primitive.hpp>
-
 #include <rw/math/Metric.hpp>
 #endif
 
@@ -41,7 +40,7 @@ namespace rw { namespace geometry {
         /**
          * @brief Smart pointer to Plane
          */
-        typedef rw::core::Ptr< Plane > Ptr;
+        typedef rw::core::Ptr<Plane> Ptr;
 
         //! @brief The value type for a plane (double precision).
         typedef double value_type;
@@ -51,19 +50,18 @@ namespace rw { namespace geometry {
          *
          * Makes a plane on X-Y surface.
          */
-        Plane () : _normal (rw::math::Vector3D<double>::z ()), _d (0.0) {}
+        Plane() : _normal(rw::math::Vector3D<double>::z()), _d(0.0) {}
 
         /**
          * @brief constructor
          * @param q
          */
-        Plane (const rw::math::Q& q)
-        {
-            RW_ASSERT (q.size () == 4);
-            _normal (0) = q (0);
-            _normal (1) = q (1);
-            _normal (2) = q (2);
-            _d          = q (3);
+        Plane(const rw::math::Q& q) {
+            RW_ASSERT(q.size() == 4);
+            _normal(0) = q(0);
+            _normal(1) = q(1);
+            _normal(2) = q(2);
+            _d         = q(3);
         }
 
         /**
@@ -71,7 +69,7 @@ namespace rw { namespace geometry {
          * @param n [in] normal of plane
          * @param d [in] distance from plane to (0,0,0) in direction of normal
          */
-        Plane (const rw::math::Vector3D<double>& n, const double d) : _normal (n), _d (d) {}
+        Plane(const rw::math::Vector3D<double>& n, const double d) : _normal(n), _d(d) {}
 
         /**
          * @brief constructor - calculates the plane from 3 vertices
@@ -79,27 +77,28 @@ namespace rw { namespace geometry {
          * @param p2 [in] vertice 2
          * @param p3 [in] vertice 3
          */
-        Plane (const rw::math::Vector3D<double>& p1, const rw::math::Vector3D<double>& p2,
-               const rw::math::Vector3D<double>& p3) :
-            _normal (normalize (cross (p2 - p1, p3 - p1)))
-        {
-            _d = -dot (_normal, p1);
+        Plane(const rw::math::Vector3D<double>& p1, const rw::math::Vector3D<double>& p2,
+              const rw::math::Vector3D<double>& p3) :
+            _normal(normalize(cross(p2 - p1, p3 - p1))) {
+            _d = -dot(_normal, p1);
         }
 
         //! @brief destructor
-        virtual ~Plane () {}
+        virtual ~Plane() {}
 
         //! @brief get plane normal
-        inline rw::math::Vector3D<double>& normal () { return _normal; }
+        inline rw::math::Vector3D<double>& normal() { return _normal; }
 
         //! @brief get plane normal
-        inline const rw::math::Vector3D<double>& normal () const { return _normal; }
+        inline const rw::math::Vector3D<double>& normal() const { return _normal; }
 
         //! @brief get distance to {0,0,0} from plane along normal.
-        inline double& d () { return _d; }
+        inline double& d() { return _d; }
 #if !defined(SWIG)
         //! @brief get distance to {0,0,0} from plane along normal.
-        inline double d () const { return _d; }
+        inline double d() const {
+            return _d;
+        }
 #endif
         /**
          * @brief Calculates the shortest distance from point to plane.
@@ -109,19 +108,17 @@ namespace rw { namespace geometry {
          *
          * @param point
          */
-        double distance (const rw::math::Vector3D<double>& point) const
-        {
-            return dot (point, _normal) + _d;
+        double distance(const rw::math::Vector3D<double>& point) const {
+            return dot(point, _normal) + _d;
         }
 
         /**
          * @brief Default metric for computing the difference between 2 planes
          * @param plane [in]
          */
-        double distance (const Plane& plane) const
-        {
-            double ang = angle (_normal, plane.normal ());
-            return (ang + fabs (_d - plane.d ())) / 2.0;
+        double distance(const Plane& plane) const {
+            double ang = angle(_normal, plane.normal());
+            return (ang + fabs(_d - plane.d())) / 2.0;
         }
 
         /**
@@ -136,7 +133,7 @@ namespace rw { namespace geometry {
          * @param data [in] a set of points
          * @return fitting error
          */
-        double refit (const std::vector< rw::math::Vector3D<double> >& data);
+        double refit(const std::vector<rw::math::Vector3D<double>>& data);
 
         /**
          * @brief Calculates the intersection between the line and plane.
@@ -147,14 +144,14 @@ namespace rw { namespace geometry {
          * @param p1 [in] point 1 on the line
          * @param p2 [in] point 2 on the line
          */
-        rw::math::Vector3D<double> intersection (const rw::math::Vector3D<double>& p1,
-                                           const rw::math::Vector3D<double>& p2) const;
+        rw::math::Vector3D<double> intersection(const rw::math::Vector3D<double>& p1,
+                                                const rw::math::Vector3D<double>& p2) const;
 
         // static Plane fitFrom(const std::vector<rw::math::Vector3D<double> >& data){ return };
 
         // inherited from Primitive
         //! @copydoc Primitive::createMesh()
-        TriMesh::Ptr createMesh (int resolution) const;
+        TriMesh::Ptr createMesh(int resolution) const;
 
         /**
          * @brief Create a triangle mesh representing the plane.
@@ -163,16 +160,18 @@ namespace rw { namespace geometry {
          * @param resolution [in] Resolution of the mesh (not applicable for a plane)
          * @param size [in] Size of the plane.
          */
-        TriMesh::Ptr createMesh (int resolution, double size) const;
+        TriMesh::Ptr createMesh(int resolution, double size) const;
 
         //! @copydoc Primitive::getParameters()
-        virtual rw::math::Q getParameters () const;
+        virtual rw::math::Q getParameters() const;
 
         //! @copydoc Primitive::setParameters
-        virtual void setParameters (const rw::math::Q& q);
+        virtual void setParameters(const rw::math::Q& q);
 
         //! @copydoc Primitive::getType()
-        GeometryType getType () const { return PlanePrim; }
+        GeometryType getType() const {
+            return PlanePrim;
+        }
 
         /**
          * @brief Create a metric that can be used to compare distance between
@@ -181,25 +180,23 @@ namespace rw { namespace geometry {
          * val = 0.5*angle(p1.normal, p2.normal)*angToDistWeight + 0.5*fabs(p1.d-p2.d);
          * @return distance metric
          */
-        static rw::math::Metric< Plane >::Ptr makeMetric (double angToDistWeight = 1.0);
+        static rw::math::Metric<Plane>::Ptr makeMetric(double angToDistWeight = 1.0);
 
 #if !defined(SWIG)
         /**
            @brief Streaming operator.
          */
-        friend std::ostream& operator<< (std::ostream& out, const Plane& p)
-        {
+        friend std::ostream& operator<<(std::ostream& out, const Plane& p) {
             return out << "Plane("
-                       << "n: " << p.normal () << ", d: " << p.d () << ")";
+                       << "n: " << p.normal() << ", d: " << p.d() << ")";
         };
 #else
-        TOSTRING (rw::geometry::Plane);
+        TOSTRING(rw::geometry::Plane);
 #endif
       protected:
-        bool doIsInside (const rw::math::Vector3D<double>& point)
-        {
+        bool doIsInside(const rw::math::Vector3D<double>& point) {
             // test if point is on the back side of the plane
-            return fabs (dot (point, _normal)) < fabs (_d);
+            return fabs(dot(point, _normal)) < fabs(_d);
         }
 
       private:
@@ -208,25 +205,25 @@ namespace rw { namespace geometry {
     };
 }}    // namespace rw::geometry
 #if defined(SWIG)
-SWIG_DECLARE_TEMPLATE (MetricPlane, rw::math::Metric< rw::geometry::Plane >);
+SWIG_DECLARE_TEMPLATE(MetricPlane, rw::math::Metric<rw::geometry::Plane>);
 #endif
 
 namespace rw { namespace geometry {
     /**
      * @brief A metric for calculating plane-to-plane distance.
      */
-    class PlaneMetric : public rw::math::Metric< rw::geometry::Plane >
+    class PlaneMetric : public rw::math::Metric<rw::geometry::Plane>
     {
       public:    // constructors
         /**
          * @brief Constructor.
          * @param angToDistWeight [in] weighting of angle compared to linear distance.
          */
-        PlaneMetric (double angToDistWeight = 1.0) : _angToDistWeight (angToDistWeight) {}
+        PlaneMetric(double angToDistWeight = 1.0) : _angToDistWeight(angToDistWeight) {}
 
       protected:
         //! @brief Calculates distance from the plane to reference plane (X-Y surface)
-        double doDistance (const Plane& q) const { return doDistance (Plane (), q); }
+        double doDistance(const Plane& q) const { return doDistance(Plane(), q); }
 
         /**
          * @brief Calculates distance between two planes
@@ -237,28 +234,27 @@ namespace rw { namespace geometry {
          *
          * Angle is normalized, so that planes with opposite normals are treated as the same plane.
          */
-        double doDistance (const Plane& a, const Plane& b) const
-        {
-            double ang = rw::math::angle (a.normal (), b.normal ());
-            double d   = b.d ();
+        double doDistance(const Plane& a, const Plane& b) const {
+            double ang = rw::math::angle(a.normal(), b.normal());
+            double d   = b.d();
 
             // if the normal faces the other direction, the real angle is 180 deg - calculated angle
             // and one of the distances is reversed
-            if ((rw::math::Pi - ang) < ang) {
+            if((rw::math::Pi - ang) < ang) {
                 ang = rw::math::Pi - ang;
                 d   = -d;
             }
 
             // ang = ((rw::math::Pi - ang) < ang) ? (rw::math::Pi - ang) : ang;
 
-            return 0.5 * ang * _angToDistWeight + 0.5 * fabs (a.d () - d);
+            return 0.5 * ang * _angToDistWeight + 0.5 * fabs(a.d() - d);
         }
 
         /**
          * @copydoc rw::math::Metric::size
          * @note this function always return -1.
          */
-        int doSize () const { return -1; }
+        int doSize() const { return -1; }
 
         //! @param weighting of angle compared to linear distance.
         double _angToDistWeight;

@@ -50,7 +50,7 @@ namespace rw { namespace loaders {
          * @param element [in] DOMElement describing Property value.
          * @return Pointer to the property value.
          */
-        static rw::core::PropertyValueBase::Ptr readPropertyValue (xercesc::DOMElement* element);
+        static rw::core::PropertyValueBase::Ptr readPropertyValue(xercesc::DOMElement* element);
 
         /**
          * @brief Reads in a Property from DOMElement.
@@ -62,8 +62,8 @@ namespace rw { namespace loaders {
          * XMLPropertyFormat::PropertyId
          * @return Pointer to the property
          */
-        static rw::core::PropertyBase::Ptr readProperty (xercesc::DOMElement* element,
-                                                         bool checkHeader = true);
+        static rw::core::PropertyBase::Ptr readProperty(xercesc::DOMElement* element,
+                                                        bool checkHeader = true);
 
         /**
          * @brief Reads in a PropertyMap from DOMElement
@@ -75,8 +75,8 @@ namespace rw { namespace loaders {
          * XMLPropertyFormat::PropertyMapId
          * @return Loaded PropertyMap
          */
-        static rw::core::PropertyMap readProperties (xercesc::DOMElement* element,
-                                                     bool checkHeader = true);
+        static rw::core::PropertyMap readProperties(xercesc::DOMElement* element,
+                                                    bool checkHeader = true);
 
         /**
          * @brief Read in rw::core::PropertyMap from file
@@ -88,8 +88,8 @@ namespace rw { namespace loaders {
          * specified in the XML-file if available.
          * @return Loaded PropertyMap
          */
-        static rw::core::PropertyMap load (const std::string& filename,
-                                           const std::string& schemaFileName = "");
+        static rw::core::PropertyMap load(const std::string& filename,
+                                          const std::string& schemaFileName = "");
 
         /**
          * @brief Read in rw::core::PropertyMap from istream
@@ -101,8 +101,8 @@ namespace rw { namespace loaders {
          * specified in the XML-file if available.
          * @return Loaded PropertyMap
          */
-        static rw::core::PropertyMap load (std::istream& instream,
-                                           const std::string& schemaFileName = "");
+        static rw::core::PropertyMap load(std::istream& instream,
+                                          const std::string& schemaFileName = "");
 
         /**
          * @brief Utility class which initializes local static variables.
@@ -119,14 +119,14 @@ namespace rw { namespace loaders {
         {
           public:
             //! @brief Initializes when constructed.
-            Initializer ();
+            Initializer();
         };
 
       private:
         static const Initializer initializer;
 
-        XMLPropertyLoader ();
-        virtual ~XMLPropertyLoader ();
+        XMLPropertyLoader();
+        virtual ~XMLPropertyLoader();
     };
 
     /* @} */

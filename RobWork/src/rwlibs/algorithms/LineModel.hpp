@@ -22,53 +22,52 @@
  * @file LineModel.hpp
  */
 
-#include <rwlibs/algorithms/RANSACModel.hpp>
-
 #include <rw/core/Ptr.hpp>
 #include <rw/geometry/Line.hpp>
 #include <rw/math/Vector3D.hpp>
+#include <rwlibs/algorithms/RANSACModel.hpp>
 
 namespace rwlibs { namespace algorithms {
 
     /**
      * @brief A line model.
      */
-    class LineModel : public RANSACModel< LineModel, rw::math::Vector3D<> >
+    class LineModel : public RANSACModel<LineModel, rw::math::Vector3D<>>
     {
       public:
         //! @brief Smart pointer type to this class.
-        typedef rw::core::Ptr< LineModel > Ptr;
+        typedef rw::core::Ptr<LineModel> Ptr;
 
       public:    // constructors
         /**
          * @brief Constructor.
          */
-        LineModel () {}
+        LineModel() {}
 
         /**
          * @brief Constructor.
          */
-        LineModel (const rw::geometry::Line& line) : _model (line) {}
+        LineModel(const rw::geometry::Line& line) : _model(line) {}
 
         //! @brief Destructor.
-        virtual ~LineModel () {}
+        virtual ~LineModel() {}
 
       public:    // methods
         //! @copydoc RANSACModel::fitError
-        virtual double fitError (const rw::math::Vector3D<>& sample) const;
+        virtual double fitError(const rw::math::Vector3D<>& sample) const;
 
         //! @copydoc RANSACModel::invalid
-        virtual bool invalid () const;
+        virtual bool invalid() const;
 
         /**
          * @copydoc RANSACModel::getMinReqData
          *
          * LineModel requires at least 2 sample.
          */
-        virtual int getMinReqData () const { return 2; }
+        virtual int getMinReqData() const { return 2; }
 
         //! @copydoc RANSACModel::refit
-        virtual double refit (const std::vector< rw::math::Vector3D<> >& samples);
+        virtual double refit(const std::vector<rw::math::Vector3D<>>& samples);
 
         /**
          * @copydoc RANSACModel::same
@@ -77,16 +76,15 @@ namespace rwlibs { namespace algorithms {
          * to metric taking into account weighted sum of direction angle difference
          * and the closest separation between lines is lower than specified threshold.
          */
-        virtual bool same (const LineModel& model, double threshold) const;
+        virtual bool same(const LineModel& model, double threshold) const;
 
         //! @brief Get line.
-        rw::geometry::Line line () const { return _model; }
+        rw::geometry::Line line() const { return _model; }
 
         /**
          * @brief Streaming operator.
          */
-        friend std::ostream& operator<< (std::ostream& out, const LineModel& model)
-        {
+        friend std::ostream& operator<<(std::ostream& out, const LineModel& model) {
             return out << model._model;
         }
 

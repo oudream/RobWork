@@ -28,7 +28,7 @@ namespace rwsim { namespace swig {
      * @param L
      * @return
      */
-    int openLuaLibRWSim (lua_State* L);
+    int openLuaLibRWSim(lua_State* L);
 
 }}     // namespace rwsim::swig
 #endif /* LUA_HPP_ */

@@ -22,9 +22,8 @@
  * @file ClosedFormIK.hpp
  */
 #if !defined(SWIG)
-#include <rw/invkin/InvKinSolver.hpp>
-
 #include <rw/core/Ptr.hpp>
+#include <rw/invkin/InvKinSolver.hpp>
 #endif
 namespace rw { namespace models {
     class Device;
@@ -52,7 +51,7 @@ namespace rw { namespace invkin {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< ClosedFormIK > Ptr;
+        typedef rw::core::Ptr<ClosedFormIK> Ptr;
 
         /**
    @brief Closed-form IK solver for a device.
@@ -69,23 +68,23 @@ namespace rw { namespace invkin {
    You should check for yourself that the closed-form IK for the device
    is correct.
 */
-        static ClosedFormIK::Ptr make (const rw::models::Device& device,
-                                       const rw::kinematics::State& state);
+        static ClosedFormIK::Ptr make(const rw::models::Device& device,
+                                      const rw::kinematics::State& state);
 
         /**
            @brief Destructor
         */
-        virtual ~ClosedFormIK () {}
+        virtual ~ClosedFormIK() {}
 
       protected:
         /**
            @brief Constructor
         */
-        ClosedFormIK () {}
+        ClosedFormIK() {}
 
       private:
-        ClosedFormIK (const ClosedFormIK&);
-        ClosedFormIK& operator= (const ClosedFormIK&);
+        ClosedFormIK(const ClosedFormIK&);
+        ClosedFormIK& operator=(const ClosedFormIK&);
     };
 
     /*@}*/

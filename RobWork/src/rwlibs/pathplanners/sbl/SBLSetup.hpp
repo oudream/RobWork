@@ -22,9 +22,8 @@
    @file SBLSetup.hpp
 */
 
-#include <rwlibs/pathplanners/sbl/SBLOptions.hpp>
-
 #include <rw/core/Ptr.hpp>
+#include <rwlibs/pathplanners/sbl/SBLOptions.hpp>
 
 namespace rw { namespace models {
     class Device;
@@ -73,10 +72,10 @@ namespace rwlibs { namespace pathplanners {
            @param connectRadius [in] Attempt connection of the trees if the
            distance to the nearest neighbor is below this threshold.
         */
-        static SBLSetup make (rw::pathplanning::QConstraint::Ptr constraint,
-                              rw::pathplanning::QEdgeConstraintIncremental::Ptr edgeConstraint,
-                              rw::core::Ptr< SBLExpand > expansion, rw::math::QMetric::Ptr metric,
-                              double connectRadius);
+        static SBLSetup make(rw::pathplanning::QConstraint::Ptr constraint,
+                             rw::pathplanning::QEdgeConstraintIncremental::Ptr edgeConstraint,
+                             rw::core::Ptr<SBLExpand> expansion, rw::math::QMetric::Ptr metric,
+                             double connectRadius);
 
         /**
            @brief Constructor
@@ -106,14 +105,14 @@ namespace rwlibs { namespace pathplanners {
 
            @param connectRadius [in] Neighbor connection radius.
         */
-        static SBLSetup make (rw::pathplanning::QConstraint::Ptr constraint,
-                              rw::pathplanning::QEdgeConstraintIncremental::Ptr edgeConstraint,
-                              //            const rw::pathplanning::PlannerConstraint& constraint,
-                              rw::core::Ptr< rw::models::Device > device, double expandRadius = -1,
-                              double connectRadius = -1);
+        static SBLSetup make(rw::pathplanning::QConstraint::Ptr constraint,
+                             rw::pathplanning::QEdgeConstraintIncremental::Ptr edgeConstraint,
+                             //            const rw::pathplanning::PlannerConstraint& constraint,
+                             rw::core::Ptr<rw::models::Device> device, double expandRadius = -1,
+                             double connectRadius = -1);
 
       private:
-        SBLSetup (const SBLOptions& options) : options (options) {}
+        SBLSetup(const SBLOptions& options) : options(options) {}
 
       public:
         //! @brief Internal options to use.

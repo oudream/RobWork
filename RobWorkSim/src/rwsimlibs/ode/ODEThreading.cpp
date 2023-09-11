@@ -18,8 +18,8 @@
 #include "ODEThreading.hpp"
 
 #include <rw/core/macros.hpp>
-#include <map>
 
+#include <map>
 
 #ifdef ODE_WITH_THREADING_IMPL
 #include <ode/objects.h>
@@ -40,8 +40,8 @@ unsigned int counter = 0;
 
 struct ODEThreading::ThreadImpl
 {
-    std::map< dWorldID, dThreadingImplementationID > threading;
-    std::map< dWorldID, dThreadingThreadPoolID > pool;
+    std::map<dWorldID, dThreadingImplementationID> threading;
+    std::map<dWorldID, dThreadingThreadPoolID> pool;
 };
 
 #else
@@ -49,27 +49,23 @@ struct ODEThreading::ThreadImpl
 {};
 #endif
 
-ODEThreading::ODEThreading ()
-{}
+ODEThreading::ODEThreading() {}
 
-ODEThreading::~ODEThreading ()
-{}
+ODEThreading::~ODEThreading() {}
 
-void ODEThreading::assertSupported ()
-{
+void ODEThreading::assertSupported() {
 #ifdef ODE_WITH_THREADING_IMPL
-    if (!isSupported ()) {
-        RW_THROW ("Open Dynamics Engine does not support threading - please make sure that ODE has "
-                  "been compiled with the --enable-builtin-threading-impl option.");
+    if(!isSupported()) {
+        RW_THROW("Open Dynamics Engine does not support threading - please make sure that ODE has "
+                 "been compiled with the --enable-builtin-threading-impl option.");
     }
 #endif
 }
 
-bool ODEThreading::isSupported ()
-{
+bool ODEThreading::isSupported() {
 #ifdef ODE_WITH_THREADING_IMPL
-    static const int TLS               = dCheckConfiguration ("ODE_EXT_mt_collisions");
-    static const int builtin_threading = dCheckConfiguration ("ODE_THR_builtin_impl");
+    static const int TLS               = dCheckConfiguration("ODE_EXT_mt_collisions");
+    static const int builtin_threading = dCheckConfiguration("ODE_THR_builtin_impl");
     static const bool supported        = (TLS != 0) && (builtin_threading != 0);
     return supported;
 #else
@@ -77,60 +73,55 @@ bool ODEThreading::isSupported ()
 #endif
 }
 
-void ODEThreading::checkSecureStepBegin ()
-{
+void ODEThreading::checkSecureStepBegin() {
 #ifdef ODE_WITH_THREADING_IMPL
-    static bool supported = isSupported ();
-    boost::mutex::scoped_lock lock (counterMutex);
+    static bool supported = isSupported();
+    boost::mutex::scoped_lock lock(counterMutex);
     counter++;
-    if (!supported && counter > 1)
-        RW_THROW ("Open Dynamics Engine does not support multiple threads calling dWorldStep or "
-                  "dWorldQuickStep function simultaneously!");
+    if(!supported && counter > 1)
+        RW_THROW("Open Dynamics Engine does not support multiple threads calling dWorldStep or "
+                 "dWorldQuickStep function simultaneously!");
 #endif
 }
 
-void ODEThreading::checkSecureStepEnd ()
-{
+void ODEThreading::checkSecureStepEnd() {
 #ifdef ODE_WITH_THREADING_IMPL
-    boost::mutex::scoped_lock lock (counterMutex);
+    boost::mutex::scoped_lock lock(counterMutex);
     counter--;
 #endif
 }
 
-void ODEThreading::initThreading (dWorldID world)
-{
+void ODEThreading::initThreading(dWorldID world) {
 #ifdef ODE_WITH_THREADING_IMPL
-    static bool supported = isSupported ();
-    if (supported) {
-        static const rw::core::Ptr< ThreadImpl > data = ODEThreading::data ();
-        data->threading[world] = dThreadingAllocateMultiThreadedImplementation ();
-        data->pool[world]      = dThreadingAllocateThreadPool (1, 0, dAllocateFlagBasicData, NULL);
-        dThreadingThreadPoolServeMultiThreadedImplementation (data->pool[world],
-                                                              data->threading[world]);
-        dWorldSetStepThreadingImplementation (
+    static bool supported = isSupported();
+    if(supported) {
+        static const rw::core::Ptr<ThreadImpl> data = ODEThreading::data();
+        data->threading[world] = dThreadingAllocateMultiThreadedImplementation();
+        data->pool[world]      = dThreadingAllocateThreadPool(1, 0, dAllocateFlagBasicData, NULL);
+        dThreadingThreadPoolServeMultiThreadedImplementation(data->pool[world],
+                                                             data->threading[world]);
+        dWorldSetStepThreadingImplementation(
             world,
-            dThreadingImplementationGetFunctions (data->threading[world]),
+            dThreadingImplementationGetFunctions(data->threading[world]),
             data->threading[world]);
     }
 #endif
 }
 
-void ODEThreading::destroyThreading (dWorldID world)
-{
+void ODEThreading::destroyThreading(dWorldID world) {
 #ifdef ODE_WITH_THREADING_IMPL
-    static bool supported = isSupported ();
-    if (supported) {
-        static const rw::core::Ptr< ThreadImpl > data = ODEThreading::data ();
-        dThreadingImplementationShutdownProcessing (data->threading[world]);
-        dThreadingFreeThreadPool (data->pool[world]);
-        dWorldSetStepThreadingImplementation (world, NULL, NULL);
-        dThreadingFreeImplementation (data->threading[world]);
+    static bool supported = isSupported();
+    if(supported) {
+        static const rw::core::Ptr<ThreadImpl> data = ODEThreading::data();
+        dThreadingImplementationShutdownProcessing(data->threading[world]);
+        dThreadingFreeThreadPool(data->pool[world]);
+        dWorldSetStepThreadingImplementation(world, NULL, NULL);
+        dThreadingFreeImplementation(data->threading[world]);
     }
 #endif
 }
 
-rw::core::Ptr< ODEThreading::ThreadImpl > ODEThreading::data ()
-{
-    static const rw::core::Ptr< ThreadImpl > data = ownedPtr (new ThreadImpl ());
+rw::core::Ptr<ODEThreading::ThreadImpl> ODEThreading::data() {
+    static const rw::core::Ptr<ThreadImpl> data = ownedPtr(new ThreadImpl());
     return data;
 }

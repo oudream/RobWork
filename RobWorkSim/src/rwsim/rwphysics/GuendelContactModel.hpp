@@ -11,39 +11,39 @@ namespace rwsim { namespace simulator {
          * @param colRestCoeff [in] the restitution coefficient of collisions
          * @param conRestCoeff [in] the restitution coefficient of contacts
          */
-        GuendelContactModel (double colRestCoeff, double conRestCoeff) :
-            _colRestCoeff (colRestCoeff), _contactRestCoeff (conRestCoeff){};
+        GuendelContactModel(double colRestCoeff, double conRestCoeff) :
+            _colRestCoeff(colRestCoeff), _contactRestCoeff(conRestCoeff){};
 
         /**
          * @brief destructor
          */
-        virtual ~GuendelContactModel (){};
+        virtual ~GuendelContactModel(){};
 
         /**
          * @copydoc ContactModel::preImpulseCalc
          */
-        virtual void preImpulseCalc (Contact& contact, ContactPoint& point);
+        virtual void preImpulseCalc(Contact& contact, ContactPoint& point);
 
         /**
          * @copydoc ContactModel::preImpulseCalc
          */
-        virtual void calcCollisionImpulse (Contact& contact, ContactPoint& point, double& nimpulse,
-                                           double& timpulse);
+        virtual void calcCollisionImpulse(Contact& contact, ContactPoint& point, double& nimpulse,
+                                          double& timpulse);
 
         /**
          * @copydoc ContactModel::preImpulseCalc
          */
-        virtual void calcContactImpulse (Contact& contact, ContactPoint& point, double& nimpulse,
-                                         double& timpulse);
+        virtual void calcContactImpulse(Contact& contact, ContactPoint& point, double& nimpulse,
+                                        double& timpulse);
 
         /**
          * @copydoc ContactModel::preImpulseCalc
          */
-        virtual void addImpulse (Contact& contact, ContactPoint& point, double nimpulse,
-                                 double timpulse);
+        virtual void addImpulse(Contact& contact, ContactPoint& point, double nimpulse,
+                                double timpulse);
 
       private:
-        GuendelContactModel (){};
+        GuendelContactModel(){};
 
       private:
         double _colRestCoeff;

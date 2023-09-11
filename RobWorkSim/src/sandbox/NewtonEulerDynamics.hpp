@@ -18,82 +18,79 @@
 #ifndef RWSIM_DYNAMICS_NEWTONEULERDYNAMICS_HPP_
 #define RWSIM_DYNAMICS_NEWTONEULERDYNAMICS_HPP_
 
-#include <map>
-#include <rw/models/Q.hpp>
-#include <rw/models/SerialDevice.hpp>
+#include "RigidBody.hpp"
+
 #include <rw/kinematics/Frame.hpp>
 #include <rw/kinematics/State.hpp>
 #include <rw/math/Vector3D.hpp>
-#include "RigidBody.hpp"
+#include <rw/models/Q.hpp>
+#include <rw/models/SerialDevice.hpp>
 
-namespace rwsim {
-namespace sandbox {
-namespace dynamics {
-	//! @addtogroup rwsim_sandbox
-	//! @{
+#include <map>
 
-	/**
-	 * @brief this class calculates the newton euler dynamics of a serial
-	 * robot with external forces on individual joints.
-	 *
-	 */
-	class NewtonEulerDynamics{
-	public :
-		NewtonEulerDynamics(const rw::core::models::SerialDevice &robot,bool print=false);
-		~NewtonEulerDynamics(){};
+namespace rwsim { namespace sandbox { namespace dynamics {
+    //! @addtogroup rwsim_sandbox
+    //! @{
 
-		void execute(rw::core::kinematics::State &state,
-					 const rw::core::models::Q &q,
-					 const rw::core::models::Q &qd,
-					 const rw::core::models::Q &qdd,
-					 const rw::core::math::Vector3D<double >& w0,
-					 const rw::core::math::Vector3D<double >& wd0,
-					 const rw::core::math::Vector3D<double >& vd0,
-					 const rw::core::math::Vector3D<double >& f_end,
-					 const rw::core::math::Vector3D<double >& n_end,
-					 bool print=false, bool printres=false);
+    /**
+     * @brief this class calculates the newton euler dynamics of a serial
+     * robot with external forces on individual joints.
+     *
+     */
+    class NewtonEulerDynamics
+    {
+      public:
+        NewtonEulerDynamics(const rw::core::models::SerialDevice& robot, bool print = false);
+        ~NewtonEulerDynamics(){};
 
-		/**
-		 * @brief sets the gravity
-		 */
-		void setGravity(double gravity);
+        void execute(rw::core::kinematics::State& state, const rw::core::models::Q& q,
+                     const rw::core::models::Q& qd, const rw::core::models::Q& qdd,
+                     const rw::core::math::Vector3D<double>& w0,
+                     const rw::core::math::Vector3D<double>& wd0,
+                     const rw::core::math::Vector3D<double>& vd0,
+                     const rw::core::math::Vector3D<double>& f_end,
+                     const rw::core::math::Vector3D<double>& n_end, bool print = false,
+                     bool printres = false);
 
-		const std::vector<double >* readTau();
+        /**
+         * @brief sets the gravity
+         */
+        void setGravity(double gravity);
 
-		void printout();
-		void printin();
+        const std::vector<double>* readTau();
 
-		void printT(const rw::core::math::Transform3D<> &t, double b);
+        void printout();
+        void printin();
 
-	private:
-		int links;
-		rw::core::math::Vector3D<double > temp, pci;
-		Eigen::Matrix<double,3,3> cI;
-		RigidBody* cur_body;
-		double m;
-		rw::core::math::Transform3D<double> Ti;
-	
-		std::vector<RigidBody* > bodies;
+        void printT(const rw::core::math::Transform3D<>& t, double b);
 
-		const rw::models::SerialDevice *robot;
-		rw::core::Ptr<const rw::kinematics::Frame> base;
+      private:
+        int links;
+        rw::core::math::Vector3D<double> temp, pci;
+        Eigen::Matrix<double, 3, 3> cI;
+        RigidBody* cur_body;
+        double m;
+        rw::core::math::Transform3D<double> Ti;
 
-		rw::core::math::Vector3D<double > Z;
-		rw::core::math::Rotation3D<double> R;
+        std::vector<RigidBody*> bodies;
 
-		std::vector<rw::core::math::Vector3D<double > > w;
-		std::vector<rw::core::math::Vector3D<double > > wd;
-		std::vector<rw::core::math::Vector3D<double > > vd;
-		std::vector<rw::core::math::Vector3D<double > > vdC;
-		std::vector<rw::core::math::Vector3D<double > > F;
-		std::vector<rw::core::math::Vector3D<double > > Nout;
-	
-		std::vector<rw::core::math::Vector3D<double > > f;
-		std::vector<rw::core::math::Vector3D<double > > n;
-		std::vector<double > tau;
-	};
-	//! @}
-}
-}
-}
+        const rw::models::SerialDevice* robot;
+        rw::core::Ptr<const rw::kinematics::Frame> base;
+
+        rw::core::math::Vector3D<double> Z;
+        rw::core::math::Rotation3D<double> R;
+
+        std::vector<rw::core::math::Vector3D<double>> w;
+        std::vector<rw::core::math::Vector3D<double>> wd;
+        std::vector<rw::core::math::Vector3D<double>> vd;
+        std::vector<rw::core::math::Vector3D<double>> vdC;
+        std::vector<rw::core::math::Vector3D<double>> F;
+        std::vector<rw::core::math::Vector3D<double>> Nout;
+
+        std::vector<rw::core::math::Vector3D<double>> f;
+        std::vector<rw::core::math::Vector3D<double>> n;
+        std::vector<double> tau;
+    };
+    //! @}
+}}}    // namespace rwsim::sandbox::dynamics
 #endif /*NEWTONEULERDYNAMICS_HPP_*/

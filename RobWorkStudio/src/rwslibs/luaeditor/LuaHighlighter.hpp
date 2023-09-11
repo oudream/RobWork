@@ -21,9 +21,9 @@
 #ifndef HIGHLIGHTER_H
 #define HIGHLIGHTER_H
 
+#include <QRegularExpression>
 #include <QSyntaxHighlighter>
 #include <QTextCharFormat>
-#include <QRegularExpression>
 
 class QTextDocument;
 
@@ -32,10 +32,10 @@ class LuaHighlighter : public QSyntaxHighlighter
     Q_OBJECT
 
   public:
-    LuaHighlighter (QTextDocument* parent = 0);
+    LuaHighlighter(QTextDocument* parent = 0);
 
   protected:
-    void highlightBlock (const QString& text);
+    void highlightBlock(const QString& text);
 
   private:
     struct HighlightingRule
@@ -43,7 +43,7 @@ class LuaHighlighter : public QSyntaxHighlighter
         QRegularExpression pattern;
         QTextCharFormat format;
     };
-    QVector< HighlightingRule > highlightingRules;
+    QVector<HighlightingRule> highlightingRules;
 
     QRegularExpression commentStartExpression;
     QRegularExpression commentEndExpression;

@@ -24,11 +24,10 @@
 #include <rwslibs/luaeditor/LuaEditorWindow.hpp>
 #include <rwslibs/swig/ScriptTypes.hpp>
 
-#include <boost/bind/bind.hpp>
-
 #include <QMenu>
 #include <QToolBar>
 #include <QVBoxLayout>
+#include <boost/bind/bind.hpp>
 
 extern "C"
 {
@@ -68,129 +67,108 @@ namespace
 }
 */
 
-Lua::Lua () :
-    RobWorkStudioPlugin ("LuaConsole", QIcon (":/lua.png")), _openEditorAction (nullptr),
-    _editor (nullptr)
-{
+Lua::Lua() :
+    RobWorkStudioPlugin("LuaConsole", QIcon(":/lua.png")), _openEditorAction(nullptr),
+    _editor(nullptr) {
     // Misc.
     // remove the native use of showAction
-    QWidget* widget  = new QWidget (this);
-    QVBoxLayout* lay = new QVBoxLayout (widget);
-    widget->setLayout (lay);
-    this->setWidget (widget);
+    QWidget* widget  = new QWidget(this);
+    QVBoxLayout* lay = new QVBoxLayout(widget);
+    widget->setLayout(lay);
+    this->setWidget(widget);
 
-    QToolBar* toolbar = new QToolBar ();
-    lay->addWidget (toolbar);    // own toolbar
-    toolbar->setIconSize (QSize (12, 12));
-    lay->setAlignment (toolbar, Qt::AlignTop);
+    QToolBar* toolbar = new QToolBar();
+    lay->addWidget(toolbar);    // own toolbar
+    toolbar->setIconSize(QSize(12, 12));
+    lay->setAlignment(toolbar, Qt::AlignTop);
 
     QAction* editorAction =
-        new QAction (QIcon (":/images/collapse_all.png"), "Editor", this);    // owned
-    connect (editorAction, SIGNAL (triggered ()), this, SLOT (startEditor ()));
+        new QAction(QIcon(":/images/collapse_all.png"), "Editor", this);    // owned
+    connect(editorAction, SIGNAL(triggered()), this, SLOT(startEditor()));
 
     // QAction* expandAllAction = new QAction(QIcon(":/images/reload.png"), "Clr", this); // owned
     // connect(expandAllAction, SIGNAL(triggered()), this, SLOT(expandAll()));
 
-    QAction* resetAction =
-        new QAction (QIcon (":/images/reload.png"), "Reset Lua", this);    // owned
-    connect (resetAction, SIGNAL (triggered ()), this, SLOT (resetLua ()));
+    QAction* resetAction = new QAction(QIcon(":/images/reload.png"), "Reset Lua", this);    // owned
+    connect(resetAction, SIGNAL(triggered()), this, SLOT(resetLua()));
 
-    toolbar->addAction (editorAction);
-    toolbar->addAction (resetAction);
+    toolbar->addAction(editorAction);
+    toolbar->addAction(resetAction);
 
-    _console = new LuaConsoleWidget (this);
+    _console = new LuaConsoleWidget(this);
     //_console->setReadOnly(true);
-    lay->addWidget (_console);
+    lay->addWidget(_console);
 
     // widget->setLayout( vlay );
 
     // this->setWidget(vwidget);  // Sets the widget on the QDockWidget
 
-    _lua = rw::core::ownedPtr (new rwlibs::swig::LuaState ());
+    _lua = rw::core::ownedPtr(new rwlibs::swig::LuaState());
     //_lua->setRobWorkStudio( getRobWorkStudio() );
-    _lua->reset ();
+    _lua->reset();
 }
 
-Lua::~Lua ()
-{
+Lua::~Lua() {
     // Close the Lua state.
     // delete _lua;
 }
 
-void Lua::initialize ()
-{
-    rws::swig::setRobWorkStudio (getRobWorkStudio ());
-    _lua->reset ();
-    _console->setLuaState (_lua.get ());
+void Lua::initialize() {
+    rws::swig::setRobWorkStudio(getRobWorkStudio());
+    _lua->reset();
+    _console->setLuaState(_lua.get());
 
-    getRobWorkStudio ()->stateChangedEvent ().add (
-        boost::bind (&Lua::stateChangedListener, this, boost::arg< 1 > ()), this);
+    getRobWorkStudio()->stateChangedEvent().add(
+        boost::bind(&Lua::stateChangedListener, this, boost::arg<1>()), this);
 
     // register the lua state in the propertymap
-    getRobWorkStudio ()->getPropertyMap ().add< rwlibs::swig::LuaState::Ptr > (
+    getRobWorkStudio()->getPropertyMap().add<rwlibs::swig::LuaState::Ptr>(
         "LuaState", "A lua state handle", _lua);
 }
 
-void Lua::stateChangedListener (const State& state)
-{
+void Lua::stateChangedListener(const State& state) {
     _state = state;
 }
 
-void Lua::luaStateChangedListener (const State& state)
-{
+void Lua::luaStateChangedListener(const State& state) {
     // Alert RobWorkStudio that rw.setState() was called in the Lua script:
-    getRobWorkStudio ()->setState (state);
+    getRobWorkStudio()->setState(state);
 }
 
-void Lua::luaPathChangedListener (const StatePath& path)
-{}
+void Lua::luaPathChangedListener(const StatePath& path) {}
 
-void Lua::open (WorkCell* workcell)
-{
+void Lua::open(WorkCell* workcell) {
     //_lua->setRobWorkStudio( getRobWorkStudio() );
     //_lua->reset();
-    stateChangedListener (getRobWorkStudio ()->getState ());
+    stateChangedListener(getRobWorkStudio()->getState());
 }
 
-void Lua::resetLua ()
-{
+void Lua::resetLua() {
     //_lua->setRobWorkStudio( getRobWorkStudio() );
-    _lua->reset ();
+    _lua->reset();
 
-    if (_editor != NULL) {
-        _editor->setLuaState (_lua);
-    }
+    if(_editor != NULL) { _editor->setLuaState(_lua); }
 }
 
-void Lua::close ()
-{}
+void Lua::close() {}
 
-void Lua::startEditor ()
-{
-    if (_editor == NULL) {
-        _editor = new LuaEditorWindow (_lua, RobWorkStudioPlugin::_log, getRobWorkStudio (), this);
+void Lua::startEditor() {
+    if(_editor == NULL) {
+        _editor = new LuaEditorWindow(_lua, RobWorkStudioPlugin::_log, getRobWorkStudio(), this);
     }
 
-    if (_editor->isVisible ()) {
-        _editor->setVisible (false);
-    }
-    else {
-        _editor->show ();
-    }
+    if(_editor->isVisible()) { _editor->setVisible(false); }
+    else { _editor->show(); }
 }
 
-void Lua::setupMenu (QMenu* pluginmenu)
-{
-    QMenuBar* menu = getRobWorkStudio ()->menuBar ();
+void Lua::setupMenu(QMenu* pluginmenu) {
+    QMenuBar* menu = getRobWorkStudio()->menuBar();
 
-    _openEditorAction = new QAction (tr ("Lua Teachpad"), this);    // owned
-    connect (_openEditorAction, SIGNAL (triggered ()), this, SLOT (startEditor ()));
+    _openEditorAction = new QAction(tr("Lua Teachpad"), this);    // owned
+    connect(_openEditorAction, SIGNAL(triggered()), this, SLOT(startEditor()));
 
-    boost::tuple< QWidget*, QMenu*, int > action =
-        RobWorkStudioPlugin::getMenu ((QWidget*) menu, std::string ("&Tools"));
-    if (action.get< 1 > () != NULL) {
-        action.get< 1 > ()->addAction (_openEditorAction);
-    }
-    else {
-    }
+    boost::tuple<QWidget*, QMenu*, int> action =
+        RobWorkStudioPlugin::getMenu((QWidget*) menu, std::string("&Tools"));
+    if(action.get<1>() != NULL) { action.get<1>()->addAction(_openEditorAction); }
+    else {}
 }

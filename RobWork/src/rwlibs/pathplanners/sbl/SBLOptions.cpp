@@ -22,12 +22,11 @@ using namespace rw::pathplanning;
 using namespace rw::math;
 using namespace rw::models;
 
-SBLOptions::SBLOptions (QConstraint::Ptr& constraint,
-                        QEdgeConstraintIncremental::Ptr& edgeConstraint, SBLExpand::Ptr expansion,
-                        QMetric::Ptr metric, double connectRadius) :
-    constraint (constraint, edgeConstraint),
-    expansion (expansion), metric (metric), connectRadius (connectRadius)
-{
+SBLOptions::SBLOptions(QConstraint::Ptr& constraint,
+                       QEdgeConstraintIncremental::Ptr& edgeConstraint, SBLExpand::Ptr expansion,
+                       QMetric::Ptr metric, double connectRadius) :
+    constraint(constraint, edgeConstraint),
+    expansion(expansion), metric(metric), connectRadius(connectRadius) {
     resetCount = 20;
     // resetCount = 200;
 

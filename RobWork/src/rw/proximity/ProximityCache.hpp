@@ -22,7 +22,7 @@
 #include <rw/core/Ptr.hpp>
 
 #include <cstddef>
-#endif 
+#endif
 
 namespace rw { namespace proximity {
 
@@ -33,27 +33,27 @@ namespace rw { namespace proximity {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< ProximityCache > Ptr;
+        typedef rw::core::Ptr<ProximityCache> Ptr;
         /**
          * @brief Constructor
          */
-        ProximityCache (void* owner) : _owner (owner) {}
+        ProximityCache(void* owner) : _owner(owner) {}
 
         /**
          * @brief Destructor
          */
-        virtual ~ProximityCache (){};
+        virtual ~ProximityCache(){};
 
         /**
          * @brief Returns size of cache
          * @return size
          */
-        virtual size_t size () const = 0;
+        virtual size_t size() const = 0;
 
         /**
          * @brief Clears cache
          */
-        virtual void clear () = 0;
+        virtual void clear() = 0;
 
         /**
          * @brief Owner of the cache

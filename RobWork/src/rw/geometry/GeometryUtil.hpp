@@ -63,14 +63,15 @@ namespace rw { namespace geometry {
          * @param geoms [in] the list of geometries.
          * @return the total volume of the geometries.
          */
-        static double estimateVolume (const std::vector< rw::core::Ptr< rw::geometry::Geometry > >& geoms);
+        static double
+        estimateVolume(const std::vector<rw::core::Ptr<rw::geometry::Geometry>>& geoms);
 
         /**
          * @brief Estimates the volume of a trimesh.
          * @param trimesh [in] the trimesh.
          * @return the total volume of the trimesh.
          */
-        static double estimateVolume (const rw::geometry::TriMesh& trimesh);
+        static double estimateVolume(const rw::geometry::TriMesh& trimesh);
 
         /**
          * @brief Estimates the inertia and center of gravity (COG) of a list of geometries.
@@ -89,10 +90,10 @@ namespace rw { namespace geometry {
          * @return the center of gravity relative to the ref frame and the inertia around
          * the center of gravity (in the coordinate frame of the ref frame).
          */
-        static std::pair< rw::math::Vector3D<double>, rw::math::InertiaMatrix<> > estimateInertiaCOG (
-            double mass, const std::vector< rw::core::Ptr< rw::geometry::Geometry > >& geoms,
+        static std::pair<rw::math::Vector3D<double>, rw::math::InertiaMatrix<>> estimateInertiaCOG(
+            double mass, const std::vector<rw::core::Ptr<rw::geometry::Geometry>>& geoms,
             const rw::core::Ptr<rw::kinematics::Frame> ref, const rw::kinematics::State& state,
-            const rw::math::Transform3D<>& reftrans = rw::math::Transform3D<>::identity ());
+            const rw::math::Transform3D<>& reftrans = rw::math::Transform3D<>::identity());
 
         /**
          * @brief Estimates the inertia of a list of geometries.
@@ -110,10 +111,10 @@ namespace rw { namespace geometry {
          * inertia.
          * @return the inertia around relative to the ref frame.
          */
-        static rw::math::InertiaMatrix<> estimateInertia (
-            double mass, const std::vector< rw::core::Ptr< rw::geometry::Geometry > >& geoms,
+        static rw::math::InertiaMatrix<> estimateInertia(
+            double mass, const std::vector<rw::core::Ptr<rw::geometry::Geometry>>& geoms,
             const rw::core::Ptr<rw::kinematics::Frame> ref, const rw::kinematics::State& state,
-            const rw::math::Transform3D<>& reftrans = rw::math::Transform3D<>::identity ());
+            const rw::math::Transform3D<>& reftrans = rw::math::Transform3D<>::identity());
 
         /**
          * @brief Estimates the inertia of a list of geometries.
@@ -130,9 +131,9 @@ namespace rw { namespace geometry {
          * inertia.
          * @return the inertia matrix relative to the reference frame.
          */
-        static rw::math::InertiaMatrix<> estimateInertia (
-            double mass, const std::vector< rw::core::Ptr< rw::geometry::Geometry > >& geoms,
-            const rw::math::Transform3D<>& reftrans = rw::math::Transform3D<>::identity ());
+        static rw::math::InertiaMatrix<> estimateInertia(
+            double mass, const std::vector<rw::core::Ptr<rw::geometry::Geometry>>& geoms,
+            const rw::math::Transform3D<>& reftrans = rw::math::Transform3D<>::identity());
 
         /**
          * @brief Find the principal axes and the principal inertia.
@@ -140,24 +141,23 @@ namespace rw { namespace geometry {
          * @return a rotation matrix giving the principal axes, and a vector of principal inertia
          * values for these axes.
          */
-        template< class T >
-        static std::pair< rw::math::Rotation3D< T >, rw::math::Vector3D< T > >
-        calculatePrincipalInertia (const rw::math::InertiaMatrix< T >& inertia)
-        {
-            const Eigen::Matrix< T, Eigen::Dynamic, Eigen::Dynamic > inertiaEigen (inertia.e ());
-            std::pair< typename rw::math::LinearAlgebra::EigenMatrix< T >::type,
-                       typename rw::math::LinearAlgebra::EigenVector< T >::type >
-                dec = rw::math::LinearAlgebra::eigenDecompositionSymmetric (inertiaEigen);
-            const rw::math::Vector3D< T > principalInertia = rw::math::Vector3D< T > (dec.second);
-            if (dec.first.determinant () < 0) {
+        template<class T>
+        static std::pair<rw::math::Rotation3D<T>, rw::math::Vector3D<T>>
+        calculatePrincipalInertia(const rw::math::InertiaMatrix<T>& inertia) {
+            const Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> inertiaEigen(inertia.e());
+            std::pair<typename rw::math::LinearAlgebra::EigenMatrix<T>::type,
+                      typename rw::math::LinearAlgebra::EigenVector<T>::type>
+                dec = rw::math::LinearAlgebra::eigenDecompositionSymmetric(inertiaEigen);
+            const rw::math::Vector3D<T> principalInertia = rw::math::Vector3D<T>(dec.second);
+            if(dec.first.determinant() < 0) {
                 // reflect in z=0 plane
-                dec.first (2, 0) = -dec.first (2, 0);
-                dec.first (2, 1) = -dec.first (2, 1);
-                dec.first (2, 2) = -dec.first (2, 2);
+                dec.first(2, 0) = -dec.first(2, 0);
+                dec.first(2, 1) = -dec.first(2, 1);
+                dec.first(2, 2) = -dec.first(2, 2);
             }
-            const rw::math::Rotation3D< T > rotation = rw::math::Rotation3D< T > (dec.first);
-            return std::pair< rw::math::Rotation3D< T >, rw::math::Vector3D< T > > (
-                rotation, principalInertia);
+            const rw::math::Rotation3D<T> rotation = rw::math::Rotation3D<T>(dec.first);
+            return std::pair<rw::math::Rotation3D<T>, rw::math::Vector3D<T>>(rotation,
+                                                                             principalInertia);
         }
 
         /**
@@ -172,7 +172,7 @@ namespace rw { namespace geometry {
          * @return the center of gravity for the geometries.
          */
         static rw::math::Vector3D<double>
-        estimateCOG (const std::vector< rw::core::Ptr< rw::geometry::Geometry > >& geoms);
+        estimateCOG(const std::vector<rw::core::Ptr<rw::geometry::Geometry>>& geoms);
 
         /**
          * @brief Estimates the center of gravity (COG) of a list of geometries.
@@ -186,8 +186,9 @@ namespace rw { namespace geometry {
          * @return the center of gravity for the geometries.
          */
         static rw::math::Vector3D<double>
-        estimateCOG (const std::vector< rw::core::Ptr< rw::geometry::Geometry > >& geoms,
-                     const rw::core::Ptr<rw::kinematics::Frame> ref, const rw::kinematics::State& state);
+        estimateCOG(const std::vector<rw::core::Ptr<rw::geometry::Geometry>>& geoms,
+                    const rw::core::Ptr<rw::kinematics::Frame> ref,
+                    const rw::kinematics::State& state);
 
         /**
          * @brief Estimates the center of gravity (COG) of a triangle mesh.
@@ -196,8 +197,8 @@ namespace rw { namespace geometry {
          * @return the center of gravity of the mesh.
          */
         static rw::math::Vector3D<double>
-        estimateCOG (const TriMesh& trimesh,
-                     const rw::math::Transform3D<>& t3d = rw::math::Transform3D<>::identity ());
+        estimateCOG(const TriMesh& trimesh,
+                    const rw::math::Transform3D<>& t3d = rw::math::Transform3D<>::identity());
 
         /**
          * @brief calculates the max distance to any triangle in the geoms, from some point \b
@@ -208,23 +209,25 @@ namespace rw { namespace geometry {
          * @param state
          * @return the maximum distance to any triangle in the geometries
          */
-        static double calcMaxDist (const std::vector< rw::core::Ptr< rw::geometry::Geometry > >& geoms,
-                                   const rw::math::Vector3D<double> center, rw::core::Ptr<rw::kinematics::Frame> ref,
-                                   const rw::kinematics::State& state);
+        static double calcMaxDist(const std::vector<rw::core::Ptr<rw::geometry::Geometry>>& geoms,
+                                  const rw::math::Vector3D<double> center,
+                                  rw::core::Ptr<rw::kinematics::Frame> ref,
+                                  const rw::kinematics::State& state);
 
         /**
          * @brief util function that locates all frames that is staticly connected to f
          * and that has geometry information.
          */
-        static std::vector< rw::kinematics::Frame* >
-        getAnchoredFrames (rw::kinematics::Frame& f, const rw::kinematics::State& state);
+        static std::vector<rw::kinematics::Frame*>
+        getAnchoredFrames(rw::kinematics::Frame& f, const rw::kinematics::State& state);
 
         /**
          * @brief util function that locates all frames in the sub tree of parent
          * that is staticly connected and that has geometry information.
          */
-        static std::vector< rw::kinematics::Frame* >
-        getAnchoredChildFrames (rw::core::Ptr<rw::kinematics::Frame> parent, const rw::kinematics::State& state);
+        static std::vector<rw::kinematics::Frame*>
+        getAnchoredChildFrames(rw::core::Ptr<rw::kinematics::Frame> parent,
+                               const rw::kinematics::State& state);
 
         /**
          * @brief calculates volume of k-simplex
@@ -243,33 +246,29 @@ namespace rw { namespace geometry {
          * of i-th vertex coordinates.
          * (taken from: http://www.math.niu.edu/~rusin/known-math/97/volumes.polyh) (dead link)
          */
-        template< std::size_t N >
-        static double simplexVolume (const std::vector< rw::math::VectorND< N > >& vertices)
-        {
-            RW_ASSERT (vertices.size () > 0);
+        template<std::size_t N>
+        static double simplexVolume(const std::vector<rw::math::VectorND<N>>& vertices) {
+            RW_ASSERT(vertices.size() > 0);
             double volume = 0.0;
 
             // construct W matrix
-            Eigen::Matrix< double, N - 1, N > W;
-            for (int idx = 1; idx < static_cast< int > (vertices.size ()); ++idx) {
+            Eigen::Matrix<double, N - 1, N> W;
+            for(int idx = 1; idx < static_cast<int>(vertices.size()); ++idx) {
                 // vector w_i
-                Eigen::Matrix< double, 1, N > wi =
-                    (vertices[idx].e () - vertices[0].e ()).transpose ();
+                Eigen::Matrix<double, 1, N> wi = (vertices[idx].e() - vertices[0].e()).transpose();
                 // std::cout << wi << std::endl;
-                W.row (idx - 1) = wi;
+                W.row(idx - 1) = wi;
             }
             // std::cout << W << std::endl;
             // std::cout << sqrt((W*W.transpose()).determinant()) << std::endl;
 
             // calculate volume
-            volume = 1.0 / rw::math::Math::factorial (N - 1) *
-                     sqrt ((W * W.transpose ()).determinant ());    // this sometimes gives NaN
+            volume = 1.0 / rw::math::Math::factorial(N - 1) *
+                     sqrt((W * W.transpose()).determinant());    // this sometimes gives NaN
             // even if matrix has a determinant...
 
             // now, for a bit of wishful thinking:
-            if (rw::math::Math::isNaN (volume) /* std::isnan(volume) */) {
-                volume = 0.0;
-            }
+            if(rw::math::Math::isNaN(volume) /* std::isnan(volume) */) { volume = 0.0; }
 
             return volume;
         }
@@ -281,23 +280,25 @@ namespace rw { namespace geometry {
          * @param t3d [in] Transformation of the vertices
          * @return Pair containing the lower and upper extremum distances of the vertices.
          */
-        static std::pair< rw::math::Vector3D<double>, rw::math::Vector3D<double> > getExtremumDistances (
-            rw::core::Ptr< TriMesh > trimesh,
-            const rw::math::Transform3D<>& t3d = rw::math::Transform3D<>::identity ());
+        static std::pair<rw::math::Vector3D<double>, rw::math::Vector3D<double>>
+        getExtremumDistances(
+            rw::core::Ptr<TriMesh> trimesh,
+            const rw::math::Transform3D<>& t3d = rw::math::Transform3D<>::identity());
 
         /**
          * @brief Returns the dimensions of \b geometry
          * @param geometry [in] Geometry to analyse
          * @return Dimensions in the x,y and z directions.
          */
-        static rw::math::Vector3D<double> getDimensions (rw::core::Ptr< rw::geometry::Geometry > geometry);
+        static rw::math::Vector3D<double>
+        getDimensions(rw::core::Ptr<rw::geometry::Geometry> geometry);
 
         /**
          * @brief Returns the dimensions of \b trimesh
          * @param trimesh [in] TriMesh to analyse
          * @return Dimensions in the x,y and z directions.
          */
-        static rw::math::Vector3D<double> getDimensions (rw::core::Ptr< TriMesh > trimesh);
+        static rw::math::Vector3D<double> getDimensions(rw::core::Ptr<TriMesh> trimesh);
 
         /**
          * @brief Calculates the volume of a N-simplex.
@@ -310,35 +311,29 @@ namespace rw { namespace geometry {
          * If only N vertices are given, then the volume is calculated with the origo as the
          * remaining vertex. (See https://en.wikipedia.org/wiki/Simplex#Volume)
          */
-        template< std::size_t N >
-        static double actualSimplexVolume (const std::vector< rw::math::VectorND< N > >& vertices)
-        {
-            RW_ASSERT (vertices.size () != N + 1 || vertices.size () != N);
+        template<std::size_t N>
+        static double actualSimplexVolume(const std::vector<rw::math::VectorND<N>>& vertices) {
+            RW_ASSERT(vertices.size() != N + 1 || vertices.size() != N);
             double volume = 0.0;
 
             // construct W matrix
-            Eigen::Matrix< double, N, N > W;
-            if (vertices.size () == N + 1) {
-                for (size_t idx = 0; idx < N; idx++) {
-                    W.col (idx) = (vertices.at (idx + 1).e () - vertices.at (0).e ());
+            Eigen::Matrix<double, N, N> W;
+            if(vertices.size() == N + 1) {
+                for(size_t idx = 0; idx < N; idx++) {
+                    W.col(idx) = (vertices.at(idx + 1).e() - vertices.at(0).e());
                 }
             }
             else {
-                for (size_t idx = 0; idx < N; idx++) {
-                    W.col (idx) = vertices.at (idx).e ();
-                }
+                for(size_t idx = 0; idx < N; idx++) { W.col(idx) = vertices.at(idx).e(); }
             }
 
             // calculate volume
-            volume =
-                std::fabs (W.determinant ()) /
-                rw::math::Math::factorial (static_cast< int > (N));    // this sometimes gives NaN
+            volume = std::fabs(W.determinant()) /
+                     rw::math::Math::factorial(static_cast<int>(N));    // this sometimes gives NaN
             // even if matrix has a determinant...
 
             // now, for a bit of wishful thinking:
-            if (rw::math::Math::isNaN (volume)) {
-                volume = 0.0;
-            }
+            if(rw::math::Math::isNaN(volume)) { volume = 0.0; }
             return volume;
         }
     };

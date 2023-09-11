@@ -33,89 +33,82 @@ using namespace rwsim::simulator;
 
 namespace {
 
-bool equalSign (double v1, double v2)
-{
+bool equalSign(double v1, double v2) {
     return (v1 < 0 && v2 < 0) || (v1 > 0 && v2 > 0);
 }
 
 }    // namespace
 
-ODEKinematicDevice::ODEKinematicDevice (rwsim::dynamics::KinematicDevice* kdev,
-                                        const rw::kinematics::State& state, ODESimulator* sim) :
-    _kdev (kdev)
-{
+ODEKinematicDevice::ODEKinematicDevice(rwsim::dynamics::KinematicDevice* kdev,
+                                       const rw::kinematics::State& state, ODESimulator* sim) :
+    _kdev(kdev) {
     // ODE does not support kinematic joints.. instead all bodies are kinematic
     // and their velocity must be controlled based on the
-    dSpaceID space = dHashSpaceCreate (sim->getODESpace ());
-    for (Body::Ptr kbody : kdev->getLinks ()) {
-        _bodies.push_back (ODEBody::makeKinematicBody (kbody, space, sim));
-        _kbodies.push_back (_bodies.back ()->getBodyID ());
-        sim->addODEBody (_bodies.back ());
+    dSpaceID space = dHashSpaceCreate(sim->getODESpace());
+    for(Body::Ptr kbody : kdev->getLinks()) {
+        _bodies.push_back(ODEBody::makeKinematicBody(kbody, space, sim));
+        _kbodies.push_back(_bodies.back()->getBodyID());
+        sim->addODEBody(_bodies.back());
     }
 }
 
-ODEKinematicDevice::~ODEKinematicDevice ()
-{}
+ODEKinematicDevice::~ODEKinematicDevice() {}
 
-void ODEKinematicDevice::reset (rw::kinematics::State& state)
-{
-    std::vector< Body::Ptr > bodies = _kdev->getLinks ();
-    for (size_t i = 0; i < _kbodies.size (); i++) {
+void ODEKinematicDevice::reset(rw::kinematics::State& state) {
+    std::vector<Body::Ptr> bodies = _kdev->getLinks();
+    for(size_t i = 0; i < _kbodies.size(); i++) {
         Transform3D<> wTb =
-            rw::kinematics::Kinematics::worldTframe (bodies[i]->getBodyFrame (), state);
-        wTb.P () += wTb.R () * bodies[i]->getInfo ().masscenter;
+            rw::kinematics::Kinematics::worldTframe(bodies[i]->getBodyFrame(), state);
+        wTb.P() += wTb.R() * bodies[i]->getInfo().masscenter;
         dBodyID bodyId = _kbodies[i];
-        ODEUtil::setODEBodyT3D (bodyId, wTb);
-        dBodyEnable (bodyId);
-        dBodySetAngularVel (bodyId, 0, 0, 0);
-        dBodySetLinearVel (bodyId, 0, 0, 0);
+        ODEUtil::setODEBodyT3D(bodyId, wTb);
+        dBodyEnable(bodyId);
+        dBodySetAngularVel(bodyId, 0, 0, 0);
+        dBodySetLinearVel(bodyId, 0, 0, 0);
     }
 }
 namespace {
 
-Jacobian subJacobian (const Jacobian& jac, int toCol)
-{
-    int m = (int) jac.size1 ();
-    RW_ASSERT (toCol <= (int) jac.size2 ());
-    Jacobian jsub (m, toCol);
-    for (int x = 0; x < m; x++)
-        for (int y = 0; y < m; y++)
-            jsub (x, y) = jac (x, y);
+Jacobian subJacobian(const Jacobian& jac, int toCol) {
+    int m = (int) jac.size1();
+    RW_ASSERT(toCol <= (int) jac.size2());
+    Jacobian jsub(m, toCol);
+    for(int x = 0; x < m; x++)
+        for(int y = 0; y < m; y++) jsub(x, y) = jac(x, y);
     return jsub;
 }
 }    // namespace
 
-void ODEKinematicDevice::update (const rwlibs::simulation::Simulator::UpdateInfo& info,
-                                 rw::kinematics::State& state)
-{
+void ODEKinematicDevice::update(const rwlibs::simulation::Simulator::UpdateInfo& info,
+                                rw::kinematics::State& state) {
     double dt = info.dt;
     // Update velocity of the ode kinematic bodies
     std::cout << "get velocity!" << std::endl;
-    Q velQ = _kdev->getJointVelocities (state);
+    Q velQ = _kdev->getJointVelocities(state);
     std::cout << "= " << velQ << std::endl;
-    std::cout << _kdev->getLinks ().size () << "==" << velQ.size () << std::endl;
-    std::cout << _kdev->getLinks ().size () << "==" << _kbodies.size () << std::endl;
+    std::cout << _kdev->getLinks().size() << "==" << velQ.size() << std::endl;
+    std::cout << _kdev->getLinks().size() << "==" << _kbodies.size() << std::endl;
 
-    RW_ASSERT (_kdev->getLinks ().size () == velQ.size ());
-    RW_ASSERT (_kdev->getLinks ().size () == _kbodies.size ());
+    RW_ASSERT(_kdev->getLinks().size() == velQ.size());
+    RW_ASSERT(_kdev->getLinks().size() == _kbodies.size());
     std::cout << "KinematicDevice update.." << std::endl;
 
     std::cout << "Update state!" << std::endl;
-    Q q1 = _kdev->getModel ().getQ (state) + velQ * dt;
+    Q q1 = _kdev->getModel().getQ(state) + velQ * dt;
     std::cout << "-get bounds!" << std::endl;
-    Device::QBox bounds = _kdev->getModel ().getBounds ();
-    q1                  = Math::clampQ (q1, bounds.first, bounds.second);
+    Device::QBox bounds = _kdev->getModel().getBounds();
+    q1                  = Math::clampQ(q1, bounds.first, bounds.second);
     std::cout << "-set" << std::endl;
 
-    Jacobian djac = _kdev->getModel ().baseJend (state);
+    Jacobian djac = _kdev->getModel().baseJend(state);
     // const Frame *baseFrame = _kdev->getModel().getBase();
     // Transform3D<> wTb = Kinematics::worldTframe(baseFrame,state);
 
-    _kdev->getModel ().setQ (q1, state);
+    _kdev->getModel().setQ(q1, state);
 
     std::cout << "Update vel of ode bodies" << std::endl;
     // int qi = 0;
-    for (size_t i = 0; i < _kbodies.size (); i++) {
+    for(size_t i = 0; i < _kbodies.size(); i++) {
         std::cout << "- Body " << i << std::endl;
         /*
                     dBodyID bodyId = _kbodies[i];
@@ -135,26 +128,24 @@ void ODEKinematicDevice::update (const rwlibs::simulation::Simulator::UpdateInfo
                     dBodySetAngularVel( bodyId, jvel(3), jvel(4), jvel(5) );
         */
 
-        Body::Ptr kbody = _kdev->getLinks ()[i];
+        Body::Ptr kbody = _kdev->getLinks()[i];
         // we calculate the difference between the current pose of the joint
         // and the destination of the joint
-        Transform3D<> wTj = ODEUtil::getODEBodyT3D (_kbodies[i]);
-        Vector3D<> offset = kbody->getInfo ().masscenter;
-        wTj.P () -= wTj.R () * offset;
+        Transform3D<> wTj = ODEUtil::getODEBodyT3D(_kbodies[i]);
+        Vector3D<> offset = kbody->getInfo().masscenter;
+        wTj.P() -= wTj.R() * offset;
 
-        Transform3D<> wTjd =
-            rw::kinematics::Kinematics::worldTframe (kbody->getBodyFrame (), state);
+        Transform3D<> wTjd = rw::kinematics::Kinematics::worldTframe(kbody->getBodyFrame(), state);
         // we now create the velocity screw and express it in world frame
-        VelocityScrew6D<> jXjd (inverse (wTj) * wTjd);
-        VelocityScrew6D<> w_jXjd = wTj.R () * jXjd * (1.0 / dt);
+        VelocityScrew6D<> jXjd(inverse(wTj) * wTjd);
+        VelocityScrew6D<> w_jXjd = wTj.R() * jXjd * (1.0 / dt);
 
         dBodyID bodyId = _kbodies[i];
-        dBodySetLinearVel (bodyId, w_jXjd (0), w_jXjd (1), w_jXjd (2));
-        dBodySetAngularVel (bodyId, w_jXjd (3), w_jXjd (4), w_jXjd (5));
+        dBodySetLinearVel(bodyId, w_jXjd(0), w_jXjd(1), w_jXjd(2));
+        dBodySetAngularVel(bodyId, w_jXjd(3), w_jXjd(4), w_jXjd(5));
     }
 }
 
-void ODEKinematicDevice::postUpdate (rw::kinematics::State& state)
-{
+void ODEKinematicDevice::postUpdate(rw::kinematics::State& state) {
     //_kdev->getModel().setQ(q, state);
 }

@@ -26,65 +26,60 @@ using namespace boost;
 using namespace rw::math;
 using namespace rwlibs::algorithms;
 
-double StablePose0DModel::fitError (const rw::math::Rotation3D<>& sample) const
-{
+double StablePose0DModel::fitError(const rw::math::Rotation3D<>& sample) const {
     // error is calculated using a standard euclidean metric for x, y & z axes difference
     Rotation3D<> rot = _rot;
 
-    double ax = angle (rot * Vector3D<>::x (), sample * Vector3D<>::x ());
-    double ay = angle (rot * Vector3D<>::y (), sample * Vector3D<>::y ());
-    double az = angle (rot * Vector3D<>::z (), sample * Vector3D<>::z ());
+    double ax = angle(rot * Vector3D<>::x(), sample * Vector3D<>::x());
+    double ay = angle(rot * Vector3D<>::y(), sample * Vector3D<>::y());
+    double az = angle(rot * Vector3D<>::z(), sample * Vector3D<>::z());
 
-    double error = sqrt (ax * ax + ay * ay + az * az);
+    double error = sqrt(ax * ax + ay * ay + az * az);
 
     return error;
 }
 
-bool StablePose0DModel::invalid () const
-{
+bool StablePose0DModel::invalid() const {
     return false;
 }
 
-double StablePose0DModel::refit (const std::vector< rw::math::Rotation3D<> >& samples)
-{
+double StablePose0DModel::refit(const std::vector<rw::math::Rotation3D<>>& samples) {
     _data = samples;
 
-    size_t n = samples.size ();
+    size_t n = samples.size();
 
     // refitting is done simply by taking an average of orientations represented as quaternions
-    Quaternion<> model (0.0, 0.0, 0.0, 0.0);
+    Quaternion<> model(0.0, 0.0, 0.0, 0.0);
 
     // average is calculated using slerp
     double weight = 1.0;
     int i         = 0;
-    for (const Rotation3D<>& s : samples) {
+    for(const Rotation3D<>& s : samples) {
         ++i;
-        model = model.slerp (Quaternion<> (s), weight / i);
+        model = model.slerp(Quaternion<>(s), weight / i);
     }
 
-    _rot = model.toRotation3D ();
+    _rot = model.toRotation3D();
 
     // calculate fitting error
     double error = 0.0;
-    for (std::vector< rw::math::Rotation3D<> >::iterator i = _data.begin (); i != _data.end ();
-         ++i) {
-        double sample_error = fitError (*i);
+    for(std::vector<rw::math::Rotation3D<>>::iterator i = _data.begin(); i != _data.end(); ++i) {
+        double sample_error = fitError(*i);
         error += sample_error * sample_error;
     }
 
     error /= (n > 0 ? n : 1);
-    setQuality (error);
+    setQuality(error);
 
     return error;
 }
 
-bool StablePose0DModel::same (const StablePose0DModel& model, double threshold) const
-{
-    double ax = angle (_rot * Vector3D<>::x (), model.orientation () * Vector3D<>::x ());
-    double ay = angle (_rot * Vector3D<>::y (), model.orientation () * Vector3D<>::y ());
-    double az = angle (_rot * Vector3D<>::z (), model.orientation () * Vector3D<>::z ());
+bool StablePose0DModel::same(const StablePose0DModel& model, double threshold) const {
+    double ax = angle(_rot * Vector3D<>::x(), model.orientation() * Vector3D<>::x());
+    double ay = angle(_rot * Vector3D<>::y(), model.orientation() * Vector3D<>::y());
+    double az = angle(_rot * Vector3D<>::z(), model.orientation() * Vector3D<>::z());
 
-    double d = sqrt (ax * ax + ay * ay + az * az);
+    double d = sqrt(ax * ax + ay * ay + az * az);
 
     return (d <= threshold);
 }

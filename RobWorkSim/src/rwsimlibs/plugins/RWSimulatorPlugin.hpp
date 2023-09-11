@@ -49,40 +49,40 @@ class QTimer;
 class RWSimulatorPlugin : public rws::RobWorkStudioPlugin
 {
     Q_OBJECT
-    Q_INTERFACES (rws::RobWorkStudioPlugin)
-    Q_PLUGIN_METADATA (IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE
-                           "RWSimulatorPlugin.json");
+    Q_INTERFACES(rws::RobWorkStudioPlugin)
+    Q_PLUGIN_METADATA(IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE
+                          "RWSimulatorPlugin.json");
 
   public:
-    RWSimulatorPlugin ();
+    RWSimulatorPlugin();
 
-    virtual ~RWSimulatorPlugin ();
+    virtual ~RWSimulatorPlugin();
 
-    void open (rw::models::WorkCell* workcell);
+    void open(rw::models::WorkCell* workcell);
 
-    void close ();
+    void close();
 
-    void initialize ();
+    void initialize();
 
-    void genericEventListener (const std::string& event);
+    void genericEventListener(const std::string& event);
 
-    void open (const std::string& file);
+    void open(const std::string& file);
 
   protected:
-    virtual void stateChangedHandler (rws::RobWorkStudioPlugin* sender);
+    virtual void stateChangedHandler(rws::RobWorkStudioPlugin* sender);
 
   private slots:
-    void open ();
-    void update ();
-    void startSimulation ();
-    void stopSimulation ();
-    void resetSimulation ();
-    void printContactGraph ();
-    void setSave ();
-    void updateCfgInfo ();
-    void openControlDialog ();
-    void openControlDialog1 ();
-    void openControlDialog2 ();
+    void open();
+    void update();
+    void startSimulation();
+    void stopSimulation();
+    void resetSimulation();
+    void printContactGraph();
+    void setSave();
+    void updateCfgInfo();
+    void openControlDialog();
+    void openControlDialog1();
+    void openControlDialog2();
 
   private:    // qt stuff
     QCheckBox *_checkBox, *_debugDrawBox, *_forceUpdateBox;
@@ -91,7 +91,7 @@ class RWSimulatorPlugin : public rws::RobWorkStudioPlugin
 
   private:
     std::string _previousOpenDirectory;
-    rw::core::Ptr< rwsim::dynamics::DynamicWorkCell > _dworkcell;
+    rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> _dworkcell;
     //    rw::kinematics::State *_state;
     rw::kinematics::State _jointState;
     // rwsim::simulator::ConstantForceManipulator *_gravity;
@@ -109,7 +109,7 @@ class RWSimulatorPlugin : public rws::RobWorkStudioPlugin
     // std::vector<rwsim::dynamics::FixedDevice*> _fdevs;
     QLabel* _timeLabel;
     rw::trajectory::TimedStatePath _statePath;
-    rw::core::Ptr< rwsim::simulator::DynamicSimulator > _simulator;
+    rw::core::Ptr<rwsim::simulator::DynamicSimulator> _simulator;
 
     // std::vector<rwlibs::control::JointController*> _controllers;
     rwlibs::opengl::Drawable* _dBtWorld;

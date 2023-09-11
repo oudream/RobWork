@@ -23,7 +23,7 @@
  */
 #if !defined(SWIG)
 #include <rw/math/Rotation3D.hpp>
-#endif 
+#endif
 
 namespace rw { namespace math {
 
@@ -36,19 +36,19 @@ namespace rw { namespace math {
      * Classes that represents a parametrisation of a 3D rotation may inherit
      * from this class
      */
-    template< class T = double > class Rotation3DVector
+    template<class T = double> class Rotation3DVector
     {
       public:
         /**
          * @brief Virtual destructor
          */
-        virtual ~Rotation3DVector () {}
+        virtual ~Rotation3DVector() {}
 
         /**
          * @brief Returns the corresponding @f$ 3\times 3 @f$ Rotation matrix
          * @return The rotation matrix
          */
-        virtual const rw::math::Rotation3D< T > toRotation3D () const = 0;
+        virtual const rw::math::Rotation3D<T> toRotation3D() const = 0;
 
       protected:
         /**
@@ -56,38 +56,38 @@ namespace rw { namespace math {
          *
          * We allow subclasses of this class to be copied.
          */
-        Rotation3DVector (const Rotation3DVector&) {}
+        Rotation3DVector(const Rotation3DVector&) {}
 
         /**
          * @brief Assignment operator is protected to force subclasses to
          * implement it by themself.
          */
-        Rotation3DVector& operator= (const Rotation3DVector&) { return *this; }
+        Rotation3DVector& operator=(const Rotation3DVector&) { return *this; }
 
         /**
          * @brief Default Constructor
          */
-        Rotation3DVector () {}
+        Rotation3DVector() {}
     };
 
     /* @} */
 }}    // namespace rw::math
 
 #if !defined(SWIG)
-    extern template class rw::math::Rotation3DVector< double >;
-    extern template class rw::math::Rotation3DVector< float >;
-#else 
+extern template class rw::math::Rotation3DVector<double>;
+extern template class rw::math::Rotation3DVector<float>;
+#else
 
 #if SWIG_VERSION < 0x040000
-    SWIG_DECLARE_TEMPLATE (Rotation3DVectord, rw::math::Rotation3DVector< double >);
-    ADD_DEFINITION (Rotation3DVectord, Rotation3DVector,sdurw_math)
+SWIG_DECLARE_TEMPLATE(Rotation3DVectord, rw::math::Rotation3DVector<double>);
+ADD_DEFINITION(Rotation3DVectord, Rotation3DVector, sdurw_math)
 #else
-    SWIG_DECLARE_TEMPLATE (Rotation3DVector, rw::math::Rotation3DVector< double >);
+SWIG_DECLARE_TEMPLATE(Rotation3DVector, rw::math::Rotation3DVector<double>);
 #endif
 
-    SWIG_DECLARE_TEMPLATE (Rotation3DVectorf, rw::math::Rotation3DVector< float >);
-#endif 
-    using Rotation3DVectord = rw::math::Rotation3DVector< double >;
-    using Rotation3DVectorf = rw::math::Rotation3DVector< float >;
+SWIG_DECLARE_TEMPLATE(Rotation3DVectorf, rw::math::Rotation3DVector<float>);
+#endif
+using Rotation3DVectord = rw::math::Rotation3DVector<double>;
+using Rotation3DVectorf = rw::math::Rotation3DVector<float>;
 
 #endif    // end include guard

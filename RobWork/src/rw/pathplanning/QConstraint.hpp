@@ -49,72 +49,72 @@ namespace rw { namespace pathplanning {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< QConstraint > Ptr;
+        typedef rw::core::Ptr<QConstraint> Ptr;
         //! @brief smart pointer type to this const class
-        typedef rw::core::Ptr< const QConstraint > CPtr;
+        typedef rw::core::Ptr<const QConstraint> CPtr;
 
         /**
          * @brief Destructor
          */
-        virtual ~QConstraint () {}
+        virtual ~QConstraint() {}
 
         /**
          * @brief Set the log to be used for writing debug info
          * @param log [in] Log to which debug information is to be written
          */
-        virtual void setLog (rw::core::Log::Ptr log);
+        virtual void setLog(rw::core::Log::Ptr log);
 
         /**
          * @brief Updates the constraint with a new state
          *
          * The method might not have an effect on all constrainttypes.
          */
-        void update (const rw::kinematics::State& state);
+        void update(const rw::kinematics::State& state);
 
         /**
          * @brief True if the work cell is considered to be in collision for the
          * device configuration \b q.
          */
-        bool inCollision (const rw::math::Q& q) const;
+        bool inCollision(const rw::math::Q& q) const;
 
         /**
          * @brief A fixed constraint.
          * The fixed constraint always returns \b value from inCollision().
          */
-        static QConstraint::Ptr makeFixed (bool value);
+        static QConstraint::Ptr makeFixed(bool value);
 
         /**
          * @brief Constraint for the bounds of the configuration space.
          * The configuration is considered to be in collision if it is outside
          * of the bounds given by \b bounds.
          */
-        static QConstraint::Ptr makeBounds (const rw::models::Device::QBox& bounds);
+        static QConstraint::Ptr makeBounds(const rw::models::Device::QBox& bounds);
 
         /**
          * @brief Map a state constraint to a configuration constraint.
          */
-        static QConstraint::Ptr make (rw::core::Ptr< StateConstraint > detector,
-                                      rw::models::Device::CPtr device,
-                                      const rw::kinematics::State& state);
+        static QConstraint::Ptr make(rw::core::Ptr<StateConstraint> detector,
+                                     rw::models::Device::CPtr device,
+                                     const rw::kinematics::State& state);
 
         /**
          * @brief Map a collision detector to a configuration constraint.
          */
-        static QConstraint::Ptr make (rw::core::Ptr< rw::proximity::CollisionDetector > detector,
-                                      rw::models::Device::CPtr device,
-                                      const rw::kinematics::State& state);
+        static QConstraint::Ptr make(rw::core::Ptr<rw::proximity::CollisionDetector> detector,
+                                     rw::models::Device::CPtr device,
+                                     const rw::kinematics::State& state);
 
         /**
            @brief Combine a set of configuration constraints into a single
            configuration constraint.
         */
-        static QConstraint::Ptr makeMerged (const std::vector< QConstraint::Ptr >& constraints);
+        static QConstraint::Ptr makeMerged(const std::vector<QConstraint::Ptr>& constraints);
 
         /**
            @brief Combine a pair of configuration constraints into a single
            configuration constraint.
         */
-        static QConstraint::Ptr makeMerged (const QConstraint::Ptr& ca, const QConstraint::Ptr& cb);
+        static QConstraint::Ptr makeMerged(const QConstraint::Ptr& ca, const QConstraint::Ptr& cb);
 
         /**
            @brief Map a configuration constraint for standard configurations
@@ -123,9 +123,8 @@ namespace rw { namespace pathplanning {
            Configuration values are mapped from the range [0, 1] into the
            corresponding position in the box \b bounds.
         */
-        static QConstraint::Ptr
-        makeNormalized (const QConstraint::Ptr& constraint,
-                        const std::pair< rw::math::Q, rw::math::Q >& bounds);
+        static QConstraint::Ptr makeNormalized(const QConstraint::Ptr& constraint,
+                                               const std::pair<rw::math::Q, rw::math::Q>& bounds);
 
         /**
            @brief Map a configuration constraint for standard configurations
@@ -134,8 +133,8 @@ namespace rw { namespace pathplanning {
            Configuration values are mapped from the range [0, 1] into the
            corresponding position in the configuration space of \b device.
         */
-        static QConstraint::Ptr makeNormalized (const QConstraint::Ptr& constraint,
-                                                const rw::models::Device& device);
+        static QConstraint::Ptr makeNormalized(const QConstraint::Ptr& constraint,
+                                               const rw::models::Device& device);
 
         /**
            @brief Map a configuration constraint for standard configurations
@@ -144,35 +143,35 @@ namespace rw { namespace pathplanning {
            Configuration values are mapped from normalized configurations into
            standard configurations using \b normalizer.
         */
-        static QConstraint::Ptr makeNormalized (const QConstraint::Ptr& constraint,
-                                                const QNormalizer& normalizer);
+        static QConstraint::Ptr makeNormalized(const QConstraint::Ptr& constraint,
+                                               const QNormalizer& normalizer);
 
       protected:
         /**
            @brief Subclass implementation of the inCollision() method.
         */
-        virtual bool doInCollision (const rw::math::Q& q) const = 0;
+        virtual bool doInCollision(const rw::math::Q& q) const = 0;
 
         /**
          * @brief Set a log.
          * @param log [in] the log.
          */
-        virtual void doSetLog (rw::core::Log::Ptr log) = 0;
+        virtual void doSetLog(rw::core::Log::Ptr log) = 0;
 
         /**
          * @brief Update constraint.
          * @param state [in] the state.
          */
-        virtual void doUpdate (const rw::kinematics::State& state) {}
+        virtual void doUpdate(const rw::kinematics::State& state) {}
 
         /**
            Constructor
         */
-        QConstraint () {}
+        QConstraint() {}
 
       private:
-        QConstraint (const QConstraint&);
-        QConstraint& operator= (const QConstraint&);
+        QConstraint(const QConstraint&);
+        QConstraint& operator=(const QConstraint&);
     };
 
     /* @} */

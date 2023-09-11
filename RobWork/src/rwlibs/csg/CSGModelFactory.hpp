@@ -18,9 +18,8 @@
 #ifndef _RWLIBS_CSG_CSGMODELFACTORY_HPP
 #define _RWLIBS_CSG_CSGMODELFACTORY_HPP
 
-#include <rwlibs/csg/CSGModel.hpp>
-
 #include <rw/math/Vector3D.hpp>
+#include <rwlibs/csg/CSGModel.hpp>
 
 namespace rwlibs { namespace csg {
 
@@ -34,19 +33,19 @@ namespace rwlibs { namespace csg {
          * @brief Constructs a CSGModel with a cube primitive.
          * @param x, y, z -- length, width and depth
          */
-        static CSGModel::Ptr makeBox (float x, float y, float z);
+        static CSGModel::Ptr makeBox(float x, float y, float z);
 
         /**
          * @brief Constructs a CSGModel with a cylinder primitive.
          * @param r, h -- radius, height
          */
-        static CSGModel::Ptr makeCylinder (float r, float h);
+        static CSGModel::Ptr makeCylinder(float r, float h);
 
         /**
          * @brief Constructs a CSGModel with a sphere primitive.
          * @param r radius
          */
-        static CSGModel::Ptr makeSphere (float r);
+        static CSGModel::Ptr makeSphere(float r);
 
         /**
          * @brief Constructs plane. \n
@@ -54,15 +53,15 @@ namespace rwlibs { namespace csg {
          * @param point, normal point and normal
          */
         static CSGModel::Ptr
-        makePlane (const rw::math::Vector3D<>& point  = rw::math::Vector3D<> (),
-                   const rw::math::Vector3D<>& normal = rw::math::Vector3D<>::z ());
+        makePlane(const rw::math::Vector3D<>& point  = rw::math::Vector3D<>(),
+                  const rw::math::Vector3D<>& normal = rw::math::Vector3D<>::z());
 
         /**
          * @brief Constructs wedge. \n
          * The wedge tip is located at origin and the edge runs along z axis.
          * The wedge axis runs along x axis
          */
-        static CSGModel::Ptr makeWedge (float angle);
+        static CSGModel::Ptr makeWedge(float angle);
     };
 
 }}    // namespace rwlibs::csg

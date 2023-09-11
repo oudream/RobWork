@@ -8,20 +8,14 @@
 #ifndef RRTGRASPPLANNER_HPP_
 #define RRTGRASPPLANNER_HPP_
 
-namespace rw {
-namespace graspplanning {
+namespace rw { namespace graspplanning {
 
-/**
- *  @brief explores freespace in the vicinity of
- */
-class RRTGraspPlanner {
+    /**
+     *  @brief explores freespace in the vicinity of
+     */
+    class RRTGraspPlanner
+    {};
 
-
-
-
-};
-
-}
-}
+}}    // namespace rw::graspplanning
 
 #endif /* RRTGRASPPLANNER_HPP_ */

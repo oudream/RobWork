@@ -22,13 +22,10 @@
 using namespace rw::core;
 using namespace rwlibs::assembly;
 
-AssemblyControlStrategy::AssemblyControlStrategy ()
-{}
+AssemblyControlStrategy::AssemblyControlStrategy() {}
 
-AssemblyControlStrategy::~AssemblyControlStrategy ()
-{}
+AssemblyControlStrategy::~AssemblyControlStrategy() {}
 
-AssemblyControlStrategy::ControlState::Ptr AssemblyControlStrategy::createState () const
-{
-    return ownedPtr (new ControlState ());
+AssemblyControlStrategy::ControlState::Ptr AssemblyControlStrategy::createState() const {
+    return ownedPtr(new ControlState());
 }

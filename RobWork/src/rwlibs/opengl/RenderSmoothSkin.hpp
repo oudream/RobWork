@@ -51,33 +51,35 @@ namespace rwlibs { namespace opengl {
     class RenderSmoothSkin : public rw::graphics::Render
     {
         //! @brief Type for vertice weights.
-        typedef std::pair< int, float > VerticeWeight;
+        typedef std::pair<int, float> VerticeWeight;
 
         //! @brief Type for bone weights.
-        typedef std::vector< VerticeWeight > BoneWeights;
+        typedef std::vector<VerticeWeight> BoneWeights;
 
         //! @brief constructor
-        RenderSmoothSkin (rw::geometry::IndexedTriMesh<>::Ptr mesh, rw::core::Ptr<rw::kinematics::Frame> base,
-                          std::vector< rw::kinematics::Frame* >& bones,
-                          std::vector< BoneWeights >& weights);
+        RenderSmoothSkin(rw::geometry::IndexedTriMesh<>::Ptr mesh,
+                         rw::core::Ptr<rw::kinematics::Frame> base,
+                         std::vector<rw::kinematics::Frame*>& bones,
+                         std::vector<BoneWeights>& weights);
 
         //! @brief destructor
-        virtual ~RenderSmoothSkin ();
+        virtual ~RenderSmoothSkin();
 
         //! @copydoc RenderSmoothSkin()
-        void init (rw::geometry::IndexedTriMesh<>::Ptr mesh, rw::core::Ptr<rw::kinematics::Frame> base,
-                   std::vector< rw::kinematics::Frame* >& bones,
-                   std::vector< BoneWeights >& weights);
+        void init(rw::geometry::IndexedTriMesh<>::Ptr mesh,
+                  rw::core::Ptr<rw::kinematics::Frame> base,
+                  std::vector<rw::kinematics::Frame*>& bones, std::vector<BoneWeights>& weights);
 
-        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info, DrawableNode::DrawType type, double alpha) const
-        void draw (const rw::graphics::DrawableNode::RenderInfo& info,
-                   rw::graphics::DrawableNode::DrawType type, double alpha) const;
+        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info,
+        //! DrawableNode::DrawType type, double alpha) const
+        void draw(const rw::graphics::DrawableNode::RenderInfo& info,
+                  rw::graphics::DrawableNode::DrawType type, double alpha) const;
 
         /**
          * @brief Update the mesh.
          * @param state [in] new state.
          */
-        void update (const rw::kinematics::State& state);
+        void update(const rw::kinematics::State& state);
 
       private:
         struct VerticeWeightINL
@@ -86,14 +88,14 @@ namespace rwlibs { namespace opengl {
             float weight;
         };
 
-        std::vector< uint8_t > _weights;
-        std::vector< rw::math::Transform3D<> > _transforms;
+        std::vector<uint8_t> _weights;
+        std::vector<rw::math::Transform3D<>> _transforms;
 
         rw::core::Ptr<rw::kinematics::Frame> _base;
-        std::vector< rw::kinematics::Frame* > _bones;
+        std::vector<rw::kinematics::Frame*> _bones;
 
         rw::geometry::IndexedTriMesh<>::Ptr _mesh;
-        std::vector< rw::math::Vector3D<> > _vertices;
+        std::vector<rw::math::Vector3D<>> _vertices;
     };
 
     /*@}*/

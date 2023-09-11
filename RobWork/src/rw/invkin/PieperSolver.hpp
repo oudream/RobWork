@@ -23,7 +23,6 @@
  */
 #if !defined(SWIG)
 #include <rw/invkin/ClosedFormIK.hpp>
-
 #include <rw/math/Q.hpp>
 #include <rw/math/Transform3D.hpp>
 
@@ -58,7 +57,7 @@ namespace rw { namespace invkin {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< PieperSolver > Ptr;
+        typedef rw::core::Ptr<PieperSolver> Ptr;
 
         /**
          * @brief Constructor
@@ -67,10 +66,10 @@ namespace rw { namespace invkin {
          * @param baseTdhRef [in] Transformation between the robot base and the reference frame for
          * the DH-parameters.
          */
-        PieperSolver (
-            const std::vector< rw::models::DHParameterSet >& dhparams,
+        PieperSolver(
+            const std::vector<rw::models::DHParameterSet>& dhparams,
             const rw::math::Transform3D<double>& joint6Tend,
-            const rw::math::Transform3D<double>& baseTdhRef = rw::math::Transform3D<>::identity ());
+            const rw::math::Transform3D<double>& baseTdhRef = rw::math::Transform3D<>::identity());
 
         /**
          * @brief Constructor - the DH parameters is expected to be on each joint
@@ -82,69 +81,69 @@ namespace rw { namespace invkin {
          * DH-parameters reference frame are calculated.
          * @note throws an exception if the device has no DH params
          */
-        PieperSolver (rw::models::SerialDevice& dev, const rw::math::Transform3D<double>& joint6Tend,
-                      const rw::kinematics::State& state);
+        PieperSolver(rw::models::SerialDevice& dev, const rw::math::Transform3D<double>& joint6Tend,
+                     const rw::kinematics::State& state);
 
         /**
          * @copydoc ClosedFormIK::solve
          */
-        virtual std::vector< math::Q > solve (const rw::math::Transform3D<double>& baseTend,
-                                              const rw::kinematics::State& state) const;
+        virtual std::vector<math::Q> solve(const rw::math::Transform3D<double>& baseTend,
+                                           const rw::kinematics::State& state) const;
 
         /**
          * @copydoc InvKinSolver::setCheckJointLimits
          */
-        virtual void setCheckJointLimits (bool check);
+        virtual void setCheckJointLimits(bool check);
 
         /**
          * @copydoc InvKinSolver::getTCP
          */
-        virtual rw::core::Ptr< const rw::kinematics::Frame > getTCP () const;
+        virtual rw::core::Ptr<const rw::kinematics::Frame> getTCP() const;
 
       private:
-        std::vector< rw::models::DHParameterSet > _dhparams;
+        std::vector<rw::models::DHParameterSet> _dhparams;
         rw::math::Transform3D<> _baseTdhRef;
         rw::math::Transform3D<> _0Tbase;
 
         rw::math::Transform3D<> _endTjoint6;
 
-        void init ();
+        void init();
 
-        void solveTheta456 (double theta1, double theta2, double theta3,
-                            rw::math::Transform3D<>& T06, std::vector< rw::math::Q >& result) const;
+        void solveTheta456(double theta1, double theta2, double theta3,
+                           rw::math::Transform3D<>& T06, std::vector<rw::math::Q>& result) const;
 
         /**
          * @brief Solves the case with a1 = 0 (Case 1 in Craig)
          */
-        std::vector< double > solveTheta3Case1 (double z) const;
+        std::vector<double> solveTheta3Case1(double z) const;
 
         /**
          * @brief Solves the case with a1 != 0 and sin(alpha1) = 0 (Case 2 in Craig)
          */
-        std::vector< double > solveTheta3Case2 (double r) const;
+        std::vector<double> solveTheta3Case2(double r) const;
 
         /**
          * @brief Solves the general case with a1 != 0 and sin(alpha1) != 0 (Case 3 in Craig)
          */
-        std::vector< double > solveTheta3Case3 (double r, double z) const;
+        std::vector<double> solveTheta3Case3(double r, double z) const;
 
-        double solveTheta2 (double r, double z, double theta3) const;
+        double solveTheta2(double r, double z, double theta3) const;
 
-        std::vector< double > solveTheta2Case1 (double z, double theta3) const;
-        std::vector< double > solveTheta2Case2 (double r, double theta3) const;
+        std::vector<double> solveTheta2Case1(double z, double theta3) const;
+        std::vector<double> solveTheta2Case2(double r, double theta3) const;
 
-        double solveTheta1 (double x, double y, double theta2, double theta3) const;
+        double solveTheta1(double x, double y, double theta2, double theta3) const;
 
-        double f (double x) const;
-        double df (double x) const;
-        double ddf (double x) const;
+        double f(double x) const;
+        double df(double x) const;
+        double ddf(double x) const;
 
-        std::vector< double > fSolve () const;
-        std::vector< double > fSolve (double s1, double s2, double s3) const;
-        std::vector< double > dfSolve (double s1, double s2) const;
-        std::vector< double > ddfSolve () const;
+        std::vector<double> fSolve() const;
+        std::vector<double> fSolve(double s1, double s2, double s3) const;
+        std::vector<double> dfSolve(double s1, double s2) const;
+        std::vector<double> ddfSolve() const;
 
-        void setupCoefficients (double r, double z) const;
+        void setupCoefficients(double r, double z) const;
 
         /*
          * Variables used for calculating

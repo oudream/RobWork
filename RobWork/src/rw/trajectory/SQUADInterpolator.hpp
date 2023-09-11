@@ -22,10 +22,9 @@
  * @file RampInterpolator.hpp
  */
 #if !defined(SWIG)
-#include <rw/trajectory/Interpolator.hpp>
-
 #include <rw/core/macros.hpp>
 #include <rw/math/Quaternion.hpp>
+#include <rw/trajectory/Interpolator.hpp>
 #endif
 namespace rw { namespace trajectory {
 
@@ -35,50 +34,44 @@ namespace rw { namespace trajectory {
     /**
      * @brief
      */
-    template< class T > class SQUADInterpolator : public Interpolator< rw::math::Quaternion< T > >
+    template<class T> class SQUADInterpolator : public Interpolator<rw::math::Quaternion<T>>
     {
       public:
         //! @brief smart pointer type to this class
-        typedef typename rw::core::Ptr< SQUADInterpolator< rw::math::Quaternion< T > > > Ptr;
+        typedef typename rw::core::Ptr<SQUADInterpolator<rw::math::Quaternion<T>>> Ptr;
 
-        SQUADInterpolator (rw::math::Quaternion< T > q0, rw::math::Quaternion< T > q1,
-                           rw::math::Quaternion< T > s0, rw::math::Quaternion< T > s1,
-                           double duration) :
-            _duration (duration),
-            _q0 (q0), _q1 (q1), _s0 (s0), _s1 (s1)
-        {}
+        SQUADInterpolator(rw::math::Quaternion<T> q0, rw::math::Quaternion<T> q1,
+                          rw::math::Quaternion<T> s0, rw::math::Quaternion<T> s1, double duration) :
+            _duration(duration),
+            _q0(q0), _q1(q1), _s0(s0), _s1(s1) {}
 
-        rw::math::Quaternion< T > x (double t) const
-        {
+        rw::math::Quaternion<T> x(double t) const {
             double h = t / _duration;
-            return Slerp (Slerp (_q0, _q1, h), Slerp (_s0, _s1, h), 2 * h * (1 - h));
+            return Slerp(Slerp(_q0, _q1, h), Slerp(_s0, _s1, h), 2 * h * (1 - h));
         }
 
-        rw::math::Quaternion< T > dx (double t) const
-        {
-            RW_THROW ("dx not implemented for SQUADInterpolation");
-            return rw::math::Quaternion< T > ();
+        rw::math::Quaternion<T> dx(double t) const {
+            RW_THROW("dx not implemented for SQUADInterpolation");
+            return rw::math::Quaternion<T>();
         }
 
-        rw::math::Quaternion< T > ddx (double t) const
-        {
-            RW_THROW ("dx not implemented for SQUADInterpolation");
-            return rw::math::Quaternion< T > ();
+        rw::math::Quaternion<T> ddx(double t) const {
+            RW_THROW("dx not implemented for SQUADInterpolation");
+            return rw::math::Quaternion<T>();
         }
 
-        double duration () const { return _duration; }
+        double duration() const { return _duration; }
 
       private:
-        rw::math::Quaternion< T > Slerp (rw::math::Quaternion< T > q0, rw::math::Quaternion< T > q1,
-                                         double h) const
-        {
-            return q0.slerp (q1, h);
+        rw::math::Quaternion<T> Slerp(rw::math::Quaternion<T> q0, rw::math::Quaternion<T> q1,
+                                      double h) const {
+            return q0.slerp(q1, h);
         }
         double _duration;
-        rw::math::Quaternion< T > _q0;
-        rw::math::Quaternion< T > _q1;
-        rw::math::Quaternion< T > _s0;
-        rw::math::Quaternion< T > _s1;
+        rw::math::Quaternion<T> _q0;
+        rw::math::Quaternion<T> _q1;
+        rw::math::Quaternion<T> _s0;
+        rw::math::Quaternion<T> _s1;
     };
 
     /* @} */

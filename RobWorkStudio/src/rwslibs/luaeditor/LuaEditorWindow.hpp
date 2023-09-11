@@ -62,41 +62,40 @@ class LuaEditorWindow : public QMainWindow
      * @param rwstudio [in] instance of RobWorkStudio
      * @param parent [in] the Qt parent widget
      */
-    LuaEditorWindow (rw::core::Ptr< rwlibs::swig::LuaState > lua,
-                     rw::core::Ptr< rw::core::Log > output, rws::RobWorkStudio* rwstudio,
-                     QWidget* parent);
+    LuaEditorWindow(rw::core::Ptr<rwlibs::swig::LuaState> lua, rw::core::Ptr<rw::core::Log> output,
+                    rws::RobWorkStudio* rwstudio, QWidget* parent);
 
     //! @brief destructor
-    virtual ~LuaEditorWindow ();
+    virtual ~LuaEditorWindow();
 
     /**
      * @brief change the lua state
      * @param lua [in] the new lua state which is to be used.
      */
-    void setLuaState (rw::core::Ptr< rwlibs::swig::LuaState > lua) { _lua = lua; }
+    void setLuaState(rw::core::Ptr<rwlibs::swig::LuaState> lua) { _lua = lua; }
 
   public Q_SLOTS:
-    void on_actionNew_triggered (bool);
-    void on_actionOpen_triggered (bool);
-    void on_actionSave_triggered (bool);
-    void on_actionSave_As_triggered (bool);
-    void on_actionRun_triggered (bool);
-    void on_actionStop_triggered (bool);
-    void on_actionReset_triggered (bool);
-    void on_actionReload_triggered (bool);
-    void on_actionClose_triggered (bool);
+    void on_actionNew_triggered(bool);
+    void on_actionOpen_triggered(bool);
+    void on_actionSave_triggered(bool);
+    void on_actionSave_As_triggered(bool);
+    void on_actionRun_triggered(bool);
+    void on_actionStop_triggered(bool);
+    void on_actionReset_triggered(bool);
+    void on_actionReload_triggered(bool);
+    void on_actionClose_triggered(bool);
 
-    void textChanged ();
-    void runFinished ();
-    void ShowContextMenu (const QPoint& p);
-    void setCheckAction (QAction*);
+    void textChanged();
+    void runFinished();
+    void ShowContextMenu(const QPoint& p);
+    void setCheckAction(QAction*);
 
   private:
-    QAbstractItemModel* modelFromFile (const QString& fileName, TreeModelCompleter* completer);
+    QAbstractItemModel* modelFromFile(const QString& fileName, TreeModelCompleter* completer);
 
     struct EditorTab
     {
-        typedef rw::core::Ptr< EditorTab > Ptr;
+        typedef rw::core::Ptr<EditorTab> Ptr;
         std::string _id;
         CodeEditor* _editor;
         LuaHighlighter* _highlighter;
@@ -104,20 +103,20 @@ class LuaEditorWindow : public QMainWindow
         std::string _filename;
     };
 
-    EditorTab::Ptr makeEditor ();
+    EditorTab::Ptr makeEditor();
 
-    bool save ();
-    bool saveAs ();
-    bool save (const std::string& filename);
-    EditorTab::Ptr getCurrentTab ();
+    bool save();
+    bool saveAs();
+    bool save(const std::string& filename);
+    EditorTab::Ptr getCurrentTab();
 
   private:
     //! hold
-    std::map< QWidget*, EditorTab::Ptr > _editors;
+    std::map<QWidget*, EditorTab::Ptr> _editors;
     class Ui::LuaEditorWindow* _ui;
 
-    rw::core::Ptr< rwlibs::swig::LuaState > _lua;
-    rw::core::Ptr< rw::core::Log > _output;
+    rw::core::Ptr<rwlibs::swig::LuaState> _lua;
+    rw::core::Ptr<rw::core::Log> _output;
     rw::core::PropertyMap _pmap;
 
     bool _isRunning;

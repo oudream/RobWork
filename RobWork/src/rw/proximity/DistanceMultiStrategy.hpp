@@ -22,10 +22,9 @@
  */
 
 #if !defined(SWIG)
-#include <rw/proximity/ProximityStrategy.hpp>
-
 #include <rw/core/ExtensionPoint.hpp>
 #include <rw/math/Transform3D.hpp>
+#include <rw/proximity/ProximityStrategy.hpp>
 #endif
 namespace rw { namespace kinematics {
     class State;
@@ -45,7 +44,7 @@ namespace rw { namespace proximity {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< DistanceMultiStrategy > Ptr;
+        typedef rw::core::Ptr<DistanceMultiStrategy> Ptr;
 
         /**
          * @brief DistanceResult contains basic information about the distance
@@ -60,61 +59,60 @@ namespace rw { namespace proximity {
             ProximityModel::Ptr b;
 
             //! Closest point on f1 to f2, described in world reference frame
-            math::Vector3D< double > p1;
+            math::Vector3D<double> p1;
 
             //! Closest point on f2 to f1, described in world reference frame
-            math::Vector3D< double > p2;
+            math::Vector3D<double> p2;
 
             //! @brief distance between frame f1 and frame f2
             double distance;
 
             //! Closest points on f1 to f2, described in world reference frame
-            std::vector< math::Vector3D<double> > p1s;
+            std::vector<math::Vector3D<double>> p1s;
 
             /**
              * @brief Closest point on f2 to f1, described in world reference frame
              */
-            std::vector< math::Vector3D<double> > p2s;
+            std::vector<math::Vector3D<double>> p2s;
 
             //! @brief geometry index to geometry in object A
-            std::vector< int > geoIdxA;
+            std::vector<int> geoIdxA;
 
             //! @brief geometry index to geometry in object B
-            std::vector< int > geoIdxB;
+            std::vector<int> geoIdxB;
 
             /**
              * @brief indices to the primitives which are the closest points on the first proximity
              *model
              **/
-            std::vector< int > p1prims;
+            std::vector<int> p1prims;
 
             /**
              * @brief indices to the primitives which are the closest points on the second proximity
              *model
              **/
-            std::vector< int > p2prims;
+            std::vector<int> p2prims;
 
             //! distances between contact points
-            std::vector< double > distances;
+            std::vector<double> distances;
 
-            void clear ()
-            {
+            void clear() {
                 a  = NULL;
                 b  = NULL;
-                p1 = rw::math::Vector3D< double > (0, 0, 0);
-                p2 = rw::math::Vector3D< double > (0, 0, 0);
-                p1s.clear ();
-                p2s.clear ();
-                p1prims.clear ();
-                p2prims.clear ();
-                distances.clear ();
+                p1 = rw::math::Vector3D<double>(0, 0, 0);
+                p2 = rw::math::Vector3D<double>(0, 0, 0);
+                p1s.clear();
+                p2s.clear();
+                p1prims.clear();
+                p2prims.clear();
+                distances.clear();
             }
         };
 
         /**
          * @brief Destroys object
          */
-        virtual ~DistanceMultiStrategy ();
+        virtual ~DistanceMultiStrategy();
 
         /**
          * @brief Calculates all distances between geometry of two given frames @f$ \mathcal{F}_a
@@ -130,9 +128,10 @@ namespace rw { namespace proximity {
          * @return shortest distance if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * separated and not in collision.
          */
-        Result distances (const rw::core::Ptr<kinematics::Frame> a, const math::Transform3D<double>& wTa,
-                          const rw::core::Ptr<kinematics::Frame> b, const math::Transform3D<double>& wTb,
-                          double tolerance);
+        Result distances(const rw::core::Ptr<kinematics::Frame> a,
+                         const math::Transform3D<double>& wTa,
+                         const rw::core::Ptr<kinematics::Frame> b,
+                         const math::Transform3D<double>& wTb, double tolerance);
 
         /**
          * @brief Calculates all distances between geometry of two  given frames @f$ \mathcal{F}_a
@@ -149,18 +148,19 @@ namespace rw { namespace proximity {
          * @return shortest distance if @f$ \mathcal{F}_a @f$ and @f$ \mathcal{F}_b @f$ are
          * separated and not in collision.
          */
-        Result& distances (const rw::core::Ptr<kinematics::Frame> a, const math::Transform3D<double>& wTa,
-                           const rw::core::Ptr<kinematics::Frame> b, const math::Transform3D<double>& wTb,
-                           double tolerance, class ProximityStrategyData& data);
+        Result& distances(const rw::core::Ptr<kinematics::Frame> a,
+                          const math::Transform3D<double>& wTa,
+                          const rw::core::Ptr<kinematics::Frame> b,
+                          const math::Transform3D<double>& wTb, double tolerance,
+                          class ProximityStrategyData& data);
 
         /**
          * @copydoc doDistances
          */
-        Result& distances (ProximityModel::Ptr a, const math::Transform3D<double>& wTa,
-                           ProximityModel::Ptr b, const math::Transform3D<double>& wTb, double tolerance,
-                           class ProximityStrategyData& data)
-        {
-            return doDistances (a, wTa, b, wTb, tolerance, data);
+        Result& distances(ProximityModel::Ptr a, const math::Transform3D<double>& wTa,
+                          ProximityModel::Ptr b, const math::Transform3D<double>& wTb,
+                          double tolerance, class ProximityStrategyData& data) {
+            return doDistances(a, wTa, b, wTb, tolerance, data);
         }
 
         /**
@@ -179,31 +179,31 @@ namespace rw { namespace proximity {
          *  - Bullet - rwlibs::proximitystrategies::ProximityStrategyBullet - Bullet Physics
          *  - PQP - rwlibs::proximitystrategies::ProximityStrategyPQP - Proximity Query Package
          */
-        class Factory : public rw::core::ExtensionPoint< DistanceMultiStrategy >
+        class Factory : public rw::core::ExtensionPoint<DistanceMultiStrategy>
         {
           public:
             /**
              * @brief Get the available strategies.
              * @return a vector of identifiers for strategies.
              */
-            static std::vector< std::string > getStrategies ();
+            static std::vector<std::string> getStrategies();
 
             /**
              * @brief Check if strategy is available.
              * @param strategy [in] the name of the strategy.
              * @return true if available, false otherwise.
              */
-            static bool hasStrategy (const std::string& strategy);
+            static bool hasStrategy(const std::string& strategy);
 
             /**
              * @brief Create a new strategy.
              * @param strategy [in] the name of the strategy.
              * @return a pointer to a new DistanceMultiStrategy.
              */
-            static DistanceMultiStrategy::Ptr makeStrategy (const std::string& strategy);
+            static DistanceMultiStrategy::Ptr makeStrategy(const std::string& strategy);
 
           private:
-            Factory ();
+            Factory();
         };
 
       protected:
@@ -220,19 +220,19 @@ namespace rw { namespace proximity {
          *
          * @return list of distances between all points that are closer than threshold.
          */
-        virtual Result& doDistances (ProximityModel::Ptr a, const math::Transform3D<double>& wTa,
-                                     ProximityModel::Ptr b, const math::Transform3D<double>& wTb,
-                                     double tolerance, class ProximityStrategyData& data) = 0;
+        virtual Result& doDistances(ProximityModel::Ptr a, const math::Transform3D<double>& wTa,
+                                    ProximityModel::Ptr b, const math::Transform3D<double>& wTb,
+                                    double tolerance, class ProximityStrategyData& data) = 0;
 
       private:
-        DistanceMultiStrategy (const DistanceMultiStrategy&);
-        DistanceMultiStrategy& operator= (const DistanceMultiStrategy&);
+        DistanceMultiStrategy(const DistanceMultiStrategy&);
+        DistanceMultiStrategy& operator=(const DistanceMultiStrategy&);
 
       protected:
         /**
          * @brief Creates object
          */
-        DistanceMultiStrategy ();
+        DistanceMultiStrategy();
     };
 
     /*@}*/

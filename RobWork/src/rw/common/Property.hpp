@@ -26,7 +26,7 @@
  * @deprecated use rw::core not rw::common
  */
 namespace rw { namespace common {
-    template< class T > using Property = rw::core::Property< T >;
+    template<class T> using Property = rw::core::Property<T>;
 
     /**
      * @brief cast a property base to a specific property. Notice that the pointer
@@ -34,9 +34,8 @@ namespace rw { namespace common {
      * @param base [in] property base pointer
      * @return property of type \b T or null if property is of another type
      */
-    template< class T > Property< T >* toProperty (rw::core::PropertyBase::Ptr base)
-    {
-        Property< T >* p = dynamic_cast< Property< T >* > (base.get ());
+    template<class T> Property<T>* toProperty(rw::core::PropertyBase::Ptr base) {
+        Property<T>* p = dynamic_cast<Property<T>*>(base.get());
         return p;
     }
 }}    // namespace rw::common

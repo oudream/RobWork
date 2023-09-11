@@ -37,11 +37,11 @@ namespace rw { namespace pathplanning {
        QToQSamplerPlanner plans a configuration space path from a start
        configuration to any configuration in the set represented by a sampler.
     */
-    class QToQSamplerPlanner : public PathPlanner< rw::math::Q, QSampler >
+    class QToQSamplerPlanner : public PathPlanner<rw::math::Q, QSampler>
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< QToQSamplerPlanner > Ptr;
+        typedef rw::core::Ptr<QToQSamplerPlanner> Ptr;
     };
 
     /*@}*/

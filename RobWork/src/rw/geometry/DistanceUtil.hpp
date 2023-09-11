@@ -20,7 +20,7 @@
 
 #if !defined(SWIG)
 #include <rw/math/Vector3D.hpp>
-#endif 
+#endif
 
 namespace rw { namespace geometry {
 
@@ -40,10 +40,10 @@ namespace rw { namespace geometry {
          * @param q2 [in] end point on line segment 2
          * @return distance between line segments
          */
-        static double distanceLineLineSqr (const rw::math::Vector3D<double>& p1,
-                                           const rw::math::Vector3D<double>& p2,
-                                           const rw::math::Vector3D<double>& q1,
-                                           const rw::math::Vector3D<double>& q2);
+        static double distanceLineLineSqr(const rw::math::Vector3D<double>& p1,
+                                          const rw::math::Vector3D<double>& p2,
+                                          const rw::math::Vector3D<double>& q1,
+                                          const rw::math::Vector3D<double>& q2);
 
         /**
          * @brief computes the euclidean distance between line segments (line(p1,p2),line(q1,q2))
@@ -53,10 +53,10 @@ namespace rw { namespace geometry {
          * @param q2 [in] end point on line segment 2
          * @return distance between line segments
          */
-        static double distanceLineLine (const rw::math::Vector3D<double>& p1,
-                                        const rw::math::Vector3D<double>& p2,
-                                        const rw::math::Vector3D<double>& q1,
-                                        const rw::math::Vector3D<double>& q2);
+        static double distanceLineLine(const rw::math::Vector3D<double>& p1,
+                                       const rw::math::Vector3D<double>& p2,
+                                       const rw::math::Vector3D<double>& q1,
+                                       const rw::math::Vector3D<double>& q2);
     };
 
 }}    // namespace rw::geometry

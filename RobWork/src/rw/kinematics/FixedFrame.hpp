@@ -22,8 +22,8 @@
  * @file FixedFrame.hpp
  */
 #if !defined(SWIG)
-#include <rw/kinematics/Frame.hpp>
 #include <rw/core/Ptr.hpp>
+#include <rw/kinematics/Frame.hpp>
 #endif
 namespace rw { namespace kinematics {
 
@@ -41,7 +41,7 @@ namespace rw { namespace kinematics {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< FixedFrame > Ptr;
+        typedef rw::core::Ptr<FixedFrame> Ptr;
 
         /**
          * @brief A frame fixed to its parent with a constant relative transform
@@ -50,10 +50,10 @@ namespace rw { namespace kinematics {
          * @param name [in] The name of the frame.
          * @param transform [in] The transform with which to attach the frame.
          */
-        FixedFrame (const std::string& name, const rw::math::Transform3D<>& transform);
+        FixedFrame(const std::string& name, const rw::math::Transform3D<>& transform);
 
         //! @brief destructor
-        virtual ~FixedFrame () {}
+        virtual ~FixedFrame() {}
 
         /**
          * @brief Sets the fixed transform of this frame.
@@ -62,7 +62,7 @@ namespace rw { namespace kinematics {
          * MovableFrame instead or make sure multiple threads are not using this
          * frame when changing the transformation.
          */
-        void setTransform (const rw::math::Transform3D<>& transform);
+        void setTransform(const rw::math::Transform3D<>& transform);
 
         /**
          * @brief Move the frame such that it is located with a relative transform \b refTtarget
@@ -71,18 +71,20 @@ namespace rw { namespace kinematics {
          * @param refframe [in] the reference frame.
          * @param state [in] the state giving the current poses.
          */
-        void moveTo (const rw::math::Transform3D<>& refTtarget, rw::core::Ptr<rw::kinematics::Frame> refframe, rw::kinematics::State& state);
+        void moveTo(const rw::math::Transform3D<>& refTtarget,
+                    rw::core::Ptr<rw::kinematics::Frame> refframe, rw::kinematics::State& state);
 
         /**
          * @brief get the fixed transform of this frame.
          */
-        const math::Transform3D<>& getFixedTransform () const;
+        const math::Transform3D<>& getFixedTransform() const;
 
       private:
-        void doMultiplyTransform (const math::Transform3D<>& parent, const rw::kinematics::State& state,
-                                  rw::math::Transform3D<>& result) const;
+        void doMultiplyTransform(const math::Transform3D<>& parent,
+                                 const rw::kinematics::State& state,
+                                 rw::math::Transform3D<>& result) const;
 
-        rw::math::Transform3D<> doGetTransform (const rw::kinematics::State& state) const;
+        rw::math::Transform3D<> doGetTransform(const rw::kinematics::State& state) const;
 
       private:
         rw::math::Transform3D<> _transform;

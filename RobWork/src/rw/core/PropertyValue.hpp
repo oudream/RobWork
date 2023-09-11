@@ -38,11 +38,11 @@ namespace rw { namespace core {
      * The PropertyValue class is a template to support property values of any
      * type.
      */
-    template< class T > class PropertyValue : public PropertyValueBase
+    template<class T> class PropertyValue : public PropertyValueBase
     {
       public:
         //! @brief Smart pointer type to this class
-        typedef rw::core::Ptr< PropertyValue > Ptr;
+        typedef rw::core::Ptr<PropertyValue> Ptr;
 
         /**
          * @brief Constructs PropertyValue.
@@ -51,22 +51,20 @@ namespace rw { namespace core {
          *
          * @param value [in] value
          */
-        PropertyValue (T value) : PropertyValueBase (PropertyType::getType (value)), _value (value)
-        {}
+        PropertyValue(T value) : PropertyValueBase(PropertyType::getType(value)), _value(value) {}
 
         /**
          * @brief Constructs PropertyValue.
          * @param type [in] type of property
          * @param value [in] value
          */
-        PropertyValue (const PropertyType& type, T value) : PropertyValueBase (type), _value (value)
-        {}
+        PropertyValue(const PropertyType& type, T value) : PropertyValueBase(type), _value(value) {}
 
         /**
          * @brief Destroys PropertyValue
          * If the property value is a pointer, the object pointed to will NOT be destroyed.
          */
-        virtual ~PropertyValue () {}
+        virtual ~PropertyValue() {}
 
         /**
          * @brief Returns a reference to the property value.
@@ -78,13 +76,13 @@ namespace rw { namespace core {
          *
          * @return reference to the property value.
          */
-        T& getValue () { return _value; }
+        T& getValue() { return _value; }
 
         /**
          * @brief Returns a constant reference to the property value.
          * @return constant reference to the property value.
          */
-        const T& getValue () const { return _value; }
+        const T& getValue() const { return _value; }
 
         /**
          * @brief Sets the property value.
@@ -93,18 +91,16 @@ namespace rw { namespace core {
          *
          * @param value [in] the new value of the Property
          */
-        void setValue (const T& value)
-        {
+        void setValue(const T& value) {
             _value = value;
 #if !defined(SWIGJAVA)
-            this->changedEvent ().fire (this);
+            this->changedEvent().fire(this);
 #endif
         }
 
         //! @copydoc PropertyBase::clone
-        PropertyValue< T >* clone () const
-        {
-            return new PropertyValue< T > (this->getType (), this->_value);
+        PropertyValue<T>* clone() const {
+            return new PropertyValue<T>(this->getType(), this->_value);
         }
 
       private:

@@ -45,54 +45,50 @@ namespace rw { namespace loaders {
         /**
          * Constructs a LoaderAC3D object
          */
-        LoaderAC3D ();
+        LoaderAC3D();
 
         /**
          * @brief Destroys RenderAC3D object
          */
-        virtual ~LoaderAC3D ();
+        virtual ~LoaderAC3D();
 
         //! @copydoc Model3DLoader::load
-        rw::graphics::Model3D::Ptr load (const std::string& filename);
+        rw::graphics::Model3D::Ptr load(const std::string& filename);
 
         // void save(Model3DPtr model, const std::string& filename);
 
         //! @copydoc Model3DLoader::getModelFormats
-        std::vector< std::string > getModelFormats () { return {".AC", ".AC3D"}; }
+        std::vector<std::string> getModelFormats() { return {".AC", ".AC3D"}; }
 
       private:
-        void initialize (std::istream& in, float alpha);
+        void initialize(std::istream& in, float alpha);
 
         enum OBJECT_TYPE { OBJECT_WORLD = 0, OBJECT_GROUP, OBJECT_LIGHT, OBJECT_NORMAL };
 
         struct Vector3f
         {
-            Vector3f ()
-            {
+            Vector3f() {
                 val[0] = 0;
                 val[1] = 0;
                 val[2] = 0;
             };
 
-            Vector3f (float a, float b, float c)
-            {
+            Vector3f(float a, float b, float c) {
                 val[0] = a;
                 val[1] = b;
                 val[2] = c;
             };
 
-            Vector3f (const rw::math::Vector3D< float >& v3d)
-            {
-                val[0] = v3d (0);
-                val[1] = v3d (1);
-                val[2] = v3d (2);
+            Vector3f(const rw::math::Vector3D<float>& v3d) {
+                val[0] = v3d(0);
+                val[1] = v3d(1);
+                val[2] = v3d(2);
             };
 
-            virtual ~Vector3f (){};
+            virtual ~Vector3f(){};
 
-            rw::math::Vector3D< float > toV3D ()
-            {
-                return rw::math::Vector3D< float > (val[0], val[1], val[2]);
+            rw::math::Vector3D<float> toV3D() {
+                return rw::math::Vector3D<float>(val[0], val[1], val[2]);
             }
             float val[3];
         };
@@ -110,16 +106,16 @@ namespace rw { namespace loaders {
         struct AC3DSurface
         {
             /** Array with vertex id */
-            std::vector< int > vertrefs;
+            std::vector<int> vertrefs;
 
             /** Array with vertex normals **/
-            std::vector< Vector3f > normals;
+            std::vector<Vector3f> normals;
 
             /** Length of vertrefs array */
             int vertref_cnt;
 
             /** Array with uvs */
-            std::vector< rw::math::Vector2D< float > > uvs;
+            std::vector<rw::math::Vector2D<float>> uvs;
 
             /** Surface normal */
             Vector3f normal;
@@ -129,15 +125,14 @@ namespace rw { namespace loaders {
             int mat;
 
             /** Constructs AC3DSurface */
-            AC3DSurface () : normal (0.0, 0.0, 0.0)
-            {
+            AC3DSurface() : normal(0.0, 0.0, 0.0) {
                 vertref_cnt = 0;
                 flags       = 0;
                 mat         = 0;
             }
 
             /** Destroys AD3DSurface */
-            ~AC3DSurface () {}
+            ~AC3DSurface() {}
         };
 
         struct AC3DObject
@@ -145,29 +140,29 @@ namespace rw { namespace loaders {
             // All the data from the ACObject
 
             /** Location */
-            rw::math::Vector3D< float > loc;
+            rw::math::Vector3D<float> loc;
 
             /** Rotation */
-            rw::math::Rotation3D< float > rot;
+            rw::math::Rotation3D<float> rot;
 
             /** Object name */
             std::string name;
 
             /** Data array */
-            std::vector< char > data;
+            std::vector<char> data;
 
             /** url */
             std::string url;
 
             /** Array with vertices and normals, each vertex has a normal */
-            std::vector< Vector3f > vertices;
-            std::vector< Vector3f > normals;
+            std::vector<Vector3f> vertices;
+            std::vector<Vector3f> normals;
 
             /** Length of vertices array */
             int vertex_cnt;
 
             /** Array with surfaces */
-            std::vector< AC3DSurface > surfaces;
+            std::vector<AC3DSurface> surfaces;
 
             /** Array mapping vertices to neighboring surfaces **/
             // std::vector<std::vector<AC3DSurface*> > _vertSurfMap;
@@ -189,7 +184,7 @@ namespace rw { namespace loaders {
             float texture_offset_y;
 
             /** Array with pointer to AC3DObjects */
-            std::vector< AC3DObject* > kids;
+            std::vector<AC3DObject*> kids;
 
             /** Length of kids array */
             int num_kids;
@@ -200,10 +195,10 @@ namespace rw { namespace loaders {
             int texture;
 
             /** Construct AC3DObject */
-            AC3DObject () :
-                loc (0.0, 0.0, 0.0), rot (rw::math::Rotation3D< float >::identity ()),
-                texture_repeat_x (1.0), texture_repeat_y (1.0), texture_offset_x (0.0),
-                texture_offset_y (0.0)
+            AC3DObject() :
+                loc(0.0, 0.0, 0.0), rot(rw::math::Rotation3D<float>::identity()),
+                texture_repeat_x(1.0), texture_repeat_y(1.0), texture_offset_x(0.0),
+                texture_offset_y(0.0)
 
             {
                 vertex_cnt = 0;
@@ -213,21 +208,18 @@ namespace rw { namespace loaders {
             }
 
             /** Destroys AC3DObject */
-            ~AC3DObject ()
-            {
-                for (int i = 0; i < num_kids; i++)
-                    delete kids[i];
+            ~AC3DObject() {
+                for(int i = 0; i < num_kids; i++) delete kids[i];
             }
 
           private:
-            AC3DObject (const AC3DObject&);
-            AC3DObject& operator= (const AC3DObject&);
+            AC3DObject(const AC3DObject&);
+            AC3DObject& operator=(const AC3DObject&);
         };
 
         struct AC3DMaterial
         {
-            AC3DMaterial ()
-            {
+            AC3DMaterial() {
                 rgb[0]      = 0.0;
                 rgb[1]      = 0.0;
                 rgb[2]      = 0.0;
@@ -265,30 +257,29 @@ namespace rw { namespace loaders {
 
         struct ModelAC3D
         {
-            virtual ~ModelAC3D ()
-            {
+            virtual ~ModelAC3D() {
                 //	delete _object;
             }
             rw::geometry::Model3D::TextureList _textures;
-            std::map< int, rw::core::Ptr< rw::geometry::Model3D::Texture > > _textureMap;
+            std::map<int, rw::core::Ptr<rw::geometry::Model3D::Texture>> _textureMap;
             // AC3DObject* _object;
-            std::vector< AC3DMaterial > _materials;
+            std::vector<AC3DMaterial> _materials;
             std::string _currentDir;
             int nrOfObjects;
         };
 
-        int loadTexture (const std::string& filename, ModelAC3D* model);
+        int loadTexture(const std::string& filename, ModelAC3D* model);
 
-        AC3DMaterial read_material (std::istream& in);
-        OBJECT_TYPE string_to_objecttype (const std::string& s);
+        AC3DMaterial read_material(std::istream& in);
+        OBJECT_TYPE string_to_objecttype(const std::string& s);
 
-        void read_data (std::istream& in, std::vector< char >& out);
+        void read_data(std::istream& in, std::vector<char>& out);
 
-        void read_surface (std::istream& in, AC3DSurface& surf, AC3DObject* ob);
+        void read_surface(std::istream& in, AC3DSurface& surf, AC3DObject* ob);
 
-        AC3DObject* load_object (std::istream& in, AC3DObject* parent, ModelAC3D* model);
+        AC3DObject* load_object(std::istream& in, AC3DObject* parent, ModelAC3D* model);
 
-        void calc_vertex_normals (AC3DObject* ob);
+        void calc_vertex_normals(AC3DObject* ob);
 
         double _maxAngle;    // in rad
     };

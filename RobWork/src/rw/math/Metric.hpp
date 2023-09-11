@@ -32,14 +32,14 @@ namespace rw { namespace math {
     /** @addtogroup math */
     /* @{ */
 
-    template< class T > class Metric;
+    template<class T> class Metric;
 
     /**
       @brief Template interface for metrics on type T.
 
       A metric is a function that defines a scalar distance between elements.
     */
-    template< class T > class Metric
+    template<class T> class Metric
     {
       public:
         //! The type of element on which the metric operates.
@@ -48,19 +48,19 @@ namespace rw { namespace math {
         typedef typename T::value_type scalar_type;
 
         //! A pointer to a Metric<T>.
-        typedef typename rw::core::Ptr< Metric< T > > Ptr;
+        typedef typename rw::core::Ptr<Metric<T>> Ptr;
         //! A pointer to a const Metric<T>.
-        typedef typename rw::core::Ptr< const Metric< T > > CPtr;
+        typedef typename rw::core::Ptr<const Metric<T>> CPtr;
 
         /**
          *  @brief Destructor
          */
-        virtual ~Metric () {}
+        virtual ~Metric() {}
 
         /**
          * @brief The distance from the zero element to q
          */
-        scalar_type distance (const value_type& q) const { return doDistance (q); }
+        scalar_type distance(const value_type& q) const { return doDistance(q); }
 
         /**
          *  @brief The distance from element a to b.
@@ -68,9 +68,8 @@ namespace rw { namespace math {
          * @param b [in] second element
          * @return the distance
          */
-        scalar_type distance (const value_type& a, const value_type& b) const
-        {
-            return doDistance (a, b);
+        scalar_type distance(const value_type& a, const value_type& b) const {
+            return doDistance(a, b);
         }
 
         /**
@@ -79,7 +78,7 @@ namespace rw { namespace math {
            The returns -1 if the elements don't have a measure of dimension or
            if the metric works for elements of all dimensions.
         */
-        int size () const { return doSize (); }
+        int size() const { return doSize(); }
 
       protected:
         // Here we have the methods implemented in the subclasses.
@@ -87,36 +86,36 @@ namespace rw { namespace math {
         /**
            @brief Subclass implementation of the distance() method.
         */
-        virtual scalar_type doDistance (const value_type& q) const = 0;
+        virtual scalar_type doDistance(const value_type& q) const = 0;
 
         /**
            @brief Subclass implementation of the distance() method.
         */
-        virtual scalar_type doDistance (const value_type& a, const value_type& b) const = 0;
+        virtual scalar_type doDistance(const value_type& a, const value_type& b) const = 0;
 
         /**
            @brief Subclass implementation of the size() method.
 
            By default the methods returns -1, i.e. valid for all elements.
         */
-        virtual int doSize () const { return -1; }
+        virtual int doSize() const { return -1; }
 
       protected:
         //! Protected constructor called by subclassed.
-        Metric () {}
+        Metric() {}
 
         //! Disable copying of superclass.
-        Metric (const Metric&) {}
+        Metric(const Metric&) {}
 
         //! Disable assignment of superclass.
-        Metric& operator= (const Metric&) { return *this; }
+        Metric& operator=(const Metric&) { return *this; }
     };
 
     //! Metrics on configurations.
-    typedef Metric< rw::math::Q > QMetric;
+    typedef Metric<rw::math::Q> QMetric;
 
     //! Metric on Transdform3D
-    typedef Metric< rw::math::Transform3D< double > > Transform3DMetric;
+    typedef Metric<rw::math::Transform3D<double>> Transform3DMetric;
     /* @} */
 }}    // namespace rw::math
 

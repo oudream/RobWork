@@ -30,40 +30,35 @@ using namespace rw::kinematics;
 using namespace rw::core;
 using namespace rw::math;
 
-ClosedFormIK::Ptr ClosedFormIK::make (const Device& device, const State& state)
-{
+ClosedFormIK::Ptr ClosedFormIK::make(const Device& device, const State& state) {
     // Cast the device.
-    const JointDevice* jd = dynamic_cast< const JointDevice* > (&device);
+    const JointDevice* jd = dynamic_cast<const JointDevice*>(&device);
 
-    if (!jd)
-        RW_THROW ("Device " << device << " is not a subtype of JointDevice.");
+    if(!jd) RW_THROW("Device " << device << " is not a subtype of JointDevice.");
 
     // Check DOFs.
-    if (jd->getDOF () != 6) {
-        RW_THROW ("Device " << device << " is not a 6 DOF device. DOF is " << jd->getDOF ());
+    if(jd->getDOF() != 6) {
+        RW_THROW("Device " << device << " is not a 6 DOF device. DOF is " << jd->getDOF());
     }
 
     // Extract the DH parameters.
-    std::vector< DHParameterSet > dhs;
+    std::vector<DHParameterSet> dhs;
     Joint* lastJoint = NULL;
-    for (Joint* joint : jd->getJoints ()) {
+    for(Joint* joint : jd->getJoints()) {
         lastJoint         = joint;
-        RevoluteJoint* rj = dynamic_cast< RevoluteJoint* > (joint);
-        if (!rj)
-            RW_THROW ("Joint " << *joint << " of device " << device << " is not revolute.");
+        RevoluteJoint* rj = dynamic_cast<RevoluteJoint*>(joint);
+        if(!rj) RW_THROW("Joint " << *joint << " of device " << device << " is not revolute.");
 
-        const DHParameterSet* dh = DHParameterSet::get (joint);
-        if (!dh) {
-            RW_THROW ("No Denavit-Hartenberg parameters for joint " << *joint << " of device "
-                                                                    << device);
+        const DHParameterSet* dh = DHParameterSet::get(joint);
+        if(!dh) {
+            RW_THROW("No Denavit-Hartenberg parameters for joint " << *joint << " of device "
+                                                                   << device);
         }
-        else {
-            dhs.push_back (*dh);
-        }
+        else { dhs.push_back(*dh); }
     }
 
     // Find the transform from the last joint to the end of the device.
-    const Transform3D<> lastToEnd = Kinematics::frameTframe (lastJoint, device.getEnd (), state);
+    const Transform3D<> lastToEnd = Kinematics::frameTframe(lastJoint, device.getEnd(), state);
 
-    return ownedPtr (new PieperSolver (dhs, lastToEnd));
+    return ownedPtr(new PieperSolver(dhs, lastToEnd));
 }

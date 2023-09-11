@@ -23,8 +23,8 @@
 
 #include <RobWorkConfig.hpp>
 #include <RobWorkStudioConfig.hpp>
-#include <rw/common/Timer.hpp>
 #include <rw/common/ProgramOptions.hpp>
+#include <rw/common/Timer.hpp>
 #include <rw/core/Log.hpp>
 #include <rw/core/PropertyMap.hpp>
 #include <rw/core/RobWork.hpp>

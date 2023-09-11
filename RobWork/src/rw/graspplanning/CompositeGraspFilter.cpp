@@ -21,17 +21,16 @@
 
 using namespace rw::graspplanning;
 
-CompositeGraspFilter::CompositeGraspFilter ()
+CompositeGraspFilter::CompositeGraspFilter()
 
 {}
 
-bool CompositeGraspFilter::isValid (const Grasp3D& con)
-{
+bool CompositeGraspFilter::isValid(const Grasp3D& con) {
     _nrOfTests++;
     bool valid = true;
 
-    for (size_t i = 0; i < _gfilters.size (); i++) {
-        if (!_gfilters[i]->isValid (con)) {
+    for(size_t i = 0; i < _gfilters.size(); i++) {
+        if(!_gfilters[i]->isValid(con)) {
             _stats[i]++;
             valid = false;
         }
@@ -39,21 +38,18 @@ bool CompositeGraspFilter::isValid (const Grasp3D& con)
     return valid;
 }
 
-void CompositeGraspFilter::addFilter (GraspValidateFilter* filter)
-{
-    _gfilters.push_back (filter);
-    _stats.push_back (0);
+void CompositeGraspFilter::addFilter(GraspValidateFilter* filter) {
+    _gfilters.push_back(filter);
+    _stats.push_back(0);
 }
 
-void CompositeGraspFilter::setFilters (std::vector< GraspValidateFilter* > filters)
-{
+void CompositeGraspFilter::setFilters(std::vector<GraspValidateFilter*> filters) {
     _gfilters = filters;
-    _stats.clear ();
-    _stats.resize (filters.size (), 0);
+    _stats.clear();
+    _stats.resize(filters.size(), 0);
 }
 
-void CompositeGraspFilter::clearStats ()
-{
-    _stats.clear ();
-    _stats.resize (_gfilters.size (), 0);
+void CompositeGraspFilter::clearStats() {
+    _stats.clear();
+    _stats.resize(_gfilters.size(), 0);
 }

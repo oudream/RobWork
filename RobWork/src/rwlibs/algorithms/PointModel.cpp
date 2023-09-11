@@ -19,45 +19,39 @@
 
 using namespace rwlibs::algorithms;
 
-double PointModel::fitError (const rw::math::Vector3D<>& sample) const
-{
+double PointModel::fitError(const rw::math::Vector3D<>& sample) const {
     // return a distance of the sample to the model
-    return fabs ((sample - _model).norm2 ());
+    return fabs((sample - _model).norm2());
 }
 
-bool PointModel::invalid () const
-{
+bool PointModel::invalid() const {
     return false;
 }
 
-double PointModel::refit (const std::vector< rw::math::Vector3D<> >& samples)
-{
+double PointModel::refit(const std::vector<rw::math::Vector3D<>>& samples) {
     _data = samples;
 
     // re-fit point model
-    const std::size_t n = _data.size ();
-    _model              = rw::math::Vector3D<> ();
-    for (std::size_t i = 0; i < n; ++i) {
-        _model += _data[i];
-    }
+    const std::size_t n = _data.size();
+    _model              = rw::math::Vector3D<>();
+    for(std::size_t i = 0; i < n; ++i) { _model += _data[i]; }
     _model *= 1.0 / (n > 0 ? n : 1);
 
     // calculate total fit error
     double error = 0.0;
-    for (std::vector< rw::math::Vector3D<> >::iterator i = _data.begin (); i != _data.end (); ++i) {
-        double sample_error = fitError (*i);
+    for(std::vector<rw::math::Vector3D<>>::iterator i = _data.begin(); i != _data.end(); ++i) {
+        double sample_error = fitError(*i);
         error += sample_error * sample_error;
     }
 
-    error = sqrt (error / (n > 0 ? n : 1));
-    setQuality (error);
+    error = sqrt(error / (n > 0 ? n : 1));
+    setQuality(error);
 
     return error;
 }
 
-bool PointModel::same (const PointModel& model, double threshold) const
-{
-    double d = (model._model - _model).norm2 ();
+bool PointModel::same(const PointModel& model, double threshold) const {
+    double d = (model._model - _model).norm2();
 
     return d <= threshold;
 }

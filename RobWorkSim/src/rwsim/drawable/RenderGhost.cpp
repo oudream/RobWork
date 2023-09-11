@@ -30,68 +30,62 @@ using namespace rwsim::drawable;
 using namespace rwlibs::opengl;
 
 namespace {
-void GLTransform (const Transform3D<>& transform)
-{
+void GLTransform(const Transform3D<>& transform) {
     GLfloat gltrans[16];
-    for (int j = 0; j < 3; j++) {
-        for (int k = 0; k < 3; k++)
-            gltrans[j + 4 * k] = (float) transform (j, k);
-        gltrans[12 + j] = (float) transform (j, 3);
+    for(int j = 0; j < 3; j++) {
+        for(int k = 0; k < 3; k++) gltrans[j + 4 * k] = (float) transform(j, k);
+        gltrans[12 + j] = (float) transform(j, 3);
     }
     gltrans[3] = gltrans[7] = gltrans[11] = 0;
     gltrans[15]                           = 1;
-    glMultMatrixf (gltrans);
+    glMultMatrixf(gltrans);
 }
 }    // namespace
 
-RenderGhost::RenderGhost (rw::core::Ptr<rw::kinematics::Frame> frame, WorkCellScene::Ptr drawer, size_t N) :
-    _drawer (drawer), _states (N)
-{
-    _frames.push_back (frame.get());
-    _drawFrame = new RenderFrame (0.2f);
+RenderGhost::RenderGhost(rw::core::Ptr<rw::kinematics::Frame> frame, WorkCellScene::Ptr drawer,
+                         size_t N) :
+    _drawer(drawer),
+    _states(N) {
+    _frames.push_back(frame.get());
+    _drawFrame = new RenderFrame(0.2f);
 }
 
-RenderGhost::RenderGhost (std::list< rw::kinematics::Frame* > frames, WorkCellScene::Ptr drawer,
-                          size_t N) :
-    _frames (frames),
-    _drawer (drawer), _states (N)
-{
-    _drawFrame = new RenderFrame (0.2f);
+RenderGhost::RenderGhost(std::list<rw::kinematics::Frame*> frames, WorkCellScene::Ptr drawer,
+                         size_t N) :
+    _frames(frames),
+    _drawer(drawer), _states(N) {
+    _drawFrame = new RenderFrame(0.2f);
 }
 
-RenderGhost::~RenderGhost ()
-{}
+RenderGhost::~RenderGhost() {}
 
-void RenderGhost::addState (const rw::kinematics::State& state)
-{
-    _states.push_back (state);
+void RenderGhost::addState(const rw::kinematics::State& state) {
+    _states.push_back(state);
 }
 
-void RenderGhost::setMaxBufferSize (size_t size)
-{
-    _states.set_capacity (size);
+void RenderGhost::setMaxBufferSize(size_t size) {
+    _states.set_capacity(size);
 }
 
-void RenderGhost::draw (const DrawableNode::RenderInfo& info, DrawType type, double alpha) const
-{
-    for (Frame* frame : _frames) {
-        const std::vector< DrawableNode::Ptr >& toDraw = _drawer->getDrawables (frame);
-        double alphaStep                               = 1.0 / (double) _states.size ();
-        double alpha                                   = 0;
-        for (DrawableNode::Ptr drawable : toDraw) {
+void RenderGhost::draw(const DrawableNode::RenderInfo& info, DrawType type, double alpha) const {
+    for(Frame* frame : _frames) {
+        const std::vector<DrawableNode::Ptr>& toDraw = _drawer->getDrawables(frame);
+        double alphaStep                             = 1.0 / (double) _states.size();
+        double alpha                                 = 0;
+        for(DrawableNode::Ptr drawable : toDraw) {
             alpha += alphaStep;
-            drawable->setTransparency ((float) alpha);
+            drawable->setTransparency((float) alpha);
             // drawable->setDrawType(Drawable::WIRE);
-            for (size_t i = 0; i < _states.size (); i++) {
-                glPushMatrix ();
-                Transform3D<> t3d = Kinematics::worldTframe (frame, _states[i]);
-                GLTransform (t3d);
-                glColor3f ((GLfloat) (alpha), 0, 0);
-                drawable->draw (info);
-                _drawFrame->draw (info, type, alpha);
-                glPopMatrix ();
+            for(size_t i = 0; i < _states.size(); i++) {
+                glPushMatrix();
+                Transform3D<> t3d = Kinematics::worldTframe(frame, _states[i]);
+                GLTransform(t3d);
+                glColor3f((GLfloat) (alpha), 0, 0);
+                drawable->draw(info);
+                _drawFrame->draw(info, type, alpha);
+                glPopMatrix();
             }
-            drawable->setTransparency (1.0);
+            drawable->setTransparency(1.0);
             // drawable->setDrawType(Drawable::SOLID);
         }
     }

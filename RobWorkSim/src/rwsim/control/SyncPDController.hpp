@@ -28,7 +28,7 @@ namespace rwsim { namespace control {
                              public rwlibs::simulation::SimulatedController
     {
       public:
-        typedef rw::core::Ptr< SyncPDController > Ptr;
+        typedef rw::core::Ptr<SyncPDController> Ptr;
 
         /**
          * @brief constrictor
@@ -36,48 +36,48 @@ namespace rwsim { namespace control {
          * @param rdev
          * @param state
          */
-        SyncPDController (const std::string& name, dynamics::RigidDevice* rdev,
-                          const rw::kinematics::State& state);
+        SyncPDController(const std::string& name, dynamics::RigidDevice* rdev,
+                         const rw::kinematics::State& state);
 
         //! @brief destructor
-        virtual ~SyncPDController (){};
+        virtual ~SyncPDController(){};
 
         /**
          * @brief the PD parameters
          * @return list of PD parameters
          */
-        std::vector< PDParam > getParameters ();
+        std::vector<PDParam> getParameters();
 
         /**
          * @brief set the PD parameters
          * @param params [in] list of parameters. must be same length as DOF
          * of controlling device
          */
-        void setParameters (const std::vector< PDParam >& params);
+        void setParameters(const std::vector<PDParam>& params);
 
         /**
          * @brief the time between samples
          * @return the sample time in seconds
          */
-        double getSampleTime ();
+        double getSampleTime();
 
         /**
          * @brief set the time between samples in seconds
          * @param stime [in] sample time
          */
-        void setSampleTime (double stime);
+        void setSampleTime(double stime);
 
         //! @copydoc rwlibs::simulation::SimulatedController::update
-        void update (const rwlibs::simulation::Simulator::UpdateInfo& info,
-                     rw::kinematics::State& state);
+        void update(const rwlibs::simulation::Simulator::UpdateInfo& info,
+                    rw::kinematics::State& state);
 
         //! @copydoc rwlibs::simulation::SimulatedController::reset
-        void reset (const rw::kinematics::State& state);
+        void reset(const rw::kinematics::State& state);
 
         //! @copydoc rwlibs::simulation::SimulatedController::getControllerName
-        Controller* getController () { return this; };
+        Controller* getController() { return this; };
 
-        std::string getControllerName () { return getName (); };
+        std::string getControllerName() { return getName(); };
 
         ////// inherited from JointController
 
@@ -86,33 +86,32 @@ namespace rwsim { namespace control {
          *
          * This controller supports both position and velocity control.
          */
-        unsigned int getControlModes () { return _mode; }
+        unsigned int getControlModes() { return _mode; }
 
         //! @copydoc rwlibs::control::JointController::setControlMode
-        void setControlMode (ControlMode mode);
+        void setControlMode(ControlMode mode);
 
         //! @copydoc rwlibs::control::JointController::setTargetPos
-        void setTargetPos (const rw::math::Q& target);
+        void setTargetPos(const rw::math::Q& target);
 
         //! @copydoc rwlibs::control::JointController::setTargetVel
-        void setTargetVel (const rw::math::Q& vals);
+        void setTargetVel(const rw::math::Q& vals);
 
         //! @copydoc rwlibs::control::JointController::setTargetAcc
-        void setTargetAcc (const rw::math::Q& vals);
+        void setTargetAcc(const rw::math::Q& vals);
 
         //! @copydoc rwlibs::control::JointController::getQ
-        rw::math::Q getQ () { return _currentQ; }
+        rw::math::Q getQ() { return _currentQ; }
 
         //! @copydoc rwlibs::control::JointController::getQd
-        rw::math::Q getQd () { return _currentVel; }
+        rw::math::Q getQd() { return _currentVel; }
 
-        void setEnabled (bool enabled) { _enabled = enabled; };
+        void setEnabled(bool enabled) { _enabled = enabled; };
 
-        bool isEnabled () const { return _enabled; };
+        bool isEnabled() const { return _enabled; };
 
         rwlibs::control::Controller::Ptr
-        getControllerHandle (rwlibs::simulation::Simulator::Ptr sim)
-        {
+        getControllerHandle(rwlibs::simulation::Simulator::Ptr sim) {
             return this;
         }
 

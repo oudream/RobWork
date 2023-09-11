@@ -37,105 +37,105 @@ namespace rw { namespace core {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< RobWork > Ptr;
+        typedef rw::core::Ptr<RobWork> Ptr;
 
         /**
          * @brief Creates RobWork instance
          */
-        RobWork (void);
+        RobWork(void);
 
         /**
          * @brief Closes all plugins, stream etc. hold by the RobWork instance before destruction
          */
-        ~RobWork (void);
+        ~RobWork(void);
 
         /**
          * @brief Returns the common log
          */
-        rw::core::Log& getLog ();
+        rw::core::Log& getLog();
 
         /**
          * @brief get a pointer to the common log
          * @return
          */
-        rw::core::Log::Ptr getLogPtr ();
+        rw::core::Log::Ptr getLogPtr();
 
         /**
          * @brief set logger for this instance of RobWork
          * @param log
          */
-        void setLog (rw::core::Log::Ptr log);
+        void setLog(rw::core::Log::Ptr log);
 
         /**
          * @brief Returns the version of RobWork
          */
-        std::string getVersion () const { return RW_VERSION; }
+        std::string getVersion() const { return RW_VERSION; }
 
         /**
          * @brief initialize robwork
          *
          * Reads in its configuration file which specify plugins and so on.
          */
-        void initialize (const std::vector< std::string >& plugins = std::vector< std::string > ());
+        void initialize(const std::vector<std::string>& plugins = std::vector<std::string>());
 
         /**
          * @brief finalizes the robwork instance
          */
-        void finalize ();
+        void finalize();
 
         /**
          * @brief get settings of RobWork instance
          * @return
          */
-        rw::core::PropertyMap& getSettings ();
+        rw::core::PropertyMap& getSettings();
 
         /**
          * @brief get the extension registry
          * @return
          */
-        rw::core::Ptr< rw::core::ExtensionRegistry > getExtensionRegistry ();
+        rw::core::Ptr<rw::core::ExtensionRegistry> getExtensionRegistry();
 
         /**
          * @brief set extension registry of this instance of robwork
          */
-        void setExtensionRegistry (rw::core::Ptr< rw::core::ExtensionRegistry > extreg);
+        void setExtensionRegistry(rw::core::Ptr<rw::core::ExtensionRegistry> extreg);
 
         /**
          * @brief Check if RobWork has been initialized.
          * @return true if initialized, false otherwise.
          */
-        bool isInitialized () const;
+        bool isInitialized() const;
 
         /**
          * @brief returns an RobWork instance
          */
-        static RobWork::Ptr getInstance ();
+        static RobWork::Ptr getInstance();
 
         /**
          * @brief initialize robwork
          */
-        static void init ();
+        static void init();
 
         /**
          * @brief initialize robwork - including possible command line options
          */
-        static void init (int argc, const char* const* argv);
+        static void init(int argc, const char* const* argv);
 
         /**
          * @brief finalize the robwork instance
          */
-        static void finish ();
+        static void finish();
 
         /**
          * @brief sets the robwork instance
          * @param rw [in] the new instance
          */
-        static void setInstance (RobWork::Ptr rw);
+        static void setInstance(RobWork::Ptr rw);
 
       private:
         rw::core::PropertyMap _settings;
         std::string _settingsFile;
-        std::map< std::string, std::time_t > _pluginChangedMap;
+        std::map<std::string, std::time_t> _pluginChangedMap;
         bool _initialized;
     };
 

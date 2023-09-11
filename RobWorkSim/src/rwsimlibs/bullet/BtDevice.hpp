@@ -39,23 +39,23 @@ namespace rwsimlibs { namespace bullet {
     {
       public:
         //! @brief Destructor.
-        virtual ~BtDevice (){};
+        virtual ~BtDevice(){};
 
         /**
          * @brief Update device.
          * @param dt [in] the timestep.
          * @param state [in/out] the state to update.
          */
-        virtual void update (double dt, rw::kinematics::State& state) = 0;
+        virtual void update(double dt, rw::kinematics::State& state) = 0;
 
         /**
          * @brief Post update of device.
          * @param state [in/out] the result of the update.
          */
-        virtual void postUpdate (rw::kinematics::State& state) = 0;
+        virtual void postUpdate(rw::kinematics::State& state) = 0;
 
       protected:
-        BtDevice (){};
+        BtDevice(){};
     };
     //! @}
 }}     // namespace rwsimlibs::bullet

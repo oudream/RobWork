@@ -39,96 +39,92 @@ using namespace rw::core;
 using namespace rw::proximity;
 using namespace rwlibs::proximitystrategies;
 
-RW_ADD_PLUGIN (ProximityStrategyPlugin)
+RW_ADD_PLUGIN(ProximityStrategyPlugin)
 
-ProximityStrategyPlugin::ProximityStrategyPlugin () :
-    Plugin ("ProximityStrategyPlugin", "ProximityStrategyPlugin", "1.0")
-{}
+ProximityStrategyPlugin::ProximityStrategyPlugin() :
+    Plugin("ProximityStrategyPlugin", "ProximityStrategyPlugin", "1.0") {}
 
-ProximityStrategyPlugin::~ProximityStrategyPlugin ()
-{}
+ProximityStrategyPlugin::~ProximityStrategyPlugin() {}
 
-std::vector< Extension::Descriptor > ProximityStrategyPlugin::getExtensionDescriptors ()
-{
-    std::vector< Extension::Descriptor > exts;
+std::vector<Extension::Descriptor> ProximityStrategyPlugin::getExtensionDescriptors() {
+    std::vector<Extension::Descriptor> exts;
 
 #ifdef RW_HAVE_BULLET
     {
         static const std::string stratID = "Bullet";
-        exts.push_back (Extension::Descriptor ("ProximityStrategy" + stratID,
-                                               "rw.proximity.ProximityStrategy"));
-        exts.back ().getProperties ().set< std::string > ("strategyID", stratID);
-        exts.push_back (Extension::Descriptor ("CollisionStrategy" + stratID,
-                                               "rw.proximity.CollisionStrategy"));
-        exts.back ().getProperties ().set< std::string > ("strategyID", stratID);
-        exts.push_back (Extension::Descriptor ("CollisionToleranceStrategy" + stratID,
-                                               "rw.proximity.CollisionToleranceStrategy"));
-        exts.back ().getProperties ().set< std::string > ("strategyID", stratID);
-        exts.push_back (
-            Extension::Descriptor ("DistanceStrategy" + stratID, "rw.proximity.DistanceStrategy"));
-        exts.back ().getProperties ().set< std::string > ("strategyID", stratID);
-        exts.push_back (Extension::Descriptor ("DistanceMultiStrategy" + stratID,
-                                               "rw.proximity.DistanceMultiStrategy"));
-        exts.back ().getProperties ().set< std::string > ("strategyID", stratID);
+        exts.push_back(
+            Extension::Descriptor("ProximityStrategy" + stratID, "rw.proximity.ProximityStrategy"));
+        exts.back().getProperties().set<std::string>("strategyID", stratID);
+        exts.push_back(
+            Extension::Descriptor("CollisionStrategy" + stratID, "rw.proximity.CollisionStrategy"));
+        exts.back().getProperties().set<std::string>("strategyID", stratID);
+        exts.push_back(Extension::Descriptor("CollisionToleranceStrategy" + stratID,
+                                             "rw.proximity.CollisionToleranceStrategy"));
+        exts.back().getProperties().set<std::string>("strategyID", stratID);
+        exts.push_back(
+            Extension::Descriptor("DistanceStrategy" + stratID, "rw.proximity.DistanceStrategy"));
+        exts.back().getProperties().set<std::string>("strategyID", stratID);
+        exts.push_back(Extension::Descriptor("DistanceMultiStrategy" + stratID,
+                                             "rw.proximity.DistanceMultiStrategy"));
+        exts.back().getProperties().set<std::string>("strategyID", stratID);
     }
 #endif
 
 #ifdef RW_HAVE_FCL
     {
         static const std::string stratID = "FCL";
-        exts.push_back (Extension::Descriptor ("ProximityStrategy" + stratID,
-                                               "rw.proximity.ProximityStrategy"));
-        exts.back ().getProperties ().set< std::string > ("strategyID", stratID);
-        exts.push_back (Extension::Descriptor ("CollisionStrategy" + stratID,
-                                               "rw.proximity.CollisionStrategy"));
-        exts.back ().getProperties ().set< std::string > ("strategyID", stratID);
-        exts.push_back (
-            Extension::Descriptor ("DistanceStrategy" + stratID, "rw.proximity.DistanceStrategy"));
-        exts.back ().getProperties ().set< std::string > ("strategyID", stratID);
-        exts.push_back (Extension::Descriptor ("DistanceMultiStrategy" + stratID,
-                                               "rw.proximity.DistanceMultiStrategy"));
-        exts.back ().getProperties ().set< std::string > ("strategyID", stratID);
+        exts.push_back(
+            Extension::Descriptor("ProximityStrategy" + stratID, "rw.proximity.ProximityStrategy"));
+        exts.back().getProperties().set<std::string>("strategyID", stratID);
+        exts.push_back(
+            Extension::Descriptor("CollisionStrategy" + stratID, "rw.proximity.CollisionStrategy"));
+        exts.back().getProperties().set<std::string>("strategyID", stratID);
+        exts.push_back(
+            Extension::Descriptor("DistanceStrategy" + stratID, "rw.proximity.DistanceStrategy"));
+        exts.back().getProperties().set<std::string>("strategyID", stratID);
+        exts.push_back(Extension::Descriptor("DistanceMultiStrategy" + stratID,
+                                             "rw.proximity.DistanceMultiStrategy"));
+        exts.back().getProperties().set<std::string>("strategyID", stratID);
     }
 #endif
 
 #ifdef RW_HAVE_PQP
     {
         static const std::string stratID = "PQP";
-        exts.push_back (Extension::Descriptor ("ProximityStrategy" + stratID,
-                                               "rw.proximity.ProximityStrategy"));
-        exts.back ().getProperties ().set< std::string > ("strategyID", stratID);
-        exts.push_back (Extension::Descriptor ("CollisionStrategy" + stratID,
-                                               "rw.proximity.CollisionStrategy"));
-        exts.back ().getProperties ().set< std::string > ("strategyID", stratID);
-        exts.push_back (Extension::Descriptor ("CollisionToleranceStrategy" + stratID,
-                                               "rw.proximity.CollisionToleranceStrategy"));
-        exts.back ().getProperties ().set< std::string > ("strategyID", stratID);
-        exts.push_back (
-            Extension::Descriptor ("DistanceStrategy" + stratID, "rw.proximity.DistanceStrategy"));
-        exts.back ().getProperties ().set< std::string > ("strategyID", stratID);
-        exts.push_back (Extension::Descriptor ("DistanceMultiStrategy" + stratID,
-                                               "rw.proximity.DistanceMultiStrategy"));
-        exts.back ().getProperties ().set< std::string > ("strategyID", stratID);
+        exts.push_back(
+            Extension::Descriptor("ProximityStrategy" + stratID, "rw.proximity.ProximityStrategy"));
+        exts.back().getProperties().set<std::string>("strategyID", stratID);
+        exts.push_back(
+            Extension::Descriptor("CollisionStrategy" + stratID, "rw.proximity.CollisionStrategy"));
+        exts.back().getProperties().set<std::string>("strategyID", stratID);
+        exts.push_back(Extension::Descriptor("CollisionToleranceStrategy" + stratID,
+                                             "rw.proximity.CollisionToleranceStrategy"));
+        exts.back().getProperties().set<std::string>("strategyID", stratID);
+        exts.push_back(
+            Extension::Descriptor("DistanceStrategy" + stratID, "rw.proximity.DistanceStrategy"));
+        exts.back().getProperties().set<std::string>("strategyID", stratID);
+        exts.push_back(Extension::Descriptor("DistanceMultiStrategy" + stratID,
+                                             "rw.proximity.DistanceMultiStrategy"));
+        exts.back().getProperties().set<std::string>("strategyID", stratID);
     }
 #endif
 
 #ifdef RW_HAVE_YAOBI
     {
         static const std::string stratID = "Yaobi";
-        exts.push_back (Extension::Descriptor ("ProximityStrategy" + stratID,
-                                               "rw.proximity.ProximityStrategy"));
-        exts.back ().getProperties ().set< std::string > ("strategyID", stratID);
-        exts.push_back (Extension::Descriptor ("CollisionStrategy" + stratID,
-                                               "rw.proximity.CollisionStrategy"));
-        exts.back ().getProperties ().set< std::string > ("strategyID", stratID);
+        exts.push_back(
+            Extension::Descriptor("ProximityStrategy" + stratID, "rw.proximity.ProximityStrategy"));
+        exts.back().getProperties().set<std::string>("strategyID", stratID);
+        exts.push_back(
+            Extension::Descriptor("CollisionStrategy" + stratID, "rw.proximity.CollisionStrategy"));
+        exts.back().getProperties().set<std::string>("strategyID", stratID);
     }
 #endif
 
     return exts;
 }
 
-Extension::Ptr ProximityStrategyPlugin::makeExtension (const std::string& id)
-{
+Extension::Ptr ProximityStrategyPlugin::makeExtension(const std::string& id) {
     // Important: When Extensions are created from AnyPtr objects, a specific strategy object MUST
     // be cast to the correct base type before creating the AnyPtr.
     // - Due to multiple inheritance, the memory layout of the specific strategy is unknown to the
@@ -136,51 +132,51 @@ Extension::Ptr ProximityStrategyPlugin::makeExtension (const std::string& id)
 
 #ifdef RW_HAVE_BULLET
     {
-        static const ProximityStrategyBullet::Ptr strat = ownedPtr (new ProximityStrategyBullet ());
+        static const ProximityStrategyBullet::Ptr strat = ownedPtr(new ProximityStrategyBullet());
         static const std::string stratID                = "Bullet";
-        if (id == "ProximityStrategy" + stratID) {
+        if(id == "ProximityStrategy" + stratID) {
             const Extension::Ptr extension =
-                ownedPtr (new Extension ("ProximityStrategy" + stratID,
-                                         "rw.proximity.ProximityStrategy",
-                                         this,
-                                         strat.cast< ProximityStrategy > ()));
-            extension->getProperties ().set< std::string > ("strategyID", stratID);
+                ownedPtr(new Extension("ProximityStrategy" + stratID,
+                                       "rw.proximity.ProximityStrategy",
+                                       this,
+                                       strat.cast<ProximityStrategy>()));
+            extension->getProperties().set<std::string>("strategyID", stratID);
             return extension;
         }
-        else if (id == "CollisionStrategy" + stratID) {
+        else if(id == "CollisionStrategy" + stratID) {
             const Extension::Ptr extension =
-                ownedPtr (new Extension ("CollisionStrategy" + stratID,
-                                         "rw.proximity.CollisionStrategy",
-                                         this,
-                                         strat.cast< CollisionStrategy > ()));
-            extension->getProperties ().set< std::string > ("strategyID", stratID);
+                ownedPtr(new Extension("CollisionStrategy" + stratID,
+                                       "rw.proximity.CollisionStrategy",
+                                       this,
+                                       strat.cast<CollisionStrategy>()));
+            extension->getProperties().set<std::string>("strategyID", stratID);
             return extension;
         }
-        else if (id == "CollisionToleranceStrategy" + stratID) {
+        else if(id == "CollisionToleranceStrategy" + stratID) {
             const Extension::Ptr extension =
-                ownedPtr (new Extension ("CollisionToleranceStrategy" + stratID,
-                                         "rw.proximity.CollisionToleranceStrategy",
-                                         this,
-                                         strat.cast< CollisionToleranceStrategy > ()));
-            extension->getProperties ().set< std::string > ("strategyID", stratID);
+                ownedPtr(new Extension("CollisionToleranceStrategy" + stratID,
+                                       "rw.proximity.CollisionToleranceStrategy",
+                                       this,
+                                       strat.cast<CollisionToleranceStrategy>()));
+            extension->getProperties().set<std::string>("strategyID", stratID);
             return extension;
         }
-        else if (id == "DistanceStrategy" + stratID) {
+        else if(id == "DistanceStrategy" + stratID) {
             const Extension::Ptr extension =
-                ownedPtr (new Extension ("DistanceStrategy" + stratID,
-                                         "rw.proximity.DistanceStrategy",
-                                         this,
-                                         strat.cast< DistanceStrategy > ()));
-            extension->getProperties ().set< std::string > ("strategyID", stratID);
+                ownedPtr(new Extension("DistanceStrategy" + stratID,
+                                       "rw.proximity.DistanceStrategy",
+                                       this,
+                                       strat.cast<DistanceStrategy>()));
+            extension->getProperties().set<std::string>("strategyID", stratID);
             return extension;
         }
-        else if (id == "DistanceMultiStrategy" + stratID) {
+        else if(id == "DistanceMultiStrategy" + stratID) {
             const Extension::Ptr extension =
-                ownedPtr (new Extension ("DistanceMultiStrategy" + stratID,
-                                         "rw.proximity.DistanceMultiStrategy",
-                                         this,
-                                         strat.cast< DistanceMultiStrategy > ()));
-            extension->getProperties ().set< std::string > ("strategyID", stratID);
+                ownedPtr(new Extension("DistanceMultiStrategy" + stratID,
+                                       "rw.proximity.DistanceMultiStrategy",
+                                       this,
+                                       strat.cast<DistanceMultiStrategy>()));
+            extension->getProperties().set<std::string>("strategyID", stratID);
             return extension;
         }
     }
@@ -188,41 +184,42 @@ Extension::Ptr ProximityStrategyPlugin::makeExtension (const std::string& id)
 
 #ifdef RW_HAVE_FCL
     {
-        static const ProximityStrategyFCL::Ptr strat = ownedPtr (new ProximityStrategyFCL ());
+        static const ProximityStrategyFCL::Ptr strat = ownedPtr(new ProximityStrategyFCL());
         static const std::string stratID             = "FCL";
-        if (id == "ProximityStrategy" + stratID) {
+        if(id == "ProximityStrategy" + stratID) {
             const Extension::Ptr extension =
-                ownedPtr (new Extension ("ProximityStrategy" + stratID,
-                                         "rw.proximity.ProximityStrategy",
-                                         this,
-                                         strat.cast< ProximityStrategy > ()));
-            extension->getProperties ().set< std::string > ("strategyID", stratID);
+                ownedPtr(new Extension("ProximityStrategy" + stratID,
+                                       "rw.proximity.ProximityStrategy",
+                                       this,
+                                       strat.cast<ProximityStrategy>()));
+            extension->getProperties().set<std::string>("strategyID", stratID);
             return extension;
         }
-        else if (id == "CollisionStrategy" + stratID) {
+        else if(id == "CollisionStrategy" + stratID) {
             const Extension::Ptr extension =
-                ownedPtr (new Extension ("CollisionStrategy" + stratID,
-                                         "rw.proximity.CollisionStrategy",
-                                         this,
-                                         strat.cast< CollisionStrategy > ()));
-            extension->getProperties ().set< std::string > ("strategyID", stratID);
+                ownedPtr(new Extension("CollisionStrategy" + stratID,
+                                       "rw.proximity.CollisionStrategy",
+                                       this,
+                                       strat.cast<CollisionStrategy>()));
+            extension->getProperties().set<std::string>("strategyID", stratID);
             return extension;
         }
-        else if (id == "DistanceStrategy" + stratID) {
+        else if(id == "DistanceStrategy" + stratID) {
             const Extension::Ptr extension =
-                ownedPtr (new Extension ("DistanceStrategy" + stratID,
-                                         "rw.proximity.DistanceStrategy",
-                                         this,
-                                         strat.cast< DistanceStrategy > ()));
-            extension->getProperties ().set< std::string > ("strategyID", stratID);
+                ownedPtr(new Extension("DistanceStrategy" + stratID,
+                                       "rw.proximity.DistanceStrategy",
+                                       this,
+                                       strat.cast<DistanceStrategy>()));
+            extension->getProperties().set<std::string>("strategyID", stratID);
             return extension;
-        }else if (id == "DistanceMultiStrategy" + stratID) {
+        }
+        else if(id == "DistanceMultiStrategy" + stratID) {
             const Extension::Ptr extension =
-                ownedPtr (new Extension ("DistanceMultiStrategy" + stratID,
-                                         "rw.proximity.DistanceMultiStrategy",
-                                         this,
-                                         strat.cast< DistanceMultiStrategy > ()));
-            extension->getProperties ().set< std::string > ("strategyID", stratID);
+                ownedPtr(new Extension("DistanceMultiStrategy" + stratID,
+                                       "rw.proximity.DistanceMultiStrategy",
+                                       this,
+                                       strat.cast<DistanceMultiStrategy>()));
+            extension->getProperties().set<std::string>("strategyID", stratID);
             return extension;
         }
     }
@@ -230,51 +227,51 @@ Extension::Ptr ProximityStrategyPlugin::makeExtension (const std::string& id)
 
 #ifdef RW_HAVE_PQP
     {
-        static const ProximityStrategyPQP::Ptr strat = ownedPtr (new ProximityStrategyPQP ());
+        static const ProximityStrategyPQP::Ptr strat = ownedPtr(new ProximityStrategyPQP());
         static const std::string stratID             = "PQP";
-        if (id == "ProximityStrategy" + stratID) {
+        if(id == "ProximityStrategy" + stratID) {
             const Extension::Ptr extension =
-                ownedPtr (new Extension ("ProximityStrategy" + stratID,
-                                         "rw.proximity.ProximityStrategy",
-                                         this,
-                                         strat.cast< ProximityStrategy > ()));
-            extension->getProperties ().set< std::string > ("strategyID", stratID);
+                ownedPtr(new Extension("ProximityStrategy" + stratID,
+                                       "rw.proximity.ProximityStrategy",
+                                       this,
+                                       strat.cast<ProximityStrategy>()));
+            extension->getProperties().set<std::string>("strategyID", stratID);
             return extension;
         }
-        else if (id == "CollisionStrategy" + stratID) {
+        else if(id == "CollisionStrategy" + stratID) {
             const Extension::Ptr extension =
-                ownedPtr (new Extension ("CollisionStrategy" + stratID,
-                                         "rw.proximity.CollisionStrategy",
-                                         this,
-                                         strat.cast< CollisionStrategy > ()));
-            extension->getProperties ().set< std::string > ("strategyID", stratID);
+                ownedPtr(new Extension("CollisionStrategy" + stratID,
+                                       "rw.proximity.CollisionStrategy",
+                                       this,
+                                       strat.cast<CollisionStrategy>()));
+            extension->getProperties().set<std::string>("strategyID", stratID);
             return extension;
         }
-        else if (id == "CollisionToleranceStrategy" + stratID) {
+        else if(id == "CollisionToleranceStrategy" + stratID) {
             const Extension::Ptr extension =
-                ownedPtr (new Extension ("CollisionToleranceStrategy" + stratID,
-                                         "rw.proximity.CollisionToleranceStrategy",
-                                         this,
-                                         strat.cast< CollisionToleranceStrategy > ()));
-            extension->getProperties ().set< std::string > ("strategyID", stratID);
+                ownedPtr(new Extension("CollisionToleranceStrategy" + stratID,
+                                       "rw.proximity.CollisionToleranceStrategy",
+                                       this,
+                                       strat.cast<CollisionToleranceStrategy>()));
+            extension->getProperties().set<std::string>("strategyID", stratID);
             return extension;
         }
-        else if (id == "DistanceStrategy" + stratID) {
+        else if(id == "DistanceStrategy" + stratID) {
             const Extension::Ptr extension =
-                ownedPtr (new Extension ("DistanceStrategy" + stratID,
-                                         "rw.proximity.DistanceStrategy",
-                                         this,
-                                         strat.cast< DistanceStrategy > ()));
-            extension->getProperties ().set< std::string > ("strategyID", stratID);
+                ownedPtr(new Extension("DistanceStrategy" + stratID,
+                                       "rw.proximity.DistanceStrategy",
+                                       this,
+                                       strat.cast<DistanceStrategy>()));
+            extension->getProperties().set<std::string>("strategyID", stratID);
             return extension;
         }
-        else if (id == "DistanceMultiStrategy" + stratID) {
+        else if(id == "DistanceMultiStrategy" + stratID) {
             const Extension::Ptr extension =
-                ownedPtr (new Extension ("DistanceMultiStrategy" + stratID,
-                                         "rw.proximity.DistanceMultiStrategy",
-                                         this,
-                                         strat.cast< DistanceMultiStrategy > ()));
-            extension->getProperties ().set< std::string > ("strategyID", stratID);
+                ownedPtr(new Extension("DistanceMultiStrategy" + stratID,
+                                       "rw.proximity.DistanceMultiStrategy",
+                                       this,
+                                       strat.cast<DistanceMultiStrategy>()));
+            extension->getProperties().set<std::string>("strategyID", stratID);
             return extension;
         }
     }
@@ -282,24 +279,24 @@ Extension::Ptr ProximityStrategyPlugin::makeExtension (const std::string& id)
 
 #ifdef RW_HAVE_YAOBI
     {
-        static const ProximityStrategyYaobi::Ptr strat = ownedPtr (new ProximityStrategyYaobi ());
+        static const ProximityStrategyYaobi::Ptr strat = ownedPtr(new ProximityStrategyYaobi());
         static const std::string stratID               = "Yaobi";
-        if (id == "ProximityStrategy" + stratID) {
+        if(id == "ProximityStrategy" + stratID) {
             const Extension::Ptr extension =
-                ownedPtr (new Extension ("ProximityStrategy" + stratID,
-                                         "rw.proximity.ProximityStrategy",
-                                         this,
-                                         strat.cast< ProximityStrategy > ()));
-            extension->getProperties ().set< std::string > ("strategyID", stratID);
+                ownedPtr(new Extension("ProximityStrategy" + stratID,
+                                       "rw.proximity.ProximityStrategy",
+                                       this,
+                                       strat.cast<ProximityStrategy>()));
+            extension->getProperties().set<std::string>("strategyID", stratID);
             return extension;
         }
-        else if (id == "CollisionStrategy" + stratID) {
+        else if(id == "CollisionStrategy" + stratID) {
             const Extension::Ptr extension =
-                ownedPtr (new Extension ("CollisionStrategy" + stratID,
-                                         "rw.proximity.CollisionStrategy",
-                                         this,
-                                         strat.cast< CollisionStrategy > ()));
-            extension->getProperties ().set< std::string > ("strategyID", stratID);
+                ownedPtr(new Extension("CollisionStrategy" + stratID,
+                                       "rw.proximity.CollisionStrategy",
+                                       this,
+                                       strat.cast<CollisionStrategy>()));
+            extension->getProperties().set<std::string>("strategyID", stratID);
             return extension;
         }
     }
@@ -308,8 +305,6 @@ Extension::Ptr ProximityStrategyPlugin::makeExtension (const std::string& id)
     return NULL;
 }
 
-void ProximityStrategyPlugin::registerPlugin ()
-{
-    ExtensionRegistry::getInstance ()->registerExtensions (
-        ownedPtr (new ProximityStrategyPlugin ()));
+void ProximityStrategyPlugin::registerPlugin() {
+    ExtensionRegistry::getInstance()->registerExtensions(ownedPtr(new ProximityStrategyPlugin()));
 }

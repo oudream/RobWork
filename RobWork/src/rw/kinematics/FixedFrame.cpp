@@ -17,41 +17,36 @@
 
 #include "FixedFrame.hpp"
 
-#include <rw/kinematics/Kinematics.hpp>
 #include <rw/core/Ptr.hpp>
+#include <rw/kinematics/Kinematics.hpp>
 
 using namespace rw::kinematics;
 using namespace rw::math;
 
-FixedFrame::FixedFrame (const std::string& name, const Transform3D<>& transform) :
-    Frame (0, name), _transform (transform)
-{}
+FixedFrame::FixedFrame(const std::string& name, const Transform3D<>& transform) :
+    Frame(0, name), _transform(transform) {}
 
-const Transform3D<>& FixedFrame::getFixedTransform () const
-{
+const Transform3D<>& FixedFrame::getFixedTransform() const {
     return _transform;
 }
 
-void FixedFrame::doMultiplyTransform (const Transform3D<>& parent, const State& state,
-                                      Transform3D<>& result) const
-{
-    Transform3D<>::multiply (parent, _transform, result);
+void FixedFrame::doMultiplyTransform(const Transform3D<>& parent, const State& state,
+                                     Transform3D<>& result) const {
+    Transform3D<>::multiply(parent, _transform, result);
 }
 
-void FixedFrame::setTransform (const Transform3D<>& transform)
-{
+void FixedFrame::setTransform(const Transform3D<>& transform) {
     _transform = transform;
 }
 
-Transform3D<> FixedFrame::doGetTransform (const State& state) const
-{
+Transform3D<> FixedFrame::doGetTransform(const State& state) const {
     return _transform;
 }
 
-void FixedFrame::moveTo (const rw::math::Transform3D<>& refTtarget, rw::core::Ptr<Frame> refframe, State& state)
-{
+void FixedFrame::moveTo(const rw::math::Transform3D<>& refTtarget, rw::core::Ptr<Frame> refframe,
+                        State& state) {
     // first calculate transform from refframe to parent frame
-    Transform3D<> parentTref    = Kinematics::frameTframe (getParent (), refframe, state);
+    Transform3D<> parentTref    = Kinematics::frameTframe(getParent(), refframe, state);
     Transform3D<> parentTmframe = parentTref * refTtarget;
-    setTransform (parentTmframe);
+    setTransform(parentTmframe);
 }

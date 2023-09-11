@@ -19,54 +19,47 @@
 
 using namespace rw::loaders;
 
-DOMPropertyMapFormat::Initializer::Initializer ()
-{
+DOMPropertyMapFormat::Initializer::Initializer() {
     static bool done = false;
-    if (!done) {
-        idPropertyMap ();
-        idProperty ();
-        idPropertyName ();
-        idPropertyDescription ();
-        idPropertyValue ();
-        idPropertyValueList ();
+    if(!done) {
+        idPropertyMap();
+        idProperty();
+        idPropertyName();
+        idPropertyDescription();
+        idPropertyValue();
+        idPropertyValueList();
         done = true;
     }
 }
 
 const DOMPropertyMapFormat::Initializer DOMPropertyMapFormat::initializer;
 
-const std::string& DOMPropertyMapFormat::idPropertyMap ()
-{
-    static const std::string id ("PropertyMap");
+const std::string& DOMPropertyMapFormat::idPropertyMap() {
+    static const std::string id("PropertyMap");
     return id;
 }
 
-const std::string& DOMPropertyMapFormat::idProperty ()
-{
-    static const std::string id ("Property");
+const std::string& DOMPropertyMapFormat::idProperty() {
+    static const std::string id("Property");
     return id;
 }
 
-const std::string& DOMPropertyMapFormat::idPropertyName ()
-{
-    static const std::string id ("Name");
+const std::string& DOMPropertyMapFormat::idPropertyName() {
+    static const std::string id("Name");
     return id;
 }
 
-const std::string& DOMPropertyMapFormat::idPropertyDescription ()
-{
-    static const std::string id ("Description");
+const std::string& DOMPropertyMapFormat::idPropertyDescription() {
+    static const std::string id("Description");
     return id;
 }
 
-const std::string& DOMPropertyMapFormat::idPropertyValue ()
-{
-    static const std::string id ("Value");
+const std::string& DOMPropertyMapFormat::idPropertyValue() {
+    static const std::string id("Value");
     return id;
 }
 
-const std::string& DOMPropertyMapFormat::idPropertyValueList ()
-{
-    static const std::string id ("ValueList");
+const std::string& DOMPropertyMapFormat::idPropertyValueList() {
+    static const std::string id("ValueList");
     return id;
 }

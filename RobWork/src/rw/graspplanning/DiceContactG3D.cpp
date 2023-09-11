@@ -44,67 +44,61 @@ namespace {
         return tri[0] + vertex1 * b0 + vertex2 * b1 + vertex3 * b2;
     }
 */
-Vector3D<> calcCenterPtInTriangle (const Triangle<>& tri)
-{
+Vector3D<> calcCenterPtInTriangle(const Triangle<>& tri) {
     return (tri[2] + tri[1] + tri[0]) / 3;
 }
 
 }    // namespace
 
-DiceContactG3D::DiceContactG3D () : _obj (nullptr), _mu (0.5), _nrOfContacts (3), _cfilter (nullptr)
-{}
+DiceContactG3D::DiceContactG3D() : _obj(nullptr), _mu(0.5), _nrOfContacts(3), _cfilter(nullptr) {}
 
-void DiceContactG3D::initialize (const TriMesh& obj, int nrOfContacts, double mu)
-{
+void DiceContactG3D::initialize(const TriMesh& obj, int nrOfContacts, double mu) {
     _nrOfContacts = nrOfContacts;
     _mu           = mu;
     _obj          = &obj;
-    _surfNormals.resize (obj.getSize ());
+    _surfNormals.resize(obj.getSize());
     // TODO: create the vector of surface normals
-    for (size_t i = 0; i < obj.getSize (); i++) {
-        _surfNormals[i] = obj.getTriangle (i).calcFaceNormal ();
+    for(size_t i = 0; i < obj.getSize(); i++) {
+        _surfNormals[i] = obj.getTriangle(i).calcFaceNormal();
         // std::cout << "Surf normal: " << _surfNormals[i] << std::endl;
     }
 }
 
-void DiceContactG3D::setContactFilter (ContactValidateFilter* filter)
-{
+void DiceContactG3D::setContactFilter(ContactValidateFilter* filter) {
     _cfilter = filter;
 }
 
-std::vector< Grasp3D > DiceContactG3D::generateContactSet (int maxNrOfContacts, double timeout)
-{
-    std::vector< Grasp3D > grasps;
+std::vector<Grasp3D> DiceContactG3D::generateContactSet(int maxNrOfContacts, double timeout) {
+    std::vector<Grasp3D> grasps;
     const int min         = 0;
-    const int max         = (int) _surfNormals.size ();
+    const int max         = (int) _surfNormals.size();
     const double avgScale = 1.0 / _nrOfContacts;
-    Grasp3D tmpGrasp (_nrOfContacts);
+    Grasp3D tmpGrasp(_nrOfContacts);
 
     // std::vector<Vector3D<> > normals(_nrOfContacts);
     // std::vector<Vector3D<> > points(_nrOfContacts);
     // std::vector<int> faceIdxs(_nrOfContacts);
 
-    double atanMU = atan (_mu);
+    double atanMU = atan(_mu);
     Timer timer;
     int nrOfTries = 0;
-    while (grasps.size () < (size_t) maxNrOfContacts && timer.getTime () < timeout) {
+    while(grasps.size() < (size_t) maxNrOfContacts && timer.getTime() < timeout) {
         nrOfTries++;
         // generate a randomly choosen grasp contact
-        for (int i = 0; i < _nrOfContacts; i++) {
-            int idx      = Random::ranI (min, max);
-            int idx2     = Random::ranI (min, max);
-            double area1 = _obj->getTriangle (idx).calcArea ();
-            double area2 = _obj->getTriangle (idx2).calcArea ();
-            if (area2 > area1)
-                idx = idx2;
+        for(int i = 0; i < _nrOfContacts; i++) {
+            int idx      = Random::ranI(min, max);
+            int idx2     = Random::ranI(min, max);
+            double area1 = _obj->getTriangle(idx).calcArea();
+            double area2 = _obj->getTriangle(idx2).calcArea();
+            if(area2 > area1) idx = idx2;
 
             tmpGrasp.contacts[i]._faceIdx = idx;
-            tmpGrasp.contacts[i].n        = _transform.R () * _surfNormals[idx];
-            tmpGrasp.contacts[i].p = _transform * calcCenterPtInTriangle (_obj->getTriangle (idx));
+            tmpGrasp.contacts[i].n        = _transform.R() * _surfNormals[idx];
+            tmpGrasp.contacts[i].p = _transform * calcCenterPtInTriangle(_obj->getTriangle(idx));
             // tmpGrasp.contacts[i].p = _obj->getTriangle( idx )[0];
 
-            if (_cfilter) {
-                if (!_cfilter->isValid (tmpGrasp.contacts[i])) {
+            if(_cfilter) {
+                if(!_cfilter->isValid(tmpGrasp.contacts[i])) {
                     i--;
                     continue;
                 }
@@ -114,59 +108,55 @@ std::vector< Grasp3D > DiceContactG3D::generateContactSet (int maxNrOfContacts, 
 
         // calculate the average of all contact normals and take the opposite
         // as guess for Fext
-        Vector3D<> fext2 (0, 0, 0);
-        for (int i = 0; i < _nrOfContacts; i++) {
-            fext2 += tmpGrasp.contacts[i].n;
-        }
+        Vector3D<> fext2(0, 0, 0);
+        for(int i = 0; i < _nrOfContacts; i++) { fext2 += tmpGrasp.contacts[i].n; }
         fext2 = -(fext2 * avgScale);
 
         // now check if the approximated fext is able to break the force-closure
         bool isGoodGrasp = false;
-        for (int i = 0; i < _nrOfContacts; i++) {
-            double angle = acos (dot (tmpGrasp.contacts[i].n, fext2));
+        for(int i = 0; i < _nrOfContacts; i++) {
+            double angle = acos(dot(tmpGrasp.contacts[i].n, fext2));
             // std::cout << "fabs(angle) < Pi/2+atanMU  --> " << fabs(angle) <<" < "<<  Pi/2+atanMU
             // << std::endl;
-            if (fabs (angle) < Pi / 2 + atanMU) {
+            if(fabs(angle) < Pi / 2 + atanMU) {
                 isGoodGrasp = true;
                 break;
             }
         }
 
-        if (isGoodGrasp) {
+        if(isGoodGrasp) {
             // add the grasp to the candidate grasps
-            grasps.push_back (tmpGrasp);
+            grasps.push_back(tmpGrasp);
         }
     }
     // std::cout << "NrofTries: " << nrOfTries << std::endl;
     return grasps;
 }
 
-Grasp3D DiceContactG3D::generateNext ()
-{
-    Grasp3D tmpGrasp (_nrOfContacts);
+Grasp3D DiceContactG3D::generateNext() {
+    Grasp3D tmpGrasp(_nrOfContacts);
     const int min         = 0;
-    const int max         = (int) _surfNormals.size ();
+    const int max         = (int) _surfNormals.size();
     const double avgScale = 1.0 / _nrOfContacts;
-    double atanMU         = atan (_mu);
+    double atanMU         = atan(_mu);
     Timer timer;
 
-    while (timer.getTime () < 1.0) {
+    while(timer.getTime() < 1.0) {
         // generate a randomly choosen grasp contact
-        for (int i = 0; i < _nrOfContacts; i++) {
-            int idx      = Random::ranI (min, max);
-            int idx2     = Random::ranI (min, max);
-            double area1 = _obj->getTriangle (idx).calcArea ();
-            double area2 = _obj->getTriangle (idx2).calcArea ();
-            if (area2 > area1)
-                idx = idx2;
+        for(int i = 0; i < _nrOfContacts; i++) {
+            int idx      = Random::ranI(min, max);
+            int idx2     = Random::ranI(min, max);
+            double area1 = _obj->getTriangle(idx).calcArea();
+            double area2 = _obj->getTriangle(idx2).calcArea();
+            if(area2 > area1) idx = idx2;
 
             tmpGrasp.contacts[i]._faceIdx = idx;
-            tmpGrasp.contacts[i].n        = _transform.R () * _surfNormals[idx];
-            tmpGrasp.contacts[i].p = _transform * calcCenterPtInTriangle (_obj->getTriangle (idx));
+            tmpGrasp.contacts[i].n        = _transform.R() * _surfNormals[idx];
+            tmpGrasp.contacts[i].p = _transform * calcCenterPtInTriangle(_obj->getTriangle(idx));
             // tmpGrasp.contacts[i].p = _obj->getTriangle( idx )[0];
 
-            if (_cfilter) {
-                if (!_cfilter->isValid (tmpGrasp.contacts[i])) {
+            if(_cfilter) {
+                if(!_cfilter->isValid(tmpGrasp.contacts[i])) {
                     i--;
                     continue;
                 }
@@ -177,24 +167,22 @@ Grasp3D DiceContactG3D::generateNext ()
         // calculate the average of all contact normals and take the opposite
         // as guess for Fext
         Vector3D<> fext2;
-        for (int i = 0; i < _nrOfContacts; i++) {
-            fext2 += tmpGrasp.contacts[i].n;
-        }
+        for(int i = 0; i < _nrOfContacts; i++) { fext2 += tmpGrasp.contacts[i].n; }
         fext2 = -(fext2 * avgScale);
 
         // now check if the approximated fext is able to break the force-closure
         bool isGoodGrasp = false;
-        for (int i = 0; i < _nrOfContacts; i++) {
-            double angle = acos (dot (tmpGrasp.contacts[i].n, fext2));
+        for(int i = 0; i < _nrOfContacts; i++) {
+            double angle = acos(dot(tmpGrasp.contacts[i].n, fext2));
             // std::cout << "fabs(angle) < Pi/2+atanMU  --> " << fabs(angle) <<" < "<<  Pi/2+atanMU
             // << std::endl;
-            if (fabs (angle) < Pi / 2 + atanMU) {
+            if(fabs(angle) < Pi / 2 + atanMU) {
                 isGoodGrasp = true;
                 break;
             }
         }
 
-        if (isGoodGrasp) {
+        if(isGoodGrasp) {
             // add the grasp to the candidate grasps
             return tmpGrasp;
         }

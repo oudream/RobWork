@@ -23,31 +23,25 @@
 
 using namespace rw::proximity;
 
-ProximityModel::~ProximityModel ()
-{}
+ProximityModel::~ProximityModel() {}
 
-bool ProximityModel::addGeometry (rw::core::Ptr< rw::geometry::Geometry > geom, bool forceCopy)
-{
-    return owner->addGeometry (this, geom);
+bool ProximityModel::addGeometry(rw::core::Ptr<rw::geometry::Geometry> geom, bool forceCopy) {
+    return owner->addGeometry(this, geom);
 }
 
-bool ProximityModel::addGeometry (const rw::geometry::Geometry& geom)
-{
-    return owner->addGeometry (this, geom);
+bool ProximityModel::addGeometry(const rw::geometry::Geometry& geom) {
+    return owner->addGeometry(this, geom);
 }
 
-bool ProximityModel::removeGeometry (const std::string& geom)
-{
-    return owner->removeGeometry (this, geom);
+bool ProximityModel::removeGeometry(const std::string& geom) {
+    return owner->removeGeometry(this, geom);
 }
 
-std::vector< std::string > ProximityModel::getGeometryIDs ()
-{
-    return owner->getGeometryIDs (this);
+std::vector<std::string> ProximityModel::getGeometryIDs() {
+    return owner->getGeometryIDs(this);
 }
 
-std::vector< rw::core::Ptr< rw::geometry::Geometry > > ProximityModel::getGeometries ()
-{
-    return owner->getGeometries (this);
+std::vector<rw::core::Ptr<rw::geometry::Geometry>> ProximityModel::getGeometries() {
+    return owner->getGeometries(this);
     ;
 }

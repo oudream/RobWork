@@ -26,7 +26,8 @@ using rw::graphics::Plot;
 using rw::sensor::Image;
 using rwlibs::plots::MathGLPlot;
 
-struct MathGLPlot::PlotData {
+struct MathGLPlot::PlotData
+{
     mglData x;
     mglData y;
     std::string title;
@@ -34,35 +35,28 @@ struct MathGLPlot::PlotData {
     std::string ylabel;
 };
 
-MathGLPlot::MathGLPlot():
-    Plot(),
-    _data(new PlotData())
-{
-}
+MathGLPlot::MathGLPlot() : Plot(), _data(new PlotData()) {}
 
-MathGLPlot::~MathGLPlot()
-{
+MathGLPlot::~MathGLPlot() {
     delete _data;
 }
 
-void MathGLPlot::listPlot (const std::vector< double >& x, const std::vector< double >& y,
-        const std::string& title, const std::string& xlabel,
-        const std::string& ylabel)
-{
-    _data->x = mglData(x);
-    _data->y = mglData(y);
-    _data->title = title;
+void MathGLPlot::listPlot(const std::vector<double>& x, const std::vector<double>& y,
+                          const std::string& title, const std::string& xlabel,
+                          const std::string& ylabel) {
+    _data->x      = mglData(x);
+    _data->y      = mglData(y);
+    _data->title  = title;
     _data->xlabel = xlabel;
     _data->ylabel = ylabel;
 }
 
-Image::Ptr MathGLPlot::render(unsigned int width, unsigned int height)
-{
+Image::Ptr MathGLPlot::render(unsigned int width, unsigned int height) {
     mglGraph gr(0, width, height);
 
     gr.Alpha(true);
     gr.Light(true);
-    gr.AddLight(0,mglPoint(1,0,-1));
+    gr.AddLight(0, mglPoint(1, 0, -1));
     gr.Title(_data->title.c_str());
     // gr.FPlot("sin(pi*x)");
 
@@ -75,11 +69,11 @@ Image::Ptr MathGLPlot::render(unsigned int width, unsigned int height)
     gr.Label('y', _data->ylabel.c_str(), 0);
     gr.Axis("!");
 
-    const unsigned char * const data = gr.GetRGB();
+    const unsigned char* const data = gr.GetRGB();
     const Image::Ptr image = ownedPtr(new Image(width, height, Image::RGB, Image::Depth8U));
-    for (unsigned int i = 0; i < width; i += 1) {
-        for (unsigned int j = 0; j < height; j += 1) {
-            const int idx = 3*i + 3*width*j;
+    for(unsigned int i = 0; i < width; i += 1) {
+        for(unsigned int j = 0; j < height; j += 1) {
+            const int idx = 3 * i + 3 * width * j;
             image->setPixel8U(i, j, data[idx + 0], data[idx + 1], data[idx + 2]);
         }
     }

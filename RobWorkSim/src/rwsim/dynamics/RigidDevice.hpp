@@ -43,7 +43,7 @@ namespace rwsim { namespace dynamics {
     {
       public:
         //! @brief Smart pointer type for a dynamic device.
-        typedef rw::core::Ptr< RigidDevice > Ptr;
+        typedef rw::core::Ptr<RigidDevice> Ptr;
 
         /**
          * @brief Construct new kinematic device.
@@ -52,30 +52,30 @@ namespace rwsim { namespace dynamics {
          * and the object geometry.
          * @param dev [in] the kinematic model.
          */
-        RigidDevice (dynamics::Body::Ptr base,
-                     const std::vector< std::pair< BodyInfo, rw::models::Object::Ptr > >& objects,
-                     rw::models::JointDevice::Ptr dev);
+        RigidDevice(dynamics::Body::Ptr base,
+                    const std::vector<std::pair<BodyInfo, rw::models::Object::Ptr>>& objects,
+                    rw::models::JointDevice::Ptr dev);
 
         //! @brief Destructor.
-        virtual ~RigidDevice () {}
+        virtual ~RigidDevice() {}
 
         /**
          * @brief set the force limits of all motors of this device
          * @param force [in] vector or force limits
          */
-        void setMotorForceLimits (const rw::math::Q& force);
+        void setMotorForceLimits(const rw::math::Q& force);
 
         /**
          * @brief get the force limits of all motors of this device
          */
-        rw::math::Q getMotorForceLimits ();
+        rw::math::Q getMotorForceLimits();
 
         /**
          * @brief get velocities of all motorized joints
          * @param state [in] the state.
          * @return the joint velocities.
          */
-        rw::math::Q getJointVelocities (const rw::kinematics::State& state);
+        rw::math::Q getJointVelocities(const rw::kinematics::State& state);
 
         /**
          * @brief Get the velocity of a motorized joint.
@@ -83,7 +83,7 @@ namespace rwsim { namespace dynamics {
          * @param state [in] the state.
          * @return the velocity for the given joint.
          */
-        double getJointVelocity (int i, const rw::kinematics::State& state);
+        double getJointVelocity(int i, const rw::kinematics::State& state);
 
         /**
          * @brief set the joint velocities
@@ -91,7 +91,7 @@ namespace rwsim { namespace dynamics {
          * @param state [in] the state in which to set the velocities
          * @return
          */
-        void setJointVelocities (const rw::math::Q& q, rw::kinematics::State& state);
+        void setJointVelocities(const rw::math::Q& q, rw::kinematics::State& state);
 
         /**
          * @brief Set the velocity of a motorized joint.
@@ -99,7 +99,7 @@ namespace rwsim { namespace dynamics {
          * @param i [in] the joint to set velocity for.
          * @param state [in] the state in which to set the velocity.
          */
-        void setJointVelocity (double vel, int i, rw::kinematics::State& state);
+        void setJointVelocity(double vel, int i, rw::kinematics::State& state);
 
         //! @brief Possible control modes for the motors in each joint.
         typedef enum {
@@ -110,7 +110,7 @@ namespace rwsim { namespace dynamics {
         /**
          * @brief get the modes of all motors
          */
-        std::vector< MotorControlMode > getMotorModes (const rw::kinematics::State& state);
+        std::vector<MotorControlMode> getMotorModes(const rw::kinematics::State& state);
 
         /**
          * @brief Get the control mode for a single motor.
@@ -118,14 +118,14 @@ namespace rwsim { namespace dynamics {
          * @param state [in] the state.
          * @return the control mode.
          */
-        MotorControlMode getMotorMode (int i, const rw::kinematics::State& state);
+        MotorControlMode getMotorMode(int i, const rw::kinematics::State& state);
 
         /**
          * @brief get the target off all motors
          * @param state [in]
          * @return
          */
-        rw::math::Q getMotorTargets (const rw::kinematics::State& state);
+        rw::math::Q getMotorTargets(const rw::kinematics::State& state);
 
         /**
          * @brief Get the target for a single motor.
@@ -133,28 +133,28 @@ namespace rwsim { namespace dynamics {
          * @param state [in] the state.
          * @return the current target.
          */
-        double getMotorTarget (int i, const rw::kinematics::State& state);
+        double getMotorTarget(int i, const rw::kinematics::State& state);
 
         /**
          * @brief set target of all motors
          * @param q [in] target of motors in either force[N]/torque[Nm] or velocity [m/s]/[rad/s]
          * @param state [in/out]
          */
-        void setMotorTargets (const rw::math::Q& q, rw::kinematics::State& state);
+        void setMotorTargets(const rw::math::Q& q, rw::kinematics::State& state);
 
         /**
          * @brief Set force targets for all motors.
          * @param force [in] the force targets.
          * @param state [out] the state to update with target.
          */
-        void setMotorForceTargets (const rw::math::Q& force, rw::kinematics::State& state);
+        void setMotorForceTargets(const rw::math::Q& force, rw::kinematics::State& state);
 
         /**
          * @brief Set velocity targets for all motors.
          * @param vel [in] the velocity targets.
          * @param state [out] the state to update with target.
          */
-        void setMotorVelocityTargets (const rw::math::Q& vel, rw::kinematics::State& state);
+        void setMotorVelocityTargets(const rw::math::Q& vel, rw::kinematics::State& state);
 
         /**
          * @brief set the target of motor \b i. the target may be a desired force or a desired
@@ -163,7 +163,7 @@ namespace rwsim { namespace dynamics {
          * @param i [in] the index of the motor
          * @param state [in/out]
          */
-        void setMotorTarget (double q, int i, rw::kinematics::State& state);
+        void setMotorTarget(double q, int i, rw::kinematics::State& state);
 
         /**
          * @brief Set force target for a single motor.
@@ -171,7 +171,7 @@ namespace rwsim { namespace dynamics {
          * @param i [in] the index of the motor.
          * @param state [out] the state to update with target.
          */
-        void setMotorForceTarget (double force, int i, rw::kinematics::State& state);
+        void setMotorForceTarget(double force, int i, rw::kinematics::State& state);
 
         /**
          * @brief Set velocity target for a single motor.
@@ -179,29 +179,29 @@ namespace rwsim { namespace dynamics {
          * @param i [in] the index of the motor.
          * @param state [out] the state to update with target.
          */
-        void setMotorVelocityTarget (double vel, int i, rw::kinematics::State& state);
+        void setMotorVelocityTarget(double vel, int i, rw::kinematics::State& state);
 
         /**
          * @brief Get the kinematic model of the device.
          * @return the kinematic model.
          */
-        rw::models::JointDevice::Ptr getJointDevice () { return _jdev; };
+        rw::models::JointDevice::Ptr getJointDevice() { return _jdev; };
 
         /**
          * @brief Get the links of the device.
          * @return the links.
          */
-        const std::vector< Body::Ptr >& getLinks () { return _links; }
+        const std::vector<Body::Ptr>& getLinks() { return _links; }
 
       private:
         // all state variables are declared here
-        rw::kinematics::StatelessData< double > _velocity;
-        rw::kinematics::StatelessData< double > _target;
-        rw::kinematics::StatelessData< char > _mode;
+        rw::kinematics::StatelessData<double> _velocity;
+        rw::kinematics::StatelessData<double> _target;
+        rw::kinematics::StatelessData<char> _mode;
 
         // these should all be part of the state...
         rw::math::Q _forceLimits;
-        std::vector< Body::Ptr > _links;
+        std::vector<Body::Ptr> _links;
         rw::models::JointDevice::Ptr _jdev;
     };
 }}    // namespace rwsim::dynamics

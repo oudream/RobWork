@@ -30,41 +30,33 @@ using namespace rw::math;
 using namespace rw::geometry;
 using namespace rwlibs::csg;
 
-CSGModel::CSGModel () : _needsConversion (false)
-{}
+CSGModel::CSGModel() : _needsConversion(false) {}
 
-CSGModel::CSGModel (const CSGModel& csgmodel) :
-    _needsConversion (csgmodel._needsConversion), _model (csgmodel._model)
-{
-    if (csgmodel._mesh != NULL) {
-        _mesh = csgmodel._mesh->clone ();
-    }
+CSGModel::CSGModel(const CSGModel& csgmodel) :
+    _needsConversion(csgmodel._needsConversion), _model(csgmodel._model) {
+    if(csgmodel._mesh != NULL) { _mesh = csgmodel._mesh->clone(); }
 }
 
-CSGModel::CSGModel (const TriMesh& trimesh) : _needsConversion (false), _mesh (trimesh.clone ())
-{
-    _model = CSGConvert::TriMesh2csgjs_model (trimesh);
+CSGModel::CSGModel(const TriMesh& trimesh) : _needsConversion(false), _mesh(trimesh.clone()) {
+    _model = CSGConvert::TriMesh2csgjs_model(trimesh);
 }
 
-void CSGModel::translate (float x, float y, float z)
-{
-    Transform3D<> t (Vector3D<> (x, y, z), Rotation3D<> ());
+void CSGModel::translate(float x, float y, float z) {
+    Transform3D<> t(Vector3D<>(x, y, z), Rotation3D<>());
 
-    transform (t);
+    transform(t);
 }
 
-void CSGModel::rotate (float r, float p, float y)
-{
-    Transform3D<> t (Vector3D<> (), RPY<> (r, p, y).toRotation3D ());
+void CSGModel::rotate(float r, float p, float y) {
+    Transform3D<> t(Vector3D<>(), RPY<>(r, p, y).toRotation3D());
 
-    transform (t);
+    transform(t);
 }
 
-void CSGModel::transform (const math::Transform3D<>& T)
-{
+void CSGModel::transform(const math::Transform3D<>& T) {
     // convert all of the model vertices to Vector3D & apply transform
-    for (unsigned i = 0; i < _model->vertices.size (); ++i) {
-        Vector3D<> v (
+    for(unsigned i = 0; i < _model->vertices.size(); ++i) {
+        Vector3D<> v(
             _model->vertices[i].pos.x, _model->vertices[i].pos.y, _model->vertices[i].pos.z);
 
         v = T * v;
@@ -77,37 +69,31 @@ void CSGModel::transform (const math::Transform3D<>& T)
     _needsConversion = true;
 }
 
-void CSGModel::add (CSGModel::Ptr model)
-{
-    _model = ownedPtr (new csgjs_model (csgjs_union (*_model, *model->_model)));
+void CSGModel::add(CSGModel::Ptr model) {
+    _model = ownedPtr(new csgjs_model(csgjs_union(*_model, *model->_model)));
 
     _needsConversion = true;
 }
 
-void CSGModel::subtract (CSGModel::Ptr model)
-{
-    _model = ownedPtr (new csgjs_model (csgjs_difference (*_model, *model->_model)));
+void CSGModel::subtract(CSGModel::Ptr model) {
+    _model = ownedPtr(new csgjs_model(csgjs_difference(*_model, *model->_model)));
 
     _needsConversion = true;
 }
 
-void CSGModel::intersect (CSGModel::Ptr model)
-{
-    _model = ownedPtr (new csgjs_model (csgjs_intersection (*_model, *model->_model)));
+void CSGModel::intersect(CSGModel::Ptr model) {
+    _model = ownedPtr(new csgjs_model(csgjs_intersection(*_model, *model->_model)));
 
     _needsConversion = true;
 }
 
-TriMesh::Ptr CSGModel::getTriMesh ()
-{
+TriMesh::Ptr CSGModel::getTriMesh() {
     // if the model was changed, apply conversion
-    if (_needsConversion)
-        _convertToTriMesh ();
+    if(_needsConversion) _convertToTriMesh();
 
     return _mesh;
 }
 
-void CSGModel::_convertToTriMesh ()
-{
-    _mesh = CSGConvert::csgjs_model2TriMesh (_model);
+void CSGModel::_convertToTriMesh() {
+    _mesh = CSGConvert::csgjs_model2TriMesh(_model);
 }

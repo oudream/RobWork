@@ -22,84 +22,73 @@
 using namespace rw::loaders;
 using namespace xercesc;
 
-XMLPathFormat::Initializer::Initializer ()
-{
+XMLPathFormat::Initializer::Initializer() {
     static bool done = false;
-    if (!done) {
+    if(!done) {
         // Small trick to make sure Xerces is initialized before we start using XMLString::transcode
         static XercesInitializer initializer;
-        idQPath ();
-        idV3DPath ();
-        idR3DPath ();
-        idT3DPath ();
-        idStatePath ();
-        idTimedQPath ();
-        idTimedState ();
-        idTimedQ ();
-        idTimedStatePath ();
-        idTime ();
+        idQPath();
+        idV3DPath();
+        idR3DPath();
+        idT3DPath();
+        idStatePath();
+        idTimedQPath();
+        idTimedState();
+        idTimedQ();
+        idTimedStatePath();
+        idTime();
         done = true;
     }
 }
 
 const XMLPathFormat::Initializer XMLPathFormat::initializer;
 
-const XMLCh* XMLPathFormat::idQPath ()
-{
-    static const XMLStr id ("QPath");
-    return id.uni ();
+const XMLCh* XMLPathFormat::idQPath() {
+    static const XMLStr id("QPath");
+    return id.uni();
 }
 
-const XMLCh* XMLPathFormat::idV3DPath ()
-{
-    static const XMLStr id ("V3DPath");
-    return id.uni ();
+const XMLCh* XMLPathFormat::idV3DPath() {
+    static const XMLStr id("V3DPath");
+    return id.uni();
 }
 
-const XMLCh* XMLPathFormat::idR3DPath ()
-{
-    static const XMLStr id ("R3DPath");
-    return id.uni ();
+const XMLCh* XMLPathFormat::idR3DPath() {
+    static const XMLStr id("R3DPath");
+    return id.uni();
 }
 
-const XMLCh* XMLPathFormat::idT3DPath ()
-{
-    static const XMLStr id ("T3DPath");
-    return id.uni ();
+const XMLCh* XMLPathFormat::idT3DPath() {
+    static const XMLStr id("T3DPath");
+    return id.uni();
 }
 
-const XMLCh* XMLPathFormat::idStatePath ()
-{
-    static const XMLStr id ("StatePath");
-    return id.uni ();
+const XMLCh* XMLPathFormat::idStatePath() {
+    static const XMLStr id("StatePath");
+    return id.uni();
 }
 
-const XMLCh* XMLPathFormat::idTimedQPath ()
-{
-    static const XMLStr id ("TimedQPath");
-    return id.uni ();
+const XMLCh* XMLPathFormat::idTimedQPath() {
+    static const XMLStr id("TimedQPath");
+    return id.uni();
 }
 
-const XMLCh* XMLPathFormat::idTimedState ()
-{
-    static const XMLStr id ("TimedState");
-    return id.uni ();
+const XMLCh* XMLPathFormat::idTimedState() {
+    static const XMLStr id("TimedState");
+    return id.uni();
 }
 
-const XMLCh* XMLPathFormat::idTimedQ ()
-{
-    static const XMLStr id ("TimedQ");
-    return id.uni ();
+const XMLCh* XMLPathFormat::idTimedQ() {
+    static const XMLStr id("TimedQ");
+    return id.uni();
 }
 
-const XMLCh* XMLPathFormat::idTimedStatePath ()
-{
-    static const XMLStr id ("TimedStatePath");
-    return id.uni ();
+const XMLCh* XMLPathFormat::idTimedStatePath() {
+    static const XMLStr id("TimedStatePath");
+    return id.uni();
 }
 
-const XMLCh* XMLPathFormat::idTime ()
-{
-    static const XMLStr id ("Time");
-    return id.uni ();
+const XMLCh* XMLPathFormat::idTime() {
+    static const XMLStr id("Time");
+    return id.uni();
 }

@@ -24,9 +24,8 @@
  * \copydoc rwlibs::mathematica::MessagePacket
  */
 
-#include <rwlibs/mathematica/Mathematica.hpp>
-
 #include <rw/core/Ptr.hpp>
+#include <rwlibs/mathematica/Mathematica.hpp>
 
 namespace rwlibs { namespace mathematica {
     //! @addtogroup mathematica
@@ -37,35 +36,35 @@ namespace rwlibs { namespace mathematica {
     {
       public:
         //! @brief Smart pointer type.
-        typedef rw::core::Ptr< MessagePacket > Ptr;
+        typedef rw::core::Ptr<MessagePacket> Ptr;
 
         /**
          * @brief Construct anew packet.
          * @param symbol [in] the symbol of the message.
          * @param string [in] the string of the message.
          */
-        MessagePacket (const Mathematica::Symbol& symbol, const Mathematica::String& string);
+        MessagePacket(const Mathematica::Symbol& symbol, const Mathematica::String& string);
 
         //! @brief Destructor.
-        virtual ~MessagePacket ();
+        virtual ~MessagePacket();
 
         /**
          * @brief Get the symbol stored in the packet.
          * @return the symbol.
          */
-        const Mathematica::Symbol& symbol ();
+        const Mathematica::Symbol& symbol();
 
         /**
          * @brief Get the string stored in the packet.
          * @return the string.
          */
-        const Mathematica::String& string ();
+        const Mathematica::String& string();
 
         //! @copydoc Mathematica::FunctionBase::getArguments
-        std::list< rw::core::Ptr< const Mathematica::Expression > > getArguments () const;
+        std::list<rw::core::Ptr<const Mathematica::Expression>> getArguments() const;
 
         //! @copydoc Mathematica::Expression::clone
-        Mathematica::Expression::Ptr clone () const;
+        Mathematica::Expression::Ptr clone() const;
 
       private:
         const Mathematica::Symbol _symbol;

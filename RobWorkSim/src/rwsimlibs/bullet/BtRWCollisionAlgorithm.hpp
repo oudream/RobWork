@@ -54,13 +54,13 @@ namespace rwsimlibs { namespace bullet {
          * @param col0Wrap [in] information about the first bullet body.
          * @param col1Wrap [in] information about the second bullet body.
          */
-        BtRWCollisionAlgorithm (rw::core::Ptr< const rwsim::contacts::ContactDetector > detector,
-                                const btCollisionAlgorithmConstructionInfo& ci,
-                                const btCollisionObjectWrapper* col0Wrap,
-                                const btCollisionObjectWrapper* col1Wrap);
+        BtRWCollisionAlgorithm(rw::core::Ptr<const rwsim::contacts::ContactDetector> detector,
+                               const btCollisionAlgorithmConstructionInfo& ci,
+                               const btCollisionObjectWrapper* col0Wrap,
+                               const btCollisionObjectWrapper* col1Wrap);
 
         //! @brief Destructor.
-        virtual ~BtRWCollisionAlgorithm ();
+        virtual ~BtRWCollisionAlgorithm();
 
         /**
          * @brief Find the contacts.
@@ -70,10 +70,10 @@ namespace rwsimlibs { namespace bullet {
          * @param resultOut [out] the resulting contacts.
          * @throws Exception if resultOut is null or no manifold could be retrieved from dispatcher.
          */
-        virtual void processCollision (const btCollisionObjectWrapper* body0Wrap,
-                                       const btCollisionObjectWrapper* body1Wrap,
-                                       const btDispatcherInfo& dispatchInfo,
-                                       btManifoldResult* resultOut);
+        virtual void processCollision(const btCollisionObjectWrapper* body0Wrap,
+                                      const btCollisionObjectWrapper* body1Wrap,
+                                      const btDispatcherInfo& dispatchInfo,
+                                      btManifoldResult* resultOut);
 
         /**
          * @brief Calculate the time of impact (not supported).
@@ -84,9 +84,9 @@ namespace rwsimlibs { namespace bullet {
          * @return the time of impact.
          * @throws Exception always (not supported).
          */
-        virtual btScalar calculateTimeOfImpact (btCollisionObject* body0, btCollisionObject* body1,
-                                                const btDispatcherInfo& dispatchInfo,
-                                                btManifoldResult* resultOut);
+        virtual btScalar calculateTimeOfImpact(btCollisionObject* body0, btCollisionObject* body1,
+                                               const btDispatcherInfo& dispatchInfo,
+                                               btManifoldResult* resultOut);
 
         /**
          * @brief Get all contact manifolds.
@@ -94,7 +94,7 @@ namespace rwsimlibs { namespace bullet {
          * @param manifoldArray [out] get all manifolds.
          * @throws Exception if no manifold could be retrieved from dispatcher.
          */
-        virtual void getAllContactManifolds (btManifoldArray& manifoldArray);
+        virtual void getAllContactManifolds(btManifoldArray& manifoldArray);
 
         //! @brief Function for creating a BtRWCollisionAlgorithm
         struct CreateFunc : public btCollisionAlgorithmCreateFunc
@@ -103,10 +103,10 @@ namespace rwsimlibs { namespace bullet {
              * @brief New factory.
              * @param detector [in] the detector to use.
              */
-            CreateFunc (rw::core::Ptr< const rwsim::contacts::ContactDetector > detector);
+            CreateFunc(rw::core::Ptr<const rwsim::contacts::ContactDetector> detector);
 
             //! @brief Destructor.
-            virtual ~CreateFunc ();
+            virtual ~CreateFunc();
 
             /**
              * @brief Construct a new algorithm for a object pair.
@@ -116,16 +116,16 @@ namespace rwsimlibs { namespace bullet {
              * @return a pointer to the new algorithm.
              */
             virtual btCollisionAlgorithm*
-            CreateCollisionAlgorithm (btCollisionAlgorithmConstructionInfo& ci,
-                                      const btCollisionObjectWrapper* body0Wrap,
-                                      const btCollisionObjectWrapper* body1Wrap);
+            CreateCollisionAlgorithm(btCollisionAlgorithmConstructionInfo& ci,
+                                     const btCollisionObjectWrapper* body0Wrap,
+                                     const btCollisionObjectWrapper* body1Wrap);
 
           private:
-            rw::core::Ptr< const rwsim::contacts::ContactDetector > _detector;
+            rw::core::Ptr<const rwsim::contacts::ContactDetector> _detector;
         };
 
       private:
-        rw::core::Ptr< const rwsim::contacts::ContactDetector > _detector;
+        rw::core::Ptr<const rwsim::contacts::ContactDetector> _detector;
         btPersistentManifold* m_manifoldPtr;
         rwsim::contacts::ContactStrategyData* _stratData;
     };

@@ -25,61 +25,53 @@ using namespace rw::models;
 using namespace rw::kinematics;
 using namespace rw::math;
 
-DependentPrismaticJoint::DependentPrismaticJoint (const std::string& name,
-                                                  const Transform3D<>& transform, Joint* owner,
-                                                  double scale, double offset) :
-    DependentJoint (name),
-    _helper (name, transform), _owner (owner), _scale (scale), _offset (offset)
-{
-    RW_ASSERT (_owner);
+DependentPrismaticJoint::DependentPrismaticJoint(const std::string& name,
+                                                 const Transform3D<>& transform, Joint* owner,
+                                                 double scale, double offset) :
+    DependentJoint(name),
+    _helper(name, transform), _owner(owner), _scale(scale), _offset(offset) {
+    RW_ASSERT(_owner);
 }
 
-void DependentPrismaticJoint::doMultiplyTransform (const Transform3D<>& parent, const State& state,
-                                                   Transform3D<>& result) const
-{
-    const double q_owner = _owner->getData (state)[0];
+void DependentPrismaticJoint::doMultiplyTransform(const Transform3D<>& parent, const State& state,
+                                                  Transform3D<>& result) const {
+    const double q_owner = _owner->getData(state)[0];
     const double q       = _scale * q_owner + _offset;
 
-    _helper.multiplyJointTransform (parent, Q (1, q), result);
+    _helper.multiplyJointTransform(parent, Q(1, q), result);
 }
 
-Transform3D<> DependentPrismaticJoint::getTransform (const State& state) const
-{
-    return doGetTransform (state);
+Transform3D<> DependentPrismaticJoint::getTransform(const State& state) const {
+    return doGetTransform(state);
 }
 
-Transform3D<> DependentPrismaticJoint::doGetTransform (const State& state) const
-{
-    const double q_owner = _owner->getData (state)[0];
+Transform3D<> DependentPrismaticJoint::doGetTransform(const State& state) const {
+    const double q_owner = _owner->getData(state)[0];
     const double q       = _scale * q_owner + _offset;
 
-    return _helper.getTransform (q);
+    return _helper.getTransform(q);
 }
 
-Jacobian DependentPrismaticJoint::doGetJacobian (const State& state) const
-{
-    return Jacobian (6, 1);
+Jacobian DependentPrismaticJoint::doGetJacobian(const State& state) const {
+    return Jacobian(6, 1);
 }
 
-void DependentPrismaticJoint::getJacobian (size_t row, size_t col, const Transform3D<>& joint,
-                                           const Transform3D<>& tcp, const State& state,
-                                           Jacobian& jacobian) const
-{
-    const Vector3D<> axis = joint.R ().getCol (2);
+void DependentPrismaticJoint::getJacobian(size_t row, size_t col, const Transform3D<>& joint,
+                                          const Transform3D<>& tcp, const State& state,
+                                          Jacobian& jacobian) const {
+    const Vector3D<> axis = joint.R().getCol(2);
 
-    jacobian.addPosition (_scale * axis, row, col);
+    jacobian.addPosition(_scale * axis, row, col);
 }
 
-void DependentPrismaticJoint::setFixedTransform (const rw::math::Transform3D<>& t3d)
-{
-    _helper.setFixedTransform (t3d);
+void DependentPrismaticJoint::setFixedTransform(const rw::math::Transform3D<>& t3d) {
+    _helper.setFixedTransform(t3d);
 }
 
 rw::math::Transform3D<>
-DependentPrismaticJoint::getJointTransform (const rw::kinematics::State& state) const
-{
-    const double q_owner = _owner->getData (state)[0];
+DependentPrismaticJoint::getJointTransform(const rw::kinematics::State& state) const {
+    const double q_owner = _owner->getData(state)[0];
     const double q       = _scale * q_owner + _offset;
 
-    return _helper.getJointTransform (q);
+    return _helper.getJointTransform(q);
 }

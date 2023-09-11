@@ -27,56 +27,48 @@ using namespace rw::models;
 using namespace rw::kinematics;
 using namespace rw::core;
 
-PlannerConstraint::PlannerConstraint ()
-{}
+PlannerConstraint::PlannerConstraint() {}
 
-PlannerConstraint::PlannerConstraint (QConstraint::Ptr constraint, QEdgeConstraint::Ptr edge) :
-    _constraint (constraint), _edge (edge)
-{
+PlannerConstraint::PlannerConstraint(QConstraint::Ptr constraint, QEdgeConstraint::Ptr edge) :
+    _constraint(constraint), _edge(edge) {
     // RW_ASSERT(_constraint);
     // RW_ASSERT(_edge);
 }
 
-PlannerConstraint PlannerConstraint::make (QConstraint::Ptr constraint, QEdgeConstraint::Ptr edge)
-{
-    return PlannerConstraint (constraint, edge);
+PlannerConstraint PlannerConstraint::make(QConstraint::Ptr constraint, QEdgeConstraint::Ptr edge) {
+    return PlannerConstraint(constraint, edge);
 }
 
-PlannerConstraint PlannerConstraint::make (CollisionDetector::Ptr detector,
-                                           rw::core::Ptr< const Device > device, const State& state)
-{
-    QConstraint::Ptr constraint = QConstraint::make (detector, device, state);
+PlannerConstraint PlannerConstraint::make(CollisionDetector::Ptr detector,
+                                          rw::core::Ptr<const Device> device, const State& state) {
+    QConstraint::Ptr constraint = QConstraint::make(detector, device, state);
 
-    QEdgeConstraint::Ptr edge = QEdgeConstraint::makeDefault (constraint, device);
+    QEdgeConstraint::Ptr edge = QEdgeConstraint::makeDefault(constraint, device);
 
-    return make (constraint, edge);
+    return make(constraint, edge);
 }
 
-PlannerConstraint PlannerConstraint::make (rw::core::Ptr< CollisionStrategy > strategy,
-                                           rw::core::Ptr< WorkCell > workcell,
-                                           rw::core::Ptr< const Device > device, const State& state)
-{
-    CollisionDetector::Ptr cdect = ownedPtr (new CollisionDetector (workcell, strategy));
-    return make (cdect, device, state);
+PlannerConstraint PlannerConstraint::make(rw::core::Ptr<CollisionStrategy> strategy,
+                                          rw::core::Ptr<WorkCell> workcell,
+                                          rw::core::Ptr<const Device> device, const State& state) {
+    CollisionDetector::Ptr cdect = ownedPtr(new CollisionDetector(workcell, strategy));
+    return make(cdect, device, state);
 }
 
-PlannerConstraint PlannerConstraint::make (rw::core::Ptr< CollisionStrategy > strategy,
-                                           const CollisionSetup& setup,
-                                           rw::core::Ptr< WorkCell > workcell,
-                                           rw::core::Ptr< const Device > device, const State& state)
-{
-    BasicFilterStrategy::Ptr bpfilter = ownedPtr (new BasicFilterStrategy (workcell, setup));
-    CollisionDetector::Ptr cdect = ownedPtr (new CollisionDetector (workcell, strategy, bpfilter));
+PlannerConstraint PlannerConstraint::make(rw::core::Ptr<CollisionStrategy> strategy,
+                                          const CollisionSetup& setup,
+                                          rw::core::Ptr<WorkCell> workcell,
+                                          rw::core::Ptr<const Device> device, const State& state) {
+    BasicFilterStrategy::Ptr bpfilter = ownedPtr(new BasicFilterStrategy(workcell, setup));
+    CollisionDetector::Ptr cdect = ownedPtr(new CollisionDetector(workcell, strategy, bpfilter));
 
-    return make (cdect, device, state);
+    return make(cdect, device, state);
 }
 
-bool PlannerConstraint::inCollision (const rw::math::Q& q)
-{
-    return _constraint->inCollision (q);
+bool PlannerConstraint::inCollision(const rw::math::Q& q) {
+    return _constraint->inCollision(q);
 }
 
-bool PlannerConstraint::inCollision (const rw::math::Q& q1, const rw::math::Q& q2)
-{
-    return _edge->inCollision (q1, q2);
+bool PlannerConstraint::inCollision(const rw::math::Q& q1, const rw::math::Q& q2) {
+    return _edge->inCollision(q1, q2);
 }

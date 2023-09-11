@@ -31,45 +31,40 @@ using namespace rw::models;
 
 namespace {
 
-std::vector< Joint* > getJointsFromFrames (const std::vector< Frame* >& frames)
-{
-    std::vector< Joint* > active;
+std::vector<Joint*> getJointsFromFrames(const std::vector<Frame*>& frames) {
+    std::vector<Joint*> active;
 
-    typedef std::vector< Frame* >::const_iterator I;
-    for (I p = frames.begin (); p != frames.end (); ++p) {
+    typedef std::vector<Frame*>::const_iterator I;
+    for(I p = frames.begin(); p != frames.end(); ++p) {
         rw::core::Ptr<Frame> frame = *p;
-        Joint::Ptr joint = frame.cast<Joint>();
-        if ((joint != NULL && joint->isActive ()) ||
-            frame.cast<DependentJoint>() != NULL)
-            active.push_back (joint.get());
+        Joint::Ptr joint           = frame.cast<Joint>();
+        if((joint != NULL && joint->isActive()) || frame.cast<DependentJoint>() != NULL)
+            active.push_back(joint.get());
     }
     return active;
 }
 
 // From the root 'first' to the child 'last' inclusive.
-std::vector< Frame* > getChain (rw::core::Ptr<Frame> first, rw::core::Ptr<Frame> last, const State& state)
-{
-    std::vector< Frame* > init = Kinematics::parentToChildChain (first, last, state);
+std::vector<Frame*> getChain(rw::core::Ptr<Frame> first, rw::core::Ptr<Frame> last,
+                             const State& state) {
+    std::vector<Frame*> init = Kinematics::parentToChildChain(first, last, state);
 
-    init.push_back (last.get());
+    init.push_back(last.get());
     return init;
 }
 }    // namespace
 
-SerialDevice::SerialDevice (rw::core::Ptr<Frame> first, rw::core::Ptr<Frame> last, const std::string& name,
-                            const State& state) :
-    JointDevice (name, first, last, getJointsFromFrames (getChain (first, last, state)), state),
-    _kinematicChain (getChain (first, last, state))
-{}
+SerialDevice::SerialDevice(rw::core::Ptr<Frame> first, rw::core::Ptr<Frame> last,
+                           const std::string& name, const State& state) :
+    JointDevice(name, first, last, getJointsFromFrames(getChain(first, last, state)), state),
+    _kinematicChain(getChain(first, last, state)) {}
 
-const std::vector< Frame* >& SerialDevice::frames () const
-{
+const std::vector<Frame*>& SerialDevice::frames() const {
     return _kinematicChain;
 }
 
-SerialDevice::SerialDevice (const std::vector< Frame* >& serialChain, const std::string& name,
-                            const State& state) :
-    JointDevice (name, serialChain.front (), serialChain.back (), getJointsFromFrames (serialChain),
-                 state),
-    _kinematicChain (serialChain)
-{}
+SerialDevice::SerialDevice(const std::vector<Frame*>& serialChain, const std::string& name,
+                           const State& state) :
+    JointDevice(name, serialChain.front(), serialChain.back(), getJointsFromFrames(serialChain),
+                state),
+    _kinematicChain(serialChain) {}

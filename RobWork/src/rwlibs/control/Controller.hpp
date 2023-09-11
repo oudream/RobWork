@@ -21,7 +21,7 @@
 #include <rw/core/Ptr.hpp>
 
 #include <string>
-#endif 
+#endif
 
 namespace rwlibs { namespace control {
 
@@ -32,32 +32,32 @@ namespace rwlibs { namespace control {
     {
       public:
         //! smart poiner definition for controller
-        typedef rw::core::Ptr< Controller > Ptr;
+        typedef rw::core::Ptr<Controller> Ptr;
 
         //! @brief destructor
-        virtual ~Controller (){}
+        virtual ~Controller() {}
 
         /**
          * @brief get the unique name of this controller
          * @return name of the controller.
          */
-        const std::string& getName () const { return _name; }
+        const std::string& getName() const { return _name; }
 
         /**
          * @brief set the name of the controller
          * @param name [in] the name
          */
-        void setName (const std::string& name) { _name = name; }
+        void setName(const std::string& name) { _name = name; }
 
       protected:
         /**
          * @brief constructor
          * @param name [in] name of controller
          */
-        Controller (const std::string& name) : _name (name) {}
+        Controller(const std::string& name) : _name(name) {}
 
       private:
-        Controller (){}
+        Controller() {}
         std::string _name;
     };
 

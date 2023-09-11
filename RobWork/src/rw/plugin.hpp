@@ -25,9 +25,9 @@
 
 #include <rw/plugin/DynamicLibraryLoader.hpp>
 #include <rw/plugin/DynamicLibraryLoaderBase.hpp>
+#include <rw/plugin/FactoryMacro.hpp>
 #include <rw/plugin/PluginFactory.hpp>
 #include <rw/plugin/PluginFactoryBase.hpp>
 #include <rw/plugin/PluginRepository.hpp>
-#include <rw/plugin/FactoryMacro.hpp>
 
 #endif

@@ -53,81 +53,79 @@ namespace rwsim { namespace contacts {
     {
       public:
         //! @brief Smart pointer type.
-        typedef rw::core::Ptr< ContactDetectorTracking > Ptr;
+        typedef rw::core::Ptr<ContactDetectorTracking> Ptr;
 
         //! @brief Constructor.
-        ContactDetectorTracking ();
+        ContactDetectorTracking();
 
         //! @brief Copy data to new container.
-        ContactDetectorTracking (const ContactDetectorTracking& data);
+        ContactDetectorTracking(const ContactDetectorTracking& data);
 
         //! @brief Destructor.
-        virtual ~ContactDetectorTracking ();
+        virtual ~ContactDetectorTracking();
 
         /**
          * @brief Assign data from other container to this container.
          * @param data [in] the data to copy.
          * @return reference to this container.
          */
-        ContactDetectorTracking& operator= (const ContactDetectorTracking& data);
+        ContactDetectorTracking& operator=(const ContactDetectorTracking& data);
 
         //! @brief Clear all stored meta-data.
-        void clear ();
+        void clear();
 
         /**
          * @brief Remove meta-data for a specific contact.
          * @param index [in] the contact to remove.
          */
-        void remove (std::size_t index);
+        void remove(std::size_t index);
 
         /**
          * @brief Get user data for the contact with given index.
          * @param index [in] the contact to get user data for.
          * @return Pointer to user data, or NULL if no user data is set.
          */
-        ContactStrategyTracking::UserData::Ptr getUserData (std::size_t index) const;
+        ContactStrategyTracking::UserData::Ptr getUserData(std::size_t index) const;
 
         /**
          * @brief Get user data for all contacts.
          * @return list of pointers to user data - can be NULL if none is set.
          */
-        std::vector< ContactStrategyTracking::UserData::Ptr > getUserData () const;
+        std::vector<ContactStrategyTracking::UserData::Ptr> getUserData() const;
 
         /**
          * @brief Attach user data to a given contact.
          * @param index [in] the contact to set user data for.
          * @param data [in] a pointer to the data.
          */
-        void setUserData (std::size_t index, ContactStrategyTracking::UserData::Ptr data);
+        void setUserData(std::size_t index, ContactStrategyTracking::UserData::Ptr data);
 
         /**
          * @brief Set user data for all contacts.
          * @param data [in] list of pointers to data.
          */
-        void setUserData (const std::vector< ContactStrategyTracking::UserData::Ptr >& data);
+        void setUserData(const std::vector<ContactStrategyTracking::UserData::Ptr>& data);
 
         /**
          * @brief Get the number of contacts tracked.
          * @return the number of contacts.
          */
-        std::size_t getSize () const;
+        std::size_t getSize() const;
 
         //! @brief Meta-data for a contact that allows it to be recalculated.
         struct ContactInfo
         {
             //! @brief Constructor.
-            ContactInfo () :
-                frames (
-                    std::make_pair< rw::kinematics::Frame*, rw::kinematics::Frame* > (NULL, NULL)),
-                models (std::make_pair< ContactModel*, ContactModel* > (NULL, NULL)),
-                strategy (NULL), tracking (NULL), id (0), total (0)
-            {}
+            ContactInfo() :
+                frames(std::make_pair<rw::kinematics::Frame*, rw::kinematics::Frame*>(NULL, NULL)),
+                models(std::make_pair<ContactModel*, ContactModel*>(NULL, NULL)), strategy(NULL),
+                tracking(NULL), id(0), total(0) {}
             //! @brief The frame pair the contact can be calculated from.
-            std::pair< rw::kinematics::Frame*, rw::kinematics::Frame* > frames;
+            std::pair<rw::kinematics::Frame*, rw::kinematics::Frame*> frames;
             //! @brief The contact models the contact can be calculated from.
-            std::pair< ContactModel*, ContactModel* > models;
+            std::pair<ContactModel*, ContactModel*> models;
             //! @brief The strategy that found the contact.
-            rw::core::Ptr< ContactStrategy > strategy;
+            rw::core::Ptr<ContactStrategy> strategy;
             //! @brief Tracking data for this specific pair of contact models (multiple contacts can
             //! point to the same).
             ContactStrategyTracking* tracking;
@@ -149,13 +147,13 @@ namespace rwsim { namespace contacts {
          * @brief Get a reference to the stored meta-data.
          * @return reference to a vector of ContactInfo.
          */
-        std::vector< ContactInfo >& getInfo ();
+        std::vector<ContactInfo>& getInfo();
 
         /**
          * @brief Get a reference to the stored meta-data.
          * @return reference to a vector of constant ContactInfo.
          */
-        const std::vector< ContactInfo >& getInfo () const;
+        const std::vector<ContactInfo>& getInfo() const;
 
         /**
          * @brief Get the stored ContactStrategyTracking for a specific pair of ContactModels.
@@ -163,13 +161,13 @@ namespace rwsim { namespace contacts {
          * @param modelB [in] the second ContactModel.
          * @return a pointer to the ContactStrategyTracking - caller does NOT own the pointer.
          */
-        ContactStrategyTracking& getStrategyTracking (const ContactModel* modelA,
-                                                      const ContactModel* modelB);
+        ContactStrategyTracking& getStrategyTracking(const ContactModel* modelA,
+                                                     const ContactModel* modelB);
         ///@}
 
       private:
-        std::vector< ContactInfo > _info;
-        std::map< const ContactModel*, std::map< const ContactModel*, ContactStrategyTracking > >
+        std::vector<ContactInfo> _info;
+        std::map<const ContactModel*, std::map<const ContactModel*, ContactStrategyTracking>>
             _modelPairToTracking;
     };
     //! @}

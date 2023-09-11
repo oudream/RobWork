@@ -23,7 +23,7 @@
 
 #include <string>
 #include <vector>
-#endif 
+#endif
 
 namespace rw { namespace geometry {
     class Geometry;
@@ -43,41 +43,41 @@ namespace rw { namespace proximity {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< ProximityModel > Ptr;
+        typedef rw::core::Ptr<ProximityModel> Ptr;
 
         /**
          * @brief Constructor
          *
          * @param pOwner the ProximityStrategy owning this ProximityModel
          **/
-        ProximityModel (ProximityStrategy* pOwner) : owner (pOwner), _frame (NULL) {}
+        ProximityModel(ProximityStrategy* pOwner) : owner(pOwner), _frame(NULL) {}
 
-        virtual ~ProximityModel ();
+        virtual ~ProximityModel();
 
         /**
          * @brief return vector of names for the geometries added to this ProximityModel
          *
          **/
-        std::vector< std::string > getGeometryIDs ();
+        std::vector<std::string> getGeometryIDs();
 
         /**
          * @brief get the associated Geometries
          * @return a list of Geomety pointers beloninh to the model
          */
-        std::vector< rw::core::Ptr< rw::geometry::Geometry > > getGeometries ();
+        std::vector<rw::core::Ptr<rw::geometry::Geometry>> getGeometries();
 
         /**
          * @brief adds geometry
          * @param geom the geometry to add
          **/
-        bool addGeometry (const rw::geometry::Geometry& geom);
+        bool addGeometry(const rw::geometry::Geometry& geom);
 
         /**
          * @brief adds geometry using pointer
          * @param geom [in] the geometry to add
          * @param forceCopy [in]
          **/
-        bool addGeometry (rw::core::Ptr< rw::geometry::Geometry > geom, bool forceCopy = false);
+        bool addGeometry(rw::core::Ptr<rw::geometry::Geometry> geom, bool forceCopy = false);
 
         /**
          * @brief removes a geometry from the ProximityModel
@@ -85,13 +85,13 @@ namespace rw { namespace proximity {
          * @param geoid name of geometry to remove
          * @return bool
          **/
-        bool removeGeometry (const std::string& geoid);
+        bool removeGeometry(const std::string& geoid);
 
         /**
          * @brief return pointer to the associated frame
          *
          **/
-        rw::kinematics::Frame* getFrame () { return _frame.get(); };
+        rw::kinematics::Frame* getFrame() { return _frame.get(); };
 
         /**
          * @brief sets the associated frame
@@ -99,8 +99,9 @@ namespace rw { namespace proximity {
          * @param frame frame to set
          **/
 
-        //void setFrame (const rw::core::Ptr<rw::kinematics::Frame> frame) { _frame = const_cast<rw::core::Ptr<rw::kinematics::Frame>> (frame); }
-        void setFrame (rw::core::Ptr<rw::kinematics::Frame> frame) {_frame = frame;}
+        // void setFrame (const rw::core::Ptr<rw::kinematics::Frame> frame) { _frame =
+        // const_cast<rw::core::Ptr<rw::kinematics::Frame>> (frame); }
+        void setFrame(rw::core::Ptr<rw::kinematics::Frame> frame) { _frame = frame; }
 
         ProximityStrategy* owner;
 

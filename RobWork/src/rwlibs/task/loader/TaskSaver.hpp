@@ -24,10 +24,9 @@
  * \copydoc rwlibs::task::TaskSaver
  */
 
-#include <rwlibs/task/Task.hpp>
-
 #include <rw/core/ExtensionPoint.hpp>
 #include <rw/core/Ptr.hpp>
+#include <rwlibs/task/Task.hpp>
 
 namespace rwlibs { namespace task {
     //! @addtogroup task
@@ -40,13 +39,13 @@ namespace rwlibs { namespace task {
     {
       public:
         //! @brief Smart pointer type for a TaskSaver.
-        typedef rw::core::Ptr< TaskSaver > Ptr;
+        typedef rw::core::Ptr<TaskSaver> Ptr;
 
         //! @brief Constructor.
-        TaskSaver () {}
+        TaskSaver() {}
 
         //! @brief Destructor.
-        virtual ~TaskSaver () {}
+        virtual ~TaskSaver() {}
 
         /**
          * @brief Save task to output stream.
@@ -54,10 +53,10 @@ namespace rwlibs { namespace task {
          * @param outstream [out] the stream to write to.
          * @return true if write was successful.
          */
-        virtual bool save (rwlibs::task::QTask::Ptr task, std::ostream& outstream) = 0;
+        virtual bool save(rwlibs::task::QTask::Ptr task, std::ostream& outstream) = 0;
 
         //! @copydoc save(rwlibs::task::QTask::Ptr, std::ostream&)
-        virtual bool save (rwlibs::task::CartesianTask::Ptr task, std::ostream& outstream) = 0;
+        virtual bool save(rwlibs::task::CartesianTask::Ptr task, std::ostream& outstream) = 0;
 
         /**
          * @brief Save task to file.
@@ -65,10 +64,10 @@ namespace rwlibs { namespace task {
          * @param filename [in] the filename to save to.
          * @return true if file was written successfully.
          */
-        virtual bool save (rwlibs::task::QTask::Ptr task, const std::string& filename) = 0;
+        virtual bool save(rwlibs::task::QTask::Ptr task, const std::string& filename) = 0;
 
         //! @copydoc save(rwlibs::task::QTask::Ptr, const std::string&)
-        virtual bool save (rwlibs::task::CartesianTask::Ptr task, const std::string& filename) = 0;
+        virtual bool save(rwlibs::task::CartesianTask::Ptr task, const std::string& filename) = 0;
 
         /**
          * @addtogroup extensionpoints
@@ -80,7 +79,7 @@ namespace rwlibs { namespace task {
          * @brief A factory for TaskSaver. This factory also defines an
          * extension point for task savers.
          */
-        class Factory : public rw::core::ExtensionPoint< TaskSaver >
+        class Factory : public rw::core::ExtensionPoint<TaskSaver>
         {
           public:
             /**
@@ -97,33 +96,32 @@ namespace rwlibs { namespace task {
              * available.
              * @return a suitable saver, or NULL if no suitable saver exist.
              */
-            static TaskSaver::Ptr getTaskSaver (const std::string& format,
-                                                const std::string& id = "");
+            static TaskSaver::Ptr getTaskSaver(const std::string& format,
+                                               const std::string& id = "");
 
             /**
              * @brief Check if the factory has a TaskSaver for a specific format.
              * @param format [in] the file ending excluding initial dot (such as xml)
              * @return true if a suitable saver exist, false otherwise.
              */
-            static bool hasTaskSaver (const std::string& format);
+            static bool hasTaskSaver(const std::string& format);
 
             /**
              * @brief Get a list of supported formats.
              * @return list of supported formats.
              */
-            static std::vector< std::string > getSupportedFormats ();
+            static std::vector<std::string> getSupportedFormats();
 
             //! @copydoc TaskSaver::save(rwlibs::task::QTask::Ptr, const std::string&)
-            static bool save (rwlibs::task::QTask::Ptr task, const std::string& filename);
+            static bool save(rwlibs::task::QTask::Ptr task, const std::string& filename);
 
             //! @copydoc TaskSaver::save(rwlibs::task::CartesianTask::Ptr, const std::string&)
-            static bool save (rwlibs::task::CartesianTask::Ptr task, const std::string& filename);
+            static bool save(rwlibs::task::CartesianTask::Ptr task, const std::string& filename);
 
           private:
-            Factory () :
-                rw::core::ExtensionPoint< TaskSaver > ("rwlibs.task.TaskSaver",
-                                                       "Savers for the RobWork Task format.")
-            {}
+            Factory() :
+                rw::core::ExtensionPoint<TaskSaver>("rwlibs.task.TaskSaver",
+                                                    "Savers for the RobWork Task format.") {}
         };
     };
     //! @}

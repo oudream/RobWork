@@ -36,8 +36,7 @@ struct FilterState
     int frontSrcIdx;
     int backSize;
     int* cIdxDst;
-    void print ()
-    {
+    void print() {
         std::cout << "FilterState: (" << frontSize << "," << backSize << "," << cIdxSrc << ","
                   << cIdxDst << ")" << std::endl;
     }
@@ -53,21 +52,20 @@ struct FilterState
  * @return The deepest penetrating point with a normal that is the
  * average of all contact points in the cluster.
  */
-ContactPoint filterContactsRec (const ContactPoint src[], const int srcSize, FilterState& state,
-                                const double maxDist)
-{
+ContactPoint filterContactsRec(const ContactPoint src[], const int srcSize, FilterState& state,
+                               const double maxDist) {
     // locate deepest point from frontBuffer
     //// std::cout  << "fileterContactRec" << std::endl;
     int deepIdx = srcSize - 1;
     //// std::cout  << itmp << std::endl;
     float deepPen = (float) src[state.cIdxSrc[deepIdx]].penetration;
 
-    for (int j = 0; j < state.backSize; j++) {
+    for(int j = 0; j < state.backSize; j++) {
         const int i = srcSize - 1 - j;
         //// std::cout  << "i: " << i;
-        RW_ASSERT (i >= 0 && i < srcSize);
-        if (src[state.cIdxSrc[i]].penetration > deepPen) {
-            RW_ASSERT (state.cIdxSrc[i] >= 0 && state.cIdxSrc[i] < srcSize);
+        RW_ASSERT(i >= 0 && i < srcSize);
+        if(src[state.cIdxSrc[i]].penetration > deepPen) {
+            RW_ASSERT(state.cIdxSrc[i] >= 0 && state.cIdxSrc[i] < srcSize);
             deepPen = (float) src[state.cIdxSrc[i]].penetration;
             deepIdx = i;
         }
@@ -75,19 +73,19 @@ ContactPoint filterContactsRec (const ContactPoint src[], const int srcSize, Fil
 
     //// std::cout  << "swap" << std::endl;
     // the deepest point
-    RW_ASSERT (deepIdx >= 0 && deepIdx < srcSize);
+    RW_ASSERT(deepIdx >= 0 && deepIdx < srcSize);
     ContactPoint dpoint = src[state.cIdxSrc[deepIdx]];
 
     // dContactGeom deepGeom = src[state.cIdxSrc[deepIdx]].geom;
     //// std::cout  << "normal" << std::endl;
-    dpoint.n     = Vector3D<> (0, 0, 0);
+    dpoint.n     = Vector3D<>(0, 0, 0);
     int frontIdx = state.frontSize, backIdx = srcSize - 1;
 
-    RW_ASSERT (frontIdx >= 0 && frontIdx < srcSize);
+    RW_ASSERT(frontIdx >= 0 && frontIdx < srcSize);
     int deepSrcIdx          = state.cIdxSrc[deepIdx];
     state.cIdxDst[frontIdx] = deepSrcIdx;
     frontIdx++;
-    RW_ASSERT (deepIdx >= 0 && deepIdx < srcSize);
+    RW_ASSERT(deepIdx >= 0 && deepIdx < srcSize);
     state.cIdxSrc[deepIdx] = -1;
     // std::cout << "DeepIdx: " << deepIdx << " " << deepSrcIdx << std::endl;
 
@@ -97,23 +95,22 @@ ContactPoint filterContactsRec (const ContactPoint src[], const int srcSize, Fil
     //// std::cout  << "front" << std::endl;
     // don't look at the first element since its the deepest
     //       for(int i=1; i<state.frontSize; i++){
-    for (int j = 0; j < state.backSize; j++) {
+    for(int j = 0; j < state.backSize; j++) {
         const int i = srcSize - 1 - j;
         // const dContactGeom &geom = src[state.cIdxSrc[i]].geom;
-        if (state.cIdxSrc[i] < 0)
-            continue;
+        if(state.cIdxSrc[i] < 0) continue;
         const ContactPoint& point = src[state.cIdxSrc[i]];
-        double dist               = MetricUtil::dist2 (dpoint.p, point.p);
+        double dist               = MetricUtil::dist2(dpoint.p, point.p);
         // std::cout << dist << "<" << maxDist << std::endl;
-        if (dist < maxDist) {
+        if(dist < maxDist) {
             // merge normal
             dpoint.n += point.n;
-            RW_ASSERT (frontIdx >= 0 && frontIdx < srcSize);
+            RW_ASSERT(frontIdx >= 0 && frontIdx < srcSize);
             state.cIdxDst[frontIdx] = state.cIdxSrc[i];
             frontIdx++;
         }
         else {
-            RW_ASSERT (backIdx >= 0 && backIdx < srcSize);
+            RW_ASSERT(backIdx >= 0 && backIdx < srcSize);
             state.cIdxSrc[backIdx] = state.cIdxSrc[i];
             backIdx--;
         }
@@ -123,7 +120,7 @@ ContactPoint filterContactsRec (const ContactPoint src[], const int srcSize, Fil
 
     // state.cIdxSrc[++state.frontSrcIdx] = deepSrcIdx;
 
-    normalize (dpoint.n);
+    normalize(dpoint.n);
     return dpoint;
 }
 
@@ -137,21 +134,20 @@ ContactPoint filterContactsRec (const ContactPoint src[], const int srcSize, Fil
  * @return The deepest penetrating point with a normal that is the
  * average of all contact points in the cluster.
  */
-ContactPoint filterContactsNormalRec (const ContactPoint src[], const int srcSize,
-                                      FilterState& state, const double maxDist)
-{
+ContactPoint filterContactsNormalRec(const ContactPoint src[], const int srcSize,
+                                     FilterState& state, const double maxDist) {
     // locate deepest point from frontBuffer
     //// std::cout  << "fileterContactRec" << std::endl;
     int deepIdx = srcSize - 1;
     //// std::cout  << itmp << std::endl;
     float deepPen = (float) src[state.cIdxSrc[deepIdx]].penetration;
 
-    for (int j = 0; j < state.backSize; j++) {
+    for(int j = 0; j < state.backSize; j++) {
         const int i = srcSize - 1 - j;
         //// std::cout  << "i: " << i;
-        RW_ASSERT (i >= 0 && i < srcSize);
-        if (src[state.cIdxSrc[i]].penetration > deepPen) {
-            RW_ASSERT (state.cIdxSrc[i] >= 0 && state.cIdxSrc[i] < srcSize);
+        RW_ASSERT(i >= 0 && i < srcSize);
+        if(src[state.cIdxSrc[i]].penetration > deepPen) {
+            RW_ASSERT(state.cIdxSrc[i] >= 0 && state.cIdxSrc[i] < srcSize);
             deepPen = (float) src[state.cIdxSrc[i]].penetration;
             deepIdx = i;
         }
@@ -159,7 +155,7 @@ ContactPoint filterContactsNormalRec (const ContactPoint src[], const int srcSiz
 
     //// std::cout  << "swap" << std::endl;
     // the deepest point
-    RW_ASSERT (deepIdx >= 0 && deepIdx < srcSize);
+    RW_ASSERT(deepIdx >= 0 && deepIdx < srcSize);
     ContactPoint dpoint = src[state.cIdxSrc[deepIdx]];
 
     // dContactGeom deepGeom = src[state.cIdxSrc[deepIdx]].geom;
@@ -167,11 +163,11 @@ ContactPoint filterContactsNormalRec (const ContactPoint src[], const int srcSiz
     // dpoint.n = Vector3D<>(0,0,0);
     int frontIdx = state.frontSize, backIdx = srcSize - 1;
 
-    RW_ASSERT (frontIdx >= 0 && frontIdx < srcSize);
+    RW_ASSERT(frontIdx >= 0 && frontIdx < srcSize);
     int deepSrcIdx          = state.cIdxSrc[deepIdx];
     state.cIdxDst[frontIdx] = deepSrcIdx;
     frontIdx++;
-    RW_ASSERT (deepIdx >= 0 && deepIdx < srcSize);
+    RW_ASSERT(deepIdx >= 0 && deepIdx < srcSize);
     state.cIdxSrc[deepIdx] = -1;
     // std::cout << "DeepIdx: " << deepIdx << " " << deepSrcIdx << std::endl;
 
@@ -181,26 +177,25 @@ ContactPoint filterContactsNormalRec (const ContactPoint src[], const int srcSiz
     //// std::cout  << "front" << std::endl;
     // don't look at the first element since its the deepest
     //       for(int i=1; i<state.frontSize; i++){
-    for (int j = 0; j < state.backSize; j++) {
+    for(int j = 0; j < state.backSize; j++) {
         const int i = srcSize - 1 - j;
         // const dContactGeom &geom = src[state.cIdxSrc[i]].geom;
-        if (state.cIdxSrc[i] < 0)
-            continue;
+        if(state.cIdxSrc[i] < 0) continue;
         const ContactPoint& point = src[state.cIdxSrc[i]];
-        RW_ASSERT (fabs (point.n.norm2 () - 1.0) < 0.0000001);
-        double dist = MetricUtil::dist2 (dpoint.n, point.n);    // this is the change
+        RW_ASSERT(fabs(point.n.norm2() - 1.0) < 0.0000001);
+        double dist = MetricUtil::dist2(dpoint.n, point.n);    // this is the change
         // std::cout << dist << "<" << maxDist << std::endl;
-        if (dist < maxDist) {
+        if(dist < maxDist) {
             // merge normal
             // std::cout << dpoint.n << "+=" <<  point.n << std::endl;
             dpoint.n += point.n;
             dpoint.n = dpoint.n / 2;
-            RW_ASSERT (frontIdx >= 0 && frontIdx < srcSize);
+            RW_ASSERT(frontIdx >= 0 && frontIdx < srcSize);
             state.cIdxDst[frontIdx] = state.cIdxSrc[i];
             frontIdx++;
         }
         else {
-            RW_ASSERT (backIdx >= 0 && backIdx < srcSize);
+            RW_ASSERT(backIdx >= 0 && backIdx < srcSize);
             state.cIdxSrc[backIdx] = state.cIdxSrc[i];
             backIdx--;
         }
@@ -210,24 +205,19 @@ ContactPoint filterContactsNormalRec (const ContactPoint src[], const int srcSiz
 
     // state.cIdxSrc[++state.frontSrcIdx] = deepSrcIdx;
 
-    normalize (dpoint.n);
+    normalize(dpoint.n);
     return dpoint;
 }
 
 }    // namespace
 
-int ContactCluster::thresClustering (ContactPoint src[], int srcCnt, int* cIdxSrc, int* cIdxDst,
-                                     ContactPoint dst[], double maxDist)
-{
-    if (srcCnt == 0) {
-        return 0;
-    }
+int ContactCluster::thresClustering(ContactPoint src[], int srcCnt, int* cIdxSrc, int* cIdxDst,
+                                    ContactPoint dst[], double maxDist) {
+    if(srcCnt == 0) { return 0; }
 
     // first locate deepest penetrating point
     //// std::cout  << "Initialize srcindex: " << std::endl;
-    for (int i = 0; i < srcCnt; i++) {
-        cIdxSrc[i] = i;
-    }
+    for(int i = 0; i < srcCnt; i++) { cIdxSrc[i] = i; }
 
     FilterState state;
     state.cIdxSrc     = cIdxSrc;
@@ -243,18 +233,18 @@ int ContactCluster::thresClustering (ContactPoint src[], int srcCnt, int* cIdxSr
         // std::cout  << "rec started" << std::endl;
         // now find deepest in src and copy all in radius thres into the
         // front of dst and everything else into back of dst.
-        ContactPoint dpoint = filterContactsRec (src, srcCnt, state, maxDist);
+        ContactPoint dpoint = filterContactsRec(src, srcCnt, state, maxDist);
 
         state.cIdxSrc[nrOfContacts] = nextContactIdx;
         nrOfContacts++;
         nextContactIdx = state.frontSize;
         // std::cout  << "rec returned" << std::endl;
-    } while (state.backSize >= 1);
+    } while(state.backSize >= 1);
     state.cIdxSrc[nrOfContacts] = nextContactIdx;
 
     // state.print();
     // std::cout << "NR of contacts: " << nrOfContacts << std::endl;
-    for (int i = 0; i < nrOfContacts; i++) {
+    for(int i = 0; i < nrOfContacts; i++) {
         // std::cout << "src[cIdxDst[cIdxSrc[" << i<<"] ] ]" << std::endl;
         // std::cout << "src[cIdxDst["<< cIdxSrc[i] <<"] ]" << std::endl;
         // std::cout << "src["<< cIdxDst[cIdxSrc[i]] << "]" << std::endl;
@@ -264,18 +254,13 @@ int ContactCluster::thresClustering (ContactPoint src[], int srcCnt, int* cIdxSr
     return nrOfContacts;
 }
 
-int ContactCluster::normalThresClustering (ContactPoint src[], int srcCnt, int* cIdxSrc,
-                                           int* cIdxDst, ContactPoint dst[], double maxDist)
-{
-    if (srcCnt == 0) {
-        return 0;
-    }
+int ContactCluster::normalThresClustering(ContactPoint src[], int srcCnt, int* cIdxSrc,
+                                          int* cIdxDst, ContactPoint dst[], double maxDist) {
+    if(srcCnt == 0) { return 0; }
 
     // first locate deepest penetrating point
     //// std::cout  << "Initialize srcindex: " << std::endl;
-    for (int i = 0; i < srcCnt; i++) {
-        cIdxSrc[i] = i;
-    }
+    for(int i = 0; i < srcCnt; i++) { cIdxSrc[i] = i; }
 
     FilterState state;
     state.cIdxSrc     = cIdxSrc;
@@ -291,18 +276,18 @@ int ContactCluster::normalThresClustering (ContactPoint src[], int srcCnt, int* 
         // std::cout  << "rec started" << std::endl;
         // now find deepest in src and copy all in radius thres into the
         // front of dst and everything else into back of dst.
-        ContactPoint dpoint = filterContactsNormalRec (src, srcCnt, state, maxDist);
+        ContactPoint dpoint = filterContactsNormalRec(src, srcCnt, state, maxDist);
 
         state.cIdxSrc[nrOfContacts] = nextContactIdx;
         nrOfContacts++;
         nextContactIdx = state.frontSize;
         // std::cout  << "rec returned" << std::endl;
-    } while (state.backSize >= 1);
+    } while(state.backSize >= 1);
     state.cIdxSrc[nrOfContacts] = nextContactIdx;
 
     // state.print();
     // std::cout << "NR of contacts: " << nrOfContacts << std::endl;
-    for (int i = 0; i < nrOfContacts; i++) {
+    for(int i = 0; i < nrOfContacts; i++) {
         // std::cout << "src[cIdxDst[cIdxSrc[" << i<<"] ] ]" << std::endl;
         // std::cout << "src[cIdxDst["<< cIdxSrc[i] <<"] ]" << std::endl;
         // std::cout << "src["<< cIdxDst[cIdxSrc[i]] << "]" << std::endl;

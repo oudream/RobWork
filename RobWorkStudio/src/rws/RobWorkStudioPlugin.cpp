@@ -30,132 +30,107 @@ using namespace rws;
 //----------------------------------------------------------------------
 // Virtual methods
 
-RobWorkStudioPlugin::~RobWorkStudioPlugin (){}
+RobWorkStudioPlugin::~RobWorkStudioPlugin() {}
 
-void RobWorkStudioPlugin::close ()
-{}
+void RobWorkStudioPlugin::close() {}
 
-void RobWorkStudioPlugin::initialize ()
-{
-    _log = _studio->logPtr ();
-    Log::setLog (_log);
+void RobWorkStudioPlugin::initialize() {
+    _log = _studio->logPtr();
+    Log::setLog(_log);
 }
 
-void RobWorkStudioPlugin::open (WorkCell* workcell)
-{}
+void RobWorkStudioPlugin::open(WorkCell* workcell) {}
 
-const rw::kinematics::State& RobWorkStudioPlugin::getState ()
-{
-    return getRobWorkStudio ()->getState ();
+const rw::kinematics::State& RobWorkStudioPlugin::getState() {
+    return getRobWorkStudio()->getState();
 }
 
-void RobWorkStudioPlugin::setState (const rw::kinematics::State& s)
-{
-    return getRobWorkStudio ()->setState (s);
+void RobWorkStudioPlugin::setState(const rw::kinematics::State& s) {
+    return getRobWorkStudio()->setState(s);
 }
 
-RobWorkStudioPlugin::RobWorkStudioPlugin (const QString& name, const QIcon& icon) :
-    QDockWidget (name), _showAction (icon, name, this), _name (name), _log (NULL)
-{
-    setObjectName (name);
-    connect (&_showAction, SIGNAL (triggered ()), this, SLOT (showPlugin ()));
-    _log = Log::getInstance ();
+RobWorkStudioPlugin::RobWorkStudioPlugin(const QString& name, const QIcon& icon) :
+    QDockWidget(name), _showAction(icon, name, this), _name(name), _log(NULL) {
+    setObjectName(name);
+    connect(&_showAction, SIGNAL(triggered()), this, SLOT(showPlugin()));
+    _log = Log::getInstance();
 }
 
-void RobWorkStudioPlugin::showPlugin ()
-{
-    if (isVisible ()) {
-        setVisible (false);
-    }
-    else {
-        this->show ();
-    }
+void RobWorkStudioPlugin::showPlugin() {
+    if(isVisible()) { setVisible(false); }
+    else { this->show(); }
 }
 
-void RobWorkStudioPlugin::setupMenu (QMenu* menu)
-{
-    menu->addAction (&_showAction);
+void RobWorkStudioPlugin::setupMenu(QMenu* menu) {
+    menu->addAction(&_showAction);
 }
 
-void RobWorkStudioPlugin::setupToolBar (QToolBar* toolbar)
-{
-    toolbar->addAction (&_showAction);
+void RobWorkStudioPlugin::setupToolBar(QToolBar* toolbar) {
+    toolbar->addAction(&_showAction);
 }
 
-QString RobWorkStudioPlugin::name () const
-{
+QString RobWorkStudioPlugin::name() const {
     return _name;
 }
 
-void RobWorkStudioPlugin::setRobWorkStudio (RobWorkStudio* studio)
-{
+void RobWorkStudioPlugin::setRobWorkStudio(RobWorkStudio* studio) {
     _studio = studio;
 }
 
-RobWorkStudio* RobWorkStudioPlugin::getRobWorkStudio ()
-{
+RobWorkStudio* RobWorkStudioPlugin::getRobWorkStudio() {
     return _studio;
 }
 
-void RobWorkStudioPlugin::setRobWorkInstance (RobWork::Ptr robwork)
-{
-    RobWork::setInstance (robwork);
+void RobWorkStudioPlugin::setRobWorkInstance(RobWork::Ptr robwork) {
+    RobWork::setInstance(robwork);
     _robwork = robwork;
 }
 
-RobWork::Ptr RobWorkStudioPlugin::getRobWorkInstance ()
-{
+RobWork::Ptr RobWorkStudioPlugin::getRobWorkInstance() {
     return _robwork;
 }
 
-rw::core::Log& RobWorkStudioPlugin::log ()
-{
+rw::core::Log& RobWorkStudioPlugin::log() {
     return *_log;
 }
 
-void RobWorkStudioPlugin::setLog (rw::core::Log::Ptr log)
-{
+void RobWorkStudioPlugin::setLog(rw::core::Log::Ptr log) {
     _log = log;
-    Log::setLog (_log);
+    Log::setLog(_log);
 }
 
-boost::tuple< QWidget*, QAction*, int >
-RobWorkStudioPlugin::getAction (QWidget* widget, const std::string& actionName)
-{
-    QList< QAction* > list = widget->actions ();
-    for (int i = 0; i < list.size (); ++i) {
+boost::tuple<QWidget*, QAction*, int>
+RobWorkStudioPlugin::getAction(QWidget* widget, const std::string& actionName) {
+    QList<QAction*> list = widget->actions();
+    for(int i = 0; i < list.size(); ++i) {
         // std::cout << list.at(i)->text().toStdString() << "==" <<  actionName << std::endl;
-        if (list.at (i)->text ().toStdString () == actionName) {
+        if(list.at(i)->text().toStdString() == actionName) {
             // std::cout << "Found File at position " << i << std::endl;
-            return boost::make_tuple (widget, list.at (i), i);
+            return boost::make_tuple(widget, list.at(i), i);
         }
     }
-    return boost::make_tuple (widget, (QAction*) NULL, -1);
+    return boost::make_tuple(widget, (QAction*) NULL, -1);
 }
 
-boost::tuple< QWidget*, QMenu*, int > RobWorkStudioPlugin::getMenu (QWidget* widget,
-                                                                    const std::string& menuName)
-{
-    boost::tuple< QWidget*, QAction*, int > res = getAction (widget, menuName);
-    if ((res.get< 1 > () != NULL) && (res.get< 1 > ()->menu () != NULL)) {
-        return boost::make_tuple (widget, res.get< 1 > ()->menu (), res.get< 2 > ());
+boost::tuple<QWidget*, QMenu*, int> RobWorkStudioPlugin::getMenu(QWidget* widget,
+                                                                 const std::string& menuName) {
+    boost::tuple<QWidget*, QAction*, int> res = getAction(widget, menuName);
+    if((res.get<1>() != NULL) && (res.get<1>()->menu() != NULL)) {
+        return boost::make_tuple(widget, res.get<1>()->menu(), res.get<2>());
     }
-    return boost::make_tuple (widget, (QMenu*) NULL, -1);
+    return boost::make_tuple(widget, (QMenu*) NULL, -1);
 }
 
-boost::tuple< QMenu*, QAction*, int >
-RobWorkStudioPlugin::getAction (QWidget* widget, const std::string& actionName,
-                                const std::string& actionName2)
-{
+boost::tuple<QMenu*, QAction*, int> RobWorkStudioPlugin::getAction(QWidget* widget,
+                                                                   const std::string& actionName,
+                                                                   const std::string& actionName2) {
     QWidget* wid;
     QMenu* pmenu;
     QAction* action;
     int index;
-    boost::tie (wid, pmenu, index) = getMenu (widget, actionName);
-    if (pmenu == NULL)
-        return boost::make_tuple ((QMenu*) NULL, (QAction*) NULL, -1);
-    boost::tie (wid, action, index) = getAction (pmenu, actionName2);
-    if (action == NULL)
-        return boost::make_tuple ((QMenu*) NULL, (QAction*) NULL, -1);
-    return boost::make_tuple (pmenu, action, index);
+    boost::tie(wid, pmenu, index) = getMenu(widget, actionName);
+    if(pmenu == NULL) return boost::make_tuple((QMenu*) NULL, (QAction*) NULL, -1);
+    boost::tie(wid, action, index) = getAction(pmenu, actionName2);
+    if(action == NULL) return boost::make_tuple((QMenu*) NULL, (QAction*) NULL, -1);
+    return boost::make_tuple(pmenu, action, index);
 }

@@ -41,46 +41,46 @@ namespace rwsim { namespace log {
     {
       public:
         //! Smart pointer type of LogConstraints
-        typedef rw::core::Ptr< LogConstraints > Ptr;
+        typedef rw::core::Ptr<LogConstraints> Ptr;
 
         //! @copydoc SimulatorLogEntry::SimulatorLogEntry
-        LogConstraints (SimulatorLogScope* parent);
+        LogConstraints(SimulatorLogScope* parent);
 
         //! @brief Destructor.
-        virtual ~LogConstraints ();
+        virtual ~LogConstraints();
 
         //! @copydoc SimulatorLogEntry::read
-        virtual void read (class rw::common::InputArchive& iarchive, const std::string& id);
+        virtual void read(class rw::common::InputArchive& iarchive, const std::string& id);
 
         //! @copydoc SimulatorLogEntry::write
-        virtual void write (class rw::common::OutputArchive& oarchive, const std::string& id) const;
+        virtual void write(class rw::common::OutputArchive& oarchive, const std::string& id) const;
 
         //! @copydoc SimulatorLogEntry::getType
-        virtual std::string getType () const;
+        virtual std::string getType() const;
 
         //! @copydoc SimulatorLogEntry::operator==
-        virtual bool operator== (const SimulatorLog& b) const;
+        virtual bool operator==(const SimulatorLog& b) const;
 
         //! @copydoc SimulatorLogEntry::getLinkedEntries
-        virtual std::list< SimulatorLogEntry::Ptr > getLinkedEntries () const;
+        virtual std::list<SimulatorLogEntry::Ptr> getLinkedEntries() const;
 
         //! @copydoc SimulatorLogEntry::autoLink
-        virtual bool autoLink ();
+        virtual bool autoLink();
 
         //! @copydoc SimulatorLogEntry::createNew
-        virtual SimulatorLogEntry::Ptr createNew (SimulatorLogScope* parent) const;
+        virtual SimulatorLogEntry::Ptr createNew(SimulatorLogScope* parent) const;
 
         /**
          * @brief Get the type id of this entry type.
          * @return the type id.
          */
-        static std::string getTypeID ();
+        static std::string getTypeID();
 
         /**
          * @brief Get the number of constraint currently in set.
          * @return the number of constraint.
          */
-        std::size_t size () const;
+        std::size_t size() const;
 
         //! @brief Information for a constraint.
         struct Constraint
@@ -108,30 +108,30 @@ namespace rwsim { namespace log {
              * @param b [in] other constraints.
              * @return true if equal, false otherwise.
              */
-            bool operator== (const Constraint& b) const;
+            bool operator==(const Constraint& b) const;
         };
 
         /**
          * @brief Append a constraint.
          * @param constraint [in] the constraint information to add.
          */
-        void addConstraint (const Constraint& constraint);
+        void addConstraint(const Constraint& constraint);
 
         /**
          * @brief Get the constraints.
          * @return a vector for constraint information.
          */
-        const std::vector< Constraint >& getConstraints () const;
+        const std::vector<Constraint>& getConstraints() const;
 
         /**
          * @brief Get a constraint.
          * @param i [in] the index.
          * @return the constraint information.
          */
-        const Constraint& getConstraint (std::size_t i) const;
+        const Constraint& getConstraint(std::size_t i) const;
 
       private:
-        std::vector< Constraint > _constraints;
+        std::vector<Constraint> _constraints;
     };
     //! @}
 }}     // namespace rwsim::log

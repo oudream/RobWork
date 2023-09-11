@@ -43,40 +43,40 @@ namespace rwsim { namespace log {
     {
       public:
         //! Smart pointer type of LogContactVelocities
-        typedef rw::core::Ptr< LogContactVelocities > Ptr;
+        typedef rw::core::Ptr<LogContactVelocities> Ptr;
 
         //! @copydoc SimulatorLogEntry::SimulatorLogEntry
-        LogContactVelocities (SimulatorLogScope* parent);
+        LogContactVelocities(SimulatorLogScope* parent);
 
         //! @brief Destructor.
-        virtual ~LogContactVelocities ();
+        virtual ~LogContactVelocities();
 
         //! @copydoc SimulatorLogEntry::read
-        virtual void read (class rw::common::InputArchive& iarchive, const std::string& id);
+        virtual void read(class rw::common::InputArchive& iarchive, const std::string& id);
 
         //! @copydoc SimulatorLogEntry::write
-        virtual void write (class rw::common::OutputArchive& oarchive, const std::string& id) const;
+        virtual void write(class rw::common::OutputArchive& oarchive, const std::string& id) const;
 
         //! @copydoc SimulatorLogEntry::getType
-        virtual std::string getType () const;
+        virtual std::string getType() const;
 
         //! @copydoc SimulatorLogEntry::operator==
-        virtual bool operator== (const SimulatorLog& b) const;
+        virtual bool operator==(const SimulatorLog& b) const;
 
         //! @copydoc SimulatorLogEntry::getLinkedEntries
-        virtual std::list< SimulatorLogEntry::Ptr > getLinkedEntries () const;
+        virtual std::list<SimulatorLogEntry::Ptr> getLinkedEntries() const;
 
         //! @copydoc SimulatorLogEntry::autoLink
-        virtual bool autoLink ();
+        virtual bool autoLink();
 
         //! @copydoc SimulatorLogEntry::createNew
-        virtual SimulatorLogEntry::Ptr createNew (SimulatorLogScope* parent) const;
+        virtual SimulatorLogEntry::Ptr createNew(SimulatorLogScope* parent) const;
 
         /**
          * @brief Get the type id of this entry type.
          * @return the type id.
          */
-        static std::string getTypeID ();
+        static std::string getTypeID();
 
         /**
          * @brief Get the positions of the contacts.
@@ -85,21 +85,21 @@ namespace rwsim { namespace log {
          *
          * @return the log entry with positions of contacts (or NULL if not linked).
          */
-        rw::core::Ptr< LogContactSet > getContacts () const;
+        rw::core::Ptr<LogContactSet> getContacts() const;
 
         /**
          * @brief Get the contact velocity acting at the first body.
          * @param i [in] the contact to get velocity for.
          * @return the velocity.
          */
-        rw::math::Vector3D<double> getVelocityBodyA (std::size_t i) const;
+        rw::math::Vector3D<double> getVelocityBodyA(std::size_t i) const;
 
         /**
          * @brief Get the contact velocity acting at the second body.
          * @param i [in] the contact to get velocity for.
          * @return the velocity.
          */
-        rw::math::Vector3D<double> getVelocityBodyB (std::size_t i) const;
+        rw::math::Vector3D<double> getVelocityBodyB(std::size_t i) const;
 
         /**
          * @brief Set a given velocity pair.
@@ -107,12 +107,12 @@ namespace rwsim { namespace log {
          * @param velocityA [in] the velocity acting in the contact at the first body.
          * @param velocityB [in] the velocity acting in the contact at the second body.
          */
-        void setVelocity (std::size_t i, const rw::math::Vector3D<double>& velocityA,
-                          const rw::math::Vector3D<double>& velocityB);
+        void setVelocity(std::size_t i, const rw::math::Vector3D<double>& velocityA,
+                         const rw::math::Vector3D<double>& velocityB);
 
       private:
-        rw::core::Ptr< LogContactSet > _contacts;
-        std::vector< std::pair< rw::math::Vector3D<double>, rw::math::Vector3D<double> > > _velocities;
+        rw::core::Ptr<LogContactSet> _contacts;
+        std::vector<std::pair<rw::math::Vector3D<double>, rw::math::Vector3D<double>>> _velocities;
     };
     //! @}
 }}     // namespace rwsim::log

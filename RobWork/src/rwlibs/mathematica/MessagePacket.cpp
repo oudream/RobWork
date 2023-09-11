@@ -20,29 +20,22 @@
 using namespace rw::core;
 using namespace rwlibs::mathematica;
 
-MessagePacket::MessagePacket (const Mathematica::Symbol& symbol,
-                              const Mathematica::String& string) :
-    Packet ("MessagePacket", Mathematica::Message),
-    _symbol (symbol), _string (string)
-{}
+MessagePacket::MessagePacket(const Mathematica::Symbol& symbol, const Mathematica::String& string) :
+    Packet("MessagePacket", Mathematica::Message), _symbol(symbol), _string(string) {}
 
-MessagePacket::~MessagePacket ()
-{}
+MessagePacket::~MessagePacket() {}
 
-const Mathematica::String& MessagePacket::string ()
-{
+const Mathematica::String& MessagePacket::string() {
     return _string;
 }
 
-std::list< rw::core::Ptr< const Mathematica::Expression > > MessagePacket::getArguments () const
-{
-    std::list< rw::core::Ptr< const Mathematica::Expression > > res;
-    res.push_back (_symbol.clone ());
-    res.push_back (_string.clone ());
+std::list<rw::core::Ptr<const Mathematica::Expression>> MessagePacket::getArguments() const {
+    std::list<rw::core::Ptr<const Mathematica::Expression>> res;
+    res.push_back(_symbol.clone());
+    res.push_back(_string.clone());
     return res;
 }
 
-Mathematica::Expression::Ptr MessagePacket::clone () const
-{
-    return ownedPtr (new MessagePacket (_symbol, _string));
+Mathematica::Expression::Ptr MessagePacket::clone() const {
+    return ownedPtr(new MessagePacket(_symbol, _string));
 }

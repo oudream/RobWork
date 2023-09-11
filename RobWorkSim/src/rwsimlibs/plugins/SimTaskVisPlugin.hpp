@@ -35,37 +35,37 @@
 class SimTaskVisPlugin : public rws::RobWorkStudioPlugin, private Ui::SimTaskVisPlugin
 {
     Q_OBJECT
-    Q_INTERFACES (rws::RobWorkStudioPlugin)
+    Q_INTERFACES(rws::RobWorkStudioPlugin)
   public:
-    SimTaskVisPlugin ();
+    SimTaskVisPlugin();
 
-    virtual ~SimTaskVisPlugin ();
+    virtual ~SimTaskVisPlugin();
 
-    virtual void open (rw::models::WorkCell* workcell);
+    virtual void open(rw::models::WorkCell* workcell);
 
-    virtual void close ();
+    virtual void close();
 
-    virtual void initialize ();
+    virtual void initialize();
     /**
      * @brief we listen for events regarding opening and closing of dynamic
      * workcell
      */
-    void genericEventListener (const std::string& event);
-    void genericAnyEventListener (const std::string& event, boost::any data);
+    void genericEventListener(const std::string& event);
+    void genericAnyEventListener(const std::string& event, boost::any data);
 
-    void loadTasks (bool automatic);
-    void saveTasks (bool automatic);
-    void loadConfig (bool automatic);
-    void saveConfig ();
+    void loadTasks(bool automatic);
+    void saveTasks(bool automatic);
+    void loadConfig(bool automatic);
+    void saveConfig();
     // void updateConfig();
-    rw::core::PropertyMap& settings ();
+    rw::core::PropertyMap& settings();
 
   private slots:
-    void updateVis ();
-    void loadTasks (QString taskFile);
-    void btnPressed ();
-    void stateChangedListener (const rw::kinematics::State& state);
-    void selectGrasp (int i);
+    void updateVis();
+    void loadTasks(QString taskFile);
+    void btnPressed();
+    void stateChangedListener(const rw::kinematics::State& state);
+    void selectGrasp(int i);
 
   private:
     rw::models::WorkCell* _wc;
@@ -73,7 +73,7 @@ class SimTaskVisPlugin : public rws::RobWorkStudioPlugin, private Ui::SimTaskVis
 
     QTimer* _timer;
     rwlibs::task::GraspTask::Ptr _graspTask;
-    std::vector< std::pair< rwlibs::task::GraspSubTask*, rwlibs::task::GraspTarget* > > _ymtargets;
+    std::vector<std::pair<rwlibs::task::GraspSubTask*, rwlibs::task::GraspTarget*>> _ymtargets;
     rw::graphics::Render::Ptr _render;
 };
 

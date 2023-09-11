@@ -27,62 +27,52 @@ using namespace rw::models;
 using namespace rw::kinematics;
 using namespace rw::math;
 
-SE3Device::SE3Device (const std::string& name, rw::core::Ptr<rw::kinematics::Frame> base,
-                      rw::kinematics::MovableFrame* mframe) :
-    Device (name)
-{}
+SE3Device::SE3Device(const std::string& name, rw::core::Ptr<rw::kinematics::Frame> base,
+                     rw::kinematics::MovableFrame* mframe) :
+    Device(name) {}
 
-void SE3Device::setQ (const Q& q, State& state) const
-{
+void SE3Device::setQ(const Q& q, State& state) const {
     // q has 3 position elements and 3 rotation elements
-    Transform3D<> t3d (Vector3D<> (q[0], q[1], q[2]), EAA<> (q[3], q[4], q[5]).toRotation3D ());
-    _mframe->setTransform (t3d, state);
+    Transform3D<> t3d(Vector3D<>(q[0], q[1], q[2]), EAA<>(q[3], q[4], q[5]).toRotation3D());
+    _mframe->setTransform(t3d, state);
 }
 
-Q SE3Device::getQ (const State& state) const
-{
-    Transform3D<> t3d = _mframe->getTransform (state);
-    EAA<> eaa (t3d.R ());
+Q SE3Device::getQ(const State& state) const {
+    Transform3D<> t3d = _mframe->getTransform(state);
+    EAA<> eaa(t3d.R());
 
     // TODO implement later
-    return Q (6, t3d.P ()[0], t3d.P ()[1], t3d.P ()[2], eaa[0], eaa[1], eaa[2]);
+    return Q(6, t3d.P()[0], t3d.P()[1], t3d.P()[2], eaa[0], eaa[1], eaa[2]);
 }
 
-std::pair< Q, Q > SE3Device::getBounds () const
-{
-    Q qMin (6);
-    Q qMax (6);
-    for (size_t i = 0; i < 6; i++) {
+std::pair<Q, Q> SE3Device::getBounds() const {
+    Q qMin(6);
+    Q qMax(6);
+    for(size_t i = 0; i < 6; i++) {
         qMin[i] = DBL_MIN;
         qMax[i] = DBL_MAX;
     }
-    return std::make_pair (qMin, qMax);
+    return std::make_pair(qMin, qMax);
 }
 
-void SE3Device::setBounds (const std::pair< Q, Q >& bounds)
-{}
+void SE3Device::setBounds(const std::pair<Q, Q>& bounds) {}
 
-Jacobian SE3Device::baseJend (const State& state) const
-{
-    return Jacobian (Jacobian::Base::Identity (6, 6));
+Jacobian SE3Device::baseJend(const State& state) const {
+    return Jacobian(Jacobian::Base::Identity(6, 6));
 }
 
-rw::math::Q SE3Device::getVelocityLimits () const
-{
+rw::math::Q SE3Device::getVelocityLimits() const {
     return _vellimits;
 }
 
-void SE3Device::setVelocityLimits (const Q& vellimits)
-{
+void SE3Device::setVelocityLimits(const Q& vellimits) {
     _vellimits = vellimits;
 }
 
-rw::math::Q SE3Device::getAccelerationLimits () const
-{
+rw::math::Q SE3Device::getAccelerationLimits() const {
     return _acclimits;
 }
 
-void SE3Device::setAccelerationLimits (const Q& acclimits)
-{
+void SE3Device::setAccelerationLimits(const Q& acclimits) {
     _acclimits = acclimits;
 }

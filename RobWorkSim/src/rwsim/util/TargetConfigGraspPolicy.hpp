@@ -39,32 +39,32 @@ namespace rwsim { namespace util {
     class TargetConfigGraspPolicy : public GraspPolicy
     {
       public:
-        typedef rw::core::Ptr< TargetConfigGraspPolicy > Ptr;
+        typedef rw::core::Ptr<TargetConfigGraspPolicy> Ptr;
 
         /**
          * @brief constructor
          * @param dev
          * @return
          */
-        TargetConfigGraspPolicy (rwsim::dynamics::DynamicDevice* dev);
+        TargetConfigGraspPolicy(rwsim::dynamics::DynamicDevice* dev);
 
-        virtual ~TargetConfigGraspPolicy ();
+        virtual ~TargetConfigGraspPolicy();
 
-        void setDefaultSettings ();
+        void setDefaultSettings();
 
-        static std::string getID () { return "TargetConfigGraspPolicy"; };
+        static std::string getID() { return "TargetConfigGraspPolicy"; };
 
         // inherited from GraspPolicy
 
-        virtual void reset (const rw::kinematics::State& state);
+        virtual void reset(const rw::kinematics::State& state);
 
-        virtual rwlibs::simulation::SimulatedController::Ptr getController ();
+        virtual rwlibs::simulation::SimulatedController::Ptr getController();
 
-        virtual std::string getIdentifier () { return TargetConfigGraspPolicy::getID (); }
+        virtual std::string getIdentifier() { return TargetConfigGraspPolicy::getID(); }
 
-        virtual rw::core::PropertyMap getSettings () { return _settings; };
+        virtual rw::core::PropertyMap getSettings() { return _settings; };
 
-        virtual void applySettings ();
+        virtual void applySettings();
 
       private:
         rw::core::PropertyMap _settings;

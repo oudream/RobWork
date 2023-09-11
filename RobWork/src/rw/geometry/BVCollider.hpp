@@ -20,24 +20,24 @@
 
 #if !defined(SWIG)
 #include <rw/math/Transform3D.hpp>
-#endif 
+#endif
 namespace rw { namespace geometry {
 
     /**
      * @brief abstract class describing interface of a bounding volume collision
      * detector. The inheritance is template based to reduce virtual method overhead
      */
-    template< class COLLIDER, class BVTYPE > class BVCollider
+    template<class COLLIDER, class BVTYPE> class BVCollider
     {
       public:
         typedef BVTYPE BVType;
         typedef typename BVTYPE::value_type value_type;
 
         //! constructor
-        BVCollider (){};
+        BVCollider(){};
 
         //! destructor
-        virtual ~BVCollider (){};
+        virtual ~BVCollider(){};
 
         /**
          * @brief test if two bounding volumes are colliding
@@ -46,10 +46,9 @@ namespace rw { namespace geometry {
          * @param aTb [in] transform from bvA to bvB
          * @return true if in collision
          */
-        inline bool inCollision (const BVTYPE& bvA, const BVTYPE& bvB,
-                                 const rw::math::Transform3D< value_type >& aTb)
-        {
-            return static_cast< COLLIDER* > (this)->collides (bvA, bvB, aTb);
+        inline bool inCollision(const BVTYPE& bvA, const BVTYPE& bvB,
+                                const rw::math::Transform3D<value_type>& aTb) {
+            return static_cast<COLLIDER*>(this)->collides(bvA, bvB, aTb);
         }
     };
 

@@ -46,7 +46,7 @@ namespace rwsim { namespace dynamics {
     {
       public:
         //! @brief Smart pointer type for a KinematicDevice.
-        typedef rw::core::Ptr< KinematicDevice > Ptr;
+        typedef rw::core::Ptr<KinematicDevice> Ptr;
 
         /**
          * @brief Construct new kinematic device.
@@ -55,26 +55,23 @@ namespace rwsim { namespace dynamics {
          * and the object geometry.
          * @param dev [in] the kinematic model.
          */
-        KinematicDevice (
+        KinematicDevice(
             dynamics::Body::Ptr base,
-            const std::vector< std::pair< BodyInfo, rw::core::Ptr< rw::models::Object > > >&
-                objects,
+            const std::vector<std::pair<BodyInfo, rw::core::Ptr<rw::models::Object>>>& objects,
             rw::models::JointDevice::Ptr dev);
 
         //! @brief destructor
-        virtual ~KinematicDevice ();
+        virtual ~KinematicDevice();
 
         //! @copydoc DynamicDevice::getJointVelocities
-        rw::math::Q getJointVelocities (const rw::kinematics::State& state)
-        {
-            return rw::math::Q (_velocity.getN (), &_velocity.get (state));
+        rw::math::Q getJointVelocities(const rw::kinematics::State& state) {
+            return rw::math::Q(_velocity.getN(), &_velocity.get(state));
         };
 
         //! @copydoc DynamicDevice::setJointVelocities
-        void setJointVelocities (const rw::math::Q& vel, rw::kinematics::State& state)
-        {
-            double* vals = &_velocity.get (state);
-            for (int i = 0; i < std::min (_velocity.getN (), (int) vel.size ()); i++) {
+        void setJointVelocities(const rw::math::Q& vel, rw::kinematics::State& state) {
+            double* vals = &_velocity.get(state);
+            for(int i = 0; i < std::min(_velocity.getN(), (int) vel.size()); i++) {
                 vals[i] = vel[i];
             }
         };
@@ -84,45 +81,45 @@ namespace rwsim { namespace dynamics {
          * bodies are ordered such that device joint \b i maps to kinematic body  \b i
          * @return all bodies that the device controls.
          */
-        const std::vector< Body::Ptr >& getLinks () { return _links; }
+        const std::vector<Body::Ptr>& getLinks() { return _links; }
 
         // parameters for velocity profile
         /**
          * @brief Set maximum acceleration for the joints.
          * @param acc [in] the maximum accelerations.
          */
-        void setMaxAcc (const rw::math::Q& acc);
+        void setMaxAcc(const rw::math::Q& acc);
 
         /**
          * @brief Get the maximum joint accelerations.
          * @return the maximum accelerations.
          */
-        rw::math::Q getMaxAcc ();
+        rw::math::Q getMaxAcc();
 
         /**
          * @brief Set the maximum joint velocities.
          * @param vel [in] the maximum velocities.
          */
-        void setMaxVel (const rw::math::Q& vel);
+        void setMaxVel(const rw::math::Q& vel);
 
         /**
          * @brief Get the maximum joint velocities.
          * @return the maximum velocities.
          */
-        rw::math::Q getMaxVel ();
+        rw::math::Q getMaxVel();
 
         /**
          * @brief Get the kinematic model.
          * @return the kinematic model of the device.
          */
-        rw::models::JointDevice::Ptr getJointDevice () { return _jdev; }
+        rw::models::JointDevice::Ptr getJointDevice() { return _jdev; }
 
       private:
-        std::vector< Body::Ptr > _links;
+        std::vector<Body::Ptr> _links;
         rw::math::Q _maxVel, _maxAcc;
         // rw::math::Q _q, _velQ;
         rw::models::JointDevice::Ptr _jdev;
-        rw::kinematics::StatelessData< double > _velocity;
+        rw::kinematics::StatelessData<double> _velocity;
     };
     //! @}
 }}    // namespace rwsim::dynamics

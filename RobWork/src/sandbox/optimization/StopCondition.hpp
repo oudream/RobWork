@@ -8,72 +8,69 @@
 #ifndef SRC_RWLIBS_OPTIMIZATION_STOPCONDITION_HPP_
 #define SRC_RWLIBS_OPTIMIZATION_STOPCONDITION_HPP_
 
-#include <limits>
 #include "Optimizer.hpp"
+
 #include <rw/core/Ptr.hpp>
 
-namespace rwlibs {
-namespace optimization {
+#include <limits>
 
-// forward declaration of Optimizer
-class Optimizer;
+namespace rwlibs { namespace optimization {
 
-namespace {
-typedef rw::core::Ptr<Optimizer> OptimizerPtr;
-}
+    // forward declaration of Optimizer
+    class Optimizer;
 
-/** @addtogroup optimization */
-/*@{*/
+    namespace {
+        typedef rw::core::Ptr<Optimizer> OptimizerPtr;
+    }
 
-/**
- * Defines a stop condition for optimization algorithms.
- */
-class StopCondition {
-public:
-	//! Smart pointer.
-	typedef rw::core::Ptr<StopCondition> Ptr;
+    /** @addtogroup optimization */
+    /*@{*/
 
-public:
-	/**
-	 * @brief Constructor.
-	 *
-	 * Basic stop condition is a limit for the number of steps, and the lower
-	 * limit for achieved tolerance. Condition is fulfilled when either one of these limits
-	 * is exceeded.
-	 *
-	 * @param maxIterations [in] upper limit for iteration count (default: 100)
-	 * @param minTolerance [in] lower limit for minimum error (default: 1e-3)
-	 */
-	StopCondition(unsigned long maxSteps = 100, double minTolerance = 0.001);
+    /**
+     * Defines a stop condition for optimization algorithms.
+     */
+    class StopCondition
+    {
+      public:
+        //! Smart pointer.
+        typedef rw::core::Ptr<StopCondition> Ptr;
 
-	//! Destructor.
-	virtual ~StopCondition();
+      public:
+        /**
+         * @brief Constructor.
+         *
+         * Basic stop condition is a limit for the number of steps, and the lower
+         * limit for achieved tolerance. Condition is fulfilled when either one of these limits
+         * is exceeded.
+         *
+         * @param maxIterations [in] upper limit for iteration count (default: 100)
+         * @param minTolerance [in] lower limit for minimum error (default: 1e-3)
+         */
+        StopCondition(unsigned long maxSteps = 100, double minTolerance = 0.001);
 
-	/**
-	 * @brief Is condition met?
-	 *
-	 * Checks optimizer state and returns \b true when condition is met.
-	 */
-	virtual bool check(OptimizerPtr optimizer) const;
+        //! Destructor.
+        virtual ~StopCondition();
 
-	//! Get iteration limit.
-	unsigned long getMaxSteps() const {
-		return _maxSteps;
-	}
+        /**
+         * @brief Is condition met?
+         *
+         * Checks optimizer state and returns \b true when condition is met.
+         */
+        virtual bool check(OptimizerPtr optimizer) const;
 
-	//! Get tolerance limit.
-	double getMinTolerance() const {
-		return _minTolerance;
-	}
+        //! Get iteration limit.
+        unsigned long getMaxSteps() const { return _maxSteps; }
 
-private:
-	unsigned long _maxSteps;
-	double _minTolerance;
-};
+        //! Get tolerance limit.
+        double getMinTolerance() const { return _minTolerance; }
 
-/*@}*/
+      private:
+        unsigned long _maxSteps;
+        double _minTolerance;
+    };
 
-} /* namespace optimization */
-} /* namespace rwlibs */
+    /*@}*/
+
+}}    // namespace rwlibs::optimization
 
 #endif /* SRC_RWLIBS_OPTIMIZATION_STOPCONDITION_HPP_ */

@@ -46,153 +46,144 @@ using namespace rwsim::drawable;
 
 using rws::RobWorkStudioPlugin;
 
-SimUtilityPlugin::SimUtilityPlugin () :
-    RobWorkStudioPlugin ("SimUtilityPlugin", QIcon (":/SimulationIcon.png")),
-    _restPoseDialog (NULL), _poseAnalyserDialog (NULL), _graspRestPoseDialog (NULL)
-{
+SimUtilityPlugin::SimUtilityPlugin() :
+    RobWorkStudioPlugin("SimUtilityPlugin", QIcon(":/SimulationIcon.png")), _restPoseDialog(NULL),
+    _poseAnalyserDialog(NULL), _graspRestPoseDialog(NULL) {
     // Construct layout and widget
-    QWidget* widg       = new QWidget (this);
-    QVBoxLayout* toplay = new QVBoxLayout (widg);
-    widg->setLayout (toplay);
-    this->setWidget (widg);
+    QWidget* widg       = new QWidget(this);
+    QVBoxLayout* toplay = new QVBoxLayout(widg);
+    widg->setLayout(toplay);
+    this->setWidget(widg);
     {
         int row        = 0;
-        QGroupBox* box = new QGroupBox ("Utilities", this);
-        toplay->addWidget (box);
-        QGridLayout* lay = new QGridLayout (box);
-        box->setLayout (lay);
+        QGroupBox* box = new QGroupBox("Utilities", this);
+        toplay->addWidget(box);
+        QGridLayout* lay = new QGridLayout(box);
+        box->setLayout(lay);
         {
-            QPushButton* button = new QPushButton ("Resting pose");
-            connect (button, SIGNAL (clicked ()), this, SLOT (btnPressed ()));
-            lay->addWidget (button, row++, 0);
+            QPushButton* button = new QPushButton("Resting pose");
+            connect(button, SIGNAL(clicked()), this, SLOT(btnPressed()));
+            lay->addWidget(button, row++, 0);
             _restPoseBtn = button;
         }
         {
-            QPushButton* button = new QPushButton ("Support pose");
-            connect (button, SIGNAL (clicked ()), this, SLOT (btnPressed ()));
-            lay->addWidget (button, row++, 0);
+            QPushButton* button = new QPushButton("Support pose");
+            connect(button, SIGNAL(clicked()), this, SLOT(btnPressed()));
+            lay->addWidget(button, row++, 0);
             _poseAnalyserBtn = button;
         }
         {
-            QPushButton* button = new QPushButton ("Tool eval");
-            connect (button, SIGNAL (clicked ()), this, SLOT (btnPressed ()));
-            lay->addWidget (button, row++, 0);
+            QPushButton* button = new QPushButton("Tool eval");
+            connect(button, SIGNAL(clicked()), this, SLOT(btnPressed()));
+            lay->addWidget(button, row++, 0);
             _toolEvalBtn = button;
         }
         {
-            QPushButton* button = new QPushButton ("Grasp selection");
-            connect (button, SIGNAL (clicked ()), this, SLOT (btnPressed ()));
-            lay->addWidget (button, row++, 0);
+            QPushButton* button = new QPushButton("Grasp selection");
+            connect(button, SIGNAL(clicked()), this, SLOT(btnPressed()));
+            lay->addWidget(button, row++, 0);
             _graspSelectBtn = button;
         }
     }
 
-    _restPoseBtn->setEnabled (false);
-    _poseAnalyserBtn->setEnabled (false);
-    _toolEvalBtn->setEnabled (false);
-    _graspSelectBtn->setEnabled (false);
+    _restPoseBtn->setEnabled(false);
+    _poseAnalyserBtn->setEnabled(false);
+    _toolEvalBtn->setEnabled(false);
+    _graspSelectBtn->setEnabled(false);
 
-    toplay->addStretch (1);
+    toplay->addStretch(1);
 }
 
-SimUtilityPlugin::~SimUtilityPlugin ()
-{}
+SimUtilityPlugin::~SimUtilityPlugin() {}
 
-void SimUtilityPlugin::btnPressed ()
-{
-    QObject* obj = sender ();
+void SimUtilityPlugin::btnPressed() {
+    QObject* obj = sender();
     // std::cout << "BtnPressed" << std::endl;
-    if (obj == _poseAnalyserBtn) {
-        if (_dwc == NULL)
-            RW_THROW ("No dynamic workcell loaded!");
+    if(obj == _poseAnalyserBtn) {
+        if(_dwc == NULL) RW_THROW("No dynamic workcell loaded!");
 
-        if (!_poseAnalyserDialog) {
-            State state = getRobWorkStudio ()->getState ();
-            rw::core::Ptr< rw::proximity::CollisionDetector > colDect =
-                getRobWorkStudio ()->getCollisionDetector ();
-            _poseAnalyserDialog = new SupportPoseAnalyserDialog (
-                state, _dwc.get (), colDect.get (), getRobWorkStudio (), NULL);
-            connect (_poseAnalyserDialog,
-                     SIGNAL (stateChanged (const rw::kinematics::State&)),
-                     this,
-                     SLOT (stateChangedEvent (const rw::kinematics::State&)));
+        if(!_poseAnalyserDialog) {
+            State state = getRobWorkStudio()->getState();
+            rw::core::Ptr<rw::proximity::CollisionDetector> colDect =
+                getRobWorkStudio()->getCollisionDetector();
+            _poseAnalyserDialog = new SupportPoseAnalyserDialog(
+                state, _dwc.get(), colDect.get(), getRobWorkStudio(), NULL);
+            connect(_poseAnalyserDialog,
+                    SIGNAL(stateChanged(const rw::kinematics::State&)),
+                    this,
+                    SLOT(stateChangedEvent(const rw::kinematics::State&)));
         }
-        _poseAnalyserDialog->show ();
-        _poseAnalyserDialog->raise ();
-        _poseAnalyserDialog->activateWindow ();
+        _poseAnalyserDialog->show();
+        _poseAnalyserDialog->raise();
+        _poseAnalyserDialog->activateWindow();
     }
-    else if (obj == _restPoseBtn) {
-        if (_dwc == NULL)
-            RW_THROW ("No dynamic workcell loaded!");
+    else if(obj == _restPoseBtn) {
+        if(_dwc == NULL) RW_THROW("No dynamic workcell loaded!");
 
-        if (!_restPoseDialog) {
-            State state = getRobWorkStudio ()->getState ();
-            rw::core::Ptr< rw::proximity::CollisionDetector > colDect =
-                getRobWorkStudio ()->getCollisionDetector ();
-            _restPoseDialog = new RestingPoseDialog (state, _dwc.get (), colDect.get (), NULL);
-            connect (_restPoseDialog,
-                     SIGNAL (stateChanged (const rw::kinematics::State&)),
-                     this,
-                     SLOT (stateChangedEvent (const rw::kinematics::State&)));
+        if(!_restPoseDialog) {
+            State state = getRobWorkStudio()->getState();
+            rw::core::Ptr<rw::proximity::CollisionDetector> colDect =
+                getRobWorkStudio()->getCollisionDetector();
+            _restPoseDialog = new RestingPoseDialog(state, _dwc.get(), colDect.get(), NULL);
+            connect(_restPoseDialog,
+                    SIGNAL(stateChanged(const rw::kinematics::State&)),
+                    this,
+                    SLOT(stateChangedEvent(const rw::kinematics::State&)));
         }
 
-        _restPoseDialog->show ();
-        _restPoseDialog->raise ();
-        _restPoseDialog->activateWindow ();
+        _restPoseDialog->show();
+        _restPoseDialog->raise();
+        _restPoseDialog->activateWindow();
     }
-    else if (obj == _toolEvalBtn) {
-        if (_dwc == NULL)
-            RW_THROW ("No dynamic workcell loaded!");
-        log ().info () << "creating grasp rest pose \n";
-        if (!_graspRestPoseDialog) {
-            State state = getRobWorkStudio ()->getState ();
-            rw::core::Ptr< rw::proximity::CollisionDetector > colDect =
-                getRobWorkStudio ()->getCollisionDetector ();
+    else if(obj == _toolEvalBtn) {
+        if(_dwc == NULL) RW_THROW("No dynamic workcell loaded!");
+        log().info() << "creating grasp rest pose \n";
+        if(!_graspRestPoseDialog) {
+            State state = getRobWorkStudio()->getState();
+            rw::core::Ptr<rw::proximity::CollisionDetector> colDect =
+                getRobWorkStudio()->getCollisionDetector();
             _graspRestPoseDialog =
-                new GraspRestingPoseDialog (state, _dwc.get (), colDect.get (), NULL);
-            connect (_graspRestPoseDialog,
-                     SIGNAL (stateChanged (const rw::kinematics::State&)),
-                     this,
-                     SLOT (stateChangedEvent (const rw::kinematics::State&)));
-            connect (_graspRestPoseDialog,
-                     SIGNAL (restingPoseEvent (const RestingConfig&)),
-                     this,
-                     SLOT (restConfigEvent (const RestingConfig&)));
+                new GraspRestingPoseDialog(state, _dwc.get(), colDect.get(), NULL);
+            connect(_graspRestPoseDialog,
+                    SIGNAL(stateChanged(const rw::kinematics::State&)),
+                    this,
+                    SLOT(stateChangedEvent(const rw::kinematics::State&)));
+            connect(_graspRestPoseDialog,
+                    SIGNAL(restingPoseEvent(const RestingConfig&)),
+                    this,
+                    SLOT(restConfigEvent(const RestingConfig&)));
         }
-        log ().info () << "Showing dialog!\n";
-        _graspRestPoseDialog->show ();
-        _graspRestPoseDialog->raise ();
-        _graspRestPoseDialog->activateWindow ();
+        log().info() << "Showing dialog!\n";
+        _graspRestPoseDialog->show();
+        _graspRestPoseDialog->raise();
+        _graspRestPoseDialog->activateWindow();
     }
-    else if (obj == _timer) {
-    }
-    else if (obj == _graspSelectBtn) {
-        if (_dwc == NULL)
-            RW_THROW ("No dynamic workcell loaded!");
+    else if(obj == _timer) {}
+    else if(obj == _graspSelectBtn) {
+        if(_dwc == NULL) RW_THROW("No dynamic workcell loaded!");
 
-        if (!_graspSelectionDialog) {
-            State state = getRobWorkStudio ()->getState ();
-            rw::core::Ptr< rw::proximity::CollisionDetector > colDect =
-                getRobWorkStudio ()->getCollisionDetector ();
+        if(!_graspSelectionDialog) {
+            State state = getRobWorkStudio()->getState();
+            rw::core::Ptr<rw::proximity::CollisionDetector> colDect =
+                getRobWorkStudio()->getCollisionDetector();
             _graspSelectionDialog =
-                new GraspSelectionDialog (state, _dwc.get (), colDect.get (), NULL);
-            connect (_graspSelectionDialog,
-                     SIGNAL (stateChanged (const rw::kinematics::State&)),
-                     this,
-                     SLOT (stateChangedEvent (const rw::kinematics::State&)));
+                new GraspSelectionDialog(state, _dwc.get(), colDect.get(), NULL);
+            connect(_graspSelectionDialog,
+                    SIGNAL(stateChanged(const rw::kinematics::State&)),
+                    this,
+                    SLOT(stateChangedEvent(const rw::kinematics::State&)));
         }
 
-        _graspSelectionDialog->show ();
-        _graspSelectionDialog->raise ();
-        _graspSelectionDialog->activateWindow ();
+        _graspSelectionDialog->show();
+        _graspSelectionDialog->raise();
+        _graspSelectionDialog->activateWindow();
     }
 }
 
-void SimUtilityPlugin::restConfigEvent (const RestingConfig& restcfg)
-{
+void SimUtilityPlugin::restConfigEvent(const RestingConfig& restcfg) {
     // std::cout << "rest config event\n";
-    getRobWorkStudio ()->setState (restcfg._state);
-    getRobWorkStudio ()->updateAndRepaint ();
+    getRobWorkStudio()->setState(restcfg._state);
+    getRobWorkStudio()->updateAndRepaint();
 
     // Frame *world = _dwc->getWorkcell()->getWorldFrame();
     // std::string gqual =
@@ -204,122 +195,108 @@ void SimUtilityPlugin::restConfigEvent (const RestingConfig& restcfg)
     // << pathPre << "/RestImageSave_" << gqual << ".png";
     sstr << restcfg._desc << ".png";
 
-    getRobWorkStudio ()->getView ()->saveBufferToFile (sstr.str ().c_str ());
+    getRobWorkStudio()->getView()->saveBufferToFile(sstr.str().c_str());
     // std::cout << "rest config event saved" << std::endl;
 }
 
-void SimUtilityPlugin::stateChangedEvent (const rw::kinematics::State& state)
-{
-    getRobWorkStudio ()->setState (state);
+void SimUtilityPlugin::stateChangedEvent(const rw::kinematics::State& state) {
+    getRobWorkStudio()->setState(state);
 }
 
-void SimUtilityPlugin::updateViewEvent ()
-{
-    if (!_restPoseDialog)
-        return;
+void SimUtilityPlugin::updateViewEvent() {
+    if(!_restPoseDialog) return;
     // std::cout << "UpdateViewEvent" << std::endl;
-    QObject* obj = sender ();
+    QObject* obj = sender();
 
-    if (obj == _restPoseDialog) {
+    if(obj == _restPoseDialog) {
         // std::cout << "UpdateViewEvent1" << std::endl;
-        State state = _restPoseDialog->getState ();
-        getRobWorkStudio ()->setState (state);
+        State state = _restPoseDialog->getState();
+        getRobWorkStudio()->setState(state);
     }
 }
 
-void SimUtilityPlugin::open (rw::models::WorkCell* workcell)
-{}
+void SimUtilityPlugin::open(rw::models::WorkCell* workcell) {}
 
-void SimUtilityPlugin::genericEventListener (const std::string& event)
-{
+void SimUtilityPlugin::genericEventListener(const std::string& event) {
     // std::cout << "Generic event: " << event << std::endl;
-    if (event == "DynamicWorkCellLoaded") {
+    if(event == "DynamicWorkCellLoaded") {
         // get the dynamic workcell from the propertymap
-        RW_DEBUG ("Getting dynamic workcell from propertymap!");
+        RW_DEBUG("Getting dynamic workcell from propertymap!");
 
-        Ptr< DynamicWorkCell > dwc =
-            getRobWorkStudio ()->getPropertyMap ().get< Ptr< DynamicWorkCell > > ("DynamicWorkcell",
-                                                                                  NULL);
+        Ptr<DynamicWorkCell> dwc =
+            getRobWorkStudio()->getPropertyMap().get<Ptr<DynamicWorkCell>>("DynamicWorkcell", NULL);
 
-        if (dwc == NULL) {
+        if(dwc == NULL) {
             std::cout << "Could not load dynamic workcell from propertymap!!" << std::endl;
             return;
         }
 
         _dwc = dwc;
 
-        _restPoseBtn->setEnabled (true);
-        _poseAnalyserBtn->setEnabled (true);
-        _toolEvalBtn->setEnabled (true);
-        _graspSelectBtn->setEnabled (true);
+        _restPoseBtn->setEnabled(true);
+        _poseAnalyserBtn->setEnabled(true);
+        _toolEvalBtn->setEnabled(true);
+        _graspSelectBtn->setEnabled(true);
 
-        if (getRobWorkStudio ()->getPropertyMap ().has ("Arg1")) {
-            if (_dwc == NULL)
-                RW_THROW ("No dynamic workcell loaded!");
-            log ().info () << "creating grasp rest pose \n";
-            if (!_graspRestPoseDialog) {
-                State state = getRobWorkStudio ()->getState ();
-                rw::core::Ptr< rw::proximity::CollisionDetector > colDect =
-                    getRobWorkStudio ()->getCollisionDetector ();
+        if(getRobWorkStudio()->getPropertyMap().has("Arg1")) {
+            if(_dwc == NULL) RW_THROW("No dynamic workcell loaded!");
+            log().info() << "creating grasp rest pose \n";
+            if(!_graspRestPoseDialog) {
+                State state = getRobWorkStudio()->getState();
+                rw::core::Ptr<rw::proximity::CollisionDetector> colDect =
+                    getRobWorkStudio()->getCollisionDetector();
                 _graspRestPoseDialog =
-                    new GraspRestingPoseDialog (state, _dwc.get (), colDect.get (), NULL);
-                connect (_graspRestPoseDialog,
-                         SIGNAL (stateChanged (const rw::kinematics::State&)),
-                         this,
-                         SLOT (stateChangedEvent (const rw::kinematics::State&)));
-                connect (_graspRestPoseDialog,
-                         SIGNAL (restingPoseEvent (const RestingConfig&)),
-                         this,
-                         SLOT (restConfigEvent (const RestingConfig&)));
+                    new GraspRestingPoseDialog(state, _dwc.get(), colDect.get(), NULL);
+                connect(_graspRestPoseDialog,
+                        SIGNAL(stateChanged(const rw::kinematics::State&)),
+                        this,
+                        SLOT(stateChangedEvent(const rw::kinematics::State&)));
+                connect(_graspRestPoseDialog,
+                        SIGNAL(restingPoseEvent(const RestingConfig&)),
+                        this,
+                        SLOT(restConfigEvent(const RestingConfig&)));
             }
-            log ().info () << "Showing dialog!\n";
-            _graspRestPoseDialog->show ();
-            _graspRestPoseDialog->raise ();
-            _graspRestPoseDialog->activateWindow ();
+            log().info() << "Showing dialog!\n";
+            _graspRestPoseDialog->show();
+            _graspRestPoseDialog->raise();
+            _graspRestPoseDialog->activateWindow();
 
-            std::string saveDir =
-                getRobWorkStudio ()->getPropertyMap ().get< std::string > ("Arg2");
-            _graspRestPoseDialog->setSaveDir (saveDir);
+            std::string saveDir = getRobWorkStudio()->getPropertyMap().get<std::string>("Arg2");
+            _graspRestPoseDialog->setSaveDir(saveDir);
 
-            std::string preshape =
-                getRobWorkStudio ()->getPropertyMap ().get< std::string > ("Arg3");
-            _graspRestPoseDialog->setPreshapeStrategy (preshape);
+            std::string preshape = getRobWorkStudio()->getPropertyMap().get<std::string>("Arg3");
+            _graspRestPoseDialog->setPreshapeStrategy(preshape);
 
-            std::string id = getRobWorkStudio ()->getPropertyMap ().get< std::string > (
-                "Arg4", std::string ("1"));
-            _graspRestPoseDialog->setUniqueID (id);
+            std::string id =
+                getRobWorkStudio()->getPropertyMap().get<std::string>("Arg4", std::string("1"));
+            _graspRestPoseDialog->setUniqueID(id);
 
-            _graspRestPoseDialog->startAuto ();
+            _graspRestPoseDialog->startAuto();
         }
     }
 }
 
-void SimUtilityPlugin::close ()
-{
-    _restPoseBtn->setEnabled (false);
-    _poseAnalyserBtn->setEnabled (false);
-    _toolEvalBtn->setEnabled (false);
-    _graspSelectBtn->setEnabled (false);
+void SimUtilityPlugin::close() {
+    _restPoseBtn->setEnabled(false);
+    _poseAnalyserBtn->setEnabled(false);
+    _toolEvalBtn->setEnabled(false);
+    _graspSelectBtn->setEnabled(false);
     _dwc = NULL;
-    if (_restPoseDialog)
-        delete _restPoseDialog;
-    if (_poseAnalyserDialog)
-        delete _poseAnalyserDialog;
+    if(_restPoseDialog) delete _restPoseDialog;
+    if(_poseAnalyserDialog) delete _poseAnalyserDialog;
 }
 
-void SimUtilityPlugin::stateChangedHandler (RobWorkStudioPlugin* sender)
-{}
+void SimUtilityPlugin::stateChangedHandler(RobWorkStudioPlugin* sender) {}
 
-void SimUtilityPlugin::initialize ()
-{
-    getRobWorkStudio ()->genericEvent ().add (
-        boost::bind (&SimUtilityPlugin::genericEventListener, this, boost::arg< 1 > ()), this);
+void SimUtilityPlugin::initialize() {
+    getRobWorkStudio()->genericEvent().add(
+        boost::bind(&SimUtilityPlugin::genericEventListener, this, boost::arg<1>()), this);
 
-    Log::setLog (_log);
+    Log::setLog(_log);
 
-    _timer = new QTimer (NULL);
-    _timer->setSingleShot (true);
+    _timer = new QTimer(NULL);
+    _timer->setSingleShot(true);
 
-    _timer->setInterval (4000);
-    connect (_timer, SIGNAL (timeout ()), this, SLOT (btnPressed ()));
+    _timer->setInterval(4000);
+    connect(_timer, SIGNAL(timeout()), this, SLOT(btnPressed()));
 }

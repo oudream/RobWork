@@ -23,6 +23,7 @@
 #ifndef RW_GEOMETRY_HPP_
 #define RW_GEOMETRY_HPP_
 
+#include <rw/geometry/AABB.hpp>
 #include <rw/geometry/Box.hpp>
 #include <rw/geometry/Cone.hpp>
 #include <rw/geometry/Cylinder.hpp>
@@ -32,6 +33,7 @@
 #include <rw/geometry/IndexedTriMesh.hpp>
 #include <rw/geometry/IndexedTriangle.hpp>
 #include <rw/geometry/PlainTriMesh.hpp>
+#include <rw/geometry/PointCloud.hpp>
 #include <rw/geometry/Primitive.hpp>
 #include <rw/geometry/Pyramid.hpp>
 #include <rw/geometry/Sphere.hpp>
@@ -39,8 +41,6 @@
 #include <rw/geometry/Triangle.hpp>
 #include <rw/geometry/TriangleUtil.hpp>
 #include <rw/geometry/Tube.hpp>
-#include <rw/geometry/AABB.hpp>
-#include <rw/geometry/PointCloud.hpp>
 //#include <rw/geometry/Point.hpp>
 #include <rw/geometry/ConvexHull2D.hpp>
 #include <rw/geometry/ConvexHull3D.hpp>

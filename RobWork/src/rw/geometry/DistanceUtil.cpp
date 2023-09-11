@@ -22,11 +22,10 @@
 using namespace rw::math;
 using namespace rw::geometry;
 
-double DistanceUtil::distanceLineLineSqr (const rw::math::Vector3D<>& p1,
-                                          const rw::math::Vector3D<>& p2,
-                                          const rw::math::Vector3D<>& q1,
-                                          const rw::math::Vector3D<>& q2)
-{
+double DistanceUtil::distanceLineLineSqr(const rw::math::Vector3D<>& p1,
+                                         const rw::math::Vector3D<>& p2,
+                                         const rw::math::Vector3D<>& q1,
+                                         const rw::math::Vector3D<>& q2) {
     Vector3D<> c1, c2;
     double s, t;
     const double EPSILON = 0.0000001;
@@ -34,60 +33,55 @@ double DistanceUtil::distanceLineLineSqr (const rw::math::Vector3D<>& p1,
     Vector3D<> d2        = q2 - q1;
     Vector3D<> r         = p1 - q1;
 
-    double a = dot (d1, d1);
-    double e = dot (d2, d2);
-    double f = dot (d2, r);
+    double a = dot(d1, d1);
+    double e = dot(d2, d2);
+    double f = dot(d2, r);
 
-    if (a <= EPSILON && e <= EPSILON) {
+    if(a <= EPSILON && e <= EPSILON) {
         // both segments degenerate into points
         s = t = 0.0;
         c1    = p1;
         c2    = q1;
-        return dot (c1 - c2, c1 - c2);
+        return dot(c1 - c2, c1 - c2);
     }
 
-    if (a <= EPSILON) {
+    if(a <= EPSILON) {
         s = 0.0;
         t = f / e;
-        t = Math::clamp (t, 0.0, 1.0);
+        t = Math::clamp(t, 0.0, 1.0);
     }
     else {
-        double c = dot (d1, r);
-        if (e <= EPSILON) {
+        double c = dot(d1, r);
+        if(e <= EPSILON) {
             t = 0.0;
-            s = Math::clamp (-c / a, 0.0, 1.0);
+            s = Math::clamp(-c / a, 0.0, 1.0);
         }
         else {
-            double b     = dot (d1, d2);
+            double b     = dot(d1, d2);
             double denom = a * e - b * b;
 
-            if (denom != 0.0) {
-                s = Math::clamp ((b * f - c * e) / denom, 0.0, 1.0);
-            }
-            else {
-                s = 0.0;
-            }
+            if(denom != 0.0) { s = Math::clamp((b * f - c * e) / denom, 0.0, 1.0); }
+            else { s = 0.0; }
 
             t = (b * s + f) / e;
 
-            if (t < 0.0) {
+            if(t < 0.0) {
                 t = 0.0;
-                s = Math::clamp (-c / a, 0.0, 1.0);
+                s = Math::clamp(-c / a, 0.0, 1.0);
             }
-            else if (t > 1.0) {
+            else if(t > 1.0) {
                 t = 1.0;
-                s = Math::clamp ((b - c) / a, 0.0, 1.0);
+                s = Math::clamp((b - c) / a, 0.0, 1.0);
             }
         }
     }
 
     c1 = p1 + d1 * s;
     c2 = q1 + d2 * t;
-    return dot (c1 - c2, c1 - c2);
+    return dot(c1 - c2, c1 - c2);
 }
 
-double DistanceUtil::distanceLineLine (const Vector3D<>& p1, const Vector3D<>& p2,
-                                       const Vector3D<>& q1, const Vector3D<>& q2)
-{
-    return sqrt (distanceLineLineSqr (p1, p2, q1, q2));
+double DistanceUtil::distanceLineLine(const Vector3D<>& p1, const Vector3D<>& p2,
+                                      const Vector3D<>& q1, const Vector3D<>& q2) {
+    return sqrt(distanceLineLineSqr(p1, p2, q1, q2));
 }

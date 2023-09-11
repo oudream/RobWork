@@ -62,39 +62,40 @@ namespace rwsimlibs { namespace plugins {
     class EngineTestPlugin : public rws::RobWorkStudioPlugin
     {
         Q_OBJECT
-        Q_INTERFACES (rws::RobWorkStudioPlugin)
-        Q_PLUGIN_METADATA (IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE
-                               "EngineTestPlugin.json");
+        Q_INTERFACES(rws::RobWorkStudioPlugin)
+        Q_PLUGIN_METADATA(IID "dk.sdu.mip.Robwork.RobWorkStudioPlugin/0.1" FILE
+                              "EngineTestPlugin.json");
+
       public:
         //! @brief Constructor.
-        EngineTestPlugin ();
+        EngineTestPlugin();
 
         //! @brief Destructor.
-        virtual ~EngineTestPlugin ();
+        virtual ~EngineTestPlugin();
 
         //! @copydoc rws::RobWorkStudioPlugin::initialize
-        void initialize ();
+        void initialize();
 
       private slots:
-        void toolBoxChanged (int index);
-        void engineChanged (QListWidgetItem* current);
-        void testChanged (QListWidgetItem* current);
-        void run ();
-        void verbose ();
-        void inputChanged ();
-        void updateInput ();
-        void predefinedChoice (int choice);
-        void resultShow ();
-        void logCheck (int state);
+        void toolBoxChanged(int index);
+        void engineChanged(QListWidgetItem* current);
+        void testChanged(QListWidgetItem* current);
+        void run();
+        void verbose();
+        void inputChanged();
+        void updateInput();
+        void predefinedChoice(int choice);
+        void resultShow();
+        void logCheck(int state);
 
       private:
-        void message (const std::string& msg);
-        void error (const std::string& msg);
+        void message(const std::string& msg);
+        void error(const std::string& msg);
 
-        void simulatorCallBack (double time, bool failure, bool done);
-        bool event (QEvent* event);
+        void simulatorCallBack(double time, bool failure, bool done);
+        bool event(QEvent* event);
 
-        void genericAnyEventListener (const std::string& event, boost::any data);
+        void genericAnyEventListener(const std::string& event, boost::any data);
 
       private:
         Ui::EngineTestPlugin* const _ui;
@@ -102,12 +103,12 @@ namespace rwsimlibs { namespace plugins {
         rwsimlibs::test::EngineTest::Ptr _test;
         rwsimlibs::test::EngineTest::TestHandle::Ptr _testHandle;
         std::string _engine;
-        rw::core::Ptr< rw::core::PropertyMap > _input;
-        rw::core::Ptr< rwsim::dynamics::DynamicWorkCell > _dwc;
-        rw::core::Ptr< rwsim::log::SimulatorLogScope > _log;
+        rw::core::Ptr<rw::core::PropertyMap> _input;
+        rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> _dwc;
+        rw::core::Ptr<rwsim::log::SimulatorLogScope> _log;
         rwsimlibs::gui::SimulatorLogWidget* _logWidget;
-        rw::core::Ptr< rw::common::ThreadPool > _threadPool;
-        rw::core::Ptr< rw::common::ThreadTask > _runTask;
+        rw::core::Ptr<rw::common::ThreadPool> _threadPool;
+        rw::core::Ptr<rw::common::ThreadTask> _runTask;
         bool _simFailed;
     };
     //! @}

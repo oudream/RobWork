@@ -18,7 +18,9 @@ Copyright 2013 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
 #define RWLIBS_SOFTBODY_MODRUSSELBEAMIPOPT_HPP
 
 #include "IpIpoptApplication.hpp"
+
 #include <rwlibs/softbody/beam/ModRusselBeamBase.hpp>
+
 #include <memory>
 
 namespace rwlibs { namespace softbody {
@@ -38,10 +40,10 @@ namespace rwlibs { namespace softbody {
          * @param obstaclePtr pointer to the plane obstacle
          * @param M number of discretization points
          **/
-        ModRusselBeamIpopt (std::shared_ptr< BeamGeometry > geomPtr,
-                            std::shared_ptr< BeamObstaclePlane > obstaclePtr, int M);
+        ModRusselBeamIpopt(std::shared_ptr<BeamGeometry> geomPtr,
+                           std::shared_ptr<BeamObstaclePlane> obstaclePtr, int M);
 
-        virtual ~ModRusselBeamIpopt ();
+        virtual ~ModRusselBeamIpopt();
 
         /**
          * @brief solve the minimization problem
@@ -50,11 +52,11 @@ namespace rwlibs { namespace softbody {
          * @param U vector to put the x-component of the curve in
          * @param V vector to put the x-component of the curve in
          **/
-        void solve (Eigen::VectorXd& xinituser, Eigen::VectorXd& U, Eigen::VectorXd& V);
+        void solve(Eigen::VectorXd& xinituser, Eigen::VectorXd& U, Eigen::VectorXd& V);
 
       private:
-        Ipopt::SmartPtr< Ipopt::TNLP > _nlp;
-        Ipopt::SmartPtr< Ipopt::IpoptApplication > _app;
+        Ipopt::SmartPtr<Ipopt::TNLP> _nlp;
+        Ipopt::SmartPtr<Ipopt::IpoptApplication> _app;
     };
     /*@}*/
 }}    // namespace rwlibs::softbody

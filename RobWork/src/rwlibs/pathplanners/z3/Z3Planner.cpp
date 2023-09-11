@@ -41,162 +41,144 @@ typedef QPath Path;
 class OrthogonalSampler : public QSampler
 {
   public:
-    static QSampler::Ptr make (const Q& dir, QSampler::Ptr directionSampler, QMetric::Ptr metric,
-                               bool useBothWays)
-    {
-        return ownedPtr (new OrthogonalSampler (dir, directionSampler, metric, useBothWays));
+    static QSampler::Ptr make(const Q& dir, QSampler::Ptr directionSampler, QMetric::Ptr metric,
+                              bool useBothWays) {
+        return ownedPtr(new OrthogonalSampler(dir, directionSampler, metric, useBothWays));
     }
 
   private:
-    OrthogonalSampler (const Q& dir, QSampler::Ptr directionSampler, QMetric::Ptr metric,
-                       bool useBothWays) :
-        _directionSampler (directionSampler),
-        _metric (metric), _useBothWays (useBothWays), _sampleCnt (0)
-    {
-        if (!dir.empty ())
-            _base.push_back (dir);
+    OrthogonalSampler(const Q& dir, QSampler::Ptr directionSampler, QMetric::Ptr metric,
+                      bool useBothWays) :
+        _directionSampler(directionSampler),
+        _metric(metric), _useBothWays(useBothWays), _sampleCnt(0) {
+        if(!dir.empty()) _base.push_back(dir);
 
-        _dof = _directionSampler->sample ().size ();
+        _dof = _directionSampler->sample().size();
     }
 
-    Q doSample ()
-    {
-        if (empty ())
-            return Q ();
+    Q doSample() {
+        if(empty()) return Q();
 
         // If an even number of samples has been returned:
-        if (!_useBothWays || _sampleCnt++ % 2 == 0) {
-            while (true) {
-                Q dir = _directionSampler->sample ();
-                if (dir.empty ())
-                    RW_THROW ("Empty configuration returned by direction sampler.");
+        if(!_useBothWays || _sampleCnt++ % 2 == 0) {
+            while(true) {
+                Q dir = _directionSampler->sample();
+                if(dir.empty()) RW_THROW("Empty configuration returned by direction sampler.");
 
                 // Gram-Schmidt orthonormalization:
-                for (const Q& e : _base) {
-                    dir -= dot (dir, e) * e;
-                }
+                for(const Q& e : _base) { dir -= dot(dir, e) * e; }
 
-                const double len = MetricUtil::norm2 (dir);
-                if (len > 1e-10) {
-                    _base.push_back (dir / len);
-                    return _base.back ();
+                const double len = MetricUtil::norm2(dir);
+                if(len > 1e-10) {
+                    _base.push_back(dir / len);
+                    return _base.back();
                 }
             }
         }
-        else {
-            return -_base.back ();
-        }
+        else { return -_base.back(); }
 
-        RW_ASSERT (0);
-        return Q ();    // To avoid a compiler warning.
+        RW_ASSERT(0);
+        return Q();    // To avoid a compiler warning.
     }
 
-    bool doEmpty () const { return _base.size () == _dof && _sampleCnt % 2 == 0; }
+    bool doEmpty() const { return _base.size() == _dof && _sampleCnt % 2 == 0; }
 
   private:
     QSampler::Ptr _directionSampler;
     QMetric::Ptr _metric;
     bool _useBothWays;
 
-    std::vector< Q > _base;    // The orthonormal base so far.
-    size_t _dof;               // The number of degrees of freedom.
-    int _sampleCnt;            // The number of configurations returned.
+    std::vector<Q> _base;    // The orthonormal base so far.
+    size_t _dof;             // The number of degrees of freedom.
+    int _sampleCnt;          // The number of configurations returned.
 };
 
 class SlidingPlanner : public QToQPlanner
 {
   public:
-    SlidingPlanner (const PlannerConstraint& constraint, QSampler::Ptr directionSampler,
-                    QConstraint::Ptr boundsConstraint, QMetric::Ptr metric, double extend,
-                    double slideImprovement) :
-        _constraint (constraint),
-        _directionSampler (directionSampler), _boundsConstraint (boundsConstraint),
-        _metric (metric), _extend (extend), _slideImprovement (slideImprovement)
-    {
-        if (_slideImprovement < 0)
-            _slideImprovement = 0.10 * _extend;
+    SlidingPlanner(const PlannerConstraint& constraint, QSampler::Ptr directionSampler,
+                   QConstraint::Ptr boundsConstraint, QMetric::Ptr metric, double extend,
+                   double slideImprovement) :
+        _constraint(constraint),
+        _directionSampler(directionSampler), _boundsConstraint(boundsConstraint), _metric(metric),
+        _extend(extend), _slideImprovement(slideImprovement) {
+        if(_slideImprovement < 0) _slideImprovement = 0.10 * _extend;
 
-        RW_ASSERT (_extend >= 0);
-        RW_ASSERT (_directionSampler);
-        RW_ASSERT (_metric);
+        RW_ASSERT(_extend >= 0);
+        RW_ASSERT(_directionSampler);
+        RW_ASSERT(_metric);
     }
 
   private:
-    bool doQuery (const Q& start, const Q& goal, Path& result, const StopCriteria& stop)
-    {
+    bool doQuery(const Q& start, const Q& goal, Path& result, const StopCriteria& stop) {
         // The defaults for how the sliding steps are selected:
         const bool useOnlyOrthogonal = true;
         const bool useBothWays       = true;
 
-        if (PlannerUtil::inCollision (_constraint, start) ||
-            PlannerUtil::inCollision (_constraint, goal))
+        if(PlannerUtil::inCollision(_constraint, start) ||
+           PlannerUtil::inCollision(_constraint, goal))
             return false;
 
         Path path;
-        const bool ok = findSurfacePoint (start, goal, path, stop);
+        const bool ok = findSurfacePoint(start, goal, path, stop);
 
-        if (!ok)
-            return false;
+        if(!ok) return false;
 
         // If we found a path right away:
-        if (path.back () == goal) {
-            RW_ASSERT (!PlannerUtil::inCollision (_constraint, path));
-            result.insert (result.end (), path.begin (), path.end ());
+        if(path.back() == goal) {
+            RW_ASSERT(!PlannerUtil::inCollision(_constraint, path));
+            result.insert(result.end(), path.begin(), path.end());
             return true;
         }
 
-        while (!stop.stop ()) {
+        while(!stop.stop()) {
             Q dir;
-            if (useOnlyOrthogonal) {
-                const Q diff     = goal - path.back ();
-                const double len = MetricUtil::norm2 (diff);
+            if(useOnlyOrthogonal) {
+                const Q diff     = goal - path.back();
+                const double len = MetricUtil::norm2(diff);
 
                 // If we are at the goal, but apparently couldn't get there,
                 // we return false here, and avoid a division by zero.
-                if (len < 1e-10)
-                    return false;
-                else
-                    dir = diff / len;
+                if(len < 1e-10) return false;
+                else dir = diff / len;
             }
 
             QSampler::Ptr baseSampler =
-                OrthogonalSampler::make (dir, _directionSampler, _metric, useBothWays);
+                OrthogonalSampler::make(dir, _directionSampler, _metric, useBothWays);
 
             bool found = false;
-            while (!found && !baseSampler->empty () && !stop.stop ()) {
-                const Q dir = baseSampler->sample ();
-                RW_ASSERT (!dir.empty ());
+            while(!found && !baseSampler->empty() && !stop.stop()) {
+                const Q dir = baseSampler->sample();
+                RW_ASSERT(!dir.empty());
 
-                const Q slide = path.back () + (_extend / _metric->distance (dir)) * dir;
+                const Q slide = path.back() + (_extend / _metric->distance(dir)) * dir;
 
-                if (!_boundsConstraint->inCollision (slide) &&
-                    !PlannerUtil::inCollision (_constraint, path.back (), slide, false, true)) {
+                if(!_boundsConstraint->inCollision(slide) &&
+                   !PlannerUtil::inCollision(_constraint, path.back(), slide, false, true)) {
                     Path slideToGoal;
-                    const bool ok = findSurfacePoint (slide, goal, slideToGoal, stop);
-                    if (!ok)
-                        return false;
+                    const bool ok = findSurfacePoint(slide, goal, slideToGoal, stop);
+                    if(!ok) return false;
 
-                    const Q& last = slideToGoal.back ();
+                    const Q& last = slideToGoal.back();
 
                     // A path to the goal was found:
-                    if (last == goal) {
-                        path.push_back (slide);
-                        path.insert (path.end (), slideToGoal.begin (), slideToGoal.end ());
+                    if(last == goal) {
+                        path.push_back(slide);
+                        path.insert(path.end(), slideToGoal.begin(), slideToGoal.end());
 
                         // This is a useful check to include if you update
                         // the algorithm:
                         // RW_ASSERT(!PlannerUtil::inCollision(_constraint, path));
 
-                        result.insert (result.end (), path.begin (), path.end ());
+                        result.insert(result.end(), path.begin(), path.end());
                         return true;
                     }
 
                     // A path to a configuration closer to the goal was found:
-                    else if (_metric->distance (path.back (), goal) -
-                                 _metric->distance (last, goal) >
-                             _slideImprovement) {
-                        path.push_back (slide);
-                        path.insert (path.end (), slideToGoal.begin (), slideToGoal.end ());
+                    else if(_metric->distance(path.back(), goal) - _metric->distance(last, goal) >
+                            _slideImprovement) {
+                        path.push_back(slide);
+                        path.insert(path.end(), slideToGoal.begin(), slideToGoal.end());
 
                         found = true;
                     }
@@ -208,8 +190,7 @@ class SlidingPlanner : public QToQPlanner
             }
 
             // If no step was found, then no solution can be found.
-            if (!found)
-                return false;
+            if(!found) return false;
 
             // Otherwise continue the sliding.
         }
@@ -223,23 +204,22 @@ class SlidingPlanner : public QToQPlanner
       colliding configuration is never found, then \b goal will be the last
       element of \b result.
     */
-    bool findSurfacePoint (const Q& start, const Q& goal, Path& path,
-                           const StopCriteria& stop) const
-    {
-        path.push_back (start);
+    bool findSurfacePoint(const Q& start, const Q& goal, Path& path,
+                          const StopCriteria& stop) const {
+        path.push_back(start);
 
         const Q diff     = goal - start;
-        const double len = _metric->distance (diff);
+        const double len = _metric->distance(diff);
 
         const int steps = (int) (len / _extend);
-        const Q step    = steps > 0 ? (_extend / len) * diff : Q ();
+        const Q step    = steps > 0 ? (_extend / len) * diff : Q();
 
         bool collisionFound = false;
-        for (int i = 0; !stop.stop () && i < steps; i++) {
-            const Q next = path.back () + step;
+        for(int i = 0; !stop.stop() && i < steps; i++) {
+            const Q next = path.back() + step;
 
-            if (!PlannerUtil::inCollision (_constraint, path.back (), next, false, true)) {
-                path.push_back (next);
+            if(!PlannerUtil::inCollision(_constraint, path.back(), next, false, true)) {
+                path.push_back(next);
             }
             else {
                 collisionFound = true;
@@ -247,14 +227,13 @@ class SlidingPlanner : public QToQPlanner
             }
         }
 
-        if (stop.stop ())
-            return false;
+        if(stop.stop()) return false;
 
         // If no collisions were found and the last step to the goal
         // configuration is also valid:
-        if (!collisionFound &&
-            !PlannerUtil::inCollision (_constraint, path.back (), goal, false, false)) {
-            path.push_back (goal);
+        if(!collisionFound &&
+           !PlannerUtil::inCollision(_constraint, path.back(), goal, false, false)) {
+            path.push_back(goal);
         }
 
         return true;
@@ -270,58 +249,53 @@ class SlidingPlanner : public QToQPlanner
 };
 }    // namespace
 
-QToQPlanner::Ptr Z3Planner::makeQToQPlanner (QSampler::Ptr sampler, QToQPlanner::Ptr localPlanner,
-                                             int nodeCnt, int repeatCnt)
-{
-    return ownedPtr (new Z3QToQPlanner (sampler, localPlanner, nodeCnt, repeatCnt));
+QToQPlanner::Ptr Z3Planner::makeQToQPlanner(QSampler::Ptr sampler, QToQPlanner::Ptr localPlanner,
+                                            int nodeCnt, int repeatCnt) {
+    return ownedPtr(new Z3QToQPlanner(sampler, localPlanner, nodeCnt, repeatCnt));
 }
 
-QToQPlanner::Ptr Z3Planner::makeQToQPlanner (const PlannerConstraint& constraint,
-                                             Device::Ptr device)
-{
+QToQPlanner::Ptr Z3Planner::makeQToQPlanner(const PlannerConstraint& constraint,
+                                            Device::Ptr device) {
     const int nodeCnt   = 20;
     const int repeatCnt = -1;
 
-    return makeQToQPlanner (
-        QSampler::makeConstrained (QSampler::makeUniform (device), constraint.getQConstraintPtr ()),
-        makeSlidingQToQPlanner (constraint, device),
+    return makeQToQPlanner(
+        QSampler::makeConstrained(QSampler::makeUniform(device), constraint.getQConstraintPtr()),
+        makeSlidingQToQPlanner(constraint, device),
         nodeCnt,
         repeatCnt);
 }
 
-QToQPlanner::Ptr Z3Planner::makeSlidingQToQPlanner (const PlannerConstraint& constraint,
-                                                    QSampler::Ptr directionSampler,
-                                                    QConstraint::Ptr boundsConstraint,
-                                                    QMetric::Ptr metric, double extend,
-                                                    double slideImprovement)
-{
-    return ownedPtr (new SlidingPlanner (
+QToQPlanner::Ptr Z3Planner::makeSlidingQToQPlanner(const PlannerConstraint& constraint,
+                                                   QSampler::Ptr directionSampler,
+                                                   QConstraint::Ptr boundsConstraint,
+                                                   QMetric::Ptr metric, double extend,
+                                                   double slideImprovement) {
+    return ownedPtr(new SlidingPlanner(
         constraint, directionSampler, boundsConstraint, metric, extend, slideImprovement));
 }
 
-QToQPlanner::Ptr Z3Planner::makeSlidingQToQPlanner (const PlannerConstraint& constraint,
-                                                    Device::Ptr device, QMetric::Ptr metric,
-                                                    double extend, double slideImprovement)
-{
-    RW_ASSERT (device);
+QToQPlanner::Ptr Z3Planner::makeSlidingQToQPlanner(const PlannerConstraint& constraint,
+                                                   Device::Ptr device, QMetric::Ptr metric,
+                                                   double extend, double slideImprovement) {
+    RW_ASSERT(device);
 
-    const Device::QBox bounds = device->getBounds ();
+    const Device::QBox bounds = device->getBounds();
 
-    if (!metric) {
-        metric = PlannerUtil::normalizingInfinityMetric (bounds);
+    if(!metric) {
+        metric = PlannerUtil::normalizingInfinityMetric(bounds);
 
-        if (extend >= 0)
-            RW_THROW ("Metric is NULL, but extend distance is non-negative.");
-        if (slideImprovement >= 0)
-            RW_THROW ("Metric is NULL, but slide improvement distance is non-negative.");
+        if(extend >= 0) RW_THROW("Metric is NULL, but extend distance is non-negative.");
+        if(slideImprovement >= 0)
+            RW_THROW("Metric is NULL, but slide improvement distance is non-negative.");
 
         extend = 0.025;
     }
 
-    return makeSlidingQToQPlanner (constraint,
-                                   QSampler::makeBoxDirectionSampler (bounds),
-                                   QConstraint::makeBounds (bounds),
-                                   metric,
-                                   extend,
-                                   slideImprovement);
+    return makeSlidingQToQPlanner(constraint,
+                                  QSampler::makeBoxDirectionSampler(bounds),
+                                  QConstraint::makeBounds(bounds),
+                                  metric,
+                                  extend,
+                                  slideImprovement);
 }

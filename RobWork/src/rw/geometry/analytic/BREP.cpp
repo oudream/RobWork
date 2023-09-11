@@ -35,22 +35,19 @@ namespace {
 class BREPShell : public Shell
 {
   public:
-    BREPShell (const BREP* brep) : Shell (), _brep (brep) {}
-    ~BREPShell () {}
-    GeometryType getType () const { return _brep->getType (); }
-    bool isConvex () { return _brep->isConvex (); }
-    std::size_t size () const { return _brep->faceCount (); }
+    BREPShell(const BREP* brep) : Shell(), _brep(brep) {}
+    ~BREPShell() {}
+    GeometryType getType() const { return _brep->getType(); }
+    bool isConvex() { return _brep->isConvex(); }
+    std::size_t size() const { return _brep->faceCount(); }
 
   private:
-    Face::CPtr doGetFace (std::size_t idx) const
-    {
-        const GenericFace::Ptr bface = ownedPtr (new GenericFace ());
-        bface->setSurface (_brep->getSurface (idx));
-        bface->setVertices (_brep->getVertices (idx));
-        const std::vector< Curve::Ptr > curves = _brep->getCurves (idx);
-        for (std::size_t i = 0; i < curves.size (); i++) {
-            bface->setCurve (i, curves[i]);
-        }
+    Face::CPtr doGetFace(std::size_t idx) const {
+        const GenericFace::Ptr bface = ownedPtr(new GenericFace());
+        bface->setSurface(_brep->getSurface(idx));
+        bface->setVertices(_brep->getVertices(idx));
+        const std::vector<Curve::Ptr> curves = _brep->getCurves(idx);
+        for(std::size_t i = 0; i < curves.size(); i++) { bface->setCurve(i, curves[i]); }
         return bface;
     }
 
@@ -58,138 +55,116 @@ class BREPShell : public Shell
 };
 }    // namespace
 
-BREP::BREP ()
-{
-    setMeshResolution ();
+BREP::BREP() {
+    setMeshResolution();
 }
 
-BREP::~BREP ()
-{
-    for (std::size_t i = 0; i < _faces.size (); i++) {
-        delete _faces[i];
-    }
-    for (std::size_t i = 0; i < _edges.size (); i++) {
+BREP::~BREP() {
+    for(std::size_t i = 0; i < _faces.size(); i++) { delete _faces[i]; }
+    for(std::size_t i = 0; i < _edges.size(); i++) {
         delete _edges[i].first;
         delete _edges[i].second;
     }
-    for (std::size_t i = 0; i < _vertices.size (); i++)
-        delete _vertices[i];
-    _faces.clear ();
-    _edges.clear ();
-    _vertices.clear ();
+    for(std::size_t i = 0; i < _vertices.size(); i++) delete _vertices[i];
+    _faces.clear();
+    _edges.clear();
+    _vertices.clear();
 }
 
-TriMesh::Ptr BREP::getTriMesh (bool)
-{
-    const PlainTriMeshN1D::Ptr mesh = ownedPtr (new PlainTriMeshN1D ());
-    for (std::size_t i = 0; i < _faces.size (); i++) {
-        const PlainTriMeshN1D::Ptr faceMesh = faceTriMesh (i).scast< PlainTriMeshN1D > ();
-        mesh->add (faceMesh);
+TriMesh::Ptr BREP::getTriMesh(bool) {
+    const PlainTriMeshN1D::Ptr mesh = ownedPtr(new PlainTriMeshN1D());
+    for(std::size_t i = 0; i < _faces.size(); i++) {
+        const PlainTriMeshN1D::Ptr faceMesh = faceTriMesh(i).scast<PlainTriMeshN1D>();
+        mesh->add(faceMesh);
     }
     return mesh;
 }
 
-bool BREP::isConvex ()
-{
+bool BREP::isConvex() {
     return false;
 }
 
-bool BREP::isConvex () const
-{
+bool BREP::isConvex() const {
     return false;
 }
 
-std::size_t BREP::faceCount () const
-{
+std::size_t BREP::faceCount() const {
     std::size_t cnt = 0;
-    for (std::size_t i = 0; i < _faces.size (); i++) {
-        if (_faces[i]->surfaceSet)
-            cnt++;
+    for(std::size_t i = 0; i < _faces.size(); i++) {
+        if(_faces[i]->surfaceSet) cnt++;
     }
     return cnt;
 }
 
-std::vector< Vector3D<> > BREP::getVertices (std::size_t loopIdx) const
-{
-    std::vector< Vector3D<> > vertices;
+std::vector<Vector3D<>> BREP::getVertices(std::size_t loopIdx) const {
+    std::vector<Vector3D<>> vertices;
     const HalfEdge* edge = _faces[loopIdx]->edge;
     do {
-        vertices.push_back (edge->previousVertex->point);
+        vertices.push_back(edge->previousVertex->point);
         edge = edge->nextEdge;
-    } while (edge != _faces[loopIdx]->edge);
+    } while(edge != _faces[loopIdx]->edge);
     return vertices;
 }
 
-std::vector< Curve::Ptr > BREP::getCurves (std::size_t loopIdx) const
-{
-    std::vector< Curve::Ptr > curves;
+std::vector<Curve::Ptr> BREP::getCurves(std::size_t loopIdx) const {
+    std::vector<Curve::Ptr> curves;
     const HalfEdge* half = _faces[loopIdx]->edge;
     do {
-        if (half->reversed)
-            curves.push_back (getCurve (half->curveIndex).reverse ());
-        else
-            curves.push_back (getCurve (half->curveIndex).clone ());
+        if(half->reversed) curves.push_back(getCurve(half->curveIndex).reverse());
+        else curves.push_back(getCurve(half->curveIndex).clone());
         half = half->nextEdge;
-    } while (half != _faces[loopIdx]->edge);
+    } while(half != _faces[loopIdx]->edge);
     return curves;
 }
 
-std::size_t BREP::getSurfaceIndex (std::size_t loop)
-{
-    std::size_t index = _faces.size ();
-    if (_faces[loop]->surfaceSet)
-        index = _faces[loop]->surfaceIndex;
+std::size_t BREP::getSurfaceIndex(std::size_t loop) {
+    std::size_t index = _faces.size();
+    if(_faces[loop]->surfaceSet) index = _faces[loop]->surfaceIndex;
     return index;
 }
 
-OBB<> BREP::obb (const rw::math::Rotation3D<>& R)
-{
-    std::list< Curve::CPtr > edges;
-    for (std::size_t i = 0; i < _edges.size (); i++) {
-        edges.push_back (getCurve (_edges[i].first->curveIndex).clone ());
+OBB<> BREP::obb(const rw::math::Rotation3D<>& R) {
+    std::list<Curve::CPtr> edges;
+    for(std::size_t i = 0; i < _edges.size(); i++) {
+        edges.push_back(getCurve(_edges[i].first->curveIndex).clone());
     }
 
-    const Vector3D<> e1 = R.getCol (0);
-    const Vector3D<> e2 = R.getCol (1);
-    const Vector3D<> e3 = R.getCol (2);
+    const Vector3D<> e1 = R.getCol(0);
+    const Vector3D<> e2 = R.getCol(1);
+    const Vector3D<> e3 = R.getCol(2);
 
-    std::vector< double > min (3, std::numeric_limits< double >::max ());
-    std::vector< double > max (3, -std::numeric_limits< double >::max ());
-    for (std::list< Curve::CPtr >::const_iterator it = edges.begin (); it != edges.end (); it++) {
-        for (std::size_t i = 0; i < 3; i++) {
-            const std::pair< double, double > extremums = (*it)->extremums (R.getCol (i));
-            if (extremums.first < min[i])
-                min[i] = extremums.first;
-            if (extremums.second > max[i])
-                max[i] = extremums.second;
+    std::vector<double> min(3, std::numeric_limits<double>::max());
+    std::vector<double> max(3, -std::numeric_limits<double>::max());
+    for(std::list<Curve::CPtr>::const_iterator it = edges.begin(); it != edges.end(); it++) {
+        for(std::size_t i = 0; i < 3; i++) {
+            const std::pair<double, double> extremums = (*it)->extremums(R.getCol(i));
+            if(extremums.first < min[i]) min[i] = extremums.first;
+            if(extremums.second > max[i]) max[i] = extremums.second;
         }
     }
 
     // Deal with surfaces
-    for (std::vector< Face* >::const_iterator it = _faces.begin (); it != _faces.end (); it++) {
-        for (std::size_t i = 0; i < 3; i++) {
-            const std::pair< double, double > extremums =
-                getSurface ((*it)->surfaceIndex).extremums (R.getCol (i));
-            if (extremums.first != -std::numeric_limits< double >::max () &&
-                extremums.first < min[i])
+    for(std::vector<Face*>::const_iterator it = _faces.begin(); it != _faces.end(); it++) {
+        for(std::size_t i = 0; i < 3; i++) {
+            const std::pair<double, double> extremums =
+                getSurface((*it)->surfaceIndex).extremums(R.getCol(i));
+            if(extremums.first != -std::numeric_limits<double>::max() && extremums.first < min[i])
                 min[i] = extremums.first;
-            if (extremums.second != std::numeric_limits< double >::max () &&
-                extremums.second > max[i])
+            if(extremums.second != std::numeric_limits<double>::max() && extremums.second > max[i])
                 max[i] = extremums.second;
         }
     }
 
     const Vector3D<> P =
-        Vector3D<> ((max[0] + min[0]) * e1 + (max[1] + min[1]) * e2 + (max[2] + min[2]) * e3) / 2;
-    const Vector3D<> halfLen = Vector3D<> (max[0] - min[0], max[1] - min[1], max[2] - min[2]) / 2;
-    return OBB<> (Transform3D<> (P, R), halfLen);
+        Vector3D<>((max[0] + min[0]) * e1 + (max[1] + min[1]) * e2 + (max[2] + min[2]) * e3) / 2;
+    const Vector3D<> halfLen = Vector3D<>(max[0] - min[0], max[1] - min[1], max[2] - min[2]) / 2;
+    return OBB<>(Transform3D<>(P, R), halfLen);
 }
 
-OBB<> BREP::obb ()
-{
-    const TriMesh::Ptr mesh = getTriMesh ();
-    const OBB<> obbFit      = OBB<>::buildTightOBB (*mesh);
-    return obb (obbFit.getTransform ().R ());
+OBB<> BREP::obb() {
+    const TriMesh::Ptr mesh = getTriMesh();
+    const OBB<> obbFit      = OBB<>::buildTightOBB(*mesh);
+    return obb(obbFit.getTransform().R());
 }
 /*
 const std::vector<BREP::Vertex*>& BREP::vertices() const {
@@ -201,9 +176,8 @@ const std::vector<std::pair<BREP::HalfEdge*, BREP::HalfEdge*> >& BREP::edges() c
 }
 */
 
-Shell::CPtr BREP::doShellProxyBREP () const
-{
-    return ownedPtr (new BREPShell (this));
+Shell::CPtr BREP::doShellProxyBREP() const {
+    return ownedPtr(new BREPShell(this));
 }
 /*
 std::vector<const BREP::HalfEdge*> BREP::loop(const Face& face) const {
@@ -224,274 +198,238 @@ std::vector<const BREP::HalfEdge*> BREP::loop(const Face& face) const {
 class BREP::CommonCurveSetGeneric : public BREP::CommonCurveSet
 {
   public:
-    CommonCurveSetGeneric (const BREP* brep, const std::vector< const BREP::HalfEdge* >& edges) :
-        _brep (brep), _edges (edges)
-    {}
-    virtual ~CommonCurveSetGeneric () {}
-    virtual std::size_t size () const { return _edges.size (); }
-    virtual const Curve& curve (std::size_t index) const
-    {
-        return _brep->getCurve (_edges[index]->curveIndex);
+    CommonCurveSetGeneric(const BREP* brep, const std::vector<const BREP::HalfEdge*>& edges) :
+        _brep(brep), _edges(edges) {}
+    virtual ~CommonCurveSetGeneric() {}
+    virtual std::size_t size() const { return _edges.size(); }
+    virtual const Curve& curve(std::size_t index) const {
+        return _brep->getCurve(_edges[index]->curveIndex);
     }
-    virtual const Surface& surfaceLeft (std::size_t index) const
-    {
-        return _brep->getSurface (_edges[index]->face->surfaceIndex);
+    virtual const Surface& surfaceLeft(std::size_t index) const {
+        return _brep->getSurface(_edges[index]->face->surfaceIndex);
     }
-    virtual const Surface& surfaceRight (std::size_t index) const
-    {
-        return _brep->getSurface (_edges[index]->oppositeEdge->face->surfaceIndex);
+    virtual const Surface& surfaceRight(std::size_t index) const {
+        return _brep->getSurface(_edges[index]->oppositeEdge->face->surfaceIndex);
     }
 
   private:
     const BREP* const _brep;
-    const std::vector< const BREP::HalfEdge* > _edges;
+    const std::vector<const BREP::HalfEdge*> _edges;
 };
 
-BREP::CommonCurveSet::CPtr BREP::getCommonCurves (const std::set< std::size_t >& faces) const
-{
-    std::vector< const HalfEdge* > edges;
-    for (std::set< std::size_t >::const_iterator it = faces.begin (); it != faces.end (); it++) {
+BREP::CommonCurveSet::CPtr BREP::getCommonCurves(const std::set<std::size_t>& faces) const {
+    std::vector<const HalfEdge*> edges;
+    for(std::set<std::size_t>::const_iterator it = faces.begin(); it != faces.end(); it++) {
         const HalfEdge* edge = _faces[*it]->edge;
-        if (edge == NULL)
-            continue;
+        if(edge == NULL) continue;
         do {
-            std::set< std::size_t >::const_iterator itB = it;
-            for (itB++; itB != faces.end (); itB++) {
+            std::set<std::size_t>::const_iterator itB = it;
+            for(itB++; itB != faces.end(); itB++) {
                 const HalfEdge* edgeB = _faces[*itB]->edge;
-                if (edgeB == NULL)
-                    continue;
+                if(edgeB == NULL) continue;
                 do {
-                    if (edge->oppositeEdge == edgeB) {
+                    if(edge->oppositeEdge == edgeB) {
                         // curves.push_back(edge->curve);
-                        edges.push_back (edge);
+                        edges.push_back(edge);
                     }
                     edgeB = edgeB->nextEdge;
-                } while (edgeB != NULL && edgeB != _faces[*itB]->edge);
+                } while(edgeB != NULL && edgeB != _faces[*itB]->edge);
             }
             edge = edge->nextEdge;
-        } while (edge != NULL && edge != _faces[*it]->edge);
+        } while(edge != NULL && edge != _faces[*it]->edge);
     }
-    return ownedPtr (new CommonCurveSetGeneric (this, edges));
+    return ownedPtr(new CommonCurveSetGeneric(this, edges));
 }
 
-void BREP::addVertex (const Vector3D<>& point)
-{
-    _vertices.push_back (new Vertex (point));
+void BREP::addVertex(const Vector3D<>& point) {
+    _vertices.push_back(new Vertex(point));
 }
 
-void BREP::makeLoop (int singleEdgeId)
-{
-    RW_ASSERT (singleEdgeId != 0);
+void BREP::makeLoop(int singleEdgeId) {
+    RW_ASSERT(singleEdgeId != 0);
     HalfEdge* const e =
         (singleEdgeId < 0) ? _edges[-singleEdgeId - 1].second : _edges[singleEdgeId - 1].first;
-    RW_ASSERT (e->previousVertex == e->nextVertex);
-    RW_ASSERT (e->oppositeEdge->previousVertex == e->oppositeEdge->nextVertex);
-    RW_ASSERT (e->previousVertex == e->oppositeEdge->nextVertex);
+    RW_ASSERT(e->previousVertex == e->nextVertex);
+    RW_ASSERT(e->oppositeEdge->previousVertex == e->oppositeEdge->nextVertex);
+    RW_ASSERT(e->previousVertex == e->oppositeEdge->nextVertex);
 
-    if (e->nextEdge != e) {
+    if(e->nextEdge != e) {
         HalfEdge* const prev = e->previousEdge;
         HalfEdge* const next = e->nextEdge;
-        if (prev == e->oppositeEdge || next == e->oppositeEdge) {
+        if(prev == e->oppositeEdge || next == e->oppositeEdge) {
             prev->nextEdge     = next;
             next->previousEdge = prev;
 
             e->nextEdge     = e;
             e->previousEdge = e;
         }
-        else {
-            RW_THROW ("Could not figure out how to make single edge loop!");
-        }
+        else { RW_THROW("Could not figure out how to make single edge loop!"); }
     }
 
-    if (e->face == NULL) {
-        _faces.push_back (new Face ());
-        _faces.back ()->edge = e;
-        e->face              = _faces.back ();
+    if(e->face == NULL) {
+        _faces.push_back(new Face());
+        _faces.back()->edge = e;
+        e->face             = _faces.back();
     }
 }
 
-void BREP::stitchEdges (const std::size_t first, const std::size_t second)
-{
+void BREP::stitchEdges(const std::size_t first, const std::size_t second) {
     const bool first1 = (_edges[first].first->face == nullptr);
     const bool first2 = (_edges[second].first->face == nullptr);
-    if (_edges[first].first->face == nullptr && _edges[first].second->face == nullptr)
-        RW_THROW ("Could not stitch edges as the first edge is not connected to any face.");
-    if (_edges[second].first->face == nullptr && _edges[second].second->face == nullptr)
-        RW_THROW ("Could not stitch edges as the second edge is not connected to any face.");
+    if(_edges[first].first->face == nullptr && _edges[first].second->face == nullptr)
+        RW_THROW("Could not stitch edges as the first edge is not connected to any face.");
+    if(_edges[second].first->face == nullptr && _edges[second].second->face == nullptr)
+        RW_THROW("Could not stitch edges as the second edge is not connected to any face.");
     HalfEdge* const e1  = first1 ? _edges[first].second : _edges[first].first;
     HalfEdge* const e2  = first2 ? _edges[second].second : _edges[second].first;
     HalfEdge* const e1n = first1 ? _edges[first].first : _edges[first].second;
     HalfEdge* const e2n = first2 ? _edges[second].first : _edges[second].second;
-    if (e1->face == nullptr)
-        RW_THROW ("Could not stitch edges as the first edge is already connected to two faces.");
-    if (e2->face == nullptr)
-        RW_THROW ("Could not stitch edges as the second edge is already connected to two faces.");
+    if(e1->face == nullptr)
+        RW_THROW("Could not stitch edges as the first edge is already connected to two faces.");
+    if(e2->face == nullptr)
+        RW_THROW("Could not stitch edges as the second edge is already connected to two faces.");
 
     e1->oppositeEdge = e2;
     e2->oppositeEdge = e1;
 
-    std::vector< Vertex* >::iterator vitPrev1;
-    std::vector< Vertex* >::iterator vitPrev2;
-    vitPrev1 = std::find (_vertices.begin (), _vertices.end (), e1n->previousVertex);
-    vitPrev2 = std::find (_vertices.begin (), _vertices.end (), e2n->previousVertex);
-    if (vitPrev1 == _vertices.end ())
-        RW_THROW ("Could not find previous vertex of first half-edge.");
-    if (vitPrev2 == _vertices.end ())
-        RW_THROW ("Could not find previous vertex of second half-edge.");
+    std::vector<Vertex*>::iterator vitPrev1;
+    std::vector<Vertex*>::iterator vitPrev2;
+    vitPrev1 = std::find(_vertices.begin(), _vertices.end(), e1n->previousVertex);
+    vitPrev2 = std::find(_vertices.begin(), _vertices.end(), e2n->previousVertex);
+    if(vitPrev1 == _vertices.end()) RW_THROW("Could not find previous vertex of first half-edge.");
+    if(vitPrev2 == _vertices.end()) RW_THROW("Could not find previous vertex of second half-edge.");
 
-    if (e1n->nextEdge != e2n) {
+    if(e1n->nextEdge != e2n) {
         e1n->nextEdge->previousEdge   = e2n->previousEdge;
         e2n->previousEdge->nextEdge   = e1n->nextEdge;
         e2n->previousEdge->nextVertex = e1n->nextEdge->previousVertex;
         HalfEdge* e                   = e2;
         const Vertex* const oldVertex = e2->nextVertex;
-        while (e->nextVertex == oldVertex) {
+        while(e->nextVertex == oldVertex) {
             e->nextEdge->previousVertex = e1n->nextEdge->previousVertex;
             e->nextVertex               = e1n->nextEdge->previousVertex;
             e                           = e->nextEdge->oppositeEdge;
         }
         delete *vitPrev2;
-        _vertices.erase (vitPrev2);
+        _vertices.erase(vitPrev2);
     }
     else {
-        if ((*vitPrev2)->nextEdge == e2n)
-            (*vitPrev2)->nextEdge = e2->nextEdge;
+        if((*vitPrev2)->nextEdge == e2n) (*vitPrev2)->nextEdge = e2->nextEdge;
     }
-    if (e2n->nextEdge != e1n) {
+    if(e2n->nextEdge != e1n) {
         e1n->previousEdge->nextEdge   = e2n->nextEdge;
         e2n->nextEdge->previousEdge   = e1n->previousEdge;
         e1n->previousEdge->nextVertex = e2n->nextEdge->previousVertex;
         HalfEdge* e                   = e1;
         const Vertex* const oldVertex = e1->nextVertex;
-        while (e->nextVertex == oldVertex) {
+        while(e->nextVertex == oldVertex) {
             e->nextEdge->previousVertex = e2n->nextEdge->previousVertex;
             e->nextVertex               = e2n->nextEdge->previousVertex;
             e                           = e->nextEdge->oppositeEdge;
         }
         delete *vitPrev1;
-        _vertices.erase (vitPrev1);
+        _vertices.erase(vitPrev1);
     }
     else {
-        if ((*vitPrev1)->nextEdge == e1n)
-            (*vitPrev1)->nextEdge = e1->nextEdge;
+        if((*vitPrev1)->nextEdge == e1n) (*vitPrev1)->nextEdge = e1->nextEdge;
     }
 
     delete e1n;
     delete e2n;
-    if (first1)
-        _edges[first].first = e2;
-    else
-        _edges[first].second = e2;
-    _edges.erase (_edges.begin () + second);
-    if (e1->curveIndex != e2->curveIndex) {
-        doRemoveCurve (e2->curveIndex);
-        for (const std::pair< HalfEdge*, HalfEdge* >& edge : _edges) {
-            if (edge.first->curveIndex > e2->curveIndex)
-                edge.first->curveIndex--;
-            if (edge.second->curveIndex > e2->curveIndex)
-                edge.second->curveIndex--;
+    if(first1) _edges[first].first = e2;
+    else _edges[first].second = e2;
+    _edges.erase(_edges.begin() + second);
+    if(e1->curveIndex != e2->curveIndex) {
+        doRemoveCurve(e2->curveIndex);
+        for(const std::pair<HalfEdge*, HalfEdge*>& edge : _edges) {
+            if(edge.first->curveIndex > e2->curveIndex) edge.first->curveIndex--;
+            if(edge.second->curveIndex > e2->curveIndex) edge.second->curveIndex--;
         }
         e2->curveIndex = e1->curveIndex;
     }
     e2->reversed = !e1->reversed;
 }
 
-void BREP::stitchAuto (const double eps)
-{
+void BREP::stitchAuto(const double eps) {
     // Make index-list of edges with exactly one half-edge connected to a face.
-    std::list< std::size_t > ids;
-    for (std::size_t i = 0; i < _edges.size (); i++) {
-        const std::pair< HalfEdge*, HalfEdge* >& e = _edges[i];
-        if ((e.first->face != nullptr && e.second->face == nullptr))
-            ids.push_back (i);
-        else if ((e.first->face == nullptr && e.second->face != nullptr))
-            ids.push_back (i);
+    std::list<std::size_t> ids;
+    for(std::size_t i = 0; i < _edges.size(); i++) {
+        const std::pair<HalfEdge*, HalfEdge*>& e = _edges[i];
+        if((e.first->face != nullptr && e.second->face == nullptr)) ids.push_back(i);
+        else if((e.first->face == nullptr && e.second->face != nullptr)) ids.push_back(i);
     }
     // Find all candidate pairs
-    std::list< std::pair< std::size_t, std::size_t > > pairs;
-    std::list< std::size_t >::const_iterator itA;
-    for (itA = ids.begin (); itA != ids.end (); itA++) {
-        const std::pair< HalfEdge*, HalfEdge* >& eA = _edges[*itA];
+    std::list<std::pair<std::size_t, std::size_t>> pairs;
+    std::list<std::size_t>::const_iterator itA;
+    for(itA = ids.begin(); itA != ids.end(); itA++) {
+        const std::pair<HalfEdge*, HalfEdge*>& eA = _edges[*itA];
         HalfEdge* hA;
-        if (eA.first->face == nullptr)
-            hA = eA.second;
-        else
-            hA = eA.first;
-        unsigned int matches                         = 0;
-        std::list< std::size_t >::const_iterator itB = itA;
-        for (itB++; itB != ids.end (); itB++) {
-            const std::pair< HalfEdge*, HalfEdge* >& eB = _edges[*itB];
+        if(eA.first->face == nullptr) hA = eA.second;
+        else hA = eA.first;
+        unsigned int matches                       = 0;
+        std::list<std::size_t>::const_iterator itB = itA;
+        for(itB++; itB != ids.end(); itB++) {
+            const std::pair<HalfEdge*, HalfEdge*>& eB = _edges[*itB];
             HalfEdge* hB;
-            if (eB.first->face == nullptr)
-                hB = eB.second;
-            else
-                hB = eB.first;
+            if(eB.first->face == nullptr) hB = eB.second;
+            else hB = eB.first;
             const Vector3D<>& vAp = hA->previousVertex->point;
             const Vector3D<>& vAn = hA->nextVertex->point;
             const Vector3D<>& vBp = hB->previousVertex->point;
             const Vector3D<>& vBn = hB->nextVertex->point;
-            const double d1       = (vAp - vBn).norm2 ();
-            const double d2       = (vBp - vAn).norm2 ();
-            if (d1 < eps && d2 < eps) {
-                const Curve& c1 = getCurve (*itA);
-                const Curve& c2 = getCurve (*itB);
-                if (c1.equals (c2.reverse (), eps)) {
-                    if (matches == 0) {
-                        pairs.push_back (std::make_pair (*itA, *itB));
+            const double d1       = (vAp - vBn).norm2();
+            const double d2       = (vBp - vAn).norm2();
+            if(d1 < eps && d2 < eps) {
+                const Curve& c1 = getCurve(*itA);
+                const Curve& c2 = getCurve(*itB);
+                if(c1.equals(c2.reverse(), eps)) {
+                    if(matches == 0) {
+                        pairs.push_back(std::make_pair(*itA, *itB));
                         matches++;
                     }
                     else {
-                        RW_THROW ("Found multiple edges that can be stitched, "
-                                  "please fix the topology of the BREP.");
+                        RW_THROW("Found multiple edges that can be stitched, "
+                                 "please fix the topology of the BREP.");
                     }
                 }
             }
         }
     }
     // Make map from original index to new reduced index
-    std::vector< std::size_t > map (_edges.size ());
-    for (std::size_t i = 0; i < _edges.size (); i++)
-        map[i] = i;
+    std::vector<std::size_t> map(_edges.size());
+    for(std::size_t i = 0; i < _edges.size(); i++) map[i] = i;
     // Do the stitching
-    for (const std::pair< std::size_t, std::size_t >& pair : pairs) {
-        stitchEdges (map[pair.first], map[pair.second]);
-        for (std::size_t i = pair.second; i < map.size (); i++)
-            map[i]--;
+    for(const std::pair<std::size_t, std::size_t>& pair : pairs) {
+        stitchEdges(map[pair.first], map[pair.second]);
+        for(std::size_t i = pair.second; i < map.size(); i++) map[i]--;
     }
 }
 
-void BREP::setEdgeOrder (int before, int after)
-{
-    RW_ASSERT (before != 0);
-    RW_ASSERT (after != 0);
+void BREP::setEdgeOrder(int before, int after) {
+    RW_ASSERT(before != 0);
+    RW_ASSERT(after != 0);
     HalfEdge* const e1 = (before < 0) ? _edges[-before - 1].second : _edges[before - 1].first;
     HalfEdge* const e2 = (after < 0) ? _edges[-after - 1].second : _edges[after - 1].first;
-    setHalfEdgeOrder (e1, e2);
-    if (e2->face == NULL) {
-        _faces.push_back (new Face ());
-        _faces.back ()->edge = e2;
-        e2->face             = _faces.back ();
+    setHalfEdgeOrder(e1, e2);
+    if(e2->face == NULL) {
+        _faces.push_back(new Face());
+        _faces.back()->edge = e2;
+        e2->face            = _faces.back();
     }
     e1->face = e2->face;
 }
 
-void BREP::setHalfEdgeOrder (HalfEdge* before, HalfEdge* after)
-{
-    if (before->nextEdge == after)
-        return;
+void BREP::setHalfEdgeOrder(HalfEdge* before, HalfEdge* after) {
+    if(before->nextEdge == after) return;
 
-    if (before == NULL)
-        RW_THROW ("before is null!");
-    if (after == NULL)
-        RW_THROW ("after is null!");
+    if(before == NULL) RW_THROW("before is null!");
+    if(after == NULL) RW_THROW("after is null!");
 
     HalfEdge* const befNext = before->nextEdge;
     HalfEdge* const aftPrev = after->previousEdge;
 
-    if (befNext == NULL)
-        RW_THROW ("befNext is null!");
-    if (aftPrev == NULL)
-        RW_THROW ("aftPrev is null!");
+    if(befNext == NULL) RW_THROW("befNext is null!");
+    if(aftPrev == NULL) RW_THROW("aftPrev is null!");
 
     /*if (after->nextEdge == after) {
             before->nextEdge = after;
@@ -500,423 +438,379 @@ void BREP::setHalfEdgeOrder (HalfEdge* before, HalfEdge* after)
             after->nextEdge = befNext;
             befNext->previousEdge = after;
     } else {*/
-    HalfEdge* const free = freeHalfEdge (*after->previousVertex, after, before);
-    if (free == NULL) {
-        RW_THROW ("No free half edge. Can not make loop.");
-    }
+    HalfEdge* const free = freeHalfEdge(*after->previousVertex, after, before);
+    if(free == NULL) { RW_THROW("No free half edge. Can not make loop."); }
     HalfEdge* const freeNext = free->nextEdge;
 
     before->nextEdge    = after;
     after->previousEdge = before;
 
-    if (free != before) {
+    if(free != before) {
         free->nextEdge        = befNext;
         befNext->previousEdge = free;
     }
 
-    if (freeNext != after) {
+    if(freeNext != after) {
         aftPrev->nextEdge      = freeNext;
         freeNext->previousEdge = aftPrev;
     }
     //}
 }
 
-BREP::HalfEdge* BREP::freeHalfEdge (const Vertex& endVertex, const HalfEdge* from,
-                                    const HalfEdge* to) const
-{
+BREP::HalfEdge* BREP::freeHalfEdge(const Vertex& endVertex, const HalfEdge* from,
+                                   const HalfEdge* to) const {
     const HalfEdge* edge = (from == NULL) ? endVertex.nextEdge : from;
-    while (edge != NULL) {
+    while(edge != NULL) {
         // if (edge->previousVertex == edge->nextVertex && from != NULL) {
         //	edge = edge->nextEdge;
         //} else {
         HalfEdge* const oppsosite = edge->oppositeEdge;
-        if (oppsosite->face == NULL)
-            return oppsosite;
+        if(oppsosite->face == NULL) return oppsosite;
         edge = oppsosite->nextEdge;
         //}
     }
     return NULL;
 }
 
-OBB<> BREP::faceOBB (std::size_t faceIndex)
-{
+OBB<> BREP::faceOBB(std::size_t faceIndex) {
     std::size_t cnt = 0;
-    for (std::size_t i = 0; i < _faces.size () && cnt < faceIndex + 1; i++) {
-        if (_faces[i]->surfaceSet)
-            cnt++;
+    for(std::size_t i = 0; i < _faces.size() && cnt < faceIndex + 1; i++) {
+        if(_faces[i]->surfaceSet) cnt++;
     }
     cnt--;
 
-    std::list< Curve::CPtr > edges;
+    std::list<Curve::CPtr> edges;
     const HalfEdge* edge = _faces[cnt]->edge;
     do {
-        edges.push_back (getCurve (edge->curveIndex).clone ());
+        edges.push_back(getCurve(edge->curveIndex).clone());
         edge = edge->nextEdge;
-    } while (edge != _faces[cnt]->edge);
+    } while(edge != _faces[cnt]->edge);
 
-    const TriMesh::Ptr mesh = faceTriMesh (faceIndex);
-    const OBB<> obb         = OBB<>::buildTightOBB (*mesh);
+    const TriMesh::Ptr mesh = faceTriMesh(faceIndex);
+    const OBB<> obb         = OBB<>::buildTightOBB(*mesh);
 
-    const Rotation3D<> R = obb.getTransform ().R ();
-    const Vector3D<> e1  = R.getCol (0);
-    const Vector3D<> e2  = R.getCol (1);
-    const Vector3D<> e3  = R.getCol (2);
+    const Rotation3D<> R = obb.getTransform().R();
+    const Vector3D<> e1  = R.getCol(0);
+    const Vector3D<> e2  = R.getCol(1);
+    const Vector3D<> e3  = R.getCol(2);
 
-    std::vector< double > min (3, std::numeric_limits< double >::max ());
-    std::vector< double > max (3, -std::numeric_limits< double >::max ());
-    for (std::list< Curve::CPtr >::const_iterator it = edges.begin (); it != edges.end (); it++) {
-        for (std::size_t i = 0; i < 3; i++) {
-            const std::pair< double, double > extremums = (*it)->extremums (R.getCol (i));
-            if (extremums.first < min[i])
-                min[i] = extremums.first;
-            if (extremums.second > max[i])
-                max[i] = extremums.second;
+    std::vector<double> min(3, std::numeric_limits<double>::max());
+    std::vector<double> max(3, -std::numeric_limits<double>::max());
+    for(std::list<Curve::CPtr>::const_iterator it = edges.begin(); it != edges.end(); it++) {
+        for(std::size_t i = 0; i < 3; i++) {
+            const std::pair<double, double> extremums = (*it)->extremums(R.getCol(i));
+            if(extremums.first < min[i]) min[i] = extremums.first;
+            if(extremums.second > max[i]) max[i] = extremums.second;
         }
     }
 
     // Deal with surface itself
-    for (std::size_t i = 0; i < 3; i++) {
-        const std::pair< double, double > extremums =
-            getSurface (_faces[cnt]->surfaceIndex).extremums (R.getCol (i));
-        if (extremums.first != -std::numeric_limits< double >::max () && extremums.first < min[i])
+    for(std::size_t i = 0; i < 3; i++) {
+        const std::pair<double, double> extremums =
+            getSurface(_faces[cnt]->surfaceIndex).extremums(R.getCol(i));
+        if(extremums.first != -std::numeric_limits<double>::max() && extremums.first < min[i])
             min[i] = extremums.first;
-        if (extremums.second != std::numeric_limits< double >::max () && extremums.second > max[i])
+        if(extremums.second != std::numeric_limits<double>::max() && extremums.second > max[i])
             max[i] = extremums.second;
     }
 
     const Vector3D<> P =
-        Vector3D<> ((max[0] + min[0]) * e1 + (max[1] + min[1]) * e2 + (max[2] + min[2]) * e3) / 2;
-    const Vector3D<> halfLen = Vector3D<> (max[0] - min[0], max[1] - min[1], max[2] - min[2]) / 2;
-    return OBB<> (Transform3D<> (P, R), halfLen);
+        Vector3D<>((max[0] + min[0]) * e1 + (max[1] + min[1]) * e2 + (max[2] + min[2]) * e3) / 2;
+    const Vector3D<> halfLen = Vector3D<>(max[0] - min[0], max[1] - min[1], max[2] - min[2]) / 2;
+    return OBB<>(Transform3D<>(P, R), halfLen);
 }
 
-OBB<> BREP::edgeOBR (std::size_t edge) const
-{
-    return getCurve (_edges[edge].first->curveIndex).obr ();
+OBB<> BREP::edgeOBR(std::size_t edge) const {
+    return getCurve(_edges[edge].first->curveIndex).obr();
 }
 
-std::pair< double, double > BREP::faceExtremums (std::size_t faceIndex, const Vector3D<>& dir) const
-{
-    std::pair< double, double > res (std::numeric_limits< double >::max (),
-                                     -std::numeric_limits< double >::max ());
+std::pair<double, double> BREP::faceExtremums(std::size_t faceIndex, const Vector3D<>& dir) const {
+    std::pair<double, double> res(std::numeric_limits<double>::max(),
+                                  -std::numeric_limits<double>::max());
 
     double& min = res.first;
     double& max = res.second;
 
     std::size_t cnt = 0;
-    for (std::size_t i = 0; i < _faces.size () && cnt < faceIndex + 1; i++) {
-        if (_faces[i]->surfaceSet)
-            cnt++;
+    for(std::size_t i = 0; i < _faces.size() && cnt < faceIndex + 1; i++) {
+        if(_faces[i]->surfaceSet) cnt++;
     }
     cnt--;
 
-    std::list< Curve::CPtr > edges;
+    std::list<Curve::CPtr> edges;
     const HalfEdge* edge = _faces[cnt]->edge;
     do {
-        edges.push_back (getCurve (edge->curveIndex).clone ());
+        edges.push_back(getCurve(edge->curveIndex).clone());
         edge = edge->nextEdge;
-    } while (edge != _faces[cnt]->edge);
+    } while(edge != _faces[cnt]->edge);
 
     // Check edges
-    for (std::list< Curve::CPtr >::const_iterator it = edges.begin (); it != edges.end (); it++) {
-        const std::pair< double, double > extremums = (*it)->extremums (dir);
-        if (extremums.first < min)
-            min = extremums.first;
-        if (extremums.second > max)
-            max = extremums.second;
+    for(std::list<Curve::CPtr>::const_iterator it = edges.begin(); it != edges.end(); it++) {
+        const std::pair<double, double> extremums = (*it)->extremums(dir);
+        if(extremums.first < min) min = extremums.first;
+        if(extremums.second > max) max = extremums.second;
     }
 
     // Deal with surface itself
-    const std::pair< double, double > extremums =
-        getSurface (_faces[cnt]->surfaceIndex).extremums (dir);
-    if (extremums.first != -std::numeric_limits< double >::max ())
-        min = extremums.first;
-    if (extremums.second != std::numeric_limits< double >::max ())
-        max = extremums.second;
+    const std::pair<double, double> extremums =
+        getSurface(_faces[cnt]->surfaceIndex).extremums(dir);
+    if(extremums.first != -std::numeric_limits<double>::max()) min = extremums.first;
+    if(extremums.second != std::numeric_limits<double>::max()) max = extremums.second;
 
     return res;
 }
 
-TriMesh::Ptr BREP::faceTriMesh (std::size_t faceIndex)
-{
+TriMesh::Ptr BREP::faceTriMesh(std::size_t faceIndex) {
     std::size_t cnt = 0;
-    for (std::size_t i = 0; i < _faces.size () && cnt < faceIndex + 1; i++) {
-        if (_faces[i]->surfaceSet)
-            cnt++;
+    for(std::size_t i = 0; i < _faces.size() && cnt < faceIndex + 1; i++) {
+        if(_faces[i]->surfaceSet) cnt++;
     }
     cnt--;
 
     // Get the halfedges
-    std::list< const HalfEdge* > edges;
+    std::list<const HalfEdge*> edges;
     const HalfEdge* edge = _faces[cnt]->edge;
     do {
-        edges.push_back (edge);
+        edges.push_back(edge);
         edge = edge->nextEdge;
-    } while (edge != _faces[cnt]->edge);
+    } while(edge != _faces[cnt]->edge);
 
     // Construct loop polygon
-    std::vector< Vector3D<> > polygon3d;
-    for (std::list< const HalfEdge* >::const_iterator it = edges.begin (); it != edges.end ();
-         it++) {
-        const Curve& c                       = getCurve ((*it)->curveIndex);
-        const std::list< Vector3D<> > points = c.discretizeAdaptive (_resolution);
-        if (!(*it)->reversed)
-            polygon3d.insert (polygon3d.end (), points.begin (), --points.end ());
-        else
-            polygon3d.insert (polygon3d.end (), points.rbegin (), --points.rend ());
+    std::vector<Vector3D<>> polygon3d;
+    for(std::list<const HalfEdge*>::const_iterator it = edges.begin(); it != edges.end(); it++) {
+        const Curve& c                     = getCurve((*it)->curveIndex);
+        const std::list<Vector3D<>> points = c.discretizeAdaptive(_resolution);
+        if(!(*it)->reversed) polygon3d.insert(polygon3d.end(), points.begin(), --points.end());
+        else polygon3d.insert(polygon3d.end(), points.rbegin(), --points.rend());
     }
 
-    const Surface::Ptr surface = getSurface (_faces[cnt]->surfaceIndex).clone ();
-    surface->setDiscretizationResolution (_resolution);
-    return surface->getTriMesh (polygon3d);
+    const Surface::Ptr surface = getSurface(_faces[cnt]->surfaceIndex).clone();
+    surface->setDiscretizationResolution(_resolution);
+    return surface->getTriMesh(polygon3d);
 }
 
-void BREP::copyTopologyTo (BREP::Ptr brep) const
-{
-    brep->_vertices.resize (_vertices.size ());
-    brep->_edges.resize (_edges.size ());
-    brep->_faces.resize (_faces.size ());
+void BREP::copyTopologyTo(BREP::Ptr brep) const {
+    brep->_vertices.resize(_vertices.size());
+    brep->_edges.resize(_edges.size());
+    brep->_faces.resize(_faces.size());
 
-    for (std::size_t i = 0; i < _vertices.size (); i++) {
-        brep->_vertices[i] = new Vertex (_vertices[i]->point);
+    for(std::size_t i = 0; i < _vertices.size(); i++) {
+        brep->_vertices[i] = new Vertex(_vertices[i]->point);
     }
-    for (std::size_t i = 0; i < _edges.size (); i++) {
-        std::size_t v1 = _vertices.size ();
-        std::size_t v2 = _vertices.size ();
-        for (std::size_t vi = 0; vi < _vertices.size (); vi++) {
-            if (_edges[i].first->previousVertex == _vertices[vi])
-                v1 = vi;
-            if (_edges[i].first->nextVertex == _vertices[vi])
-                v2 = vi;
+    for(std::size_t i = 0; i < _edges.size(); i++) {
+        std::size_t v1 = _vertices.size();
+        std::size_t v2 = _vertices.size();
+        for(std::size_t vi = 0; vi < _vertices.size(); vi++) {
+            if(_edges[i].first->previousVertex == _vertices[vi]) v1 = vi;
+            if(_edges[i].first->nextVertex == _vertices[vi]) v2 = vi;
         }
-        if (v1 >= _vertices.size () || v2 >= _vertices.size ())
-            RW_THROW ("Make sure BREP is valid before scaling it.");
-        std::pair< HalfEdge*, HalfEdge* >& edge = brep->_edges[i];
-        edge.first                              = new HalfEdge (_edges[i].first->curveIndex);
-        edge.second                             = new HalfEdge (_edges[i].second->curveIndex);
-        edge.first->previousVertex              = brep->_vertices[v1];
-        edge.first->nextVertex                  = brep->_vertices[v2];
-        edge.first->oppositeEdge                = edge.second;
-        edge.first->reversed                    = _edges[i].first->reversed;
-        edge.second->previousVertex             = brep->_vertices[v2];
-        edge.second->nextVertex                 = brep->_vertices[v1];
-        edge.second->oppositeEdge               = edge.first;
-        edge.second->reversed                   = _edges[i].second->reversed;
+        if(v1 >= _vertices.size() || v2 >= _vertices.size())
+            RW_THROW("Make sure BREP is valid before scaling it.");
+        std::pair<HalfEdge*, HalfEdge*>& edge = brep->_edges[i];
+        edge.first                            = new HalfEdge(_edges[i].first->curveIndex);
+        edge.second                           = new HalfEdge(_edges[i].second->curveIndex);
+        edge.first->previousVertex            = brep->_vertices[v1];
+        edge.first->nextVertex                = brep->_vertices[v2];
+        edge.first->oppositeEdge              = edge.second;
+        edge.first->reversed                  = _edges[i].first->reversed;
+        edge.second->previousVertex           = brep->_vertices[v2];
+        edge.second->nextVertex               = brep->_vertices[v1];
+        edge.second->oppositeEdge             = edge.first;
+        edge.second->reversed                 = _edges[i].second->reversed;
     }
-    for (std::size_t i = 0; i < _vertices.size (); i++) {
-        for (std::size_t nei = 0; nei < _edges.size () && brep->_vertices[i]->nextEdge == NULL;
-             nei++) {
-            if (_edges[nei].first == _vertices[i]->nextEdge)
+    for(std::size_t i = 0; i < _vertices.size(); i++) {
+        for(std::size_t nei = 0; nei < _edges.size() && brep->_vertices[i]->nextEdge == NULL;
+            nei++) {
+            if(_edges[nei].first == _vertices[i]->nextEdge)
                 brep->_vertices[i]->nextEdge = brep->_edges[nei].first;
-            else if (_edges[nei].second == _vertices[i]->nextEdge)
+            else if(_edges[nei].second == _vertices[i]->nextEdge)
                 brep->_vertices[i]->nextEdge = brep->_edges[nei].second;
         }
-        if (brep->_vertices[i]->nextEdge == NULL)
-            RW_THROW ("Make sure BREP is valid before scaling it.");
+        if(brep->_vertices[i]->nextEdge == NULL)
+            RW_THROW("Make sure BREP is valid before scaling it.");
     }
     // Make the loops...
-    for (std::size_t i = 0; i < _faces.size (); i++) {
-        brep->_faces[i]               = new Face ();
+    for(std::size_t i = 0; i < _faces.size(); i++) {
+        brep->_faces[i]               = new Face();
         brep->_faces[i]->surfaceIndex = _faces[i]->surfaceIndex;
         brep->_faces[i]->surfaceSet   = _faces[i]->surfaceSet;
-        for (std::size_t nei = 0; nei < _edges.size () && brep->_faces[i]->edge == NULL; nei++) {
-            if (_edges[nei].first == _faces[i]->edge)
+        for(std::size_t nei = 0; nei < _edges.size() && brep->_faces[i]->edge == NULL; nei++) {
+            if(_edges[nei].first == _faces[i]->edge)
                 brep->_faces[i]->edge = brep->_edges[nei].first;
-            else if (_edges[nei].second == _faces[i]->edge)
+            else if(_edges[nei].second == _faces[i]->edge)
                 brep->_faces[i]->edge = brep->_edges[nei].second;
         }
-        if (brep->_faces[i]->edge == NULL)
-            RW_THROW ("Make sure BREP is valid before scaling it.");
+        if(brep->_faces[i]->edge == NULL) RW_THROW("Make sure BREP is valid before scaling it.");
     }
-    for (std::size_t i = 0; i < _edges.size (); i++) {
-        for (std::size_t fi = 0; fi < _faces.size () && (brep->_edges[i].first->face == NULL ||
-                                                         brep->_edges[i].second->face == NULL);
-             fi++) {
-            if (_faces[fi] == _edges[i].first->face)
-                brep->_edges[i].first->face = brep->_faces[fi];
-            if (_faces[fi] == _edges[i].second->face)
+    for(std::size_t i = 0; i < _edges.size(); i++) {
+        for(std::size_t fi = 0; fi < _faces.size() && (brep->_edges[i].first->face == NULL ||
+                                                       brep->_edges[i].second->face == NULL);
+            fi++) {
+            if(_faces[fi] == _edges[i].first->face) brep->_edges[i].first->face = brep->_faces[fi];
+            if(_faces[fi] == _edges[i].second->face)
                 brep->_edges[i].second->face = brep->_faces[fi];
         }
-        if (brep->_edges[i].first->face == NULL || brep->_edges[i].second->face == NULL)
-            RW_THROW ("Make sure BREP is valid before scaling it.");
+        if(brep->_edges[i].first->face == NULL || brep->_edges[i].second->face == NULL)
+            RW_THROW("Make sure BREP is valid before scaling it.");
 
-        for (std::size_t nei = 0; nei < _edges.size () && brep->_edges[i].first->nextEdge == NULL;
-             nei++) {
-            if (_edges[nei].first == _edges[i].first->nextEdge)
+        for(std::size_t nei = 0; nei < _edges.size() && brep->_edges[i].first->nextEdge == NULL;
+            nei++) {
+            if(_edges[nei].first == _edges[i].first->nextEdge)
                 brep->_edges[i].first->nextEdge = brep->_edges[nei].first;
-            else if (_edges[nei].second == _edges[i].first->nextEdge)
+            else if(_edges[nei].second == _edges[i].first->nextEdge)
                 brep->_edges[i].first->nextEdge = brep->_edges[nei].second;
         }
-        for (std::size_t nei = 0;
-             nei < _edges.size () && brep->_edges[i].first->previousEdge == NULL;
-             nei++) {
-            if (_edges[nei].first == _edges[i].first->previousEdge)
+        for(std::size_t nei = 0; nei < _edges.size() && brep->_edges[i].first->previousEdge == NULL;
+            nei++) {
+            if(_edges[nei].first == _edges[i].first->previousEdge)
                 brep->_edges[i].first->previousEdge = brep->_edges[nei].first;
-            else if (_edges[nei].second == _edges[i].first->previousEdge)
+            else if(_edges[nei].second == _edges[i].first->previousEdge)
                 brep->_edges[i].first->previousEdge = brep->_edges[nei].second;
         }
-        for (std::size_t nei = 0; nei < _edges.size () && brep->_edges[i].second->nextEdge == NULL;
-             nei++) {
-            if (_edges[nei].first == _edges[i].second->nextEdge)
+        for(std::size_t nei = 0; nei < _edges.size() && brep->_edges[i].second->nextEdge == NULL;
+            nei++) {
+            if(_edges[nei].first == _edges[i].second->nextEdge)
                 brep->_edges[i].second->nextEdge = brep->_edges[nei].first;
-            else if (_edges[nei].second == _edges[i].second->nextEdge)
+            else if(_edges[nei].second == _edges[i].second->nextEdge)
                 brep->_edges[i].second->nextEdge = brep->_edges[nei].second;
         }
-        for (std::size_t nei = 0;
-             nei < _edges.size () && brep->_edges[i].second->previousEdge == NULL;
-             nei++) {
-            if (_edges[nei].first == _edges[i].second->previousEdge)
+        for(std::size_t nei = 0;
+            nei < _edges.size() && brep->_edges[i].second->previousEdge == NULL;
+            nei++) {
+            if(_edges[nei].first == _edges[i].second->previousEdge)
                 brep->_edges[i].second->previousEdge = brep->_edges[nei].first;
-            else if (_edges[nei].second == _edges[i].second->previousEdge)
+            else if(_edges[nei].second == _edges[i].second->previousEdge)
                 brep->_edges[i].second->previousEdge = brep->_edges[nei].second;
         }
-        if (brep->_edges[i].first->nextEdge == NULL)
-            RW_THROW ("Make sure BREP is valid before scaling it.");
-        if (brep->_edges[i].first->previousEdge == NULL)
-            RW_THROW ("Make sure BREP is valid before scaling it.");
-        if (brep->_edges[i].second->nextEdge == NULL)
-            RW_THROW ("Make sure BREP is valid before scaling it.");
-        if (brep->_edges[i].second->previousEdge == NULL)
-            RW_THROW ("Make sure BREP is valid before scaling it.");
+        if(brep->_edges[i].first->nextEdge == NULL)
+            RW_THROW("Make sure BREP is valid before scaling it.");
+        if(brep->_edges[i].first->previousEdge == NULL)
+            RW_THROW("Make sure BREP is valid before scaling it.");
+        if(brep->_edges[i].second->nextEdge == NULL)
+            RW_THROW("Make sure BREP is valid before scaling it.");
+        if(brep->_edges[i].second->previousEdge == NULL)
+            RW_THROW("Make sure BREP is valid before scaling it.");
     }
 }
 
-void BREP::addBREPEdge (const std::size_t curveIndex, const std::size_t vertex1,
-                        const std::size_t vertex2)
-{
-    _edges.push_back (std::make_pair (new HalfEdge (curveIndex), new HalfEdge (curveIndex)));
-    _edges.back ().first->previousVertex  = _vertices[vertex1];
-    _edges.back ().first->nextVertex      = _vertices[vertex2];
-    _edges.back ().first->oppositeEdge    = _edges.back ().second;
-    _edges.back ().first->reversed        = false;
-    _edges.back ().second->previousVertex = _vertices[vertex2];
-    _edges.back ().second->nextVertex     = _vertices[vertex1];
-    _edges.back ().second->oppositeEdge   = _edges.back ().first;
-    _edges.back ().second->reversed       = true;
-    _edges.back ().first->nextEdge        = _edges.back ().second;
-    _edges.back ().first->previousEdge    = _edges.back ().second;
-    _edges.back ().second->nextEdge       = _edges.back ().first;
-    _edges.back ().second->previousEdge   = _edges.back ().first;
+void BREP::addBREPEdge(const std::size_t curveIndex, const std::size_t vertex1,
+                       const std::size_t vertex2) {
+    _edges.push_back(std::make_pair(new HalfEdge(curveIndex), new HalfEdge(curveIndex)));
+    _edges.back().first->previousVertex  = _vertices[vertex1];
+    _edges.back().first->nextVertex      = _vertices[vertex2];
+    _edges.back().first->oppositeEdge    = _edges.back().second;
+    _edges.back().first->reversed        = false;
+    _edges.back().second->previousVertex = _vertices[vertex2];
+    _edges.back().second->nextVertex     = _vertices[vertex1];
+    _edges.back().second->oppositeEdge   = _edges.back().first;
+    _edges.back().second->reversed       = true;
+    _edges.back().first->nextEdge        = _edges.back().second;
+    _edges.back().first->previousEdge    = _edges.back().second;
+    _edges.back().second->nextEdge       = _edges.back().first;
+    _edges.back().second->previousEdge   = _edges.back().first;
 
-    if (_vertices[vertex1]->nextEdge == NULL) {
-        _vertices[vertex1]->nextEdge = _edges.back ().first;
-    }
+    if(_vertices[vertex1]->nextEdge == NULL) { _vertices[vertex1]->nextEdge = _edges.back().first; }
     else {
-        HalfEdge* const vPrev = freeHalfEdge (*_vertices[vertex1]);
+        HalfEdge* const vPrev = freeHalfEdge(*_vertices[vertex1]);
         HalfEdge* const vNext = vPrev->nextEdge;
-        if (vPrev == vNext) {
+        if(vPrev == vNext) {
             // Circle...
         }
-        vPrev->nextEdge                    = _edges.back ().first;
-        _edges.back ().first->previousEdge = vPrev;
-        _edges.back ().second->nextEdge    = vNext;
-        vNext->previousEdge                = _edges.back ().second;
+        vPrev->nextEdge                   = _edges.back().first;
+        _edges.back().first->previousEdge = vPrev;
+        _edges.back().second->nextEdge    = vNext;
+        vNext->previousEdge               = _edges.back().second;
     }
-    if (vertex1 == vertex2)
-        return;
-    if (_vertices[vertex2]->nextEdge == NULL) {
-        _vertices[vertex2]->nextEdge = _edges.back ().second;
+    if(vertex1 == vertex2) return;
+    if(_vertices[vertex2]->nextEdge == NULL) {
+        _vertices[vertex2]->nextEdge = _edges.back().second;
     }
     else {
-        HalfEdge* const vPrev = freeHalfEdge (*_vertices[vertex2]);
+        HalfEdge* const vPrev = freeHalfEdge(*_vertices[vertex2]);
         HalfEdge* const vNext = vPrev->nextEdge;
-        if (vPrev == vNext) {
+        if(vPrev == vNext) {
             // Circle...
         }
-        vPrev->nextEdge                     = _edges.back ().second;
-        _edges.back ().second->previousEdge = vPrev;
-        _edges.back ().first->nextEdge      = vNext;
-        vNext->previousEdge                 = _edges.back ().first;
+        vPrev->nextEdge                    = _edges.back().second;
+        _edges.back().second->previousEdge = vPrev;
+        _edges.back().first->nextEdge      = vNext;
+        vNext->previousEdge                = _edges.back().first;
     }
 }
 
-void BREP::setBREPFace (std::size_t surfaceIndex, std::size_t loop)
-{
+void BREP::setBREPFace(std::size_t surfaceIndex, std::size_t loop) {
     _faces[loop]->surfaceIndex = surfaceIndex;
     _faces[loop]->surfaceSet   = true;
     HalfEdge* edge             = _faces[loop]->edge->nextEdge;
-    while (edge != _faces[loop]->edge) {
+    while(edge != _faces[loop]->edge) {
         edge->face = _faces[loop];
         edge       = edge->nextEdge;
     }
 }
 
-void BREP::print ()
-{
-    std::cout << "Vertices: " << _vertices.size () << std::endl;
-    for (std::size_t i = 0; i < _vertices.size (); i++) {
+void BREP::print() {
+    std::cout << "Vertices: " << _vertices.size() << std::endl;
+    for(std::size_t i = 0; i < _vertices.size(); i++) {
         std::cout << " ";
-        if (_vertices[i]->nextEdge == NULL) {
-            std::cout << " Edge NULL";
-        }
+        if(_vertices[i]->nextEdge == NULL) { std::cout << " Edge NULL"; }
         else {
             bool found = false;
-            for (std::size_t k = 0; k < _edges.size () && !found; k++) {
-                if (_vertices[i]->nextEdge == _edges[k].first) {
+            for(std::size_t k = 0; k < _edges.size() && !found; k++) {
+                if(_vertices[i]->nextEdge == _edges[k].first) {
                     std::cout << " Edge fwd " << k;
                     found = true;
                 }
-                else if (_vertices[i]->nextEdge == _edges[k].second) {
+                else if(_vertices[i]->nextEdge == _edges[k].second) {
                     std::cout << " Edge bwd " << k;
                     found = true;
                 }
             }
-            if (!found)
-                std::cout << "Edge not found " << _vertices[i]->nextEdge;
+            if(!found) std::cout << "Edge not found " << _vertices[i]->nextEdge;
         }
         std::cout << "  Point " << _vertices[i]->point << std::endl;
     }
-    std::cout << "Edges: " << _edges.size () << std::endl;
-    for (std::size_t i = 0; i < _edges.size (); i++) {
+    std::cout << "Edges: " << _edges.size() << std::endl;
+    for(std::size_t i = 0; i < _edges.size(); i++) {
         std::cout << " ";
 
-        if (_edges[i].first->previousVertex == NULL) {
-            std::cout << " Prev Vertex NULL";
-        }
+        if(_edges[i].first->previousVertex == NULL) { std::cout << " Prev Vertex NULL"; }
         else {
             bool found = false;
-            for (std::size_t k = 0; k < _vertices.size () && !found; k++) {
-                if (_edges[i].first->previousVertex == _vertices[k]) {
+            for(std::size_t k = 0; k < _vertices.size() && !found; k++) {
+                if(_edges[i].first->previousVertex == _vertices[k]) {
                     std::cout << " Prev Vertex " << k;
                     found = true;
                 }
             }
-            if (!found)
-                std::cout << "Vertex not found " << _edges[i].first->previousVertex;
+            if(!found) std::cout << "Vertex not found " << _edges[i].first->previousVertex;
         }
 
-        if (_edges[i].first->nextVertex == NULL) {
-            std::cout << " Next Vertex NULL";
-        }
+        if(_edges[i].first->nextVertex == NULL) { std::cout << " Next Vertex NULL"; }
         else {
             bool found = false;
-            for (std::size_t k = 0; k < _vertices.size () && !found; k++) {
-                if (_edges[i].first->nextVertex == _vertices[k]) {
+            for(std::size_t k = 0; k < _vertices.size() && !found; k++) {
+                if(_edges[i].first->nextVertex == _vertices[k]) {
                     std::cout << " Next Vertex " << k;
                     found = true;
                 }
             }
-            if (!found)
-                std::cout << "Vertex not found " << _edges[i].first->previousVertex;
+            if(!found) std::cout << "Vertex not found " << _edges[i].first->previousVertex;
         }
 
-        if (_edges[i].first->nextEdge == NULL) {
-            std::cout << " Next Edge NULL";
-        }
+        if(_edges[i].first->nextEdge == NULL) { std::cout << " Next Edge NULL"; }
         else {
             bool found = false;
-            for (std::size_t k = 0; k < _edges.size () && !found; k++) {
-                if (_edges[i].first->nextEdge == _edges[k].first) {
+            for(std::size_t k = 0; k < _edges.size() && !found; k++) {
+                if(_edges[i].first->nextEdge == _edges[k].first) {
                     std::cout << " Next Edge fwd " << k;
                     found = true;
                 }
-                else if (_edges[i].first->nextEdge == _edges[k].second) {
+                else if(_edges[i].first->nextEdge == _edges[k].second) {
                     std::cout << " Next Edge bwd " << k;
                     found = true;
                 }
             }
-            if (!found)
-                std::cout << "Edge not found " << _edges[i].first->nextEdge;
+            if(!found) std::cout << "Edge not found " << _edges[i].first->nextEdge;
         }
 
         /*
@@ -928,166 +822,166 @@ void BREP::print ()
 
         std::cout << std::endl;
     }
-    std::set< HalfEdge* > edges;
-    for (std::size_t i = 0; i < _edges.size (); i++) {
-        edges.insert (_edges[i].first);
-        edges.insert (_edges[i].second);
+    std::set<HalfEdge*> edges;
+    for(std::size_t i = 0; i < _edges.size(); i++) {
+        edges.insert(_edges[i].first);
+        edges.insert(_edges[i].second);
     }
     std::cout << "Connected halfedges:" << std::endl;
-    while (edges.size () > 0) {
-        HalfEdge* const begin = *edges.begin ();
+    while(edges.size() > 0) {
+        HalfEdge* const begin = *edges.begin();
         HalfEdge* current     = begin;
         std::cout << " ";
         do {
-            for (std::size_t k = 0; k < _edges.size (); k++) {
-                if (current == _edges[k].first) {
+            for(std::size_t k = 0; k < _edges.size(); k++) {
+                if(current == _edges[k].first) {
                     std::cout << " " << k + 1;
                     break;
                 }
-                else if (current == _edges[k].second) {
+                else if(current == _edges[k].second) {
                     std::cout << " -" << k + 1;
                     break;
                 }
             }
-            edges.erase (current);
+            edges.erase(current);
             current           = current->nextEdge;
             bool currentInSet = false;
-            for (std::set< HalfEdge* >::const_iterator eIt = edges.begin (); eIt != edges.end ();
-                 eIt++) {
-                if (*eIt == current) {
+            for(std::set<HalfEdge*>::const_iterator eIt = edges.begin(); eIt != edges.end();
+                eIt++) {
+                if(*eIt == current) {
                     currentInSet = true;
                     break;
                 }
             }
-            if (!currentInSet && current != begin) {
+            if(!currentInSet && current != begin) {
                 std::cout << "Repeated edge encountered! Current: ";
-                for (std::size_t k = 0; k < _edges.size (); k++) {
-                    if (current == _edges[k].first) {
+                for(std::size_t k = 0; k < _edges.size(); k++) {
+                    if(current == _edges[k].first) {
                         std::cout << " " << k + 1;
                         break;
                     }
-                    else if (current == _edges[k].second) {
+                    else if(current == _edges[k].second) {
                         std::cout << " -" << k + 1;
                         break;
                     }
                 }
                 break;
             }
-        } while (current != begin && edges.size () > 0);
+        } while(current != begin && edges.size() > 0);
         std::cout << std::endl;
     }
-    for (std::size_t i = 0; i < _edges.size (); i++) {
-        edges.insert (_edges[i].first);
-        edges.insert (_edges[i].second);
+    for(std::size_t i = 0; i < _edges.size(); i++) {
+        edges.insert(_edges[i].first);
+        edges.insert(_edges[i].second);
     }
     std::cout << "Connected halfedges backward:" << std::endl;
-    while (edges.size () > 0) {
-        HalfEdge* const begin = *edges.begin ();
+    while(edges.size() > 0) {
+        HalfEdge* const begin = *edges.begin();
         HalfEdge* current     = begin;
         std::cout << " ";
         do {
-            for (std::size_t k = 0; k < _edges.size (); k++) {
-                if (current == _edges[k].first) {
+            for(std::size_t k = 0; k < _edges.size(); k++) {
+                if(current == _edges[k].first) {
                     std::cout << " " << k + 1;
                     break;
                 }
-                else if (current == _edges[k].second) {
+                else if(current == _edges[k].second) {
                     std::cout << " -" << k + 1;
                     break;
                 }
             }
-            edges.erase (current);
+            edges.erase(current);
             current           = current->previousEdge;
             bool currentInSet = false;
-            for (std::set< HalfEdge* >::const_iterator eIt = edges.begin (); eIt != edges.end ();
-                 eIt++) {
-                if (*eIt == current) {
+            for(std::set<HalfEdge*>::const_iterator eIt = edges.begin(); eIt != edges.end();
+                eIt++) {
+                if(*eIt == current) {
                     currentInSet = true;
                     break;
                 }
             }
-            if (!currentInSet && current != begin) {
+            if(!currentInSet && current != begin) {
                 std::cout << "Repeated edge encountered! Current: ";
-                for (std::size_t k = 0; k < _edges.size (); k++) {
-                    if (current == _edges[k].first) {
+                for(std::size_t k = 0; k < _edges.size(); k++) {
+                    if(current == _edges[k].first) {
                         std::cout << " " << k + 1;
                         break;
                     }
-                    else if (current == _edges[k].second) {
+                    else if(current == _edges[k].second) {
                         std::cout << " -" << k + 1;
                         break;
                     }
                 }
                 break;
             }
-        } while (current != begin && edges.size () > 0);
+        } while(current != begin && edges.size() > 0);
         std::cout << std::endl;
     }
-    std::set< const HalfEdge* > faceEdges;
-    std::cout << "Faces: " << _faces.size () << std::endl;
-    for (std::size_t i = 0; i < _faces.size (); i++) {
+    std::set<const HalfEdge*> faceEdges;
+    std::cout << "Faces: " << _faces.size() << std::endl;
+    for(std::size_t i = 0; i < _faces.size(); i++) {
         const HalfEdge* const begin = _faces[i]->edge;
         const HalfEdge* current     = begin;
         std::cout << " ";
         do {
-            for (std::size_t k = 0; k < _edges.size (); k++) {
-                if (current == _edges[k].first) {
+            for(std::size_t k = 0; k < _edges.size(); k++) {
+                if(current == _edges[k].first) {
                     std::cout << " " << k + 1;
                     break;
                 }
-                else if (current == _edges[k].second) {
+                else if(current == _edges[k].second) {
                     std::cout << " -" << k + 1;
                     break;
                 }
             }
             current           = current->nextEdge;
             bool currentInSet = false;
-            for (std::set< const HalfEdge* >::const_iterator eIt = faceEdges.begin ();
-                 eIt != faceEdges.end ();
-                 eIt++) {
-                if (*eIt == current) {
+            for(std::set<const HalfEdge*>::const_iterator eIt = faceEdges.begin();
+                eIt != faceEdges.end();
+                eIt++) {
+                if(*eIt == current) {
                     currentInSet = true;
                     break;
                 }
             }
-            if (currentInSet && current != begin) {
+            if(currentInSet && current != begin) {
                 std::cout << "Repeated edge encountered! Current: ";
-                for (std::size_t k = 0; k < _edges.size (); k++) {
-                    if (current == _edges[k].first) {
+                for(std::size_t k = 0; k < _edges.size(); k++) {
+                    if(current == _edges[k].first) {
                         std::cout << " " << k + 1;
                         break;
                     }
-                    else if (current == _edges[k].second) {
+                    else if(current == _edges[k].second) {
                         std::cout << " -" << k + 1;
                         break;
                     }
                 }
                 std::cout << " Prev: ";
-                for (std::size_t k = 0; k < _edges.size (); k++) {
-                    if (current->previousEdge == _edges[k].first) {
+                for(std::size_t k = 0; k < _edges.size(); k++) {
+                    if(current->previousEdge == _edges[k].first) {
                         std::cout << " " << k + 1;
                         break;
                     }
-                    else if (current->previousEdge == _edges[k].second) {
+                    else if(current->previousEdge == _edges[k].second) {
                         std::cout << " -" << k + 1;
                         break;
                     }
                 }
                 std::cout << " Prev prev: ";
-                for (std::size_t k = 0; k < _edges.size (); k++) {
-                    if (current->previousEdge->previousEdge == _edges[k].first) {
+                for(std::size_t k = 0; k < _edges.size(); k++) {
+                    if(current->previousEdge->previousEdge == _edges[k].first) {
                         std::cout << " " << k + 1;
                         break;
                     }
-                    else if (current->previousEdge->previousEdge == _edges[k].second) {
+                    else if(current->previousEdge->previousEdge == _edges[k].second) {
                         std::cout << " -" << k + 1;
                         break;
                     }
                 }
                 break;
             }
-            faceEdges.insert (current);
-        } while (current != begin);
+            faceEdges.insert(current);
+        } while(current != begin);
 
         /*
         if (_faces[i]->surfaceSet) {

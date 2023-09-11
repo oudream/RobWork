@@ -46,38 +46,38 @@ namespace rwsim { namespace contacts {
     {
       public:
         //! @brief Smart pointer type.
-        typedef rw::core::Ptr< ContactStrategyTracking > Ptr;
+        typedef rw::core::Ptr<ContactStrategyTracking> Ptr;
 
         //! @brief Constructor.
-        ContactStrategyTracking ();
+        ContactStrategyTracking();
 
         /**
          * @brief Copy constructor.
          * @param tracking [in] the tracking information to copy.
          */
-        ContactStrategyTracking (const ContactStrategyTracking& tracking);
+        ContactStrategyTracking(const ContactStrategyTracking& tracking);
 
         //! @brief Destructor.
-        virtual ~ContactStrategyTracking ();
+        virtual ~ContactStrategyTracking();
 
         /**
          * @brief Assign data from other container to this container.
          * @param data [in] the data to copy.
          * @return reference to this container.
          */
-        ContactStrategyTracking& operator= (const ContactStrategyTracking& data);
+        ContactStrategyTracking& operator=(const ContactStrategyTracking& data);
 
         //! @brief Base struct that can be extended for user specific data.
         struct UserData
         {
             //! @brief Smart pointer type.
-            typedef rw::core::Ptr< const UserData > Ptr;
+            typedef rw::core::Ptr<const UserData> Ptr;
 
             //! @brief Constructor.
-            UserData () {}
+            UserData() {}
 
             //! @brief Destructor.
-            virtual ~UserData () {}
+            virtual ~UserData() {}
         };
 
         /**
@@ -85,76 +85,76 @@ namespace rwsim { namespace contacts {
          * @param index [in] the contact to get user data for.
          * @return pointer to user data, or NULL if no user data is set.
          */
-        virtual const UserData::Ptr getUserData (std::size_t index) const;
+        virtual const UserData::Ptr getUserData(std::size_t index) const;
 
         /**
          * @brief Attach user data to a given contact.
          * @param index [in] the contact to set user data for.
          * @param data [in] a pointer to the data.
          */
-        virtual void setUserData (std::size_t index, const UserData::Ptr data);
+        virtual void setUserData(std::size_t index, const UserData::Ptr data);
 
         /**
          * @brief Remove meta-data for a specific contact.
          * @param index [in] the contact to remove.
          */
-        virtual void remove (std::size_t index);
+        virtual void remove(std::size_t index);
 
         //! @brief Clear all tracking information.
-        virtual void clear ();
+        virtual void clear();
 
         /**
          * @brief Get the number of contacts tracked currently.
          * @return the number of tracked contacts.
          */
-        virtual std::size_t getSize () const;
+        virtual std::size_t getSize() const;
 
         //! @brief Base struct that can be extended for strategy specific data.
         struct StrategyData
         {
             //! @brief Constructor.
-            StrategyData () {}
+            StrategyData() {}
 
             //! @brief Destructor.
-            virtual ~StrategyData () {}
+            virtual ~StrategyData() {}
 
             /**
              * @brief Do a copy of the strategy data.
              * @return a new copy of the strategy data owned by the caller.
              */
-            virtual StrategyData* copy () const = 0;
+            virtual StrategyData* copy() const = 0;
 
             //! @copydoc rwsim::contacts::ContactStrategyTracking::getUserData
-            virtual const UserData::Ptr getUserData (std::size_t index) const = 0;
+            virtual const UserData::Ptr getUserData(std::size_t index) const = 0;
 
             //! @copydoc rwsim::contacts::ContactStrategyTracking::setUserData
-            virtual void setUserData (std::size_t index, const UserData::Ptr data) = 0;
+            virtual void setUserData(std::size_t index, const UserData::Ptr data) = 0;
 
             //! @copydoc rwsim::contacts::ContactStrategyTracking::remove
-            virtual void remove (std::size_t index) = 0;
+            virtual void remove(std::size_t index) = 0;
 
             //! @copydoc rwsim::contacts::ContactStrategyTracking::getSize
-            virtual std::size_t getSize () const = 0;
+            virtual std::size_t getSize() const = 0;
         };
 
         /**
          * @brief Get the current strategy data.
          * @return pointer to StrategyData, or NULL if none set.
          */
-        virtual StrategyData* getStrategyData () const;
+        virtual StrategyData* getStrategyData() const;
 
         /**
          * @brief Set the strategy data to store for tracking purposes.
          * @param data [in] a pointer to the strategy data.
          */
-        virtual void setStrategyData (StrategyData* data);
+        virtual void setStrategyData(StrategyData* data);
 
         /**
          * @brief Check whether data container has been initialized with strategy data.
          * @return true if initialized - NULL if not initialized, or if tracking is unsupported by
          * strategy.
          */
-        virtual bool isInitialized () const;
+        virtual bool isInitialized() const;
 
       private:
         StrategyData* _strategyData;

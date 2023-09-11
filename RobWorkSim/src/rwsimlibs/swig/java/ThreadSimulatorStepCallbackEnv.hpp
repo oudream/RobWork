@@ -37,18 +37,18 @@ namespace rwsimlibs { namespace swig {
     class ThreadSimulatorStepCallbackEnv : public rwsim::simulator::ThreadSimulator::StepCallback
     {
       public:
-        typedef void (*cThreadSimulatorStepCallback) (rwsim::simulator::ThreadSimulator*,
-                                                      rw::kinematics::State&, void*);
+        typedef void (*cThreadSimulatorStepCallback)(rwsim::simulator::ThreadSimulator*,
+                                                     rw::kinematics::State&, void*);
 
-        ThreadSimulatorStepCallbackEnv (const ThreadSimulatorStepCallbackEnv& cb);
-        ThreadSimulatorStepCallbackEnv (cThreadSimulatorStepCallback fct, void* userdata);
-        virtual ~ThreadSimulatorStepCallbackEnv ();
-        void set (cThreadSimulatorStepCallback fct, void* userdata);
-        void operator() (rwsim::simulator::ThreadSimulator* sim, rw::kinematics::State& state);
+        ThreadSimulatorStepCallbackEnv(const ThreadSimulatorStepCallbackEnv& cb);
+        ThreadSimulatorStepCallbackEnv(cThreadSimulatorStepCallback fct, void* userdata);
+        virtual ~ThreadSimulatorStepCallbackEnv();
+        void set(cThreadSimulatorStepCallback fct, void* userdata);
+        void operator()(rwsim::simulator::ThreadSimulator* sim, rw::kinematics::State& state);
 
       private:
-        void callback (rwsim::simulator::ThreadSimulator* sim, rw::kinematics::State& state,
-                       void* data);
+        void callback(rwsim::simulator::ThreadSimulator* sim, rw::kinematics::State& state,
+                      void* data);
 
         cThreadSimulatorStepCallback _cb;
         void* _data;

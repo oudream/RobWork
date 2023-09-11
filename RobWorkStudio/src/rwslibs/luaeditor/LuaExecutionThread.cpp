@@ -19,9 +19,9 @@
 
 extern "C"
 {
+#include <lauxlib.h>
 #include <lua.h>
 #include <lualib.h>
-#include <lauxlib.h>
 }
 
 #include <rw/core/Exception.hpp>
@@ -47,48 +47,43 @@ std::endl;
 }
 */
 
-void LuaExecutionThread::set (const std::string& cmd, rwlibs::swig::LuaState::Ptr lstate,
-                              rw::core::LogWriter::Ptr output)
-{
+void LuaExecutionThread::set(const std::string& cmd, rwlibs::swig::LuaState::Ptr lstate,
+                             rw::core::LogWriter::Ptr output) {
     _cmd    = cmd;
     _lua    = lstate;
     _output = output;
 }
 
-void LuaExecutionThread::run ()
-{
+void LuaExecutionThread::run() {
     // QObject::moveToThread(this);
     try {
         // const std::string cmd = _editor->textCursor().block().text().toStdString();
-        _resVal = luaL_loadbuffer (_lua->get (), _cmd.data (), _cmd.size (), "");
-        if (!_resVal)
-            _resVal = lua_pcall (_lua->get (), 0, 0, 0);
+        _resVal = luaL_loadbuffer(_lua->get(), _cmd.data(), _cmd.size(), "");
+        if(!_resVal) _resVal = lua_pcall(_lua->get(), 0, 0, 0);
 
-        if (_resVal) {
+        if(_resVal) {
             //_editor->setLineState(number, CodeEditor::ExecutedError);
             // processError(error, _lua->get(), _output);
 
-            if (_resVal) {
-                _resstring = lua_tostring (_lua->get (), -1);
+            if(_resVal) {
+                _resstring = lua_tostring(_lua->get(), -1);
                 (*_output) << _resstring << "\n";
-                lua_pop (_lua->get (), 1);
+                lua_pop(_lua->get(), 1);
             }
         }
     }
-    catch (const Exception& exp) {
+    catch(const Exception& exp) {
         // QMessageBox::critical(NULL, "Lua Editor", tr("Failed to execute script with message
         // '%1'").arg(exp.what()));
-        Log::errorLog () << "Lua: Failed to execute script with message \"" << exp.what ()
-                         << "\" \n";
+        Log::errorLog() << "Lua: Failed to execute script with message \"" << exp.what() << "\" \n";
     }
-    catch (std::exception& e) {
+    catch(std::exception& e) {
         // QMessageBox::critical(NULL, "Lua Editor", tr("Failed to execute script with message
         // '%1'").arg(e.what()));
-        Log::errorLog () << "Lua: Failed to execute script with message \"" << e.what () << "\" \n";
+        Log::errorLog() << "Lua: Failed to execute script with message \"" << e.what() << "\" \n";
     }
 }
 
-void LuaExecutionThread::stop ()
-{
-    luaL_error (_lua->get (), "User interupt!");
+void LuaExecutionThread::stop() {
+    luaL_error(_lua->get(), "User interupt!");
 }

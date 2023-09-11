@@ -19,8 +19,6 @@
 
 using namespace rw::trajectory;
 
-InterpolatorUtil::InterpolatorUtil ()
-{}
+InterpolatorUtil::InterpolatorUtil() {}
 
-InterpolatorUtil::~InterpolatorUtil ()
-{}
+InterpolatorUtil::~InterpolatorUtil() {}

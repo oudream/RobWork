@@ -64,93 +64,93 @@ namespace rwsimlibs { namespace bullet {
     {
       public:
         //! Construct new simulator.
-        BtSimulator ();
+        BtSimulator();
 
         /**
          * @brief Construct new simulator.
          * @param dwc [in] the dynamic workcell.
          */
-        BtSimulator (rw::core::Ptr< rwsim::dynamics::DynamicWorkCell > dwc);
+        BtSimulator(rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> dwc);
 
         //! @brief Destructor.
-        virtual ~BtSimulator ();
+        virtual ~BtSimulator();
 
         //! @copydoc rwsim::simulator::PhysicsEngine::load
-        void load (rw::core::Ptr< rwsim::dynamics::DynamicWorkCell > dwc);
+        void load(rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> dwc);
 
         //! @copydoc rwsim::simulator::PhysicsEngine::setContactDetector
-        bool setContactDetector (rw::core::Ptr< rwsim::contacts::ContactDetector > detector);
+        bool setContactDetector(rw::core::Ptr<rwsim::contacts::ContactDetector> detector);
 
         //! @copydoc rwsim::simulator::PhysicsEngine::step
-        void step (double dt, rw::kinematics::State& state);
+        void step(double dt, rw::kinematics::State& state);
 
         //! @copydoc rwsim::simulator::PhysicsEngine::resetScene
-        void resetScene (rw::kinematics::State& state);
+        void resetScene(rw::kinematics::State& state);
 
         //! @copydoc rwsim::simulator::PhysicsEngine::initPhysics
-        void initPhysics (rw::kinematics::State& state);
+        void initPhysics(rw::kinematics::State& state);
 
         //! @copydoc rwsim::simulator::PhysicsEngine::exitPhysics
-        void exitPhysics ();
+        void exitPhysics();
 
         //! @copydoc rwsim::simulator::PhysicsEngine::getTime
-        double getTime ();
+        double getTime();
 
         //! @copydoc rwsim::simulator::PhysicsEngine::setEnabled
-        void setEnabled (rw::core::Ptr< rwsim::dynamics::Body > body, bool enabled);
+        void setEnabled(rw::core::Ptr<rwsim::dynamics::Body> body, bool enabled);
 
         //! @copydoc rwsim::simulator::PhysicsEngine::setDynamicsEnabled
-        void setDynamicsEnabled (rw::core::Ptr< rwsim::dynamics::Body > body, bool enabled);
+        void setDynamicsEnabled(rw::core::Ptr<rwsim::dynamics::Body> body, bool enabled);
 
         //! @copydoc rwsim::simulator::PhysicsEngine::createDebugRender
-        rwsim::drawable::SimulatorDebugRender::Ptr createDebugRender ();
+        rwsim::drawable::SimulatorDebugRender::Ptr createDebugRender();
 
         //! @copydoc rwsim::simulator::PhysicsEngine::getPropertyMap
-        rw::core::PropertyMap& getPropertyMap ();
+        rw::core::PropertyMap& getPropertyMap();
 
         //! @copydoc rwsim::simulator::PhysicsEngine::emitPropertyChanged
-        void emitPropertyChanged ();
+        void emitPropertyChanged();
 
         //! @copydoc rwsim::simulator::PhysicsEngine::addController
-        void addController (rw::core::Ptr< rwlibs::simulation::SimulatedController > controller);
+        void addController(rw::core::Ptr<rwlibs::simulation::SimulatedController> controller);
 
         //! @copydoc rwsim::simulator::PhysicsEngine::removeController
-        void removeController (rw::core::Ptr< rwlibs::simulation::SimulatedController > controller);
+        void removeController(rw::core::Ptr<rwlibs::simulation::SimulatedController> controller);
 
         //! @copydoc rwsim::simulator::PhysicsEngine::addBody
-        void addBody (rw::core::Ptr< rwsim::dynamics::Body > body, rw::kinematics::State& state);
+        void addBody(rw::core::Ptr<rwsim::dynamics::Body> body, rw::kinematics::State& state);
 
         //! @copydoc rwsim::simulator::PhysicsEngine::addDevice
-        void addDevice (rw::core::Ptr< rwsim::dynamics::DynamicDevice > device,
-                        rw::kinematics::State& state);
+        void addDevice(rw::core::Ptr<rwsim::dynamics::DynamicDevice> device,
+                       rw::kinematics::State& state);
 
         //! @copydoc rwsim::simulator::PhysicsEngine::addSensor
-        void addSensor (rwlibs::simulation::SimulatedSensor::Ptr sensor,
-                        rw::kinematics::State& state);
+        void addSensor(rwlibs::simulation::SimulatedSensor::Ptr sensor,
+                       rw::kinematics::State& state);
 
         //! @copydoc rwsim::simulator::PhysicsEngine::removeSensor
-        void removeSensor (rwlibs::simulation::SimulatedSensor::Ptr sensor);
+        void removeSensor(rwlibs::simulation::SimulatedSensor::Ptr sensor);
 
         //! @copydoc rwsim::simulator::PhysicsEngine::attach
-        void attach (rw::core::Ptr< rwsim::dynamics::Body > b1,
-                     rw::core::Ptr< rwsim::dynamics::Body > b2);
+        void attach(rw::core::Ptr<rwsim::dynamics::Body> b1,
+                    rw::core::Ptr<rwsim::dynamics::Body> b2);
 
         //! @copydoc rwsim::simulator::PhysicsEngine::detach
-        void detach (rw::core::Ptr< rwsim::dynamics::Body > b1,
-                     rw::core::Ptr< rwsim::dynamics::Body > b2);
+        void detach(rw::core::Ptr<rwsim::dynamics::Body> b1,
+                    rw::core::Ptr<rwsim::dynamics::Body> b2);
 
         //! @copydoc rwsim::simulator::PhysicsEngine::getSensors
-        std::vector< rwlibs::simulation::SimulatedSensor::Ptr > getSensors ();
+        std::vector<rwlibs::simulation::SimulatedSensor::Ptr> getSensors();
 
         /**
          * @brief Add a Constraint between two bodies.
          * @param constraint [in] a pointer to the RobWork constraint.
          */
-        void addConstraint (rw::core::Ptr< const rwsim::dynamics::Constraint > constraint);
+        void addConstraint(rw::core::Ptr<const rwsim::dynamics::Constraint> constraint);
 
       private:
         rw::core::PropertyMap _propertyMap;
-        std::vector< rwlibs::simulation::SimulatedSensor::Ptr > _sensors;
+        std::vector<rwlibs::simulation::SimulatedSensor::Ptr> _sensors;
 
         btDiscreteDynamicsWorld* m_dynamicsWorld;
         btBroadphaseInterface* m_overlappingPairCache;
@@ -158,29 +158,29 @@ namespace rwsimlibs { namespace bullet {
         btConstraintSolver* m_solver;
         btCollisionConfiguration* m_collisionConfiguration;
 
-        rw::core::Ptr< const rwsim::dynamics::DynamicWorkCell > _dwc;
+        rw::core::Ptr<const rwsim::dynamics::DynamicWorkCell> _dwc;
         rwsim::dynamics::MaterialDataMap _materialMap;
         rwsim::dynamics::ContactDataMap _contactMap;
 
-        std::vector< rwsimlibs::bullet::BtBody* > _btBodies;
-        std::map< const rw::kinematics::Frame*, rwsimlibs::bullet::BtBody* > _rwFrameToBtBody;
-        std::map< rwsimlibs::bullet::BtBody*, rw::kinematics::Frame* > _rwBtBodyToFrame;
+        std::vector<rwsimlibs::bullet::BtBody*> _btBodies;
+        std::map<const rw::kinematics::Frame*, rwsimlibs::bullet::BtBody*> _rwFrameToBtBody;
+        std::map<rwsimlibs::bullet::BtBody*, rw::kinematics::Frame*> _rwBtBodyToFrame;
 
-        std::vector< BtConstraint* > _constraints;
-        std::vector< BtTactileSensor* > _btSensors;
+        std::vector<BtConstraint*> _constraints;
+        std::vector<BtTactileSensor*> _btSensors;
 
-        std::vector< rw::core::Ptr< rwsim::dynamics::DynamicDevice > > _devices;
+        std::vector<rw::core::Ptr<rwsim::dynamics::DynamicDevice>> _devices;
 
-        std::vector< BtDevice* > _btDevices;
+        std::vector<BtDevice*> _btDevices;
 
-        std::map< rw::models::Joint*, btTypedConstraint* > _jointToConstraintMap;
+        std::map<rw::models::Joint*, btTypedConstraint*> _jointToConstraintMap;
 
         rwsim::drawable::SimulatorDebugRender::Ptr _render;
 
-        std::vector< rw::core::Ptr< rwlibs::simulation::SimulatedController > > _controllers;
+        std::vector<rw::core::Ptr<rwlibs::simulation::SimulatedController>> _controllers;
 
-        rw::core::Ptr< rwsim::contacts::ContactDetector > _detector;
-        rw::core::Ptr< rwsim::contacts::ContactDetectorData > _detectorData;
+        rw::core::Ptr<rwsim::contacts::ContactDetector> _detector;
+        rw::core::Ptr<rwsim::contacts::ContactDetectorData> _detectorData;
 
         double _time, _dt;
         bool _initPhysicsHasBeenRun;

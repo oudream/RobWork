@@ -52,8 +52,8 @@ namespace rw { namespace geometry {
          * @param result [out] Indices of the vertices defining the triangles. The corners of the
          * n'th triangle is the points with indices result[3*n], result[3*n+1] and result[3*n+2]
          */
-        static bool processPoints (const std::vector< rw::math::Vector2D<> >& points,
-                                   std::vector< int >& result);
+        static bool processPoints(const std::vector<rw::math::Vector2D<>>& points,
+                                  std::vector<int>& result);
 
         /**
          * @brief Triangulates the polygon described by \b points
@@ -68,9 +68,9 @@ namespace rw { namespace geometry {
          * @param colinearCriteria [in] Criteria for when two edges are considered to be colinear
          * @param precision [in] Criteria for when two points are considered to be coinciding
          */
-        static bool processPoints (const std::vector< rw::math::Vector3D< double > >& contour,
-                                   std::vector< int >& result, double colinearCriteria = 1e-5,
-                                   double precision = 1e-5);
+        static bool processPoints(const std::vector<rw::math::Vector3D<double>>& contour,
+                                  std::vector<int>& result, double colinearCriteria = 1e-5,
+                                  double precision = 1e-5);
 
         /**
          * @brief Triangules the polygon \b polygon
@@ -84,23 +84,23 @@ namespace rw { namespace geometry {
          * @param colinearCriteria [in] Criteria for when two edges are considered to be colinear
          * @param precision [in] Criteria for when two points are considered to be coinciding
          */
-        static bool processPolygon (Polygon<>::Ptr polygon, std::vector< int >& result,
-                                    double colinearCriteria = 1e-5, double precision = 1e-5);
+        static bool processPolygon(Polygon<>::Ptr polygon, std::vector<int>& result,
+                                   double colinearCriteria = 1e-5, double precision = 1e-5);
 
         /**
          * @brief Computes area of the polygon defined by \b contour
          */
-        static double calcArea (const std::vector< rw::math::Vector2D<> >& contour);
+        static double calcArea(const std::vector<rw::math::Vector2D<>>& contour);
 
         /**
          * @brief Checks if the point (Px,Py) is inside the triangle (Ax,Ay), (Bx,By), (Cx,Cy)
          */
-        static bool insideTriangle2D (float Ax, float Ay, float Bx, float By, float Cx, float Cy,
-                                      float Px, float Py);
+        static bool insideTriangle2D(float Ax, float Ay, float Bx, float By, float Cx, float Cy,
+                                     float Px, float Py);
 
       private:
-        static bool snip (const std::vector< rw::math::Vector2D<> >& contour, int u, int v, int w,
-                          int n, int* V);
+        static bool snip(const std::vector<rw::math::Vector2D<>>& contour, int u, int v, int w,
+                         int n, int* V);
     };
 }}    // namespace rw::geometry
 

@@ -15,23 +15,18 @@
  * limitations under the License.
  *****************************************************************************/
 
-#include "MathGLPlot.hpp"
 #include "MathGLPlotGenerator.hpp"
+
+#include "MathGLPlot.hpp"
 
 using rw::core::ownedPtr;
 using rw::graphics::Plot;
 using namespace rwlibs::plots;
 
-MathGLPlotGenerator::MathGLPlotGenerator():
-    PlotGenerator()
-{
-}
+MathGLPlotGenerator::MathGLPlotGenerator() : PlotGenerator() {}
 
-MathGLPlotGenerator::~MathGLPlotGenerator()
-{
-}
+MathGLPlotGenerator::~MathGLPlotGenerator() {}
 
-Plot::Ptr MathGLPlotGenerator::makePlot()
-{
+Plot::Ptr MathGLPlotGenerator::makePlot() {
     return ownedPtr(new MathGLPlot());
 }

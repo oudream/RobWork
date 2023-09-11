@@ -41,12 +41,12 @@ namespace rw { namespace kinematics {
     {
       public:
         //! Smart pointer type
-        typedef rw::core::Ptr< StateCache > Ptr;
+        typedef rw::core::Ptr<StateCache> Ptr;
 
         /**
          * @brief destructor
          */
-        virtual ~StateCache (){};
+        virtual ~StateCache(){};
 
         /**
          * @brief An integer ID for the StateCache.
@@ -69,15 +69,15 @@ namespace rw { namespace kinematics {
          *
          * @return The number of doubles allocated by the StateCache
          */
-        virtual size_t size () const = 0;
+        virtual size_t size() const = 0;
 
         /**
          * @brief this creates a deep copy of this cache
          */
-        virtual rw::core::Ptr< StateCache > clone () const = 0;
+        virtual rw::core::Ptr<StateCache> clone() const = 0;
 
       protected:
-        StateCache (){};
+        StateCache(){};
         // StateCache should not be copied by other than its inherited class.
         // StateCache(const StateCache&);
         // StateCache& operator=(const StateCache&);

@@ -34,24 +34,24 @@ namespace rwlibs { namespace opengl {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< RenderPointCloud > Ptr;
+        typedef rw::core::Ptr<RenderPointCloud> Ptr;
 
         /**
          * @brief Constructs RenderPointCloud with no points
          */
-        RenderPointCloud ();
+        RenderPointCloud();
 
         /**
          * @brief Construct RenderPointCloud adding the points specified
          *
          * @param points [in] Points to draw
          */
-        RenderPointCloud (const std::vector< rw::math::Vector3D< float > >& points);
+        RenderPointCloud(const std::vector<rw::math::Vector3D<float>>& points);
 
         /**
          * @brief Descructor
          */
-        virtual ~RenderPointCloud ();
+        virtual ~RenderPointCloud();
 
         /**
          * @brief Adds a single line to the drawable
@@ -61,12 +61,12 @@ namespace rwlibs { namespace opengl {
          *
          * @param p [in] point to add
          */
-        void addPoint (const rw::math::Vector3D< float >& p);
+        void addPoint(const rw::math::Vector3D<float>& p);
 
         /**
          * @brief Adds a single line to the drawable
          */
-        void addPoint (const rw::math::Vector3D< double >& p);
+        void addPoint(const rw::math::Vector3D<double>& p);
 
         /**
          * @brief Adds a collection of points
@@ -75,13 +75,13 @@ namespace rwlibs { namespace opengl {
          *
          * @param points [in] List of points
          */
-        void addPoints (const std::vector< rw::math::Vector3D< float > >& points);
+        void addPoints(const std::vector<rw::math::Vector3D<float>>& points);
 
         /**
          * @brief Adds a collection of points
          * @param points
          */
-        void addPoints (const std::vector< rw::math::Vector3D< double > >& points);
+        void addPoints(const std::vector<rw::math::Vector3D<double>>& points);
 
         /**
          * @brief Sets the color of the points.
@@ -94,7 +94,7 @@ namespace rwlibs { namespace opengl {
          * @param b [in] blue [0;1]
          * @param alpha [in] alpha [0;1]
          */
-        void setColor (float r, float g, float b, float alpha);
+        void setColor(float r, float g, float b, float alpha);
 
         /**
          * @brief Sets point size.
@@ -103,28 +103,29 @@ namespace rwlibs { namespace opengl {
          * Calling setPointSize triggers an update of the display list
          * @param size [in] Point size
          */
-        void setPointSize (float size);
+        void setPointSize(float size);
 
         /**
          * @brief Clears all points
          *
          * When clearing the points a new display list without points will be generated.
          */
-        void clear ();
+        void clear();
 
-        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info, DrawableNode::DrawType type, double alpha) const
-        void draw (const rw::graphics::DrawableNode::RenderInfo& info,
-                   rw::graphics::DrawableNode::DrawType type, double alpha) const;
+        //! @copydoc rw::graphics::Render::draw(const DrawableNode::RenderInfo& info,
+        //! DrawableNode::DrawType type, double alpha) const
+        void draw(const rw::graphics::DrawableNode::RenderInfo& info,
+                  rw::graphics::DrawableNode::DrawType type, double alpha) const;
 
         /**
          * @brief Rerender the scene into the display list.
          * This method need to be called after all points has been added.
          */
-        void rerender ();
+        void rerender();
 
       private:
         std::string _id;
-        std::vector< rw::math::Vector3D< float > > _points;
+        std::vector<rw::math::Vector3D<float>> _points;
 
         float _r;
         float _g;
@@ -138,7 +139,7 @@ namespace rwlibs { namespace opengl {
      * @deprecated Use RenderPointCloud::Ptr instead. This type will be removed sometime in the
      * future.
      */
-    typedef rw::core::Ptr< RenderPointCloud > RenderPointCloudPtr;
+    typedef rw::core::Ptr<RenderPointCloud> RenderPointCloudPtr;
     //! @}
 }}    // namespace rwlibs::opengl
 

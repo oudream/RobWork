@@ -23,7 +23,7 @@
 #include <rw/models/JacobianCalculator.hpp>
 
 #include <vector>
-#endif 
+#endif
 
 namespace rw { namespace kinematics {
     class State;
@@ -56,28 +56,28 @@ namespace rw { namespace models {
          * @param tcps [in] List of tool end-effectors for which to calculate the Jacobian.
          * @param state [in] State giving how frame are connected
          */
-        DeviceJacobianCalculator (std::vector< rw::core::Ptr< rw::models::Device > > devices,
-                                  const rw::core::Ptr<rw::kinematics::Frame> base,
-                                  const std::vector< rw::kinematics::Frame* >& tcps,
-                                  const rw::kinematics::State& state);
+        DeviceJacobianCalculator(std::vector<rw::core::Ptr<rw::models::Device>> devices,
+                                 const rw::core::Ptr<rw::kinematics::Frame> base,
+                                 const std::vector<rw::kinematics::Frame*>& tcps,
+                                 const rw::kinematics::State& state);
 
         /**
          * @brief Destructor
          */
-        virtual ~DeviceJacobianCalculator ();
+        virtual ~DeviceJacobianCalculator();
 
         /**
          * @copydoc JacobianCalculator::get(const rw::kinematics::State&) const
          */
-        virtual rw::math::Jacobian get (const rw::kinematics::State& state) const;
+        virtual rw::math::Jacobian get(const rw::kinematics::State& state) const;
 
       private:
-        typedef std::vector< std::pair< const rw::models::Joint*, size_t > > JacobianSetup;
+        typedef std::vector<std::pair<const rw::models::Joint*, size_t>> JacobianSetup;
 
-        std::vector< JacobianSetup > _jacobianSetups;
-        std::vector< rw::core::Ptr< rw::models::Device > > _devices;
+        std::vector<JacobianSetup> _jacobianSetups;
+        std::vector<rw::core::Ptr<rw::models::Device>> _devices;
         const rw::core::Ptr<rw::kinematics::Frame> _base;
-        std::vector< rw::kinematics::Frame* > _tcps;
+        std::vector<rw::kinematics::Frame*> _tcps;
         size_t _dof;
     };
 

@@ -19,10 +19,9 @@
 #define RW_PROXIMITY_DISTANCECALCULATOR_HPP
 
 #if !defined(SWIG)
-#include <rw/proximity/DistanceStrategy.hpp>
-
 #include <rw/common/Timer.hpp>
 #include <rw/proximity/CollisionSetup.hpp>
+#include <rw/proximity/DistanceStrategy.hpp>
 #endif
 /**
  * @file DistanceCalculator.hpp
@@ -55,9 +54,9 @@ namespace rw { namespace proximity {
     {
       public:
         //! @brief smart pointer type to this class
-        typedef rw::core::Ptr< DistanceCalculator > Ptr;
+        typedef rw::core::Ptr<DistanceCalculator> Ptr;
         //! @brief smart pointer type to this const class
-        typedef rw::core::Ptr< const DistanceCalculator > CPtr;
+        typedef rw::core::Ptr<const DistanceCalculator> CPtr;
 
         /**
          * @brief Distance calculations for a given tree, collision setup and
@@ -78,10 +77,10 @@ namespace rw { namespace proximity {
          * @param initial_state [in] - the work cell state to use for the
          * initial traversal of the tree.
          */
-        DistanceCalculator (rw::core::Ptr<rw::kinematics::Frame> root,
-                            rw::core::Ptr< rw::models::WorkCell > workcell,
-                            rw::core::Ptr<rw::proximity::DistanceStrategy> strategy,
-                            const rw::kinematics::State& initial_state);
+        DistanceCalculator(rw::core::Ptr<rw::kinematics::Frame> root,
+                           rw::core::Ptr<rw::models::WorkCell> workcell,
+                           rw::core::Ptr<rw::proximity::DistanceStrategy> strategy,
+                           const rw::kinematics::State& initial_state);
 
         /**
          * @brief Construct distance calculator for a WorkCell with an associated
@@ -93,8 +92,8 @@ namespace rw { namespace proximity {
          * @param workcell [in] the workcell to check
          * @param strategy [in] the distance calculation strategy to use
          */
-        DistanceCalculator (rw::core::Ptr< rw::models::WorkCell > workcell,
-                            rw::core::Ptr<rw::proximity::DistanceStrategy> strategy);
+        DistanceCalculator(rw::core::Ptr<rw::models::WorkCell> workcell,
+                           rw::core::Ptr<rw::proximity::DistanceStrategy> strategy);
 
         /**
          * @brief Constructs distance calculator for a selected set of frames
@@ -108,12 +107,13 @@ namespace rw { namespace proximity {
          * @param pairs [in] Pairs of frame to check
          * @param strategy [in] the distance calculation strategy to use
          */
-        DistanceCalculator (const kinematics::FramePairList& pairs, rw::core::Ptr<rw::proximity::DistanceStrategy> strategy);
+        DistanceCalculator(const kinematics::FramePairList& pairs,
+                           rw::core::Ptr<rw::proximity::DistanceStrategy> strategy);
 
         /**
          * @brief Destructor
          */
-        virtual ~DistanceCalculator ();
+        virtual ~DistanceCalculator();
 
         /**
          * @brief Calculates the distances between frames in the tree
@@ -126,12 +126,12 @@ namespace rw { namespace proximity {
          * @return the shortest distance between frame and frame tree
          */
         rw::proximity::DistanceStrategy::Result
-        distance (const kinematics::State& state,
-                  std::vector< rw::proximity::DistanceStrategy::Result >* result = 0) const;
+        distance(const kinematics::State& state,
+                 std::vector<rw::proximity::DistanceStrategy::Result>* result = 0) const;
 
         rw::proximity::DistanceStrategy::Result
-        distanceOMP (const kinematics::State& state,
-                     std::vector< rw::proximity::DistanceStrategy::Result >* result = 0) const;
+        distanceOMP(const kinematics::State& state,
+                    std::vector<rw::proximity::DistanceStrategy::Result>* result = 0) const;
 
         /**
          * @brief Calculates the distance between frame and the rest of the tree
@@ -146,8 +146,8 @@ namespace rw { namespace proximity {
          * @return the shortest distance between frame and frame tree
          */
         rw::proximity::DistanceStrategy::Result
-        distance (const kinematics::State& state, const rw::core::Ptr<kinematics::Frame> frame,
-                  std::vector< rw::proximity::DistanceStrategy::Result >* result = 0) const;
+        distance(const kinematics::State& state, const rw::core::Ptr<kinematics::Frame> frame,
+                 std::vector<rw::proximity::DistanceStrategy::Result>* result = 0) const;
 
         /**
          * @brief Set the primitive distance calculator to \b strategy.
@@ -158,7 +158,7 @@ namespace rw { namespace proximity {
          *
          * @param strategy [in] - the primitive distance calculator to use.
          */
-        void setDistanceStrategy (rw::core::Ptr<rw::proximity::DistanceStrategy> strategy);
+        void setDistanceStrategy(rw::core::Ptr<rw::proximity::DistanceStrategy> strategy);
 
         /**
          * @brief Adds distance model to frame
@@ -170,21 +170,20 @@ namespace rw { namespace proximity {
          * @return true if a distance model was succesfully created and linked
          * with the frame; false otherwise.
          */
-        bool addDistanceModel (const rw::core::Ptr<rw::kinematics::Frame> frame,
-                               const rw::geometry::Geometry& faces);
+        bool addDistanceModel(const rw::core::Ptr<rw::kinematics::Frame> frame,
+                              const rw::geometry::Geometry& faces);
 
         /**
          * @brief Clears the cache of the distance models
          */
-        void clearCache ();
+        void clearCache();
 
-        double getComputationTime () { return _timer.getTime (); }
+        double getComputationTime() { return _timer.getTime(); }
 
-        int getCount () { return _cnt; }
+        int getCount() { return _cnt; }
 
-        void resetComputationTimeAndCount ()
-        {
-            _timer.resetAndPause ();
+        void resetComputationTimeAndCount() {
+            _timer.resetAndPause();
             _cnt = 0;
         }
 
@@ -203,20 +202,20 @@ namespace rw { namespace proximity {
         // The pairs of frames to check for distances.
         kinematics::FramePairList _distancePairs;
 
-        DistanceCalculator (const DistanceCalculator&);
-        DistanceCalculator& operator= (const DistanceCalculator&);
+        DistanceCalculator(const DistanceCalculator&);
+        DistanceCalculator& operator=(const DistanceCalculator&);
 
         /**
          * @brief Initializes the geometry of the workcell. The geometry is added to the used
          * strategy
          * @param wc [in] Pointer to workcell to import geometry from.
          */
-        void initializeGeometry (rw::core::Ptr< const rw::models::WorkCell > wc);
+        void initializeGeometry(rw::core::Ptr<const rw::models::WorkCell> wc);
         /**
          * @brief Initializes the distance pairs to collision check based on
          * collision setup of the workcell.
          */
-        void initializeDistancePairs ();
+        void initializeDistancePairs();
     };
 
 }}    // namespace rw::proximity

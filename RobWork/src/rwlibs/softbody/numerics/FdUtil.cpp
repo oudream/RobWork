@@ -19,16 +19,15 @@ Copyright 2013 The Robotics Group, The Maersk Mc-Kinney Moller Institute,
 
 using namespace rwlibs::softbody;
 
-void FdUtil::vectorDerivative (const Eigen::VectorXd& f, Eigen::VectorXd& df, const double h)
-{
-    assert (f.size () > 1);
+void FdUtil::vectorDerivative(const Eigen::VectorXd& f, Eigen::VectorXd& df, const double h) {
+    assert(f.size() > 1);
 
-    for (int i = 0; i < (int) f.size (); i++) {
-        if (0 == i) {
+    for(int i = 0; i < (int) f.size(); i++) {
+        if(0 == i) {
             // forward difference
             df[i] = (f[i + 1] - f[i]) / h;
         }
-        else if (i == (f.size () - 1)) {
+        else if(i == (f.size() - 1)) {
             // backward difference
             df[i] = (f[i] - f[i - 1]) / h;
         }

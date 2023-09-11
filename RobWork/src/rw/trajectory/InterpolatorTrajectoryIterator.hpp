@@ -32,7 +32,8 @@ namespace rw { namespace trajectory {
     /**
      * @brief Bi-directional iterator for running efficiently through a trajectory
      */
-    template< class T > class InterpolatorTrajectoryIterator : public rw::trajectory::TrajectoryIterator< T >
+    template<class T>
+    class InterpolatorTrajectoryIterator : public rw::trajectory::TrajectoryIterator<T>
     {
       public:
         /**
@@ -41,13 +42,11 @@ namespace rw { namespace trajectory {
          * @param trajectory [in] Trajectory to iterate through
          * @param dt [in] Default stepsize used for ++ and -- operators
          */
-        InterpolatorTrajectoryIterator (const InterpolatorTrajectory< T >* trajectory,
-                                        double dt = 1)
-        {
+        InterpolatorTrajectoryIterator(const InterpolatorTrajectory<T>* trajectory, double dt = 1) {
             _trajectory     = trajectory;
             _dt             = dt;
             _time           = 0;
-            _currentSegment = trajectory->_segments.begin ();
+            _currentSegment = trajectory->_segments.begin();
         }
 
         /**
@@ -58,40 +57,31 @@ namespace rw { namespace trajectory {
         /**
          * @copydoc rw::trajectory::TrajectoryIterator::getTime()
          */
-        double getTime () { return _time; }
+        double getTime() { return _time; }
 
         /**
          * @copydoc rw::trajectory::TrajectoryIterator::operator-=()
          */
-        void operator-= (double dt)
-        {
-            if (_time - dt < 0)
-                _time = 0;
-            else
-                _time -= dt;
-            while (_time < _currentSegment->t1)
-                _currentSegment--;
+        void operator-=(double dt) {
+            if(_time - dt < 0) _time = 0;
+            else _time -= dt;
+            while(_time < _currentSegment->t1) _currentSegment--;
         }
 
         /**
          * @copydoc rw::trajectory::TrajectoryIterator::operator+=()
          */
-        void operator+= (double dt)
-        {
-            if (_time + dt > _trajectory->duration ())
-                _time = _trajectory->duration ();
-            else
-                _time += dt;
-            while (_time > _currentSegment->t2)
-                _currentSegment++;
+        void operator+=(double dt) {
+            if(_time + dt > _trajectory->duration()) _time = _trajectory->duration();
+            else _time += dt;
+            while(_time > _currentSegment->t2) _currentSegment++;
         }
 
         /**
          * @copydoc rw::trajectory::TrajectoryIterator::operator++()
          */
 
-        rw::trajectory::TrajectoryIterator& operator++ ()
-        {
+        rw::trajectory::TrajectoryIterator& operator++() {
             (*this) += _dt;
             return *this;
         }
@@ -99,8 +89,7 @@ namespace rw { namespace trajectory {
         /**
          * @copydoc rw::trajectory::TrajectoryIterator::operator--()
          */
-        rw::trajectory::TrajectoryIterator& operator-- ()
-        {
+        rw::trajectory::TrajectoryIterator& operator--() {
             (*this) -= _dt;
             return *this;
         }
@@ -108,36 +97,36 @@ namespace rw { namespace trajectory {
         /**
          * @copydoc rw::trajectory::TrajectoryIterator::isEnd()
          */
-        bool isEnd () { return _time >= _trajectory->duration (); }
+        bool isEnd() { return _time >= _trajectory->duration(); }
 
         /**
          * @copydoc rw::trajectory::TrajectoryIterator::isBegin()
          */
-        bool isBegin () { return _time <= 0; }
+        bool isBegin() { return _time <= 0; }
 
         /**
          * @copydoc rw::trajectory::TrajectoryIterator::operator*()
          */
-        T operator* () const { return x (); }
+        T operator*() const { return x(); }
 
         /**
          * @copydoc rw::trajectory::TrajectoryIterator::x()
          */
-        T x () const { return _trajectory->getX (*_currentSegment, _time); }
+        T x() const { return _trajectory->getX(*_currentSegment, _time); }
 
         /**
          * @copydoc rw::trajectory::TrajectoryIterator::dx()
          */
-        T dx () const { return _trajectory->getDX (*_currentSegment, _time); }
+        T dx() const { return _trajectory->getDX(*_currentSegment, _time); }
 
         /**
          * @copydoc rw::trajectory::TrajectoryIterator::ddx()
          */
-        T ddx () const { return _trajectory->getDDX (*_currentSegment, _time); }
+        T ddx() const { return _trajectory->getDDX(*_currentSegment, _time); }
 
       private:
-        typename Trajectory< T >::SegmentList::const_iterator _currentSegment;
-        const Trajectory< T >* _trajectory;
+        typename Trajectory<T>::SegmentList::const_iterator _currentSegment;
+        const Trajectory<T>* _trajectory;
         double _time;
         double _dt;
     };

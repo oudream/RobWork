@@ -34,24 +34,24 @@ namespace rw { namespace sensor {
          * @brief constructor
          * @param timeStamp
          */
-        SensorData (long timeStamp = 0) : _stamp (timeStamp) {}
+        SensorData(long timeStamp = 0) : _stamp(timeStamp) {}
 
         /**
          * @brief Destructor
          */
-        virtual ~SensorData () {}
+        virtual ~SensorData() {}
 
         /**
          * @brief get timestamp of this sensor data
          * @return timestamp in ms
          */
-        virtual long getTimeStamp () { return _stamp; }
+        virtual long getTimeStamp() { return _stamp; }
 
         /**
          * @brief set timestamp of this sensor data
          * @param timestamp [in] time in ms
          */
-        virtual void setTimeStamp (long timestamp) { _stamp = timestamp; }
+        virtual void setTimeStamp(long timestamp) { _stamp = timestamp; }
 
       private:
         long _stamp;

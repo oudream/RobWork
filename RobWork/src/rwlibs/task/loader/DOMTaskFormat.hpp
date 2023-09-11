@@ -40,121 +40,121 @@ namespace rwlibs { namespace task {
          * @brief Identifier for rw::task::Task with rw::math::Q as content in the XML format.
          * @return the identifier.
          */
-        static const std::string& idQTask ();
+        static const std::string& idQTask();
 
         /**
          * @brief Identifier for CartesianTask.
          * @return the identifier.
          */
-        static const std::string& idCartesianTask ();
+        static const std::string& idCartesianTask();
 
         /**
          * @brief Identifier for Targets.
          * @return the identifier.
          */
-        static const std::string& idTargets ();
+        static const std::string& idTargets();
 
         /**
          * @brief Identifier for Entities.
          * @return the identifier.
          */
-        static const std::string& idEntities ();
+        static const std::string& idEntities();
 
         /**
          * @brief Identifier for Augmentations.
          * @return the identifier.
          */
-        static const std::string& idAugmentations ();
+        static const std::string& idAugmentations();
 
         /**
          * @brief Identifier for QTarget.
          * @return the identifier.
          */
-        static const std::string& idQTarget ();
+        static const std::string& idQTarget();
 
         /**
          * @brief Identifier for CartesianTarget.
          * @return the identifier.
          */
-        static const std::string& idCartesianTarget ();
+        static const std::string& idCartesianTarget();
 
         /**
          * @brief Identifier for Motion.
          * @return the identifier.
          */
-        static const std::string& idMotion ();
+        static const std::string& idMotion();
 
         /**
          * @brief Identifier for Action.
          * @return the identifier.
          */
-        static const std::string& idAction ();
+        static const std::string& idAction();
 
         /**
          * @brief Identifier for EntityIndex.
          * @return the identifier.
          */
-        static const std::string& idEntityIndex ();
+        static const std::string& idEntityIndex();
 
         /**
          * @brief Identifier for EntityId.
          * @return the identifier.
          */
-        static const std::string& idEntityId ();
+        static const std::string& idEntityId();
 
         /**
          * @brief Identifier for TargetIdAttr.
          * @return the identifier.
          */
-        static const std::string& idTargetIdAttr ();
+        static const std::string& idTargetIdAttr();
 
         /**
          * @brief Identifier for MotionTypeAttr.
          * @return the identifier.
          */
-        static const std::string& idMotionTypeAttr ();
+        static const std::string& idMotionTypeAttr();
 
         /**
          * @brief Identifier for MotionStart.
          * @return the identifier.
          */
-        static const std::string& idMotionStart ();
+        static const std::string& idMotionStart();
 
         /**
          * @brief Identifier for MotionMid.
          * @return the identifier.
          */
-        static const std::string& idMotionMid ();
+        static const std::string& idMotionMid();
 
         /**
          * @brief Identifier for MotionEnd.
          * @return the identifier.
          */
-        static const std::string& idMotionEnd ();
+        static const std::string& idMotionEnd();
 
         /**
          * @brief Identifier for LinearMotion.
          * @return the identifier.
          */
-        static const std::string& idLinearMotion ();
+        static const std::string& idLinearMotion();
 
         /**
          * @brief Identifier for P2PMotion.
          * @return the identifier.
          */
-        static const std::string& idP2PMotion ();
+        static const std::string& idP2PMotion();
 
         /**
          * @brief Identifier for CircularMotion.
          * @return the identifier.
          */
-        static const std::string& idCircularMotion ();
+        static const std::string& idCircularMotion();
 
         /**
          * @brief Identifier for ActionTypeAttr.
          * @return the identifier.
          */
-        static const std::string& idActionTypeAttr ();
+        static const std::string& idActionTypeAttr();
 
         /**
          * @brief Utility class which initializes local static variables.
@@ -171,14 +171,14 @@ namespace rwlibs { namespace task {
         {
           public:
             //! @brief Initializes when constructed.
-            Initializer ();
+            Initializer();
         };
 
       private:
         static const Initializer initializer;
 
-        DOMTaskFormat () {}
-        virtual ~DOMTaskFormat () {}
+        DOMTaskFormat() {}
+        virtual ~DOMTaskFormat() {}
     };
     //! @}
 }}    // namespace rwlibs::task

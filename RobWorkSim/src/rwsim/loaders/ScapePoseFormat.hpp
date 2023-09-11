@@ -62,20 +62,19 @@ namespace rwsim { namespace dynamics {
         /**
          * @brief save a single pose of all rigid bodies in a workcell.
          */
-        static void
-        savePoses (const std::string& FileNameAndPath,
-                   const std::vector< rw::core::Ptr< rwsim::dynamics::RigidBody > >& bodies,
-                   const rw::kinematics::State& state, const std::string& ObjectName,
-                   const std::string& SimulationDescription);
+        static void savePoses(const std::string& FileNameAndPath,
+                              const std::vector<rw::core::Ptr<rwsim::dynamics::RigidBody>>& bodies,
+                              const rw::kinematics::State& state, const std::string& ObjectName,
+                              const std::string& SimulationDescription);
 
         /**
          * @brief save a multiple pose of all rigid bodies in a workcell.
          */
-        static void
-        savePoses (const std::string& FileNameAndPath,
-                   const std::vector< rw::core::Ptr< rwsim::dynamics::RigidBody > >& bodies,
-                   const std::vector< rw::kinematics::State > states, const std::string& ObjectName,
-                   const std::string& SimulationDescription);
+        static void savePoses(const std::string& FileNameAndPath,
+                              const std::vector<rw::core::Ptr<rwsim::dynamics::RigidBody>>& bodies,
+                              const std::vector<rw::kinematics::State> states,
+                              const std::string& ObjectName,
+                              const std::string& SimulationDescription);
     };
     //! @}
 }}    // namespace rwsim::dynamics

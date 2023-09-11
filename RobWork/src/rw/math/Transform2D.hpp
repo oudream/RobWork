@@ -27,7 +27,7 @@
 #include <rw/math/Vector2D.hpp>
 
 #include <cassert>
-#endif 
+#endif
 
 namespace rw { namespace math {
 
@@ -49,10 +49,9 @@ namespace rw { namespace math {
      *
      */
 
-    template<class T>
-    struct Transform2DIdentity;
+    template<class T> struct Transform2DIdentity;
 
-    template< class T = double > class Transform2D
+    template<class T = double> class Transform2D
     {
       public:
         //! Value type.
@@ -63,14 +62,14 @@ namespace rw { namespace math {
          *
          * Initializes with 0 translation and Identity matrix as rotation
          */
-        Transform2D () : _d (), _R (Rotation2D< T >::identity ()) {}
+        Transform2D() : _d(), _R(Rotation2D<T>::identity()) {}
 
         /**
          * @brief Constructs a homogeneous transform
          * @param d [in] @f$ \mathbf{d} @f$ A 2x1 translation vector
          * @param R [in] @f$ \mathbf{R} @f$ A 2x2 rotation matrix
          */
-        Transform2D (const Vector2D< T >& d, const Rotation2D< T >& R) : _d (d), _R (R) {}
+        Transform2D(const Vector2D<T>& d, const Rotation2D<T>& R) : _d(d), _R(R) {}
 
         /**
          * @brief Constructs the identity transform
@@ -87,10 +86,7 @@ namespace rw { namespace math {
          * \right]
          * @f$
          */
-        static const Transform2D& identity ()
-        {
-            return Transform2DIdentity<T>::identity();
-        }
+        static const Transform2D& identity() { return Transform2DIdentity<T>::identity(); }
 
         /**
          * @brief Returns matrix element reference
@@ -98,14 +94,11 @@ namespace rw { namespace math {
          * @param col [in] col, col must be @f$ < 3 @f$
          * @return reference to matrix element
          */
-        T& operator() (std::size_t row, std::size_t col)
-        {
-            assert (row < 2);
-            assert (col < 3);
-            if (row < 2 && col < 2)
-                return _R (row, col);
-            else
-                return _d (row);
+        T& operator()(std::size_t row, std::size_t col) {
+            assert(row < 2);
+            assert(col < 3);
+            if(row < 2 && col < 2) return _R(row, col);
+            else return _d(row);
         }
 
         /**
@@ -114,14 +107,11 @@ namespace rw { namespace math {
          * @param col [in] col, col must be @f$ < 3 @f$
          * @return const reference to matrix element
          */
-        const T& operator() (std::size_t row, std::size_t col) const
-        {
-            assert (row < 2);
-            assert (col < 3);
-            if (row < 2 && col < 2)
-                return _R (row, col);
-            else
-                return _d (row);
+        const T& operator()(std::size_t row, std::size_t col) const {
+            assert(row < 2);
+            assert(col < 3);
+            if(row < 2 && col < 2) return _R(row, col);
+            else return _d(row);
         }
 
         /**
@@ -133,8 +123,7 @@ namespace rw { namespace math {
          * @param rhs [in] Transform to compare with
          * @return True if equal.
          */
-        bool operator==(const Transform2D<T>& rhs) const
-        {
+        bool operator==(const Transform2D<T>& rhs) const {
             return (R() == rhs.R()) && (P() == rhs.P());
         }
 
@@ -147,10 +136,7 @@ namespace rw { namespace math {
          * @param rhs [in] Transform to compare with
          * @return True if not equal.
          */
-        bool operator!=(const Transform2D<T>& rhs) const
-        {
-            return !(*this == rhs);
-        }
+        bool operator!=(const Transform2D<T>& rhs) const { return !(*this == rhs); }
 
         /**
            @brief Calculates @f$ \robabx{a}{c}{\mathbf{T}} =
@@ -171,9 +157,8 @@ namespace rw { namespace math {
            \right]
            @f$
         */
-        const Transform2D operator* (const Transform2D& bTc) const
-        {
-            return Transform2D (this->_d + this->_R * bTc._d, this->_R * bTc._R);
+        const Transform2D operator*(const Transform2D& bTc) const {
+            return Transform2D(this->_d + this->_R * bTc._d, this->_R * bTc._R);
         }
 
         /**
@@ -185,8 +170,7 @@ namespace rw { namespace math {
            @param bP [in] @f$ \robax{b}{\mathbf{p}} @f$
            @return @f$ \robax{a}{\mathbf{p}} @f$
         */
-        const Vector2D< T > operator* (const Vector2D< T >& bP) const
-        {
+        const Vector2D<T> operator*(const Vector2D<T>& bP) const {
             return this->_R * bP + this->_d;
         }
 
@@ -194,25 +178,25 @@ namespace rw { namespace math {
          * @brief Gets the rotation part @f$ \mathbf{R} @f$ from @f$ \mathbf{T} @f$
          * @return @f$ \mathbf{R} @f$
          */
-        Rotation2D< T >& R () { return _R; }
+        Rotation2D<T>& R() { return _R; }
 
         /**
          * @brief Gets the rotation part @f$ \mathbf{R} @f$ from @f$ \mathbf{T} @f$
          * @return @f$ \mathbf{R} @f$
          */
-        const Rotation2D< T >& R () const { return _R; }
+        const Rotation2D<T>& R() const { return _R; }
 
         /**
          * \brief Gets the position part @f$ \mathbf{d} @f$ from @f$ \mathbf{T} @f$
          * \return @f$ \mathbf{d} @f$
          */
-        Vector2D< T >& P () { return _d; }
+        Vector2D<T>& P() { return _d; }
 
         /**
          * @brief Gets the position part @f$ \mathbf{d} @f$ from @f$ \mathbf{T} @f$
          * @return @f$ \mathbf{d} @f$
          */
-        const Vector2D< T >& P () const { return _d; }
+        const Vector2D<T>& P() const { return _d; }
 
         /**
          * @brief Outputs transform to stream
@@ -220,39 +204,34 @@ namespace rw { namespace math {
          * @param t [in] the transform that is to be sent to the output stream
          * @return os
          */
-        friend std::ostream& operator<< (std::ostream& os, const Transform2D< T >& t)
-        {
-            return os << "Transform2D(" << t.P () << ", " << t.R () << ")";
+        friend std::ostream& operator<<(std::ostream& os, const Transform2D<T>& t) {
+            return os << "Transform2D(" << t.P() << ", " << t.R() << ")";
         }
 
       private:
-        Vector2D< T > _d;
-        Rotation2D< T > _R;
+        Vector2D<T> _d;
+        Rotation2D<T> _R;
     };
 
     extern const Transform2D<double> Transform2DDoubleIdentity;
     extern const Transform2D<float> Transform2DFloatIdentity;
 
-    template<class T>
-    struct Transform2DIdentity {
+    template<class T> struct Transform2DIdentity
+    {
         static const Transform2D<T>& identity() {
-            static const Transform2D<> id (Vector2D< T > (0, 0), Rotation2D< T >::identity ());
+            static const Transform2D<> id(Vector2D<T>(0, 0), Rotation2D<T>::identity());
             return id;
         }
     };
 
-    template<>
-    struct Transform2DIdentity<double> {
-        static const Transform2D<double>& identity() {
-            return Transform2DDoubleIdentity;
-        }
+    template<> struct Transform2DIdentity<double>
+    {
+        static const Transform2D<double>& identity() { return Transform2DDoubleIdentity; }
     };
 
-    template<>
-    struct Transform2DIdentity<float> {
-        static const Transform2D<float>& identity() {
-            return Transform2DFloatIdentity;
-        }
+    template<> struct Transform2DIdentity<float>
+    {
+        static const Transform2D<float>& identity() { return Transform2DFloatIdentity; }
     };
 
     /**
@@ -260,12 +239,10 @@ namespace rw { namespace math {
      * @param trans [in] Transform2D with type T
      * @return Transform2D with type Q
      */
-    template< class Q, class T > const Transform2D< Q > cast (const Transform2D< T >& trans)
-    {
-        Transform2D< Q > res;
-        for (size_t i = 0; i < 2; i++)
-            for (size_t j = 0; j < 3; j++)
-                res (i, j) = static_cast< Q > (trans (i, j));
+    template<class Q, class T> const Transform2D<Q> cast(const Transform2D<T>& trans) {
+        Transform2D<Q> res;
+        for(size_t i = 0; i < 2; i++)
+            for(size_t j = 0; j < 3; j++) res(i, j) = static_cast<Q>(trans(i, j));
 
         return res;
     }
@@ -287,13 +264,12 @@ namespace rw { namespace math {
      *
      * @f$
      */
-    template< class T > const Transform2D< T > inverse (const Transform2D< T >& aTb)
-    {
-        return Transform2D< T > (-(inverse (aTb.R ()) * aTb.P ()), inverse (aTb.R ()));
+    template<class T> const Transform2D<T> inverse(const Transform2D<T>& aTb) {
+        return Transform2D<T>(-(inverse(aTb.R()) * aTb.P()), inverse(aTb.R()));
     }
 
-    extern template class rw::math::Transform2D< double >;
-    extern template class rw::math::Transform2D< float >;
+    extern template class rw::math::Transform2D<double>;
+    extern template class rw::math::Transform2D<float>;
 
     using Transform2Dd = Transform2D<double>;
     using Transform2Df = Transform2D<float>;
@@ -311,23 +287,15 @@ namespace rw { namespace common {
          * @relatedalso rw::math::Transform2D
          */
         template<>
-        void write (const rw::math::Transform2D< double >& sobject,
-                    rw::common::OutputArchive& oarchive, const std::string& id);
+        void write(const rw::math::Transform2D<double>& sobject,
+                   rw::common::OutputArchive& oarchive, const std::string& id);
 
         /**
          * @copydoc rw::common::serialization::write
          * @relatedalso rw::math::Transform2D
          */
         template<>
-        void write (const rw::math::Transform2D< float >& sobject,
-                    rw::common::OutputArchive& oarchive, const std::string& id);
-
-        /**
-         * @copydoc rw::common::serialization::read
-         * @relatedalso rw::math::Transform2D
-         */
-        template<>
-        void read (rw::math::Transform2D< double >& sobject, rw::common::InputArchive& iarchive,
+        void write(const rw::math::Transform2D<float>& sobject, rw::common::OutputArchive& oarchive,
                    const std::string& id);
 
         /**
@@ -335,28 +303,33 @@ namespace rw { namespace common {
          * @relatedalso rw::math::Transform2D
          */
         template<>
-        void read (rw::math::Transform2D< float >& sobject, rw::common::InputArchive& iarchive,
-                   const std::string& id);
+        void read(rw::math::Transform2D<double>& sobject, rw::common::InputArchive& iarchive,
+                  const std::string& id);
+
+        /**
+         * @copydoc rw::common::serialization::read
+         * @relatedalso rw::math::Transform2D
+         */
+        template<>
+        void read(rw::math::Transform2D<float>& sobject, rw::common::InputArchive& iarchive,
+                  const std::string& id);
     }    // namespace serialization
 }}       // namespace rw::common
 
-namespace boost {
-    namespace serialization {
-        /**
-         * @brief Boost serialization.
-         * @param archive [in] the boost archive to read from or write to.
-         * @param transform [in/out] the transformation to read/write.
-         * @param version [in] class version (currently version 0).
-         * @relatedalso rw::math::Transform2D
-         */
-        template<class Archive, class T>
-        void serialize(Archive& archive, rw::math::Transform2D<T>& transform,
-            const unsigned int version)
-        {
-            archive& transform.P();
-            archive& transform.R();
-        }
+namespace boost { namespace serialization {
+    /**
+     * @brief Boost serialization.
+     * @param archive [in] the boost archive to read from or write to.
+     * @param transform [in/out] the transformation to read/write.
+     * @param version [in] class version (currently version 0).
+     * @relatedalso rw::math::Transform2D
+     */
+    template<class Archive, class T>
+    void serialize(Archive& archive, rw::math::Transform2D<T>& transform,
+                   const unsigned int version) {
+        archive& transform.P();
+        archive& transform.R();
     }
-} // end namespaces
+}}    // namespace boost::serialization
 
 #endif    // end include guard
