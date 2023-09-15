@@ -158,12 +158,14 @@ This way CMake and Qt automatically generates the ui_SamplePlugin.h file that we
 With Python
 ===========
 
+** OBS This only works for older versions of PySide2 that doesn't ship with QT **
 Plugins can also be made, in form of a python script. 
 To Enable this feature Python3-dev must be installed on the system,
 before compiling RobWorkStudio.
 Python plugins are in actuality a c++ plugin with a python interpreter loaded into it.
 To allow modification of the pluginGUI the c++ plugin starts by running a script in the python interpreter,
 before calling the user written python plugin.
+
 
 .. code-block:: python
 

@@ -22,3 +22,4 @@ how it is designed. This includes examples for both the C++, Python, Java and Lu
    manual/motionplanning
    manual/trajectories
    manual/simulated_sensors
+   manual/plugins_sdurws
