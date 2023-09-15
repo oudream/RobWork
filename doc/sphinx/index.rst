@@ -49,7 +49,6 @@ This documentation page includes tutorials on how to compile, install and use Ro
 - :ref:`tutorials` provides tutorials on more advanced topics.
 - :ref:`file_formats` is a reference for the XML format used to describe scenes in RobWork.
 - :ref:`interfaces` gives details about developing in different languages, such as C++, Python, Java & Lua.
-- :ref:`hardware` has an overview of the hardware that RobWork provides drivers for.
 - :ref:`contributing` gives information about coding standards and the procedure for contributing code to the RobWork project.
 - :ref:`scene_collection` shows the device and scene models available in RobWorkData.
 - :ref:`apidoc` provides a reference for the four supported languages: C++, Python, Java & Lua.
