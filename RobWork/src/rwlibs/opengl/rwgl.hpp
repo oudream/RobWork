@@ -21,16 +21,21 @@
 #include <rw/core/os.hpp>
 
 #if defined(RW_CYGWIN)
+#include <windows.h>
+
+/* Include windows.h before GL to ensure needed definitions are set for GL. */
 #include <GL/gl.h>
 #include <GL/glext.h>
 #include <GL/glu.h>    // Header File For The GLu32 Library
-#include <windows.h>
 #elif defined(RW_WIN32)
-#include <rwlibs/opengl/glext_win32.h>
+#include <windows.h>
 
+/* Include windows.h before GL to ensure needed definitions are set for GL. */
 #include <GL/gl.h>
 #include <GL/glu.h>    // Header File For The GLu32 Library
-#include <windows.h>
+
+/* Include GL before glext_win32 to ensure needed definitions are set for glext_win32. */
+#include <rwlibs/opengl/glext_win32.h>
 #elif defined(RW_MACOS)
 #include <OpenGL/gl.h>
 #include <OpenGL/glext.h>
