@@ -37,16 +37,16 @@ TaskDescriptionLoader::readTaskDescription(PTree& tree, rwsim::dynamics::Dynamic
 
     if(task->_wc == NULL) { RW_THROW(" NULL wc"); }
 
-    DEBUG << "Loading task description..." << endl;
+    DEBUG << "Loading task description..." << std::endl;
 
     readTarget(tree.get_child("Target"), task);
     readGripper(tree.get_child("Gripper"), task);
     readInterferenceObjects(tree.get_child("InterferenceObjects"), task);
     readLimits(tree.get_child("Limits"), task);
 
-    DEBUG << "- baseline" << endl;
+    DEBUG << "- baseline" << std::endl;
     readQualities(tree.get_child("Baseline"), task->_baseLine);
-    DEBUG << "- weights" << endl;
+    DEBUG << "- weights" << std::endl;
     readQualities(tree.get_child("Weights"), task->_weights);
 
     DEBUG << "- prefiltering distance: ";
@@ -54,7 +54,7 @@ TaskDescriptionLoader::readTaskDescription(PTree& tree, rwsim::dynamics::Dynamic
     task->_prefilteringDistance = XMLHelpers::readQ(node1);
     task->_prefilteringDistance(1) *= Deg2Rad;
     task->_prefilteringDistance(2) *= Deg2Rad;
-    DEBUG << task->_prefilteringDistance << endl;
+    DEBUG << task->_prefilteringDistance << std::endl;
 
     DEBUG << "- coverage distance: ";
     PTree& node2            = tree.get_child("CoverageDistance");
@@ -62,14 +62,14 @@ TaskDescriptionLoader::readTaskDescription(PTree& tree, rwsim::dynamics::Dynamic
     // task->_coverageDistance(6) *= Deg2Rad;
     task->_coverageDistance(1) *= Deg2Rad;
     task->_coverageDistance(2) *= Deg2Rad;
-    DEBUG << task->_coverageDistance << endl;
+    DEBUG << task->_coverageDistance << std::endl;
 
     DEBUG << "- teach distance: ";
     PTree& node3         = tree.get_child("TeachDistance");
     task->_teachDistance = XMLHelpers::readQ(node3);
     task->_teachDistance(3) *= Deg2Rad;
     task->_teachDistance(4) *= Deg2Rad;
-    DEBUG << task->_teachDistance << endl;
+    DEBUG << task->_teachDistance << std::endl;
 
     boost::optional<PTree&> node4 = tree.get_child_optional("HintGrasps");
     if(node4) { readHints(*node4, task); }
@@ -83,7 +83,7 @@ TaskDescriptionLoader::readTaskDescription(PTree& tree, rwsim::dynamics::Dynamic
     if(node6) {
         /*DEBUG << "- alignment parameters: ";
         Q params = XMLHelpers::readQ(*node6);
-        DEBUG << params << endl;
+        DEBUG << params << std::endl;
         task->_iterations = (int)params[0];
         task->_minInliers = (int)params[1];
         task->_dataThreshold = (double)params[2];
@@ -100,23 +100,23 @@ void TaskDescriptionLoader::readTarget(PTree& tree, TaskDescription::Ptr task) {
     string targetName = tree.get_value<string>();
     trim(targetName);
 
-    DEBUG << "- target name: [" << targetName << "]" << endl;
+    DEBUG << "- target name: [" << targetName << "]" << std::endl;
 
     task->_targetObject = task->_wc->findObject(targetName);
-    // DEBUG << task->_targetObject->getName() << endl;
+    // DEBUG << task->_targetObject->getName() << std::endl;
     task->_targetFrame = task->_targetObject->getBase();
 
     if(!task->_targetObject) { RW_THROW("Cannot find target object!"); }
 }
 
 void TaskDescriptionLoader::readGripper(PTree& tree, TaskDescription::Ptr task) {
-    DEBUG << "- gripper" << endl;
+    DEBUG << "- gripper" << std::endl;
 
     // read name
     PTree& nameNode    = tree.get_child("Name");
     string gripperName = nameNode.get_value<string>();
     trim(gripperName);
-    DEBUG << "\t name: [" << gripperName << "]" << endl;
+    DEBUG << "\t name: [" << gripperName << "]" << std::endl;
     task->_gripperID     = gripperName;
     task->_gripperDevice = task->_wc->findDevice<TreeDevice>(gripperName);
     if(!task->_gripperDevice) { RW_THROW("Gripper device not found!"); }
@@ -127,7 +127,7 @@ void TaskDescriptionLoader::readGripper(PTree& tree, TaskDescription::Ptr task) 
     PTree& tcpNode = tree.get_child("TCP");
     string tcpName = tcpNode.get_value<string>();
     trim(tcpName);
-    DEBUG << "\t tcp frame: [" << tcpName << "]" << endl;
+    DEBUG << "\t tcp frame: [" << tcpName << "]" << std::endl;
     task->_gripperTCP = task->_wc->findFrame(tcpName);
     if(!task->_gripperTCP) { RW_THROW("Gripper TCP frame not found!"); }
 
@@ -135,7 +135,7 @@ void TaskDescriptionLoader::readGripper(PTree& tree, TaskDescription::Ptr task) 
     PTree& movNode     = tree.get_child("Movable");
     string movableName = movNode.get_value<string>();
     trim(movableName);
-    DEBUG << "\t movable frame: [" << movableName << "]" << endl;
+    DEBUG << "\t movable frame: [" << movableName << "]" << std::endl;
     task->_gripperMovable = task->_wc->findFrame<MovableFrame>(movableName);
     if(!task->_gripperMovable) { RW_THROW("Gripper movable frame not found!"); }
 
@@ -143,19 +143,19 @@ void TaskDescriptionLoader::readGripper(PTree& tree, TaskDescription::Ptr task) 
     PTree& ctrlrNode = tree.get_child("Controller");
     string ctrlrName = ctrlrNode.get_value<string>();
     trim(ctrlrName);
-    DEBUG << "\t controller: [" << ctrlrName << "]" << endl;
+    DEBUG << "\t controller: [" << ctrlrName << "]" << std::endl;
     task->_controllerID = ctrlrName;
 }
 
 void TaskDescriptionLoader::readInterferenceObjects(PTree& tree, TaskDescription::Ptr task) {
-    DEBUG << "- interference objects" << endl;
+    DEBUG << "- interference objects" << std::endl;
 
     for(CI p = tree.begin(); p != tree.end(); ++p) {
         if(p->first == "Object") {
             string objName = p->second.get_value<string>();
             trim(objName);
 
-            DEBUG << "\t object: [" << objName << "]" << endl;
+            DEBUG << "\t object: [" << objName << "]" << std::endl;
 
             Object::Ptr obj = task->_wc->findObject(objName);
             if(obj == NULL) { RW_THROW("Interference object not found!"); }
@@ -166,23 +166,23 @@ void TaskDescriptionLoader::readInterferenceObjects(PTree& tree, TaskDescription
 }
 
 void TaskDescriptionLoader::readLimits(PTree& tree, TaskDescription::Ptr task) {
-    DEBUG << "- limits" << endl;
+    DEBUG << "- limits" << std::endl;
 
     DEBUG << "\tInterference limit: ";
     PTree& intChild          = tree.get_child("Interference");
     task->_interferenceLimit = XMLHelpers::readDouble(intChild);
-    DEBUG << task->_interferenceLimit << endl;
+    DEBUG << task->_interferenceLimit << std::endl;
 
     DEBUG << "\tWrench limit: ";
     PTree& wrenchChild = tree.get_child("Wrench");
     task->_wrenchLimit = XMLHelpers::readDouble(wrenchChild);
-    DEBUG << task->_wrenchLimit << endl;
+    DEBUG << task->_wrenchLimit << std::endl;
 
     boost::optional<PTree&> stressNode = tree.get_child_optional("Stress");
     if(stressNode) {
         DEBUG << "\tStress limit: ";
         task->_stressLimit = XMLHelpers::readDouble(stressNode.get());
-        DEBUG << task->_stressLimit << endl;
+        DEBUG << task->_stressLimit << std::endl;
     }
     else { task->_stressLimit = 0.0; }
 }
@@ -191,29 +191,29 @@ void TaskDescriptionLoader::readQualities(PTree& tree, TaskDescription::Qualitie
     /*DEBUG << "\tShape: ";
     PTree& node1 = tree.get_child("Shape");
     q.shape = XMLHelpers::readDouble(node1);
-    DEBUG << q.shape << endl;*/
+    DEBUG << q.shape << std::endl;*/
 
     DEBUG << "\tCoverage: ";
     PTree& node2 = tree.get_child("Coverage");
     q.coverage   = XMLHelpers::readDouble(node2);
-    DEBUG << q.coverage << endl;
+    DEBUG << q.coverage << std::endl;
 
     DEBUG << "\tSuccess ratio: ";
     PTree& node3 = tree.get_child("SuccessRatio");
     q.success    = XMLHelpers::readDouble(node3);
-    DEBUG << q.success << endl;
+    DEBUG << q.success << std::endl;
 
     DEBUG << "\tWrench: ";
     PTree& node4 = tree.get_child("Wrench");
     q.wrench     = XMLHelpers::readDouble(node4);
-    DEBUG << q.wrench << endl;
+    DEBUG << q.wrench << std::endl;
 
     // read optional stress & volume weights
     boost::optional<PTree&> stressNode = tree.get_child_optional("Stress");
     if(stressNode) {
         DEBUG << "\tStress: ";
         q.stress = XMLHelpers::readDouble(stressNode.get());
-        DEBUG << q.stress << endl;
+        DEBUG << q.stress << std::endl;
     }
     else { q.stress = 1.0; }
 
@@ -221,7 +221,7 @@ void TaskDescriptionLoader::readQualities(PTree& tree, TaskDescription::Qualitie
     if(volumeNode) {
         DEBUG << "\tVolume: ";
         q.volume = XMLHelpers::readDouble(volumeNode.get());
-        DEBUG << q.volume << endl;
+        DEBUG << q.volume << std::endl;
     }
     else { q.volume = 0.0; }
 
@@ -229,7 +229,7 @@ void TaskDescriptionLoader::readQualities(PTree& tree, TaskDescription::Qualitie
     if(alignmentNode) {
         DEBUG << "\tAlignment: ";
         q.alignment = XMLHelpers::readDouble(alignmentNode.get());
-        DEBUG << q.alignment << endl;
+        DEBUG << q.alignment << std::endl;
     }
     else { q.alignment = 0.0; }
 }
@@ -252,7 +252,7 @@ TaskDescription::Ptr TaskDescriptionLoader::load(const std::string& filename,
 }
 
 void TaskDescriptionLoader::readHints(rwlibs::xml::PTree& tree, TaskDescription::Ptr task) {
-    DEBUG << "- hints" << endl;
+    DEBUG << "- hints" << std::endl;
 
     for(CI p = tree.begin(); p != tree.end(); ++p) {
         if(p->first == "Grasp") readGrasp(p->second, task);
@@ -263,7 +263,7 @@ void TaskDescriptionLoader::readGrasp(rwlibs::xml::PTree& tree, TaskDescription:
     DEBUG << "\tGrasp: ";
     Q posq = XMLHelpers::readQ(tree.get_child("Pos"));
     Q rpyq = XMLHelpers::readQ(tree.get_child("RPY"));
-    DEBUG << "pos=" << posq << " rot=" << rpyq << endl;
+    DEBUG << "pos=" << posq << " rot=" << rpyq << std::endl;
 
     Vector3D<> pos(posq[0], posq[1], posq[2]);
     RPY<> rpy(rpyq[0], rpyq[1], rpyq[2]);
@@ -272,7 +272,7 @@ void TaskDescriptionLoader::readGrasp(rwlibs::xml::PTree& tree, TaskDescription:
 
 /*void TaskDescriptionLoader::readAlignments(rwlibs::xml::PTree& tree, TaskDescription::Ptr task)
 {
-        DEBUG << "- alignments" << endl;
+        DEBUG << "- alignments" << std::endl;
 
         for (CI p = tree.begin(); p != tree.end(); ++p) {
                 if (p->first == "Alignment") readAlignment(p->second, task);
@@ -287,7 +287,7 @@ void TaskDescriptionLoader::readAlignment(rwlibs::xml::PTree& tree, TaskDescript
         Q posq = XMLHelpers::readQ(tree.get_child("Pos"));
         Q rpyq = XMLHelpers::readQ(tree.get_child("RPY"));
         Q distq = XMLHelpers::readQ(tree.get_child("Dist"));
-        DEBUG << "pos=" << posq << " rot=" << rpyq << " dist=" << distq << endl;
+        DEBUG << "pos=" << posq << " rot=" << rpyq << " dist=" << distq << std::endl;
 
         Vector3D<> pos(posq[0], posq[1], posq[2]);
         RPY<> rpy(rpyq[0], rpyq[1], rpyq[2]);
@@ -297,13 +297,13 @@ void TaskDescriptionLoader::readAlignment(rwlibs::xml::PTree& tree, TaskDescript
 void TaskDescriptionLoader::readAlignment(rwlibs::xml::PTree& tree, TaskDescription::Ptr task) {
     DEBUG << "\tAlignment model: ";
     string model = tree.get_child("Model").get_value<string>();
-    DEBUG << "model: " << model << endl;
+    DEBUG << "model: " << model << std::endl;
     if(model == "StablePose0D") { task->_alignmentModel = TaskDescription::STABLEPOSE0D; }
     else if(model == "StablePose1D") { task->_alignmentModel = TaskDescription::STABLEPOSE1D; }
 
     DEBUG << "\tAlignment parameters: ";
     Q params = XMLHelpers::readQ(tree.get_child("Parameters"));
-    DEBUG << "parameters:" << params << endl;
+    DEBUG << "parameters:" << params << std::endl;
 
     task->_iterations     = (int) params[0];
     task->_minInliers     = (int) params[1];

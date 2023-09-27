@@ -129,7 +129,7 @@ namespace rwsim { namespace simulator {
          * @param detector [in] the contact detector to use
          */
         ODESimulator(dynamics::DynamicWorkCell::Ptr dwc,
-                     rw::core::Ptr<rwsim::contacts::ContactDetector> detector = NULL);
+                     rw::core::Ptr<rwsim::contacts::BaseContactDetector> detector = NULL);
 
         /**
          * @brief destructor
@@ -140,7 +140,7 @@ namespace rwsim { namespace simulator {
         void load(rwsim::dynamics::DynamicWorkCell::Ptr dwc);
 
         //! @copydoc PhysicsEngine::setContactDetector
-        bool setContactDetector(rw::core::Ptr<rwsim::contacts::ContactDetector> detector);
+        bool setContactDetector(rw::core::Ptr<rwsim::contacts::BaseContactDetector> detector);
 
         /**
          * @brief sets the ODE step method that should be used for stepping
@@ -318,29 +318,6 @@ namespace rwsim { namespace simulator {
         };
 
       public:
-        /*
-        ODEBody* createBody(dynamics::Body* bframe, const rw::kinematics::State& state, dSpaceID
-spaceid);
-
-
-        // create bodies that match rw bodies
-        ODEBody* createRigidBody(dynamics::Body* bframe,
-                        const rw::kinematics::State& state,
-                        dSpaceID spaceid);
-
-ODEBody* createKinematicBody(
-                        dynamics::Body* kbody,
-                        const rw::kinematics::State& state,
-                        dSpaceID spaceid);
-
-ODEBody* createFixedBody(dynamics::Body* bframe,
-                        const rw::kinematics::State& state,
-                        dSpaceID spaceid);
-
-        */
-
-        //
-
         double getMaxSeperatingDistance();
 
         dSpaceID getODESpace() { return _spaceId; };
@@ -458,7 +435,7 @@ ODEBody* createFixedBody(dynamics::Body* bframe,
         rw::kinematics::FrameMap<rw::core::Ptr<rw::proximity::ProximityModel>> _frameToModels;
         boost::mutex _contactMutex;
 
-        rw::core::Ptr<rwsim::contacts::ContactDetector> _detector;
+        rw::core::Ptr<rwsim::contacts::BaseContactDetector> _detector;
 
         bool _logContactingBodies;
         std::vector<boost::tuple<std::string, std::string, dynamics::ContactPoint>> _contactPoints,

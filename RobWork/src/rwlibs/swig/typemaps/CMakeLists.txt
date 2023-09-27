@@ -19,7 +19,6 @@ generate_pointer_converters(
     "toFrame"
 )
 
-
 generate_pointer_converters(
     "rw::kinematics::StateData"
     TYPES
@@ -71,52 +70,57 @@ generate_pointer_converters(
     "toJoint"
 )
 
-generate_pointer_converters(
-    "rw::trajectory::Trajectory<rw::math::Q>"
+generate_template_pointer_converters(
+    "rw::trajectory::Trajectory"
     TYPES
-    "rw::trajectory::InterpolatorTrajectory<rw::math::Q>"
+    "rw::trajectory::InterpolatorTrajectory"
+    "rw::trajectory::TrajectorySequence"
     "int"
+    TEMPLATES
+    "rw::math::Q"
+    "rw::math::Vector3D<double>"
+    "rw::math::Vector2D<double>"
+    "rw::math::Quaternion<double>"
     CONVERTER
-    "toTrajectoryQ"
+    "toTrajectory"
 )
 
-generate_pointer_converters(
-    "rw::trajectory::Blend< rw::math::Vector2D<double>>"
+generate_template_pointer_converters(
+    "rw::trajectory::Blend"
     TYPES
-    "rw::trajectory::ParabolicBlend< rw::math::Vector2D<double>>"
+    "rw::trajectory::ParabolicBlend"
+    "rw::trajectory::LloydHaywardBlend"
     "int"
+    TEMPLATES
+    "rw::math::Q"
+    "rw::math::Vector3D<double>"
+    "rw::math::Vector2D<double>"
+    "rw::math::Quaternion<double>"
     CONVERTER
-    "toBlendVector2D"
+    "toBlend"
 )
 
-generate_pointer_converters(
-    "rw::trajectory::Interpolator< rw::math::Vector2D<double>>"
+generate_template_pointer_converters(
+    "rw::trajectory::Interpolator"
     TYPES
-    "rw::trajectory::LinearInterpolator< rw::math::Vector2D<double>>"
-    "rw::trajectory::RampInterpolator < rw::math::Vector2D<double>>"
-    "rw::trajectory::CubicSplineInterpolator< rw::math::Vector2D<double>>"
+    "rw::trajectory::LinearInterpolator"
+    "rw::trajectory::RampInterpolator"
+    "rw::trajectory::CubicSplineInterpolator"
     "int"
+    TEMPLATES
+    "rw::math::Q"
+    "rw::math::Vector3D<double>"
+    "rw::math::Vector2D<double>"
+    "rw::math::Quaternion<double>"
     CONVERTER
-    "toInterpolatorVector2D"
-
+    "toInterpolator"
 )
 
-generate_pointer_converters(
-    "rw::pathplanning::QConstraint"
-    CONVERTER
-    "toQConstraint"
-)
-
-generate_pointer_converters(
-    "rwlibs::pathoptimization::ClearanceCalculator"
-    TYPES
-    "rwlibs::pathoptimization::MinimumClearanceCalculator"
-    CONVERTER
-    "toClearanceCalculator"
-)
+generate_template_pointer_converters("rw::pathplanning::QConstraint" CONVERTER "toQConstraint")
 
 generate_pointer_converters(
-    "rw::models::ParallelDevice"
-    CONVERTER
-    "toParallelDevice"
+    "rwlibs::pathoptimization::ClearanceCalculator" TYPES
+    "rwlibs::pathoptimization::MinimumClearanceCalculator" CONVERTER "toClearanceCalculator"
 )
+
+generate_pointer_converters("rw::models::ParallelDevice" CONVERTER "toParallelDevice")

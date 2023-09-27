@@ -85,10 +85,10 @@ void GraspPlugin::open(WorkCell* workcell) {
         _wd = _wc->getFilePath();
         if(!_td && _wc->getPropertyMap().has("taskDescription")) {
             string filename = _wd + _wc->getPropertyMap().get<string>("taskDescription");
-            log().info() << "Loading task description from: " << filename << endl;
-            cout << "Loading task description from: " << filename << endl;
+            log().info() << "Loading task description from: " << filename << std::endl;
+            std::cout << "Loading task description from: " << filename << std::endl;
             _td = TaskDescriptionLoader::load(filename, _dwc);
-            cout << "Loaded task description." << endl;
+            std::cout << "Loaded task description." << std::endl;
         }
 
         _initState = getRobWorkStudio()->getState();
@@ -111,13 +111,13 @@ void GraspPlugin::close() {
 void GraspPlugin::addHint() {
     Transform3D<> target =
         Kinematics::worldTframe(_td->getGripperTCP(), getRobWorkStudio()->getState());
-    log().info() << "Added hint grasp: " << target.P() << " " << RPY<>(target.R()) << endl;
+    log().info() << "Added hint grasp: " << target.P() << " " << RPY<>(target.R()) << std::endl;
 
     /*EAA<> hintEAA(target.R());
     Vector3D<> hintZ = target.R() * Vector3D<>::z();
 
     double hintAngle = atan2(hintZ[1], hintZ[0]);
-    cout << "hintangle= " << hintAngle << " " << hintZ << endl;*/
+    std::cout << "hintangle= " << hintAngle << " " << hintZ << std::endl;*/
 
     if(_td) { _td->addHint(target); }
 }
@@ -189,7 +189,7 @@ void GraspPlugin::guiEvent() {
 
         if(taskfile.isEmpty()) return;
 
-        log().info() << "Saving tasks to: " << taskfile.toStdString() << endl;
+        log().info() << "Saving tasks to: " << taskfile.toStdString() << std::endl;
 
         GraspTask::saveRWTask(_tasks, taskfile.toStdString());
     }
@@ -201,14 +201,14 @@ void GraspPlugin::guiEvent() {
     /*else if (obj == _approachButton) { // set the approach pose of the gripper
             _wTapproach = Kinematics::worldTframe(_wc->findFrame("TCPgripper"),
     getRobWorkStudio()->getState()); log().info() << "Approach: " << inverse(_wTapproach) *
-    _wTtarget << endl;
+    _wTtarget << std::endl;
 
             //_gripper->setTasks(NULL);
     }
 
     else if (obj == _targetButton) { // set the target pose of the gripper
             _wTtarget = Kinematics::worldTframe(_wc->findFrame("TCPgripper"),
-    getRobWorkStudio()->getState()); log().info() << "Target: " << _wTtarget << endl;
+    getRobWorkStudio()->getState()); log().info() << "Target: " << _wTtarget << std::endl;
 
             //_gripper->setTasks(NULL);
     }*/
@@ -247,7 +247,7 @@ void GraspPlugin::guiEvent() {
         QStringList f            = files;
         QStringList::Iterator it = f.begin();
         while(it != f.end()) {
-            cout << "Loading: " << it->toStdString() << endl;
+            std::cout << "Loading: " << it->toStdString() << std::endl;
             loadGripper(it->toStdString());
             _wd = QFileInfo(*it).path().toStdString();
             ++it;
@@ -277,7 +277,7 @@ void GraspPlugin::guiEvent() {
     else if(obj == ui.clearButton) {
         _gripperList.clear();
         ui.gripperCombo->disconnect(this);
-        cout << "Number of items in combo box: " << ui.gripperCombo->count() << endl;
+        std::cout << "Number of items in combo box: " << ui.gripperCombo->count() << std::endl;
         // for (int i = 0; i < _gripperCombo->count(); ++i) {
         //	_gripperCombo->removeItem(0);
         // }
@@ -320,7 +320,7 @@ void GraspPlugin::guiEvent() {
 }
 
 void GraspPlugin::designEvent() {
-    cout << "Design dialog opened..." << endl;
+    std::cout << "Design dialog opened..." << std::endl;
     DesignDialog* ddialog = new DesignDialog(this, _gripper, _wd);
     ddialog->exec();
 
@@ -347,14 +347,14 @@ void GraspPlugin::setupEvent() {
 }
 
 void GraspPlugin::loadGripper(const std::string& filename) {
-    cout << "Loading gripper from: " << filename << endl;
+    std::cout << "Loading gripper from: " << filename << std::endl;
     Gripper::Ptr gripper = GripperXMLLoader::load(filename);
     _gripperList.push_back(gripper);
     ui.gripperCombo->addItem(QString::fromStdString(gripper->getName()));
 }
 
 void GraspPlugin::updateGripper() {
-    cout << "Updating gripper..." << endl;
+    std::cout << "Updating gripper..." << std::endl;
     _gripper->updateGripper(_td->getWorkCell(),
                             _td->getDynamicWorkCell(),
                             _td->getGripperDevice(),
@@ -362,7 +362,7 @@ void GraspPlugin::updateGripper() {
                             _td->getInitState(),
                             _td);
 
-    cout << "Refreshing RWS..." << endl;
+    std::cout << "Refreshing RWS..." << std::endl;
     getRobWorkStudio()->getWorkCellScene()->clearCache();
     getRobWorkStudio()->getWorkCellScene()->updateSceneGraph(_td->getInitState());
     getRobWorkStudio()->setWorkcell(_wc);
@@ -385,7 +385,7 @@ void GraspPlugin::updateSim() {
         _gripper->getQuality() = GripperQuality(_graspSim->getGripperQuality());
         // calculateQuality(_gripper->getTasks(), _generator->getSamples());
 
-        log().info() << "Simulation is finished." << endl;
+        log().info() << "Simulation is finished." << std::endl;
     }
 
     showTasks();
@@ -415,10 +415,10 @@ GraspTask::Ptr GraspPlugin::generateTasks(int nTasks) {
 void GraspPlugin::planTasks() {
     _nOfTargetsToGen = ui.nAutoEdit->text().toInt();
 
-    cout << "Planning " << _nOfTargetsToGen << " tasks..." << endl;
-    log().info() << "Generating " << _nOfTargetsToGen << " tasks..." << endl;
+    std::cout << "Planning " << _nOfTargetsToGen << " tasks..." << std::endl;
+    log().info() << "Generating " << _nOfTargetsToGen << " tasks..." << std::endl;
 
-    if(_gripper == NULL) { cout << "NULL gripper" << endl; }
+    if(_gripper == NULL) { std::cout << "NULL gripper" << std::endl; }
 
     // bool finally = true;
     // do {
@@ -436,13 +436,13 @@ void GraspPlugin::planTasks() {
     }
     //} while (!finally);
 
-    log().info() << "Tasks: " << _tasks->getSubTasks()[0].getTargets().size() << endl;
-    log().info() << "Samples: " << _samples->getSubTasks()[0].getTargets().size() << endl;
-    cout << "Tasks: " << _tasks->getSubTasks()[0].getTargets().size() << endl;
-    cout << "Samples: " << _samples->getSubTasks()[0].getTargets().size() << endl;
+    log().info() << "Tasks: " << _tasks->getSubTasks()[0].getTargets().size() << std::endl;
+    log().info() << "Samples: " << _samples->getSubTasks()[0].getTargets().size() << std::endl;
+    std::cout << "Tasks: " << _tasks->getSubTasks()[0].getTargets().size() << std::endl;
+    std::cout << "Samples: " << _samples->getSubTasks()[0].getTargets().size() << std::endl;
 
-    cout << "Done." << endl;
-    log().info() << "Done." << endl;
+    std::cout << "Done." << std::endl;
+    log().info() << "Done." << std::endl;
 
     ui.progressBar->setValue(0);
     ui.progressBar->setMaximum(_nOfTargetsToGen);
@@ -454,10 +454,10 @@ void GraspPlugin::perturbTasks() {
     bool onlySuccesses = ui.perturbBox->isChecked();
     int nPerturbations = ui.perturbEdit->text().toInt();
 
-    cout << "Perturbing tasks..." << endl;
-    log().info() << "Perturbing tasks..." << endl;
+    std::cout << "Perturbing tasks..." << std::endl;
+    log().info() << "Perturbing tasks..." << std::endl;
 
-    if(_gripper == NULL) { cout << "NULL gripper" << endl; }
+    if(_gripper == NULL) { std::cout << "NULL gripper" << std::endl; }
 
     // int toPerturb = onlySuccesses ? TaskGenerator::countTasks(_tasks,GraspTask::Success) :
     // _nOfTargetsToGen;
@@ -470,8 +470,8 @@ void GraspPlugin::perturbTasks() {
         QMessageBox::critical(NULL, "RW Exception", e.what());
     }
 
-    cout << "Done." << endl;
-    log().info() << "Done." << endl;
+    std::cout << "Done." << std::endl;
+    log().info() << "Done." << std::endl;
 
     ui.progressBar->setValue(0);
     ui.progressBar->setMaximum(nPerturbations);
@@ -588,7 +588,7 @@ void GraspPlugin::showTasks() {
         }
     }
 
-    // cout << "Painting!" << endl;
+    // std::cout << "Painting!" << std::endl;
 
     //((RenderTargets*)_render.get())->setTargets(rtargets);
     // getRobWorkStudio()->postUpdateAndRepaint();
@@ -601,7 +601,7 @@ void GraspPlugin::test() {
     VectorND<4> v2; v2[0] = 0.0; v2[1] = 1.0; v2[2] = 0.0; v2[3] = 0.0; vtx.push_back(v2);
     VectorND<4> v3; v3[0] = 0.0; v3[1] = 0.0; v3[2] = 1.0; v3[3] = 0.0; vtx.push_back(v3);
 
-    log().info() << GeometryUtil::simplexVolume(vtx) << endl;*/
+    log().info() << GeometryUtil::simplexVolume(vtx) << std::endl;*/
     /*vector<VectorND<3> > vtx;
     VectorND<3> v0; v0[0] = 0.0; v0[1] = 0.0; v0[2] = 0.0; vtx.push_back(v0);
     VectorND<3> v1; v1[0] = 1.0; v1[1] = 0.0; v1[2] = 0.0; vtx.push_back(v1);
@@ -615,16 +615,16 @@ void GraspPlugin::test() {
     QHullND<3>::Ptr qh = new QHullND<3>;
     qh->rebuild(vtx);
 
-    log().info() << qh->getCentroid() << endl;
+    log().info() << qh->getCentroid() << std::endl;
 
-    //log().info() << GeometryUtil::simplexVolume(vtx) << endl;*/
+    //log().info() << GeometryUtil::simplexVolume(vtx) << std::endl;*/
 
     static int npic = 0;
 
     /*stringstream sstr;
     sstr << npic++;
     string filename = _wc->getName() + "_" + _gripper->getName() + "_" + sstr.str() + ".png";
-    log().info() << "Saving image " + filename + "..." << endl;
+    log().info() << "Saving image " + filename + "..." << std::endl;
     getRobWorkStudio()->saveViewGL(QString::fromStdString(filename));*/
 
     // let's calculate gripper's hights...
@@ -640,17 +640,17 @@ void GraspPlugin::test() {
             double sigma = 6 * M / (b * h * h);
             if (isnan(sigma)) sigma = 0.0;
 
-            cout << x << ' ' << h << ' ' << M << ' ' << sigma << endl;
-            file << x << ' ' << h << ' ' << M << ' ' << sigma << endl;
+            std::cout << x << ' ' << h << ' ' << M << ' ' << sigma << std::endl;
+            file << x << ' ' << h << ' ' << M << ' ' << sigma << std::endl;
     }
 
     file.close();*/
 
-    // log().info() << "Max stress= " << _gripper->getMaxStress() << endl;
+    // log().info() << "Max stress= " << _gripper->getMaxStress() << std::endl;
 
     /* LET'S TEST ALIGNMENTS */
     // Frame* frame = _td->getTargetFrame();
-    // log().info() << RPY<>(frame->getTransform(getRobWorkStudio()->getState()).R()) << endl;*/
+    // log().info() << RPY<>(frame->getTransform(getRobWorkStudio()->getState()).R()) << std::endl;*/
 
     // sequence gripper pictures
     for(Gripper::Ptr g : _gripperList) {
@@ -664,15 +664,15 @@ void GraspPlugin::test() {
         // stringstream sstr;
         // sstr << npic++;
         string filename = _gripper->getName() + ".png";
-        log().info() << "Saving image " + filename + "..." << endl;
+        log().info() << "Saving image " + filename + "..." << std::endl;
         getRobWorkStudio()->saveViewGL(QString::fromStdString(filename));
     }
 
     // test gripper finger volume
     // log().info() << "Finger volume calculated from STL = " <<
-    // _gripper->getJawGeometry()->getGeometryData()->getTriMesh()->getVolume() << endl;
+    // _gripper->getJawGeometry()->getGeometryData()->getTriMesh()->getVolume() << std::endl;
     // log().info() << "Finger volume calculated from parameters = " << _gripper->getVolume() <<
-    // endl;
+    // std::endl;
 }
 
 Q_EXPORT_PLUGIN(GraspPlugin);

@@ -151,7 +151,7 @@ namespace rw { namespace models {
          * @param state [in] the state in which the mass should be gotten from
          * @return mass in kilo grams
          */
-        virtual double getMass(rw::kinematics::State& state) const = 0;
+        virtual double getMass(const rw::kinematics::State& state) const = 0;
 
         /**
          * @brief get center of mass of this object
@@ -164,7 +164,7 @@ namespace rw { namespace models {
          * @brief returns the inertia matrix of this body calculated around COM with the orientation
          * of the base frame.
          */
-        virtual rw::math::InertiaMatrix<> getInertia(rw::kinematics::State& state) const = 0;
+        virtual rw::math::InertiaMatrix<> getInertia(const rw::kinematics::State& state) const = 0;
 
       protected:
         friend class WorkCell;

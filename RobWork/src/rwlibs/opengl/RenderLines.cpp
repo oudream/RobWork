@@ -24,22 +24,23 @@ using namespace rw::math;
 using namespace rwlibs::opengl;
 using namespace rw::geometry;
 using namespace rw::graphics;
-namespace {
-void drawVector3D(const Vector3D<>& vec) {
+
+void RenderLines::drawVector3D(const Vector3D<>& vec) const {
     glVertex3f(static_cast<float>(vec(0)), static_cast<float>(vec(1)), static_cast<float>(vec(2)));
 }
 
-void drawLines(const std::vector<Line>& lines) {
+void RenderLines::drawLines(const std::vector<Line>& lines) const {
     glBegin(GL_LINES);
+    glColor4f(_r, _g, _b, _alpha);
     // Draw all faces.
     for(const Line& line : lines) {
         // TODO: better to use glVertex3fv
+
         drawVector3D(line.p1());
         drawVector3D(line.p2());
     }
     glEnd();
 }
-}    // namespace
 
 RenderLines::RenderLines() :
     _r(1), _g(0), _b(0), _alpha(1), _thickness(1)

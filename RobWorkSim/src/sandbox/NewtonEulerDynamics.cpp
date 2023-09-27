@@ -25,7 +25,7 @@ using namespace std;
 NewtonEulerDynamics::NewtonEulerDynamics(const SerialDevice& rob, bool print) :
     Z(0, 0, 1), R(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0) {
     bodies.resize(0);
-    if(print) { cout << "[NewtonEulerDynamics] Adding RigidBodies:" << endl; }
+    if(print) { std::cout << "[NewtonEulerDynamics] Adding RigidBodies:" << std::endl; }
     robot            = &rob;
     base             = robot->getBase();
     const Frame* end = robot->getEnd();
@@ -41,7 +41,7 @@ NewtonEulerDynamics::NewtonEulerDynamics(const SerialDevice& rob, bool print) :
             // check if frame is a RigidBody
             const RigidBody* body = dynamic_cast<const RigidBody*>(tmp);
             if(body != NULL) {
-                if(print) { cout << "adding \"" << body->getName() << "\"" << endl; }
+                if(print) { std::cout << "adding \"" << body->getName() << "\"" << std::endl; }
                 bodies.push_back((RigidBody*) body);
             }
             iter_pair.first++;
@@ -49,13 +49,13 @@ NewtonEulerDynamics::NewtonEulerDynamics(const SerialDevice& rob, bool print) :
         end = end->getParent();
     }
     if(print) {
-        cout << "[NewtonEulerDynamics] List of Rigidbodies: " << endl;
+        std::cout << "[NewtonEulerDynamics] List of Rigidbodies: " << std::endl;
 
         for(unsigned int h = 0; h < bodies.size(); h++) {
             // cur_body =
-            cout << h << " : " << bodies[h]->getName() << endl;
+            std::cout << h << " : " << bodies[h]->getName() << std::endl;
         }
-        cout << "[NewtonEulerDynamics] Finished adding RigidBodies" << endl;
+        std::cout << "[NewtonEulerDynamics] Finished adding RigidBodies" << std::endl;
     }
 
     links = bodies.size();
@@ -88,15 +88,15 @@ void NewtonEulerDynamics::execute(State& state, const Q& q, const Q& qd, const Q
     Frame::const_iterator_pair iter_pair = base->getChildren();
 
     if(print) {
-        cout << "[NewtonEulerDynamics] Executing N-E Algorithm " << endl;
-        cout << "[NewtonEulerDynamics] Outward iterations" << endl;
+        std::cout << "[NewtonEulerDynamics] Executing N-E Algorithm " << std::endl;
+        std::cout << "[NewtonEulerDynamics] Outward iterations" << std::endl;
     }
     bool first = true;
     /*outward iterations*/
     for(i = 0; i < links; i++) {
         if(print) {
-            cout << "--------------------------------------------" << endl;
-            cout << "i : " << i << endl;
+            std::cout << "--------------------------------------------" << std::endl;
+            std::cout << "i : " << i << std::endl;
         }
         j = links - 1 - i;
 
@@ -104,7 +104,7 @@ void NewtonEulerDynamics::execute(State& state, const Q& q, const Q& qd, const Q
         base      = &(*iter_pair.first);
 
         Ti = base->getTransform(state);
-        // cout<<"[NewtonEulerDynamics] OI - Ti :"<<endl;
+        // cout<<"[NewtonEulerDynamics] OI - Ti :"<<std::endl;
         if(print) printT(Ti, 1.0e-8);
 
         cur_body = bodies[j];
@@ -117,23 +117,23 @@ void NewtonEulerDynamics::execute(State& state, const Q& q, const Q& qd, const Q
         cI = prod(cur_body->getTransform(state).R().m(), cur_body->getInertia());
         // cI			= cur_body->getTransform(state).R() * cI;
 
-        if(print) { cout << inverse(Ti).R() << " * " << w[i] << " + " << qd[i] * Z << endl; }
+        if(print) { std::cout << inverse(Ti).R() << " * " << w[i] << " + " << qd[i] * Z << std::endl; }
         first = false;
 
         w[i + 1] = inverse(Ti).R() * w[i] + qd[i] * Z;
-        if(print) cout << w[i + 1] << endl << endl;
+        if(print) std::cout << w[i + 1] << std::endl << std::endl;
 
         if(print) {
-            cout << inverse(Ti).R() << " * " << wd[i] << " + " << inverse(Ti).R() << " * " << w[i]
-                 << " x " << qd[i] * Z << " + " << qdd[i] * Z << endl;
-            cout << inverse(Ti).R() * wd[i] << " + " << inverse(Ti).R() * w[i] << " x " << qd[i] * Z
-                 << " + " << qdd[i] * Z << endl;
-            cout << inverse(Ti).R() * wd[i] << " + " << cross(inverse(Ti).R() * w[i], qd[i] * Z)
-                 << " + " << qdd[i] * Z << endl;
+            std::cout << inverse(Ti).R() << " * " << wd[i] << " + " << inverse(Ti).R() << " * " << w[i]
+                 << " x " << qd[i] * Z << " + " << qdd[i] * Z << std::endl;
+            std::cout << inverse(Ti).R() * wd[i] << " + " << inverse(Ti).R() * w[i] << " x " << qd[i] * Z
+                 << " + " << qdd[i] * Z << std::endl;
+            std::cout << inverse(Ti).R() * wd[i] << " + " << cross(inverse(Ti).R() * w[i], qd[i] * Z)
+                 << " + " << qdd[i] * Z << std::endl;
         }
 
         wd[i + 1] = inverse(Ti).R() * wd[i] + cross(inverse(Ti).R() * w[i], qd[i] * Z) + qdd[i] * Z;
-        if(print) cout << wd[i + 1] << endl << endl;
+        if(print) std::cout << wd[i + 1] << std::endl << std::endl;
 
         temp = (cross(wd[i], Ti.P()) + cross(w[i], cross(w[i], Ti.P())) + vd[i]);
 
@@ -148,9 +148,9 @@ void NewtonEulerDynamics::execute(State& state, const Q& q, const Q& qd, const Q
         Nout[i + 1] = prod(cI, wd[i + 1]) + cross(w[i + 1], prod(cI, w[i + 1]));
     }
 
-    if(print) { cout << "[NewtonEulerDynamics] Finished outward iterations " << endl; }
+    if(print) { std::cout << "[NewtonEulerDynamics] Finished outward iterations " << std::endl; }
     if(print || printres) { printout(); }
-    if(print) { cout << "[NewtonEulerDynamics] Inward iterations " << endl; }
+    if(print) { std::cout << "[NewtonEulerDynamics] Inward iterations " << std::endl; }
 
     f[links]  = f_end;
     n[links]  = n_end;
@@ -158,7 +158,7 @@ void NewtonEulerDynamics::execute(State& state, const Q& q, const Q& qd, const Q
     base      = &(*iter_pair.first);
     /*inward iterations*/
     for(i = links; i > 0; i--) {
-        if(print) { cout << "-------------------------" << endl << "i : " << i << endl; }
+        if(print) { std::cout << "-------------------------" << std::endl << "i : " << i << std::endl; }
         j        = links - i;
         cur_body = bodies[j];
         pci      = (cur_body->getTransform(state)).P();
@@ -166,37 +166,37 @@ void NewtonEulerDynamics::execute(State& state, const Q& q, const Q& qd, const Q
         base     = base->getParent();
 
         if(print) {
-            cout << "f" << endl;
-            cout << Ti.R() << " * " << f[i] << " + " << F[i] << endl;
-            cout << Ti.R() * f[i] << " + " << F[i] << endl;
+            std::cout << "f" << std::endl;
+            std::cout << Ti.R() << " * " << f[i] << " + " << F[i] << std::endl;
+            std::cout << Ti.R() * f[i] << " + " << F[i] << std::endl;
         }
 
         f[i - 1] = Ti.R() * f[i] + F[i];
-        if(print) { cout << f[i - 1] << endl; }
+        if(print) { std::cout << f[i - 1] << std::endl; }
 
         n[i - 1] = Nout[i] + (Ti.R() * n[i]) + cross(pci, F[i]) + cross(Ti.P(), Ti.R() * f[i]);
 
         if(print) {
-            cout << "n" << endl;
-            cout << Nout[i] << " + " << Ti.R() << " * " << n[i] << " + " << pci << " x " << F[i]
-                 << " + " << Ti.P() << " x (" << Ti.R() << " * " << f[i] << ")" << endl;
-            cout << Nout[i] << " + " << (Ti.R() * n[i]) << " + " << cross(pci, F[i]) << " + "
-                 << cross(Ti.P(), Ti.R() * f[i]) << endl;
-            cout << n[i - 1] << endl;
+            std::cout << "n" << std::endl;
+            std::cout << Nout[i] << " + " << Ti.R() << " * " << n[i] << " + " << pci << " x " << F[i]
+                 << " + " << Ti.P() << " x (" << Ti.R() << " * " << f[i] << ")" << std::endl;
+            std::cout << Nout[i] << " + " << (Ti.R() * n[i]) << " + " << cross(pci, F[i]) << " + "
+                 << cross(Ti.P(), Ti.R() * f[i]) << std::endl;
+            std::cout << n[i - 1] << std::endl;
         }
         // tau[i]	= ((inverse(Ti).R())*n[i-1])(2);
         tau[i - 1] = dot(n[i - 1], Z);
-        if(print) cout << "tau[i]: " << tau[i] << endl;
+        if(print) std::cout << "tau[i]: " << tau[i] << std::endl;
     }
     if(print || printres) { printin(); }
     if(print) {
-        cout << "[NewtonEulerDynamics] Finished inward iterations " << endl;
-        cout << "[NewtonEulerDynamics] Finished executing N-E algorithm" << endl;
+        std::cout << "[NewtonEulerDynamics] Finished inward iterations " << std::endl;
+        std::cout << "[NewtonEulerDynamics] Finished executing N-E algorithm" << std::endl;
     }
 }
 
 const std::vector<double>* NewtonEulerDynamics::readTau() {
-    // cout<<"[NewtonEulerDynamics] Reading results"<<endl;
+    // cout<<"[NewtonEulerDynamics] Reading results"<<std::endl;
     return &tau;
 }
 
@@ -204,127 +204,127 @@ void NewtonEulerDynamics::printout() {
     unsigned int i;
 
     // w
-    cout << "  \t";
+    std::cout << "  \t";
     for(i = 0; i < w.size(); i++) { printf("%+2.4f  \t", w[i](0)); }
-    cout << endl;
+    std::cout << std::endl;
 
-    cout << "w:\t";
+    std::cout << "w:\t";
     for(i = 0; i < w.size(); i++) { printf("%+2.4f  \t", w[i](1)); }
-    cout << endl;
+    std::cout << std::endl;
 
-    cout << "  \t";
+    std::cout << "  \t";
     for(i = 0; i < w.size(); i++) { printf("%+2.4f  \t", w[i](2)); }
-    cout << endl;
-    cout << endl;
+    std::cout << std::endl;
+    std::cout << std::endl;
 
     // wd
-    cout << "  \t";
+    std::cout << "  \t";
     for(i = 0; i < wd.size(); i++) { printf("%+2.4f  \t", wd[i](0)); }
-    cout << endl;
+    std::cout << std::endl;
 
-    cout << "wd:\t";
+    std::cout << "wd:\t";
     for(i = 0; i < wd.size(); i++) { printf("%+2.4f  \t", wd[i](1)); }
-    cout << endl;
+    std::cout << std::endl;
 
-    cout << "  \t";
+    std::cout << "  \t";
     for(i = 0; i < wd.size(); i++) { printf("%+2.4f  \t", wd[i](2)); }
-    cout << endl;
-    cout << endl;
+    std::cout << std::endl;
+    std::cout << std::endl;
 
     // vd
-    cout << "  \t";
+    std::cout << "  \t";
     for(i = 0; i < vd.size(); i++) { printf("%+2.4f  \t", vd[i](0)); }
-    cout << endl;
+    std::cout << std::endl;
 
-    cout << "vd:\t";
+    std::cout << "vd:\t";
     for(i = 0; i < vd.size(); i++) { printf("%+2.4f  \t", vd[i](1)); }
-    cout << endl;
+    std::cout << std::endl;
 
-    cout << "  \t";
+    std::cout << "  \t";
     for(i = 0; i < vd.size(); i++) { printf("%+2.4f  \t", vd[i](2)); }
-    cout << endl;
-    cout << endl;
+    std::cout << std::endl;
+    std::cout << std::endl;
 
     // vdC
-    cout << "  \t";
+    std::cout << "  \t";
     for(i = 0; i < vdC.size(); i++) { printf("%+2.4f  \t", vdC[i](0)); }
-    cout << endl;
+    std::cout << std::endl;
 
-    cout << "vdC:\t";
+    std::cout << "vdC:\t";
     for(i = 0; i < vdC.size(); i++) { printf("%+2.4f  \t", vdC[i](1)); }
-    cout << endl;
+    std::cout << std::endl;
 
-    cout << "  \t";
+    std::cout << "  \t";
     for(i = 0; i < vdC.size(); i++) { printf("%+2.4f  \t", vdC[i](2)); }
-    cout << endl;
-    cout << endl;
+    std::cout << std::endl;
+    std::cout << std::endl;
 
     // F
 
-    cout << "  \t";
+    std::cout << "  \t";
     for(i = 0; i < F.size(); i++) { printf("%+2.4f  \t", F[i](0)); }
-    cout << endl;
+    std::cout << std::endl;
 
-    cout << "F:\t";
+    std::cout << "F:\t";
     for(i = 0; i < F.size(); i++) { printf("%+2.4f  \t", F[i](1)); }
-    cout << endl;
+    std::cout << std::endl;
 
-    cout << "  \t";
+    std::cout << "  \t";
     for(i = 0; i < F.size(); i++) { printf("%+2.4f  \t", F[i](2)); }
-    cout << endl;
-    cout << endl;
+    std::cout << std::endl;
+    std::cout << std::endl;
 
     // N
-    cout << "  \t";
+    std::cout << "  \t";
     for(i = 0; i < Nout.size(); i++) { printf("%+2.4f  \t", Nout[i](0)); }
-    cout << endl;
+    std::cout << std::endl;
 
-    cout << "N:\t";
+    std::cout << "N:\t";
     for(i = 0; i < Nout.size(); i++) { printf("%+2.4f  \t", Nout[i](1)); }
-    cout << endl;
+    std::cout << std::endl;
 
-    cout << "  \t";
+    std::cout << "  \t";
     for(i = 0; i < Nout.size(); i++) { printf("%+2.4f  \t", Nout[i](2)); }
-    cout << endl;
-    cout << endl;
+    std::cout << std::endl;
+    std::cout << std::endl;
 }
 
 void NewtonEulerDynamics::printin() {
     unsigned int i;
 
     // f
-    cout << "  \t";
+    std::cout << "  \t";
     for(i = 0; i < f.size(); i++) { printf("%+2.4f  \t", f[i](0)); }
-    cout << endl;
+    std::cout << std::endl;
 
-    cout << "f:\t";
+    std::cout << "f:\t";
     for(i = 0; i < f.size(); i++) { printf("%+2.4f  \t", f[i](1)); }
-    cout << endl;
+    std::cout << std::endl;
 
-    cout << "  \t";
+    std::cout << "  \t";
     for(i = 0; i < f.size(); i++) { printf("%+2.4f  \t", f[i](2)); }
-    cout << endl;
-    cout << endl;
+    std::cout << std::endl;
+    std::cout << std::endl;
 
     // n
-    cout << "  \t";
+    std::cout << "  \t";
     for(i = 0; i < n.size(); i++) { printf("%+2.4f  \t", n[i](0)); }
-    cout << endl;
+    std::cout << std::endl;
 
-    cout << "n:\t";
+    std::cout << "n:\t";
     for(i = 0; i < n.size(); i++) { printf("%+2.4f  \t", n[i](1)); }
-    cout << endl;
+    std::cout << std::endl;
 
-    cout << "  \t";
+    std::cout << "  \t";
     for(i = 0; i < n.size(); i++) { printf("%+2.4f  \t", n[i](2)); }
-    cout << endl;
-    cout << endl;
+    std::cout << std::endl;
+    std::cout << std::endl;
 
     // tau
-    cout << "tau:\t";
+    std::cout << "tau:\t";
     for(i = 0; i < tau.size(); i++) { printf("%+2.4f  \t", tau[i]); }
-    cout << endl;
-    cout << endl;
+    std::cout << std::endl;
+    std::cout << std::endl;
 }
 
 void NewtonEulerDynamics::printT(const Transform3D<double>& t, double b) {
@@ -336,12 +336,12 @@ void NewtonEulerDynamics::printT(const Transform3D<double>& t, double b) {
             if(j != 3) {
                 a = (t.R())(i, j);
                 if(fabs(a) < b) { a = 0; }
-                cout << a << "\t";
+                std::cout << a << "\t";
             }
-            else { cout << (t.P())(i); }
+            else { std::cout << (t.P())(i); }
         }
-        cout << endl;
+        std::cout << std::endl;
     }
-    cout << "0\t0\t0\t1" << endl;
-    cout << endl;
+    std::cout << "0\t0\t0\t1" << std::endl;
+    std::cout << std::endl;
 }

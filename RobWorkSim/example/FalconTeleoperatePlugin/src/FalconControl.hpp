@@ -23,24 +23,6 @@
 
 #include <QPushButton>
 
-using namespace std;
-
-using namespace rw::kinematics;
-using namespace rwsim::dynamics;
-using namespace rwsim::control;
-using namespace rwsim::contacts;
-using namespace rwlibs::control;
-using namespace rwlibs::simulation;
-
-
-USE_ROBWORKSIM_NAMESPACE
-using namespace robworksim;
-
-USE_ROBWORK_NAMESPACE
-using namespace robwork;
-using namespace rws;
-
-
 /**
  * @brief A plugin for grasping simulation in the UR test scene with use of the Novint Falcon 3D controller.
  */

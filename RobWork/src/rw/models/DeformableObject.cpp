@@ -137,7 +137,7 @@ DeformableObject::doGetModels(const rw::kinematics::State& state) const {
     return _rstate.getStateCache<DeformableObjectCache>(state)->_models;
 }
 
-double DeformableObject::getMass(rw::kinematics::State& state) const {
+double DeformableObject::getMass(const rw::kinematics::State& state) const {
     return 1.0;
 }
 
@@ -145,7 +145,7 @@ rw::math::Vector3D<> DeformableObject::getCOM(const rw::kinematics::State& state
     return rw::math::Vector3D<>(0, 0, 0);
 }
 
-rw::math::InertiaMatrix<> DeformableObject::getInertia(rw::kinematics::State& state) const {
+rw::math::InertiaMatrix<> DeformableObject::getInertia(const rw::kinematics::State& state) const {
     return rw::math::InertiaMatrix<>::makeSolidSphereInertia(1.0, 0.1);
 }
 

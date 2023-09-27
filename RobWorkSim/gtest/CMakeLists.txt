@@ -116,9 +116,14 @@ endif()
 
 if(TARGET sdurwsim)
     set(SIMULATOR_TEST_LIBRARIES sdurwsim_test sdurwsim ${RW_BUILD_WITH_LIBRARIES_GTEST})
-    set(SIMULATOR_TEST_SRC simulator/PhysicsEngineTest.cpp)
-    add_executable(sdurwsim_simulator-gtest ${SIMULATOR_TEST_SRC})
-    target_link_libraries(sdurwsim_simulator-gtest ${SIMULATOR_TEST_LIBRARIES})
+
+    add_executable(sdurwsim_physics-gtest simulator/PhysicsEngineTest.cpp )
+    target_link_libraries(sdurwsim_physics-gtest ${SIMULATOR_TEST_LIBRARIES})
+    add_rwsim_gtest(sdurwsim_physics-gtest)
+
+
+    add_executable(sdurwsim_simulator-gtest simulator/GripperSim.cpp)
+    target_link_libraries(sdurwsim_simulator-gtest sdurwsim-gtest-main ${SIMULATOR_TEST_LIBRARIES})
     add_rwsim_gtest(sdurwsim_simulator-gtest)
 endif()
 

@@ -21,12 +21,12 @@
 	  <Mass>0.1</Mass>
 	  <EstimateInertia />
 	  <MaterialID>Plastic</MaterialID>
-	</RigidBody>
+	</RigidJoint>
  </RigidDevice>
 
  <PDDeviceController name="GraspController" device="PG70" type="Position">
   <Sync>False</Sync>
-  <PDParams>10 0.003</PDParam>
+  <PDParams>10 0.003</PDParams>
   <TimeStep> 0.01 </TimeStep>
  </PDDeviceController>
  </IncludeData>

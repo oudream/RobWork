@@ -48,7 +48,7 @@ namespace rwsim { namespace dynamics {
         /**
          * @brief Construct new kinematic device.
          * @param base [in] base of the device.
-         * @param objects [in] vector of links. Each linksis given as the dynamic body parameters
+         * @param objects [in] vector of links. Each links is given as the dynamic body parameters
          * and the object geometry.
          * @param dev [in] the kinematic model.
          */

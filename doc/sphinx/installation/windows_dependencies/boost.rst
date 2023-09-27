@@ -6,7 +6,7 @@ recommended to always use the latest possible version of Boost. RobWork
 is also backwards compatible with older versions of Boost, mainly to
 support current Ubuntu LTS releases and CentOS 7. On Windows, you should
 use at least Boost 1.55, as older releases is not expected to support
-the Visual Studio versions which are new enough to support C++11. 
+the Visual Studio versions which are new enough to support C++17. 
 
 Boost can either be installed or manually compiled:
 

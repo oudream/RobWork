@@ -154,7 +154,7 @@ namespace rw { namespace models {
          * @param state [in] the state
          * @return mass in kilo grams
          */
-        double getMass(rw::kinematics::State& state) const;
+        double getMass(const rw::kinematics::State& state) const;
 
         /**
          * @brief get center of mass of this object
@@ -169,7 +169,7 @@ namespace rw { namespace models {
          * @param state [in] the state to get the inertia in
          * @return matrix with inertia
          */
-        rw::math::InertiaMatrix<> getInertia(rw::kinematics::State& state) const;
+        rw::math::InertiaMatrix<> getInertia(const rw::kinematics::State& state) const;
 
         /**
          * @brief updates the model with the current state of the deformable model

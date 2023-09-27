@@ -91,8 +91,10 @@ void BtSimulator::load(DynamicWorkCell::Ptr dwc) {
     _detector->addContactStrategy(strat);
 }
 
-bool BtSimulator::setContactDetector(ContactDetector::Ptr detector) {
-    _detector     = detector;
+bool BtSimulator::setContactDetector(BaseContactDetector::Ptr detector) {
+    if(detector.cast<ContactDetector>().isNull())
+        RW_THROW("The Base Contact Detecter needs to be a ContactDetector");
+    _detector     = detector.cast<ContactDetector>();
     _detectorData = ownedPtr(new ContactDetectorData());
     return true;
 }

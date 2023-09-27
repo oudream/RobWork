@@ -50,7 +50,7 @@ namespace simulator {
         void load(rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> dwc);
 
         //! @copydoc PhysicsEngine::setContactDetector
-        bool setContactDetector(rw::core::Ptr<rwsim::contacts::ContactDetector> detector);
+        bool setContactDetector(rw::core::Ptr<rwsim::contacts::BaseContactDetector> detector);
 
         /**
          * @copydoc PhysicsEngine::initPhysics

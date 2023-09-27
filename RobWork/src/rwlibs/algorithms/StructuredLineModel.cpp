@@ -84,7 +84,7 @@ double StructuredLineModel::testInterval(const std::vector<rw::math::Vector3D<>>
 
     // for each of the spots calculate the error
     for(const Spot& s : spots) {
-        // cout << "neighbours= " << s.second.size() << endl;
+        // std::cout << "neighbours= " << s.second.size() << std::endl;
         double spot_error = 0.0;
         for(const Vector3D<>& p : s.second) {
             double dist = (p - s.first).norm2();
@@ -94,7 +94,7 @@ double StructuredLineModel::testInterval(const std::vector<rw::math::Vector3D<>>
         error += spot_error;
     }
 
-    // cout << "interval= " << interval << " error= " << error << endl;
+    // std::cout << "interval= " << interval << " error= " << error << std::endl;
 
     return error;
 }
@@ -113,10 +113,10 @@ double StructuredLineModel::refit(const std::vector<rw::math::Vector3D<>>& sampl
     // 2. beginning is the point with lowest x+y+z value
     Vector3D<> start = _data[0];
     double xyz       = start[0] + start[1] + start[2];
-    // cout << "start xyz=" << xyz << endl;
+    // std::cout << "start xyz=" << xyz << std::endl;
     for(const Vector3D<>& p : _data) {
         double dist = p[0] + p[1] + p[2];
-        // cout << "pt xyz=" << p << ": " << dist << endl;
+        // std::cout << "pt xyz=" << p << ": " << dist << std::endl;
         if(dist < xyz) {
             start = p;
             xyz   = dist;
@@ -144,7 +144,7 @@ double StructuredLineModel::refit(const std::vector<rw::math::Vector3D<>>& sampl
         if(Math::isNaN(q)) continue;
 
         intervals.push_back(IntervalQuality(t, q));
-        // cout << " --- " << t << ", " << q << endl;
+        // std::cout << " --- " << t << ", " << q << std::endl;
     }
 
     // find interval with best quality

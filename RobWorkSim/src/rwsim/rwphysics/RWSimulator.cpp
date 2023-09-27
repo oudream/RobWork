@@ -67,7 +67,8 @@ void RWSimulator::load(dynamics::DynamicWorkCell::Ptr dwc) {
     _dwc = dwc;
 }
 
-bool RWSimulator::setContactDetector(rw::core::Ptr<rwsim::contacts::ContactDetector> detector) {
+bool RWSimulator::setContactDetector (rw::core::Ptr< rwsim::contacts::BaseContactDetector > detector)
+{
     return false;
 }
 

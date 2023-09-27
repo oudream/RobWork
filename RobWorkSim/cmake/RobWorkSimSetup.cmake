@@ -78,7 +78,7 @@ find_package(OpenGL REQUIRED)
 if(RW_BUILD_WITH_SWIG AND NOT DEFINED SWIG_EXECUTABLE)
     set(SWIG_EXECUTABLE ${RW_BUILD_WITH_SWIG_CMD})
 endif()
-find_package(SWIG 3.0.0 QUIET) # At least SWIG 3 to support C++11
+find_package(SWIG 4.0.0 QUIET) 
 if(SWIG_FOUND)
     message(STATUS "RobWorkSim: SWIG ${SWIG_VERSION} found!")
 else()

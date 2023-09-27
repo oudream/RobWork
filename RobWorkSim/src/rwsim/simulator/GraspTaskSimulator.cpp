@@ -661,7 +661,7 @@ void GraspTaskSimulator::stepCB(ThreadSimulator* sim, const rw::kinematics::Stat
 }
 
 void GraspTaskSimulator::simulationFinished(SimState& sstate) {
-    Log::infoLog() << "Simulation finished:" << endl;
+    Log::infoLog() << "Simulation finished:" << std::endl;
 
     Log::infoLog() << "-- target nr: " << std::setw(5) << _currentTargetIndex
                    << " success:" << std::setw(5) << _success << " slipped:" << std::setw(5)

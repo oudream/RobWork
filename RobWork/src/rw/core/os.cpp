@@ -23,7 +23,7 @@
 #include <windows.h>
 #endif
 
-std::string OS::InstallPluginLocation(std::string pack) {
+std::vector<std::string> OS::InstallPluginLocation(std::string pack) {
 #if defined(RW_WIN)
     HKEY hKey          = 0;
     char buf[1024]     = {0};
@@ -34,17 +34,17 @@ std::string OS::InstallPluginLocation(std::string pack) {
         dwType = REG_SZ;
         if(RegQueryValueEx(hKey, "Location", 0, &dwType, (BYTE*) buf, &dwBufSize) ==
            ERROR_SUCCESS) {
-            return std::string(buf) + "\\lib\\RobWork\\rwplugins";
+            return {std::string(buf) + "\\lib\\RobWork\\rwplugins"};
         }
         RegCloseKey(hKey);
     }
-    return std::string();
+    return {std::string()};
 #else
+    std::vector<std::string> rwpluginFolders;
+
     if(boost::filesystem::exists("/usr/lib/")) {    // Add default plugin location
 
         boost::filesystem::path p("/usr/lib");
-        std::string rwpluginFolder = "";
-
         // Find the architecture dependendt folder containing the rwplugins folder
         // Search all files and folders
         for(boost::filesystem::directory_iterator i(p);
@@ -52,16 +52,22 @@ std::string OS::InstallPluginLocation(std::string pack) {
             i++) {
             // If is directory
             if(boost::filesystem::is_directory(i->path())) {
-                rwpluginFolder = "/usr/lib/";
+                std::string rwpluginFolder = "/usr/lib/";
                 rwpluginFolder += i->path().filename().string();
                 rwpluginFolder += "/RobWork/rwplugins";
-                if(boost::filesystem::exists(rwpluginFolder)) { break; }
-                else { rwpluginFolder = ""; }
+                if(boost::filesystem::exists(rwpluginFolder)) {
+                    rwpluginFolders.push_back(rwpluginFolder);
+                    break;
+                }
             }
         }
-        return rwpluginFolder;
     }
-    return "";
+    if(boost::filesystem::exists(
+           "/usr/local/lib/RobWork/rwplugins")) {    // Add default plugin location
+        rwpluginFolders.push_back("/usr/local/lib/RobWork/rwplugins");
+    }
+
+    return rwpluginFolders;
 
 #endif
 }

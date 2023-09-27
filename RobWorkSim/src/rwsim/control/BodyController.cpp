@@ -139,6 +139,7 @@ void BodyController::updateKinematicBody(KinematicBody* body, TargetData& tdata,
 void BodyController::updateBody(Body* body, TargetData& tdata,
                                 const rwlibs::simulation::Simulator::UpdateInfo& info,
                                 State& state) {
+    if(body == nullptr) RW_THROW("Can't update NULL Body");
     // for a kinematic body we allways follow a trajectory
     // basically we just need the current time to be calculate
     if(!info.rollback) {
@@ -152,7 +153,8 @@ void BodyController::updateBody(Body* body, TargetData& tdata,
         body->setTorqueW(info.dt * tdata._torque, state);
     }
     else if(tdata._type == TargetData::VelocityController) {
-        RW_THROW("Velocity targets not supported yet for non-kinematic bodies!");
+        RW_THROW("Velocity targets not supported yet for non-kinematic bodies!. Called for: "
+                 << body->getName());
     }
     else {
         // test if the trajectory is finished
@@ -227,6 +229,7 @@ void BodyController::reset(const State& state) {}
 void BodyController::setTarget(Body::Ptr body, const Transform3D<>& target, const State& state,
                                double maxLinVel, double maxLinAcc, double maxAngVel,
                                double maxAngAcc) {
+    if(body.isNull()) RW_THROW("Can't set a target for a NULL Body");
     boost::mutex::scoped_lock lock(_mutex);
 
     // create a trajectory using a velocity ramp function
@@ -255,6 +258,7 @@ void BodyController::setTarget(Body::Ptr body, const Transform3D<>& target, cons
 }
 
 void BodyController::setTarget(Body::Ptr body, Trajectory<Transform3D<>>::Ptr traj) {
+    if(body.isNull()) RW_THROW("Can't set a target for a NULL Body");
     boost::mutex::scoped_lock lock(_mutex);
 
     if(_bodyMap.find(body.get()) == _bodyMap.end()) _bodyMap[body.get()] = new TargetData();
@@ -268,6 +272,7 @@ void BodyController::setTarget(Body::Ptr body, Trajectory<Transform3D<>>::Ptr tr
 }
 
 void BodyController::setTarget(Body::Ptr body, const VelocityScrew6D<>& velocity) {
+    if(body.isNull()) RW_THROW("Can't set a target for a NULL Body");
     boost::mutex::scoped_lock lock(_mutex);
 
     if(_bodyMap.find(body.get()) == _bodyMap.end()) _bodyMap[body.get()] = new TargetData();
@@ -280,6 +285,7 @@ void BodyController::setTarget(Body::Ptr body, const VelocityScrew6D<>& velocity
 }
 
 void BodyController::setForceTarget(Body::Ptr body, Vector3D<> force, Vector3D<> torque) {
+    if(body.isNull()) RW_THROW("Can't set a target for a NULL Body");
     boost::mutex::scoped_lock lock(_mutex);
 
     if(_bodyMap.find(body.get()) == _bodyMap.end()) _bodyMap[body.get()] = new TargetData();

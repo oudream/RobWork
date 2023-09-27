@@ -107,6 +107,8 @@ namespace rwlibs { namespace opengl {
       private:
         // Initilized the color and thickness parameters
         void rerender();
+        void drawLines(const std::vector<rw::geometry::Line>& lines) const;
+        void drawVector3D(const rw::math::Vector3D<double>& vec) const;
 
         std::string _id;
         std::vector<rw::geometry::Line> _lines;

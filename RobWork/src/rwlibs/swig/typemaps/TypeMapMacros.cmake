@@ -90,7 +90,7 @@ macro(GENERATE_INCLUDES)
                     RELATIVE "${RW_ROOT}/src"
                     "${RW_ROOT}/src/*/${subarg}.hpp"
                 )
-                if(EXISTS ${RW_ROOT}/src/${dir} AND NOT "${dir}" STREQUAL "" )
+                if(EXISTS ${RW_ROOT}/src/${dir} AND NOT "${dir}" STREQUAL "")
                     list(APPEND _include "#include <${dir}>")
                 endif()
             endif()
@@ -464,17 +464,25 @@ macro(GENERATE_PYTHON_FRAGMENT _type)
 endmacro()
 
 macro(GENERATE_POINTER_CONVERTERS _type)
-    set(oneValueArgs CONVERTER) # used to marke values with a single value
+    set(oneValueArgs CONVERTER DIRECTORY) # used to marke values with a single value
     set(multiValueArgs TYPES)
 
     cmake_parse_arguments(GPC "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
-    generate_includes(TYPES ${GPC_TYPES} CONVERTER "${GPC_CONVERTER}" FILE "./${GPC_CONVERTER}.i")
+    if("${GPC_DIRECTORY}" STREQUAL "")
+        set(GPC_DIRECTORY ".")
+    elseif(NOT EXISTS ${GPC_DIRECTORY})
+        file(MAKE_DIRECTORY ${GPC_DIRECTORY})
+    endif()
+
+    generate_includes(TYPES ${GPC_TYPES} CONVERTER "${GPC_CONVERTER}" FILE
+                      "${GPC_DIRECTORY}/${GPC_CONVERTER}.i"
+    )
 
     set(GPC_INCLUDE
         "%fragment(\"${GPC_CONVERTER}PointerInclude\", \"header\",fragment=\"${GPC_CONVERTER}Include\")%{%}\n\n%fragment(\"${GPC_CONVERTER}PtrInclude\", \"header\",fragment=\"${GPC_CONVERTER}Include\")%{%}\n\n%fragment(\"${GPC_CONVERTER}CPtrInclude\", \"header\",fragment=\"${GPC_CONVERTER}Include\")%{%}\n\n"
     )
-    typemap_tofile("./${GPC_CONVERTER}.i" TRUE ${GPC_INCLUDE})
+    typemap_tofile("${GPC_DIRECTORY}/${GPC_CONVERTER}.i" TRUE ${GPC_INCLUDE})
 
     set(GPC_POINTOR_TYPES ${_type} "rw::core::Ptr<${_type}>")
     set(GPC_PTR_TYPES "rw::core::Ptr<${_type}>" ${_type})
@@ -492,9 +500,9 @@ macro(GENERATE_POINTER_CONVERTERS _type)
             )
         endif()
     endforeach(type)
-    set(GPC_AS_POINTOR "${GPC_CONVERTER}Pointer" FILE "./${GPC_CONVERTER}.i" APPEND)
-    set(GPC_AS_PTR "${GPC_CONVERTER}Ptr" FILE "./${GPC_CONVERTER}.i" APPEND)
-    set(GPC_AS_CPTR "${GPC_CONVERTER}CPtr" FILE "./${GPC_CONVERTER}.i" APPEND)
+    set(GPC_AS_POINTOR "${GPC_CONVERTER}Pointer" FILE "${GPC_DIRECTORY}/${GPC_CONVERTER}.i" APPEND)
+    set(GPC_AS_PTR "${GPC_CONVERTER}Ptr" FILE "${GPC_DIRECTORY}/${GPC_CONVERTER}.i" APPEND)
+    set(GPC_AS_CPTR "${GPC_CONVERTER}CPtr" FILE "${GPC_DIRECTORY}/${GPC_CONVERTER}.i" APPEND)
 
     set(GPC_TYPE_POINTOR "${_type}*")
     set(GPC_TYPE_PTR "rw::core::Ptr<${_type}>")
@@ -588,4 +596,57 @@ macro(GENERATE_TYPEMAP_CHECK _type)
         "${TMC_CONVERTER}"
         APPEND
     )
+endmacro()
+
+macro(GENERATE_TEMPLATE_POINTER_CONVERTERS _type)
+    set(oneValueArgs CONVERTER DIRECTORY) # used to marke values with a single value
+    set(multiValueArgs TYPES TEMPLATES)
+
+    cmake_parse_arguments(GTPC "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
+
+    # Make sure Directory is set
+    if("${GTPC_DIRECTORY}" STREQUAL "")
+        set(GTPC_DIRECTORY ".")
+    endif()
+
+    set(GTPC_DIROUT "${GTPC_DIRECTORY}/${GTPC_CONVERTER}")
+    set(GTPC_CONVERTERS)
+
+    if(NOT EXISTS ${GTPC_DIROUT})
+        file(MAKE_DIRECTORY ${GPC_DIRECTORY})
+    endif()
+
+    foreach(TEMPLATE_TYPE ${GTPC_TEMPLATES})
+        string(REGEX REPLACE "rw::.*::" "" STRIPED_TYPE ${TEMPLATE_TYPE})
+        string(REGEX MATCH "([a-zA-Z0-9]*)" STRIPED_TYPE ${STRIPED_TYPE})
+
+        set(GTPC_TEMPTYPES)
+
+        foreach(TYPE ${GTPC_TYPES})
+            if(NOT "${TYPE}" STREQUAL "int")
+                set(GTPC_TEMPTYPES ${GTPC_TEMPTYPES} "${TYPE}<${TEMPLATE_TYPE}>")
+            endif()
+        endforeach()
+
+        generate_pointer_converters(
+            "${_type}<${TEMPLATE_TYPE}>"
+            TYPES
+            ${GTPC_TEMPTYPES}
+            CONVERTER
+            "${GTPC_CONVERTER}${STRIPED_TYPE}"
+            DIRECTORY
+            ${GTPC_DIROUT}
+        )
+
+        set(GTPC_CONVERTERS
+            ${GTPC_CONVERTERS} "rwlibs/swig/typemaps/${GTPC_DIROUT}/${GTPC_CONVERTER}${STRIPED_TYPE}.i"
+        )
+    endforeach()
+
+
+    typemap_tofile("${GTPC_DIRECTORY}/${GTPC_CONVERTER}.i" FALSE "// Includer file\n")
+    foreach(CONVERT ${GTPC_CONVERTERS})
+        string(REPLACE "/./" "/" CONVERT ${CONVERT})
+        typemap_tofile("${GTPC_DIRECTORY}/${GTPC_CONVERTER}.i" TRUE "%include<${CONVERT}>\n")
+    endforeach()
 endmacro()

@@ -117,8 +117,8 @@ class Rosenbrock : public FunctionType
 void printLog(Optimizer::Ptr optimizer) {
     for(unsigned i = 0; i < optimizer->getLog().size(); ++i) {
         Optimizer::State state = optimizer->getLog()[i];
-        cout << "#" << state.step << " MIN= " << state.guess << " VAL= " << state.value
-             << " ERR= " << state.error << endl;
+        std::cout << "#" << state.step << " MIN= " << state.guess << " VAL= " << state.value
+             << " ERR= " << state.error << std::endl;
     }
 }
 
@@ -131,7 +131,7 @@ void saveLogCSV(const string& filename, Optimizer::Ptr optimizer) {
 
         RW_ASSERT(state.guess.size() >= 2);
 
-        file << state.guess(0) << ", " << state.guess(1) << endl;
+        file << state.guess(0) << ", " << state.guess(1) << std::endl;
     }
 
     file.close();
@@ -168,7 +168,7 @@ int main(int argc, char* argv[]) {
     tfunction    = new Simple10D();
     initialGuess = Q(10, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
 
-    cout << "Using initial guess= " << initialGuess << endl;
+    std::cout << "Using initial guess= " << initialGuess << std::endl;
 
     // initialGuess = Q(3, 1, 1, 1);
 
@@ -186,55 +186,55 @@ int main(int argc, char* argv[]) {
     /*
      * Test line search
      */
-    cout << "LINE SEARCH OPTIMIZER (ALONG X)" << endl;
+    std::cout << "LINE SEARCH OPTIMIZER (ALONG X)" << std::endl;
     Optimizer::Ptr optimizer = new GoldenSectionLineSearch(function, Q(2, 1, 0), -1.0, 1.0);
     optimizer->setLogging(true);
     Q minimum    = optimizer->optimize(initialGuess, stopCondition);
     double value = optimizer->getCurrentValue();
     double error = optimizer->getCurrentError();
     saveLogCSV("linesearch.csv", optimizer);
-    cout << "#" << optimizer->getStepCount() << " MIN= " << minimum << " VAL= " << value
-         << " ERR= " << error << endl;
-    cout << "Function evaluations: " << gCallCount << endl;
+    std::cout << "#" << optimizer->getStepCount() << " MIN= " << minimum << " VAL= " << value
+         << " ERR= " << error << std::endl;
+    std::cout << "Function evaluations: " << gCallCount << std::endl;
     gCallCount = 0;
-    cout << endl;
+    std::cout << std::endl;
 
     /*
      * Test TaxiCab optimizer
      */
-    cout << "TAXI CAB OPTIMIZER" << endl;
+    std::cout << "TAXI CAB OPTIMIZER" << std::endl;
     optimizer = new TaxiCabOptimizer(function, 1.0, new StopCondition(1000, 0.01));
     optimizer->setLogging(true);
     minimum = optimizer->optimize(initialGuess, stopCondition);
     value   = optimizer->getCurrentValue();
     error   = optimizer->getCurrentError();
     saveLogCSV("taxicab.csv", optimizer);
-    cout << "#" << optimizer->getStepCount() << " MIN= " << minimum << " VAL= " << value
-         << " ERR= " << error << endl;
-    cout << "Function evaluations: " << gCallCount << endl;
+    std::cout << "#" << optimizer->getStepCount() << " MIN= " << minimum << " VAL= " << value
+         << " ERR= " << error << std::endl;
+    std::cout << "Function evaluations: " << gCallCount << std::endl;
     gCallCount = 0;
-    cout << endl;
+    std::cout << std::endl;
 
     /*
      * Powell optimizer
      */
-    cout << "POWELL OPTIMIZER" << endl;
+    std::cout << "POWELL OPTIMIZER" << std::endl;
     optimizer = new PowellOptimizer(function, 1.0, new StopCondition(1000, 0.01));
     optimizer->setLogging(true);
     minimum = optimizer->optimize(initialGuess, stopCondition);
     value   = optimizer->getCurrentValue();
     error   = optimizer->getCurrentError();
     saveLogCSV("powell.csv", optimizer);
-    cout << "#" << optimizer->getStepCount() << " MIN= " << minimum << " VAL= " << value
-         << " ERR= " << error << endl;
-    cout << "Function evaluations: " << gCallCount << endl;
+    std::cout << "#" << optimizer->getStepCount() << " MIN= " << minimum << " VAL= " << value
+         << " ERR= " << error << std::endl;
+    std::cout << "Function evaluations: " << gCallCount << std::endl;
     gCallCount = 0;
-    cout << endl;
+    std::cout << std::endl;
 
     /*
      * Downhill optimizer
      */
-    cout << "DOWNHILL OPTIMIZER" << endl;
+    std::cout << "DOWNHILL OPTIMIZER" << std::endl;
     optimizer = new DownhillOptimizer(function, 0.01);
     optimizer->setLogging(true);
     minimum = optimizer->optimize(initialGuess, stopCondition);
@@ -242,32 +242,32 @@ int main(int argc, char* argv[]) {
     error   = optimizer->getCurrentError();
     // printLog(downhillOptimizer);
     saveLogCSV("downhill.csv", optimizer);
-    cout << "#" << optimizer->getStepCount() << " MIN= " << minimum << " VAL= " << value
-         << " ERR= " << error << endl;
-    cout << "Function evaluations: " << gCallCount << endl;
+    std::cout << "#" << optimizer->getStepCount() << " MIN= " << minimum << " VAL= " << value
+         << " ERR= " << error << std::endl;
+    std::cout << "Function evaluations: " << gCallCount << std::endl;
     gCallCount = 0;
-    cout << endl;
+    std::cout << std::endl;
 
     /*
      * Gradient descent optimizer
      */
-    cout << "GRADIENT DESCENT OPTIMIZER" << endl;
+    std::cout << "GRADIENT DESCENT OPTIMIZER" << std::endl;
     optimizer = new GradientDescentOptimizer(function, 0.001, 0.1);
     optimizer->setLogging(true);
     minimum = optimizer->optimize(initialGuess, stopCondition);
     value   = optimizer->getCurrentValue();
     error   = optimizer->getCurrentError();
     saveLogCSV("descent.csv", optimizer);
-    cout << "#" << optimizer->getStepCount() << " MIN= " << minimum << " VAL= " << value
-         << " ERR= " << error << endl;
-    cout << "Function evaluations: " << gCallCount << endl;
+    std::cout << "#" << optimizer->getStepCount() << " MIN= " << minimum << " VAL= " << value
+         << " ERR= " << error << std::endl;
+    std::cout << "Function evaluations: " << gCallCount << std::endl;
     gCallCount = 0;
-    cout << endl;
+    std::cout << std::endl;
 
     /*
      * Simulated annealing optimizer
      */
-    cout << "SIMULATED ANNEALING OPTIMIZER" << endl;
+    std::cout << "SIMULATED ANNEALING OPTIMIZER" << std::endl;
     optimizer = new SimulatedAnnealingOptimizer(function, 1.0, 1.0, 0.001);
     optimizer->setLogging(true);
     minimum = optimizer->optimize(initialGuess, stopCondition);
@@ -275,27 +275,27 @@ int main(int argc, char* argv[]) {
     error   = optimizer->getCurrentError();
     // printLog(descentOptimizer);
     saveLogCSV("annealing.csv", optimizer);
-    cout << "#" << optimizer->getStepCount() << " MIN= " << minimum << " VAL= " << value
-         << " ERR= " << error << endl;
-    cout << "Function evaluations: " << gCallCount << endl;
+    std::cout << "#" << optimizer->getStepCount() << " MIN= " << minimum << " VAL= " << value
+         << " ERR= " << error << std::endl;
+    std::cout << "Function evaluations: " << gCallCount << std::endl;
     gCallCount = 0;
-    cout << endl;
+    std::cout << std::endl;
 
     /*
      * BFGS optimizer
      */
-    cout << "BFGS OPTIMIZER" << endl;
+    std::cout << "BFGS OPTIMIZER" << std::endl;
     optimizer = new BFGSOptimizer(function, 1.0);
     optimizer->setLogging(true);
     minimum = optimizer->optimize(initialGuess, stopCondition);
     value   = optimizer->getCurrentValue();
     error   = optimizer->getCurrentError();
     saveLogCSV("bfgs.csv", optimizer);
-    cout << "#" << optimizer->getStepCount() << " MIN= " << minimum << " VAL= " << value
-         << " ERR= " << error << endl;
-    cout << "Function evaluations: " << gCallCount << endl;
+    std::cout << "#" << optimizer->getStepCount() << " MIN= " << minimum << " VAL= " << value
+         << " ERR= " << error << std::endl;
+    std::cout << "Function evaluations: " << gCallCount << std::endl;
     gCallCount = 0;
-    cout << endl;
+    std::cout << std::endl;
 
     return 0;
 }

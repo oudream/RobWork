@@ -95,8 +95,8 @@ int main(int argc, char* argv[]) {
         notify(vm);
 
         if(vm.count("help")) {
-            cout << usage << endl;
-            cout << desc << endl;
+            std::cout << usage << std::endl;
+            std::cout << desc << std::endl;
             return 0;
         }
 
@@ -105,21 +105,21 @@ int main(int argc, char* argv[]) {
         if(vm.count("robustness")) { testRobustness = true; }
     }
     catch(...) {
-        cout << usage << endl;
-        cout << desc << endl;
+        std::cout << usage << std::endl;
+        std::cout << desc << std::endl;
         return -1;
     }
 
     /* load data */
-    cout << "* Loading dwc... ";
+    std::cout << "* Loading dwc... ";
     DynamicWorkCell::Ptr dwc = DynamicWorkCellLoader::load(dwcFilename);
-    cout << "Loaded." << endl;
-    cout << "* Loading task description... ";
+    std::cout << "Loaded." << std::endl;
+    std::cout << "* Loading task description... ";
     TaskDescription::Ptr td = TaskDescriptionLoader::load(tdFilename, dwc);
-    cout << "Loaded." << endl;
-    cout << "* Loading gripper... ";
+    std::cout << "Loaded." << std::endl;
+    std::cout << "* Loading gripper... ";
     Gripper::Ptr gripper = GripperXMLLoader::load(gripperFilename);
-    cout << "Loaded." << endl;
+    std::cout << "Loaded." << std::endl;
 
     if(vm.count("out")) { outFilename = vm["out"].as<string>(); }
     else { outFilename = gripper->getName() + ".tasks.xml"; }
@@ -142,7 +142,7 @@ int main(int argc, char* argv[]) {
                            td);
     // CollisionDetector::Ptr cd = new CollisionDetector(td->getWorkCell(),
     // ProximityStrategyFactory::makeDefaultCollisionStrategy());
-    cout << "Generating grasps..." << endl;
+    std::cout << "Generating grasps..." << std::endl;
     TaskGenerator::Ptr generator = new TaskGenerator(td);
 
     if(useSamples) { generator->generateTask(ntargets, td->getInitState(), &ssamples, nsamples); }
@@ -150,29 +150,29 @@ int main(int argc, char* argv[]) {
 
     GraspTask::Ptr tasks   = generator->getTasks();
     GraspTask::Ptr samples = generator->getSamples();
-    cout << "Grasps generated." << endl;
-    cout << "Tasks: " << tasks->getSubTasks()[0].getTargets().size() << endl;
-    cout << "Samples: " << samples->getSubTasks()[0].getTargets().size() << endl;
+    std::cout << "Grasps generated." << std::endl;
+    std::cout << "Tasks: " << tasks->getSubTasks()[0].getTargets().size() << std::endl;
+    std::cout << "Samples: " << samples->getSubTasks()[0].getTargets().size() << std::endl;
 
     /* perform simulation */
     if(!nosim) {
-        cout << "Starting simulation..." << endl;
+        std::cout << "Starting simulation..." << std::endl;
         GripperTaskSimulator::Ptr sim =
             ownedPtr(new GripperTaskSimulator(gripper, tasks, samples, td));
-        cout << "Simulator created." << endl;
+        std::cout << "Simulator created." << std::endl;
 
         try {
-            cout << "Launching..." << endl;
+            std::cout << "Launching..." << std::endl;
             sim->startSimulation(td->getInitState());
-            cout << "Launched." << endl;
+            std::cout << "Launched." << std::endl;
         }
         catch(...) {
-            cout << "Error starting simulation..." << endl;
+            std::cout << "Error starting simulation..." << std::endl;
             return -1;
         }
 
         while(sim->isRunning()) {
-            // cout << "Running..." << endl;
+            // std::cout << "Running..." << std::endl;
         }
 
         gripper->getQuality() = sim->getGripperQuality();
@@ -180,7 +180,7 @@ int main(int argc, char* argv[]) {
 
     /* perform robustness tests */
     if(testRobustness) {
-        cout << "Starting robustness test..." << endl;
+        std::cout << "Starting robustness test..." << std::endl;
 
         // perturbate only succesful tasks
         tasks = TaskGenerator::copyTasks(tasks, true);
@@ -195,8 +195,8 @@ int main(int argc, char* argv[]) {
     }
 
     /* display results */
-    cout << "\nRESULTS" << endl;
-    cout << gripper->getQuality() << endl;
+    std::cout << "\nRESULTS" << std::endl;
+    std::cout << gripper->getQuality() << std::endl;
 
     /* save results */
     GripperXMLLoader::save(gripper, gripperFilename);

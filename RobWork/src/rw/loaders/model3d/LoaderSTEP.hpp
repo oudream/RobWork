@@ -26,6 +26,8 @@
 
 #include <string>
 
+class TopoDS_Shape;
+
 namespace rw { namespace loaders {
 
     //! @addtogroup graphics
@@ -50,6 +52,15 @@ namespace rw { namespace loaders {
 
         //! @copydoc Model3DLoader::load
         rw::graphics::Model3D::Ptr load(const std::string& filename);
+
+        /**
+         * @brief convert an OpenCasCade Shape to a RobWorkModel. this will try to triangulate the
+         * shape
+         * @param shape [in] the OpenCasCade Shape to convert. OBS not all shapes can be
+         * triangulated
+         * @param name [in] name of the model
+         */
+        static rw::graphics::Model3D::Ptr toModel(const TopoDS_Shape& shape, std::string name);
 
 #if RW_HAVE_OCC
         //! @copydoc Model3DLoader::getModelFormats

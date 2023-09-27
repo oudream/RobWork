@@ -137,10 +137,10 @@ int main(int argc, char** argv)
     rw::math::Math::seed( TimerUtil::currentTimeMs() );
     // write standard welcome, status
     if (vm.count("help")) {
-        cout << "Usage:\n\n"
+        std::cout << "Usage:\n\n"
                   << "\t" << argv[0] <<" [options] -o<outfile> <expFile1> <expFile2> <...> <expFileN> \n"
                   << "\n";
-        cout << desc << "\n";
+        std::cout << desc << "\n";
         return 1;
     }
 

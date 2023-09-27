@@ -48,17 +48,17 @@ int main(int argc, char** argv)
 
     // write standard welcome, status
     if (vm.count("help")) {
-        cout << "Usage:\n\n"
+        std::cout << "Usage:\n\n"
                   << "\t" << argv[0] <<" [options] -o<outfile> <expFile1> <expFile2> <...> <expFileN> \n"
                   << "\n";
-        cout << desc << "\n";
+        std::cout << desc << "\n";
         return 0;
     }
 
     using namespace boost::filesystem;
 
     if(!vm.count("baseline")){
-        cout << "\n Error: baseline experiments are required!\n";
+        std::cout << "\n Error: baseline experiments are required!\n";
         return 10;
     }
     bool silent = vm["silent"].as<bool>();

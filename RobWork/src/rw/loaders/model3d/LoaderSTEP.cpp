@@ -60,7 +60,10 @@ TopoDS_Shape loadShape(std::string const& filename) {
 
 rw::graphics::Model3D::Ptr LoaderSTEP::load(const std::string& filename) {
     TopoDS_Shape shape = loadShape(filename);
+    return toModel(shape, boost::filesystem::path(filename).filename().c_str());
+}
 
+rw::graphics::Model3D::Ptr LoaderSTEP::toModel(const TopoDS_Shape& shape, std::string name) {
     PlainTriMesh<Triangle<double>> rwMesh;
     for(TopExp_Explorer aExpFace(shape, TopAbs_FACE); aExpFace.More(); aExpFace.Next()) {
         TopoDS_Face aFace                  = TopoDS::Face(aExpFace.Current());
@@ -108,7 +111,7 @@ rw::graphics::Model3D::Ptr LoaderSTEP::load(const std::string& filename) {
     }
     rwMesh.scale(0.001);
     Model3D::Ptr model =
-        ownedPtr(new Model3D(boost::filesystem::path(filename).filename().c_str()));
+        ownedPtr(new Model3D(name));
     model->addTriMesh(Model3D::Material("White", 0.8, 0.8, 0.8), rwMesh);
 
     return model;

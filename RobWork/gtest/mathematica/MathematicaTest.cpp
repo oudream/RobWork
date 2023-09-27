@@ -143,7 +143,7 @@ TEST(MathematicaTest, MathematicaTestCPP11 ){
 		*l >> result; // read the first In[1]:= prompt from kernel
 
 		{
-			*l << Image(ListPlot({{0,1},{2,2},{2.5,3}},Rule("PlotLabel","TESTPLOT C++11"),Rule("AxesLabel",{"X","Y"})));
+			*l << Image(ListPlot({{0,1},{2,2},{2.5,3}},Rule("PlotLabel","TESTPLOT C++17"),Rule("AxesLabel",{"X","Y"})));
 			*l >> result;
 			EXPECT_EQ(result->packetType() , Mathematica::Return);
 			const ReturnPacket::Ptr imgPacket = result.cast<ReturnPacket>();

@@ -177,10 +177,10 @@ namespace rw { namespace models {
         const std::vector<rw::geometry::Model3D::Ptr>& getModels() const;
 
         //! @copydoc Object::getMass
-        double getMass(rw::kinematics::State& state) const { return getMass(); };
+        double getMass(const rw::kinematics::State& state) const { return getMass(); };
 
         //! @copydoc Object::getInertia
-        rw::math::InertiaMatrix<> getInertia(rw::kinematics::State& state) const {
+        rw::math::InertiaMatrix<> getInertia(const rw::kinematics::State& state) const {
             return getInertia();
         }
 
