@@ -133,10 +133,10 @@ int main(int argc, char** argv){
     notify(vm);
 
     if (vm.count("help")) {
-        cout << "Usage:\n\n"
+        std::cout << "Usage:\n\n"
                   << "\t" << argv[0] <<" [options] -w<workcellFile> -o<objectName> -k<knifeName> <actionInput> \n"
                   << "\n";
-        cout << desc << "\n";
+        std::cout << desc << "\n";
         return 1;
     }
 

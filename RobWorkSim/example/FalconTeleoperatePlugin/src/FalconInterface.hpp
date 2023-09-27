@@ -36,11 +36,6 @@
 #define STRONG_FORCE_RADIUS			0.035
 #define GRAVITY_FORCE				0.5
 
-using namespace libnifalcon;
-using namespace rw::math;
-using namespace std;
-
-
 /**
  * @brief The wrapper class for the Novint Falcon 3D controller device.
  */

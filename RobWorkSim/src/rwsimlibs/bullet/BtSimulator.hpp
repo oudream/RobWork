@@ -79,7 +79,7 @@ namespace rwsimlibs { namespace bullet {
         void load(rw::core::Ptr<rwsim::dynamics::DynamicWorkCell> dwc);
 
         //! @copydoc rwsim::simulator::PhysicsEngine::setContactDetector
-        bool setContactDetector(rw::core::Ptr<rwsim::contacts::ContactDetector> detector);
+        bool setContactDetector(rw::core::Ptr<rwsim::contacts::BaseContactDetector> detector);
 
         //! @copydoc rwsim::simulator::PhysicsEngine::step
         void step(double dt, rw::kinematics::State& state);

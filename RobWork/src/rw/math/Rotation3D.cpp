@@ -39,6 +39,11 @@ namespace rw { namespace math {
 template<class T>
 Rotation3D<T>::Rotation3D(const Rotation3DVector<T>& rotVec) : Rotation3D(rotVec.toRotation3D()) {}
 
+template<class T> Rotation3D<T>& Rotation3D<T>::operator=(const Rotation3DVector<T>& rot) {
+    _m = rot.toRotation3D()._m;
+    return *this;
+}
+
 template<class T> bool Rotation3D<T>::isProperRotation() const {
     return LinearAlgebra::isSO(e());
 }

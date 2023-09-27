@@ -67,26 +67,13 @@ struct ContactDetector::OrderFramePairs
 };
 
 ContactDetector::ContactDetector(WorkCell::Ptr wc, ProximityFilterStrategy::Ptr filter) :
-    _wc(wc), _bpfilter(filter == NULL ? rw::core::ownedPtr(new BasicFilterStrategy(wc)) : filter),
-    _orderFramePairs(new OrderFramePairs(wc)), _timer(0) {
+    BaseContactDetector(wc, filter), _orderFramePairs(new OrderFramePairs(wc)) {
     initializeGeometryMap();
 }
 
 ContactDetector::~ContactDetector() {
     clearStrategies();
     delete _orderFramePairs;
-}
-
-void ContactDetector::setProximityFilterStrategy(ProximityFilterStrategy::Ptr filter) {
-    _bpfilter = filter;
-}
-
-double ContactDetector::getTimer() const {
-    return _timer;
-}
-
-void ContactDetector::setTimer(double value) {
-    _timer = value;
 }
 
 void ContactDetector::initializeGeometryMap() {
@@ -149,10 +136,6 @@ void ContactDetector::initializeModels(StrategyTableRow& strategy) {
             }
         }
     }
-}
-
-ProximityFilterStrategy::Ptr ContactDetector::getProximityFilterStrategy() const {
-    return _bpfilter;
 }
 
 std::list<ContactDetector::StrategyTableRow> ContactDetector::getContactStategies() const {
@@ -299,9 +282,10 @@ std::vector<Contact> ContactDetector::findContacts(const State& state, ContactDe
 
     std::vector<Contact> res;
 
-    ProximityFilter::Ptr filter = _bpfilter->update(state);
+    ProximityFilter::Ptr filter = _bpFilter->update(state);
     std::list<FramePair> framePairs;
     while(!filter->isEmpty()) { framePairs.push_back(filter->frontAndPop()); }
+
     framePairs.sort(*_orderFramePairs);
     FKTable fk(state);
     for(std::list<FramePair>::const_iterator pairIt = framePairs.begin();
@@ -386,7 +370,7 @@ std::vector<Contact> ContactDetector::findContacts(const State& state, ContactDe
     std::vector<ContactDetectorTracking::ContactInfo>& trackInfo = tracking.getInfo();
     trackInfo.clear();
 
-    ProximityFilter::Ptr filter = _bpfilter->update(state);
+    ProximityFilter::Ptr filter = _bpFilter->update(state);
     std::list<FramePair> framePairs;
     while(!filter->isEmpty()) { framePairs.push_back(filter->frontAndPop()); }
     framePairs.sort(*_orderFramePairs);

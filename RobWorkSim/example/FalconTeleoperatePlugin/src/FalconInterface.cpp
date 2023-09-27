@@ -4,23 +4,23 @@ bool FalconInterface::initializeFalcon()
 {
 	falcon = new FalconDevice();
 	
-	cout << "Setting up comm interface for Falcon comms" << endl;
+	std::cout << "Setting up comm interface for Falcon comms" << std::endl;
 
 	unsigned int count;
 	falcon->getDeviceCount(count);
-	cout << "Connected Device Count: " << count << endl;
+	std::cout << "Connected Device Count: " << count << std::endl;
 
 	//Open the device number:
 	int deviceNum = 0;
-	cout << "Attempting to open Falcon device:  " << deviceNum << endl;
+	std::cout << "Attempting to open Falcon device:  " << deviceNum << std::endl;
 	if(!falcon->open(deviceNum))
 	{
-		cout << "Cannot open falcon device index " << deviceNum << " - Lib Error Code: " << falcon->getErrorCode() << " Device Error Code: " << falcon->getFalconComm()->getDeviceErrorCode() << endl;
+		std::cout << "Cannot open falcon device index " << deviceNum << " - Lib Error Code: " << falcon->getErrorCode() << " Device Error Code: " << falcon->getFalconComm()->getDeviceErrorCode() << std::endl;
 		return false;
 	}
 	else
 	{
-		cout << "Connected to Falcon device " << deviceNum << endl ;
+		std::cout << "Connected to Falcon device " << deviceNum << std::endl ;
 	}
 
 	//Load the device firmware:
@@ -49,7 +49,7 @@ bool FalconInterface::initializeFalcon()
 				if(!falcon->getFalconFirmware()->loadFirmware(skip_checksum, NOVINT_FALCON_NVENT_FIRMWARE_SIZE, const_cast<uint8_t*>(NOVINT_FALCON_NVENT_FIRMWARE)))
 
 				{
-					cout << "Firmware loading try failed";
+					std::cout << "Firmware loading try failed";
 					//Completely close and reopen
 					//falcon.close();
 					//if(!falcon.open(m_varMap["device_index"].as<int>()))

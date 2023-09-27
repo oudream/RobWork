@@ -98,11 +98,11 @@ int main(int argc, char** argv) {
     bool useAlignedGrasp = vm["align"].as<bool>();
     // write standard welcome, status
     if(vm.count("help")) {
-        cout << "Usage:\n\n"
+        std::cout << "Usage:\n\n"
              << "\t" << argv[0]
              << " [options] -o<outfile> <expFile1> <expFile2> <...> <expFileN> \n"
              << "\n";
-        cout << desc << "\n";
+        std::cout << desc << "\n";
         return 1;
     }
 
@@ -159,14 +159,14 @@ int main(int argc, char** argv) {
     State initState          = dwc->getWorkcell()->getDefaultState();
 
     /* funny stuff */
-    cout << "* Loading task description... ";
+    std::cout << "* Loading task description... ";
     std::string tdFilename  = vm["td"].as<std::string>();
     TaskDescription::Ptr td = TaskDescriptionLoader::load(tdFilename, dwc);
-    cout << "Loaded." << endl;
-    cout << "* Loading gripper... ";
+    std::cout << "Loaded." << std::endl;
+    std::cout << "* Loading gripper... ";
     std::string gripperFilename = vm["gripper"].as<std::string>();
     Gripper::Ptr gripper        = GripperXMLLoader::load(gripperFilename);
-    cout << "Loaded." << endl;
+    std::cout << "Loaded." << std::endl;
 
     gripper->updateGripper(td->getWorkCell(),
                            td->getDynamicWorkCell(),

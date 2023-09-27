@@ -44,7 +44,7 @@ int main(int argc, char* argv[]) {
     posDesc.add("out", -1);
 
     try {
-        cout << "Processing cmdline" << endl;
+        std::cout << "Processing cmdline" << std::endl;
 
         variables_map vm;
         store(command_line_parser(argc, argv)
@@ -55,29 +55,29 @@ int main(int argc, char* argv[]) {
               vm);
         notify(vm);
 
-        cout << "Processed" << endl;
+        std::cout << "Processed" << std::endl;
 
         /* PROCESS */
         if(vm.count("help")) {
-            cout << "This is a script creating gripper XML description file for given "
+            std::cout << "This is a script creating gripper XML description file for given "
                     "parametrization.\n"
                  << "New gripper is saved to [out] if specified or [gripper_name].grp.xml if not.\n"
                  << "If --stl option is specified, base and jaw meshes are saved to "
                     "[gripper_name]_base.stl "
                  << "and [gripper_name]_jaw.stl, respectively.\n"
-                 << endl;
+                 << std::endl;
 
-            cout << desc << endl;
+            std::cout << desc << std::endl;
             return 1;
         }
 
-        cout << "Making gripper" << endl;
+        std::cout << "Making gripper" << std::endl;
         Gripper::Ptr gripper = ownedPtr(new Gripper);
 
         if(vm.count("name")) { gripper->setName(vm["name"].as<string>()); }
 
         if(vm.count("jaw")) {
-            cout << "Found jaw" << endl;
+            std::cout << "Found jaw" << std::endl;
             jawParams = Q(vm["jaw"].as<vector<double>>());
             jawParams(5) *= Deg2Rad;
             jawParams(8) *= Deg2Rad;
@@ -91,7 +91,7 @@ int main(int argc, char* argv[]) {
         }
 
         if(vm.count("tcp")) {
-            cout << "Found tcp" << endl;
+            std::cout << "Found tcp" << std::endl;
             // gripper->setTCP(Transform3D<>(Vector3D<>(0, 0,
             // gripper->getJawParameters()[1]-vm["tcp"].as<double>())));
             gripper->setTCP(Transform3D<>(Vector3D<>(0, 0, vm["tcp"].as<double>())));
@@ -132,7 +132,7 @@ int main(int argc, char* argv[]) {
         GripperXMLLoader::save(gripper, filename);
     }
     catch(...) {
-        cout << "ERROR" << endl;
+        std::cout << "ERROR" << std::endl;
         return -1;
     }
 

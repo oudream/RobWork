@@ -54,24 +54,24 @@ int main(int argc, char* argv[]) {
         notify(vm);
 
         if(vm.count("help")) {
-            cout << usage << endl;
-            cout << desc << endl;
+            std::cout << usage << std::endl;
+            std::cout << desc << std::endl;
             return 0;
         }
     }
     catch(...) {
-        cout << usage << endl;
-        cout << desc << endl;
+        std::cout << usage << std::endl;
+        std::cout << desc << std::endl;
         return -1;
     }
 
     /* load stuff */
-    cout << "* Loading dwc... ";
+    std::cout << "* Loading dwc... ";
     DynamicWorkCell::Ptr dwc = DynamicWorkCellLoader::load(dwcFilename);
-    cout << "Loaded." << endl;
-    cout << "* Loading task description... ";
+    std::cout << "Loaded." << std::endl;
+    std::cout << "* Loading task description... ";
     TaskDescription::Ptr td = TaskDescriptionLoader::load(tdFilename, dwc);
-    cout << "Loaded." << endl;
+    std::cout << "Loaded." << std::endl;
 
     /* prepare sampling */
     TaskGenerator::Ptr generator = new TaskGenerator(td);
@@ -96,13 +96,13 @@ int main(int argc, char* argv[]) {
     cstrategy->addGeometry(object.get(), td->getTargetObject()->getGeometry()[0]);
 
     /* generate samples */
-    cout << "Generating samples..." << endl;
+    std::cout << "Generating samples..." << std::endl;
     vector<SurfaceSample> samples;
     for(int i = 0; i < number; ++i) {
         SurfaceSample ssample = generator->sample(sampler, object, ray, cstrategy);
         samples.push_back(ssample);
     }
-    cout << "Done." << endl;
+    std::cout << "Done." << std::endl;
 
     /* save results */
     SurfaceSample::saveToXML(outFilename, samples);

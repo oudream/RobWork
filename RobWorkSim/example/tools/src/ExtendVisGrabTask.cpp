@@ -387,7 +387,7 @@ std::vector<std::string> mergeTaskFileList(std::string root, std::string preName
 
                     graspI++;
                 }
-                cout << "-- " << graspType << ", " << objectDirectory << ", sceneI: " << sceneI << ", nrGrasps: " << graspI << endl;
+                std::cout << "-- " << graspType << ", " << objectDirectory << ", sceneI: " << sceneI << ", nrGrasps: " << graspI << std::endl;
             }
 
             std::cout << "Merging " << nrExpMerged << " tasks into: " << std::string("/" + objectDirectory + "/" + "merged_" + sIstr + ".task.xml") << std::endl;
@@ -488,7 +488,7 @@ std::vector<std::string> merge(std::vector<std::string> v1, std::vector<std::str
                     */
 
                     //if (objI == 1) exit(1);
-                    cout << "-- " << graspType << ", " << objectDirectory << ", sceneI: " << sceneI << ", nrGrasps: " << graspI << endl;
+                    std::cout << "-- " << graspType << ", " << objectDirectory << ", sceneI: " << sceneI << ", nrGrasps: " << graspI << std::endl;
                 }
 
                 std::cout << "Merging " << nrExpMerged << " tasks into: " << merged_taskFile << std::endl;
@@ -542,32 +542,32 @@ std::vector<std::string> merge(std::vector<std::string> v1, std::vector<std::str
 
             if(use_existing_result_file){
                 if (stat(resultFile.c_str(), &stInfo) == 0){
-                    cout << "CONTINUEING A RESULT FILE - USING RESULTFILE AS TASK FILE" << std::endl;
+                    std::cout << "CONTINUEING A RESULT FILE - USING RESULTFILE AS TASK FILE" << std::endl;
                     merged_taskFile = resultFile;
                 }
             } else {
                 // if result file exist allready then skip it
                 if (stat(resultFile.c_str(), &stInfo) == 0){
-                    cout << "*************************************************************" << std::endl;
-                    cout << "* SKIPPED: [" << objI <<"," << sceneI <<"] " << objectDirectory << "_img_" << string(sIstr) << std::endl;
-                    cout << "*************************************************************" << std::endl;
+                    std::cout << "*************************************************************" << std::endl;
+                    std::cout << "* SKIPPED: [" << objI <<"," << sceneI <<"] " << objectDirectory << "_img_" << string(sIstr) << std::endl;
+                    std::cout << "*************************************************************" << std::endl;
                     continue;
                 }
             }
             // Execute RobWork
             char cmd2[1024];
-            cout << "*************************************************************" << std::endl;
-            cout << "* STARTED: [" << objI <<"," << sceneI <<"] " << objectDirectory << "_img_" << string(sIstr) << std::endl;
-            cout << "* " << std::endl;
+            std::cout << "*************************************************************" << std::endl;
+            std::cout << "* STARTED: [" << objI <<"," << sceneI <<"] " << objectDirectory << "_img_" << string(sIstr) << std::endl;
+            std::cout << "* " << std::endl;
             sprintf(
                     cmd2,
                     "start \"%s\" /WAIT %s --ini-file=%s -PDWC=%s -PSimTaskConfig=%s -PTaskTestFile=%s -PTaskTestOutFile=%s -PAuto=True -PNoSave=True",
                     merged_taskFile.c_str(),
                     robWorkStudio.c_str(), iniFile.c_str(), dwcFile.c_str(), propFile.c_str(),
                     merged_taskFile.c_str(), resultFile.c_str());
-            cout << cmd2 << endl;
+            std::cout << cmd2 << std::endl;
             int ret = system(cmd2);
-            cout << "*************************************************************" << std::endl;
+            std::cout << "*************************************************************" << std::endl;
             //if (WIFSIGNALED(ret) && (WTERMSIG(ret) == SIGINT || WTERMSIG(ret) == SIGQUIT))
             //    exit(EXIT_FAILURE);
 
@@ -610,7 +610,7 @@ std::vector<std::string> merge(std::vector<std::string> v1, std::vector<std::str
                             "%s --ini-file=%s -PDWC=%s -PSimTaskConfig=%s -PTaskTestFile=%s -PTaskTestOutFile=%s -PAuto=True -PNoSave=True",
                             robWorkStudio.c_str(), iniFile.c_str(), dwcFile.c_str(), propFile.c_str(),
                             taskFile.c_str(), resultFile.c_str());
-                    cout << cmd2 << endl;
+                    std::cout << cmd2 << std::endl;
                     int ret = system(cmd2);
                     //if (WIFSIGNALED(ret) && (WTERMSIG(ret) == SIGINT || WTERMSIG(ret) == SIGQUIT))
                     //    exit(EXIT_FAILURE);
@@ -620,14 +620,14 @@ std::vector<std::string> merge(std::vector<std::string> v1, std::vector<std::str
                     graspI++;
                 }
                 //if (objI == 1) exit(1);
-                cout << graspType << ", " << objectDirectory << ", sceneI: " << sceneI << ", nrGrasps: " << graspI
-                        << endl;
+                std::cout << graspType << ", " << objectDirectory << ", sceneI: " << sceneI << ", nrGrasps: " << graspI
+                        << std::endl;
 
             }
         }
     }
     */
 
-    cout << "Nr of experiments: " << nrExp << endl;
+    std::cout << "Nr of experiments: " << nrExp << std::endl;
 #endif
 

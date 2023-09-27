@@ -46,41 +46,4 @@ const Transform3D<>& FKTable::get(const Frame& frame) const {
         else frame.multiplyTransform(get(*parent), getState(), result);
     }
     return result;
-
-    /*
-    Version based on boost::multi_index_container:
-
-    TransformMap::iterator p = _transforms.find(&frame);
-    if (p == _end) {
-        Entry entry(&frame);
-
-        const rw::core::Ptr< Frame> parent = frame.getParent(getState());
-        if (!parent)
-            entry.transform = frame.getTransform(getState());
-        else
-            frame.getTransform(get(*parent), getState(), entry.transform);
-
-        return _transforms.insert(entry).first->transform;
-    } else
-        return p->transform;
-
-    */
-
-    /*
-    Version based on std::map<>:
-
-    TransformMap::iterator p = _transforms.find(&frame);
-
-    if (p == _transforms.end()) {
-        const rw::core::Ptr< Frame> parent = frame.getParent(getState());
-        if (!parent) {
-            const Transform3D<>& local = frame.getTransform(getState());
-            p = _transforms.insert(Entry(&frame, local)).first;
-        } else {
-            p = _transforms.insert(Entry(&frame, Transform3D<>())).first;
-            frame.getTransform(get(*parent), getState(), p->second);
-        }
-    }
-    return p->second;
-    */
 }

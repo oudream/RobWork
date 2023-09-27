@@ -46,7 +46,6 @@ This documentation page includes tutorials on how to compile, install and use Ro
 
 - :ref:`installation` guides you through setting up RobWork on Ubuntu, CentOS and Windows.
 - :ref:`manual` provides tutorials on basic usage of RobWork and RobWorkStudio. New users should start with these tutorials.
-- :ref:`tutorials` provides tutorials on more advanced topics.
 - :ref:`file_formats` is a reference for the XML format used to describe scenes in RobWork.
 - :ref:`interfaces` gives details about developing in different languages, such as C++, Python, Java & Lua.
 - :ref:`contributing` gives information about coding standards and the procedure for contributing code to the RobWork project.
@@ -63,10 +62,8 @@ This documentation page includes tutorials on how to compile, install and use Ro
 
    installation
    manual
-   tutorials
    file_formats
    interfaces
-   hardware
    contributing
    scene_collection
    apidoc/index

@@ -1,0 +1,164 @@
+<DynamicWorkcell workcell="box_of_cones.wc.xml">
+  <PhysicsEngine>
+    <RestitutionModel>Newton</RestitutionModel>
+    <ContactModel>Guendel</ContactModel>
+    <AutoDisable>true</AutoDisable>
+    <Property name="StepMethod">WorldQuickStep</Property>
+    <Property name="ContactSurfaceLayer" type="float">0.000012</Property>
+    <Property name="MaxSepDistance" type="float">0.000120</Property>
+  </PhysicsEngine>
+
+  <Gravity>0 0 -9.82</Gravity>
+
+  <Include file="../DynamicMaterialDataBase.xml" />
+
+  <!-- Now define all the rigid bodies that exist in the workcell, remember to
+      reference the RigidBody to a movableframe -->
+  <KinematicBody frame="Box">
+    <MaterialID>Plastic</MaterialID>
+  </KinematicBody>
+
+
+
+  <RigidBody frame="Obj1">
+    <Mass>0.0856</Mass>
+    <EstimateCOG />
+    <EstimateInertia />
+    <Integrator>Euler</Integrator>
+    <MaterialID>Plastic</MaterialID>
+  </RigidBody>
+  <RigidBody frame="Obj2">
+    <Mass>0.0856</Mass>
+    <EstimateCOG />
+    <EstimateInertia />
+    <Integrator>Euler</Integrator>
+    <MaterialID>Plastic</MaterialID>
+  </RigidBody>
+  <RigidBody frame="Obj3">
+    <Mass>0.0856</Mass>
+    <EstimateCOG />
+    <EstimateInertia />
+    <Integrator>Euler</Integrator>
+    <MaterialID>Plastic</MaterialID>
+  </RigidBody>
+  <RigidBody frame="Obj4">
+    <Mass>0.0856</Mass>
+    <EstimateCOG />
+    <EstimateInertia />
+    <Integrator>Euler</Integrator>
+    <MaterialID>Plastic</MaterialID>
+  </RigidBody>
+  <RigidBody frame="Obj5">
+    <Mass>0.0856</Mass>
+    <EstimateCOG />
+    <EstimateInertia />
+    <Integrator>Euler</Integrator>
+    <MaterialID>Plastic</MaterialID>
+  </RigidBody>
+  <RigidBody frame="Obj6">
+    <Mass>0.0856</Mass>
+    <EstimateCOG />
+    <EstimateInertia />
+    <Integrator>Euler</Integrator>
+    <MaterialID>Plastic</MaterialID>
+  </RigidBody>
+  <RigidBody frame="Obj7">
+    <Mass>0.0856</Mass>
+    <EstimateCOG />
+    <EstimateInertia />
+    <Integrator>Euler</Integrator>
+    <MaterialID>Plastic</MaterialID>
+  </RigidBody>
+  <RigidBody frame="Obj8">
+    <Mass>0.0856</Mass>
+    <EstimateCOG />
+    <EstimateInertia />
+    <Integrator>Euler</Integrator>
+    <MaterialID>Plastic</MaterialID>
+  </RigidBody>
+  <RigidBody frame="Obj9">
+    <Mass>0.0856</Mass>
+    <EstimateCOG />
+    <EstimateInertia />
+    <Integrator>Euler</Integrator>
+    <MaterialID>Plastic</MaterialID>
+  </RigidBody>
+  <RigidBody frame="Obj10">
+    <Mass>0.0856</Mass>
+    <EstimateCOG />
+    <EstimateInertia />
+    <Integrator>Euler</Integrator>
+    <MaterialID>Plastic</MaterialID>
+  </RigidBody>
+
+  <RigidBody frame="Obj11">
+    <Mass>0.0856</Mass>
+    <EstimateCOG />
+    <EstimateInertia />
+    <Integrator>Euler</Integrator>
+    <MaterialID>Plastic</MaterialID>
+  </RigidBody>
+  <RigidBody frame="Obj12">
+    <Mass>0.0856</Mass>
+    <EstimateCOG />
+    <EstimateInertia />
+    <Integrator>Euler</Integrator>
+    <MaterialID>Plastic</MaterialID>
+  </RigidBody>
+  <RigidBody frame="Obj13">
+    <Mass>0.0856</Mass>
+    <EstimateCOG />
+    <EstimateInertia />
+    <Integrator>Euler</Integrator>
+    <MaterialID>Plastic</MaterialID>
+  </RigidBody>
+  <RigidBody frame="Obj14">
+    <Mass>0.0856</Mass>
+    <EstimateCOG />
+    <EstimateInertia />
+    <Integrator>Euler</Integrator>
+    <MaterialID>Plastic</MaterialID>
+  </RigidBody>
+  <RigidBody frame="Obj15">
+    <Mass>0.0856</Mass>
+    <EstimateCOG />
+    <EstimateInertia />
+    <Integrator>Euler</Integrator>
+    <MaterialID>Plastic</MaterialID>
+  </RigidBody>
+  <RigidBody frame="Obj16">
+    <Mass>0.0856</Mass>
+    <EstimateCOG />
+    <EstimateInertia />
+    <Integrator>Euler</Integrator>
+    <MaterialID>Plastic</MaterialID>
+  </RigidBody>
+  <RigidBody frame="Obj17">
+    <Mass>0.0856</Mass>
+    <EstimateCOG />
+    <EstimateInertia />
+    <Integrator>Euler</Integrator>
+    <MaterialID>Plastic</MaterialID>
+  </RigidBody>
+  <RigidBody frame="Obj18">
+    <Mass>0.0856</Mass>
+    <EstimateCOG />
+    <EstimateInertia />
+    <Integrator>Euler</Integrator>
+    <MaterialID>Plastic</MaterialID>
+  </RigidBody>
+  <RigidBody frame="Obj19">
+    <Mass>0.0856</Mass>
+    <EstimateCOG />
+    <EstimateInertia />
+    <Integrator>Euler</Integrator>
+    <MaterialID>Plastic</MaterialID>
+  </RigidBody>
+  <RigidBody frame="Obj20">
+    <Mass>0.0856</Mass>
+    <EstimateCOG />
+    <EstimateInertia />
+    <Integrator>Euler</Integrator>
+    <MaterialID>Plastic</MaterialID>
+  </RigidBody>
+</DynamicWorkcell>

@@ -515,15 +515,18 @@ ProximityStrategyPQP::getSurfaceNormals(MultiDistanceResult& res, int idx) {
     PQPProximityModel* a = (PQPProximityModel*) res.a.get();
     PQPProximityModel* b = (PQPProximityModel*) res.b.get();
 
-    if(a->getGeometryIDs().size() > 1 || b->getGeometryIDs().size() > 1) {
+    /*if(a->getGeometryIDs().size() > 1 || b->getGeometryIDs().size() > 1) {
         RW_THROW(" multiple geoms on one frame is not supported for normal extraction yet!");
-    }
+    }*/
 
     int p1id = res.p1prims[idx];
     int p2id = res.p2prims[idx];
 
-    PQP::Tri* atri = &a->models[0].pqpmodel->tris[p1id];
-    PQP::Tri* btri = &b->models[0].pqpmodel->tris[p2id];
+    int geoIdxA = res.geoIdxA[idx];
+    int geoIdxB = res.geoIdxB[idx];
+
+    PQP::Tri* atri = &a->models[geoIdxA].pqpmodel->tris[p1id];
+    PQP::Tri* btri = &b->models[geoIdxB].pqpmodel->tris[p2id];
 
     rw::math::Vector3D<> atri_p1 = fromRapidVector(atri->p1);
     rw::math::Vector3D<> atri_p2 = fromRapidVector(atri->p2);
@@ -533,8 +536,10 @@ ProximityStrategyPQP::getSurfaceNormals(MultiDistanceResult& res, int idx) {
     rw::math::Vector3D<> btri_p2 = fromRapidVector(btri->p2);
     rw::math::Vector3D<> btri_p3 = fromRapidVector(btri->p3);
 
-    rw::math::Vector3D<> n_p1 = a->models[0].t3d.R() * cross(atri_p2 - atri_p1, atri_p3 - atri_p1);
-    rw::math::Vector3D<> n_p2 = b->models[0].t3d.R() * cross(btri_p2 - btri_p1, btri_p3 - btri_p1);
+    rw::math::Vector3D<> n_p1 =
+        a->models[geoIdxA].t3d.R() * cross(atri_p2 - atri_p1, atri_p3 - atri_p1);
+    rw::math::Vector3D<> n_p2 =
+        b->models[geoIdxB].t3d.R() * cross(btri_p2 - btri_p1, btri_p3 - btri_p1);
 
     return std::make_pair(n_p1, n_p2);
 }

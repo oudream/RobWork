@@ -103,7 +103,7 @@ std::string JawPrimitive::toString() const {
         stream << "- box (" << jaw._length << ", " << jaw._width << ", " << jaw._depth << ")\n";
         stream << "- chamfer (" << jaw._chamferDepth << ", " << Rad2Deg * jaw._chamferAngle <<
 "deg)\n"; stream << "- cut (" << jaw._cutPosition << ", " << jaw._cutDepth << ", " << Rad2Deg *
-jaw._cutAngle << "deg)\n"; stream << "}" << endl;
+jaw._cutAngle << "deg)\n"; stream << "}" << std::endl;
 
         return stream;
 }*/

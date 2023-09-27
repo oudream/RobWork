@@ -20,6 +20,7 @@
 
 #include <chrono>
 #include <map>
+#include <mutex>
 #include <string>
 #include <vector>
 
@@ -61,6 +62,12 @@ namespace rw { namespace common {
          * in the static repport.
          */
         void stop();
+
+        /**
+         * @brief Stop the Current Time, and restart it with a new name
+         * @param name
+         */
+        void stopAndStartWithName(std::string name);
 
         /**
          * @brief Get the Repport object

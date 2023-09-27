@@ -143,7 +143,7 @@ double ODESimulator::getMaxSeperatingDistance() {
 }
 
 ODESimulator::ODESimulator(DynamicWorkCell::Ptr dwc,
-                           rwsim::contacts::ContactDetector::Ptr detector) :
+                           rwsim::contacts::BaseContactDetector::Ptr detector) :
     _dwc(dwc),
     _time(0.0), _render(ownedPtr(new ODEDebugRender(this))), _contacts(INITIAL_MAX_CONTACTS),
     _filteredContacts(INITIAL_MAX_CONTACTS + 10), _rwcontacts(INITIAL_MAX_CONTACTS),
@@ -228,7 +228,7 @@ void ODESimulator::load(rwsim::dynamics::DynamicWorkCell::Ptr dwc) {
         this);
 }
 
-bool ODESimulator::setContactDetector(rwsim::contacts::ContactDetector::Ptr detector) {
+bool ODESimulator::setContactDetector(rwsim::contacts::BaseContactDetector::Ptr detector) {
     _detector = detector;
     return true;
 }
@@ -1295,12 +1295,6 @@ void ODESimulator::removeSensor(rwlibs::simulation::SimulatedSensor::Ptr sensor)
 using namespace rw::proximity;
 
 void ODESimulator::detectCollisionsContactDetector(const State& state) {
-    /*if(_logContactingBodies){
-        //_contactingBodies.clear();
-    }*/
-
-    //_contactPointsTmp.clear();
-    //_contactPoints.clear();
     _contactingBodiesTmp.clear();
 
     std::vector<rwsim::contacts::Contact> contacts;
@@ -1311,12 +1305,8 @@ void ODESimulator::detectCollisionsContactDetector(const State& state) {
             state, data, tracking, _log->makeScope("Find Contacts", __FILE__, __LINE__));
     }
     else { contacts = _detector->findContacts(state); }
+
     size_t numc = contacts.size();
-    /*for(rwsim::contacts::Contact &c : contacts) {
-        std::cout << "ModelA: " << c.getModelA()->getName() << " ModelB: " <<
-    c.getModelB()->getName() << " FrameA: " << c.getFrameA()->getName() << " FrameB: " <<
-    c.getFrameB()->getName() << " " << c.getNormal() << std::endl;
-    }*/
     if(_rwcontacts.size() < numc) {
         _rwcontacts.resize(numc);
         _contacts.resize(numc);
@@ -1331,8 +1321,8 @@ void ODESimulator::detectCollisionsContactDetector(const State& state) {
         ODEBody* b_data = _rwFrameToODEBody[contact.getFrameB()];
         if(a_data == NULL || b_data == NULL) {
             std::cout << "ODE Bodies not found" << std::endl;
-            std::cout << "Frame A: " << contact.getFrameA()->getName() << std::endl;
-            std::cout << "Frame B: " << contact.getFrameB()->getName() << std::endl;
+            if(a_data == NULL) std::cout << "Frame A: " << contact.getFrameA()->getName() << std::endl;
+            if(b_data == NULL) std::cout << "Frame B: " << contact.getFrameB()->getName() << std::endl;
             continue;
         }
 
@@ -1427,14 +1417,10 @@ void ODESimulator::detectCollisionsContactDetector(const State& state) {
 }
 
 bool ODESimulator::detectCollisionsRW(rw::kinematics::State& state, bool onlyTestPenetration) {
-    //
-    // std::cout << "detectCollisionsRW" << onlyTestPenetration << std::endl;
     ProximityFilter::Ptr filter = _bpstrategy->update(state);
-    FKTable fk(state);
     ProximityStrategyData data;
 
     if(!onlyTestPenetration) { _contactingBodiesTmp.clear(); }
-
     std::vector<MultiDistanceResult> logDistances;
     // next we query the BP filter for framepairs that are possibly in collision
     while(!filter->isEmpty()) {
@@ -1540,15 +1526,8 @@ bool ODESimulator::detectCollisionsRW(rw::kinematics::State& state, bool onlyTes
             continue;
         }
 
-        // TODO: if the object is a soft object then we need to add more contacts
-        bool softcontact = false;
-        double softlayer = 0.0;
-        if(softcontact) {
-            // change MAX_SEP_DISTANCE
-            softlayer = 0.001;
-        }
         data.setCollisionQueryType(CollisionStrategy::AllContacts);
-        res = &_narrowStrategy->distances(a, aT, b, bT, _maxSepDistance + softlayer, data);
+        res = &_narrowStrategy->distances(a, aT, b, bT, _maxSepDistance, data);
 
         // create all contacts
         size_t numc = res->distances.size();
@@ -1586,11 +1565,6 @@ bool ODESimulator::detectCollisionsRW(rw::kinematics::State& state, bool onlyTes
             ODEUtil::toODEVector(n, con.geom.normal);
             ODEUtil::toODEVector(p, con.geom.pos);
 
-            if(softcontact) {
-                // scale the distances to fit into MAX_SEP_DISTANCE
-                res->distances[i] *= _maxSepDistance / (_maxSepDistance + softlayer);
-            }
-
             con.geom.depth = _maxAllowedPenetration - res->distances[i];
             con.geom.g1    = a_geom;
             con.geom.g2    = b_geom;
@@ -1612,20 +1586,15 @@ bool ODESimulator::detectCollisionsRW(rw::kinematics::State& state, bool onlyTes
             ni++;
         }
         numc = ni;
-
-        // if (numc < 100) {
         addContacts((int) numc, a_data, b_data, pair.first, pair.second);
-        //}
         res->clear();
     }
 
     if(_log->doLog())
         _log->addDistanceMultiResults("Distance Detection", logDistances, __FILE__, __LINE__);
 
-    // if(_logContactingBodies) {
     _contactingBodies = _contactingBodiesTmp;
-    //_contactPoints = _contactPointsTmp;
-    //}
+
 
     if(onlyTestPenetration) { return false; }
     return false;

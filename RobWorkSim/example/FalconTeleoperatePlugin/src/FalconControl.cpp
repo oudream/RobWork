@@ -19,17 +19,17 @@ void FalconControl::step(ThreadSimulator* sim, const rw::kinematics::State& stat
 		FKTable fk(state);
 		vector<ContactPoint> contacts =  _engine->getContacts();
  		map<pair<string,string>,vector<ContactPoint> > cbodies =  _engine->getContactingBodies();
- 		cout << "cbodies:  " << cbodies.size()<< " contacts:  " << contacts.size() << endl;
+ 		std::cout << "cbodies:  " << cbodies.size()<< " contacts:  " << contacts.size() << std::endl;
  		for (int i = 0; i < contacts.size(); ++i)
- 			cout << contacts[i].p << endl;
+ 			std::cout << contacts[i].p << std::endl;
  		
- 		cout << "--------" << endl;
+ 		std::cout << "--------" << std::endl;
  		for (map<pair<string,string>,vector<ContactPoint> >::iterator it=cbodies.begin(); it!=cbodies.end(); ++it)
  		{
  			if (it->second.size() > 0)
-			    cout << it->first.first << " - " << it->first.second << " => " << it->second[0].p << endl;
+			    std::cout << it->first.first << " - " << it->first.second << " => " << it->second[0].p << std::endl;
 		}
-    	cout << "end" << endl;
+    	std::cout << "end" << std::endl;
 		vector< pair< int, Transform3D<> > > objectPoses;
 		
 		for(int i = 0 ; i < allBodies.size() ; ++i)

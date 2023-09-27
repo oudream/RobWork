@@ -114,6 +114,12 @@ namespace rw { namespace models {
          */
         const std::vector<rw::kinematics::Frame*>& getEnds() const { return _ends; }
 
+        /** @copydoc Device::getEnd() */
+        virtual rw::kinematics::Frame* getEnd() { return _ends[0]; }
+
+        /** @copydoc Device::getEnd */
+        virtual const rw::kinematics::Frame* getEnd() const { return _ends[0]; }
+
         /**
          * @brief Frames of the device.
          *

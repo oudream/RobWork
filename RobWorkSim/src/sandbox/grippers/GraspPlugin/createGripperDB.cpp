@@ -54,11 +54,11 @@ int main(int argc, char* argv[]) {
 
         /* PROCESS */
         if(vm.count("help")) {
-            cout << "This is a script creating gripper XML files database.\n"
+            std::cout << "This is a script creating gripper XML files database.\n"
                  << "A number of grippers is randomly generated within given constraints.\n"
-                 << endl;
+                 << std::endl;
 
-            cout << desc << endl;
+            std::cout << desc << std::endl;
             return 1;
         }
 
@@ -76,7 +76,7 @@ int main(int argc, char* argv[]) {
             Q jawParams  = jawSampler->sample();
             jawParams(0) = int(jawParams(0));
             jawParams(6) = jawParams(6) * jawParams(1);
-            cout << jawParams << endl;
+            std::cout << jawParams << std::endl;
             gripper->setJawGeometry(jawParams);
 
             GripperXMLLoader::save(gripper, ".", gripper->getName() + ".grp.xml");
@@ -89,8 +89,8 @@ int main(int argc, char* argv[]) {
         }
     }
     catch(...) {
-        cout << "ERROR! Usage:\n" << endl;
-        cout << desc << endl;
+        std::cout << "ERROR! Usage:\n" << std::endl;
+        std::cout << desc << std::endl;
         return -1;
     }
 

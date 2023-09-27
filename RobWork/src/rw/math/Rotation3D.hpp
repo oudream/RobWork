@@ -490,6 +490,12 @@ namespace rw { namespace math {
             return (*this)(0, 0) + (*this)(1, 1) + (*this)(2, 2);
         }
 
+        /**
+         * @brief Assignment of RotationVector to Rotation3D
+         * @param rot [in] Rotation input
+         */
+        Rotation3D<T>& operator=(const Rotation3DVector<T>& rot);
+
 #if defined(SWIG)
         TOSTRING(rw::math::Rotation3D<T>);
 #endif

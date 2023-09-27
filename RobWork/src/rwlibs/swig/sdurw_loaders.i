@@ -30,6 +30,7 @@
 #include <rw/trajectory/TrajectorySequence.hpp> 
 #include <rw/trajectory/LloydHaywardBlend.hpp>
 #include <rw/trajectory/ParabolicBlend.hpp>
+#include <rw/trajectory/CircularInterpolator.hpp>
 #include <rw/models.hpp>
 
 

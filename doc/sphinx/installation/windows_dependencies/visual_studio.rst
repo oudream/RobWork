@@ -7,7 +7,7 @@ Visual studio should be used to compile RobWork (and
 dependencies) on Windows platforms. RobWork is expected to compile on
 Windows 7 or newer, using Visual Studio 2013 or newer. Currently,
 RobWork is continuously tested on Windows 10 using Visual Studio 2019.
-Notice that RobWork is now written using C++11 code, that is not
+Notice that RobWork is now written using C++17 code, that is not
 expected to compile in Visual Studio 2012 or earlier versions.
 
 if visual studio is not already installed on you system we suggest installing visual studio 2019

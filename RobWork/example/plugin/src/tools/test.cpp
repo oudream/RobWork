@@ -26,9 +26,9 @@ int main(int argc, char* argv[]) {
 	ExtensionRegistry::Ptr extReg = ExtensionRegistry::getInstance();
 	vector<Ptr<Plugin> > plugins = extReg->getPlugins();
 	
-	cout << "List of plugins: " << endl;
+	std::cout << "List of plugins: " << std::endl;
 	for(Ptr<Plugin>& plugin : plugins) {
-		cout << " + " << plugin->getName() << endl;
+		std::cout << " + " << plugin->getName() << std::endl;
 	}
 	
 	/*

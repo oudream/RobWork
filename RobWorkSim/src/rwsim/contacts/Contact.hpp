@@ -146,7 +146,7 @@ namespace rwsim { namespace contacts {
          * @param modelA [in] contact model specific for the contact strategy that generates the
          * contact.
          */
-        void setModelA(rw::core::Ptr<ContactModel> modelA);
+        inline void setModelA(rw::core::Ptr<ContactModel> modelA) { _a = modelA; }
 
         /**
          * @brief Set the contact model for the second object.
@@ -154,7 +154,7 @@ namespace rwsim { namespace contacts {
          * @param modelB [in] contact model specific for the contact strategy that generates the
          * contact.
          */
-        void setModelB(rw::core::Ptr<ContactModel> modelB);
+        inline void setModelB(rw::core::Ptr<ContactModel> modelB) { _b = modelB; }
 
         /**
          * @brief Set the frame for the first object.
@@ -200,21 +200,21 @@ namespace rwsim { namespace contacts {
          *
          * @param aTb [in] the relative transform.
          */
-        void setTransform(rw::math::Transform3D<> aTb);
+        inline void setTransform(rw::math::Transform3D<> aTb) { _aTb = aTb; }
 
         /**
          * @brief Set the contact point on the first object.
          *
          * @param pointA [in] contact point.
          */
-        void setPointA(rw::math::Vector3D<> pointA);
+        inline void setPointA(rw::math::Vector3D<> pointA) { _pointA = pointA; }
 
         /**
          * @brief Set the contact point on the second object.
          *
          * @param pointB [in] contact point.
          */
-        void setPointB(rw::math::Vector3D<> pointB);
+        inline void setPointB(rw::math::Vector3D<> pointB) { _pointB = pointB; }
 
         /**
          * @brief Set the contact points on both objects at the same time.
@@ -229,7 +229,7 @@ namespace rwsim { namespace contacts {
          *
          * @param normal [in] contact normal.
          */
-        void setNormal(rw::math::Vector3D<> normal);
+        void setNormal(rw::math::Vector3D<> normal) { _normal = normal; }
 
         /**
          * @brief Calculate penetration depth automatically.
@@ -243,7 +243,7 @@ namespace rwsim { namespace contacts {
          *
          * @param depth [in] penetration depth. Positive if penetrating, negative if separated.
          */
-        void setDepth(double depth);
+        inline void setDepth(double depth) { _depth = depth; }
 
         /**
          * @brief Check if the contact is exactly the same as other contact.

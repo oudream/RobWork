@@ -99,8 +99,8 @@ int main(int argc, char** argv)
         string dwcFile = dwcFiles[idx];
         string resultFile = resultFiles[idx];
         string runFile = taskFile; // the file to run
-        cout << "*************************************************************" << std::endl;
-        cout << "* TASK: [" << taskFile << std::endl;
+        std::cout << "*************************************************************" << std::endl;
+        std::cout << "* TASK: [" << taskFile << std::endl;
         bool makeNew = true;
         // if the result file exists then check if there are still tasks to be simulated
         struct stat stInfo;
@@ -108,13 +108,13 @@ int main(int argc, char** argv)
         if(! FORCE_TASK_SIMULATION){
             if (stat(resultFile.c_str(), &stInfo) == 0){
                 if(! hasUndoneTasks(resultFile, makeNew) ){
-                    cout << "* SKIPPED: all results done!" << std::endl;
-                    cout << "*************************************************************" << std::endl;
+                    std::cout << "* SKIPPED: all results done!" << std::endl;
+                    std::cout << "*************************************************************" << std::endl;
                     continue;
                 }
                 //if(!makeNew)
                     runFile = resultFile;
-                cout << "* CONTINUEING A RESULT FILE - USING RESULTFILE AS TASK FILE" << std::endl;
+                std::cout << "* CONTINUEING A RESULT FILE - USING RESULTFILE AS TASK FILE" << std::endl;
             }
         }
 
@@ -122,8 +122,8 @@ int main(int argc, char** argv)
 
         // Execute RobWork
         char cmd2[1024];
-        cout << "* STARTING, nr of targets: " << nrOfTargets << std::endl;
-        cout << "* " << std::endl;
+        std::cout << "* STARTING, nr of targets: " << nrOfTargets << std::endl;
+        std::cout << "* " << std::endl;
         
 	sprintf(
                 cmd2,
@@ -136,9 +136,9 @@ int main(int argc, char** argv)
                 propFile.c_str(),
                 runFile.c_str(),
                 resultFile.c_str());
-        cout << cmd2 << endl;
+        std::cout << cmd2 << std::endl;
         int ret = system(cmd2);
-        cout << "*************************************************************" << std::endl;
+        std::cout << "*************************************************************" << std::endl;
         //if (WIFSIGNALED(ret) && (WTERMSIG(ret) == SIGINT || WTERMSIG(ret) == SIGQUIT))
         //    exit(EXIT_FAILURE);
 
@@ -146,7 +146,7 @@ int main(int argc, char** argv)
     }
 
     std::cout << "Time: "<<  time.toString() << std::endl;
-    cout << "Nr of experiments: " << nrExp << endl;
+    std::cout << "Nr of experiments: " << nrExp << std::endl;
 
     return (0);
 }

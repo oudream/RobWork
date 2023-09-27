@@ -81,14 +81,6 @@ double Contact::getDepth() const {
     return _depth;
 }
 
-void Contact::setModelA(ContactModel::Ptr modelA) {
-    _a = modelA;
-}
-
-void Contact::setModelB(ContactModel::Ptr modelB) {
-    _b = modelB;
-}
-
 void Contact::setFrameA(rw::core::Ptr<const Frame> frame) {
     if(frame == NULL) _nameA = UNKNOWN_NAME;
     else _nameA = frame->getName();
@@ -122,38 +114,13 @@ bool Contact::setFrames(const WorkCell& wc) {
     else { return false; }
 }
 
-void Contact::setTransform(Transform3D<> aTb) {
-    _aTb = aTb;
-}
-
-void Contact::setPointA(Vector3D<> pointA) {
-    _pointA = pointA;
-}
-
-void Contact::setPointB(Vector3D<> pointB) {
-    _pointB = pointB;
-}
-
 void Contact::setPoints(rw::math::Vector3D<> pointA, rw::math::Vector3D<> pointB) {
     _pointA = pointA;
     _pointB = pointB;
 }
 
-void Contact::setNormal(Vector3D<> normal) {
-    _normal = normal;
-}
-
 void Contact::setDepth() {
-    // double dist = (_pointA-_pointB).norm2();
-    // if (dot(_pointA-_pointB,_normal) < 0)
-    //	_depth = -dist;
-    // else
-    //	_depth = dist;
     _depth = dot(_pointA - _pointB, _normal);
-}
-
-void Contact::setDepth(double depth) {
-    _depth = depth;
 }
 
 bool Contact::operator==(const Contact& b) const {

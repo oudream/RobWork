@@ -118,7 +118,7 @@ void DesignDialog::_updateGUI() {
         // update jaw geometry area
         Q jawParams = _gripper->getJawParameters();
         if(jawParams.size() == 10 || jawParams.size() == 11) {
-            cout << jawParams(0) << endl;
+            std::cout << jawParams(0) << std::endl;
             if(jawParams(0) == 0) { ui.prismaticButton->setChecked(true); }
             else { ui.cylindricalButton->setChecked(true); }
             ui.lengthEdit->setText(QString::number(jawParams(1)));

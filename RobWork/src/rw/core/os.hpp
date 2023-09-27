@@ -19,6 +19,7 @@
 #define RW_CORE_OS_HPP
 #if !defined(SWIG)
 #include <string>
+#include <vector>
 
 #endif
 
@@ -69,9 +70,9 @@ class OS
      * @param pack [in] this is used for some systems where RobWork, RobWorkSim, RobWorkHardware and
      * RobWorkStudio don't install the plugins in the same location. This variable takes one of four
      * strings as argument {RobWork, RobWorkSim, RobWorkHardware and RobWorkStudio}
-     * @return return "" if location not found
+     * @return return empty if location not found
      */
-    static std::string InstallPluginLocation(std::string pack = "RobWork");
+    static std::vector<std::string> InstallPluginLocation(std::string pack = "RobWork");
 };
 
 #endif /*RW_COMMOM_OS_HPP*/

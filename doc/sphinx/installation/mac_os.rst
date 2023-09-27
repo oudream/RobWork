@@ -89,7 +89,7 @@ a good idea to compile Xerces:
     brew install xerces-c
 
 SWIG (optional) is a tool that makes it possible to generate a LUA
-script interface for RobWork. SWIG must be version 3 or newer (since we use C++11).
+script interface for RobWork. SWIG must be version 4 or newer (since we use C++17).
 Python and Java interfaces are also possible, but require that Python or Java
 SDK is installed as well. All of these interfaces can be generated if
 you install the following packages:

@@ -122,7 +122,7 @@ int main(int argc, char** argv) {
         // std::stringstream sstr;
         GraspTask::Ptr gtask = GraspTask::load(ip.string());
         std::cout << "Processing...\n"
-                  << endl;    // << path(file).filename().string() << std::endl;
+                  << std::endl;    // << path(file).filename().string() << std::endl;
         // sstr << outfile << "/" << path(file).filename().string();
         calcPerturbedQuality(gtask, outfile, pertubations);
         //}

@@ -22,6 +22,7 @@
 #include <rw/core/PropertyMap.hpp>
 #include <rw/core/Ptr.hpp>
 #include <rwlibs/simulation/SimulatedSensor.hpp>
+#include <rwsim/contacts/BaseContactDetector.hpp>
 #include <rwsim/drawable/SimulatorDebugRender.hpp>
 
 // Forward declarations
@@ -91,7 +92,7 @@ namespace rwsim { namespace simulator {
          * successfully.
          */
         virtual bool
-        setContactDetector(rw::core::Ptr<rwsim::contacts::ContactDetector> detector) = 0;
+        setContactDetector(rw::core::Ptr<rwsim::contacts::BaseContactDetector> detector) = 0;
 
         /**
          * @brief Performs a step and updates the state

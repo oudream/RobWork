@@ -36,16 +36,16 @@ void ScapePoseFormat::savePoses(const std::string& FileNameAndPath,
                                 const rw::kinematics::State& state, const std::string& ObjectName,
                                 const std::string& SimulationDescription) {
     ofstream fout(FileNameAndPath.c_str());
-    fout << "CObjectPoseContainer  Version: 0.1" << endl;
-    fout << "  Description: " << SimulationDescription << endl;
-    fout << "  IsObjectsInitialized: 1" << endl;
-    fout << "    CPart  Version: 0.20" << endl;
-    fout << "      IsInitialized: 1" << endl;
-    fout << "        Name: " << ObjectName << endl;
-    fout << "        Description: EMPTY" << endl;
-    fout << "        CADFileName: EMPTY" << endl;
-    fout << "        Symmetry: UNDEFINED " << endl;
-    fout << "  IsPosesInitialized: 1" << endl;
+    fout << "CObjectPoseContainer  Version: 0.1" << std::endl;
+    fout << "  Description: " << SimulationDescription << std::endl;
+    fout << "  IsObjectsInitialized: 1" << std::endl;
+    fout << "    CPart  Version: 0.20" << std::endl;
+    fout << "      IsInitialized: 1" << std::endl;
+    fout << "        Name: " << ObjectName << std::endl;
+    fout << "        Description: EMPTY" << std::endl;
+    fout << "        CADFileName: EMPTY" << std::endl;
+    fout << "        Symmetry: UNDEFINED " << std::endl;
+    fout << "  IsPosesInitialized: 1" << std::endl;
     for(size_t i = 0; i < bodies.size(); i++) {
         rw::core::Ptr<rw::kinematics::Frame> frame = bodies[i]->getBodyFrame();
         if((frame != NULL) && (bodies[i].cast<RigidBody>())) {
@@ -56,7 +56,7 @@ void ScapePoseFormat::savePoses(const std::string& FileNameAndPath,
             fout << "    CObjectPose  Pose: (" << P(0) << "," << P(1) << "," << P(2) << ")"
                  << "  XDir: (" << R(0, 0) << "," << R(1, 0) << "," << R(2, 0) << ")"
                  << "  YDir: (" << R(0, 1) << "," << R(1, 1) << "," << R(2, 1) << ")"
-                 << " Active: 1 Name: " << ObjectName << endl;
+                 << " Active: 1 Name: " << ObjectName << std::endl;
         }
     }
     fout.flush();
@@ -69,16 +69,16 @@ void ScapePoseFormat::savePoses(const std::string& FileNameAndPath,
                                 const std::string& ObjectName,
                                 const std::string& SimulationDescription) {
     ofstream fout(FileNameAndPath.c_str());
-    fout << "CObjectPoseContainer  Version: 0.1" << endl;
-    fout << "  Description: " << SimulationDescription << endl;
-    fout << "  IsObjectsInitialized: 1" << endl;
-    fout << "    CPart  Version: 0.20" << endl;
-    fout << "      IsInitialized: 1" << endl;
-    fout << "        Name: " << ObjectName << endl;
-    fout << "        Description: EMPTY" << endl;
-    fout << "        CADFileName: EMPTY" << endl;
-    fout << "        Symmetry: UNDEFINED " << endl;
-    fout << "  IsPosesInitialized: 1" << endl;
+    fout << "CObjectPoseContainer  Version: 0.1" << std::endl;
+    fout << "  Description: " << SimulationDescription << std::endl;
+    fout << "  IsObjectsInitialized: 1" << std::endl;
+    fout << "    CPart  Version: 0.20" << std::endl;
+    fout << "      IsInitialized: 1" << std::endl;
+    fout << "        Name: " << ObjectName << std::endl;
+    fout << "        Description: EMPTY" << std::endl;
+    fout << "        CADFileName: EMPTY" << std::endl;
+    fout << "        Symmetry: UNDEFINED " << std::endl;
+    fout << "  IsPosesInitialized: 1" << std::endl;
     for(size_t j = 0; j < states.size(); j++) {
         const State& state = states[j];
         for(size_t i = 0; i < bodies.size(); i++) {
@@ -91,7 +91,7 @@ void ScapePoseFormat::savePoses(const std::string& FileNameAndPath,
                 fout << "    CObjectPose  Pose: (" << P(0) << "," << P(1) << "," << P(2) << ")"
                      << "  XDir: (" << R(0, 0) << "," << R(1, 0) << "," << R(2, 0) << ")"
                      << "  YDir: (" << R(0, 1) << "," << R(1, 1) << "," << R(2, 1) << ")"
-                     << " Active: 1 Name: " << ObjectName << "_m" << j << endl;
+                     << " Active: 1 Name: " << ObjectName << "_m" << j << std::endl;
             }
         }
     }

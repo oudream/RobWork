@@ -41,6 +41,14 @@ rw_modules = [
         "sdurw_opengl"
     ]
 
+
+try:
+    sys.path.remove('@RW_LIBS@')
+    sys.path.remove('@RWS_LIBS@')
+    sys.path.remove('@RWSIM_LIBS@')
+except ValueError:
+    pass 
+
 for s in rw_modules:
     sys.path.append('@RW_LIBS@/'+s)
 sys.path.append('@RWS_LIBS@/sdurws')

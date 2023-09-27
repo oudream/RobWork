@@ -51,6 +51,13 @@ void CodeTimer::operator()(std::string newName) {
     _start = high_resolution_clock::now();
 }
 
+void CodeTimer::stopAndStartWithName(std::string name) {
+    stop();
+    _name    = name;
+    _stopped = false;
+    _start   = high_resolution_clock::now();
+}
+
 unsigned long rw::common::CodeTimer::collectWaste(ParentMap& data, std::string current) {
     unsigned long waste                                                  = 0;
     std::vector<std::pair<std::string, CodeTimer::CodeTimerData>> c_data = data[current];

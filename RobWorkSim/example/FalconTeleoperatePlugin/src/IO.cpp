@@ -104,7 +104,7 @@ void Recorder::save(string filename) {
 	fout.open(filename.c_str());
 	
 	for (vector<Pace *>::iterator it = paces.begin(); it != paces.end(); ++it) {
-		fout << **it << endl;
+		fout << **it << std::endl;
 		delete *it;
 	}
 		

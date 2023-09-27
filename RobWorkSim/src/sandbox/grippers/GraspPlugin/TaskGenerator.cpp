@@ -162,7 +162,7 @@ SurfaceSample TaskGenerator::sample(TriMeshSurfaceSampler& sampler, ProximityMod
                     }*/
 
                     if(distOk && angleOk) {
-                        // cout << hintEAA.axis() << " " << targetEAA.axis() << endl;
+                        // std::cout << hintEAA.axis() << " " << targetEAA.axis() << std::endl;
                         // RW_WARN("WEE");
                         targetFound = true;
                         break;
@@ -213,7 +213,7 @@ rwlibs::task::GraspTask::Ptr TaskGenerator::filterTasks(const rwlibs::task::Gras
             key[5] = eaa.axis()(2);
             key[6] = eaa.angle();
 
-            // cout << key << endl;
+            // std::cout << key << std::endl;
 
             nodes.push_back(NNSearch::KDNode(key, p.second->getResult()));
 
@@ -237,7 +237,7 @@ rwlibs::task::GraspTask::Ptr TaskGenerator::filterTasks(const rwlibs::task::Gras
                 if(n->key == node.key) continue;
 
                 // this is where a node gets removed
-                // cout << "REMOVING NODE " << nRemoved << endl;
+                // std::cout << "REMOVING NODE " << nRemoved << std::endl;
 
                 if(n->value->testStatus != GraspTask::Filtered) ++removed;
                 const_cast<NNSearch::KDNode*>(n)->value->testStatus =
@@ -249,8 +249,8 @@ rwlibs::task::GraspTask::Ptr TaskGenerator::filterTasks(const rwlibs::task::Gras
 
     double avgRemoved = 1.0 * nRemoved / nTasks;
 
-    // cout << "Total number of grasps: " << nTasks << " Filtered: " << nTasks - nRemoved << endl;
-    // cout << "  Removed " << avgRemoved << " neighbouring nodes on average." << endl;
+    // std::cout << "Total number of grasps: " << nTasks << " Filtered: " << nTasks - nRemoved << std::endl;
+    // std::cout << "  Removed " << avgRemoved << " neighbouring nodes on average." << std::endl;
 
     return tasks1;
 }
@@ -262,8 +262,8 @@ int TaskGenerator::countTasks(const rwlibs::task::GraspTask::Ptr tasks,
     typedef std::pair<class GraspSubTask*, class GraspTarget*> TaskTarget;
     for(TaskTarget p : tasks->getAllTargets()) {
         // for(GraspTarget* target : tasks->getAllTargets().second) {
-        // //tasks->getSubTasks()[0].getTargets()) { cout << p.second->getResult()->testStatus <<
-        // endl;
+        // //tasks->getSubTasks()[0].getTargets()) { std::cout << p.second->getResult()->testStatus <<
+        // std::endl;
         if(p.second->getResult()->testStatus == status) { ++n; }
     }
 
@@ -366,9 +366,9 @@ rwlibs::task::GraspTask::Ptr TaskGenerator::generateTask(int nTargets, rw::kinem
     sampler.setRandomPositionEnabled(false);
     sampler.setRandomRotationEnabled(false);
 
-    // cout << _td->getTargetObject()->getGeometry()[0]->getName() << endl;
-    // cout << "PTR: " << _td->getTargetObject()->getGeometry()[0]->getGeometryData()->getTriMesh()
-    // << endl; cout << "MESHSIZE: " << sampler.getMesh() << endl;
+    // std::cout << _td->getTargetObject()->getGeometry()[0]->getName() << std::endl;
+    // std::cout << "PTR: " << _td->getTargetObject()->getGeometry()[0]->getGeometryData()->getTriMesh()
+    // << std::endl; std::cout << "MESHSIZE: " << sampler.getMesh() << std::endl;
 
     CollisionStrategy::Ptr cstrategy = ProximityStrategyFactory::makeDefaultCollisionStrategy();
     CollisionDetector cd(_td->getWorkCell(), cstrategy);
@@ -419,15 +419,15 @@ rwlibs::task::GraspTask::Ptr TaskGenerator::generateTask(int nTargets, rw::kinem
 
         // distance between grasping points is graspW
         // we close gripper such that it is 1 cm more openned than the target
-        // cout << "GraspW: " << graspW << " closeQ: " << _closeQ(0) << " openQ: " << _openQ(0) <<
-        // endl;
+        // std::cout << "GraspW: " << graspW << " closeQ: " << _closeQ(0) << " openQ: " << _openQ(0) <<
+        // std::endl;
 
         Q oq  = _openQ;
         oq(0) = std::max(_closeQ(0), _closeQ(0) + (graspW + 0.01) / 2.0);
         oq(0) = std::min(_openQ(0), oq(0));
         // oq(0) =
         _td->getGripperDevice()->setQ(oq, state);
-        // cout << "So the oq is: " << oq(0) << endl;
+        // std::cout << "So the oq is: " << oq(0) << std::endl;
 
         // then check for collision
         moveFrameW(wTobj * target, _td->getGripperTCP(), _td->getGripperMovable(), state);
@@ -487,7 +487,7 @@ rwlibs::task::GraspTask::Ptr TaskGenerator::generateTask(int nTargets, rw::kinem
                         subtask.retract = Transform3D<>(Vector3D<>(0, 0, 0.1));
                         subtask.openQ = oq;
                         subtask.closeQ = _closeQ; *///
-			//cout << "collision" << endl;
+			//std::cout << "collision" << std::endl;
             GraspTarget gtarget(target);
             gtarget.result                            = ownedPtr(new GraspResult());
             gtarget.result->testStatus                = GraspTask::UnInitialized;
@@ -515,26 +515,26 @@ rwlibs::task::GraspTask::Ptr TaskGenerator::generateTask(int nTargets, rw::kinem
     int nsamples = _samples->getAllTargets().size();
 
     // preliminary filtering
-    cout << "Preliminary filtering" << endl;
+    std::cout << "Preliminary filtering" << std::endl;
     Q preDist = _td->getPrefilteringDistance();
     double R  = 2.0 * sin(0.25 * preDist(1));
     Q diff(7, preDist(0), preDist(0), preDist(0), R, R, R, preDist(2));
 
-    cout << " - filtering targets... ";
+    std::cout << " - filtering targets... ";
     _tasks        = filterTasks(_tasks, diff);
     int nftargets = countTasks(_tasks, GraspTask::UnInitialized);
-    cout << nftargets << " out of " << ntargets << endl;
+    std::cout << nftargets << " out of " << ntargets << std::endl;
 
-    cout << " - filtering samples... ";
+    std::cout << " - filtering samples... ";
     _samples      = filterTasks(_samples, diff);
     int nfsamples = countTasks(_samples, GraspTask::UnInitialized);
-    cout << nfsamples << " out of " << nsamples << endl;
+    std::cout << nfsamples << " out of " << nsamples << std::endl;
 
-    // cout << "Number of UNIN tasks went from " << unin1;
-    // cout << " to " << unin2;
-    // cout << " (to " << unin3 << ")" << endl;
+    // std::cout << "Number of UNIN tasks went from " << unin1;
+    // std::cout << " to " << unin2;
+    // std::cout << " (to " << unin3 << ")" << std::endl;
 
-    cout << "Generated " << ntargets << " tasks & " << nsamples << " samples." << endl;
+    std::cout << "Generated " << ntargets << " tasks & " << nsamples << " samples." << std::endl;
 
     return _tasks;
 }

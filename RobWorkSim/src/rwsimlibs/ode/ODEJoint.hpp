@@ -124,8 +124,6 @@ namespace rwsim { namespace simulator {
         }
 
         void setMotorEnabled(bool enabled) {
-            std::cout << "set motor " << enabled << " " << _rwJoint->getName()
-                      << " id: " << _motorId << "\n";
             if(enabled) {
                 // dJointEnable(_motorId);
                 setMaxForce(_disableForceTmp);

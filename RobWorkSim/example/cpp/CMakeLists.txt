@@ -27,6 +27,9 @@ endmacro()
 
 rw_build(ex-ode-simloop)
 
+rw_build(ex-multithread-odesim)
+
+
 foreach(obj ${ROBWORKSIM_INCLUDE_DIRS})
     message(STATUS "INCL_DIR: ${obj}")
 endforeach()

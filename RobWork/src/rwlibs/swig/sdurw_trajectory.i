@@ -133,7 +133,7 @@
 	ADD_DEFINITION(NAME_T3D(name),NAME_SE3(name),sdurw_trejectory);
 %enddef
 
-%include <rwlibs/swig/typemaps/toBlendVector2D.i>
+%include <rwlibs/swig/typemaps/toBlend.i>
 %{
 	#include <rw/trajectory/Blend.hpp>
 %}
@@ -141,7 +141,7 @@
 ADD_TRAJECTORY_STANDARD_TEMPLATE(Blend,rw::trajectory::Blend);
 
 
-%include <rwlibs/swig/typemaps/toInterpolatorVector2D.i>
+%include <rwlibs/swig/typemaps/toInterpolator.i>
 %{
 	#include <rw/trajectory/Interpolator.hpp>
 %}
@@ -149,6 +149,7 @@ ADD_TRAJECTORY_STANDARD_TEMPLATE(Blend,rw::trajectory::Blend);
 ADD_TRAJECTORY_STANDARD_TEMPLATE(Interpolator,rw::trajectory::Interpolator);
 %template(InterpolatorTransform3DVector) rw::trajectory::Interpolator<rw::math::Transform3DVector<double>>;
 
+%include <rwlibs/swig/typemaps/toTrajectory.i>
 %{
 	#include <rw/trajectory/Trajectory.hpp>
 %}

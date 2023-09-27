@@ -43,7 +43,7 @@ vector<SurfaceSample> SurfaceSample::loadFromXML(const std::string& filename) {
                 Q posq        = XMLHelpers::readQ(p->second.get_child("Pos"));
                 Q rpyq        = XMLHelpers::readQ(p->second.get_child("RPY"));
                 double graspW = XMLHelpers::readDouble(p->second.get_child("GraspW"));
-                // cout << "pos=" << posq << " rot=" << rpyq << " graspW=" << graspW << endl;
+                // std::cout << "pos=" << posq << " rot=" << rpyq << " graspW=" << graspW << std::endl;
 
                 Vector3D<> pos(posq[0], posq[1], posq[2]);
                 RPY<> rpy(rpyq[0], rpyq[1], rpyq[2]);

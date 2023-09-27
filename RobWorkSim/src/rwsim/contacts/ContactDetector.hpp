@@ -31,6 +31,7 @@
 #include <rw/proximity/ProximityFilterStrategy.hpp>
 #include <rw/proximity/ProximitySetup.hpp>
 #include <rw/proximity/ProximitySetupRule.hpp>
+#include <rwsim/contacts/BaseContactDetector.hpp>
 
 namespace rw { namespace core {
     class PropertyMap;
@@ -80,7 +81,7 @@ namespace rwsim { namespace contacts {
      * strategies. These strategies can be applied for specific frame names, specific geometry types
      * or both.
      */
-    class ContactDetector
+    class ContactDetector : public BaseContactDetector
     {
       public:
         //! @brief smart pointer type to this class
@@ -134,12 +135,6 @@ namespace rwsim { namespace contacts {
         virtual ~ContactDetector();
 
         /**
-         * @brief Set a new broad-phase filter.
-         * @param filter [in] broad-phase filter to remove frames that are obviously not colliding.
-         */
-        void setProximityFilterStrategy(rw::proximity::ProximityFilterStrategy::Ptr filter);
-
-        /**
          * @brief Find contacts in workcell.
          *
          * @param state [in] The state for which to check for contacts.
@@ -190,23 +185,6 @@ namespace rwsim { namespace contacts {
                                                     ContactDetectorData& data,
                                                     ContactDetectorTracking& tracking,
                                                     rwsim::log::SimulatorLogScope* log = NULL);
-
-        /**
-         * @brief The broad-phase filter strategy used by the contact detector.
-         */
-        virtual rw::proximity::ProximityFilterStrategy::Ptr getProximityFilterStrategy() const;
-
-        /**
-         * @brief The number of seconds measured used in contact detection.
-         * @return the value of the timer in seconds.
-         */
-        virtual double getTimer() const;
-
-        /**
-         * @brief Set the value of a timer that will measure time used during contact detection.
-         * @param value [in] the value to set the time to (seconds)
-         */
-        virtual void setTimer(double value = 0);
 
         /**
          * @name Strategy table functions.
@@ -386,15 +364,11 @@ namespace rwsim { namespace contacts {
         void initializeGeometryMap();
         void initializeModels(StrategyTableRow& strategy);
 
-        rw::core::Ptr<rw::models::WorkCell> _wc;
-        rw::proximity::ProximityFilterStrategy::Ptr _bpfilter;
         struct OrderFramePairs;
         const OrderFramePairs* const _orderFramePairs;
         StrategyTable _strategies;
 
         rw::kinematics::FrameMap<std::vector<rw::core::Ptr<rw::geometry::Geometry>>> _frameToGeo;
-
-        double _timer;
     };
     //! @}
 }}     // namespace rwsim::contacts

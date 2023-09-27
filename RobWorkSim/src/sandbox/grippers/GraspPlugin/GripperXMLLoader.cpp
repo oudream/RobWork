@@ -33,7 +33,7 @@ using namespace rwlibs::xml;
         params[5] *= Deg2Rad;
         if (params[0] == JawPrimitive::Prismatic) params[8] *= Deg2Rad;
 
-        cout << params << endl;
+        std::cout << params << std::endl;
 
         return ownedPtr(new JawPrimitive(params));
 }*/
@@ -43,7 +43,7 @@ void readJaws(PTree& tree, Gripper::Ptr gripper, const std::string& path) {
     if(fileNode) {
         // read jaw geometry from STL file
         string filename = path + (*fileNode).get_value<string>();
-        DEBUG << "Jaw geometry from file: " << filename << endl;
+        DEBUG << "Jaw geometry from file: " << filename << std::endl;
 
         TriMesh::Ptr mesh = STLFile::load(filename);
         gripper->setJawGeometry(ownedPtr(new Geometry(mesh)));
@@ -59,7 +59,7 @@ void readJaws(PTree& tree, Gripper::Ptr gripper, const std::string& path) {
         params(10) *= Deg2Rad;
     }
 
-    DEBUG << "Jaw geometry from parameters: " << params << endl;
+    DEBUG << "Jaw geometry from parameters: " << params << std::endl;
     gripper->setJawGeometry(params);
 }
 
@@ -68,7 +68,7 @@ void readBase(PTree& tree, Gripper::Ptr gripper, const std::string& path) {
     if(fileNode) {
         // read base geometry from STL file
         string filename = (*fileNode).get_value<string>();
-        DEBUG << "Base geometry from file: " << filename << endl;
+        DEBUG << "Base geometry from file: " << filename << std::endl;
 
         TriMesh::Ptr mesh = STLFile::load(filename);
         gripper->setBaseGeometry(ownedPtr(new Geometry(mesh)));
@@ -78,7 +78,7 @@ void readBase(PTree& tree, Gripper::Ptr gripper, const std::string& path) {
 
     // else use parametrization
     Q params = XMLHelpers::readQ(tree.get_child("Q"));
-    DEBUG << "Base geometry from parameters: " << params << endl;
+    DEBUG << "Base geometry from parameters: " << params << std::endl;
     gripper->setBaseGeometry(params);
 }
 
@@ -109,9 +109,9 @@ void readParameters(PTree& tree, Gripper::Ptr gripper, const std::string& path) 
         gripper->setJawdist(opening - stroke);
     }
 
-    DEBUG << "Offset: " << offset << endl;
-    DEBUG << "Opening: " << opening << endl;
-    DEBUG << "Force: " << force << endl;
+    DEBUG << "Offset: " << offset << std::endl;
+    DEBUG << "Opening: " << opening << std::endl;
+    DEBUG << "Force: " << force << std::endl;
 }
 
 void readResult(PTree& tree, Gripper::Ptr gripper, const std::string& path) {
@@ -148,8 +148,8 @@ void readResult(PTree& tree, Gripper::Ptr gripper, const std::string& path) {
     if(alignNode) { result.alignment = XMLHelpers::readDouble(alignNode.get()); }
     else { result.alignment = 0.0; }
 
-    DEBUG << "Read gripper quality:" << endl;
-    DEBUG << result << endl;
+    DEBUG << "Read gripper quality:" << std::endl;
+    DEBUG << result << std::endl;
 }
 
 Gripper::Ptr readGripper(PTree& tree, const std::string& path) {

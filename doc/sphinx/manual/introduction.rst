@@ -55,7 +55,7 @@ This includes:
 - Motion planning & trajectories.
 - Real & simulated sensors.
 
-This includes the basics needed by most new users. For more advanced topics, see the :ref:`tutorials` section.
+This includes the basics needed by most new users.
 
 .. The detailed description of key elements in RobWork will be
    followed with key usages such as using the RobWork plugin structure, the GUI plugin structure, the Lua scripting

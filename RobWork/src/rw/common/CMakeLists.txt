@@ -46,7 +46,7 @@ if(build)
         BINArchive.hpp
         BoostXMLParser.hpp
         Cache.hpp
-        CodeTimer.cpp
+        CodeTimer.hpp
         ConcatVectorIterator.hpp
         DOMElem.hpp
         DOMParser.hpp

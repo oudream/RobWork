@@ -29,11 +29,11 @@ int main(int argc, char* argv[]) {
     X -= (C + D + E);
     X -= W;
 
-    cout << X << endl;
+    std::cout << X << std::endl;
 
     X.saveToStl("result.stl");
 
-    cout << "Done." << endl;
+    std::cout << "Done." << std::endl;
 
     return 0;
 }

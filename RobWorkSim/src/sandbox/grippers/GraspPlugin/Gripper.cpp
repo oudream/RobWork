@@ -24,14 +24,14 @@ void Gripper::updateGripper(rw::models::WorkCell::Ptr wc, rwsim::dynamics::Dynam
     Geometry::Ptr rightGeometry = getJawGeometry();
 
     // remove existing objects
-    cout << "- Removing objects..." << endl;
+    std::cout << "- Removing objects..." << std::endl;
     wc->removeObject(wc->findObject("gripper.Base").get());
     wc->removeObject(wc->findObject("gripper.LeftFinger").get());
     wc->removeObject(wc->findObject("gripper.RightFinger").get());
-    cout << "- Objects removed." << endl;
+    std::cout << "- Objects removed." << std::endl;
 
     // create and add new objects
-    cout << "- Adding new objects..." << endl;
+    std::cout << "- Adding new objects..." << std::endl;
 
     // if base is parametrized, the box has to be moved from origin by half its height
     Transform3D<> baseT;
@@ -70,7 +70,7 @@ void Gripper::updateGripper(rw::models::WorkCell::Ptr wc, rwsim::dynamics::Dynam
     rightobj->addGeometry(rightGeometry);
     wc->add(rightobj);
     dwc->findBody("gripper.RightFinger")->setObject(rightobj);
-    cout << "Objects added." << endl;
+    std::cout << "Objects added." << std::endl;
 
     // set tcp
     // string tcpFrameName = wc->getPropertyMap().get<string>("gripperTCP");
@@ -78,7 +78,7 @@ void Gripper::updateGripper(rw::models::WorkCell::Ptr wc, rwsim::dynamics::Dynam
         (MovableFrame*) td->getGripperTCP();    // wc->findFrame<MovableFrame>(tcpFrameName);
     tcp->setTransform(_tcp, state);
 
-    // cout << "LOL" << tcp->getName() << endl;
+    // std::cout << "LOL" << tcp->getName() << std::endl;
 
     // set bounds
     double minOpening = _jawdist;
@@ -90,7 +90,7 @@ void Gripper::updateGripper(rw::models::WorkCell::Ptr wc, rwsim::dynamics::Dynam
     // set force
     ddev->setMotorForceLimits(Q(2, _force, _force));
 
-    cout << "Gripper updated!" << endl;
+    std::cout << "Gripper updated!" << std::endl;
 }
 
 double Gripper::getCrossHeight(double x) const {
@@ -148,7 +148,7 @@ double Gripper::getMaxStress() const {
 
         if(sigma > sigmaMax) sigmaMax = sigma;
 
-        // cout << x << ' ' << h << ' ' << M << ' ' << sigma << endl;
+        // std::cout << x << ' ' << h << ' ' << M << ' ' << sigma << std::endl;
     }
 
     return sigmaMax;
@@ -164,9 +164,9 @@ double Gripper::getVolume() const {
 
         //_dataFilename = filename;
 
-        cout << "Loading tasks from: " << filename << "\n";
+        std::cout << "Loading tasks from: " << filename << "\n";
         _tasks = GraspTask::load(filename);
-        cout << "Tasks loaded!" << endl;
+        std::cout << "Tasks loaded!" << std::endl;
 }
 
 
@@ -180,9 +180,9 @@ void Gripper::saveTasks(std::string filename)
         //_dataFilename = filename;
 
         try {
-                cout << "Saving tasks to: " << filename << "\n";
+                std::cout << "Saving tasks to: " << filename << "\n";
                 GraspTask::saveRWTask(_tasks, filename);
-                cout << "Tasks saved!" << endl;
+                std::cout << "Tasks saved!" << std::endl;
         } catch (...)
         {
         }

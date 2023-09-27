@@ -393,7 +393,7 @@ option(USE_SWIG
 
 set(RW_HAVE_SWIG False)
 if(USE_SWIG)
-    find_package(SWIG 3.0.0 QUIET) # At least SWIG 3 to support C++11
+    find_package(SWIG 4.0.0 QUIET) # At least SWIG 3 to support C++17
     if(SWIG_FOUND)
         set(RW_HAVE_SWIG true)
         message(STATUS "USE_SWIG ${USE_SWIG} : Swig ${SWIG_VERSION} Found")
@@ -749,7 +749,7 @@ if("${RW_CXX_FLAGS}" STREQUAL "")
         set(RW_CXX_FLAGS_TMP "-EHa -bigobj /MP")
     endif()
 
-    # Set C++11 standard (except if user has specified this explicitly in the RW_CXX_FLAGS_EXTRA
+    # Set C++17 standard (except if user has specified this explicitly in the RW_CXX_FLAGS_EXTRA
     # variable).
     set(RW_CXX_FLAGS_SET_STD FALSE)
     if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
@@ -767,7 +767,7 @@ if("${RW_CXX_FLAGS}" STREQUAL "")
         endif()
     endif()
     if(RW_CXX_FLAGS_SET_STD)
-        set(RW_CXX_FLAGS_TMP "${RW_CXX_FLAGS_TMP} -std=c++11")
+        set(RW_CXX_FLAGS_TMP "${RW_CXX_FLAGS_TMP} -std=c++17")
     endif()
 
     if(DEFINED RW_CXX_FLAGS_EXTRA)

@@ -164,6 +164,16 @@ namespace rw { namespace proximity {
         }
 
         /**
+         * @brief Get the Surface Normals
+         * 
+         * @param res the result to get the normals from
+         * @param idx 
+         * @return a pair of surface Normals
+         */
+        virtual std::pair<rw::math::Vector3D<double>, rw::math::Vector3D<double>>
+        getSurfaceNormals(rw::proximity::DistanceMultiStrategy::Result& res, int idx) = 0;
+
+        /**
          * @addtogroup extensionpoints
          * @extensionpoint{rw::proximity::DistanceMultiStrategy::Factory,rw::proximity::DistanceMultiStrategy,rw.proximity.DistanceMultiStrategy}
          */

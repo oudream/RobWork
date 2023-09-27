@@ -1,0 +1,258 @@
+<WorkCell name="">
+  <Frame name="Box" refframe="" type="Movable">
+    <Pos>0 0 0</Pos>
+    <RPY>0 0 0</RPY>
+    <Drawable name="BoxFloor" colmodel="Enabled">
+      <Pos>0 0 0</Pos>
+      <RPY>0 0 0</RPY>
+      <RGB>0.6 0.6 0.6 </RGB>
+      <Box x="0.2" y="0.2" z="0.01" />
+    </Drawable>
+    <Drawable name="BoxSide1" colmodel="Enabled">
+      <Pos>0.1 0 0.045</Pos>
+      <RPY>0 0 0</RPY>
+      <RGB>0.6 0.6 0.6 </RGB>
+      <Box x="0.01" y="0.2" z="0.1" />
+    </Drawable>
+    <Drawable name="BoxSide2" colmodel="Enabled">
+      <Pos>-0.1 0 0.045</Pos>
+      <RPY>0 0 0</RPY>
+      <RGB>0.6 0.6 0.6 </RGB>
+      <Box x="0.01" y="0.2" z="0.1" />
+    </Drawable>
+    <Drawable name="BoxSide3" colmodel="Enabled">
+      <Pos>0 0.1 0.045</Pos>
+      <RPY>0 0 0</RPY>
+      <RGB>0.6 0.6 0.6 </RGB>
+      <Box x="0.2" y="0.01" z="0.1" />
+    </Drawable>
+    <Drawable name="BoxSide4" colmodel="Enabled">
+      <Pos>0 -0.1 0.045</Pos>
+      <RPY>0 0 0</RPY>
+      <RGB>0.6 0.6 0.6 </RGB>
+      <Box x="0.2" y="0.01" z="0.1" />
+    </Drawable>
+  </Frame>
+
+  <Frame name="Obj1" refframe="" type="Movable">
+    <Pos>0 0 0.03</Pos>
+    <RPY>0 13 0</RPY>
+    <Drawable name="Cone" colmodel="Enabled">
+      <Pos>0 0 0</Pos>
+      <RPY>0 0 0</RPY>
+      <RGB>0.6 0.6 0.6 </RGB>
+      <Cone radius="0.01" z="0.01" level="2000" />
+    </Drawable>
+  </Frame>
+
+  <Frame name="Obj2" refframe="" type="Movable">
+    <Pos>0 0.02 0.03</Pos>
+    <RPY>0 23 0</RPY>
+    <Drawable name="Cone" colmodel="Enabled">
+      <Pos>0 0 0</Pos>
+      <RPY>0 0 0</RPY>
+      <RGB>0.6 0.6 0.6 </RGB>
+      <Cone radius="0.01" z="0.01" level="2000" />
+    </Drawable>
+  </Frame>
+
+  <Frame name="Obj3" refframe="" type="Movable">
+    <Pos>0 0.04 0.03</Pos>
+    <RPY>32 13 0</RPY>
+    <Drawable name="Cone" colmodel="Enabled">
+      <Pos>0 0 0</Pos>
+      <RPY>0 0 0</RPY>
+      <RGB>0.6 0.6 0.6 </RGB>
+      <Cone radius="0.01" z="0.01" level="2000" />
+    </Drawable>
+  </Frame>
+
+  <Frame name="Obj4" refframe="" type="Movable">
+    <Pos>0 0.06 0.03</Pos>
+    <RPY>17 13 0</RPY>
+    <Drawable name="Cone" colmodel="Enabled">
+      <Pos>0 0 0</Pos>
+      <RPY>0 0 0</RPY>
+      <RGB>0.6 0.6 0.6 </RGB>
+      <Cone radius="0.01" z="0.01" level="2000" />
+    </Drawable>
+  </Frame>
+
+  <Frame name="Obj5" refframe="" type="Movable">
+    <Pos>0 -0.02 0.03</Pos>
+    <RPY>0 50 0</RPY>
+    <Drawable name="Cone" colmodel="Enabled">
+      <Pos>0 0 0</Pos>
+      <RPY>0 0 0</RPY>
+      <RGB>0.6 0.6 0.6 </RGB>
+      <Cone radius="0.01" z="0.01" level="2000" />
+    </Drawable>
+  </Frame>
+
+  <Frame name="Obj6" refframe="" type="Movable">
+    <Pos>0 -0.04 0.03</Pos>
+    <RPY>33 13 22</RPY>
+    <Drawable name="Cone" colmodel="Enabled">
+      <Pos>0 0 0</Pos>
+      <RPY>0 0 0</RPY>
+      <RGB>0.6 0.6 0.6 </RGB>
+      <Cone radius="0.01" z="0.01" level="2000" />
+    </Drawable>
+  </Frame>
+
+  <Frame name="Obj7" refframe="" type="Movable">
+    <Pos>0 -0.06 0.04</Pos>
+    <RPY>13 90 0</RPY>
+    <Drawable name="Cone" colmodel="Enabled">
+      <Pos>0 0 0</Pos>
+      <RPY>0 0 0</RPY>
+      <RGB>0.6 0.6 0.6 </RGB>
+      <Cone radius="0.01" z="0.01" level="2000" />
+    </Drawable>
+  </Frame>
+
+  <Frame name="Obj8" refframe="" type="Movable">
+    <Pos>0.03 0 0.03</Pos>
+    <RPY>139 13 0</RPY>
+    <Drawable name="Cone" colmodel="Enabled">
+      <Pos>0 0 0</Pos>
+      <RPY>0 0 0</RPY>
+      <RGB>0.6 0.6 0.6 </RGB>
+      <Cone radius="0.01" z="0.01" level="2000" />
+    </Drawable>
+  </Frame>
+
+  <Frame name="Obj9" refframe="" type="Movable">
+    <Pos>0.06 0 0.03</Pos>
+    <RPY>-35 110 0</RPY>
+    <Drawable name="Cone" colmodel="Enabled">
+      <Pos>0 0 0</Pos>
+      <RPY>0 0 0</RPY>
+      <RGB>0.6 0.6 0.6 </RGB>
+      <Cone radius="0.01" z="0.01" level="2000" />
+    </Drawable>
+  </Frame>
+
+  <Frame name="Obj10" refframe="" type="Movable">
+    <Pos>-0.03 0 0.03</Pos>
+    <RPY>140 55 0</RPY>
+    <Drawable name="Cone" colmodel="Enabled">
+      <Pos>0 0 0</Pos>
+      <RPY>0 0 0</RPY>
+      <RGB>0.6 0.6 0.6 </RGB>
+      <Cone radius="0.01" z="0.01" level="2000" />
+    </Drawable>
+  </Frame>
+
+  <Frame name="Obj11" refframe="" type="Movable">
+    <Pos>0 0 0.06</Pos>
+    <RPY>0 13 0</RPY>
+    <Drawable name="Cone" colmodel="Enabled">
+      <Pos>0 0 0</Pos>
+      <RPY>0 0 0</RPY>
+      <RGB>0.6 0.6 0.6 </RGB>
+      <Cone radius="0.01" z="0.01" level="2000" />
+    </Drawable>
+  </Frame>
+
+  <Frame name="Obj12" refframe="" type="Movable">
+    <Pos>0 0.02 0.06</Pos>
+    <RPY>0 23 0</RPY>
+    <Drawable name="Cone" colmodel="Enabled">
+      <Pos>0 0 0</Pos>
+      <RPY>0 0 0</RPY>
+      <RGB>0.6 0.6 0.6 </RGB>
+      <Cone radius="0.01" z="0.01" level="2000" />
+    </Drawable>
+  </Frame>
+
+  <Frame name="Obj13" refframe="" type="Movable">
+    <Pos>0 0.04 0.06</Pos>
+    <RPY>32 13 0</RPY>
+    <Drawable name="Cone" colmodel="Enabled">
+      <Pos>0 0 0</Pos>
+      <RPY>0 0 0</RPY>
+      <RGB>0.6 0.6 0.6 </RGB>
+      <Cone radius="0.01" z="0.01" level="2000" />
+    </Drawable>
+  </Frame>
+
+  <Frame name="Obj14" refframe="" type="Movable">
+    <Pos>0 0.06 0.06</Pos>
+    <RPY>17 13 0</RPY>
+    <Drawable name="Cone" colmodel="Enabled">
+      <Pos>0 0 0</Pos>
+      <RPY>0 0 0</RPY>
+      <RGB>0.6 0.6 0.6 </RGB>
+      <Cone radius="0.01" z="0.01" level="2000" />
+    </Drawable>
+  </Frame>
+
+  <Frame name="Obj15" refframe="" type="Movable">
+    <Pos>0 -0.02 0.06</Pos>
+    <RPY>0 50 0</RPY>
+    <Drawable name="Cone" colmodel="Enabled">
+      <Pos>0 0 0</Pos>
+      <RPY>0 0 0</RPY>
+      <RGB>0.6 0.6 0.6 </RGB>
+      <Cone radius="0.01" z="0.01" level="2000" />
+    </Drawable>
+  </Frame>
+
+  <Frame name="Obj16" refframe="" type="Movable">
+    <Pos>0 -0.04 0.1</Pos>
+    <RPY>33 13 22</RPY>
+    <Drawable name="Cone" colmodel="Enabled">
+      <Pos>0 0 0</Pos>
+      <RPY>0 0 0</RPY>
+      <RGB>0.6 0.6 0.6 </RGB>
+      <Cone radius="0.01" z="0.01" level="2000" />
+    </Drawable>
+  </Frame>
+
+  <Frame name="Obj17" refframe="" type="Movable">
+    <Pos>0 -0.08 0.1</Pos>
+    <RPY>13 90 0</RPY>
+    <Drawable name="Cone" colmodel="Enabled">
+      <Pos>0 0 0</Pos>
+      <RPY>0 0 0</RPY>
+      <RGB>0.6 0.6 0.6 </RGB>
+      <Cone radius="0.01" z="0.01" level="2000" />
+    </Drawable>
+  </Frame>
+
+  <Frame name="Obj18" refframe="" type="Movable">
+    <Pos>0.03 0 0.06</Pos>
+    <RPY>139 13 0</RPY>
+    <Drawable name="Cone" colmodel="Enabled">
+      <Pos>0 0 0</Pos>
+      <RPY>0 0 0</RPY>
+      <RGB>0.6 0.6 0.6 </RGB>
+      <Cone radius="0.01" z="0.01" level="2000" />
+    </Drawable>
+  </Frame>
+
+  <Frame name="Obj19" refframe="" type="Movable">
+    <Pos>0.06 0 0.06</Pos>
+    <RPY>-35 110 0</RPY>
+    <Drawable name="Cone" colmodel="Enabled">
+      <Pos>0 0 0</Pos>
+      <RPY>0 0 0</RPY>
+      <RGB>0.6 0.6 0.6 </RGB>
+      <Cone radius="0.01" z="0.01" level="2000" />
+    </Drawable>
+  </Frame>
+
+  <Frame name="Obj20" refframe="" type="Movable">
+    <Pos>-0.03 0 0.06</Pos>
+    <RPY>140 55 0</RPY>
+    <Drawable name="Cone" colmodel="Enabled">
+      <Pos>0 0 0</Pos>
+      <RPY>0 0 0</RPY>
+      <RGB>0.6 0.6 0.6 </RGB>
+      <Cone radius="0.01" z="0.01" level="2000" />
+    </Drawable>
+  </Frame>
+
+
+</WorkCell>

@@ -32,7 +32,7 @@ int main(int argc, char* argv[]) {
     notify(vm);
 
     if(vm.count("help")) {
-        cout << desc << endl;
+        std::cout << desc << std::endl;
         return 1;
     }
 
@@ -45,7 +45,7 @@ int main(int argc, char* argv[]) {
     if(vm.count("cdepth")) params[6] = vm["cdepth"].as<double>();
     if(vm.count("cangle")) params[7] = Deg2Rad * vm["cangle"].as<double>();
 
-    // cout << params[1] << endl;
+    // std::cout << params[1] << std::endl;
 
     // JawPrimitive::Ptr jaw = ownedPtr(new JawPrimitive(params));
     JawPrimitive jaw(params);

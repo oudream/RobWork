@@ -25,48 +25,48 @@ string CSQueryType[2] = {"FirstContact","AllContacts"};
 
 void printPSD (ProximityStrategyData data)
 {
-    cout << "    ProximityStrategyData" << endl;
-    cout << "        Abs error  : " << data.abs_err << endl;
-    cout << "        Rel error  : " << data.rel_err << endl;
-    cout << "        QueryType  : " << CSQueryType[data.getCollisionQueryType ()] << endl;
-    cout << "        inCollision: " << data.inCollision () << endl;
+    std::cout << "    ProximityStrategyData" << std::endl;
+    std::cout << "        Abs error  : " << data.abs_err << std::endl;
+    std::cout << "        Rel error  : " << data.rel_err << std::endl;
+    std::cout << "        QueryType  : " << CSQueryType[data.getCollisionQueryType ()] << std::endl;
+    std::cout << "        inCollision: " << data.inCollision () << std::endl;
     CollisionStrategy::Result CSResult = data.getCollisionData ();
 
     try {
-        cout << "\n        First Model Geometries: " << endl;
+        std::cout << "\n        First Model Geometries: " << std::endl;
         for (string& geo : CSResult.a->getGeometryIDs ()) {
-            cout << "            Geometry: " << geo << endl;
+            std::cout << "            Geometry: " << geo << std::endl;
         }
-        cout << "\n        Second Model Geometries: " << endl;
+        std::cout << "\n        Second Model Geometries: " << std::endl;
         for (string& geo : CSResult.b->getGeometryIDs ()) {
-            cout << "            Geometry: " << geo << endl;
+            std::cout << "            Geometry: " << geo << std::endl;
         }
     }
     catch (rw::core::Exception& e) {
-        cout << "            " << e.what () << endl;
+        std::cout << "            " << e.what () << std::endl;
     }
 
-    cout << "\n        Transform(aTb): " << CSResult._aTb << endl;
-    cout << "        PrimTests      : " << CSResult.getNrPrimTests () << endl;
-    cout << "        BVTests        : " << CSResult.getNrBVTests () << endl;
-    cout << "        GeoVertex ids  : " << endl;
+    std::cout << "\n        Transform(aTb): " << CSResult._aTb << std::endl;
+    std::cout << "        PrimTests      : " << CSResult.getNrPrimTests () << std::endl;
+    std::cout << "        BVTests        : " << CSResult.getNrBVTests () << std::endl;
+    std::cout << "        GeoVertex ids  : " << std::endl;
     for (pair< int, int >& ids : CSResult._geomPrimIds) {
-        cout << "            Vertex: " << ids.first << " and " << ids.second << " colliding"
-             << endl;
+        std::cout << "            Vertex: " << ids.first << " and " << ids.second << " colliding"
+             << std::endl;
     }
-    cout << "        CollisionPairs : " << endl;
+    std::cout << "        CollisionPairs : " << std::endl;
     for (auto& ids : CSResult._collisionPairs) {
-        cout << "            ColSize: " << ids.size << endl;
-        cout << "            startID: " << ids.startIdx << endl;
-        cout << "            ColPair: " << ids.geoIdxA << " and " << ids.geoIdxB << " colliding"
-             << endl;
+        std::cout << "            ColSize: " << ids.size << std::endl;
+        std::cout << "            startID: " << ids.startIdx << std::endl;
+        std::cout << "            ColPair: " << ids.geoIdxA << " and " << ids.geoIdxB << " colliding"
+             << std::endl;
     }
 }
 
 void printColInfo (string name, CollisionDetector& detector, WorkCell::Ptr wc, State& state)
 {
-    cout << "#########################################" << endl;
-    cout << "DetectingCollisions using: " << name << "\n" << endl;
+    std::cout << "#########################################" << std::endl;
+    std::cout << "DetectingCollisions using: " << name << "\n" << std::endl;
 
     // done to pre call to initialize cache
     ProximityData res = ProximityData ();
@@ -97,52 +97,52 @@ void printColInfo (string name, CollisionDetector& detector, WorkCell::Ptr wc, S
     end           = omp_get_wtime ();
     double time3t = (end - start) * pow (10, 3);
 
-    cout << "Time(ProximityData std)  : " << round (time1 * 1000) / 1000 << "ms - "
-         << round (time1t * 10000) / 10000 << "ms" << endl;
-    cout << "Time(ProximityData full) : " << round (time2 * 1000) / 1000 << "ms - "
-         << round (time2t * 10000) / 10000 << "ms" << endl;
-    cout << "Time(QueryResult)        : " << round (time3 * 1000) / 1000 << "ms - "
-         << round (time3t * 10000) / 10000 << "ms" << endl;
-    cout << endl;
+    std::cout << "Time(ProximityData std)  : " << round (time1 * 1000) / 1000 << "ms - "
+         << round (time1t * 10000) / 10000 << "ms" << std::endl;
+    std::cout << "Time(ProximityData full) : " << round (time2 * 1000) / 1000 << "ms - "
+         << round (time2t * 10000) / 10000 << "ms" << std::endl;
+    std::cout << "Time(QueryResult)        : " << round (time3 * 1000) / 1000 << "ms - "
+         << round (time3t * 10000) / 10000 << "ms" << std::endl;
+    std::cout << std::endl;
 
-    cout << "inCollision(ProximityData std)  : " << ret1 << endl;
-    cout << "inCollision(ProximityData full) : " << ret2 << endl;
-    cout << "inCollision(QueryResult)        : " << ret3 << endl;
-    cout << endl;
+    std::cout << "inCollision(ProximityData std)  : " << ret1 << std::endl;
+    std::cout << "inCollision(ProximityData full) : " << ret2 << std::endl;
+    std::cout << "inCollision(QueryResult)        : " << ret3 << std::endl;
+    std::cout << std::endl;
 
-    cout << "QueryType(ProximityData std) : " << CDQueryType[res1.getCollisionQueryType ()] << endl;
-    cout << "QueryType(ProximityData full): " << CDQueryType[res2.getCollisionQueryType ()] << endl;
-    cout << "QueryType(QueryResult)       : "
-         << "Not Available" << endl;
+    std::cout << "QueryType(ProximityData std) : " << CDQueryType[res1.getCollisionQueryType ()] << std::endl;
+    std::cout << "QueryType(ProximityData full): " << CDQueryType[res2.getCollisionQueryType ()] << std::endl;
+    std::cout << "QueryType(QueryResult)       : "
+         << "Not Available" << std::endl;
 
     CollisionDetector::QueryResult res1QR = res1._collisionData;
     CollisionDetector::QueryResult res2QR = res2._collisionData;
 
-    cout << "\nColliding Frames (ProximityData std)" << endl;
+    std::cout << "\nColliding Frames (ProximityData std)" << std::endl;
     for (const FramePair& frameP : res1QR.collidingFrames) {
-        cout << "    " << frameP.first->getName () << " and " << frameP.second->getName () << endl;
+        std::cout << "    " << frameP.first->getName () << " and " << frameP.second->getName () << std::endl;
     }
 
-    cout << "\nColliding Frames (ProximityData full)" << endl;
+    std::cout << "\nColliding Frames (ProximityData full)" << std::endl;
     for (const FramePair& frameP : res2QR.collidingFrames) {
-        cout << "    " << frameP.first->getName () << " and " << frameP.second->getName () << endl;
+        std::cout << "    " << frameP.first->getName () << " and " << frameP.second->getName () << std::endl;
     }
-    cout << "\nColliding Frames (QueryResult)" << endl;
+    std::cout << "\nColliding Frames (QueryResult)" << std::endl;
     for (const FramePair& frameP : res3.collidingFrames) {
-        cout << "    " << frameP.first->getName () << " and " << frameP.second->getName () << endl;
+        std::cout << "    " << frameP.first->getName () << " and " << frameP.second->getName () << std::endl;
     }
 
-    cout << "\nProximityStrategyData (ProximityData std)" << endl;
+    std::cout << "\nProximityStrategyData (ProximityData std)" << std::endl;
     for (ProximityStrategyData& PSD : res1QR._fullInfo) {
         printPSD (PSD);
     }
 
-    cout << "\nProximityStrategyData (ProximityDataFULL)" << endl;
+    std::cout << "\nProximityStrategyData (ProximityDataFULL)" << std::endl;
     for (ProximityStrategyData& PSD : res2QR._fullInfo) {
         printPSD (PSD);
     }
 
-    cout << "\nProximityStrategyData (QueryType)" << endl;
+    std::cout << "\nProximityStrategyData (QueryType)" << std::endl;
     for (ProximityStrategyData& PSD : res3._fullInfo) {
         printPSD (PSD);
     }

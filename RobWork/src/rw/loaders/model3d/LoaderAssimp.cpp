@@ -48,10 +48,10 @@ static Transform3D<float> toRWTransform(const aiMatrix4x4& matrix) {
 }    // namespace
 
 LoaderAssimp::LoaderAssimp() {
-    Assimp::Logger::LogSeverity severity = Assimp::Logger::VERBOSE;
-    Assimp::DefaultLogger::create("", severity, aiDefaultLogStream_STDOUT);
-    Assimp::DefaultLogger::create("assimp_log.txt", severity, aiDefaultLogStream_FILE);
-    Assimp::DefaultLogger::get()->info("this is my info call");
+    /*Assimp::Logger::LogSeverity severity = Assimp::Logger::VERBOSE;
+    Assimp::DefaultLogger::create ("", severity, aiDefaultLogStream_STDOUT);
+    Assimp::DefaultLogger::create ("assimp_log.txt", severity, aiDefaultLogStream_FILE);
+    Assimp::DefaultLogger::get ()->info ("this is my info call");*/
 }
 
 LoaderAssimp::~LoaderAssimp() {}

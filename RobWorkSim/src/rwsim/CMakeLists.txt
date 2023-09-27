@@ -7,21 +7,20 @@ set(SUBSYS_DEPS
             RW::sdurw_pathplanners
             RW::sdurw_proximitystrategies
             RW::sdurw_graspplanning
-    PUBLIC
-            RW::sdurw_simulation
-            RW::sdurw_task
-            RW::sdurw_control
-            RW::sdurw_proximity
-            RW::sdurw_geometry
-            RW::sdurw_models
-            RW::sdurw_loaders
-            RW::sdurw_trajectory
-            RW::sdurw_graphics
-            RW::sdurw_sensor
-            RW::sdurw_kinematics
-            RW::sdurw_common
-            RW::sdurw_math
-            RW::sdurw_core
+    PUBLIC RW::sdurw_simulation
+           RW::sdurw_task
+           RW::sdurw_control
+           RW::sdurw_proximity
+           RW::sdurw_geometry
+           RW::sdurw_models
+           RW::sdurw_trajectory
+           RW::sdurw_graphics
+           RW::sdurw_sensor
+           RW::sdurw_loaders
+           RW::sdurw_kinematics
+           RW::sdurw_common
+           RW::sdurw_math
+           RW::sdurw_core
 )
 
 set(build TRUE)
@@ -46,6 +45,8 @@ if(build)
         contacts/ContactStrategyGeometry.cpp
         contacts/ContactStrategyTracking.cpp
         contacts/RenderContacts.cpp
+        contacts/BaseContactDetector.cpp
+        contacts/ThreadedContactDetector.cpp
         dynamics/Body.cpp
         dynamics/RigidBody.cpp
         dynamics/BeamBody.cpp
@@ -308,11 +309,7 @@ if(build)
         simulator
         util
     )
-    target_link_libraries(
-        ${SUBSYS_NAME}
-        ${SUBSYS_DEPS}
-        PUBLIC  ${OPENGL_LIBRARIES}
-    )
+    target_link_libraries(${SUBSYS_NAME} ${SUBSYS_DEPS} PUBLIC ${OPENGL_LIBRARIES})
 
     target_include_directories(
         ${SUBSYS_NAME} PUBLIC $<BUILD_INTERFACE:${RWSIM_ROOT}/src>
@@ -329,24 +326,59 @@ if(build)
     set_target_properties(${SUBSYS_NAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
 
     if(CMAKE_COMPILER_IS_GNUCXX)
-        set_source_files_properties(contacts/ContactDetector.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
-        set_source_files_properties(control/BodyController.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
-        set_source_files_properties(control/SerialDeviceController.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+        set_source_files_properties(
+            contacts/ContactDetector.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique
+        )
+        set_source_files_properties(
+            contacts/ThreadedContactDetector.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique
+        )
+        set_source_files_properties(
+            control/BodyController.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique
+        )
+        set_source_files_properties(
+            control/SerialDeviceController.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique
+        )
         set_source_files_properties(dynamics/BodyUtil.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
-        set_source_files_properties(dynamics/Constraint.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
-        set_source_files_properties(dynamics/DynamicUtil.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
-        set_source_files_properties(dynamics/DynamicWorkCell.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+        set_source_files_properties(
+            dynamics/Constraint.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique
+        )
+        set_source_files_properties(
+            dynamics/DynamicUtil.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique
+        )
+        set_source_files_properties(
+            dynamics/DynamicWorkCell.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique
+        )
         set_source_files_properties(dynamics/RigidBody.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
-        set_source_files_properties(dynamics/SuctionCup.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
-        set_source_files_properties(loaders/DynamicWorkCellLoader.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
-        set_source_files_properties(loaders/DynamicWorkCellSaver.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
-        set_source_files_properties(rwphysics/ContactModelFactory.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
-        set_source_files_properties(rwphysics/RWSimulator.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
-        set_source_files_properties(simulator/AssemblySimulator.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
-        set_source_files_properties(simulator/DynamicSimulator.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
-        set_source_files_properties(simulator/GraspTaskSimulator.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
-        set_source_files_properties(simulator/ThreadSimulator.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
-        set_source_files_properties(util/RestingPoseGenerator.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
+        set_source_files_properties(
+            dynamics/SuctionCup.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique
+        )
+        set_source_files_properties(
+            loaders/DynamicWorkCellLoader.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique
+        )
+        set_source_files_properties(
+            loaders/DynamicWorkCellSaver.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique
+        )
+        set_source_files_properties(
+            rwphysics/ContactModelFactory.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique
+        )
+        set_source_files_properties(
+            rwphysics/RWSimulator.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique
+        )
+        set_source_files_properties(
+            simulator/AssemblySimulator.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique
+        )
+        set_source_files_properties(
+            simulator/DynamicSimulator.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique
+        )
+        set_source_files_properties(
+            simulator/GraspTaskSimulator.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique
+        )
+        set_source_files_properties(
+            simulator/ThreadSimulator.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique
+        )
+        set_source_files_properties(
+            util/RestingPoseGenerator.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique
+        )
         set_source_files_properties(LuaEditorWindow.cpp PROPERTIES COMPILE_FLAGS -fno-gnu-unique)
     endif()
 endif()

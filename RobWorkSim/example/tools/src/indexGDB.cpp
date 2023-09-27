@@ -46,11 +46,11 @@ int main(int argc, char** argv)
 
     // write standard welcome, status
     if (vm.count("help")) {
-        cout << "Usage:\n\n"
+        std::cout << "Usage:\n\n"
                   << "\t" << argv[0] <<" [options] --gdb1=db1 --gdb2=db2 \n"
                   << "\n";
 
-        cout << desc << "\n";
+        std::cout << desc << "\n";
         return 1;
     }
 

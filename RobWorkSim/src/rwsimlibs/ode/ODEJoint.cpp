@@ -267,34 +267,8 @@ ODEJoint::ODEJoint(rw::models::Joint* rwjoint, ODEBody* parent, ODEBody* child,
     else { RW_THROW("Unsupported joint type!"); }
 }
 
-/*
-ODEJoint* ODEJoint::make(RevoluteJoint* joint, dBodyID parent, dWorldID worldId){
-    const double qinit = rwjoint->getQ(initState)[0];
-
-    dJointID hinge = dJointCreateHinge(worldId, 0);
-    dJointAttach(hinge, odeChild, odeParent);
-    dJointSetHingeAxis(hinge, haxis(0) , haxis(1), haxis(2));
-    dJointSetHingeAnchor(hinge, hpos(0), hpos(1), hpos(2));
-
-    dJointID motor = dJointCreateAMotor (_worldId, 0);
-    dJointAttach(motor, odeChild, odeParent);
-    dJointSetAMotorNumAxes(motor, 1);
-    dJointSetAMotorAxis(motor, 0, 1, haxis(0) , haxis(1), haxis(2));
-    dJointSetAMotorAngle(motor,0, qinit);
-    dJointSetAMotorParam(motor,dParamFMax, maxForce(i) );
-    dJointSetAMotorParam(motor,dParamVel,0);
-
-    //dJointSetAMotorParam(Amotor,dParamLoStop,-0);
-    //dJointSetAMotorParam(Amotor,dParamHiStop,0);
-    //std::cout << "CREATED ODEJOINT: " << rwjoint->getName() << std::endl;
-    ODEJoint *odeJoint = new ODEJoint(hinge, motor, rjoint);
-    _jointToODEJoint[rwjoint] = odeJoint;
-    odeJoints.push_back(odeJoint);
-
-}
-*/
-
-void ODEJoint::reset(const rw::kinematics::State& state) {
+void ODEJoint::reset (const rw::kinematics::State& state)
+{
     // if the fixed transform between two bodies is changed
     // then any constraint between these need to be reset
     // so we need to reattach the constraint
