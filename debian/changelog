@@ -1,3 +1,31 @@
+robwork (2.6.3-1) jammy; urgency=medium
+
+  [ kasper Høj Lorenzen ]
+  * Fixed upload Problem
+  * Version number updated to 2.6.3-1
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Wed, 27 Sep 2023 09:56:33 +0200
+
+robwork (2.6.2-1) jammy; urgency=medium
+
+  [ Kasper Høj Lorenzen ]
+  * Formated all .cpp and .hpp files to newest standard
+
+  [ kasper Høj Lorenzen ]
+  * Removed Invalid documentation
+
+  [ Lukas ]
+  * Fixed include order for rwgl on Windows.
+
+  [ Kasper Høj Lorenzen ]
+  * Multi threaded single sim
+  * Fixed Swig Template types for Interpolators
+
+  [ kasper Høj Lorenzen ]
+  * Version number updated to 2.6.2-1
+
+ -- Kasper Høj Lorenzen <kalor@mmmi.sdu.dk>  Wed, 27 Sep 2023 09:50:56 +0200
+
 robwork (2.6.1-1) jammy; urgency=medium
 
   [ kasper Høj Lorenzen ]
