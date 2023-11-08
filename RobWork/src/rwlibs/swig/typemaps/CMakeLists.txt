@@ -116,7 +116,7 @@ generate_template_pointer_converters(
     "toInterpolator"
 )
 
-generate_template_pointer_converters("rw::pathplanning::QConstraint" CONVERTER "toQConstraint")
+generate_pointer_converters("rw::pathplanning::QConstraint" CONVERTER "toQConstraint")
 
 generate_pointer_converters(
     "rwlibs::pathoptimization::ClearanceCalculator" TYPES
