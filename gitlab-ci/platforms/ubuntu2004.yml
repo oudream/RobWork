@@ -2,14 +2,14 @@
 
 build-RW:ubuntu-2004:
   extends: .linux-build-RW
-  image: gitlab.sdu.dk:5050/sdurobotics/docker-images/robwork-build:ubuntu-2004
+  image: registry.gitlab.sdu.dk/sdurobotics/docker-images/robwork-build:ubuntu-2004
 
 build-RWS:ubuntu-2004:
   extends: .linux-build-RWS
   dependencies:
     - build-RW:ubuntu-2004
   needs: ["build-RW:ubuntu-2004"]
-  image: gitlab.sdu.dk:5050/sdurobotics/docker-images/robwork-build:ubuntu-2004
+  image: registry.gitlab.sdu.dk/sdurobotics/docker-images/robwork-build:ubuntu-2004
 
 build-RWSim:ubuntu-2004:
   extends: .linux-build-RWSim
@@ -17,7 +17,7 @@ build-RWSim:ubuntu-2004:
     - build-RW:ubuntu-2004
     - build-RWS:ubuntu-2004
   needs: ["build-RW:ubuntu-2004", "build-RWS:ubuntu-2004"]
-  image: gitlab.sdu.dk:5050/sdurobotics/docker-images/robwork-build:ubuntu-2004
+  image: registry.gitlab.sdu.dk/sdurobotics/docker-images/robwork-build:ubuntu-2004
 
 examples:ubuntu-2004:
   extends: .linux-examples
@@ -27,7 +27,7 @@ examples:ubuntu-2004:
     - build-RWSim:ubuntu-2004
   needs:
     ["build-RW:ubuntu-2004", "build-RWS:ubuntu-2004", "build-RWSim:ubuntu-2004"]
-  image: gitlab.sdu.dk:5050/sdurobotics/docker-images/robwork-build:ubuntu-2004
+  image: registry.gitlab.sdu.dk/sdurobotics/docker-images/robwork-build:ubuntu-2004
 
 unique-symbols-tests:ubuntu-2004:
   extends: .linux-unique-symbols-tests
@@ -37,7 +37,7 @@ unique-symbols-tests:ubuntu-2004:
     - build-RWSim:ubuntu-2004
   needs:
     ["build-RW:ubuntu-2004", "build-RWS:ubuntu-2004", "build-RWSim:ubuntu-2004"]
-  image: gitlab.sdu.dk:5050/sdurobotics/docker-images/robwork-build:ubuntu-2004
+  image: registry.gitlab.sdu.dk/sdurobotics/docker-images/robwork-build:ubuntu-2004
 
 tests:ubuntu-2004:
   extends: .linux-tests
@@ -47,7 +47,7 @@ tests:ubuntu-2004:
     - build-RWSim:ubuntu-2004
   needs:
     ["build-RW:ubuntu-2004", "build-RWS:ubuntu-2004", "build-RWSim:ubuntu-2004"]
-  image: gitlab.sdu.dk:5050/sdurobotics/docker-images/robwork-build:ubuntu-2004
+  image: registry.gitlab.sdu.dk/sdurobotics/docker-images/robwork-build:ubuntu-2004
 
 python-tests:ubuntu-2004:
   extends: .linux-python-tests
@@ -57,7 +57,7 @@ python-tests:ubuntu-2004:
     - build-RWSim:ubuntu-2004
   needs:
     ["build-RW:ubuntu-2004", "build-RWS:ubuntu-2004", "build-RWSim:ubuntu-2004"]
-  image: gitlab.sdu.dk:5050/sdurobotics/docker-images/robwork-build:ubuntu-2004
+  image: registry.gitlab.sdu.dk/sdurobotics/docker-images/robwork-build:ubuntu-2004
 
 install-tests:ubuntu-2004:
   extends: .linux-install-tests
@@ -67,27 +67,27 @@ install-tests:ubuntu-2004:
     - build-RWSim:ubuntu-2004
   needs:
     ["build-RW:ubuntu-2004", "build-RWS:ubuntu-2004", "build-RWSim:ubuntu-2004"]
-  image: gitlab.sdu.dk:5050/sdurobotics/docker-images/robwork-build:ubuntu-2004
+  image: registry.gitlab.sdu.dk/sdurobotics/docker-images/robwork-build:ubuntu-2004
 
 build-debian:ubuntu-2004:
   extends: .linux-build-debian
-  image: gitlab.sdu.dk:5050/sdurobotics/docker-images/robwork-build:ubuntu-2004-deb
+  image: registry.gitlab.sdu.dk/sdurobotics/docker-images/robwork-build:ubuntu-2004-deb
 
 test-debian:ubuntu-2004:
   extends: .linux-test-debian
-  image: gitlab.sdu.dk:5050/sdurobotics/docker-images/robwork-build:ubuntu-2004-deb-test
+  image: registry.gitlab.sdu.dk/sdurobotics/docker-images/robwork-build:ubuntu-2004-deb-test
   dependencies:
     - "build-debian:ubuntu-2004"
   needs: ["build-debian:ubuntu-2004"]
 
 test-debian-upgrade:ubuntu-2004:
   extends: .linux-debian-upgrade-test
-  image: gitlab.sdu.dk:5050/sdurobotics/docker-images/robwork-build:ubuntu-2004-deb-test
+  image: registry.gitlab.sdu.dk/sdurobotics/docker-images/robwork-build:ubuntu-2004-deb-test
   dependencies:
     - build-debian:ubuntu-2004
   needs: ["build-debian:ubuntu-2004"]
 
 ppa-test:ubuntu-2004:
   extends: .ppa-install-tests
-  image: gitlab.sdu.dk:5050/sdurobotics/docker-images/robwork-build:ubuntu-2004-deb-test
+  image: registry.gitlab.sdu.dk/sdurobotics/docker-images/robwork-build:ubuntu-2004-deb-test
   needs: []

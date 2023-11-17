@@ -62,6 +62,16 @@ namespace rw { namespace loaders {
          */
         static rw::graphics::Model3D::Ptr toModel(const TopoDS_Shape& shape, std::string name);
 
+        /**
+         * @brief sets how much the Surface should deflect before a new triangle is made.
+         * check BRepMesh_IncrementalMesh at
+         * https://dev.opencascade.org/doc/refman/html/class_b_rep_mesh___incremental_mesh.html for
+         * more information
+         * @param linDef [in] linear Defelection
+         * @param angDef [in] angular deflection
+         */
+        static void setDeflection(double linDef = 0.01, double angDef = 0.5);
+
 #if RW_HAVE_OCC
         //! @copydoc Model3DLoader::getModelFormats
         std::vector<std::string> getModelFormats() {
@@ -73,6 +83,10 @@ namespace rw { namespace loaders {
             return {};
         }
 #endif
+
+      private:
+        static double _linDef;
+        static double _angDef;
     };
 
     //! @}
