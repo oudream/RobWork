@@ -25,8 +25,10 @@ using namespace rw::geometry;
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
 
+double rw::loaders::LoaderSTEP::_angDef(0.5);
+double rw::loaders::LoaderSTEP::_linDef(0.01);
 namespace {
-TopoDS_Shape loadShape(std::string const& filename) {
+TopoDS_Shape loadShape(std::string const& filename, double linDef, double angDef) {
     TopoDS_Shape shape;
     const std::string& filetype = StringUtil::toUpper(StringUtil::getFileExtension(filename));
 
@@ -36,7 +38,7 @@ TopoDS_Shape loadShape(std::string const& filename) {
         Reader.NbRootsForTransfer();
         Reader.TransferRoots();
         shape = Reader.OneShape();
-        BRepMesh_IncrementalMesh Mesh(shape, 0.01);
+        BRepMesh_IncrementalMesh Mesh(shape, linDef, false, angDef);
         Mesh.Perform();
     }
     else if(filetype == ".IGS") {
@@ -45,7 +47,7 @@ TopoDS_Shape loadShape(std::string const& filename) {
         Reader.NbRootsForTransfer();
         Reader.TransferRoots();
         shape = Reader.OneShape();
-        BRepMesh_IncrementalMesh Mesh(shape, 0.01);
+        BRepMesh_IncrementalMesh Mesh(shape, linDef, false, angDef);
         Mesh.Perform();
     }
     else if(filetype == ".BREP") {
@@ -59,7 +61,7 @@ TopoDS_Shape loadShape(std::string const& filename) {
 }    // namespace
 
 rw::graphics::Model3D::Ptr LoaderSTEP::load(const std::string& filename) {
-    TopoDS_Shape shape = loadShape(filename);
+    TopoDS_Shape shape = loadShape(filename, LoaderSTEP::_linDef, LoaderSTEP::_angDef);
     return toModel(shape, boost::filesystem::path(filename).filename().c_str());
 }
 
@@ -110,8 +112,7 @@ rw::graphics::Model3D::Ptr LoaderSTEP::toModel(const TopoDS_Shape& shape, std::s
         }
     }
     rwMesh.scale(0.001);
-    Model3D::Ptr model =
-        ownedPtr(new Model3D(name));
+    Model3D::Ptr model = ownedPtr(new Model3D(name));
     model->addTriMesh(Model3D::Material("White", 0.8, 0.8, 0.8), rwMesh);
 
     return model;
@@ -123,3 +124,8 @@ rw::graphics::Model3D::Ptr LoaderSTEP::load(const std::string& filename) {
     return NULL;
 }
 #endif
+
+void LoaderSTEP::setDeflection(double linDef, double angDef){
+    _linDef = linDef;
+    _angDef = angDef;
+}
