@@ -45,6 +45,7 @@
       when: never
     - if: '$CI_COMMIT_BRANCH == "debian-pkg"'
       when: never
+    - if: '$CI_COMMIT_BRANCH == "devel"'
     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
     - if: '$CI_PIPELINE_SOURCE == "push"'
     - if: '$CI_PIPELINE_SOURCE == "web"'
