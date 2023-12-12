@@ -94,7 +94,7 @@ CollisionDetector::Ptr makeCollisionDetector(WorkCell::Ptr workcell) {
 
 RobWorkStudio::RobWorkStudio(const PropertyMap& map) :
     QMainWindow(NULL), _robwork(RobWork::getInstance()), _aboutBox(NULL), _inStateUpdate(false),
-    _settingsMap(NULL) {
+     _timedStatePath(ownedPtr(new rw::trajectory::TimedStatePath())), _settingsMap(NULL) {
     this->setObjectName("RobWorkStudio_MainWindow");
     // Always create the about box.
     _aboutBox = new AboutBox(RW_VERSION, RW_REVISION, this);

@@ -25,8 +25,10 @@ using namespace rw::geometry;
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
 
-double rw::loaders::LoaderSTEP::_angDef(0.5);
-double rw::loaders::LoaderSTEP::_linDef(0.01);
+//double rw::loaders::LoaderSTEP::_angDef = 0.5;
+//double rw::loaders::LoaderSTEP::_linDef = 0.01;
+
+
 namespace {
 TopoDS_Shape loadShape(std::string const& filename, double linDef, double angDef) {
     TopoDS_Shape shape;

@@ -117,7 +117,7 @@ macro(GENERATE_TYPECHECK _type)
 
     set(body)
     set(body "${body}    ${_type} res;\n")
-    set(body "${body}    $1 = fromSWIG(SWIGPtr_pre $input,res,true);\n")
+    set(body "${body}    $1 = fromSWIG(SWIGPtr_pre $input,&res,true);\n")
     set(body "${body}    if ( ! $1 ) {\n")
     set(body "${body}    std::cout << \"Failed to verify ${_type} \" << std::endl;\n")
     set(body "${body}#if defined(SWIGPYTHON)\n")
@@ -184,18 +184,18 @@ macro(GENERATE_TYPEMAP _type)
     set(typemap)
     set(typemap "${typemap}#if !defined(SWIGJAVA)\n")
     set(typemap "${typemap}%typemap(in, fragment=\"${TM_CONVERTER}FromSwig\") ${_type} {\n")
-    set(typemap "${typemap}    bool res = fromSWIG(SWIGPtr_pre $input,$1,false);\n")
+    set(typemap "${typemap}    bool res = fromSWIG(SWIGPtr_pre $input,&$1,false);\n")
     set(typemap "${typemap}${tm_end}")
     set(typemap
         "${typemap}%typemap(in, fragment=\"${TM_CONVERTER}FromSwig\") ${_type}&  (${_type} temp) {\n"
     )
-    set(typemap "${typemap}    bool res = fromSWIG(SWIGPtr_pre $input,temp,false);\n")
+    set(typemap "${typemap}    bool res = fromSWIG(SWIGPtr_pre $input,&temp,false);\n")
     set(typemap "${typemap}    $1 = &temp;\n")
     set(typemap "${typemap}${tm_end}")
     set(typemap
         "${typemap}%typemap(in, fragment=\"${TM_CONVERTER}FromSwig\") const ${_type}& (${_type} temp) {\n"
     )
-    set(typemap "${typemap}    bool res = fromSWIG(SWIGPtr_pre $input,temp,false);\n")
+    set(typemap "${typemap}    bool res = fromSWIG(SWIGPtr_pre $input,&temp,false);\n")
     set(typemap "${typemap}    $1 = &temp;\n")
     set(typemap "${typemap}${tm_end}")
     set(typemap "${typemap}#endif\n")
@@ -317,15 +317,15 @@ macro(GENERATE_FROM_SWIG_FRAGMENT _type)
     # fromSwig Function
     # ##############################################################################################
     set(fragment "${fragment}    template<class T>\n")
-    set(fragment "${fragment}    bool fromSWIG(LUASTATE_pre T elem, ${_type}& res,bool isCheck){\n")
+    set(fragment "${fragment}    bool fromSWIG(LUASTATE_pre T elem, ${_type}* res,bool isCheck){\n")
 
     if(${IS_POINTER})
         set(fragment
-            "${fragment}        if(convert<${_type}>(SWIGPtr_pre $descriptor(${_type} *),elem,res,isCheck)) return true;\n"
+            "${fragment}        if(convert<${_type}>(SWIGPtr_pre $descriptor(${_type} *),elem,*res,isCheck)) return true;\n"
         )
     else()
         set(fragment
-            "${fragment}        if(convert<${_type}*>(SWIGPtr_pre $descriptor(${_type} *),elem,res,isCheck)) return true;\n"
+            "${fragment}        if(convert<${_type}*>(SWIGPtr_pre $descriptor(${_type} *),elem,*res,isCheck)) return true;\n"
         )
     endif()
     foreach(type ${FS_TYPES})
@@ -340,12 +340,12 @@ macro(GENERATE_FROM_SWIG_FRAGMENT _type)
             set(fragment
                 "${fragment}            if(isCheck) return v == 0; //Only NULL pointers allowed;\n"
             )
-            set(fragment "${fragment}            res = ${FS_CONVERTER} (v);\n")
+            set(fragment "${fragment}            *res = ${FS_CONVERTER} (v);\n")
             set(fragment "${fragment}            return true;\n")
             set(fragment "${fragment}        }\n")
         else()
             set(fragment
-                "${fragment}        if(convert<${type}*>(SWIGPtr_pre $descriptor(${type} *),elem,res,isCheck)) return true;\n"
+                "${fragment}        if(convert<${type}*>(SWIGPtr_pre $descriptor(${type} *),elem,*res,isCheck)) return true;\n"
             )
         endif()
     endforeach()
@@ -447,7 +447,7 @@ macro(GENERATE_PYTHON_FRAGMENT _type)
     set(fragment
         "${fragment}        static void fromPy(PyObject* elem,swig_type_info* type, ${_type}& res){\n"
     )
-    set(fragment "${fragment}           if(!fromSWIG(elem,res,false)){\n")
+    set(fragment "${fragment}           if(!fromSWIG(elem,&res,false)){\n")
     set(fragment
         "${fragment}                RW_THROW(\"Could not convert to type: \" <<  type->str  << \". Python reports type as: \" << elem->ob_type->tp_name );\n"
     )

@@ -63,14 +63,17 @@ double DrawableGeometry::getAlpha() {
     return _alpha;
 }
 
-void DrawableGeometry::addLines(const std::vector<rw::geometry::Line>& lines) {
+void DrawableGeometry::addLines(const std::vector<rw::geometry::Line>& lines, double thickness) {
     initLines();
     _rlines->addLines(lines);
+    _rlines->setThickness(thickness);
 }
 
-void DrawableGeometry::addLine(const rw::math::Vector3D<>& v1, const rw::math::Vector3D<>& v2) {
+void DrawableGeometry::addLine(const rw::math::Vector3D<>& v1, const rw::math::Vector3D<>& v2,
+                               double thickness) {
     initLines();
     _rlines->addLine(v1, v2);
+    _rlines->setThickness(thickness);
 }
 
 void DrawableGeometry::addGeometry(rw::geometry::Geometry::Ptr geom) {

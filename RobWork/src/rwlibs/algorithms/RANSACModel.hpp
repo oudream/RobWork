@@ -26,6 +26,7 @@
 #include <rw/math/Random.hpp>
 
 #include <algorithm>
+#include <random>
 #include <vector>
 
 namespace rwlibs { namespace algorithms {
@@ -94,8 +95,10 @@ namespace rwlibs { namespace algorithms {
                 models;    // pair containing a model and a number of inliers
 
             int iterations = 0;
+            std::random_device rd;
+            std::mt19937 gen(rd());
             while(iterations++ < maxIterations) {
-                std::random_shuffle(indices.begin(), indices.end());
+                std::shuffle(indices.begin(), indices.end(), gen);
                 std::vector<DATA> maybeInliers;
                 for(size_t i = 0; i < static_cast<size_t>(n); ++i) {
                     maybeInliers.push_back(data[indices[i]]);

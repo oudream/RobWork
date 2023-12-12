@@ -15,6 +15,7 @@
 #include <rwlibs/proximitystrategies/ProximityStrategyFactory.hpp>
 
 #include <boost/tokenizer.hpp>
+#include <random>
 
 using namespace rw::core;
 using namespace rw::math;
@@ -88,8 +89,10 @@ Planning::Status Planning::getPath(std::pair<unsigned int, QPath>& res, const St
     if(tasks.size() <= 0) return NO_TASK;
 
     std::vector<unsigned int> ind;
+    std::random_device rd;
+    std::mt19937 grn(rd());
     for(unsigned int i = 0; i < tasks.size(); i++) ind.push_back(i);
-    if(_strategy == RANDOM) { std::random_shuffle(ind.begin(), ind.end()); }
+    if(_strategy == RANDOM) { std::shuffle(ind.begin(), ind.end(), gen); }
     else if(_strategy == BEST_QUALITY) {
         // Order after quality descending
         std::vector<std::pair<unsigned int, double>> sortList;
@@ -117,8 +120,10 @@ Planning::Status Planning::getPath(std::pair<unsigned int, QPath>& res, const St
             list[list.size() - 1].second.push_back(id);
         }
         // Randomize ids
+        std::random_device rd;
+        std::mt19937 grn(rd());
         for(unsigned int i = 0; i < list.size(); i++) {
-            std::random_shuffle(list[i].second.begin(), list[i].second.end());
+            std::shuffle(list[i].second.begin(), list[i].second.end(), gen);
         }
         // Linearize list
         ind.clear();

@@ -79,8 +79,8 @@ public:
 	void setAlpha(double alpha) {}
 	Vector3D<> getColor() { return Vector3D<>::x(); }
 	double getAlpha() { return 1; }
-	void addLines(const std::vector<rw::geometry::Line >& lines) {}
-	void addLine(const Vector3D<>& v1, const Vector3D<>& v2) {}
+	void addLines(const std::vector<rw::geometry::Line >& lines,double thickness = 1) {}
+	void addLine(const Vector3D<>& v1, const Vector3D<>& v2,double thickness = 1) {}
 	void addGeometry(rw::core::Ptr<class rw::geometry::Geometry> geom) {}
 	void addFrameAxis(double size) {}
 };

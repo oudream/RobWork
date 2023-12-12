@@ -389,6 +389,14 @@ namespace rw { namespace core {
         return Ptr<T>(typename Ptr<T>::shared_ptr(ptr));
     }
 
+        /**
+     * @brief A Ptr that takes ownership over a raw pointer \b ptr.
+     * @relates Ptr
+     */
+    template<class T> Ptr<T> OwnedPtr(T* ptr) {
+        return Ptr<T>(typename Ptr<T>::shared_ptr(ptr));
+    }
+
     /**
      * @brief Convert a vector of Ptr to a vector of std::shared_ptr.
      *

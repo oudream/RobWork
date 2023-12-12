@@ -90,9 +90,10 @@ namespace rwlibs { namespace opengl {
         //! @copydoc rw::graphics::DrawableGeometryNode::getAlpha()
         double getAlpha();
         //! @copydoc rw::graphics::DrawableGeometryNode::addLines()
-        void addLines(const std::vector<rw::geometry::Line>& lines);
+        void addLines(const std::vector<rw::geometry::Line>& lines, double thickness = 1);
         //! @copydoc rw::graphics::DrawableGeometryNode::addLine()
-        void addLine(const rw::math::Vector3D<>& v1, const rw::math::Vector3D<>& v2);
+        void addLine(const rw::math::Vector3D<>& v1, const rw::math::Vector3D<>& v2,
+                     double thickness = 1);
         //! @copydoc rw::graphics::DrawableGeometryNode::addGeometry()
         void addGeometry(rw::core::Ptr<rw::geometry::Geometry> geom);
         //! @copydoc rw::graphics::DrawableGeometryNode::addFrameAxis()

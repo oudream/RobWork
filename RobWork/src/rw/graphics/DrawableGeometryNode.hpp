@@ -69,14 +69,16 @@ namespace rw { namespace graphics {
          * @brief add lines to this geometry
          * @param lines [in] list of line segments that should be added
          */
-        virtual void addLines(const std::vector<rw::geometry::Line>& lines) = 0;
+        virtual void addLines(const std::vector<rw::geometry::Line>& lines,
+                              double thickness = 1) = 0;
 
         /**
          * @brief add a single line segment to this geometry render
          * @param v1 [in] line segment vertice 1
          * @param v2 [in] line segment vertice 2
          */
-        virtual void addLine(const rw::math::Vector3D<>& v1, const rw::math::Vector3D<>& v2) = 0;
+        virtual void addLine(const rw::math::Vector3D<>& v1, const rw::math::Vector3D<>& v2,
+                             double thickness = 1) = 0;
 
         /**
          * @brief add a geometry to this render

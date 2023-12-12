@@ -660,7 +660,7 @@ Jacobian ParallelDevice::baseJend(const std::vector<ParallelLeg*>& legs, const S
     return Jacobian(m);
 }
 
-Jacobian ParallelDevice::baseJframe(const rw::core::Ptr<Frame> frame, const State& state) const {
+Jacobian ParallelDevice::baseJframe(const rw::core::Ptr<const Frame> frame, const State& state) const {
     RW_THROW("Not implemented");
 
     // calculate the size of the total jacobian matrix and configuration vector
