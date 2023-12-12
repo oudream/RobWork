@@ -15,7 +15,6 @@ include:
 #Jobs
   - '/gitlab-ci/platforms/ubuntu2204.yml'
   - '/gitlab-ci/platforms/ubuntu2004.yml'
-  - '/gitlab-ci/platforms/ubuntu1804.yml'
   - '/gitlab-ci/gitlab-ci-doc.yml'
   - '/gitlab-ci/platforms/windows10-vs16.yml'
   - '/gitlab-ci/platforms/mac.yml'

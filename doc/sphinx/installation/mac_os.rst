@@ -108,11 +108,11 @@ to use Java you need to link it to the system installed packages with:
 RobWorkStudio Required Dependencies
 -----------------------------------
 
-RobWorkStudio requires Qt to be installed. Only Qt5 is supported:
+RobWorkStudio requires Qt to be installed. Only Qt6 is supported:
 
 .. code-block:: shell
 
-    brew install qt5
+    brew install qt6
 
 RobWorkSim Dependencies
 -----------------------------------

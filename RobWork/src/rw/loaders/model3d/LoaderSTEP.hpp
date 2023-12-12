@@ -85,8 +85,8 @@ namespace rw { namespace loaders {
 #endif
 
       private:
-        static double _linDef;
-        static double _angDef;
+        inline static double _linDef = 0.01;
+        inline static double _angDef = 0.5;
     };
 
     //! @}

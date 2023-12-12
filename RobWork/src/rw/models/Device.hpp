@@ -322,7 +322,7 @@ namespace rw { namespace models {
          *
          * By default the method forwards to baseJframes().
          */
-        virtual rw::math::Jacobian baseJframe(rw::core::Ptr<const rw::kinematics::Frame> frame,
+        virtual rw::math::Jacobian baseJframe(const rw::core::Ptr<const rw::kinematics::Frame> frame,
                                               const rw::kinematics::State& state) const;
 
         /**
