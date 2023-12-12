@@ -119,7 +119,7 @@ namespace rw { namespace models {
                           rw::kinematics::State& state) const;
 
         /** @copydoc Device::baseJframe */
-        rw::math::Jacobian baseJframe(const rw::core::Ptr<rw::kinematics::Frame> frame,
+        rw::math::Jacobian baseJframe(const rw::core::Ptr<const rw::kinematics::Frame> frame,
                                       const rw::kinematics::State& state) const;
 
         /** @copydoc Device::baseJend */
