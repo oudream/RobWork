@@ -28,6 +28,7 @@ add_subdirectory(pythoneditor)
 add_subdirectory(sensors)
 add_subdirectory(workcelleditor)
 add_subdirectory(workcelleditorplugin)
+add_subdirectory(pathvisualizer)
 # depends on all above
 add_subdirectory(rwstudioapp)
 # depends on rwstudio

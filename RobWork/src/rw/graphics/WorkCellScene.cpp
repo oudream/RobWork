@@ -817,6 +817,7 @@ bool WorkCellScene::removeDrawable(const std::string& name, const rw::core::Ptr<
 }
 
 Frame* WorkCellScene::getFrame(DrawableNode::Ptr d) const {
+    if(d->_parentNodes.empty()) return NULL;
     GroupNode::Ptr gn = d->_parentNodes.front().cast<GroupNode>();
     if(gn == NULL) {
         RW_WARN("Group Node is NULL");
